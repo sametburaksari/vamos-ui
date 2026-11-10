@@ -5,12 +5,19 @@ import docActivityTimeline from "./activity-timeline";
 import docAddressField from "./address-field";
 import docAlertDialog from "./alert-dialog";
 import docAlert from "./alert";
+import docAnnouncementBar from "./announcement-bar";
 import docAppShell from "./app-shell";
+import docApprovalFlow from "./approval-flow";
 import docAreaChart from "./area-chart";
+import docArticleLayout from "./article-layout";
+import docAttachmentList from "./attachment-list";
+import docAuditLog from "./audit-log";
 import docAvatar from "./avatar";
 import docBadge from "./badge";
 import docBarChart from "./bar-chart";
+import docBlockEditor from "./block-editor";
 import docBlocksApi from "./blocks-api";
+import docBlogList from "./blog-list";
 import docBreadcrumb from "./breadcrumb";
 import docButtonGroup from "./button-group";
 import docButton from "./button";
@@ -23,7 +30,13 @@ import docColorPicker from "./color-picker";
 import docComboChart from "./combo-chart";
 import docCombobox from "./combobox";
 import docCommand from "./command";
+import docCommentThread from "./comment-thread";
+import docComparisonTable from "./comparison-table";
+import docConsentBanner from "./consent-banner";
+import docContactDock from "./contact-dock";
+import docContactForm from "./contact-form";
 import docContextMenu from "./context-menu";
+import docCta from "./cta";
 import docDataTable from "./data-table";
 import docDatePicker from "./date-picker";
 import docDateRangePicker from "./date-range-picker";
@@ -31,55 +44,95 @@ import docDescriptionList from "./description-list";
 import docDialog from "./dialog";
 import docDonutChart from "./donut-chart";
 import docDropdownMenu from "./dropdown-menu";
+import docEditorLayout from "./editor-layout";
 import docEmptyState from "./empty-state";
+import docEntityCard from "./entity-card";
+import docExport from "./export";
+import docFaq from "./faq";
+import docFeatureGrid from "./feature-grid";
 import docFileUpload from "./file-upload";
 import docFilterBar from "./filter-bar";
 import docFontPicker from "./font-picker";
+import docFooter from "./footer";
 import docFormattedInput from "./formatted-input";
 import docFunnel from "./funnel";
+import docGallerySection from "./gallery-section";
 import docGallery from "./gallery";
+import docGantt from "./gantt";
 import docGauge from "./gauge";
 import docHeatmap from "./heatmap";
+import docHero from "./hero";
+import docHierarchyChart from "./hierarchy-chart";
 import docHoverCard from "./hover-card";
 import docImageCropper from "./image-cropper";
+import docImageField from "./image-field";
 import docImage from "./image";
+import docImportWizard from "./import-wizard";
 import docInputOtp from "./input-otp";
 import docInput from "./input";
 import docItem from "./item";
+import docKanban from "./kanban";
 import docKbd from "./kbd";
 import docLightbox from "./lightbox";
 import docLineChart from "./line-chart";
+import docLineItems from "./line-items";
 import docLinkPreviews from "./link-previews";
+import docListLayout from "./list-layout";
+import docLogoStrip from "./logo-strip";
+import docMapHours from "./map-hours";
+import docMediaLibrary from "./media-library";
+import docMediaPicker from "./media-picker";
+import docMediaText from "./media-text";
+import docMenuList from "./menu-list";
+import docMultiStepForm from "./multi-step-form";
+import docNavbar from "./navbar";
 import docNavigationMenu from "./navigation-menu";
+import docNotFound from "./not-found";
 import docNotificationCenter from "./notification-center";
 import docPageHeader from "./page-header";
+import docPageIntro from "./page-intro";
 import docPagination from "./pagination";
+import docPermissionMatrix from "./permission-matrix";
 import docPopover from "./popover";
+import docPricingTable from "./pricing-table";
 import docProgress from "./progress";
 import docRadioGroup from "./radio-group";
+import docRecordDetailLayout from "./record-detail-layout";
 import docRecordPicker from "./record-picker";
 import docResizable from "./resizable";
+import docResourceCalendar from "./resource-calendar";
+import docRichTextSection from "./rich-text-section";
 import docSavedViews from "./saved-views";
+import docScheduler from "./scheduler";
 import docScrollArea from "./scroll-area";
 import docSelect from "./select";
 import docSeparator from "./separator";
+import docSettingsLayout from "./settings-layout";
+import docSetupChecklist from "./setup-checklist";
 import docSheet from "./sheet";
 import docSidebar from "./sidebar";
 import docSignaturePad from "./signature-pad";
 import docSkeleton from "./skeleton";
 import docSlider from "./slider";
 import docSlugInput from "./slug-input";
+import docSortableList from "./sortable-list";
 import docSortable from "./sortable";
 import docSparkline from "./sparkline";
 import docSpinner from "./spinner";
 import docStat from "./stat";
+import docStatsBand from "./stats-band";
 import docStatusPicker from "./status-picker";
 import docStepper from "./stepper";
+import docSteps from "./steps";
 import docSwitch from "./switch";
 import docTable from "./table";
 import docTabs from "./tabs";
 import docTagInput from "./tag-input";
+import docTaskList from "./task-list";
+import docTeam from "./team";
+import docTestimonials from "./testimonials";
 import docTimePicker from "./time-picker";
+import docTimeTracker from "./time-tracker";
 import docToast from "./toast";
 import docTooltip from "./tooltip";
 import docTopBar from "./top-bar";
@@ -87,6 +140,7 @@ import docTreeSelect from "./tree-select";
 import docTreeView from "./tree-view";
 import docTypography from "./typography";
 import docUserPicker from "./user-picker";
+import docVersionHistory from "./version-history";
 import docVideoPlayer from "./video-player";
 
 export const entries: DocEntry[] = [
@@ -95,12 +149,19 @@ export const entries: DocEntry[] = [
   docAddressField,
   docAlertDialog,
   docAlert,
+  docAnnouncementBar,
   docAppShell,
+  docApprovalFlow,
   docAreaChart,
+  docArticleLayout,
+  docAttachmentList,
+  docAuditLog,
   docAvatar,
   docBadge,
   docBarChart,
+  docBlockEditor,
   docBlocksApi,
+  docBlogList,
   docBreadcrumb,
   docButtonGroup,
   docButton,
@@ -113,7 +174,13 @@ export const entries: DocEntry[] = [
   docComboChart,
   docCombobox,
   docCommand,
+  docCommentThread,
+  docComparisonTable,
+  docConsentBanner,
+  docContactDock,
+  docContactForm,
   docContextMenu,
+  docCta,
   docDataTable,
   docDatePicker,
   docDateRangePicker,
@@ -121,55 +188,95 @@ export const entries: DocEntry[] = [
   docDialog,
   docDonutChart,
   docDropdownMenu,
+  docEditorLayout,
   docEmptyState,
+  docEntityCard,
+  docExport,
+  docFaq,
+  docFeatureGrid,
   docFileUpload,
   docFilterBar,
   docFontPicker,
+  docFooter,
   docFormattedInput,
   docFunnel,
+  docGallerySection,
   docGallery,
+  docGantt,
   docGauge,
   docHeatmap,
+  docHero,
+  docHierarchyChart,
   docHoverCard,
   docImageCropper,
+  docImageField,
   docImage,
+  docImportWizard,
   docInputOtp,
   docInput,
   docItem,
+  docKanban,
   docKbd,
   docLightbox,
   docLineChart,
+  docLineItems,
   docLinkPreviews,
+  docListLayout,
+  docLogoStrip,
+  docMapHours,
+  docMediaLibrary,
+  docMediaPicker,
+  docMediaText,
+  docMenuList,
+  docMultiStepForm,
+  docNavbar,
   docNavigationMenu,
+  docNotFound,
   docNotificationCenter,
   docPageHeader,
+  docPageIntro,
   docPagination,
+  docPermissionMatrix,
   docPopover,
+  docPricingTable,
   docProgress,
   docRadioGroup,
+  docRecordDetailLayout,
   docRecordPicker,
   docResizable,
+  docResourceCalendar,
+  docRichTextSection,
   docSavedViews,
+  docScheduler,
   docScrollArea,
   docSelect,
   docSeparator,
+  docSettingsLayout,
+  docSetupChecklist,
   docSheet,
   docSidebar,
   docSignaturePad,
   docSkeleton,
   docSlider,
   docSlugInput,
+  docSortableList,
   docSortable,
   docSparkline,
   docSpinner,
   docStat,
+  docStatsBand,
   docStatusPicker,
   docStepper,
+  docSteps,
   docSwitch,
   docTable,
   docTabs,
   docTagInput,
+  docTaskList,
+  docTeam,
+  docTestimonials,
   docTimePicker,
+  docTimeTracker,
   docToast,
   docTooltip,
   docTopBar,
@@ -177,5 +284,6 @@ export const entries: DocEntry[] = [
   docTreeView,
   docTypography,
   docUserPicker,
+  docVersionHistory,
   docVideoPlayer,
 ];

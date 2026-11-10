@@ -296,3 +296,179 @@ th:hover > .ui-dt-resize::after {
   background: var(--selected);
   border-color: color-mix(in srgb, var(--accent-ink) 30%, var(--line));
 }
+
+/* ------------------------------------------------------------------ */
+/* Attachment list                                                      */
+/* ------------------------------------------------------------------ */
+
+.ui-attachment-progress[data-indeterminate] > span {
+  width: 35%;
+  animation: ui-attachment-indeterminate 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes ui-attachment-indeterminate {
+  from { inset-inline-start: -35%; }
+  to { inset-inline-start: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-attachment-progress[data-indeterminate] > span {
+    animation: none;
+    width: 100%;
+    opacity: 0.45;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Diff view (Version history, Audit log)                               */
+/* Panels are surface-2 — never blurred. Colour is paired with +/− and <ins>/<del>. */
+/* ------------------------------------------------------------------ */
+
+.ui-diff {
+  --diff-add: color-mix(in srgb, var(--success) 13%, transparent);
+  --diff-del: color-mix(in srgb, var(--danger) 12%, transparent);
+  --diff-add-word: color-mix(in srgb, var(--success) 30%, transparent);
+  --diff-del-word: color-mix(in srgb, var(--danger) 28%, transparent);
+  --diff-no-w: 2.75rem;
+}
+.ui-diff-body {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+  max-height: var(--diff-max-h, none);
+  overflow-y: auto;
+}
+.ui-diff-line {
+  display: grid;
+  grid-template-columns: auto auto 1.25rem minmax(0, 1fr);
+  align-items: start;
+  min-width: max-content;
+}
+.ui-diff[data-wrap] .ui-diff-line { min-width: 0; }
+.ui-diff:not([data-numbers]) .ui-diff-line { grid-template-columns: 1.25rem minmax(0, 1fr); }
+.ui-diff-split .ui-diff-line { grid-template-columns: auto 1.25rem minmax(0, 1fr); }
+.ui-diff:not([data-numbers]) .ui-diff-split .ui-diff-line { grid-template-columns: 1.25rem minmax(0, 1fr); }
+.ui-diff-no {
+  width: var(--diff-no-w);
+  padding-inline: 0.5rem;
+  text-align: end;
+  color: var(--fg-subtle);
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+  border-inline-end: 1px solid var(--line);
+}
+.ui-diff-marker {
+  text-align: center;
+  user-select: none;
+  color: var(--fg-subtle);
+}
+.ui-diff-text {
+  padding-inline-end: 0.75rem;
+  white-space: pre;
+  color: var(--fg);
+}
+.ui-diff[data-wrap] .ui-diff-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.ui-diff-text ins,
+.ui-diff-text del,
+ins.ui-diff-text,
+del.ui-diff-text { text-decoration: none; }
+.ui-diff-line[data-type="add"] { background: var(--diff-add); }
+.ui-diff-line[data-type="del"] { background: var(--diff-del); }
+.ui-diff-line[data-type="add"] .ui-diff-marker { color: var(--success); font-weight: 600; }
+.ui-diff-line[data-type="del"] .ui-diff-marker { color: var(--danger); font-weight: 600; }
+.ui-diff-line[data-type="add"] .ui-diff-no { box-shadow: inset calc(-2px * var(--dir, 1)) 0 0 var(--success); }
+.ui-diff-line[data-type="del"] .ui-diff-no { box-shadow: inset calc(-2px * var(--dir, 1)) 0 0 var(--danger); }
+.ui-diff-line[data-type="empty"] {
+  background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--fg) 3%, transparent) 6px 7px);
+}
+.ui-diff-text ins[data-word] { background: var(--diff-add-word); border-radius: 2px; }
+.ui-diff-text del[data-word] { background: var(--diff-del-word); border-radius: 2px; }
+[data-current] > .ui-diff-line,
+.ui-diff-line[data-current] { box-shadow: inset calc(3px * var(--dir, 1)) 0 0 var(--accent-ink); }
+.ui-diff-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.ui-diff-split > .ui-diff-line:first-child { border-inline-end: 1px solid var(--line); }
+.ui-diff-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--fg-muted);
+  background: color-mix(in oklch, var(--surface-2) 94%, var(--scene));
+  border-bottom: 1px solid var(--line);
+}
+.ui-diff-head > span { padding: 0.35rem 0.75rem; }
+.ui-diff-head > span:first-child { border-inline-end: 1px solid var(--line); }
+.ui-diff-gap {
+  border-block: 1px solid var(--line);
+  background: color-mix(in srgb, var(--fg) 3%, transparent);
+}
+.ui-diff-gap > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.25rem 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.ui-diff-gap > button:hover { color: var(--fg); background: var(--hover); }
+
+/* Field diff */
+.ui-field-diff :is(th, td) {
+  padding: 0.55rem 0.75rem;
+  text-align: start;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+.ui-field-diff tbody tr:last-child > * { border-bottom: 0; }
+.ui-field-diff thead th {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--fg-muted);
+  background: color-mix(in srgb, var(--fg) 2.5%, transparent);
+}
+.ui-field-diff tbody th { width: 28%; font-weight: 500; color: var(--fg); }
+.ui-field-diff td { color: var(--fg); }
+.ui-field-diff td > del {
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--danger) 70%, transparent);
+  color: var(--fg-muted);
+  background: color-mix(in srgb, var(--danger) 9%, transparent);
+  border-radius: 3px;
+  padding: 0 0.2em;
+}
+.ui-field-diff td > ins {
+  text-decoration: none;
+  background: color-mix(in srgb, var(--success) 13%, transparent);
+  border-radius: 3px;
+  padding: 0 0.2em;
+}
+.ui-field-diff td > .ui-diff { margin: -0.25rem -0.5rem; }
+
+/* ------------------------------------------------------------------ */
+/* Audit log                                                            */
+/* ------------------------------------------------------------------ */
+
+.ui-audit {
+  --audit-head-bg: color-mix(in oklch, var(--surface) 94%, var(--scene));
+}
+.ui-audit-table { border-collapse: separate; border-spacing: 0; }
+.ui-audit-table > thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--audit-head-bg);
+  border-bottom: 1px solid var(--line);
+}
+.ui-audit-table > tbody > tr > td { border-bottom: 1px solid var(--line); }
+.ui-audit-table > tbody[data-expanded] > tr:first-child > td { border-bottom-color: transparent; background: var(--selected); }
+.ui-audit-table > tbody > tr[data-slot="audit-row"]:hover > td { background: var(--hover); }
+.ui-audit-table > tbody[data-severity="critical"] > tr:first-child > td:first-child { box-shadow: inset calc(2px * var(--dir, 1)) 0 0 var(--danger); }
+.ui-audit-table > tbody[data-severity="warning"] > tr:first-child > td:first-child { box-shadow: inset calc(2px * var(--dir, 1)) 0 0 var(--warning); }
+.ui-audit-table > tbody > tr[data-slot="audit-detail"] > td { background: color-mix(in srgb, var(--selected) 55%, transparent); }

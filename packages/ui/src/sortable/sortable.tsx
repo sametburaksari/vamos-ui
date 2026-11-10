@@ -504,7 +504,7 @@ export function Sortable<T>(props: SortableProps<T>) {
       id={dndId}
       sensors={sensors}
       collisionDetection={collision}
-      modifiers={MODIFIERS[orientation]}
+      modifiers={multi ? [] : MODIFIERS[orientation]}
       measuring={multi ? { droppable: { strategy: MeasuringStrategy.Always } } : undefined}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}

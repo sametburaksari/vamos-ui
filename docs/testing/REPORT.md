@@ -17,3 +17,8 @@ Written by the orchestrator from the QA agents' results (subagents can't write r
 - Fixed: label-in-name for date/range pickers, record/user pickers, user menu, app switcher, lightbox tiles; disallowed `aria-required` on button/group roles; command separator inside listbox; Node vs Chrome ICU differences in date ranges and country names (hydration); user-picker cache keys shared across pickers.
 - Locale: 649 keys in 39 namespaces added to `en.ts` and `tr.ts`.
 - Not run yet (final pass): contrast audit, keyboard spec, RTL and mobile screenshots.
+
+## Wave 3 — flows, drag and drop, scheduler, records, layouts, media library, editor, site blocks
+- Scope: 54 docs pages; all 143 inventory components ready.
+- `tsc --noEmit`: 0 errors (ui, www, admin).
+- Unit: 1172/1172 passed. E2E: 253/253 passed after re-runs (new `e2e/wave-3.spec.ts`).

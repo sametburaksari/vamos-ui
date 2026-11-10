@@ -15,6 +15,7 @@
     "./format": "./src/format/index.ts",
     "./sortable": "./src/sortable/index.ts",
     "./scheduler": "./src/scheduler/index.ts",
+    "./scheduler/core": "./src/scheduler/core/index.ts",
     "./media": "./src/media/index.ts",
     "./editor": "./src/editor/index.ts",
     "./render": "./src/render/index.ts",

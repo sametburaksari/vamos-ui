@@ -1,2 +1,66 @@
-// Public API of @vamos-cms/ui/scheduler — owned by the group that builds it.
-export {};
+// Public API of @vamos-cms/ui/scheduler: Agenda / scheduler, Resource calendar, Gantt, Time tracker.
+// The React-free engine (layout, scheduling, durations, time scale) is also at ./core.
+export {
+  Scheduler,
+  schedulerVariants,
+  schedulerLabels,
+  schedulerEventDays,
+  type SchedulerProps,
+  type SchedulerEvent,
+  type SchedulerEventChange,
+  type SchedulerCreateRange,
+  type SchedulerRenderState,
+  type SchedulerView,
+  type SchedulerLabels,
+} from "./scheduler";
+export {
+  ResourceCalendar,
+  resourceCalendarVariants,
+  resourceCalendarLabels,
+  minRestRule,
+  maxHoursRule,
+  maxConcurrentRule,
+  type ResourceCalendarProps,
+  type Resource,
+  type ResourceBlock,
+  type ResourceBlockStatus,
+  type ResourceTemplate,
+  type ResourceRule,
+  type ResourceRuleContext,
+  type ResourceRuleViolation,
+  type ResourceBlocksChange,
+  type ResourceCellRef,
+  type ResourceCellAction,
+  type ResourceCalendarLabels,
+} from "./resource-calendar";
+export {
+  Gantt,
+  ganttVariants,
+  ganttLabels,
+  type GanttProps,
+  type GanttTask,
+  type GanttLink,
+  type GanttAssignee,
+  type GanttScale,
+  type GanttColumnKey,
+  type GanttTaskChange,
+  type GanttLabels,
+} from "./gantt";
+export {
+  TimerButton,
+  Timesheet,
+  TimeEntryList,
+  timesheetVariants,
+  timeTrackerLabels,
+  createMemoryTimerAdapter,
+  createLocalTimerAdapter,
+  type TimerAdapter,
+  type TimerButtonProps,
+  type TimerProject,
+  type TimesheetProps,
+  type TimesheetRow,
+  type TimeEntryListProps,
+  type TimeTrackerLabels,
+} from "./time-tracker";
+export type { ScheduleTone } from "./shared";
+export * from "./core";

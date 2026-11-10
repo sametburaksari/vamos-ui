@@ -122,9 +122,11 @@ export async function visitAllComponentPages(
     }
     // A dev-server restart mid-load (only network errors, nothing from the page itself): wait for
     // it and visit again. Anything the page logs on the second visit still fails.
-    if (errors.length && errors.some((e) => SERVER_RESTART.test(e)) && errors.every((e) => SERVER_RESTART.test(e) || /^Failed to load resource/.test(e))) {
+    // Up to two retries: a restart under memory pressure can still be settling on the first one.
+    for (let i = 0; i < 2 && onlyRestartNoise(errors); i++) {
       test.info().annotations.push({ type: "dev-server-restart", description: href });
       await waitForServer(page);
+      await page.waitForTimeout(2_000);
       ({ res, errors } = await visit(href));
     }
     opts.onPage && (await opts.onPage(href));
@@ -199,7 +201,8 @@ export async function gotoWithRetry(page: Page, href: string, timeout = 30_000) 
   } catch (e) {
     // Also: the dev server restarts itself when its heap passes 80% ("approaching the used memory
     // threshold"), refusing connections for a few seconds.
-    if (!/Timeout|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_EMPTY_RESPONSE/i.test(String(e))) throw e;
+    // "interrupted by another navigation" to the same URL: a dev-server Fast Refresh full reload.
+    if (!/Timeout|ERR_CONNECTION_REFUSED|ERR_CONNECTION_RESET|ERR_EMPTY_RESPONSE|interrupted by another navigation/i.test(String(e))) throw e;
     await waitForServer(page);
     return page.goto(href, { waitUntil: "load", timeout });
   }

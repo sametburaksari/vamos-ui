@@ -36,7 +36,7 @@ describe("RecordPicker", () => {
   it("searches, picks with the keyboard and shows the record in the trigger", async () => {
     const onValueChange = vi.fn();
     const { user } = setup(<RecordPicker aria-label="Company" source={source()} onValueChange={onValueChange} name="companyId" />);
-    const trigger = screen.getByRole("button", { name: "Company" });
+    const trigger = screen.getByRole("button", { name: /^Company,/ });
     expect(trigger).toHaveAttribute("aria-haspopup", "listbox");
     await user.click(trigger);
     const input = await screen.findByRole("combobox");
@@ -59,13 +59,13 @@ describe("RecordPicker", () => {
 
   it("arrow keys move the active option; recent picks show on reopen", async () => {
     const { user } = setup(<RecordPicker aria-label="Company" source={source()} />);
-    await user.click(screen.getByRole("button", { name: "Company" }));
+    await user.click(screen.getByRole("button", { name: /^Company,/ }));
     const input = await screen.findByRole("combobox");
     await screen.findByRole("option", { name: /Northwind/ });
     await user.keyboard("{ArrowDown}{ArrowDown}");
     expect(input.getAttribute("aria-activedescendant")).toBe(screen.getByRole("option", { name: /Kadıköy/ }).id);
     await user.keyboard("{Enter}");
-    await user.click(screen.getByRole("button", { name: "Company" }));
+    await user.click(screen.getByRole("button", { name: /^Company,/ }));
     const recent = await screen.findByRole("group", { name: "Recent" });
     expect(within(recent).getByRole("option", { name: /Kadıköy/ })).toHaveAttribute("aria-selected", "true");
   });
@@ -94,7 +94,7 @@ describe("RecordPicker", () => {
     const onCreate = vi.fn(async (name: string) => ({ id: "new", name, domain: "—" }));
     const onValueChange = vi.fn();
     const { user } = setup(<RecordPicker aria-label="Company" source={source()} onCreate={onCreate} onValueChange={onValueChange} />);
-    await user.click(screen.getByRole("button", { name: "Company" }));
+    await user.click(screen.getByRole("button", { name: /^Company,/ }));
     await user.type(await screen.findByRole("combobox"), "Moda Bakery");
     const create = await screen.findByRole("option", { name: "Create “Moda Bakery”" });
     await user.click(create);
@@ -124,7 +124,7 @@ describe("RecordPicker", () => {
       },
     };
     const { user } = setup(<RecordPicker aria-label="Company" source={src} />);
-    await user.click(screen.getByRole("button", { name: "Company" }));
+    await user.click(screen.getByRole("button", { name: /^Company,/ }));
     expect(await screen.findByText("Couldn't load results")).toBeInTheDocument();
     fail = false;
     await user.click(screen.getByRole("button", { name: /Try again/ }));

@@ -67,3 +67,27 @@ export {
 
 // Convenience re-exports so media code can import everything from one place.
 export { Image, Figure, FigureCaption, ImageLoaderProvider, useImageLoader, useImageSources, getImageSources, type ImageProps } from "../components/image";
+
+// Media library · Media picker · Image field (+ adapters, upload queue, focal point)
+export { createRestAdapter, createPresignedUpload, xhrUpload, toSearchParams, type RestAdapterOptions, type PresignedTarget, type PresignedUploadOptions, type XhrUploadOptions } from "./rest-adapter";
+export { useUploadQueue, type UploadQueue, type UploadQueueItem, type UploadStatus, type UseUploadQueueOptions } from "./use-upload-queue";
+export { mediaKindOf, acceptsMedia, kindsFromAccept, isAltMissing, isDecorative, downscaleImage, DECORATIVE_TAG } from "./media-utils";
+export { FocalPointPicker, type FocalPointPickerProps, type FocalPoint, type FocalPointLabels } from "./focal-point";
+export {
+  MediaLibrary,
+  MediaDetails,
+  MediaUploadQueue,
+  MediaThumb,
+  MediaFileGlyph,
+  type MediaLibraryProps,
+  type MediaLibraryHandle,
+  type MediaLibraryView,
+  type MediaSelectionMode,
+  type MediaDetailsProps,
+  type MediaUploadQueueProps,
+  type MediaLibraryLabels,
+  type MediaDetailsLabels,
+  type MediaUploadQueueLabels,
+} from "./media-library";
+export { MediaPicker, MediaPickerProvider, useMediaPicker, type MediaPickerProps, type MediaPickerTab, type MediaPickOptions, type MediaPickerLabels } from "./media-picker";
+export { ImageField, imageFieldVariants, type ImageFieldProps, type ImageFieldValue, type ImageFieldCropPreset, type ImageFieldLabels } from "./image-field";

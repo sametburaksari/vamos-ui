@@ -55,7 +55,7 @@ describe("useLabels", () => {
   it("deep-merges partial messages and supports unknown namespaces", () => {
     function Probe() {
       const m = useMessages();
-      const t = useLabels("kanban", { add: "Add card" });
+      const t = useLabels("wishlist", { add: "Add card" });
       return (
         <span>
           {m.common.remove} | {m.common.close} | {t("add")}
@@ -63,7 +63,7 @@ describe("useLabels", () => {
       );
     }
     render(
-      <LocaleProvider messages={{ common: { remove: "Move to bin" }, kanban: { add: "New card" } }}>
+      <LocaleProvider messages={{ common: { remove: "Move to bin" }, wishlist: { add: "New card" } }}>
         <Probe />
       </LocaleProvider>,
     );

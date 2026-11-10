@@ -23,7 +23,7 @@ beforeEach(() => clearRecordPickerCache());
 describe("UserPicker", () => {
   it("lists people with presence and role, sorted by name, and passes axe", async () => {
     const { user } = setup(<UserPicker aria-label="Owner" source={people} />);
-    const trigger = screen.getByRole("button", { name: "Owner" });
+    const trigger = screen.getByRole("button", { name: /^Owner,/ });
     expect(trigger).toHaveTextContent("Unassigned");
     await user.click(trigger);
     const options = await screen.findAllByRole("option");
@@ -41,7 +41,7 @@ describe("UserPicker", () => {
   it("assigns to me and marks the current user", async () => {
     const onValueChange = vi.fn();
     const { user } = setup(<UserPicker aria-label="Assignee" source={people} currentUserId="u2" onValueChange={onValueChange} />);
-    await user.click(screen.getByRole("button", { name: "Assignee" }));
+    await user.click(screen.getByRole("button", { name: /^Assignee,/ }));
     expect(await screen.findByRole("option", { name: /Mehmet Kaya \(you\)/ })).toBeInTheDocument();
     await user.click(screen.getByRole("option", { name: "Assign to me" }));
     await waitFor(() => expect(onValueChange).toHaveBeenCalledWith("u2", expect.objectContaining({ name: "Mehmet Kaya" })));
@@ -49,7 +49,7 @@ describe("UserPicker", () => {
 
   it("searches name, email and role", async () => {
     const { user } = setup(<UserPicker aria-label="Reviewer" source={people} />);
-    await user.click(screen.getByRole("button", { name: "Reviewer" }));
+    await user.click(screen.getByRole("button", { name: /^Reviewer,/ }));
     await user.type(await screen.findByRole("combobox"), "designer");
     await waitFor(() => expect(screen.getAllByRole("option")).toHaveLength(1));
     expect(screen.getByRole("option")).toHaveTextContent("Priya Raman");
@@ -87,10 +87,10 @@ describe("UserPicker", () => {
         <UserPicker aria-label="Shift lead" source={staff} />
       </>,
     );
-    await user.click(screen.getByRole("button", { name: "Owner" }));
+    await user.click(screen.getByRole("button", { name: /^Owner,/ }));
     expect(await screen.findByRole("option", { name: /Ayşe Demir/ })).toBeInTheDocument();
     await user.keyboard("{Escape}");
-    await user.click(screen.getByRole("button", { name: "Shift lead" }));
+    await user.click(screen.getByRole("button", { name: /^Shift lead,/ }));
     expect(await screen.findByRole("option", { name: /Emre Tunç/ })).toBeInTheDocument();
     expect(screen.queryByRole("option", { name: /Ayşe Demir/ })).toBeNull();
   });

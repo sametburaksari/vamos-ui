@@ -277,11 +277,15 @@ export const LayerContentShell = React.forwardRef<HTMLDivElement, LayerContentSh
     onPointerDownOutside,
     onInteractOutside,
     onOpenAutoFocus,
+    onCloseAutoFocus,
     ...props
   },
   ref,
 ) {
   const root = React.useContext(DialogRootContext);
+  // What had focus when the panel opened. Radix returns focus only to a Dialog.Trigger; a
+  // controlled dialog opened from a plain button (or a menu) would drop focus to <body> on close.
+  const returnTo = React.useRef<HTMLElement | null>(null);
   const t = useLabels("dialog", dialogLabels, labels);
   const scope = usePortalContainer();
   const depth = useLayerDepth() + 1;
@@ -334,7 +338,18 @@ export const LayerContentShell = React.forwardRef<HTMLDivElement, LayerContentSh
             // A non-modal panel (record preview) stays open while the page behind is used.
             if (!modal) e.preventDefault();
           }}
+          onCloseAutoFocus={(e) => {
+            onCloseAutoFocus?.(e);
+            if (e.defaultPrevented) return;
+            const el = returnTo.current;
+            if (el && el.isConnected && el !== document.body) {
+              e.preventDefault();
+              el.focus();
+            }
+          }}
           onOpenAutoFocus={(e) => {
+            // Fires before the focus scope moves focus in: activeElement is still the opener.
+            returnTo.current = document.activeElement as HTMLElement | null;
             onOpenAutoFocus?.(e);
             if (e.defaultPrevented) return;
             const target = (e.currentTarget as HTMLElement | null)?.querySelector<HTMLElement>("[data-autofocus]");
