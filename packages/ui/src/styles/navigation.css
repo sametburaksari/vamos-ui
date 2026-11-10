@@ -201,3 +201,93 @@
     backdrop-filter: none;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Record detail layout                                                */
+/* header · aside · main on narrow; header over main | aside from 42rem */
+/* ------------------------------------------------------------------ */
+
+.vui-record-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "header" "aside" "main";
+  align-items: start;
+}
+@container record (min-width: 42rem) {
+  .vui-record-grid {
+    column-gap: calc(var(--gap) * 1.4);
+    grid-template-columns: minmax(0, 1fr) min(var(--record-aside-w, 20rem), 40cqi);
+    grid-template-areas: "header header" "main aside";
+  }
+  .vui-record-grid[data-aside="start"] {
+    grid-template-columns: min(var(--record-aside-w, 20rem), 40cqi) minmax(0, 1fr);
+    grid-template-areas: "header header" "aside main";
+  }
+  .vui-record-grid > [data-slot="record-header"] {
+    padding-bottom: calc(var(--gap) * 0.4);
+    border-bottom: 1px solid var(--line);
+  }
+}
+.vui-pane-handle::before {
+  /* wider invisible hit area for touch */
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline: -4px;
+}
+.vui-pane-handle[data-dragging] { cursor: col-resize; }
+[data-material="glass"]:has(.vui-pane-handle[data-dragging]) .surface,
+[data-material="glass"]:has(.vui-pane-handle[data-dragging]) .surface-bar {
+  /* X10: no blur while resizing */
+  --blur: 0px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Editor layout                                                       */
+/* ------------------------------------------------------------------ */
+
+.vui-editor-grid {
+  --editor-bar-h: 3.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "bar" "canvas";
+}
+[data-density="compact"] .vui-editor-grid { --editor-bar-h: 3rem; }
+.vui-editor-grid > [data-slot="editor-bar"] {
+  grid-area: bar;
+  position: sticky;
+  top: var(--editor-sticky-top, var(--topbar-h));
+  z-index: var(--z-sticky);
+  transition: opacity 400ms ease;
+}
+.vui-editor-grid > [data-slot="editor-canvas"] { grid-area: canvas; }
+.vui-editor-grid > [data-slot="editor-panel"] {
+  grid-area: panel;
+  position: sticky;
+  top: calc(var(--editor-sticky-top, var(--topbar-h)) + var(--editor-bar-h));
+  align-self: start;
+  max-height: calc(100dvh - var(--editor-sticky-top, var(--topbar-h)) - var(--editor-bar-h));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@container editor (min-width: 44rem) {
+  .vui-editor-grid[data-panel="open"] {
+    grid-template-columns: minmax(0, 1fr) min(var(--editor-panel-w, 20rem), 42cqi);
+    grid-template-areas: "bar bar" "canvas panel";
+  }
+}
+/* "panes": fill the parent; canvas and panel scroll on their own. */
+.vui-editor-grid[data-scroll="panes"] {
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.vui-editor-grid[data-scroll="panes"] > [data-slot="editor-bar"] { position: relative; top: auto; }
+.vui-editor-grid[data-scroll="panes"] > [data-slot="editor-canvas"] { overflow-y: auto; overscroll-behavior: contain; }
+.vui-editor-grid[data-scroll="panes"] > [data-slot="editor-panel"] { position: relative; top: auto; max-height: none; height: 100%; }
+/* Focus mode: the bar fades after a pause, comes back on pointer move, hover or focus. */
+[data-slot="editor-layout"][data-focus-mode] [data-slot="editor-bar"][data-idle]:not(:hover):not(:focus-within) { opacity: 0.18; }
+[data-slot="editor-layout"][data-focus-mode] [data-slot="editor-canvas"] { background: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  .vui-editor-grid > [data-slot="editor-bar"] { transition: none; }
+}

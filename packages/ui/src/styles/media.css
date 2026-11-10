@@ -407,3 +407,109 @@
 .vui-lp[data-platform="slack"] .vui-lp-title { color: var(--preview-slack-link); font-size: 15px; font-weight: 700; }
 .vui-lp[data-platform="slack"] .vui-lp-desc { -webkit-line-clamp: 3; font-size: 15px; line-height: 22px; color: var(--preview-fg); }
 .vui-lp-slack-media { margin-top: 8px; max-width: 360px; border-radius: 8px; }
+
+/* ------------------------------------------------------------------ */
+/* Media library · Media picker · Image field                           */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* Tiles are blur-free surface-2 (hundreds of blur layers would choke the GPU). */
+  .vui-media-tile-frame {
+    box-shadow: 0 0 0 1px var(--line);
+    transition: box-shadow 140ms ease-out;
+  }
+  .vui-media-tile:hover .vui-media-tile-frame {
+    box-shadow: 0 0 0 1px var(--field-border-hover);
+  }
+  .vui-media-tile[data-selected] .vui-media-tile-frame {
+    box-shadow: 0 0 0 2px var(--ring);
+    background: var(--selected);
+  }
+  .vui-media-tile[data-active]:not([data-selected]) .vui-media-tile-frame {
+    box-shadow: 0 0 0 1px var(--fg-muted);
+  }
+  .vui-media-tile:focus-visible {
+    outline: none;
+  }
+  .vui-media-tile:focus-visible .vui-media-tile-frame {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  /* The corner check shows on hover / focus, or always once something is selected. */
+  .vui-media-check {
+    opacity: 0;
+    transition: opacity 120ms ease-out;
+  }
+  .vui-media-tile:hover .vui-media-check,
+  .vui-media-tile:focus-visible .vui-media-check,
+  .vui-media-tile[data-selected] .vui-media-check,
+  [data-slot="media-grid"]:has([data-selected]) .vui-media-check {
+    opacity: 1;
+  }
+  .vui-media-alt-dot {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--scene) 80%, transparent);
+  }
+
+  /* Drag-over: the whole library gets accent-soft and a dashed ring. */
+  .vui-media-drop {
+    opacity: 0;
+    border: 2px dashed var(--ring);
+    background: color-mix(in srgb, var(--accent-soft) 85%, transparent);
+    transition: opacity 120ms ease-out;
+  }
+  .vui-media-library[data-dragging] .vui-media-drop {
+    opacity: 1;
+  }
+
+  /* Picker: the embedded library sits flat inside the dialog (no second glass layer). */
+  .vui-media-picker .vui-media-library {
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  /* Focal point marker: 2px white ring + accent dot + shadow, readable on any image. */
+  .vui-focal-marker {
+    width: 1.5rem;
+    height: 1.5rem;
+    translate: -50% -50%;
+    border-radius: 9999px;
+    border: 2px solid #fff;
+    background: radial-gradient(circle, var(--accent) 0 30%, transparent 32%);
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35), 0 2px 8px rgb(0 0 0 / 0.35);
+    cursor: grab;
+    touch-action: none;
+  }
+  .vui-focal-marker:active {
+    cursor: grabbing;
+  }
+  .vui-focal-guides {
+    background:
+      linear-gradient(to right, transparent calc(var(--fx) - 0.5px), rgb(255 255 255 / 0.55) calc(var(--fx) - 0.5px), rgb(255 255 255 / 0.55) calc(var(--fx) + 0.5px), transparent calc(var(--fx) + 0.5px)),
+      linear-gradient(to bottom, transparent calc(var(--fy) - 0.5px), rgb(255 255 255 / 0.55) calc(var(--fy) - 0.5px), rgb(255 255 255 / 0.55) calc(var(--fy) + 0.5px), transparent calc(var(--fy) + 0.5px));
+    mix-blend-mode: difference;
+    opacity: 0;
+    transition: opacity 140ms ease-out;
+  }
+  .vui-focal-stage:hover .vui-focal-guides,
+  .vui-focal-stage:focus-within .vui-focal-guides {
+    opacity: 1;
+  }
+
+  /* Image field */
+  .vui-image-field-scrim {
+    background: color-mix(in srgb, var(--overlay) 70%, transparent);
+  }
+  .vui-image-field-preview:focus-visible .vui-image-field-scrim {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vui-media-tile-frame,
+    .vui-media-check,
+    .vui-media-drop,
+    .vui-focal-guides {
+      transition: none;
+    }
+  }
+}

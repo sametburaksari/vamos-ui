@@ -1,0 +1,61 @@
+// React-free core of @vamos-cms/ui/scheduler: time scale, working-day math, event layout,
+// Gantt scheduling and time-tracking helpers. Importable from server components and workers.
+export {
+  createTimeScale,
+  toEpoch,
+  minutesToClock,
+  clockToMinutes,
+  TIME_SCALE_PRESETS,
+  type TimeScale,
+  type TimeScaleOptions,
+  type TimeScalePreset,
+  type TimeScaleUnit,
+  type TickUnit,
+  type TimeTick,
+  type TimeInput,
+} from "./time-scale";
+export { countWorkingDays, addWorkingDays, isWorkingDay, workingValue, nextWorkingDay } from "../../locale-data/core/working-days";
+export type { WorkCalendar, HolidayProvider, Holiday, BusinessHours } from "../../locale-data/core/types";
+export {
+  layoutDayEvents,
+  packLanes,
+  laneCount,
+  isLaneEvent,
+  eventDays,
+  eventsInRange,
+  compareEvents,
+  shiftEvent,
+  localDate,
+  localMinutes,
+  instantAt,
+  weekDays,
+  monthWeeks,
+  type LayoutEvent,
+  type PositionedEvent,
+  type LaneAssignment,
+} from "./layout";
+export {
+  flattenTasks,
+  visibleTasks,
+  rollupSummaries,
+  detectCycles,
+  createsCycle,
+  taskDuration,
+  moveTaskTo,
+  scheduleForward,
+  linkViolations,
+  type GanttTaskCore,
+  type GanttLinkCore,
+  type GanttTaskType,
+  type FlatTask,
+} from "./gantt";
+export {
+  parseDuration,
+  formatDuration,
+  entryMinutes,
+  timesheetTotals,
+  toLineItems,
+  lineItemsTotal,
+  type TimeEntry,
+  type LineItemDraft,
+} from "./duration";

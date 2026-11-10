@@ -59,3 +59,36 @@ export {
   type PointerDragPoint,
 } from "./use-pointer-drag";
 export { useTimeScale } from "./use-time-scale";
+export {
+  SortableTree,
+  sortableTreeLabels,
+  type SortableTreeProps,
+  type SortableTreeMoveEvent,
+  type SortableTreeDropCheck,
+  type SortableTreeRenderState,
+  type SortableTreeLabels,
+} from "./sortable-tree";
+export {
+  Kanban,
+  KanbanColumnHeader,
+  KanbanCardTitle,
+  KanbanCardMeta,
+  KanbanCardFooter,
+  kanbanLabels,
+  kanbanColumnVariants,
+  type KanbanProps,
+  type KanbanCardState,
+  type KanbanLane,
+  type KanbanColumnHeaderProps,
+  type KanbanLabels,
+} from "./kanban";
+export {
+  groupByStage,
+  sumBy,
+  weightedSum,
+  applyKanbanMove,
+  stageToneColor,
+  type Stage,
+  type StageTone,
+  type KanbanMoveEvent,
+} from "./kanban-core";

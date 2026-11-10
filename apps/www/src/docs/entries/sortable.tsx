@@ -119,7 +119,7 @@ const entry: DocEntry = {
     "Announcements come from the sortable dictionary namespace, e.g. \"Picked up About us. Position 2 of 6.\" (tr: \"Hakkımızda alındı. Konum 2 / 6.\").",
     "Repeated items never blur. The overlay is an opaque popover without backdrop-filter, so it renders the same in glass and solid. Reduced motion turns off the item-shift and drop animations.",
     "Touch: long press (220 ms) lifts, so the list still scrolls. The Move menu is the dependable path on touch screens.",
-    "Tree reordering: projectTreeMove, flattenTree and moveTreeNode (core) are ready; the SortableTree component ships with Tree view.",
+    "Tree reordering: projectTreeMove, flattenTree and moveTreeNode (core) are ready; the SortableTree component is documented under Sortable list / tree (/docs/components/sortable-list).",
   ],
   covers: [],
 };
