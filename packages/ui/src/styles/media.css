@@ -1,1 +1,409 @@
-/* media — component CSS owned by the media group. Tokens only. */
+/* media — component CSS owned by the media group. Tokens only.
+   Glass rule: scrolling content and repeated items (tiles, slides) never get backdrop-filter;
+   blur is limited to chrome (toolbars, overlay controls). */
+
+/* ------------------------------------------------------------------ */
+/* Image                                                                */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .vui-image-img {
+    opacity: 0;
+    transition: opacity 240ms ease-out;
+  }
+  .vui-image[data-state="loaded"] .vui-image-img,
+  .vui-image[data-placeholder="none"] .vui-image-img {
+    opacity: 1;
+  }
+  /* The LQIP sits under the image, blurred and slightly scaled so the edges don't bleed. */
+  .vui-image-blur {
+    filter: blur(20px);
+    transform: scale(1.06);
+    transition: opacity 240ms ease-out 120ms;
+  }
+  .vui-image[data-state="loaded"] .vui-image-blur {
+    opacity: 0;
+  }
+  .vui-image[data-state="loaded"] {
+    background-color: transparent;
+  }
+  /* Hairline frame drawn above the image (never blurred). */
+  .vui-image-framed::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--surface-border);
+    pointer-events: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Carousel                                                             */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* slidesPerView breakpoints follow the carousel's own width (container queries), so a
+     carousel in a sidebar or a docs preview picks the right count. */
+  .vui-carousel {
+    container: carousel / inline-size;
+  }
+  .vui-carousel-stage {
+    --spv: var(--spv-base, 1);
+  }
+  @container carousel (min-width: 640px) {
+    .vui-carousel[data-spv-sm] .vui-carousel-stage { --spv: var(--spv-sm); }
+  }
+  @container carousel (min-width: 768px) {
+    .vui-carousel[data-spv-md] .vui-carousel-stage { --spv: var(--spv-md); }
+  }
+  @container carousel (min-width: 1024px) {
+    .vui-carousel[data-spv-lg] .vui-carousel-stage { --spv: var(--spv-lg); }
+  }
+  @container carousel (min-width: 1280px) {
+    .vui-carousel[data-spv-xl] .vui-carousel-stage { --spv: var(--spv-xl); }
+  }
+
+  /* A carousel always fills its container: its slides must not widen a shrink-to-fit parent. */
+  .vui-carousel-viewport,
+  .vui-carousel-thumbs-track,
+  .vui-marquee {
+    contain: inline-size;
+  }
+  .vui-carousel-container {
+    margin-inline-start: calc(var(--carousel-gap) * -1);
+  }
+  .vui-carousel-slide {
+    flex-basis: calc(100% / var(--spv));
+    padding-inline-start: var(--carousel-gap);
+  }
+  .vui-carousel[data-spv-auto] .vui-carousel-slide {
+    flex-basis: auto;
+  }
+  .vui-carousel[data-orientation="vertical"] .vui-carousel-viewport {
+    height: var(--carousel-height, 22rem);
+  }
+  .vui-carousel[data-orientation="vertical"] .vui-carousel-container {
+    margin-inline-start: 0;
+    margin-top: calc(var(--carousel-gap) * -1);
+  }
+  .vui-carousel[data-orientation="vertical"] .vui-carousel-slide {
+    padding-inline-start: 0;
+    padding-top: var(--carousel-gap);
+  }
+
+  .vui-carousel[data-dragging] .vui-carousel-viewport {
+    cursor: grabbing;
+    user-select: none;
+  }
+  .vui-carousel:not([data-single]) .vui-carousel-viewport {
+    cursor: grab;
+  }
+
+  /* Outside arrows: the stage makes room for them. */
+  .vui-carousel-outside .vui-carousel-stage {
+    padding-inline: calc(var(--control-h) + 0.75rem);
+  }
+  .vui-carousel-outside .vui-carousel-arrow[data-slot="carousel-prev"] { inset-inline-start: 0; }
+  .vui-carousel-outside .vui-carousel-arrow[data-slot="carousel-next"] { inset-inline-end: 0; }
+  @container carousel (max-width: 479px) {
+    .vui-carousel-outside .vui-carousel-stage { padding-inline: 0; }
+    .vui-carousel-outside .vui-carousel-arrow { display: none; }
+  }
+  .vui-carousel[data-controls="hidden"] .vui-carousel-arrow { display: none; }
+
+  /* Overlay arrows appear on hover / focus (always on touch). */
+  @media (hover: hover) {
+    .vui-carousel[data-controls="inside"] .vui-carousel-arrow {
+      opacity: 0;
+      transition: opacity 160ms ease-out;
+    }
+    .vui-carousel[data-controls="inside"]:hover .vui-carousel-arrow,
+    .vui-carousel[data-controls="inside"]:focus-within .vui-carousel-arrow {
+      opacity: 1;
+    }
+    .vui-carousel[data-controls="inside"] .vui-carousel-arrow:disabled { opacity: 0 !important; }
+  }
+
+  /* Strip: faded edges. */
+  .vui-carousel-strip .vui-carousel-viewport {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+  }
+
+  /* Fade transition (plugin sets opacity; slides stack). */
+  .vui-carousel[data-transition="fade"] .vui-carousel-slide {
+    flex-basis: 100%;
+  }
+
+  /* Dots: a short track bar; the current one stretches and takes the accent. */
+  .vui-carousel-dot > span {
+    width: 0.375rem;
+    background: var(--track);
+    transition: width 220ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 160ms;
+  }
+  .vui-carousel-dot:hover > span { background: var(--fg-subtle); }
+  .vui-carousel-dot[aria-current="true"] > span {
+    width: 1.25rem;
+    background: var(--accent);
+  }
+  .vui-carousel-hero .vui-carousel-dot > span { background: color-mix(in srgb, var(--popover-nested) 70%, transparent); box-shadow: 0 0 0 1px var(--popover-border); }
+  .vui-carousel-hero .vui-carousel-dot[aria-current="true"] > span { background: var(--accent); }
+
+  .vui-carousel-thumb {
+    opacity: 0.62;
+    transition: opacity 160ms, box-shadow 160ms;
+  }
+  .vui-carousel-thumb:hover { opacity: 0.9; }
+  .vui-carousel-thumb[aria-current="true"] {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--surface-solid, var(--surface)), 0 0 0 4px var(--ring);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vui-carousel-dot > span { transition: none; }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Marquee                                                              */
+/* ------------------------------------------------------------------ */
+@keyframes vui-marquee { to { transform: translateX(calc(-100% * var(--dir))); } }
+@layer components {
+  .vui-marquee { gap: var(--marquee-gap); }
+  .vui-marquee-track {
+    gap: var(--marquee-gap);
+    min-width: 100%;
+    justify-content: space-around;
+    animation: vui-marquee var(--marquee-duration, 40s) linear infinite;
+  }
+  .vui-marquee[data-reverse] .vui-marquee-track { animation-direction: reverse; }
+  .vui-marquee[data-pause-on-hover]:hover .vui-marquee-track,
+  .vui-marquee[data-pause-on-hover]:focus-within .vui-marquee-track { animation-play-state: paused; }
+  .vui-marquee[data-fade] {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vui-marquee { overflow-x: auto; }
+    .vui-marquee-track { animation: none; }
+    .vui-marquee-track[aria-hidden] { display: none; }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Gallery                                                              */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .vui-gallery { --cols: var(--cols-base, 3); }
+  @container gallery (min-width: 640px) { .vui-gallery[data-cols-sm] .vui-gallery-grid { --cols: var(--cols-sm); } }
+  @container gallery (min-width: 768px) { .vui-gallery[data-cols-md] .vui-gallery-grid { --cols: var(--cols-md); } }
+  @container gallery (min-width: 1024px) { .vui-gallery[data-cols-lg] .vui-gallery-grid { --cols: var(--cols-lg); } }
+  .vui-gallery-grid {
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: var(--gallery-gap);
+  }
+  /* Justified rows before measuring: the last row must not stretch. */
+  .vui-gallery-justified-css::after { content: ""; flex-grow: 999; }
+  .vui-gallery-trigger .vui-gallery-media img {
+    transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease-out;
+  }
+  .vui-gallery-trigger:hover .vui-gallery-media img { transform: scale(1.025); }
+  .vui-gallery-trigger::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--overlay);
+    opacity: 0;
+    transition: opacity 200ms;
+    pointer-events: none;
+  }
+  .vui-gallery-trigger:hover::after { opacity: 0.18; }
+  .vui-gallery-trigger:focus-visible { outline-offset: 3px; }
+  .vui-gallery-overlay {
+    background: linear-gradient(to top, color-mix(in srgb, var(--scene) 78%, transparent), transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vui-gallery-trigger:hover .vui-gallery-media img { transform: none; }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Lightbox                                                             */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .vui-lightbox-overlay[data-backdrop="solid"] { background: color-mix(in srgb, var(--scene) 96%, transparent); }
+  .vui-lightbox-overlay[data-backdrop="dim"] { background: var(--overlay); }
+  .vui-lightbox-overlay[data-backdrop="blur"] {
+    background: var(--overlay);
+    -webkit-backdrop-filter: blur(max(var(--overlay-blur), 14px));
+    backdrop-filter: blur(max(var(--overlay-blur), 14px));
+  }
+  .vui-lightbox .vui-carousel-container { height: 100%; }
+  .vui-lightbox .vui-carousel-viewport { flex: 1 1 0; min-height: 0; }
+  .vui-lightbox .vui-carousel-stage { display: flex; flex: 1 1 0; min-height: 0; }
+  .vui-lightbox .vui-carousel-stage > [data-slot="carousel-viewport"] { flex: 1; }
+  .vui-lightbox-img { transition: opacity 200ms ease-out; will-change: transform; }
+  .vui-lightbox [data-slot="lightbox-stage"] { cursor: zoom-in; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Video                                                                */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .vui-video:fullscreen { border-radius: 0; aspect-ratio: auto; }
+  .vui-video-controls {
+    background: linear-gradient(to top, color-mix(in srgb, var(--scene) 82%, transparent), transparent);
+    transition: opacity 200ms ease-out;
+  }
+  .vui-video[data-idle] { cursor: none; }
+  .vui-video[data-idle] .vui-video-controls { opacity: 0; pointer-events: none; }
+  .vui-video[data-chrome="bar"] .vui-video-controls { background: color-mix(in srgb, var(--scene) 88%, transparent); padding-top: 0.25rem; }
+  .vui-video-seek [data-slot="slider-range"], .vui-video-seek [role="slider"] { --slider-fill: var(--accent); }
+  .vui-video video::cue {
+    background: color-mix(in srgb, var(--scene) 72%, transparent);
+    color: var(--fg);
+    font-family: var(--font-ui);
+  }
+  .vui-video-facade-shade {
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--scene) 60%, transparent), transparent 40%, color-mix(in srgb, var(--scene) 20%, transparent));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vui-video-controls { transition: none; }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Image cropper                                                        */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .vui-cropper-container { background: var(--scene); }
+  .vui-cropper .vui-cropper-area {
+    border: 1px solid color-mix(in srgb, var(--popover-nested) 80%, transparent) !important;
+    box-shadow: 0 0 0 9999em var(--overlay) !important;
+  }
+  .vui-cropper .vui-cropper-area:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .vui-cropper .vui-cropper-area::before,
+  .vui-cropper .vui-cropper-area::after { border-color: color-mix(in srgb, var(--popover-nested) 45%, transparent) !important; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Link previews — THE token exception (imitates third-party UIs).      */
+/* --preview-* variables live here only; never use them elsewhere.      */
+/* ------------------------------------------------------------------ */
+.vui-lp {
+  --preview-bg: #ffffff;
+  --preview-fg: #202124;
+  --preview-muted: #4d5156;
+  --preview-subtle: #70757a;
+  --preview-link: #1a0dab;
+  --preview-border: #dadce0;
+  --preview-card: #f0f2f5;
+  --preview-media: #e4e6eb;
+  --preview-wa-bg: #efeae2;
+  --preview-wa-bubble: #d9fdd3;
+  --preview-wa-card: #c7f1c0;
+  --preview-wa-link: #027eb5;
+  --preview-slack-bar: #dddddd;
+  --preview-slack-link: #1264a3;
+  --preview-x-border: #cfd9de;
+  --preview-x-fg: #0f1419;
+  --preview-x-muted: #536471;
+  --preview-font: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --preview-font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--preview-bg);
+  color: var(--preview-fg);
+  font-family: var(--preview-font-ui);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: start;
+}
+.vui-lp[data-appearance="dark"],
+.dark .vui-lp[data-appearance="auto"] {
+  --preview-bg: #1f1f1f;
+  --preview-fg: #e8eaed;
+  --preview-muted: #bdc1c6;
+  --preview-subtle: #9aa0a6;
+  --preview-link: #99c3ff;
+  --preview-border: #3c4043;
+  --preview-card: #3a3b3c;
+  --preview-media: #303031;
+  --preview-wa-bg: #0b141a;
+  --preview-wa-bubble: #005c4b;
+  --preview-wa-card: #025144;
+  --preview-wa-link: #53bdeb;
+  --preview-slack-bar: #4f5155;
+  --preview-slack-link: #1d9bd1;
+  --preview-x-border: #2f3336;
+  --preview-x-fg: #e7e9ea;
+  --preview-x-muted: #71767b;
+}
+.vui-lp[data-appearance="light"] { color-scheme: light; }
+.vui-lp-frame .vui-lp { box-shadow: 0 0 0 1px var(--surface-border); }
+
+/* Search result */
+.vui-lp-serp { padding: 16px 18px 18px; font-family: var(--preview-font); max-width: 652px; }
+.vui-lp-serp[data-device="mobile"] { max-width: 400px; padding: 14px 16px 16px; }
+.vui-lp-serp-site { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.vui-lp-favicon {
+  display: inline-flex; flex: none; width: 28px; height: 28px; border-radius: 50%; align-items: center; justify-content: center;
+  background: var(--preview-card); border: 1px solid var(--preview-border); overflow: hidden; font-size: 12px; color: var(--preview-muted);
+}
+.vui-lp-favicon img { width: 18px; height: 18px; object-fit: contain; }
+.vui-lp-serp-sitename { display: block; font-size: 14px; line-height: 20px; color: var(--preview-fg); }
+.vui-lp-serp-url { display: block; font-size: 12px; line-height: 18px; color: var(--preview-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vui-lp-serp-title { margin: 0; font-size: 20px; line-height: 26px; color: var(--preview-link); font-weight: 400; overflow-wrap: anywhere; }
+.vui-lp-serp[data-device="mobile"] .vui-lp-serp-title { font-size: 16px; line-height: 22px; }
+.vui-lp-serp-title:hover { text-decoration: underline; }
+.vui-lp-serp-desc { margin: 4px 0 0; font-size: 14px; line-height: 22px; color: var(--preview-muted); overflow-wrap: anywhere; }
+.vui-lp-serp-desc b { color: var(--preview-fg); font-weight: 700; }
+.vui-lp-serp-date { color: var(--preview-subtle); }
+.vui-lp [data-missing] { color: var(--preview-subtle); font-style: italic; }
+.vui-lp[data-size="sm"].vui-lp-serp { padding: 12px 14px 14px; }
+.vui-lp[data-size="sm"] .vui-lp-serp-title { font-size: 17px; line-height: 23px; }
+
+/* Social cards */
+.vui-lp-social { max-width: 527px; }
+.vui-lp[data-size="sm"].vui-lp-social { max-width: 360px; }
+.vui-lp-media { display: block; position: relative; aspect-ratio: 1.91 / 1; background: var(--preview-media); overflow: hidden; }
+.vui-lp-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.vui-lp-media-empty { display: flex; align-items: center; justify-content: center; color: var(--preview-subtle); }
+.vui-lp-media-empty svg { width: 32px; height: 32px; }
+.vui-lp-body { display: flex; flex-direction: column; gap: 3px; padding: 10px 12px 12px; min-width: 0; }
+.vui-lp-domain { font-size: 12px; line-height: 16px; color: var(--preview-subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vui-lp-title { font-size: 16px; line-height: 20px; font-weight: 600; color: var(--preview-fg); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.vui-lp-desc { font-size: 14px; line-height: 19px; color: var(--preview-muted); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+
+.vui-lp[data-platform="facebook"] { border-radius: 8px; }
+.vui-lp[data-platform="facebook"] .vui-lp-body { background: var(--preview-card); }
+.vui-lp[data-platform="facebook"] .vui-lp-title { font-size: 17px; line-height: 21px; -webkit-line-clamp: 1; }
+
+.vui-lp[data-platform="linkedin"] { border-radius: 8px; }
+.vui-lp[data-platform="linkedin"] .vui-lp-title { font-size: 14px; line-height: 20px; }
+.vui-lp[data-platform="linkedin"] .vui-lp-body { padding: 8px 12px 10px; }
+
+.vui-lp[data-platform="x"] { background: transparent; border-radius: 0; overflow: visible; box-shadow: none !important; color: var(--preview-x-fg); }
+.vui-lp[data-platform="x"] .vui-lp-media { border-radius: 16px; border: 1px solid var(--preview-x-border); }
+.vui-lp-x-badge { position: absolute; inset-inline-start: 12px; bottom: 12px; padding: 0 6px; border-radius: 4px; font-size: 13px; line-height: 20px; color: #fff; background: rgb(0 0 0 / 0.77); }
+.vui-lp-x-below { display: block; margin-top: 4px; font-size: 13px; color: var(--preview-x-muted); }
+.vui-lp-x-summary { display: flex; border: 1px solid var(--preview-x-border); border-radius: 16px; overflow: hidden; background: var(--preview-bg); }
+.vui-lp-x-thumb { flex: none; width: 130px; aspect-ratio: 1 / 1; border-inline-end: 1px solid var(--preview-x-border); }
+.vui-lp-x-summary .vui-lp-body { justify-content: center; }
+.vui-lp-x-summary .vui-lp-title { font-size: 15px; font-weight: 400; }
+.vui-lp[data-platform="x"] .vui-lp-domain, .vui-lp[data-platform="x"] .vui-lp-desc { color: var(--preview-x-muted); }
+
+.vui-lp[data-platform="whatsapp"] { background: var(--preview-wa-bg); padding: 14px; border-radius: 12px; }
+.vui-lp-wa-bubble { display: block; max-width: 340px; margin-inline-start: auto; padding: 4px; background: var(--preview-wa-bubble); border-radius: 8px; box-shadow: 0 1px 0.5px rgb(11 20 26 / 0.13); }
+.vui-lp-wa-card { display: block; border-radius: 6px; overflow: hidden; background: var(--preview-wa-card); }
+.vui-lp-wa-card .vui-lp-body { padding: 8px 10px; }
+.vui-lp-wa-card .vui-lp-title { font-size: 14px; line-height: 19px; }
+.vui-lp-wa-card .vui-lp-desc { font-size: 13px; -webkit-line-clamp: 2; }
+.vui-lp-wa-link { display: block; padding: 6px 6px 2px; font-size: 14px; line-height: 19px; color: var(--preview-wa-link); overflow-wrap: anywhere; }
+
+.vui-lp[data-platform="slack"] { padding: 12px 16px; border-radius: 8px; font-family: var(--preview-font-ui); }
+.vui-lp-slack { display: flex; flex-direction: column; gap: 3px; padding-inline-start: 12px; border-inline-start: 4px solid var(--preview-slack-bar); }
+.vui-lp-slack-site { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--preview-fg); }
+.vui-lp-slack-icon { width: 16px; height: 16px; border-radius: 3px; }
+.vui-lp[data-platform="slack"] .vui-lp-title { color: var(--preview-slack-link); font-size: 15px; font-weight: 700; }
+.vui-lp[data-platform="slack"] .vui-lp-desc { -webkit-line-clamp: 3; font-size: 15px; line-height: 22px; color: var(--preview-fg); }
+.vui-lp-slack-media { margin-top: 8px; max-width: 360px; border-radius: 8px; }

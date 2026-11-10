@@ -24,8 +24,8 @@ export default function Login01() {
           <h1 className="text-[20px] font-semibold tracking-[-0.015em]">Sign in</h1>
           <p className="mt-1 text-[13.5px] text-fg-muted">Use your work email. We’ll keep you signed in on this device.</p>
           <form className="mt-6 grid gap-4">
-            <Field label="Email"><Input type="email" autoComplete="email" placeholder="you@company.com" /></Field>
-            <Field label="Password"><Input type="password" autoComplete="current-password" /></Field>
+            <Field label="Email" id="login-email"><Input name="email" type="email" autoComplete="email" placeholder="you@company.com" /></Field>
+            <Field label="Password" id="login-password"><Input name="password" type="password" autoComplete="current-password" /></Field>
             <Button variant="primary" block type="submit">Continue <ArrowRight /></Button>
           </form>
           <div className="mt-5 flex justify-between text-[12.5px]">

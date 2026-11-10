@@ -1,2 +1,36 @@
-// Public API of @vamos-cms/ui/format — owned by the group that builds it.
-export {};
+// Public API of @vamos-cms/ui/format — React-free core (works in RSC) + the client `useFormat` hook.
+export {
+  createFormatter,
+  numberFormat,
+  dateTimeFormat,
+  currencyDigits,
+  isDateOnly,
+  numberSeparators,
+  parseDecimal,
+  parseNumber,
+  isDecimalString,
+  toMinorUnits,
+  fromMinorUnits,
+  roundDecimal,
+  addDecimal,
+  subtractDecimal,
+  multiplyDecimal,
+  compareDecimal,
+  readingMinutes,
+  toISODate,
+  fromISODate,
+  type Formatter,
+  type FormatterOptions,
+  type DateInput,
+  type NumericInput,
+  type DatePreset,
+  type DurationStyle,
+  type DurationOptions,
+  type BytesOptions,
+  type CurrencyOptions,
+  type RelativeOptions,
+  type RoundingMode,
+} from "./core";
+export { formatMessage } from "../lib/message-format";
+export { slugify, type SlugifyOptions } from "../lib/text";
+export { useFormat } from "./use-format";

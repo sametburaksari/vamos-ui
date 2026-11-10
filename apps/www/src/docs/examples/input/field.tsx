@@ -6,7 +6,7 @@ export default function InputField() {
       <Field label="Title" required hint="Keep it under 60 characters for search results.">
         <Input placeholder="Post title" />
       </Field>
-      <Field label="Email" error="This address is already registered.">
+      <Field label="Work email" error="This address is already registered." labelAction={<a href="#reset" className="text-accent-ink hover:underline">Reset password</a>}>
         <Input type="email" defaultValue="hello@vamos.ist" />
       </Field>
     </div>

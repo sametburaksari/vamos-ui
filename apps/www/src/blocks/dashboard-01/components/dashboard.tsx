@@ -81,8 +81,8 @@ export function Dashboard() {
         <Card className="ui-rise flex flex-col" style={{ animationDelay: "300ms" }}>
           <CardHeader title="Quick draft" description="Don't lose the idea." />
           <CardBody className="grid flex-1 gap-3">
-            <Field label="Title"><Input placeholder="Post title" /></Field>
-            <Field label="Content" hint="You can expand it in the block editor later."><Textarea rows={5} placeholder="Write an idea…" /></Field>
+            <Field label="Title" id="quick-draft-title"><Input name="title" placeholder="Post title" /></Field>
+            <Field label="Content" id="quick-draft-content" hint="You can expand it in the block editor later."><Textarea name="content" rows={5} placeholder="Write an idea…" /></Field>
           </CardBody>
           <CardFooter className="justify-end">
             <Button variant="ghost" size="sm">Clear</Button>

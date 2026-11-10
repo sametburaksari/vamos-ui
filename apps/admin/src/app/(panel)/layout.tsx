@@ -1,5 +1,9 @@
-import { Shell } from "@/components/shell";
+import { cookies } from "next/headers";
+import { parseSidebarCookie, SIDEBAR_COOKIE } from "@vamos-cms/ui";
+import { AdminShell } from "@/components/admin-shell";
 
-export default function PanelLayout({ children }: { children: React.ReactNode }) {
-  return <Shell>{children}</Shell>;
+export default async function PanelLayout({ children }: { children: React.ReactNode }) {
+  // Read the rail preference on the server so the sidebar doesn't flash on load.
+  const collapsed = parseSidebarCookie((await cookies()).get(SIDEBAR_COOKIE)?.value);
+  return <AdminShell defaultCollapsed={collapsed}>{children}</AdminShell>;
 }
