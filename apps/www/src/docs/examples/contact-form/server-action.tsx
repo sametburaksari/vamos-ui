@@ -1,3 +1,5 @@
+"use client";
+
 import { ContactForm } from "@vamos-cms/ui/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { sendLead } from "./_actions";
