@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Onest, Instrument_Serif, JetBrains_Mono, Hanken_Grotesk, Bricolage_Grotesque, Geist_Mono, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { fontBootScript } from "@vamos-cms/ui/fonts";
+import { TooltipProvider } from "@vamos-cms/ui";
 import "./globals.css";
 
 // The four font presets. Only the default (editorial) is preloaded;
@@ -16,8 +18,9 @@ const fonts = [onest, instrument, jetbrains, hanken, bricolage, geistMono, plex,
 
 export const metadata: Metadata = { title: { default: "Vamos UI", template: "%s · Vamos UI" }, description: "One component kit for every admin panel and website." };
 
-// Apply the theme axes before first paint (no flash).
-const boot = `try{var s=JSON.parse(localStorage.getItem("vamos-theme")||"{}");var h=document.documentElement;if(s.dark)h.classList.add("dark");h.dataset.material=s.material||"glass";h.dataset.accent=s.accent||"lime";h.dataset.density=s.density||"comfortable";h.dataset.font=s.font||"editorial"}catch(e){}`;
+// Apply the theme axes before first paint (no flash). A saved non-preset font pairing
+// ("fontPairing" in vamos-theme) also gets its tokens and a render-blocking Google Fonts link.
+const boot = `try{var s=JSON.parse(localStorage.getItem("vamos-theme")||"{}");var h=document.documentElement;if(s.dark)h.classList.add("dark");h.dataset.material=s.material||"glass";h.dataset.accent=s.accent||"lime";h.dataset.density=s.density||"comfortable";h.dataset.font=s.font||"editorial"}catch(e){}` + fontBootScript("vamos-theme", "fontPairing");
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,7 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: boot }} />
       </head>
-      <body className="min-h-dvh font-sans text-[14px]">{children}</body>
+      <body className="min-h-dvh font-sans text-[14px]">
+        <TooltipProvider>{children}</TooltipProvider>
+      </body>
     </html>
   );
 }

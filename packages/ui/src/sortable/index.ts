@@ -1,2 +1,61 @@
-// Public API of @vamos-cms/ui/sortable — owned by the group that builds it.
-export {};
+// Public API of @vamos-cms/ui/sortable — reordering + pointer-drag primitives.
+// The drag engine (dnd-kit) is internal: no engine type is exported.
+export {
+  Sortable,
+  SortableItem,
+  SortableHandle,
+  SortableOverlay,
+  SortableMoveMenu,
+  SortableContainer,
+  useSortableItem,
+  useSortableItemContext,
+  useSortableActiveId,
+  useSortableContainerItems,
+  sortableLabels,
+  type SortableProps,
+  type SortableItemProps,
+  type SortableHandleProps,
+  type SortableOverlayProps,
+  type SortableMoveMenuProps,
+  type SortableContainerProps,
+  type SortableContainerSpec,
+  type SortableMoveEvent,
+  type SortableMoveBetweenEvent,
+  type SortableOrientation,
+  type SortableLabels,
+  type UseSortableItemResult,
+} from "./sortable";
+export {
+  SortableList,
+  SortableGrid,
+  sortableListVariants,
+  sortableRowVariants,
+  type SortableListProps,
+  type SortableGridProps,
+  type SortableRenderState,
+} from "./sortable-list";
+export {
+  arrayMove,
+  moveTargetIndex,
+  moveBetweenContainers,
+  findContainer,
+  flattenTree,
+  descendantIds,
+  projectTreeMove,
+  moveTreeNode,
+  keepMountedRange,
+  type MoveOp,
+  type ContainerState,
+  type SortableTreeNode,
+  type FlatTreeItem,
+  type TreeProjection,
+} from "./core";
+export {
+  usePointerDrag,
+  snapToGrid,
+  type UsePointerDragOptions,
+  type UsePointerDragResult,
+  type PointerDragState,
+  type PointerDragPoint,
+} from "./use-pointer-drag";
+export { useTimeScale } from "./use-time-scale";

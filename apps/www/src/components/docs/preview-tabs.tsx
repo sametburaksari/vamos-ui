@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Moon, Sun, Layers, Square, Code2, Eye } from "lucide-react";
-import { cn, IconButton } from "@vamos-cms/ui";
+import { cn, IconButton, ThemeScope } from "@vamos-cms/ui";
 import { CodeFrame } from "./code-frame";
 
 type Theme = "inherit" | "light" | "dark";
@@ -61,7 +61,10 @@ export function PreviewTabs({ preview, html, raw, file, align = "center" }: { pr
             )}
             data-material={material === "inherit" ? undefined : material}
           >
-            <div className="relative z-10 flex w-full flex-wrap items-center justify-center">{preview}</div>
+            {/* Overlays opened in the preview portal into this scope, so they take the preview's own
+                theme/material. No z-index here: a stacking context would trap dialogs and menus
+                under the next preview and the sticky header. */}
+            <ThemeScope className="relative flex w-full flex-wrap items-center justify-center">{preview}</ThemeScope>
           </div>
         ) : (
           <CodeFrame html={html} raw={raw} title={file} />

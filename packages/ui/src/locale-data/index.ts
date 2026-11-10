@@ -1,2 +1,4 @@
-// Public API of @vamos-cms/ui/locale-data — owned by the group that builds it.
-export {};
+// Public API of @vamos-cms/ui/locale-data — React-free locale data packs.
+// `core`: contracts + week info + holidays + working days + IBAN + decimals. `tr`: the first pack.
+export * from "./core";
+export * from "./tr";

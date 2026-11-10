@@ -1,12 +1,17 @@
 import { test, expect } from "@playwright/test";
-import { THEME_MATRIX, setTheme, readTheme, visitAllComponentPages, blockPages, collectConsoleErrors, seriousA11y } from "./helpers";
+import { THEME_MATRIX, setTheme, readTheme, visitAllComponentPages, blockPages, collectConsoleErrors, seriousA11y, stubExternalRequests } from "./helpers";
+
+test.beforeEach(async ({ page }) => {
+  await stubExternalRequests(page);
+});
 
 /** Every docs component page and every block must load in light/dark × glass/solid without console errors. */
 // Serial: four workers hitting the Turbopack dev server's on-demand compile at once time out.
 test.describe.serial("theme matrix", () => {
 for (const theme of THEME_MATRIX) {
   test(`component pages + blocks render (${theme.name})`, async ({ page }) => {
-    test.setTimeout(180_000);
+    // ~60 component pages + blocks; first visits compile on demand in the dev server.
+    test.setTimeout(900_000);
     const results = await visitAllComponentPages(page, { blocks: true, theme });
     expect(results.length).toBeGreaterThan(0);
     for (const r of results) {

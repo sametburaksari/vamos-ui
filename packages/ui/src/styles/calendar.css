@@ -1,1 +1,176 @@
 /* calendar — component CSS owned by the calendar group. Tokens only. */
+
+/* CalendarGrid (react-day-picker v9 under the hood). State hooks are data attributes on the
+   day cell (<td>): data-today, data-selected, data-range-start|middle|end, data-disabled,
+   data-outside, data-weekend, data-holiday, data-preview. Cells never blur (glass budget);
+   the range band is an opaque mix so it reads on glass. */
+@layer components {
+  .ui-cal {
+    --cal-cell: clamp(2rem, var(--control-h), 2.75rem);
+    --cal-band: color-mix(in oklch, var(--accent-base) 26%, var(--surface-solid, var(--popover)));
+    --cal-band-hover: color-mix(in oklch, var(--accent-base) 38%, var(--surface-solid, var(--popover)));
+    --cal-preview: color-mix(in oklch, var(--accent-base) 13%, transparent);
+    --cal-holiday: color-mix(in oklch, var(--warning) 11%, transparent);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+  .ui-cal[data-size="sm"] { --cal-cell: 2rem; }
+  .ui-cal[data-size="lg"] { --cal-cell: 4.75rem; width: 100%; }
+  .ui-cal[data-size="lg"] .ui-cal-grid { width: 100%; table-layout: fixed; }
+
+  .ui-cal-weekday,
+  .ui-cal-cell { width: var(--cal-cell); }
+  .ui-cal[data-size="lg"] .ui-cal-weekday,
+  .ui-cal[data-size="lg"] .ui-cal-cell { width: auto; }
+  .ui-cal[data-size="lg"] .ui-cal-weekday { text-align: start; padding-inline-start: 0.5rem; }
+  .ui-cal-weekno { width: 1.75rem; border-inline-end: 1px solid var(--line); }
+
+  /* Day button */
+  .ui-cal-day {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: var(--cal-cell);
+    height: var(--cal-cell);
+    margin-inline: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-ui-sm, 6px);
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ui-cal[data-size="sm"] .ui-cal-day { font-size: 12px; }
+  .ui-cal-day:hover { background: var(--hover); }
+  .ui-cal-day[data-static] { cursor: default; }
+  .ui-cal-day[data-static]:hover { background: transparent; }
+  .ui-cal-day:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; z-index: 1; }
+
+  .ui-cal [data-weekend] .ui-cal-day { color: var(--fg-muted); }
+  .ui-cal [data-outside] .ui-cal-day { color: var(--fg-subtle); opacity: 0.6; }
+
+  /* Today: accent-ink number with a short bar above it. */
+  .ui-cal [data-today]:not([data-selected]) .ui-cal-day { color: var(--accent-ink); font-weight: 650; }
+  .ui-cal [data-today] .ui-cal-day::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    inset-inline: calc(50% - 5px);
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    opacity: 0.85;
+  }
+
+  /* Holiday tint */
+  .ui-cal [data-holiday]:not([data-selected]):not([data-range-middle]) .ui-cal-day { background: var(--cal-holiday); }
+  .ui-cal [data-holiday]:not([data-selected]) .ui-cal-day:hover { background: color-mix(in oklch, var(--warning) 18%, transparent); }
+
+  /* Range preview while picking the end (Date range picker) */
+  .ui-cal [data-preview]:not([data-selected]) { background: var(--cal-preview); }
+  .ui-cal [data-preview]:not([data-selected]) .ui-cal-day { border-radius: 0; }
+
+  /* Selected (single / multiple / range ends) */
+  .ui-cal [data-selected]:not([data-range-middle]) .ui-cal-day {
+    background: var(--accent);
+    color: var(--accent-fg);
+    font-weight: 650;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 1px 2px rgb(0 0 0 / 0.12);
+  }
+  .ui-cal [data-selected]:not([data-range-middle]) .ui-cal-day:hover { filter: brightness(1.04); }
+
+  /* Range band */
+  .ui-cal [data-range-middle] { background: var(--cal-band); }
+  .ui-cal [data-range-middle] .ui-cal-day { border-radius: 0; color: var(--fg); font-weight: 500; }
+  .ui-cal [data-range-middle] .ui-cal-day:hover { background: var(--cal-band-hover); }
+  .ui-cal [data-range-start]:not([data-range-end]) { background: linear-gradient(to right, transparent 50%, var(--cal-band) 50%); }
+  .ui-cal [data-range-end]:not([data-range-start]) { background: linear-gradient(to left, transparent 50%, var(--cal-band) 50%); }
+  .ui-cal:dir(rtl) [data-range-start]:not([data-range-end]) { background: linear-gradient(to left, transparent 50%, var(--cal-band) 50%); }
+  .ui-cal:dir(rtl) [data-range-end]:not([data-range-start]) { background: linear-gradient(to right, transparent 50%, var(--cal-band) 50%); }
+  /* Soft ends of the band at the edges of a week row */
+  .ui-cal td[data-range-middle]:first-of-type,
+  .ui-cal td[data-preview]:first-of-type { border-start-start-radius: var(--radius-ui-sm, 6px); border-end-start-radius: var(--radius-ui-sm, 6px); }
+  .ui-cal td[data-range-middle]:last-child,
+  .ui-cal td[data-preview]:last-child { border-start-end-radius: var(--radius-ui-sm, 6px); border-end-end-radius: var(--radius-ui-sm, 6px); }
+
+  /* Disabled */
+  .ui-cal [data-disabled] .ui-cal-day {
+    color: var(--fg-subtle);
+    opacity: 0.45;
+    cursor: not-allowed;
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in srgb, var(--fg-subtle) 70%, transparent);
+  }
+  .ui-cal [data-disabled] .ui-cal-day:hover { background: transparent; }
+
+  /* Day content: dots (sm/md) */
+  .ui-cal:not([data-size="lg"]) [data-slot="calendar-day-extra"] {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 4px;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .ui-cal[data-size="sm"] [data-slot="calendar-day-extra"] { bottom: 2.5px; }
+  .ui-cal-dots { display: inline-flex; gap: 2px; height: 4px; }
+  .ui-cal-dot { width: 4px; height: 4px; border-radius: 999px; background: var(--tone, var(--accent-ink)); }
+  .ui-cal [data-selected]:not([data-range-middle]) .ui-cal-dot { background: currentColor; opacity: 0.75; }
+  .ui-cal-dot-loading { width: 10px; background: var(--skeleton); animation: ui-cal-pulse 1.2s ease-in-out infinite; }
+  @keyframes ui-cal-pulse { 50% { opacity: 0.4; } }
+  @media (prefers-reduced-motion: reduce) { .ui-cal-dot-loading { animation: none; } }
+
+  /* lg cells: number top-start, content lines below */
+  .ui-cal[data-size="lg"] .ui-cal-day {
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: 6px 6px 5px;
+    text-align: start;
+    border-radius: var(--radius-ui-sm, 6px);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .ui-cal[data-size="lg"] .ui-cal-cell { padding: 1px; }
+  .ui-cal[data-size="lg"] [data-slot="calendar-day-number"] { align-self: flex-start; display: inline-flex; min-width: 1.4rem; height: 1.4rem; align-items: center; justify-content: center; border-radius: 999px; font-size: 12.5px; }
+  .ui-cal[data-size="lg"] [data-weekend]:not([data-selected]):not([data-holiday]) .ui-cal-day { background: var(--surface-2); }
+  .ui-cal[data-size="lg"] [data-today] .ui-cal-day::before { display: none; }
+  .ui-cal[data-size="lg"] [data-today] [data-slot="calendar-day-number"] { background: var(--fg); color: var(--scene); font-weight: 650; }
+  .ui-cal[data-size="lg"] [data-selected]:not([data-range-middle]) .ui-cal-day {
+    background: color-mix(in oklch, var(--accent-base) 16%, var(--surface-solid, var(--surface)));
+    color: var(--fg);
+    box-shadow: inset 0 0 0 1.5px var(--accent-ink);
+    filter: none;
+  }
+  .ui-cal[data-size="lg"] [data-slot="calendar-day-extra"] { display: block; min-width: 0; }
+  .ui-cal-lines { display: grid; gap: 2px; min-width: 0; }
+  .ui-cal-line {
+    display: block;
+    overflow: hidden;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--tone, var(--accent-ink)) 13%, transparent);
+    color: color-mix(in srgb, var(--tone, var(--accent-ink)) 85%, var(--fg));
+    font-size: 10.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ui-cal-line-holiday { --tone: var(--warning); }
+  .ui-cal-line-more { padding-inline: 5px; font-size: 10px; color: var(--fg-subtle); }
+
+  /* Footer slot */
+  .ui-cal-footer { margin-top: 0.75rem; }
+
+  /* Legend swatch */
+  .ui-cal-legend-holiday { width: 12px; height: 10px; border-radius: 3px; background: color-mix(in oklch, var(--warning) 22%, transparent); box-shadow: inset 0 -2px 0 var(--warning); }
+}

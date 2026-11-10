@@ -1,1 +1,75 @@
 /* editors — component CSS owned by the editors group. Tokens only. */
+
+/* ---------------------------------------------------------------- */
+/* Sortable                                                          */
+/* ---------------------------------------------------------------- */
+
+/* Lifted item: the original slot becomes a dashed placeholder while the overlay carries the clone. */
+[data-slot="sortable-item"][data-placeholder] {
+  position: relative;
+  box-shadow: none;
+}
+[data-slot="sortable-item"][data-placeholder] > * {
+  visibility: hidden;
+}
+[data-slot="sortable-item"][data-placeholder]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed var(--field-border-hover);
+  border-radius: inherit;
+  background: var(--surface-2);
+  pointer-events: none;
+}
+/* Without an overlay the item itself moves: lift it. */
+[data-slot="sortable-item"][data-dragging]:not([data-placeholder]) {
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--popover-shadow);
+}
+
+/* The dragged clone: opaque popover, never blurred, so glass and solid render identically. */
+.vui-sortable-overlay {
+  --blur: 0px;
+  cursor: grabbing;
+}
+.vui-sortable-overlay > .vui-sortable-clone {
+  background: var(--popover-nested, var(--popover));
+  box-shadow: var(--popover-shadow);
+  color: var(--fg);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .vui-sortable-overlay > .vui-sortable-clone {
+    animation: vui-sortable-lift 140ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+@keyframes vui-sortable-lift {
+  from { transform: scale(1); }
+  to { transform: scale(1.02) rotate(-0.4deg); }
+}
+
+/* Multi-container drop target. */
+.vui-sortable-container[data-over] {
+  background: color-mix(in srgb, var(--accent-soft) 45%, transparent);
+  outline: 1.5px dashed color-mix(in srgb, var(--accent-ink) 40%, transparent);
+  outline-offset: -1.5px;
+}
+.vui-sortable-container[data-empty]:not([data-over]) {
+  outline: 1.5px dashed var(--field-border);
+  outline-offset: -1.5px;
+}
+
+/* Grid tiles never blur (repeated items). */
+.vui-sortable-tile {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* While anything drags: no item-shift transitions under reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="sortable-item"] {
+    transition: none !important;
+  }
+}

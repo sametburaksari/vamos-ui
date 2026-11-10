@@ -1,1 +1,244 @@
 /* overlays — component CSS owned by the overlays group. Tokens only. */
+
+@layer components {
+  /* ---------------------------------------------------------------- */
+  /* Overlay (Dialog, Alert Dialog, Sheet, Drawer)                     */
+  /* ---------------------------------------------------------------- */
+  .vui-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    background: var(--overlay);
+  }
+  /* Only the first layer's overlay blurs (D5); the content above it then drops its own blur. */
+  .vui-overlay[data-overlay-blurred] {
+    -webkit-backdrop-filter: blur(var(--overlay-blur, 0px));
+    backdrop-filter: blur(var(--overlay-blur, 0px));
+  }
+
+  /* A layer panel sitting on a blurred overlay: no blur of its own, a little more opaque. */
+  [data-material="glass"] .vui-layer-panel,
+  .vui-layer-panel[data-material="glass"] {
+    --popover: color-mix(in srgb, var(--popover-nested) 94%, transparent);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Dialog                                                            */
+  /* ---------------------------------------------------------------- */
+  .vui-dialog {
+    position: fixed;
+    z-index: var(--z-overlay);
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: calc(-50% * var(--dir)) -50%;
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - 24px);
+    max-width: var(--dialog-w, 32.5rem);
+    max-height: min(85dvh, var(--dialog-max-h));
+    border-radius: var(--radius-ui-lg);
+    outline: none;
+    overflow: hidden;
+  }
+  .vui-dialog[data-size="sm"] { --dialog-w: 25rem; }
+  .vui-dialog[data-size="md"] { --dialog-w: 32.5rem; }
+  .vui-dialog[data-size="lg"] { --dialog-w: 42.5rem; }
+  .vui-dialog[data-size="xl"] { --dialog-w: 55rem; }
+  .vui-dialog[data-size="full"] {
+    --dialog-w: none;
+    height: calc(100dvh - 24px);
+    max-height: calc(100dvh - 24px);
+  }
+
+  @media (max-width: 639px) {
+    .vui-dialog[data-mobile="sheet"] {
+      inset-block-start: auto;
+      inset-block-end: 0;
+      inset-inline-start: 0;
+      translate: none;
+      width: 100%;
+      max-width: none;
+      height: auto;
+      max-height: 92dvh;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+      border-bottom-width: 0;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .vui-dialog[data-mobile="sheet"][data-state="open"] { animation: ui-sheet-bottom-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .vui-dialog[data-mobile="sheet"][data-state="closed"] { animation: ui-sheet-bottom-out 180ms ease-in; }
+    .vui-dialog[data-mobile="sheet"] .vui-layer-footer { flex-direction: column-reverse; align-items: stretch; }
+    .vui-dialog[data-mobile="sheet"] .vui-layer-footer > * { width: 100%; }
+
+    .vui-dialog[data-mobile="fullscreen"] {
+      inset: 0;
+      translate: none;
+      width: 100%;
+      max-width: none;
+      height: 100dvh;
+      max-height: 100dvh;
+      border-radius: 0;
+      border-width: 0;
+    }
+    /* The mobile sheet shows a grab line so it reads as a sheet (not draggable — use Drawer for that). */
+    .vui-dialog[data-mobile="sheet"]::before {
+      content: "";
+      align-self: center;
+      flex: none;
+      width: 2.25rem;
+      height: 4px;
+      margin-top: 8px;
+      border-radius: 999px;
+      background: var(--track);
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Layer header / body / footer (shared by Dialog, Sheet, Drawer…)   */
+  /* ---------------------------------------------------------------- */
+  .vui-layer-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  /* Hairline under the header only once the body has scrolled. */
+  .vui-layer-body[data-scrolled] { box-shadow: inset 0 1px 0 var(--line); }
+
+  /* ---------------------------------------------------------------- */
+  /* Sheet / Drawer                                                    */
+  /* ---------------------------------------------------------------- */
+  .vui-sheet {
+    position: fixed;
+    z-index: var(--z-overlay);
+    display: flex;
+    flex-direction: column;
+    outline: none;
+    --sheet-gap: 0px;
+  }
+  .vui-sheet[data-inset] {
+    --sheet-gap: 8px;
+    border-radius: var(--radius-ui-lg);
+    overflow: hidden;
+  }
+  .vui-sheet[data-side="end"],
+  .vui-sheet[data-side="start"] {
+    inset-block: var(--sheet-gap);
+    width: calc(100vw - 2 * var(--sheet-gap) - 24px);
+    max-width: var(--sheet-w, 27.5rem);
+  }
+  .vui-sheet[data-side="end"] { inset-inline-end: var(--sheet-gap); }
+  .vui-sheet[data-side="start"] { inset-inline-start: var(--sheet-gap); }
+  .vui-sheet[data-side="end"]:not([data-inset]) { border-block-width: 0; border-inline-end-width: 0; }
+  .vui-sheet[data-side="start"]:not([data-inset]) { border-block-width: 0; border-inline-start-width: 0; }
+
+  .vui-sheet[data-side="top"],
+  .vui-sheet[data-side="bottom"] {
+    inset-inline: var(--sheet-gap);
+    max-height: var(--sheet-h, 85dvh);
+  }
+  .vui-sheet[data-side="top"] { inset-block-start: var(--sheet-gap); }
+  .vui-sheet[data-side="bottom"] { inset-block-end: var(--sheet-gap); padding-bottom: env(safe-area-inset-bottom); }
+  .vui-sheet[data-side="top"]:not([data-inset]) {
+    border-block-start-width: 0;
+    border-inline-width: 0;
+    border-end-start-radius: var(--radius-ui-lg);
+    border-end-end-radius: var(--radius-ui-lg);
+  }
+  .vui-sheet[data-side="bottom"]:not([data-inset]) {
+    border-block-end-width: 0;
+    border-inline-width: 0;
+    border-start-start-radius: var(--radius-ui-lg);
+    border-start-end-radius: var(--radius-ui-lg);
+  }
+
+  .vui-sheet[data-size="sm"] { --sheet-w: 22.5rem; --sheet-h: 40dvh; }
+  .vui-sheet[data-size="md"] { --sheet-w: 27.5rem; --sheet-h: 60dvh; }
+  .vui-sheet[data-size="lg"] { --sheet-w: 35rem; --sheet-h: 75dvh; }
+  .vui-sheet[data-size="xl"] { --sheet-w: 45rem; --sheet-h: 85dvh; }
+  .vui-sheet[data-size="full"] { --sheet-w: none; --sheet-h: none; }
+  .vui-sheet[data-size="full"][data-side="end"],
+  .vui-sheet[data-size="full"][data-side="start"] { width: calc(100vw - 2 * var(--sheet-gap)); }
+  .vui-sheet[data-size="full"][data-side="top"],
+  .vui-sheet[data-size="full"][data-side="bottom"] { height: calc(100dvh - 2 * var(--sheet-gap)); }
+  /* Top / bottom sheets: content-sized height, capped by --sheet-h; "full" fills. */
+
+  /* Drawer: drag follows the pointer through `translate`, so the close keyframes compose with it. */
+  .vui-drawer { touch-action: none; }
+  .vui-drawer [data-slot="drawer-body"] { touch-action: pan-y; }
+  .vui-drawer[data-dragging] { transition: none; user-select: none; }
+  .vui-drawer[data-settling] { transition: translate 220ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .vui-drawer-handle {
+    flex: none;
+    align-self: center;
+    width: 2.5rem;
+    height: 5px;
+    margin-block: 10px 2px;
+    border-radius: 999px;
+    background: var(--track);
+    cursor: grab;
+  }
+  .vui-drawer[data-dragging] .vui-drawer-handle { cursor: grabbing; background: var(--fg-subtle); }
+
+  /* ---------------------------------------------------------------- */
+  /* Toast (sonner, unstyled + tokens)                                 */
+  /* ---------------------------------------------------------------- */
+  .vui-toast {
+    width: var(--width, 22.25rem);
+  }
+  /* Only the front toast of the stack blurs; the ones behind it are opaque. */
+  .vui-toast:not([data-front="true"]) {
+    --blur: 0px;
+    --popover: var(--popover-nested);
+  }
+  .vui-toast[data-expanded="true"] { --popover: var(--popover-nested); }
+  .vui-toast[data-expanded="true"][data-front="true"] { --popover: var(--popover); }
+  .vui-toast [data-icon] { display: flex; }
+  .vui-toast [data-icon] > svg { width: 1rem; height: 1rem; }
+  .vui-toast [data-content] { min-width: 0; }
+  [data-sonner-toaster] { z-index: var(--z-toast); }
+
+  /* ---------------------------------------------------------------- */
+  /* Progress                                                          */
+  /* ---------------------------------------------------------------- */
+  .vui-progress-indicator { transition: transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 200ms; }
+  .vui-progress[data-state="indeterminate"] .vui-progress-indicator {
+    width: 40%;
+    transform: none;
+    animation: ui-indeterminate 1.4s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+  }
+  .vui-progress-circle[data-state="indeterminate"] .vui-progress-arc {
+    transform-origin: 50% 50%;
+    animation: ui-spin 0.9s linear infinite;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Empty state                                                       */
+  /* ---------------------------------------------------------------- */
+  /* The icon well sits on two faint contour rings — a quiet "nothing here" mark. */
+  .vui-empty-well {
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--fg) 3.5%, transparent),
+      0 0 0 13px color-mix(in srgb, var(--fg) 2%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vui-progress-indicator { transition: none; }
+  /* Indeterminate: a static half fill with fine diagonal hatching instead of a sliding bar. */
+  .vui-progress[data-state="indeterminate"] .vui-progress-indicator {
+    width: 50%;
+    animation: none;
+    background-image: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in srgb, var(--scene) 35%, transparent) 4px 6px);
+  }
+  .vui-progress-circle[data-state="indeterminate"] .vui-progress-arc { animation: none; }
+  .vui-drawer[data-settling] { transition: none; }
+  .vui-dialog[data-mobile="sheet"][data-state] { animation: none !important; }
+}
+
+/* Tooltip — never shown on touch-only devices (hover: none). It can't be the only source of information. */
+@media (hover: none) {
+  [data-slot="tooltip-content"] { display: none; }
+}
+/* Menus: the highlighted item of a parent menu stays tinted while its submenu is open. */
+[data-slot$="menu-sub-trigger"][data-state="open"] { background-color: var(--hover); }

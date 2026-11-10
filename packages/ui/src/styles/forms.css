@@ -1,1 +1,402 @@
 /* forms — component CSS owned by the forms group. Tokens only. */
+
+/* ================================================================== */
+/* Selection controls: Checkbox · Radio Group · Switch · Slider ·      */
+/* Toggle / segmented · Avatar · Typography (Prose)                    */
+/* ================================================================== */
+
+/* Component-scoped values derived from the theme tokens. */
+:root,
+.light {
+  /* Moving thumb of a segmented control / switch (opaque, so it reads on glass). */
+  --segment-thumb: var(--popover-nested);
+  --segment-thumb-shadow: 0 1px 2px rgba(18, 21, 15, 0.1), 0 0 0 1px rgba(18, 21, 15, 0.06);
+  --switch-thumb: #ffffff;
+  /* Ring that separates stacked avatars / the status dot from what is behind them. */
+  --avatar-ring: var(--surface-solid);
+}
+.dark {
+  --segment-thumb: rgba(255, 255, 255, 0.11);
+  --segment-thumb-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --switch-thumb: #e9ece3;
+  --avatar-ring: var(--surface-solid);
+}
+[data-material="glass"],
+[data-material="glass"] .light {
+  --avatar-ring: rgba(255, 255, 255, 0.92);
+}
+.dark[data-material="glass"],
+.dark [data-material="glass"],
+[data-material="glass"] .dark {
+  --avatar-ring: #22261c;
+}
+
+@layer components {
+  /* Checkbox tick: drawn in, not faded in. */
+  .ui-check-path {
+    stroke-dasharray: 22;
+    stroke-dashoffset: 0;
+  }
+  [data-state="checked"] > [data-slot="checkbox-indicator"] .ui-check-path {
+    animation: ui-check-draw 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  /* Radio dot / switch thumb springs. */
+  .ui-radio-dot[data-state="checked"] {
+    animation: ui-radio-pop 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+@keyframes ui-check-draw {
+  from { stroke-dashoffset: 22; }
+}
+@keyframes ui-radio-pop {
+  from { transform: scale(0.3); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-state="checked"] > [data-slot="checkbox-indicator"] .ui-check-path,
+  .ui-radio-dot[data-state="checked"] {
+    animation: none;
+  }
+  [data-slot="switch-thumb"],
+  [data-slot="segmented-thumb"] {
+    transition: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Prose — rich text from the editor / CMS (no typography plugin).      */
+/* Reads the data-font axis: headings use --font-heading + --display-*. */
+/* Size steps: .prose-ui-sm / (md) / .prose-ui-lg set --prose-fs.       */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .prose-ui {
+    --prose-fs: 1rem;
+    --prose-lh: 1.7;
+    --prose-flow: 1.15em;
+    font-size: var(--prose-fs);
+    line-height: var(--prose-lh);
+    color: var(--fg);
+    max-width: var(--measure, 64ch);
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+  .prose-ui-sm { --prose-fs: 0.875rem; --prose-lh: 1.65; }
+  .prose-ui-lg { --prose-fs: 1.125rem; --prose-lh: 1.72; }
+
+  .prose-ui :where(p, ul, ol, blockquote, pre, figure, table, hr, dl, dd, h1, h2, h3, h4, h5, h6) { margin-block: 0; }
+  .prose-ui > * + * { margin-block-start: var(--prose-flow); }
+  .prose-ui :where(p, li) { text-wrap: pretty; }
+
+  .prose-ui :where(h1, h2, h3, h4, h5, h6) {
+    color: var(--fg);
+    text-wrap: balance;
+    hyphens: manual;
+  }
+  .prose-ui :where(h1, h2) {
+    font-family: var(--font-heading), ui-serif, Georgia, serif;
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    line-height: 1.08;
+  }
+  .prose-ui :where(h1, h2) em { font-style: var(--display-em); }
+  .prose-ui h1 { font-size: calc(2.4em * var(--display-scale)); }
+  .prose-ui h2 { font-size: calc(1.75em * var(--display-scale)); }
+  .prose-ui :where(h3, h4, h5, h6) { font-weight: 600; letter-spacing: -0.012em; line-height: 1.3; }
+  .prose-ui h3 { font-size: 1.22em; }
+  .prose-ui h4 { font-size: 1.05em; }
+  .prose-ui :where(h5, h6) { font-size: 0.95em; color: var(--fg-muted); }
+  .prose-ui > :where(h1, h2) { margin-block-start: 1.9em; }
+  .prose-ui > :where(h3, h4, h5, h6) { margin-block-start: 1.6em; }
+  .prose-ui > :where(h1, h2, h3, h4, h5, h6) + * { margin-block-start: 0.6em; }
+  .prose-ui > :first-child { margin-block-start: 0 !important; }
+
+  .prose-ui :where(a) {
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 45%, transparent);
+    transition: text-decoration-color 120ms;
+  }
+  .prose-ui :where(a):hover { text-decoration-color: currentColor; }
+  .prose-ui :where(a):focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 2px; }
+  .prose-ui :where(strong, b) { font-weight: 600; color: var(--fg); }
+  .prose-ui :where(mark) { background: var(--accent-soft); color: inherit; padding: 0 0.15em; border-radius: 3px; }
+  .prose-ui :where(small) { font-size: 0.85em; color: var(--fg-muted); }
+
+  .prose-ui :where(ul, ol) { padding-inline-start: 1.4em; }
+  .prose-ui :where(ul) { list-style: none; }
+  .prose-ui :where(ul) > li { position: relative; }
+  .prose-ui :where(ul) > li::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: -1.05em;
+    top: calc(var(--prose-lh) * 0.5em - 0.12em);
+    width: 0.42em;
+    height: 1px;
+    background: var(--fg-subtle);
+  }
+  .prose-ui :where(ol) { list-style: decimal; }
+  .prose-ui :where(ol) > li::marker { color: var(--fg-subtle); font-variant-numeric: tabular-nums; font-size: 0.9em; }
+  .prose-ui :where(li) + li { margin-block-start: 0.4em; }
+  .prose-ui :where(li) > :where(ul, ol) { margin-block-start: 0.4em; }
+
+  .prose-ui :where(blockquote) {
+    border-inline-start: 2px solid var(--accent-ink);
+    padding-inline-start: 1.1em;
+    color: var(--fg-muted);
+    font-family: var(--font-heading), ui-serif, Georgia, serif;
+    font-size: 1.15em;
+    line-height: 1.5;
+  }
+  .prose-ui :where(blockquote) em { font-style: var(--display-em); }
+  .prose-ui :where(blockquote) cite,
+  .prose-ui :where(figcaption) {
+    display: block;
+    margin-block-start: 0.6em;
+    font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.8rem;
+    font-style: normal;
+    color: var(--fg-subtle);
+  }
+
+  .prose-ui :where(code):not(pre code) {
+    font-family: var(--font-code), ui-monospace, monospace;
+    font-size: 0.86em;
+    background: var(--selected);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0.08em 0.36em;
+  }
+  .prose-ui :where(pre) {
+    font-family: var(--font-code), ui-monospace, monospace;
+    font-size: 0.84em;
+    line-height: 1.65;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) - 4px);
+    padding: 0.9em 1.1em;
+    overflow-x: auto;
+    hyphens: none;
+  }
+  .prose-ui :where(kbd) {
+    font-family: var(--font-code), ui-monospace, monospace;
+    font-size: 0.8em;
+    border: 1px solid var(--field-border);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 0 0.35em;
+  }
+  .prose-ui :where(hr) { border: 0; height: 1px; background: var(--line); }
+  .prose-ui > hr { margin-block: 2em; }
+  .prose-ui :where(img, video) { max-width: 100%; height: auto; border-radius: calc(var(--radius) - 4px); }
+
+  .prose-ui :where(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-variant-numeric: tabular-nums;
+  }
+  .prose-ui :where(th) {
+    text-align: start;
+    font-weight: 500;
+    color: var(--fg-muted);
+    border-bottom: 1px solid var(--field-border);
+    padding: 0.5em 0.75em;
+  }
+  .prose-ui :where(td) { border-bottom: 1px solid var(--line); padding: 0.55em 0.75em; vertical-align: top; }
+  .prose-ui :where(th, td):first-child { padding-inline-start: 0; }
+  .prose-ui :where(th, td):last-child { padding-inline-end: 0; }
+  /* Wide tables scroll inside a focusable region (<ProseTable> or data-slot="prose-table"). */
+  .prose-ui :where([data-slot="prose-table"]) { overflow-x: auto; }
+  .prose-ui :where([data-slot="prose-table"]):focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+  /* Locale-aware quotation marks for <q>. */
+  .prose-ui q:lang(en) { quotes: "\201C" "\201D" "\2018" "\2019"; }
+  .prose-ui q:lang(tr) { quotes: "\201C" "\201D" "\2018" "\2019"; }
+  .prose-ui q:lang(de) { quotes: "\201E" "\201C" "\201A" "\2018"; }
+  .prose-ui q:lang(fr) { quotes: "\00AB\00A0" "\00A0\00BB" "\2039\00A0" "\00A0\203A"; }
+}
+
+/* ================================================================== */
+/* Pickers: Tag input · Input OTP · Color picker                       */
+/* ================================================================== */
+
+:root,
+.light {
+  /* Checkerboard behind translucent colours (always on an opaque base). */
+  --checker: rgba(18, 21, 15, 0.1);
+}
+.dark {
+  --checker: rgba(255, 255, 255, 0.12);
+}
+
+@layer components {
+  /* Opaque checkerboard: colour previews never sit on blurred glass. */
+  .ui-checker {
+    background-color: var(--surface-solid);
+    background-image: conic-gradient(var(--checker) 25%, transparent 0 50%, var(--checker) 0 75%, transparent 0);
+    background-size: 8px 8px;
+  }
+
+  /* Tag input: the existing chip pulses when a duplicate is typed. */
+  .ui-tag[data-flash] {
+    animation: ui-tag-flash 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Input OTP: blinking fake caret + a short shake when the code is rejected. */
+  .ui-otp-caret {
+    animation: ui-otp-caret 1.1s steps(1) infinite;
+  }
+  .ui-otp-invalid .ui-otp-group {
+    animation: ui-otp-shake 320ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
+}
+@keyframes ui-tag-flash {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  30% { box-shadow: 0 0 0 3px var(--accent-soft); transform: scale(1.04); }
+}
+@keyframes ui-otp-caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes ui-otp-shake {
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-tag[data-flash],
+  .ui-otp-invalid .ui-otp-group {
+    animation: none;
+  }
+  .ui-otp-caret { animation-duration: 0s; }
+}
+
+/* Color picker area (react-colorful). Unlayered and scoped on purpose: the library injects its
+   own unlayered <style>, which would beat anything inside @layer. */
+[data-slot="color-picker-area"] .react-colorful {
+  width: 100%;
+  height: auto;
+  gap: 10px;
+}
+[data-slot="color-picker-area"] .react-colorful__saturation {
+  height: 168px;
+  flex: none;
+  border-bottom: 0;
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 10%, transparent);
+}
+[data-slot="color-picker-area"] .react-colorful__hue,
+[data-slot="color-picker-area"] .react-colorful__alpha,
+[data-slot="color-picker-area"] .react-colorful__last-control {
+  height: 12px;
+  flex: none;
+  border-radius: 999px;
+}
+[data-slot="color-picker-area"] .react-colorful__alpha {
+  background-color: var(--surface-solid);
+}
+[data-slot="color-picker-area"] .react-colorful__alpha-gradient,
+[data-slot="color-picker-area"] .react-colorful__hue,
+[data-slot="color-picker-area"] .react-colorful__alpha {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 10%, transparent);
+}
+[data-slot="color-picker-area"] .react-colorful__alpha-gradient {
+  border-radius: inherit;
+}
+[data-slot="color-picker-area"] .react-colorful__pointer {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.28);
+  transition: transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+[data-slot="color-picker-area"] .react-colorful__hue-pointer,
+[data-slot="color-picker-area"] .react-colorful__alpha-pointer {
+  width: 16px;
+  height: 16px;
+}
+[data-slot="color-picker-area"] .react-colorful__interactive:focus .react-colorful__pointer {
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.28), 0 0 0 4px var(--ring);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="color-picker-area"] .react-colorful__pointer { transition: none; }
+}
+
+/* ================================================================== */
+/* Business inputs: Formatted inputs · Slug · File upload · Signature  */
+/* ================================================================== */
+
+:root {
+  /* Typed signatures. Load a handwriting font and point this at it. */
+  --font-signature: "Segoe Script", "Snell Roundhand", "Brush Script MT", "Apple Chancery", cursive;
+}
+
+@layer components {
+  /* Rows and messages that appear (file items, rejections, bank name). */
+  .ui-form-reveal {
+    animation: ui-form-reveal 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  [data-slot="iban-input-bank"] {
+    animation: ui-form-reveal 160ms ease-out both;
+  }
+
+  /* Dropzone: hairline dashes read too faintly on a glass scene. */
+  [data-material="glass"] .ui-dropzone,
+  [data-material="glass"] [data-slot="image-upload"] [data-slot="file-upload-dropzone"] {
+    border-color: var(--field-border-hover);
+  }
+  .ui-dropzone[data-dragging] .ui-dropzone-icon {
+    transform: translateY(-2px);
+  }
+  .ui-dropzone-icon {
+    transition: transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 150ms, color 150ms, border-color 150ms;
+  }
+
+  /* Image upload: Replace / Remove appear on hover or keyboard focus; always visible on touch. */
+  [data-slot="image-upload"] .ui-image-actions {
+    opacity: 0;
+    transform: translateY(-2px);
+    transition: opacity 140ms ease-out, transform 140ms ease-out;
+  }
+  [data-slot="image-upload"] :hover > .ui-image-actions,
+  [data-slot="image-upload"] .ui-image-actions:focus-within {
+    opacity: 1;
+    transform: none;
+  }
+  @media (hover: none) {
+    [data-slot="image-upload"] .ui-image-actions { opacity: 1; transform: none; }
+  }
+
+  /* Signature pad: always an opaque writing surface (glass would show the scene through the ink). */
+  .ui-signature {
+    background-color: var(--surface-solid, var(--field));
+    background-image: radial-gradient(color-mix(in srgb, var(--fg) 7%, transparent) 0.5px, transparent 0.6px);
+    background-size: 14px 14px;
+  }
+  [data-readonly] > .ui-signature {
+    background-image: none;
+  }
+  /* Stored signatures use dark ink; lift it in dark mode so it stays legible on screen only. */
+  .dark .ui-signature-ink {
+    filter: invert(0.92) hue-rotate(180deg);
+  }
+  .dark .light .ui-signature-ink {
+    filter: none;
+  }
+}
+
+@keyframes ui-form-reveal {
+  from { opacity: 0; transform: translateY(-3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-form-reveal,
+  [data-slot="iban-input-bank"],
+  [data-slot="image-upload"] .ui-image-actions,
+  .ui-dropzone-icon {
+    animation: none;
+    transition: none;
+  }
+  .ui-dropzone[data-dragging] .ui-dropzone-icon { transform: none; }
+}

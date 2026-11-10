@@ -12,3 +12,4 @@ window.matchMedia ??= ((q: string) => ({ matches: false, media: q, onchange: nul
 Element.prototype.scrollIntoView ??= function () {};
 Element.prototype.hasPointerCapture ??= () => false;
 Element.prototype.releasePointerCapture ??= () => {};
+Element.prototype.setPointerCapture ??= () => {};

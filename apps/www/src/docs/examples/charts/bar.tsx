@@ -1,28 +1,31 @@
-"use client";
+import { BarChart, BarList, type ChartConfig } from "@vamos-cms/ui/charts";
 
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-
-const data = [
-  { stage: "Lead", deals: 64 }, { stage: "Qualified", deals: 41 }, { stage: "Proposal", deals: 23 },
-  { stage: "Negotiation", deals: 12 }, { stage: "Won", deals: 8 },
+const stages = [
+  { stage: "Lead", deals: 412_000 },
+  { stage: "Qualified", deals: 286_500 },
+  { stage: "Proposal", deals: 198_200 },
+  { stage: "Negotiation", deals: 121_800 },
+  { stage: "Won", deals: 96_400 },
 ];
+
+const pages = [
+  { key: "pricing", label: "/pricing", value: 8_420, delta: 0.18 },
+  { key: "home", label: "/", value: 7_960, delta: 0.04 },
+  { key: "blog-ai", label: "/blog/ai-in-crm", value: 3_210, delta: 0.62 },
+  { key: "docs", label: "/docs/getting-started", value: 2_480, delta: -0.07 },
+  { key: "careers", label: "/careers", value: 940 },
+];
+
+const config = { deals: { label: "Pipeline value", format: "currency" } } satisfies ChartConfig;
 
 export default function BarChartDemo() {
   return (
-    <div className="h-[260px] w-full">
-      <ResponsiveContainer>
-        <BarChart data={data} margin={{ top: 8, right: 4, bottom: 0, left: -20 }}>
-          <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-          <XAxis dataKey="stage" tickLine={false} axisLine={false} tick={{ fill: "var(--fg-subtle)", fontSize: 11 }} />
-          <YAxis tickLine={false} axisLine={false} tick={{ fill: "var(--fg-subtle)", fontSize: 11 }} />
-          <Tooltip
-            cursor={{ fill: "var(--hover)" }}
-            contentStyle={{ background: "var(--popover)", border: "1px solid var(--popover-border)", borderRadius: 10, fontSize: 12 }}
-            itemStyle={{ color: "var(--fg)" }}
-          />
-          <Bar dataKey="deals" name="Deals" fill="var(--chart-1)" radius={[6, 6, 2, 2]} maxBarSize={48} />
-        </BarChart>
-      </ResponsiveContainer>
+    <div className="grid w-full gap-8 md:grid-cols-[1.4fr_1fr]">
+      <BarChart title="Pipeline value by stage" data={stages} x="stage" config={config} valueLabels height="md" />
+      <div>
+        <p className="mb-2 text-[13px] font-medium">Top pages</p>
+        <BarList aria-label="Top pages" data={pages} showShare />
+      </div>
     </div>
   );
 }

@@ -1,1 +1,203 @@
 /* navigation — component CSS owned by the navigation group. Tokens only. */
+
+/* ------------------------------------------------------------------ */
+/* Edge fade masks (Tabs overflow="scroll", ScrollArea fade)            */
+/* The scrolling element sets data-fade-start / data-fade-end while    */
+/* there is hidden content on that side; the mask disappears at edges. */
+/* ------------------------------------------------------------------ */
+
+[data-edge-fade] {
+  --fade-size: 1.5rem;
+  --fade-s: 0px;
+  --fade-e: 0px;
+}
+[data-edge-fade][data-fade-start] { --fade-s: var(--fade-size); }
+[data-edge-fade][data-fade-end] { --fade-e: var(--fade-size); }
+[data-edge-fade="x"] {
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-s), #000 calc(100% - var(--fade-e)), transparent 100%);
+}
+[dir="rtl"] [data-edge-fade="x"],
+[data-edge-fade="x"][dir="rtl"] {
+  mask-image: linear-gradient(to left, transparent 0, #000 var(--fade-s), #000 calc(100% - var(--fade-e)), transparent 100%);
+}
+[data-edge-fade="y"] {
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-s), #000 calc(100% - var(--fade-e)), transparent 100%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll Area                                                         */
+/* ------------------------------------------------------------------ */
+
+[data-slot="scroll-area-thumb"] {
+  background: color-mix(in srgb, var(--fg) 25%, transparent);
+}
+[data-slot="scroll-area-bar"]:hover [data-slot="scroll-area-thumb"],
+[data-slot="scroll-area-thumb"]:active {
+  background: color-mix(in srgb, var(--fg) 42%, transparent);
+}
+.surface-nav [data-slot="scroll-area-thumb"] {
+  background: color-mix(in srgb, var(--nav-fg) 30%, transparent);
+}
+/* Radix sets display:table on the viewport child to measure width; let block content fill it. */
+[data-slot="scroll-area-viewport"] > div {
+  min-width: 100%;
+}
+[data-slot="scroll-area-viewport"][data-orientation="vertical"] > div {
+  display: block !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Resizable                                                           */
+/* While a handle is dragged, surfaces inside the group stop blurring  */
+/* (backdrop-filter recomputed every frame flickers and drops frames). */
+/* ------------------------------------------------------------------ */
+
+[data-slot="resizable-group"]:has([data-separator="active"]) {
+  --blur: 0px;
+  --overlay-blur: 0px;
+}
+[data-slot="resizable-group"]:has(> [data-separator="active"]) {
+  user-select: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Navigation Menu — content slides between items                      */
+/* ------------------------------------------------------------------ */
+
+@keyframes ui-nav-from-start { from { opacity: 0; transform: translateX(calc(-12px * var(--dir))); } }
+@keyframes ui-nav-from-end { from { opacity: 0; transform: translateX(calc(12px * var(--dir))); } }
+@keyframes ui-nav-to-start { to { opacity: 0; transform: translateX(calc(-12px * var(--dir))); } }
+@keyframes ui-nav-to-end { to { opacity: 0; transform: translateX(calc(12px * var(--dir))); } }
+
+@layer components {
+  .ui-nav-content[data-motion="from-start"] { animation: ui-nav-from-start 180ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-nav-content[data-motion="from-end"] { animation: ui-nav-from-end 180ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-nav-content[data-motion="to-start"] { animation: ui-nav-to-start 140ms ease-in; }
+  .ui-nav-content[data-motion="to-end"] { animation: ui-nav-to-end 140ms ease-in; }
+  .ui-nav-viewport {
+    transition: width 200ms cubic-bezier(0.2, 0.8, 0.2, 1), height 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+
+/* Glass budget: the floating pill already blurs, so its panel doesn't. */
+[data-slot="navigation-menu"][data-variant="floating"] [data-slot="navigation-menu-viewport"] {
+  --blur: 0px;
+  --popover: var(--popover-nested);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-nav-content,
+  .ui-nav-viewport {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Command palette — top-anchored dialog (fullscreen below 640px)      */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .vui-dialog.vui-command-dialog {
+    inset-block-start: max(12dvh, 3rem);
+    translate: calc(-50% * var(--dir)) 0;
+    max-height: min(34rem, calc(100dvh - max(12dvh, 3rem) - 2rem));
+  }
+  .vui-dialog.vui-command-dialog[data-command-size="md"] { --dialog-w: 35rem; }
+  .vui-command-dialog [cmdk-list-sizer] { display: block; }
+  @media (max-width: 639px) {
+    .vui-dialog.vui-command-dialog {
+      inset: 0;
+      translate: none;
+      width: 100%;
+      max-width: none;
+      max-height: none;
+      border-radius: 0;
+    }
+    .vui-command-dialog [data-slot="command-list"] { max-height: none; flex: 1 1 auto; }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Sidebar                                                             */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .vui-sidebar {
+    --sidebar-item-h: calc(var(--control-h) * 0.9);
+    width: var(--sidebar-w);
+    transition: width 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  [data-density="compact"] .vui-sidebar,
+  .vui-sidebar[data-density="compact"] {
+    --sidebar-w: 13.5rem;
+    --sidebar-w-rail: 3.25rem;
+  }
+  .vui-sidebar[data-collapsed] { width: var(--sidebar-w-rail); }
+  .vui-sidebar[data-mode="mobile"] { width: 100%; transition: none; }
+
+  /* The light "surface" variant (client portals, websites) uses content tokens instead of --nav*. */
+  .vui-sidebar[data-variant="surface"] {
+    --nav: var(--surface);
+    --nav-fg: var(--fg-muted);
+    --nav-fg-strong: var(--fg);
+    --nav-hover: var(--hover);
+    --nav-active: var(--selected);
+    --nav-line: var(--line);
+    --nav-sub: transparent;
+    --nav-popover: var(--popover-nested);
+    --nav-popover-border: var(--popover-border);
+    --ring: var(--accent-ink);
+  }
+
+  /* Flyouts: almost opaque, never blurred (hover would re-trigger backdrop-filter and flicker). */
+  .vui-sidebar-flyout {
+    background: var(--nav-popover);
+    border: 1px solid var(--nav-popover-border);
+    color: var(--nav-fg);
+    box-shadow: 0 18px 48px -12px rgb(0 0 0 / 0.45), 0 2px 6px rgb(0 0 0 / 0.18);
+    --blur: 0px;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    --ring: rgba(255, 255, 255, 0.85);
+  }
+  [data-variant="surface"] .vui-sidebar-flyout,
+  .vui-sidebar-flyout[data-variant="surface"] {
+    --nav-popover: var(--popover-nested);
+    --nav-popover-border: var(--popover-border);
+    --nav-fg: var(--fg-muted);
+    --nav-fg-strong: var(--fg);
+    --nav-hover: var(--hover);
+    --nav-line: var(--line);
+    --ring: var(--accent-ink);
+    box-shadow: var(--popover-shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vui-sidebar { transition: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* App shell                                                           */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .vui-app-shell { container: shell / inline-size; }
+  /* The skip link stays off-screen until focused. */
+  .vui-skip-link {
+    position: absolute;
+    inset-inline-start: 0.75rem;
+    inset-block-start: 0.75rem;
+    z-index: var(--z-toast);
+    translate: 0 calc(-100% - 1rem);
+  }
+  .vui-skip-link:focus-visible { translate: 0 0; }
+  /* Transparent top bar turns into the bar surface once the page scrolls. */
+  .vui-top-bar[data-variant="transparent"]:not([data-scrolled]) {
+    background: transparent;
+    border-bottom-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

@@ -6,6 +6,18 @@ const isExport = process.env.STATIC_EXPORT === "1";
 const config: NextConfig = {
   transpilePackages: ["@vamos-cms/ui"],
   ...(isExport ? { output: "export" as const, trailingSlash: true, images: { unoptimized: true } } : {}),
+  webpack(config) {
+    // react-resizable-panels 4.21 reads `React.Activity` behind a runtime check (React >= 19.2,
+    // falls back otherwise). On React 19.1 webpack's strict export check turns that namespace
+    // access into a production build error ("'Activity' is not exported from 'react'").
+    // Downgrade missing-export checks to warnings; remove once the apps are on React >= 19.2.
+    config.module.strictExportPresence = false;
+    config.module.parser = {
+      ...config.module.parser,
+      javascript: { ...config.module.parser?.javascript, exportsPresence: "warn" },
+    };
+    return config;
+  },
 };
 
 export default config;

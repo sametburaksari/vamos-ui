@@ -121,6 +121,8 @@
   --success: #0f8a5f;
   --warning: #c26a00;
   --danger: #d0303c;
+  /* solid danger fill behind white text (destructive buttons); stays >= 4.5:1 in both themes */
+  --danger-solid: #d0303c;
   --info: #2563eb;
 
   --chart-1: var(--accent-ink);
@@ -130,6 +132,19 @@
   --chart-5: #1a9c8c;
   --chart-6: #c94f7c;
   --chart-grid: rgba(18, 21, 15, 0.07);
+  --chart-axis: #8a9083;
+  --chart-cursor: rgba(18, 21, 15, 0.22);
+  --chart-tooltip: #ffffff;
+
+  /* Nested floating layers (a popover inside a dialog) never blur: they use this opaque value. */
+  --popover-nested: #ffffff;
+  /* Top bar / sticky toolbars. */
+  --bar: rgba(238, 240, 234, 0.92);
+  --bar-border: rgba(18, 21, 15, 0.08);
+  /* Dialog/sheet overlay blur (glass only). */
+  --overlay-blur: 0px;
+  /* Badge / alert tint strength (glass bumps it so tints survive the scene). */
+  --tone-mix: 13%;
 }
 
 .dark {
@@ -166,6 +181,7 @@
   --success: #3ccf91;
   --warning: #f2b23e;
   --danger: #f2717a;
+  --danger-solid: #c93a45;
   --info: #7cb0ff;
 
   --chart-2: #6ea4ff;
@@ -174,6 +190,13 @@
   --chart-5: #4cc9b6;
   --chart-6: #ee86ac;
   --chart-grid: rgba(255, 255, 255, 0.06);
+  --chart-axis: #767c6d;
+  --chart-cursor: rgba(255, 255, 255, 0.24);
+  --chart-tooltip: #1d2117;
+
+  --popover-nested: #1d2117;
+  --bar: rgba(12, 14, 10, 0.9);
+  --bar-border: rgba(255, 255, 255, 0.06);
 }
 
 /* Derived accent values. Also declared on [data-accent] so they are recomputed when a
@@ -186,6 +209,27 @@
   --accent-soft: color-mix(in oklch, var(--accent-base) 22%, transparent);
   --accent-ink: var(--accent-ink-light);
   --ring: var(--accent-ink-light);
+}
+
+/* Chart series 1 + the sequential ramp (heatmaps, choropleths) follow the accent and theme.
+   Declared on every theme/accent root so a dark or re-accented subtree recomputes them. */
+:root,
+.light,
+.dark,
+[data-accent] {
+  --chart-1: var(--accent-ink);
+  --chart-seq-0: color-mix(in oklch, var(--chart-1) 10%, var(--surface-solid, var(--surface)));
+  --chart-seq-1: color-mix(in oklch, var(--chart-1) 30%, var(--surface-solid, var(--surface)));
+  --chart-seq-2: color-mix(in oklch, var(--chart-1) 52%, var(--surface-solid, var(--surface)));
+  --chart-seq-3: color-mix(in oklch, var(--chart-1) 76%, var(--surface-solid, var(--surface)));
+  --chart-seq-4: var(--chart-1);
+}
+:root,
+.light {
+  --surface-solid: #ffffff;
+}
+.dark {
+  --surface-solid: #15180f;
 }
 .dark,
 .dark[data-accent],
@@ -219,6 +263,13 @@
   --popover: rgba(255, 255, 255, 0.86);
   --nav: rgba(16, 20, 12, 0.84);
   --nav-sub: rgba(0, 0, 0, 0.16);
+  /* a dark tint: white skeletons vanish on the white glass card they usually sit in */
+  --skeleton: rgba(18, 21, 15, 0.075);
+  --popover-nested: rgba(255, 255, 255, 0.97);
+  --bar: rgba(255, 255, 255, 0.5);
+  --bar-border: rgba(255, 255, 255, 0.7);
+  --overlay-blur: 6px;
+  --tone-mix: 17%;
 }
 .dark[data-material="glass"],
 .dark [data-material="glass"],
@@ -230,6 +281,45 @@
   --field: rgba(255, 255, 255, 0.05);
   --popover: rgba(22, 25, 18, 0.86);
   --nav: rgba(8, 10, 6, 0.55);
+  --skeleton: rgba(255, 255, 255, 0.08);
+  --popover-nested: rgba(29, 33, 23, 0.97);
+  --bar: rgba(14, 17, 11, 0.5);
+  --bar-border: rgba(255, 255, 255, 0.07);
+}
+
+/* ------------------------------------------------------------------ */
+/* Glass budget (X10): at most sidebar + top bar + the topmost layer blur.  */
+/* ------------------------------------------------------------------ */
+
+/* Layers nested inside another layer (popover in a dialog, submenu…) never blur. */
+[data-layer-depth]:not([data-layer-depth="1"]) {
+  --blur: 0px;
+  --popover: var(--popover-nested);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* The overlay already blurs the page, so the content above it doesn't. */
+[data-overlay-blurred] ~ [data-layer-content] {
+  --blur: 0px;
+}
+/* Blur off while dragging / resizing (set by Resizable, Drawer, Sortable). */
+[data-dragging] {
+  --blur: 0px;
+  --overlay-blur: 0px;
+}
+@media (prefers-reduced-transparency: reduce) {
+  [data-material="glass"] {
+    --blur: 0px;
+    --overlay-blur: 0px;
+    --popover: var(--popover-nested);
+  }
+}
+/* Opt-in for low-power devices: <html data-glass-quality="low">. */
+[data-glass-quality="low"],
+[data-glass-quality="low"] [data-material="glass"],
+[data-glass-quality="low"][data-material="glass"] {
+  --blur: 0px;
+  --overlay-blur: 0px;
 }
 
 /* ------------------------------------------------------------------ */
@@ -296,11 +386,50 @@
   --control-h: 2.5rem;
   --gap: 1.25rem;
   --dir: 1;
+
+  /* Table / list rows (data-density aware; "spacious" is table-local). */
+  --row-h: 3.25rem;
+  --cell-px: 1rem;
+
+  /* App shell */
+  --sidebar-w: 15.5rem;
+  --sidebar-w-rail: 3.75rem;
+  --topbar-h: 3.5rem;
+  --dialog-max-h: 48rem;
+
+  /* z-index scale — never use magic numbers. */
+  --z-sticky: 20;
+  --z-nav: 30;
+  --z-overlay: 50;
+  --z-popover: 60;
+  --z-toast: 70;
+  --z-tooltip: 80;
+
+  /* Web layout (site blocks) */
+  --container: 76rem;
+  --container-wide: 90rem;
+  --prose: 42rem;
+  --measure: 64ch;
+  --gutter: clamp(1rem, 0.5rem + 3cqi, 2.5rem);
+  --section-y: clamp(4rem, 2.5rem + 7cqi, 9rem);
+
 }
 [data-density="compact"] {
   --radius: 10px;
   --control-h: 2.125rem;
   --gap: 0.875rem;
+  --row-h: 2.5rem;
+  --cell-px: 0.75rem;
+  --topbar-h: 3rem;
+  --section-y: calc(clamp(4rem, 2.5rem + 7cqi, 9rem) * 0.8);
+}
+[data-density="comfortable"] {
+  --row-h: 3.25rem;
+  --cell-px: 1rem;
+}
+[data-density="spacious"] {
+  --row-h: 3.75rem;
+  --cell-px: 1.25rem;
 }
 [dir="rtl"] {
   --dir: -1;
@@ -346,6 +475,7 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
+  --color-danger-solid: var(--danger-solid);
   --color-info: var(--info);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
@@ -353,6 +483,18 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-axis: var(--chart-axis);
+  --color-chart-cursor: var(--chart-cursor);
+  --color-chart-tooltip: var(--chart-tooltip);
+  --color-chart-seq-0: var(--chart-seq-0);
+  --color-chart-seq-1: var(--chart-seq-1);
+  --color-chart-seq-2: var(--chart-seq-2);
+  --color-chart-seq-3: var(--chart-seq-3);
+  --color-chart-seq-4: var(--chart-seq-4);
+  --color-popover-nested: var(--popover-nested);
+  --color-bar: var(--bar);
+  --color-bar-border: var(--bar-border);
 
   --radius-ui: var(--radius);
   --radius-ui-sm: calc(var(--radius) - 4px);
@@ -361,6 +503,27 @@
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-heading), ui-serif, Georgia, serif;
   --font-mono: var(--font-code), ui-monospace, "SF Mono", monospace;
+
+  /* Fluid type scale (360px → 1280px+). Display sizes follow the font preset's --display-scale.
+     cqi falls back to the small viewport outside a container. */
+  --text-display-2xl: calc(clamp(3rem, 1rem + 8.5cqi, 8.5rem) * var(--display-scale));
+  --text-display-2xl--line-height: 0.92;
+  --text-display-xl: calc(clamp(2.6rem, 1.3rem + 5.6cqi, 6rem) * var(--display-scale));
+  --text-display-xl--line-height: 0.96;
+  --text-display-l: calc(clamp(2.1rem, 1.3rem + 3.6cqi, 4.25rem) * var(--display-scale));
+  --text-display-l--line-height: 1;
+  --text-display-m: calc(clamp(1.75rem, 1.25rem + 2.2cqi, 3rem) * var(--display-scale));
+  --text-display-m--line-height: 1.05;
+  --text-h3: clamp(1.2rem, 1.08rem + 0.6cqi, 1.6rem);
+  --text-h3--line-height: 1.2;
+  --text-lead: clamp(1.0625rem, 1rem + 0.4cqi, 1.375rem);
+  --text-lead--line-height: 1.5;
+  --text-body: clamp(1rem, 0.97rem + 0.15cqi, 1.0625rem);
+  --text-body--line-height: 1.6;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.3;
 }
 
 /* ------------------------------------------------------------------ */
@@ -409,8 +572,8 @@ html {
   background: var(--surface);
   border: 1px solid var(--surface-border);
   box-shadow: var(--surface-shadow);
-  backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
   -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
+  backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
 }
 @utility surface-2 {
   background: var(--surface-2);
@@ -420,16 +583,34 @@ html {
   background: var(--popover);
   border: 1px solid var(--popover-border);
   box-shadow: var(--popover-shadow);
-  backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
   -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+  backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
   color: var(--fg);
 }
 @utility surface-nav {
   background: var(--nav);
   color: var(--nav-fg);
-  backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
   -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+  backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
   --ring: rgba(255, 255, 255, 0.85);
+}
+@utility surface-bar {
+  background: var(--bar);
+  border-bottom: 1px solid var(--bar-border);
+  -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+  backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+}
+/* Semantic tints shared by Badge, Alert, Toast and Status picker:
+   pick a hue with tone-<name> (or set --tone), paint with tone-soft. */
+@utility tone-neutral { --tone: var(--fg-muted); }
+@utility tone-accent { --tone: var(--accent-ink); }
+@utility tone-success { --tone: var(--success); }
+@utility tone-warning { --tone: var(--warning); }
+@utility tone-danger { --tone: var(--danger); }
+@utility tone-info { --tone: var(--info); }
+@utility tone-soft {
+  background-color: color-mix(in srgb, var(--tone, var(--fg-muted)) var(--tone-mix, 13%), transparent);
+  color: var(--tone, var(--fg-muted));
 }
 @utility focus-ring {
   &:focus-visible {
@@ -466,7 +647,12 @@ html {
 @keyframes ui-sheet-bottom-out { to { transform: translateY(100%); } }
 @keyframes ui-collapse-down { from { height: 0; opacity: 0; } to { height: var(--radix-collapsible-content-height, var(--radix-accordion-content-height)); } }
 @keyframes ui-collapse-up { from { height: var(--radix-collapsible-content-height, var(--radix-accordion-content-height)); } to { height: 0; opacity: 0; } }
-@keyframes ui-shimmer { to { transform: translateX(100%); } }
+@keyframes ui-shimmer { to { transform: translateX(calc(100% * var(--dir))); } }
+@keyframes ui-sheet-top-in { from { transform: translateY(-100%); } }
+@keyframes ui-sheet-top-out { to { transform: translateY(-100%); } }
+@keyframes ui-indeterminate { from { transform: translateX(calc(-100% * var(--dir))); } to { transform: translateX(calc(250% * var(--dir))); } }
+@keyframes ui-spin { to { transform: rotate(360deg); } }
+@keyframes ui-appear { to { opacity: 1; } }
 @keyframes ui-rise { from { opacity: 0; transform: translateY(8px); } }
 
 @layer components {
@@ -487,6 +673,8 @@ html {
   .ui-sheet-start[data-state="closed"] { animation: ui-sheet-start-out 180ms ease-in; }
   .ui-sheet-bottom[data-state="open"] { animation: ui-sheet-bottom-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
   .ui-sheet-bottom[data-state="closed"] { animation: ui-sheet-bottom-out 180ms ease-in; }
+  .ui-sheet-top[data-state="open"] { animation: ui-sheet-top-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-sheet-top[data-state="closed"] { animation: ui-sheet-top-out 180ms ease-in; }
   .ui-collapse { overflow: hidden; }
   .ui-collapse[data-state="open"] { animation: ui-collapse-down 200ms cubic-bezier(0.2, 0.8, 0.2, 1); }
   .ui-collapse[data-state="closed"] { animation: ui-collapse-up 160ms ease-in; }
@@ -495,7 +683,7 @@ html {
     content: "";
     position: absolute;
     inset: 0;
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% * var(--dir)));
     background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--fg) 7%, transparent), transparent);
     animation: ui-shimmer 1.6s ease-in-out infinite;
   }
@@ -503,7 +691,7 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-fade, .ui-pop, .ui-dialog, .ui-sheet-end, .ui-sheet-start, .ui-sheet-bottom,
+  .ui-fade, .ui-pop, .ui-dialog, .ui-sheet-end, .ui-sheet-start, .ui-sheet-bottom, .ui-sheet-top,
   .ui-collapse, .ui-shimmer::after, .ui-rise {
     animation: none !important;
   }
