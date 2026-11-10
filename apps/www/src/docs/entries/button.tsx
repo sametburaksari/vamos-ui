@@ -1,0 +1,49 @@
+import { ex, type DocEntry } from "../types";
+import ButtonDemo from "../examples/button/demo";
+import ButtonVariants from "../examples/button/variants";
+import ButtonSizes from "../examples/button/sizes";
+import ButtonWithIcon from "../examples/button/with-icon";
+import IconButtonDemo from "../examples/button/icon-button";
+import ButtonLoading from "../examples/button/loading";
+import ButtonAsLink from "../examples/button/as-link";
+import ButtonPill from "../examples/button/pill";
+
+const entry: DocEntry = {
+  slug: "button",
+  title: "Button",
+  group: "Foundations",
+  description: "Triggers an action. Eight variants, a loading state, and the option to render as another element (asChild).",
+  source: ["components/button.tsx"],
+  basedOn: "Radix Slot",
+  usage: `import { Button } from "@vamos-cms/ui";
+
+<Button variant="primary">Publish</Button>`,
+  demo: ex("demo", "Demo", "button/demo.tsx", ButtonDemo),
+  examples: [
+    ex("variants", "Variants", "button/variants.tsx", ButtonVariants, "Use one primary per screen; keep the rest secondary or ghost."),
+    ex("sizes", "Sizes", "button/sizes.tsx", ButtonSizes, "The md height comes from the --control-h token, so it follows the density axis."),
+    ex("with-icon", "With icon", "button/with-icon.tsx", ButtonWithIcon, "Put the icon before the label; it is sized from the button size."),
+    ex("icon-button", "Icon Button", "button/icon-button.tsx", IconButtonDemo, "For icon-only buttons. The label prop is required."),
+    ex("loading", "Loading", "button/loading.tsx", ButtonLoading, "loading locks the button and adds a spinner and aria-busy."),
+    ex("as-link", "As link", "button/as-link.tsx", ButtonAsLink, "With asChild the styles are kept and the rendered element is your <Link>."),
+    ex("pill", "Pill", "button/pill.tsx", ButtonPill, "Fully rounded — for website CTAs."),
+  ],
+  api: [
+    { name: "Button", props: [
+      { name: "variant", type: '"primary" | "secondary" | "solid" | "soft" | "ghost" | "danger" | "danger-ghost" | "link"', default: '"secondary"', description: "Visual weight." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "icon-xs" | "icon-sm" | "icon"', default: '"md"', description: "Height and padding." },
+      { name: "loading", type: "boolean", default: "false", description: "Spinner + click lock + aria-busy." },
+      { name: "asChild", type: "boolean", default: "false", description: "Pass the styles to the single child element (e.g. Next Link)." },
+      { name: "block", type: "boolean", default: "false", description: "Full width." },
+      { name: "pill", type: "boolean", default: "false", description: "Fully rounded corners." },
+    ] },
+    { name: "IconButton", props: [
+      { name: "label", type: "string", description: "Required. Used as aria-label and title." },
+      { name: "size", type: '"xs" | "sm" | "md"', default: '"md"', description: "Square size." },
+      { name: "variant", type: "Button variant", default: '"ghost"', description: "Same variants as Button." },
+    ] },
+  ],
+  covers: ["Button", "Icon Button"],
+};
+
+export default entry;

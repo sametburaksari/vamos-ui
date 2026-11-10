@@ -1,0 +1,20 @@
+node_modules
+.next
+dist
+.turbo
+*.tsbuildinfo
+.env*
+!.env.example
+.DS_Store
+
+# test output
+test-results
+playwright-report
+coverage
+*.tmp
+
+# internal planning notes (kept local)
+docs/plan/
+docs/plan-prompt.md
+docs/durum-*.md
+docs/AGENT-BRIEF.md

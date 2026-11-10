@@ -1,0 +1,510 @@
+/*
+ * @vamos-cms/ui — design tokens.
+ *
+ * Import AFTER Tailwind in your app stylesheet:
+ *   @import "tailwindcss";
+ *   @import "@vamos-cms/ui/styles.css";
+ *
+ * Five independent axes, set on <html> (or on any subtree):
+ *   class="dark"                          → theme (light | dark)
+ *   data-material="glass|solid"           → surface material (Liquid Glass | solid)
+ *   data-accent="lime|ocean|ember|..."    → accent colour (or set --accent-base yourself)
+ *   data-density="comfortable|compact"    → density
+ *   data-font="editorial|grotesk|..."     → type pairing
+ *
+ * Components only read the variables defined here and never use `dark:`.
+ * Every axis can therefore be switched with one attribute, even per subtree.
+ */
+
+/* Component CSS, one file per group (keeps parallel work conflict-free). */
+@import "./styles/base.css";
+@import "./styles/overlays.css";
+@import "./styles/navigation.css";
+@import "./styles/forms.css";
+@import "./styles/data.css";
+@import "./styles/charts.css";
+@import "./styles/calendar.css";
+@import "./styles/editors.css";
+@import "./styles/media.css";
+@import "./styles/blocks.css";
+
+@source "./";
+
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant glass (&:where([data-material="glass"], [data-material="glass"] *));
+
+/* ------------------------------------------------------------------ */
+/* Accent — one source colour, everything else is derived              */
+/* ------------------------------------------------------------------ */
+
+:root,
+[data-accent="lime"] {
+  --accent-base: oklch(0.89 0.21 122);
+  --accent-fg: oklch(0.17 0.02 120);
+  --accent-ink-light: oklch(0.47 0.13 125);
+  --accent-ink-dark: oklch(0.9 0.19 122);
+}
+[data-accent="ocean"] {
+  --accent-base: oklch(0.64 0.17 245);
+  --accent-fg: #fff;
+  --accent-ink-light: oklch(0.5 0.17 250);
+  --accent-ink-dark: oklch(0.78 0.12 240);
+}
+[data-accent="ember"] {
+  --accent-base: oklch(0.7 0.19 45);
+  --accent-fg: oklch(0.18 0.03 40);
+  --accent-ink-light: oklch(0.53 0.17 40);
+  --accent-ink-dark: oklch(0.8 0.14 50);
+}
+[data-accent="rose"] {
+  --accent-base: oklch(0.66 0.21 10);
+  --accent-fg: #fff;
+  --accent-ink-light: oklch(0.52 0.2 12);
+  --accent-ink-dark: oklch(0.8 0.13 10);
+}
+[data-accent="graphite"] {
+  --accent-base: oklch(0.25 0.01 120);
+  --accent-fg: #fff;
+  --accent-ink-light: oklch(0.25 0.01 120);
+  --accent-ink-dark: oklch(0.92 0.01 120);
+}
+.dark[data-accent="graphite"],
+.dark [data-accent="graphite"] {
+  --accent-base: oklch(0.95 0.005 120);
+  --accent-fg: oklch(0.18 0.01 120);
+}
+
+/* ------------------------------------------------------------------ */
+/* Theme                                                               */
+/* ------------------------------------------------------------------ */
+
+:root,
+.light {
+  color-scheme: light;
+
+  --scene: #eef0ea;
+  --fg: #12150f;
+  --fg-muted: #5a6053;
+  --fg-subtle: #8a9083;
+
+  --surface: #ffffff;
+  --surface-2: #f6f7f3;
+  --surface-border: rgba(18, 21, 15, 0.09);
+  --line: rgba(18, 21, 15, 0.075);
+  --surface-shadow: 0 1px 2px rgba(18, 21, 15, 0.05), 0 8px 24px -16px rgba(18, 21, 15, 0.18);
+
+  --field: #ffffff;
+  --field-border: rgba(18, 21, 15, 0.15);
+  --field-border-hover: rgba(18, 21, 15, 0.28);
+  --hover: rgba(18, 21, 15, 0.05);
+  --selected: rgba(18, 21, 15, 0.075);
+  --skeleton: rgba(18, 21, 15, 0.07);
+  --track: rgba(18, 21, 15, 0.12);
+
+  --popover: #ffffff;
+  --popover-border: rgba(18, 21, 15, 0.1);
+  --popover-shadow: 0 16px 48px -12px rgba(18, 21, 15, 0.28), 0 2px 6px rgba(18, 21, 15, 0.06);
+  --overlay: rgba(10, 12, 8, 0.42);
+
+  /* The sidebar stays dark in both themes: light content, dark navigation. */
+  --nav: #14170f;
+  --nav-fg: rgba(255, 255, 255, 0.72);
+  --nav-fg-strong: #fff;
+  --nav-hover: rgba(255, 255, 255, 0.06);
+  --nav-active: rgba(255, 255, 255, 0.1);
+  --nav-line: rgba(255, 255, 255, 0.07);
+  --nav-sub: rgba(0, 0, 0, 0.22);
+  --nav-popover: #1b1f17;
+  --nav-popover-border: rgba(255, 255, 255, 0.09);
+
+
+  --success: #0f8a5f;
+  --warning: #c26a00;
+  --danger: #d0303c;
+  --info: #2563eb;
+
+  --chart-1: var(--accent-ink);
+  --chart-2: #2f6fd6;
+  --chart-3: #d9822b;
+  --chart-4: #8a5cd1;
+  --chart-5: #1a9c8c;
+  --chart-6: #c94f7c;
+  --chart-grid: rgba(18, 21, 15, 0.07);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --scene: #0c0e0a;
+  --fg: #f1f3ec;
+  --fg-muted: #a7ad9c;
+  --fg-subtle: #767c6d;
+
+  --surface: #15180f;
+  --surface-2: #1b1e15;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.065);
+  --surface-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px -18px rgba(0, 0, 0, 0.7);
+
+  --field: rgba(255, 255, 255, 0.04);
+  --field-border: rgba(255, 255, 255, 0.13);
+  --field-border-hover: rgba(255, 255, 255, 0.26);
+  --hover: rgba(255, 255, 255, 0.055);
+  --selected: rgba(255, 255, 255, 0.085);
+  --skeleton: rgba(255, 255, 255, 0.07);
+  --track: rgba(255, 255, 255, 0.12);
+
+  --popover: #1a1d14;
+  --popover-border: rgba(255, 255, 255, 0.1);
+  --popover-shadow: 0 18px 50px -12px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --overlay: rgba(3, 4, 2, 0.6);
+
+  --nav: #0f110c;
+  --nav-sub: rgba(255, 255, 255, 0.025);
+
+
+  --success: #3ccf91;
+  --warning: #f2b23e;
+  --danger: #f2717a;
+  --info: #7cb0ff;
+
+  --chart-2: #6ea4ff;
+  --chart-3: #f0a256;
+  --chart-4: #b493f0;
+  --chart-5: #4cc9b6;
+  --chart-6: #ee86ac;
+  --chart-grid: rgba(255, 255, 255, 0.06);
+}
+
+/* Derived accent values. Also declared on [data-accent] so they are recomputed when a
+   subtree changes its accent (custom properties inherit the computed value). */
+:root,
+.light,
+.dark,
+[data-accent] {
+  --accent: var(--accent-base);
+  --accent-soft: color-mix(in oklch, var(--accent-base) 22%, transparent);
+  --accent-ink: var(--accent-ink-light);
+  --ring: var(--accent-ink-light);
+}
+.dark,
+.dark[data-accent],
+.dark [data-accent] {
+  --accent-soft: color-mix(in oklch, var(--accent-base) 16%, transparent);
+  --accent-ink: var(--accent-ink-dark);
+  --ring: var(--accent-ink-dark);
+}
+/* A light section inside a dark page must get the light accent values back. */
+.dark .light,
+.dark .light[data-accent],
+.dark .light [data-accent] {
+  --accent-soft: color-mix(in oklch, var(--accent-base) 22%, transparent);
+  --accent-ink: var(--accent-ink-light);
+  --ring: var(--accent-ink-light);
+}
+
+/* ------------------------------------------------------------------ */
+/* Material: Liquid Glass                                              */
+/* Same token names, translucent values — component code doesn't change. */
+/* ------------------------------------------------------------------ */
+
+[data-material="glass"],
+[data-material="glass"] .light {
+  --blur: 26px;
+  --surface: rgba(255, 255, 255, 0.64);
+  --surface-2: rgba(255, 255, 255, 0.5);
+  --surface-border: rgba(255, 255, 255, 0.8);
+  --surface-shadow: 0 10px 40px -14px rgba(20, 28, 10, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --field: rgba(255, 255, 255, 0.62);
+  --popover: rgba(255, 255, 255, 0.86);
+  --nav: rgba(16, 20, 12, 0.84);
+  --nav-sub: rgba(0, 0, 0, 0.16);
+}
+.dark[data-material="glass"],
+.dark [data-material="glass"],
+[data-material="glass"] .dark {
+  --surface: rgba(18, 21, 14, 0.56);
+  --surface-2: rgba(255, 255, 255, 0.045);
+  --surface-border: rgba(255, 255, 255, 0.1);
+  --surface-shadow: 0 10px 40px -14px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --field: rgba(255, 255, 255, 0.05);
+  --popover: rgba(22, 25, 18, 0.86);
+  --nav: rgba(8, 10, 6, 0.55);
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography — data-font axis                                         */
+/* The app loads the font files and provides the --ff-* variables.     */
+/* Heading character (weight, tracking, emphasis style, scale) changes */
+/* with the preset: <em> is italic in serif headings, plain in sans.   */
+/* ------------------------------------------------------------------ */
+
+:root,
+[data-font="editorial"] {
+  --font-ui: var(--ff-onest, ui-sans-serif);
+  --font-heading: var(--ff-instrument, Georgia);
+  --font-code: var(--ff-jetbrains, ui-monospace);
+  --display-weight: 400;
+  --display-tracking: -0.01em;
+  --display-em: italic;
+  --display-scale: 1;
+}
+[data-font="grotesk"] {
+  --font-ui: var(--ff-hanken, ui-sans-serif);
+  --font-heading: var(--ff-bricolage, ui-sans-serif);
+  --font-code: var(--ff-geist-mono, ui-monospace);
+  --display-weight: 640;
+  --display-tracking: -0.035em;
+  --display-em: normal;
+  --display-scale: 0.86;
+}
+[data-font="corporate"] {
+  --font-ui: var(--ff-plex, ui-sans-serif);
+  --font-heading: var(--ff-plex, ui-sans-serif);
+  --font-code: var(--ff-plex-mono, ui-monospace);
+  --display-weight: 600;
+  --display-tracking: -0.025em;
+  --display-em: normal;
+  --display-scale: 0.8;
+}
+[data-font="system"] {
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-code: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --display-weight: 650;
+  --display-tracking: -0.03em;
+  --display-em: normal;
+  --display-scale: 0.8;
+}
+
+@layer components {
+  .font-display {
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+  }
+  .font-display em {
+    font-style: var(--display-em);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Density                                                             */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --radius: 14px;
+  --control-h: 2.5rem;
+  --gap: 1.25rem;
+  --dir: 1;
+}
+[data-density="compact"] {
+  --radius: 10px;
+  --control-h: 2.125rem;
+  --gap: 0.875rem;
+}
+[dir="rtl"] {
+  --dir: -1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tailwind theme                                                      */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  --color-scene: var(--scene);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-border: var(--surface-border);
+  --color-line: var(--line);
+  --color-field: var(--field);
+  --color-field-border: var(--field-border);
+  --color-field-border-hover: var(--field-border-hover);
+  --color-hover: var(--hover);
+  --color-selected: var(--selected);
+  --color-skeleton: var(--skeleton);
+  --color-track: var(--track);
+  --color-popover: var(--popover);
+  --color-popover-border: var(--popover-border);
+  --color-overlay: var(--overlay);
+  --color-nav: var(--nav);
+  --color-nav-fg: var(--nav-fg);
+  --color-nav-fg-strong: var(--nav-fg-strong);
+  --color-nav-hover: var(--nav-hover);
+  --color-nav-active: var(--nav-active);
+  --color-nav-line: var(--nav-line);
+  --color-nav-sub: var(--nav-sub);
+  --color-nav-popover: var(--nav-popover);
+  --color-nav-popover-border: var(--nav-popover-border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+
+  --radius-ui: var(--radius);
+  --radius-ui-sm: calc(var(--radius) - 4px);
+  --radius-ui-lg: calc(var(--radius) + 6px);
+
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-heading), ui-serif, Georgia, serif;
+  --font-mono: var(--font-code), ui-monospace, "SF Mono", monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+html {
+  background: var(--scene);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+.light,
+.dark {
+  color: var(--fg);
+}
+::selection {
+  background: var(--accent-soft);
+}
+
+/* Glass scene: soft, low-saturation colour field + fine grain. */
+[data-material="glass"] body {
+  background:
+    radial-gradient(60% 50% at 12% 8%, color-mix(in oklch, var(--accent) 38%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 92% 18%, rgba(70, 130, 180, 0.22), transparent 70%),
+    radial-gradient(70% 60% at 70% 100%, rgba(214, 160, 80, 0.2), transparent 70%),
+    var(--scene);
+  background-attachment: fixed;
+}
+[data-material="glass"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ */
+/* Surfaces                                                            */
+/* ------------------------------------------------------------------ */
+
+@utility surface {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--surface-shadow);
+  backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
+}
+@utility surface-2 {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+@utility surface-popover {
+  background: var(--popover);
+  border: 1px solid var(--popover-border);
+  box-shadow: var(--popover-shadow);
+  backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+  color: var(--fg);
+}
+@utility surface-nav {
+  background: var(--nav);
+  color: var(--nav-fg);
+  backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(170%);
+  --ring: rgba(255, 255, 255, 0.85);
+}
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion (driven by Radix data-state; reduced-motion safe)            */
+/* ------------------------------------------------------------------ */
+
+@keyframes ui-fade-in { from { opacity: 0; } }
+@keyframes ui-fade-out { to { opacity: 0; } }
+@keyframes ui-pop-in { from { opacity: 0; transform: scale(0.97) translateY(-2px); } }
+@keyframes ui-pop-out { to { opacity: 0; transform: scale(0.97); } }
+@keyframes ui-dialog-in { from { opacity: 0; transform: translateY(10px) scale(0.98); } }
+@keyframes ui-dialog-out { to { opacity: 0; transform: translateY(6px) scale(0.98); } }
+@keyframes ui-sheet-end-in { from { transform: translateX(calc(100% * var(--dir))); } }
+@keyframes ui-sheet-end-out { to { transform: translateX(calc(100% * var(--dir))); } }
+@keyframes ui-sheet-start-in { from { transform: translateX(calc(-100% * var(--dir))); } }
+@keyframes ui-sheet-start-out { to { transform: translateX(calc(-100% * var(--dir))); } }
+@keyframes ui-sheet-bottom-in { from { transform: translateY(100%); } }
+@keyframes ui-sheet-bottom-out { to { transform: translateY(100%); } }
+@keyframes ui-collapse-down { from { height: 0; opacity: 0; } to { height: var(--radix-collapsible-content-height, var(--radix-accordion-content-height)); } }
+@keyframes ui-collapse-up { from { height: var(--radix-collapsible-content-height, var(--radix-accordion-content-height)); } to { height: 0; opacity: 0; } }
+@keyframes ui-shimmer { to { transform: translateX(100%); } }
+@keyframes ui-rise { from { opacity: 0; transform: translateY(8px); } }
+
+@layer components {
+  .ui-fade[data-state="open"] { animation: ui-fade-in 160ms ease-out; }
+  .ui-fade[data-state="closed"] { animation: ui-fade-out 120ms ease-in; }
+  .ui-pop[data-state="open"],
+  .ui-pop[data-state="delayed-open"],
+  .ui-pop[data-state="instant-open"] {
+    animation: ui-pop-in 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-origin: var(--radix-popper-transform-origin, var(--radix-dropdown-menu-content-transform-origin, center));
+  }
+  .ui-pop[data-state="closed"] { animation: ui-pop-out 100ms ease-in; }
+  .ui-dialog[data-state="open"] { animation: ui-dialog-in 200ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-dialog[data-state="closed"] { animation: ui-dialog-out 120ms ease-in; }
+  .ui-sheet-end[data-state="open"] { animation: ui-sheet-end-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-sheet-end[data-state="closed"] { animation: ui-sheet-end-out 180ms ease-in; }
+  .ui-sheet-start[data-state="open"] { animation: ui-sheet-start-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-sheet-start[data-state="closed"] { animation: ui-sheet-start-out 180ms ease-in; }
+  .ui-sheet-bottom[data-state="open"] { animation: ui-sheet-bottom-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-sheet-bottom[data-state="closed"] { animation: ui-sheet-bottom-out 180ms ease-in; }
+  .ui-collapse { overflow: hidden; }
+  .ui-collapse[data-state="open"] { animation: ui-collapse-down 200ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ui-collapse[data-state="closed"] { animation: ui-collapse-up 160ms ease-in; }
+  .ui-shimmer { position: relative; overflow: hidden; }
+  .ui-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--fg) 7%, transparent), transparent);
+    animation: ui-shimmer 1.6s ease-in-out infinite;
+  }
+  .ui-rise { animation: ui-rise 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-fade, .ui-pop, .ui-dialog, .ui-sheet-end, .ui-sheet-start, .ui-sheet-bottom,
+  .ui-collapse, .ui-shimmer::after, .ui-rise {
+    animation: none !important;
+  }
+}
