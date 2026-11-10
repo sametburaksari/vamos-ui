@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Import CSV or XLSX into any collection: upload (encoding and delimiter sniffing, sheet, header row, the file's number/date format) → column mapping (locale-folded auto-mapping and saved templates) → review with inline fixes → duplicate strategy, dry run and a chunked, cancellable import → report with a failed-rows download. papaparse and read-excel-file load only when a file is read.",
   source: ["business/import-wizard.tsx", "business/import-core.ts"],
   basedOn: "Multi-step form · File upload · papaparse · read-excel-file",
-  usage: `import { ImportWizard, type ImportField } from "@vamos-cms/ui/business";
+  usage: `import { ImportWizard, type ImportField } from "@vamos-ui/react/business";
 
 const fields: ImportField[] = [
   { id: "name", label: "Full name", aliases: ["Ad Soyad"], required: true, type: "text" },

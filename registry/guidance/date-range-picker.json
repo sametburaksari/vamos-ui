@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Report filters, leave requests, bookings, campaign flights.",
+    "Preset ranges (Last 7 days, This quarter) with custom ranges."
+  ],
+  "avoidWhen": [
+    "A single date — use Date Picker.",
+    "Booking a resource across people — use Resource calendar."
+  ],
+  "related": [
+    "date-picker",
+    "calendar",
+    "filter-bar",
+    "form-01"
+  ],
+  "a11y": [
+    "Start and end inputs each have labels; the hover preview is not required to pick.",
+    "Presets are a list of buttons announced with the resulting range."
+  ]
+}

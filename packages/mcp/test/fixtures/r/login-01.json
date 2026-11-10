@@ -1,0 +1,21 @@
+{
+  "name": "login-01",
+  "type": "block",
+  "title": "Login",
+  "description": "Email and password sign-in with remember me and SSO.",
+  "category": "Authentication",
+  "tags": [
+    "any"
+  ],
+  "docs": "https://ui.vamos.ist/blocks/login-01",
+  "dependencies": [],
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "blocks/login-01/page.tsx",
+      "content": "export default function Page() { return null; }\n"
+    }
+  ]
+}

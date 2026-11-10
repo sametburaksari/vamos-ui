@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CurrencyInput, Field, LocaleProvider } from "@vamos-cms/ui";
+import { CurrencyInput, Field, LocaleProvider } from "@vamos-ui/react";
 
 export default function CurrencyExample() {
   const [usd, setUsd] = React.useState<string | null>("48500.00");

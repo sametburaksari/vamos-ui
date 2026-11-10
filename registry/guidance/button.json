@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "Every action: save, create, submit, open a dialog.",
+    "One primary (accent) button per view for the main action; secondary/ghost for the rest.",
+    "Links that look like buttons via asChild."
+  ],
+  "avoidWhen": [
+    "Navigating to another page in body text — use a link.",
+    "On/off settings — use Switch.",
+    "Several primary buttons in one view — demote all but one."
+  ],
+  "related": [
+    "button-group",
+    "dropdown-menu",
+    "tooltip",
+    "kbd"
+  ],
+  "a11y": [
+    "Icon-only buttons (IconButton) need aria-label plus a Tooltip.",
+    "The loading state keeps the label for screen readers and sets aria-busy; do not disable without explaining why."
+  ]
+}

@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, DescriptionGroup, DescriptionList } from "@vamos-cms/ui";
+import { Button, Card, CardBody, DescriptionGroup, DescriptionList } from "@vamos-ui/react";
 
 export default function DescriptionListGroups() {
   return (

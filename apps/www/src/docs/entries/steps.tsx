@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description:
     "“How we work”: discovery → design → launch, a spa's first visit, SaaS setup. An ordered list — the order is announced, the numbers are visual — with hairline rules instead of cards; only the first step's marker carries the accent.",
   source: ["blocks/site/process.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { Steps } from "@vamos-cms/ui/blocks";
+  usage: `import { Steps } from "@vamos-ui/react/blocks";
 
 <Steps
   title="Six weeks from *brief* to launch"

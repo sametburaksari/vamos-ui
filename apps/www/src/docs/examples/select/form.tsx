@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Field, Select } from "@vamos-cms/ui";
+import { Button, Field, Select } from "@vamos-ui/react";
 
 export default function SelectForm() {
   const [submitted, setSubmitted] = React.useState<string | null>(null);

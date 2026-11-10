@@ -1,4 +1,4 @@
-import { Button, MobileNav, NavigationMenu, type SiteNavItem } from "@vamos-cms/ui";
+import { Button, MobileNav, NavigationMenu, type SiteNavItem } from "@vamos-ui/react";
 
 const nav: SiteNavItem[] = [
   {

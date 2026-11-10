@@ -1,4 +1,4 @@
-import { Card, Sparkline } from "@vamos-cms/ui";
+import { Card, Sparkline } from "@vamos-ui/react";
 
 const daily = [14, 18, 11, 22, 26, 19, 31, 28, 24, 35, 33, 29, 38, 41];
 

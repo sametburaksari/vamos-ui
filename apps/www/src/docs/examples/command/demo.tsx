@@ -1,7 +1,7 @@
 "use client";
 
 import { FilePlus2, FileText, Image, Settings, UserPlus, Users } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@vamos-cms/ui";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@vamos-ui/react";
 
 export default function CommandDemo() {
   return (

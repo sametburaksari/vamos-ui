@@ -1,4 +1,4 @@
-import { RichTextSection } from "@vamos-cms/ui/blocks";
+import { RichTextSection } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Column: a 42rem column placed on grid columns 2–9 (not centred), with an editorial drop cap.

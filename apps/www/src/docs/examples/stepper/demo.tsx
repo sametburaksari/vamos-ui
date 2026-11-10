@@ -1,4 +1,4 @@
-import { Stepper } from "@vamos-cms/ui";
+import { Stepper } from "@vamos-ui/react";
 
 export default function StepperDemo() {
   return (

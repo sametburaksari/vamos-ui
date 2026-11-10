@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CommentComposer, CommentBody, type MentionItem } from "@vamos-cms/ui";
+import { CommentComposer, CommentBody, type MentionItem } from "@vamos-ui/react";
 
 const people: MentionItem[] = [
   { id: "u2", label: "Daniel Brooks", kind: "user", description: "Account executive" },

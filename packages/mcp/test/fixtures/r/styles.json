@@ -1,0 +1,15 @@
+{
+  "name": "styles",
+  "type": "style",
+  "title": "Styles",
+  "description": "Tokens and component CSS.",
+  "docs": "https://ui.vamos.ist/docs/theming",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "styles.css",
+      "content": ":root { --fg: #12150f; }\n"
+    }
+  ]
+}

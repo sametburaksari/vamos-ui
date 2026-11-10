@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, TagInput } from "@vamos-cms/ui";
+import { Field, TagInput } from "@vamos-ui/react";
 
 const segments = ["Enterprise", "Mid-market", "Startups", "Event attendees", "Newsletter", "Trial users", "Churn risk", "Partners", "Istanbul office", "Berlin office"];
 

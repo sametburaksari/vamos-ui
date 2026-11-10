@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@vamos-cms/ui";
+import { cn } from "@vamos-ui/react";
 import { CopyButton } from "./copy-button";
 
 /** Highlighted code + copy. Long snippets collapse behind "Expand". */

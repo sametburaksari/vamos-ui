@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A CRM contact or company record: key facts, pager, tasks, activity, comments, files, deals."
+  ],
+  "avoidWhen": [
+    "Employee records — use detail-02.",
+    "Financial documents — use detail-03."
+  ],
+  "related": [
+    "record-detail-layout",
+    "activity-timeline",
+    "comment-thread",
+    "task-list",
+    "entity-card"
+  ],
+  "a11y": [
+    "The contact name is the h1; tabs follow the tabs pattern."
+  ]
+}

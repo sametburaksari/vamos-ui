@@ -1,7 +1,7 @@
 "use client";
 
 import { MapPin } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, LocaleProvider } from "@vamos-cms/ui";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, LocaleProvider } from "@vamos-ui/react";
 
 const offices = ["İstanbul — Maltepe", "İzmir — Alsancak", "Ankara — Çankaya", "Iğdır — Merkez", "Şişli — Işık Sokak", "Berlin — Mitte"];
 

@@ -1,4 +1,4 @@
-import { StatsBand, site1LabelsTr } from "@vamos-cms/ui/blocks";
+import { StatsBand, site1LabelsTr } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // The same figures in Turkish: Intl separators (4,8 · 1.240) and spoken units come from the locale.

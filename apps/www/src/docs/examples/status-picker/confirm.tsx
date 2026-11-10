@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, StatusPicker, type StatusDef } from "@vamos-cms/ui";
+import { Avatar, StatusPicker, type StatusDef } from "@vamos-ui/react";
 
 const leave: StatusDef[] = [
   { value: "pending", label: "Pending", category: "todo", tone: "warning" },

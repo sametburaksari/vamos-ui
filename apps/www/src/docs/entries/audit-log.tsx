@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "The full ledger of who did what, when and from where — sign-ins, permission changes, exports, deletes. Filter by text, actor, action and severity, expand an event for its field diff, JSON diff and raw payload, and scroll thousands of rows: long logs are virtualized while keeping native table semantics.",
   source: ["components/audit-log.tsx", "components/version-history.tsx", "styles/data.css"],
   basedOn: "@tanstack/react-virtual + native <table> (one <tbody> per event)",
-  usage: `import { AuditLog } from "@vamos-cms/ui";
+  usage: `import { AuditLog } from "@vamos-ui/react";
 
 <AuditLog
   events={events}

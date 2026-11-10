@@ -1,4 +1,4 @@
-import { Cta } from "@vamos-cms/ui/blocks";
+import { Cta } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Band: accent surface by default; the primary action inverts on accent. Mono phone +

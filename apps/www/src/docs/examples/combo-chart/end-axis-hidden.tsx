@@ -1,4 +1,4 @@
-import { ComboChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { ComboChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const visits = [
   { day: "Mon", visits: 4_210, bounce: 0.42 },

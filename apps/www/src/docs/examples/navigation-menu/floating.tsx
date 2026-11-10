@@ -1,4 +1,4 @@
-import { NavigationMenu, type SiteNavItem } from "@vamos-cms/ui";
+import { NavigationMenu, type SiteNavItem } from "@vamos-ui/react";
 
 const nav: SiteNavItem[] = [
   { label: "Work", href: "/work" },

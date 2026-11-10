@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "Day, week, work week, month and list views over one event model. Overlapping events share columns, multi-day events pack into lanes, and you can create, move and resize by dragging (snapped) or from the keyboard. A now line, business hours, holidays and an explicit time zone are built in. Our own engine on date-fns, with no calendar library underneath.",
   source: ["scheduler/scheduler.tsx", "scheduler/core/layout.ts", "scheduler/shared.ts", "sortable/use-pointer-drag.ts", "styles/calendar.css"],
   basedOn: "Own engine: date-fns v4 + @date-fns/tz, usePointerDrag",
-  usage: `import { Scheduler } from "@vamos-cms/ui/scheduler";
+  usage: `import { Scheduler } from "@vamos-ui/react/scheduler";
 
 <Scheduler
   events={events}               // { id, title, start, end } — UTC ISO, or YYYY-MM-DD with allDay
@@ -27,7 +27,7 @@ const entry: DocEntry = {
 />
 
 // The React-free layout functions are exported from the same entry
-import { layoutDayEvents, packLanes } from "@vamos-cms/ui/scheduler";`,
+import { layoutDayEvents, packLanes } from "@vamos-ui/react/scheduler";`,
   demo: ex("demo", "Demo", "scheduler/demo.tsx", SchedulerDemo),
   examples: [
     ex("month", "Month with multi-day lanes", "scheduler/month.tsx", SchedulerMonth, "Multi-day events span the week and pack into lanes; a crowded day shows “+N more” with a popover. The month is an ARIA grid: arrow keys move between days, Enter opens the day."),

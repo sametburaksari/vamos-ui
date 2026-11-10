@@ -1,4 +1,4 @@
-import { Badge, Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@vamos-cms/ui";
+import { Badge, Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@vamos-ui/react";
 
 const releases = [
   { version: "4.12", date: "Nov 8", notes: ["Scheduled posts now respect the site time zone.", "Faster media library search on large sites.", "Fixed: duplicate slugs when two editors publish at once."] },

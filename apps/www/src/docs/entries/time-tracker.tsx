@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Track time with one running timer shared by every tab, a weekly timesheet that accepts durations the way people type them, and a day-grouped entry list. Billable time becomes invoice line drafts with decimal-string totals. Attendance sheets use the Resource calendar's codes variant.",
   source: ["scheduler/time-tracker.tsx", "scheduler/core/duration.ts", "styles/calendar.css"],
   basedOn: "Plain React + BroadcastChannel (timer adapter)",
-  usage: `import { TimerButton, Timesheet, createLocalTimerAdapter } from "@vamos-cms/ui/scheduler";
+  usage: `import { TimerButton, Timesheet, createLocalTimerAdapter } from "@vamos-ui/react/scheduler";
 
 const adapter = createLocalTimerAdapter({ onStop: (entry) => api.timeEntries.create(entry) });
 

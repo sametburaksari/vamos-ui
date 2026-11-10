@@ -1,4 +1,4 @@
-import { MenuList, site2LabelsTr } from "@vamos-cms/ui/blocks";
+import { MenuList, site2LabelsTr } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 const TRY = (amount: string) => ({ amount, currency: "TRY" });

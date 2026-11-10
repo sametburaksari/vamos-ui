@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "SEO and social sharing previews in a CMS editor: search result, Facebook, LinkedIn, X, WhatsApp.",
+    "Showing title and description length against real truncation."
+  ],
+  "avoidWhen": [
+    "Rendering actual link cards on a website."
+  ],
+  "related": [
+    "editor-01",
+    "slug-input",
+    "editor-layout"
+  ],
+  "a11y": [
+    "Tabs switch platforms; length meters have text values.",
+    "Previews are images-with-text mockups; keep the real text available."
+  ]
+}

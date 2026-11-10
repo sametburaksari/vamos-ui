@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Free-form multi-value entry: post tags, segments, skills, recipients, keywords.",
+    "Suggestions while typing with Enter/Tab/comma to add."
+  ],
+  "avoidWhen": [
+    "Choosing from a fixed list — use Combobox with multiple.",
+    "A single value — use Input."
+  ],
+  "related": [
+    "combobox",
+    "badge",
+    "input"
+  ],
+  "a11y": [
+    "Wrap in Field; chips are removable with Backspace and announced.",
+    "Validation errors per tag are announced."
+  ]
+}

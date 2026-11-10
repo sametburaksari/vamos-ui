@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Venue, food or project photos on a website: mosaic, filmstrip, equal grid or sticky caption.",
+    "Server-rendered photo sections that open the Lightbox."
+  ],
+  "avoidWhen": [
+    "Admin media management — use Gallery grid or Media library.",
+    "A single feature image beside text — use Media + text."
+  ],
+  "related": [
+    "gallery",
+    "lightbox",
+    "media-text",
+    "site-restaurant-01"
+  ],
+  "a11y": [
+    "Every photo has descriptive alt text; the section has a heading.",
+    "Filmstrip scrolling works with keyboard and has visible controls."
+  ]
+}

@@ -1,4 +1,4 @@
-import { Field, FormattedInput } from "@vamos-cms/ui";
+import { Field, FormattedInput } from "@vamos-ui/react";
 
 export default function MaskExample() {
   return (

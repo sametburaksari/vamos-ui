@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Postal, billing or shipping addresses on customer, company, branch or invoice forms.",
+    "Turkish addresses where province and district must come from a fixed list."
+  ],
+  "avoidWhen": [
+    "A single free-text location like a meeting place — use Input.",
+    "Picking a stored branch or warehouse — use Select or Record picker."
+  ],
+  "related": [
+    "input",
+    "combobox",
+    "select",
+    "map-hours"
+  ],
+  "a11y": [
+    "Renders a fieldset with a legend; give it a label that names the address (Billing address).",
+    "Each sub-field keeps its own visible label and autocomplete token."
+  ]
+}

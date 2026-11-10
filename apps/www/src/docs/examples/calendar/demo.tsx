@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, type CalendarMarker } from "@vamos-cms/ui";
+import { Calendar, type CalendarMarker } from "@vamos-ui/react";
 
 // Editorial calendar: scheduled posts per day.
 const scheduled: Record<string, CalendarMarker[]> = {

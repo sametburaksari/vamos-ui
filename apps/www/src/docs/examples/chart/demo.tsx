@@ -1,4 +1,4 @@
-import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 // 30 days of site traffic; dates are plain "YYYY-MM-DD" strings.
 const traffic = Array.from({ length: 30 }, (_, i) => {

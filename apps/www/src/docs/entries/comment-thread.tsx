@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Threaded discussion on a record — editorial notes on a post, CRM notes on a deal, feedback on a candidate, a partner ticket. One reply level, @people and #record mentions with a picker, attachments, reactions, edit and delete, resolve and collapse, and optimistic sending / failed states.",
   source: ["components/comment-thread.tsx", "components/attachment-list.tsx"],
   basedOn: "Plain textarea + combobox-pattern mention picker; ARIA feed",
-  usage: `import { CommentThread } from "@vamos-cms/ui";
+  usage: `import { CommentThread } from "@vamos-ui/react";
 
 <CommentThread
   comments={comments}

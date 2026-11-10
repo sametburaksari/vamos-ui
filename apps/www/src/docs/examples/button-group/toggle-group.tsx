@@ -1,5 +1,5 @@
 import { CalendarDays, Kanban, List } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
+import { ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 
 export default function ButtonGroupToggleGroup() {
   return (

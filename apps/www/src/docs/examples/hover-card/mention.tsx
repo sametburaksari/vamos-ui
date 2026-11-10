@@ -1,4 +1,4 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@vamos-cms/ui";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@vamos-ui/react";
 
 const people = {
   daniel: { name: "Daniel Okafor", role: "Operations lead · Lagos office", status: "On leave until Nov 14" },

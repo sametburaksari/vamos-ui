@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@vamos-cms/ui";
-import { ImportWizard, type ImportField } from "@vamos-cms/ui/business";
+import { Button } from "@vamos-ui/react";
+import { ImportWizard, type ImportField } from "@vamos-ui/react/business";
 
 const fields: ImportField[] = [
   { id: "name", label: "Müşteri", aliases: ["Customer"], required: true, type: "text" },

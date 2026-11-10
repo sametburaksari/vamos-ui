@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarCheck, FileText, MessagesSquare, Receipt } from "lucide-react";
-import { AppShell, AppShellProvider, PageHeader, type AppDefinition } from "@vamos-cms/ui";
+import { AppShell, AppShellProvider, PageHeader, type AppDefinition } from "@vamos-ui/react";
 import { DemoPage, ShellFrame, useMemoryRouter } from "./demo-kit";
 
 const portal: AppDefinition = {

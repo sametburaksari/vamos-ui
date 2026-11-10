@@ -1,4 +1,4 @@
-import { ScrollArea } from "@vamos-cms/ui";
+import { ScrollArea } from "@vamos-ui/react";
 
 const events: [when: string, what: string, meta: string][] = [
   ["09:42", "Invoice INV-2026-0418 paid", "$4,250.00"],

@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@vamos-cms/ui";
+import { Tabs, TabsList, TabsTrigger } from "@vamos-ui/react";
 
 export default function TabsWithCount() {
   return (

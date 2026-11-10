@@ -1,5 +1,5 @@
 import { Copy, Eye, Pencil } from "lucide-react";
-import { Button, ButtonGroup } from "@vamos-cms/ui";
+import { Button, ButtonGroup } from "@vamos-ui/react";
 
 export default function ButtonGroupDemo() {
   return (

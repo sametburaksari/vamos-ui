@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, LocaleProvider, ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
+import { Calendar, LocaleProvider, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 
 export default function CalendarHolidays() {
   const [locale, setLocale] = React.useState("tr-TR");

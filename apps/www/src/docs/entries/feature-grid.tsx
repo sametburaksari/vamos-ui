@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Services, treatments or product modules — without the card wall. Card-less by default: hairline rules, mono index numbers and whitespace. The tabs variant is a Radix Tabs island; sticky media swaps images with CSS view timelines and no JS.",
   source: ["blocks/site/feature-grid.tsx", "blocks/site/feature-tabs.tsx", "blocks/site/_site-icon-1.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
   basedOn: "Radix Tabs (tabs variant only)",
-  usage: `import { FeatureGrid } from "@vamos-cms/ui/blocks";
+  usage: `import { FeatureGrid } from "@vamos-ui/react/blocks";
 
 <FeatureGrid
   eyebrow="Services"

@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A getting-started dashboard: staged setup guide, first-week tasks, trial status and help links."
+  ],
+  "avoidWhen": [
+    "A first-run wizard before the product is usable — use onboarding-02."
+  ],
+  "related": [
+    "setup-checklist",
+    "task-list",
+    "progress",
+    "empty-01"
+  ],
+  "a11y": [
+    "Step completion is stated in text; the progress ring has value text."
+  ]
+}

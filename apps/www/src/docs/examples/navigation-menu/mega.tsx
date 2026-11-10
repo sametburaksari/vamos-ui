@@ -8,7 +8,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 // Company website: a product mega menu with a featured card, plus a two-column resources panel.
 export default function NavigationMenuMega() {

@@ -1,4 +1,4 @@
-import { EntityCard } from "@vamos-cms/ui";
+import { EntityCard } from "@vamos-ui/react";
 
 const people = [
   { name: "Ayşe Kaya", role: "Account owner", status: { tone: "success" as const, label: "Online" }, email: "ayse.kaya@vamos.ist" },

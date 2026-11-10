@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "Concrete, sourced numbers — “4.8 on Google · 1,240 reviews”, “340 projects in 12 years”. A semantic dl; numbers go through Intl for the locale, units are superscripts that screen readers hear spelled out, and there is no count-up animation. The schema warns when a figure has no source.",
   source: ["blocks/site/stats-band.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { StatsBand } from "@vamos-cms/ui/blocks";
+  usage: `import { StatsBand } from "@vamos-ui/react/blocks";
 
 <StatsBand
   items={[

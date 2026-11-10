@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Assign or mention people and teams: task assignee, approvers, deal owner, reviewers, shift staff, share-with. A Record picker for people — avatars with presence, role line, “Assign to me”, deactivated users, teams that expand to their members, and an avatar-stack trigger for table cells.",
   source: ["components/user-picker.tsx", "components/record-picker.tsx", "components/avatar.tsx"],
   basedOn: "Record picker",
-  usage: `import { Field, UserPicker } from "@vamos-cms/ui";
+  usage: `import { Field, UserPicker } from "@vamos-ui/react";
 
 <Field label="Assignee">
   <UserPicker source={people} currentUserId={me.id} value={assigneeId} onValueChange={setAssigneeId} />

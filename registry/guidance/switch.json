@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "On/off settings that apply immediately: maintenance mode, online bookings, active in a row.",
+    "A loading state while the change saves."
+  ],
+  "avoidWhen": [
+    "Choices submitted with a form — use Checkbox.",
+    "More than two states — use Radio Group."
+  ],
+  "related": [
+    "checkbox",
+    "settings-layout",
+    "radio-group"
+  ],
+  "a11y": [
+    "role=switch with a visible label; the label should not change with state.",
+    "Failures revert and announce the error."
+  ]
+}

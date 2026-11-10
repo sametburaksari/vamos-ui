@@ -1,4 +1,4 @@
-import { Badge, Card, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
+import { Badge, Card, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 
 const lines = [
   { item: "Brand identity refresh", detail: "Logo, colour system, type scale", qty: 1, rate: "4500.00", amount: "4500.00" },

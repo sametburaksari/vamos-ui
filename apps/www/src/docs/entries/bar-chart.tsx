@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "Category comparison — columns or ranked rows, grouped, stacked or 100% stacked, with highlight, value labels and a zero line for negatives. Bar list is the plain-DOM ranked list for top pages, sources and referrers.",
   source: ["charts/bar-chart.tsx", "charts/bar-list.tsx"],
   basedOn: "Recharts BarChart (Bar list: plain DOM)",
-  usage: `import { BarChart, BarList } from "@vamos-cms/ui/charts";
+  usage: `import { BarChart, BarList } from "@vamos-ui/react/charts";
 
 <BarChart title="Won by rep" data={reps} x="rep" layout="horizontal" config={{ won: { label: "Won", format: "currency" } }} />
 <BarList aria-label="Top sources" data={sources} showShare />`,

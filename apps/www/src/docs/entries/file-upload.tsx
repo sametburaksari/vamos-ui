@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Pick or drop files, watch them upload with progress, retry failures, remove or cancel. The drop target is a real button, so the keyboard path is the same as the pointer path; type, size and count rejections come back as localized messages. Without an upload handler the files simply go with the form.",
   source: ["components/file-upload.tsx", "components/progress.tsx", "format/core.ts"],
   basedOn: "Native file input · Drag and Drop API",
-  usage: `import { Field, FileUpload } from "@vamos-cms/ui";
+  usage: `import { Field, FileUpload } from "@vamos-ui/react";
 
 <Field label="Documents">
   <FileUpload

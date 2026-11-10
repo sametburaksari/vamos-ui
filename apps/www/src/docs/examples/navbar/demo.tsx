@@ -1,4 +1,4 @@
-import { Navbar } from "@vamos-cms/ui/blocks";
+import { Navbar } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Corporate bar: logo at the start, small links beside it, phone + one CTA at the end.

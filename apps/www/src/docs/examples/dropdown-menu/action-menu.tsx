@@ -1,7 +1,7 @@
 "use client";
 
 import { Archive, Copy, Eye, Pencil, Send, Trash2 } from "lucide-react";
-import { ActionMenu, Badge, VamosProvider, type MenuEntry } from "@vamos-cms/ui";
+import { ActionMenu, Badge, VamosProvider, type MenuEntry } from "@vamos-ui/react";
 
 const invoices = [
   { id: "INV-2041", client: "Northwind Logistics", total: "$12,480.00", status: "Overdue", tone: "danger" },

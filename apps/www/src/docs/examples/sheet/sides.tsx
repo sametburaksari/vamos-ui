@@ -1,4 +1,4 @@
-import { Button, Sheet, SheetBody, SheetContent, SheetHeader, SheetTrigger, type SheetSide } from "@vamos-cms/ui";
+import { Button, Sheet, SheetBody, SheetContent, SheetHeader, SheetTrigger, type SheetSide } from "@vamos-ui/react";
 
 const sides: { side: SheetSide; note: string }[] = [
   { side: "start", note: "Mobile navigation. Opens from the right in RTL." },

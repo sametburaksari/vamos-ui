@@ -1,4 +1,4 @@
-import { Alert, Button } from "@vamos-cms/ui";
+import { Alert, Button } from "@vamos-ui/react";
 
 export default function AlertBanner() {
   return (

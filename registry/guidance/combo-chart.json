@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Volume and rate together: orders as bars with conversion rate as a line.",
+    "Two measures with different units that share a time axis."
+  ],
+  "avoidWhen": [
+    "Two measures with the same unit — use a grouped Bar chart or Line chart.",
+    "More than two measures — split into separate charts."
+  ],
+  "related": [
+    "bar-chart",
+    "line-chart",
+    "chart"
+  ],
+  "a11y": [
+    "Label both axes with units; the summary describes both series.",
+    "Do not rely on bar vs line colour only — the legend names each series."
+  ]
+}

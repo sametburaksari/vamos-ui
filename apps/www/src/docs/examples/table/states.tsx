@@ -1,4 +1,4 @@
-import { Card, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
+import { Card, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 
 export default function TableStates() {
   return (

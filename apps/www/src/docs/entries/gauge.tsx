@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "A score or attainment on a 180° / 270° arc with threshold bands and a target marker, and a full ring for progress to a goal — from a 20 px table-cell ring to a 160 px dashboard gauge. Plain SVG.",
   source: ["charts/gauge.tsx"],
-  usage: `import { Gauge, ProgressRing } from "@vamos-cms/ui/charts";
+  usage: `import { Gauge, ProgressRing } from "@vamos-ui/react/charts";
 
 <Gauge value={64} aria-label="SEO score" semantic="meter" />
 <ProgressRing value={85} format="percent" aria-label="Profile completeness" />`,

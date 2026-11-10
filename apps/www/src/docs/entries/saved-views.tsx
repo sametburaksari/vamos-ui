@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Named list configurations — “My open deals”, “Probation ending”, “Partners at risk” — as tabs above any list. A view stores filters, sort, columns and density; edits show a Modified strip with Save, Save as new and Reset. Personal or team scope, a default view, share links with ?sv=, and a dropdown form for narrow headers. Persistence stays in your app.",
   source: ["data-table/saved-views.tsx", "data-table/view-state.ts", "data-table/types.ts"],
   basedOn: "Tabs pattern (manual activation) + Radix Dropdown Menu + Dialog",
-  usage: `import { SavedViews } from "@vamos-cms/ui/data-table";
+  usage: `import { SavedViews } from "@vamos-ui/react/data-table";
 
 <SavedViews
   views={views}

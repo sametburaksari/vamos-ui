@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { toast } from "@vamos-cms/ui";
-import { ApprovalActions, ApprovalFlow, type ApprovalStageData } from "@vamos-cms/ui/business";
+import { toast } from "@vamos-ui/react";
+import { ApprovalActions, ApprovalFlow, type ApprovalStageData } from "@vamos-ui/react/business";
 
 const initial: ApprovalStageData[] = [
   { id: "sales", title: "Sales manager", mode: "all", condition: "Discount > 15%", status: "active", approvers: [{ id: "me", name: "You", role: "Sales manager" }] },

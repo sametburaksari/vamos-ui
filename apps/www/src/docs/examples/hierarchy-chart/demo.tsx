@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { HierarchyChart, HierarchyPersonNode } from "@vamos-cms/ui";
+import { HierarchyChart, HierarchyPersonNode } from "@vamos-ui/react";
 
 interface Person {
   id: string;

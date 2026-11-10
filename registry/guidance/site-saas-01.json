@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A SaaS product landing page: product hero, logos, feature tabs, stats, steps, pricing, FAQ, CTA."
+  ],
+  "avoidWhen": [
+    "A standalone pricing page — use page-pricing-01."
+  ],
+  "related": [
+    "hero",
+    "feature-grid",
+    "pricing-table",
+    "faq",
+    "logo-strip"
+  ],
+  "a11y": [
+    "Feature tabs follow the tabs pattern; the marquee pauses under reduced motion."
+  ]
+}

@@ -13,8 +13,8 @@ const entry: DocEntry = {
     "A task plan on a time axis. The task list is a WAI-ARIA treegrid that holds everything: WBS number, dates, duration, progress and predecessors, all editable inline. Beside it are bars, summary brackets, milestones, finish-to-start links, a today marker and non-working days. Drag a bar to move it, pull its end to resize, or drag its handle onto another bar to link them. Successors are auto-scheduled on working days.",
   source: ["scheduler/gantt.tsx", "scheduler/core/gantt.ts", "scheduler/core/time-scale.ts", "sortable/use-time-scale.ts", "styles/calendar.css"],
   basedOn: "Own engine: useTimeScale, usePointerDrag, @tanstack/react-virtual",
-  usage: `import { Gantt } from "@vamos-cms/ui/scheduler";
-import { trWorkCalendar } from "@vamos-cms/ui/locale-data";
+  usage: `import { Gantt } from "@vamos-ui/react/scheduler";
+import { trWorkCalendar } from "@vamos-ui/react/locale-data";
 
 <Gantt
   tasks={tasks}            // { id, parentId?, title, start, end (YYYY-MM-DD, inclusive), progress?, type? }
@@ -26,7 +26,7 @@ import { trWorkCalendar } from "@vamos-cms/ui/locale-data";
 />
 
 // Scheduling without React (server, worker)
-import { scheduleForward, detectCycles } from "@vamos-cms/ui/scheduler";`,
+import { scheduleForward, detectCycles } from "@vamos-ui/react/scheduler";`,
   demo: ex("demo", "Demo", "gantt/demo.tsx", GanttDemo),
   examples: [
     ex("dependencies", "Dependencies and auto-scheduling", "gantt/dependencies.tsx", GanttDependencies, "A partner launch plan on trWorkCalendar. Move a task and its finish-to-start successors move with it, on working days only (29 October is skipped). Edit the Predecessors cell (“1.2, 3”) to add or remove links. A link that would create a loop is refused."),

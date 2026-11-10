@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Switch, StatusPicker, toast, Toaster, type StatusDef } from "@vamos-cms/ui";
+import { Switch, StatusPicker, toast, Toaster, type StatusDef } from "@vamos-ui/react";
 
 const stages: StatusDef[] = [
   { value: "lead", label: "Lead", category: "todo", color: "oklch(0.62 0.03 250)" },

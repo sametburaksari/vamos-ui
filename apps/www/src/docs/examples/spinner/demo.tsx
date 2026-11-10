@@ -1,4 +1,4 @@
-import { Spinner } from "@vamos-cms/ui";
+import { Spinner } from "@vamos-ui/react";
 
 export default function SpinnerDemo() {
   return (

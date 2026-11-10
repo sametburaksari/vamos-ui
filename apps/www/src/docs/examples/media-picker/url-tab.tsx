@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@vamos-cms/ui";
-import { MediaPicker, type MediaAdapter, type MediaAsset } from "@vamos-cms/ui/media";
+import { Button } from "@vamos-ui/react";
+import { MediaPicker, type MediaAdapter, type MediaAsset } from "@vamos-ui/react/media";
 import { createDemoMedia } from "../media-library/sample-media";
 
 // The "From URL" tab appears when the adapter can sideload. The imported file lands in the

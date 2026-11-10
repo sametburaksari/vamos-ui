@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A hairline between card sections, menu and toolbar groups, the or on sign-in forms."
+  ],
+  "avoidWhen": [
+    "Spacing that whitespace can do alone.",
+    "Section breaks on websites — sections own their spacing."
+  ],
+  "related": [
+    "card",
+    "dropdown-menu",
+    "button-group"
+  ],
+  "a11y": [
+    "Decorative by default; set decorative={false} only when it separates semantic groups."
+  ]
+}

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Field } from "@vamos-cms/ui";
-import { FontPicker } from "@vamos-cms/ui/fonts";
+import { Field } from "@vamos-ui/react";
+import { FontPicker } from "@vamos-ui/react/fonts";
 
 export default function FontPickerDemo() {
   const [family, setFamily] = React.useState<string | null>("Fraunces");

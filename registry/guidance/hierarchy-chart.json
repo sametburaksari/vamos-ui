@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Org charts, partner networks, decision-maker maps, site structures.",
+    "Pannable, zoomable trees with collapsible branches."
+  ],
+  "avoidWhen": [
+    "Navigating a hierarchy to pick an item — use Tree view or Tree select.",
+    "Flat lists."
+  ],
+  "related": [
+    "tree-view",
+    "tree-select",
+    "entity-card"
+  ],
+  "a11y": [
+    "Provides a tree view alternative and keyboard navigation between nodes.",
+    "Zoom and pan controls are labelled buttons."
+  ]
+}

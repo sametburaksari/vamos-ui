@@ -1,4 +1,4 @@
-import { Cta } from "@vamos-cms/ui/blocks";
+import { Cta } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Newsletter: a plain form (works without JS) posting to a URL or a server action. Pass

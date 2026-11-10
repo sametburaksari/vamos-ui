@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Building a new website section that must render on the server and be editable in the CMS.",
+    "Defining block fields with the schema layer (f.*) and rendering stored pages."
+  ],
+  "avoidWhen": [
+    "Ordinary app screens — compose kit components inside a block folder instead.",
+    "One-off markup that never goes through the CMS."
+  ],
+  "related": [
+    "hero",
+    "feature-grid",
+    "rich-text-section",
+    "block-editor"
+  ],
+  "a11y": [
+    "SectionHeader and BlockHeading keep one h1 per page and a correct heading order.",
+    "BlockImage requires alt text unless explicitly decorative."
+  ]
+}

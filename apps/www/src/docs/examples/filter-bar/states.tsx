@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FilterBar, type FilterFieldDef, type FilterGroup } from "@vamos-cms/ui/data-table";
+import { FilterBar, type FilterFieldDef, type FilterGroup } from "@vamos-ui/react/data-table";
 import { stageOptions } from "../data-table/_data";
 
 const fields: FilterFieldDef[] = [

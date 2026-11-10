@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@vamos-cms/ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@vamos-ui/react";
 
 const policies = [
   { id: "leave", title: "Annual leave", body: "20 working days per calendar year, plus public holidays. Up to 5 days carry over to the next year." },

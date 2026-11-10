@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "Editable product and service rows — item, quantity, unit, price, discount, tax rate and a generic withholding field — with exact totals per tax rate. Money is decimal strings end to end (BigInt maths, half-up rounding), tax rules come from a locale pack (Turkish KDV and tevkifat ship in locale-data), and rows reorder by drag, keyboard or menu.",
   source: ["business/line-items.tsx", "business/line-items-core.ts"],
   basedOn: "Sortable (dnd-kit) · Record picker · Currency / Number input",
-  usage: `import { LineItems, trLineTaxPack, computeLineTotals } from "@vamos-cms/ui/business";
+  usage: `import { LineItems, trLineTaxPack, computeLineTotals } from "@vamos-ui/react/business";
 
 <LineItems
   currency="TRY"

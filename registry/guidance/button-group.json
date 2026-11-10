@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A split button (Publish ▾), pager arrows, or an input attached to its button.",
+    "ToggleGroup for one-of or many-of view switches: Day/Week/Month, Bold/Italic."
+  ],
+  "avoidWhen": [
+    "Unrelated actions side by side — use separate Buttons.",
+    "Switching page sections — use Tabs.",
+    "Picking one value inside a form — use Radio Group."
+  ],
+  "related": [
+    "button",
+    "tabs",
+    "radio-group",
+    "dropdown-menu"
+  ],
+  "a11y": [
+    "ButtonGroup is role=group with a label; ToggleGroup items expose pressed or checked state.",
+    "Icon-only items each need an aria-label and a Tooltip."
+  ]
+}

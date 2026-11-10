@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Label/value pairs for record details and summaries — a native <dl>. Horizontal, vertical or grid layouts that follow the container width, locale formatting for numbers and dates, copy buttons and click-to-edit values.",
   source: ["components/description-list.tsx", "lib/data-islands.tsx", "lib/value-format.ts", "styles/data.css"],
   basedOn: "Native <dl>",
-  usage: `import { DescriptionList } from "@vamos-cms/ui";
+  usage: `import { DescriptionList } from "@vamos-ui/react";
 
 <DescriptionList items={[
   { key: "owner", label: "Owner", value: "Ayşe Kaya" },

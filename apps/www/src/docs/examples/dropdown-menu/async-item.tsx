@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Download, FileSpreadsheet, FileText } from "lucide-react";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Spinner } from "@vamos-cms/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Spinner } from "@vamos-ui/react";
 
 export default function DropdownMenuAsyncItem() {
   const [open, setOpen] = React.useState(false);

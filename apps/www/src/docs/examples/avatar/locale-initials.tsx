@@ -1,4 +1,4 @@
-import { Avatar, LocaleProvider } from "@vamos-cms/ui";
+import { Avatar, LocaleProvider } from "@vamos-ui/react";
 
 const names = ["ilker şahin", "Işıl Yıldız", "Çağrı Öz", "inci Uğur"];
 

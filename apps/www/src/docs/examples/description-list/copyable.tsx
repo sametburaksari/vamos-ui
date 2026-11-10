@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, DescriptionItem, DescriptionList } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, DescriptionItem, DescriptionList } from "@vamos-ui/react";
 
 export default function DescriptionListCopyable() {
   return (

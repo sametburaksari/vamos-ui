@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Business inputs that format while typing: money, numbers, percentages, phone (E.164), IBAN, national/tax IDs.",
+    "Values that must be stored locale-free (decimal string, compact IBAN)."
+  ],
+  "avoidWhen": [
+    "Plain text — use Input.",
+    "Choosing a quantity with a drag — use Slider."
+  ],
+  "related": [
+    "input",
+    "line-items",
+    "address-field"
+  ],
+  "a11y": [
+    "Wrap in Field; validation messages go to Field error and are announced on blur.",
+    "The caret never jumps; the raw value is submitted via a hidden input."
+  ]
+}

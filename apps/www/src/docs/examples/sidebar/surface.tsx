@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarCheck, CreditCard, FileText, LifeBuoy, MessagesSquare, Receipt } from "lucide-react";
-import { AppSwitcher, Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarNav, VamosProvider, type NavNode } from "@vamos-cms/ui";
+import { AppSwitcher, Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarNav, VamosProvider, type NavNode } from "@vamos-ui/react";
 import { useMemoryRouter } from "../app-shell/demo-kit";
 
 const portal: NavNode[] = [

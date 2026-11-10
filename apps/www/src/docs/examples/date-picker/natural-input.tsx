@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DatePicker, Field, LocaleProvider } from "@vamos-cms/ui";
+import { DatePicker, Field, LocaleProvider } from "@vamos-ui/react";
 
 export default function DatePickerNaturalInput() {
   const [en, setEn] = React.useState<string | null>(null);

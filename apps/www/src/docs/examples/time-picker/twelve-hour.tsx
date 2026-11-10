@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, LocaleProvider, TimeInput } from "@vamos-cms/ui";
+import { Field, LocaleProvider, TimeInput } from "@vamos-ui/react";
 
 export default function TimePickerTwelveHour() {
   const [time, setTime] = React.useState<string | null>("19:45");

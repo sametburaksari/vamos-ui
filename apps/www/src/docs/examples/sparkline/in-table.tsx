@@ -1,4 +1,4 @@
-import { Card, Delta, Sparkline, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
+import { Card, Delta, Sparkline, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 
 const pages = [
   { path: "/blog/qr-menus-guide", weeks: [120, 180, 240, 310, 290, 360, 420, 480, 455, 510, 560, 610], change: 0.18 },

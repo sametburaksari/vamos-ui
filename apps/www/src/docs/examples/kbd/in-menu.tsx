@@ -1,5 +1,5 @@
 import { Copy, Eye, Pencil, Trash2 } from "lucide-react";
-import { KbdGroup, Separator, itemSlots, itemVariants } from "@vamos-cms/ui";
+import { KbdGroup, Separator, itemSlots, itemVariants } from "@vamos-ui/react";
 
 const actions = [
   { label: "Edit", icon: Pencil, keys: "e" },

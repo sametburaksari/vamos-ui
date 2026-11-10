@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Lays out an image collection as an even grid, masonry columns or justified rows, opens items in the Lightbox, and has an edit mode for listings and gallery blocks: reorder by drag or keyboard (with a Move menu as the non-drag alternative), remove, caption and add.",
   source: ["media/gallery.tsx", "media/gallery-layout.ts"],
   basedOn: "Own layout math (deterministic, SSR-safe) · Sortable for edit mode",
-  usage: `import { Gallery } from "@vamos-cms/ui/media";
+  usage: `import { Gallery } from "@vamos-ui/react/media";
 
 <Gallery items={photos} layout="masonry" columns={{ base: 2, md: 3 }} lightbox />`,
   demo: ex("demo", "Demo", "gallery/demo.tsx", GalleryDemo),

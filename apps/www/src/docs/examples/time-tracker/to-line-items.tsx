@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useFormat } from "@vamos-cms/ui";
-import { lineItemsTotal, toLineItems, type TimeEntry } from "@vamos-cms/ui/scheduler";
+import { useFormat } from "@vamos-ui/react";
+import { lineItemsTotal, toLineItems, type TimeEntry } from "@vamos-ui/react/scheduler";
 
 const rate = { amount: "95.00", currency: "EUR" };
 const entries: TimeEntry[] = [

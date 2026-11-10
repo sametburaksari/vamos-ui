@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSwitcher, Sidebar, SidebarCollapseButton, SidebarContent, SidebarFooter, SidebarHeader, SidebarNav, VamosProvider } from "@vamos-cms/ui";
+import { AppSwitcher, Sidebar, SidebarCollapseButton, SidebarContent, SidebarFooter, SidebarHeader, SidebarNav, VamosProvider } from "@vamos-ui/react";
 import { crmApp, peopleApp, sharedNav, siteApp, siteNav, useMemoryRouter } from "../app-shell/demo-kit";
 
 export default function SidebarDemo() {

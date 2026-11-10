@@ -16,7 +16,7 @@ const entry: DocEntry = {
     "Pick one of a small, fixed set — content status, currency, department, sort order. The trigger shares its box with Input (controlVariants); the list supports groups, icons and descriptions, a clearable value and locale-aware typeahead. NativeSelect is the styled platform <select> for mobile-heavy website forms.",
   source: ["components/select.tsx", "components/native-select.tsx", "lib/variants.ts", "lib/text.ts"],
   basedOn: "Radix Select",
-  usage: `import { Field, Select, NativeSelect } from "@vamos-cms/ui";
+  usage: `import { Field, Select, NativeSelect } from "@vamos-ui/react";
 
 <Field label="Status">
   <Select name="status" defaultValue="draft" items={[

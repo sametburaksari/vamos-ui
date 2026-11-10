@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, type CalendarMarker } from "@vamos-cms/ui";
+import { Calendar, type CalendarMarker } from "@vamos-ui/react";
 
 // CRM: a month of activity on one account, in large cells.
 const activity: Record<string, CalendarMarker[]> = {

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Confirming irreversible or high-stakes actions: delete workspace, cancel subscription, revoke access.",
+    "One-line confirmations from code with useConfirm()."
+  ],
+  "avoidWhen": [
+    "Reversible actions — do it immediately and offer Undo in a Toast.",
+    "Forms or multi-field tasks — use Dialog.",
+    "Informational messages — use Alert or Toast."
+  ],
+  "related": [
+    "dialog",
+    "toast",
+    "button"
+  ],
+  "a11y": [
+    "role=alertdialog with title and description wired; the overlay never dismisses it.",
+    "Danger tone focuses Cancel first; name the object in the title (Delete “Spring menu”?)."
+  ]
+}

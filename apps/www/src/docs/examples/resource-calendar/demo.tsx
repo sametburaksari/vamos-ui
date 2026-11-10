@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Toaster } from "@vamos-cms/ui";
-import { ResourceCalendar, type ResourceBlock, type ResourceBlocksChange, type ResourceTemplate } from "@vamos-cms/ui/scheduler";
+import { Toaster } from "@vamos-ui/react";
+import { ResourceCalendar, type ResourceBlock, type ResourceBlocksChange, type ResourceTemplate } from "@vamos-ui/react/scheduler";
 
 const staff = [
   { id: "ayse", title: "Ayşe Demir", meta: "Head chef", group: "Kitchen" },

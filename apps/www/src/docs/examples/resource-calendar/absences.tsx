@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge } from "@vamos-cms/ui";
-import { ResourceCalendar, type ResourceBlock } from "@vamos-cms/ui/scheduler";
+import { Badge } from "@vamos-ui/react";
+import { ResourceCalendar, type ResourceBlock } from "@vamos-ui/react/scheduler";
 
 const team = [
   { id: "a", title: "Defne Aydın", meta: "12 days left" },

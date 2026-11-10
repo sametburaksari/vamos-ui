@@ -1,4 +1,4 @@
-import { ResizableGroup, ResizableHandle, ResizablePanel } from "@vamos-cms/ui";
+import { ResizableGroup, ResizableHandle, ResizablePanel } from "@vamos-ui/react";
 
 // CMS template editor: source + preview, with a console under the source.
 export default function ResizableNested() {

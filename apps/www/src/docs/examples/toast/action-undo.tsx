@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, toast, Toaster } from "@vamos-cms/ui";
+import { Button, toast, Toaster } from "@vamos-ui/react";
 
 const initial = ["Elif Demir", "Can Yıldız", "Ayşe Kaya", "Mert Aksoy"];
 

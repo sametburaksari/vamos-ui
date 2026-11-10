@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "An axis-less mini trend in plain SVG — light enough for a hundred table rows. Line, area, bars and win/loss; token colours; null gaps; a shared domain to compare rows; fluid width with crisp strokes. Decorative unless you give it a label.",
   source: ["components/sparkline.tsx"],
   basedOn: "Plain SVG",
-  usage: `import { Sparkline, sparklineSummary } from "@vamos-cms/ui";
+  usage: `import { Sparkline, sparklineSummary } from "@vamos-ui/react";
 
 <Sparkline values={[4, 6, 5, 8, 7, 9, 12]} className="text-accent-ink" />
 <Sparkline values={weekly} variant="bars" size="xs" label={sparklineSummary(weekly)} />`,

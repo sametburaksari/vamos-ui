@@ -1,4 +1,4 @@
-import { BlockHeading } from "@vamos-cms/ui/blocks";
+import { BlockHeading } from "@vamos-ui/react/blocks";
 
 const presets = ["editorial", "grotesk", "corporate", "system"] as const;
 

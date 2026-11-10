@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-cms/ui/sortable";
+import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-ui/react/sortable";
 
 interface Order {
   id: string;

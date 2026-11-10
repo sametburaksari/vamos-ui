@@ -1,4 +1,4 @@
-import { BlockRenderer } from "@vamos-cms/ui/render";
+import { BlockRenderer } from "@vamos-ui/react/render";
 import { siteBlocks, kiyiPage } from "./_site-blocks";
 
 // The same kind of page stored as JSON (VamosDoc) and rendered by the async server renderer:

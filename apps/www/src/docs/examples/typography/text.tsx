@@ -1,4 +1,4 @@
-import { Code, Text } from "@vamos-cms/ui";
+import { Code, Text } from "@vamos-ui/react";
 
 export default function TypographyText() {
   return (

@@ -17,7 +17,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 export default function DialogNested() {
   return (

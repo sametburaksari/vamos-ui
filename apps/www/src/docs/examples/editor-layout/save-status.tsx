@@ -1,4 +1,4 @@
-import { SaveStatus } from "@vamos-cms/ui";
+import { SaveStatus } from "@vamos-ui/react";
 
 const now = new Date("2026-11-10T10:00:00Z");
 

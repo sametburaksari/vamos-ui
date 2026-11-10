@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Plus } from "lucide-react";
-import { Button, Sheet, SheetBody, SheetContent, SheetHeader, TopBar, TopBarActions, TopBarMenuButton, TopBarSearch, TopBarSpacer, TopBarStart, UserMenu } from "@vamos-cms/ui";
+import { Button, Sheet, SheetBody, SheetContent, SheetHeader, TopBar, TopBarActions, TopBarMenuButton, TopBarSearch, TopBarSpacer, TopBarStart, UserMenu } from "@vamos-ui/react";
 
 /** Below 560px the search collapses to an icon. The menu button shows below 768px (inside App shell it opens the nav sheet). */
 export default function TopBarMobile() {

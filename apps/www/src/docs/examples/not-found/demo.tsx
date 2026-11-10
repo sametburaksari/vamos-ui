@@ -1,4 +1,4 @@
-import { NotFound } from "@vamos-cms/ui/blocks";
+import { NotFound } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Plain: a small mono code, a sentence title (h1) and one way home — no giant numerals.

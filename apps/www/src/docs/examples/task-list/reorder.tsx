@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TaskList, type TaskData } from "@vamos-cms/ui";
+import { TaskList, type TaskData } from "@vamos-ui/react";
 
 export default function TaskListReorder() {
   const [tasks, setTasks] = React.useState<TaskData[]>([

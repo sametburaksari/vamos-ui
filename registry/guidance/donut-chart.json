@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Parts of a whole with up to about six slices: employment type, traffic source share.",
+    "A headline share in the centre with a legend list of values."
+  ],
+  "avoidWhen": [
+    "More than six categories or close values — use Bar chart or Bar list.",
+    "Changes over time — use Area or Line chart."
+  ],
+  "related": [
+    "bar-chart",
+    "chart",
+    "stat"
+  ],
+  "a11y": [
+    "The legend is a real list with values and shares; it is the accessible source of truth.",
+    "Slices are not distinguished by colour alone."
+  ]
+}

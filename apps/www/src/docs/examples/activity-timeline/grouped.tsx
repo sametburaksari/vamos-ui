@@ -1,5 +1,5 @@
 import { ArrowRightLeft, CircleDollarSign, Mail, PhoneCall } from "lucide-react";
-import { ActivityTimeline, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-cms/ui";
+import { ActivityTimeline, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-ui/react";
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3_600_000).toISOString();
 

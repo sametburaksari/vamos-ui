@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Toaster } from "@vamos-cms/ui";
-import { Gantt, type GanttLink, type GanttTask, type GanttTaskChange } from "@vamos-cms/ui/scheduler";
+import { Toaster } from "@vamos-ui/react";
+import { Gantt, type GanttLink, type GanttTask, type GanttTaskChange } from "@vamos-ui/react/scheduler";
 
 const people = {
   ada: { id: "ada", name: "Ada Kaplan" },

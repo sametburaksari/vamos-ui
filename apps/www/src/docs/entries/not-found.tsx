@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description:
     "A branded, useful not-found, error or maintenance page for not-found.tsx and error.tsx. No giant numerals: a small mono code, a sentence title as the page's h1, and the way back — popular pages, a plain GET search form and a phone line in the links variant. Works as a server component and inside error.tsx (client) with Next's reset().",
   source: ["blocks/site/not-found.tsx", "blocks/site/registry-2.ts"],
-  usage: `import { NotFound } from "@vamos-cms/ui/blocks";
+  usage: `import { NotFound } from "@vamos-ui/react/blocks";
 
 // app/not-found.tsx
 export default function NotFoundPage() {

@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/media — media contract, adapters and viewers.
+// Public API of @vamos-ui/react/media — media contract, adapters and viewers.
 // `Image`, `Figure` and `Carousel` live in the package root (they are light); this subpath holds
 // the heavier media parts and the storage-agnostic MediaAdapter contract (plan 05 · D2).
 

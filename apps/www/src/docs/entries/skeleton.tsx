@@ -12,7 +12,7 @@ const entry: DocEntry = {
   description:
     "Placeholders while content loads. Skeletons are hidden from assistive tech; SkeletonGroup announces the region once. The shimmer follows reading direction and stops under reduced motion.",
   source: ["components/skeleton.tsx"],
-  usage: `import { Skeleton, SkeletonGroup, SkeletonText } from "@vamos-cms/ui";
+  usage: `import { Skeleton, SkeletonGroup, SkeletonText } from "@vamos-ui/react";
 
 <SkeletonGroup>
   <Skeleton className="h-4 w-32" />

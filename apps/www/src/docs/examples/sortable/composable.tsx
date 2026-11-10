@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Sortable, SortableHandle, SortableItem, SortableMoveMenu, SortableOverlay } from "@vamos-cms/ui/sortable";
-import { useFormat } from "@vamos-cms/ui";
-import { multiplyDecimal } from "@vamos-cms/ui/locale-data";
+import { Sortable, SortableHandle, SortableItem, SortableMoveMenu, SortableOverlay } from "@vamos-ui/react/sortable";
+import { useFormat } from "@vamos-ui/react";
+import { multiplyDecimal } from "@vamos-ui/react/locale-data";
 
 interface Line {
   id: string;

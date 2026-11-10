@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Website top navigation: corporate, restaurant split, minimal, SaaS.",
+    "Server-rendered navbars with a zero-JS mobile menu."
+  ],
+  "avoidWhen": [
+    "Admin apps — use App shell with Sidebar/Top bar.",
+    "Mega menus with rich panels — use Navigation Menu."
+  ],
+  "related": [
+    "navigation-menu",
+    "footer",
+    "announcement-bar",
+    "hero"
+  ],
+  "a11y": [
+    "A labelled nav landmark; the current page has aria-current.",
+    "The mobile menu button has an accessible name and expanded state."
+  ]
+}

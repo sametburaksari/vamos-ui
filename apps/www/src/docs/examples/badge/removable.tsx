@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 
 export default function BadgeRemovable() {
   const [tags, setTags] = React.useState(["Brunch", "Vegan", "Kadıköy", "Weekend"]);

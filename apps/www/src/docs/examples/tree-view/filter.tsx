@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Search } from "lucide-react";
-import { Input, TreeView, type TreeNode } from "@vamos-cms/ui";
+import { Input, TreeView, type TreeNode } from "@vamos-ui/react";
 
 const org: TreeNode[] = [
   {

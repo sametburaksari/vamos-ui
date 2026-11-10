@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Input, SettingsLayout, SettingsRow, SettingsSaveBar, SettingsSection, Switch } from "@vamos-cms/ui";
+import { Input, SettingsLayout, SettingsRow, SettingsSaveBar, SettingsSection, Switch } from "@vamos-ui/react";
 
 // CRM pipeline settings: edit a field and the bar rises. ⌘/Ctrl+S saves; every third save fails to show the error state.
 export default function SettingsLayoutSaveBar() {

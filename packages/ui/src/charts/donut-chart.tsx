@@ -84,7 +84,7 @@ export function DonutChart<T extends object>({
       list = [...raw.filter((s) => keep.has(s.key)), { key: OTHER_KEY, value: rest.reduce((s, r) => s + r.value, 0) }];
     }
     const cfg: ChartConfig = {};
-    for (const s of list) cfg[s.key] = s.key === OTHER_KEY ? { label: config[OTHER_KEY]?.label ?? "", color: "fg-subtle", format } : { label: s.key, ...config[s.key], format: valueFormat };
+    for (const s of list) cfg[s.key] = s.key === OTHER_KEY ? { label: config[OTHER_KEY]?.label ?? "", color: "fg-subtle", format } : { ...config[s.key], label: config[s.key]?.label ?? s.key, format: valueFormat };
     return { slices: list, effectiveConfig: cfg };
   }, [rows, nameKey, valueKey, maxSlices, config, valueFormat]);
 

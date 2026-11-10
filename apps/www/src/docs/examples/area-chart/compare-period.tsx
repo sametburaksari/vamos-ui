@@ -1,4 +1,4 @@
-import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 // Numeric-looking keys ("2026") get reordered by JavaScript, so name series by meaning.
 const headcount = [

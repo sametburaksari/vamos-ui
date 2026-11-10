@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, StatusPicker, type StatusDef } from "@vamos-cms/ui";
+import { Field, StatusPicker, type StatusDef } from "@vamos-ui/react";
 
 const order: StatusDef[] = [
   { value: "awaiting_payment", label: "Awaiting payment", category: "todo", tone: "warning" },

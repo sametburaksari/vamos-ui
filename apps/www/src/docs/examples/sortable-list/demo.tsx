@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { ExternalLink, FileText, FolderOpen } from "lucide-react";
-import { Badge } from "@vamos-cms/ui";
-import { SortableTree, moveTreeNode } from "@vamos-cms/ui/sortable";
+import { Badge } from "@vamos-ui/react";
+import { SortableTree, moveTreeNode } from "@vamos-ui/react/sortable";
 
 interface MenuNode {
   id: string;

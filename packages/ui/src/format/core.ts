@@ -1,5 +1,5 @@
 /**
- * @vamos-cms/ui/format — React-free formatting core. Works in server components, route
+ * @vamos-ui/react/format — React-free formatting core. Works in server components, route
  * handlers and the browser. Every formatter goes through cached `Intl.*` instances.
  *
  * Value rules (X11): a date-only value is a `"YYYY-MM-DD"` string (formatted as a calendar

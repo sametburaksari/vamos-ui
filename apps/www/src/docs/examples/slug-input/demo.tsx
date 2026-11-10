@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, Input, SlugInput } from "@vamos-cms/ui";
+import { Field, Input, SlugInput } from "@vamos-ui/react";
 
 export default function SlugInputDemo() {
   const [title, setTitle] = React.useState("Spring menu: wild garlic & morels");

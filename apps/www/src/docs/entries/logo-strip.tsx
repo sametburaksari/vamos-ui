@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description:
     "“Brands we work with” proof for agency and SaaS homepages. Logos sit at an equal optical height, greyscale until hover; dark sections use each logo's dark artwork instead of invert(). The marquee is pure CSS and stops on hover, focus and reduced motion.",
   source: ["blocks/site/logo-strip.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { LogoStrip } from "@vamos-cms/ui/blocks";
+  usage: `import { LogoStrip } from "@vamos-ui/react/blocks";
 
 <LogoStrip
   caption="Running the sites of 120+ businesses since 2014"

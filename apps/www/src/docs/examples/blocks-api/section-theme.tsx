@@ -1,4 +1,4 @@
-import { Section, Container, SectionHeader, BlockLink } from "@vamos-cms/ui/blocks";
+import { Section, Container, SectionHeader, BlockLink } from "@vamos-ui/react/blocks";
 
 const photo = { src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=70&auto=format&fit=crop", width: 1600, height: 1067, focal: { x: 0.5, y: 0.6 } };
 

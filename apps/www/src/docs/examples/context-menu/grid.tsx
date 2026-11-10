@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Download, Folder, FolderInput, Link2, Pencil, Star, Trash2 } from "lucide-react";
-import { ContextMenu, cn, type MenuEntry } from "@vamos-cms/ui";
+import { ContextMenu, cn, type MenuEntry } from "@vamos-ui/react";
 
 const files = [
   { name: "harbour-sunrise.jpg", size: "2.4 MB", hue: "var(--accent-soft)" },

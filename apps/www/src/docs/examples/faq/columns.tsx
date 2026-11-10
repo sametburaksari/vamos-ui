@@ -1,4 +1,4 @@
-import { Faq } from "@vamos-cms/ui/blocks";
+import { Faq } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Columns: no accordion — short answers always open in two columns (maximally indexable).

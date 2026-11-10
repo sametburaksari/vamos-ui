@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Restaurant menus, spa or salon price lists, QR-menu pages.",
+    "Allergens, durations and tabular prices with a sticky category jump bar."
+  ],
+  "avoidWhen": [
+    "SaaS plans — use Pricing table.",
+    "Product catalogs with cart."
+  ],
+  "related": [
+    "pricing-table",
+    "site-restaurant-01",
+    "site-spa-01"
+  ],
+  "a11y": [
+    "Each category is a labelled section; the jump bar is a nav of anchors.",
+    "Allergen icons have text equivalents."
+  ]
+}

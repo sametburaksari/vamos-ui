@@ -1,4 +1,4 @@
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 
 export default function BadgeTones() {
   return (

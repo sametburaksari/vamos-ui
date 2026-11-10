@@ -42,7 +42,7 @@ export interface VamosContextValue {
   currentPath?: string;
   /** Permission check used to hide nav items and actions. Hiding is not access control. */
   can: (permission: string, resource?: unknown) => boolean;
-  /** Media adapter (see `@vamos-cms/ui/media`). Typed by the consumer: `useMediaAdapter<MyAdapter>()`. */
+  /** Media adapter (see `@vamos-ui/react/media`). Typed by the consumer: `useMediaAdapter<MyAdapter>()`. */
   media?: unknown;
 }
 
@@ -88,7 +88,7 @@ export interface VamosProviderProps extends Omit<LocaleProviderProps, "children"
 
 /**
  * The app root bridge: locale + router + image + permissions + media, set once.
- * The kit never imports a framework; pass your router's pieces (or use `@vamos-cms/ui/next`).
+ * The kit never imports a framework; pass your router's pieces (or use `@vamos-ui/react/next`).
  *
  * ```tsx
  * "use client";

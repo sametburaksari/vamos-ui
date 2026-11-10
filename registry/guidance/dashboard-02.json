@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A sales dashboard: pipeline KPIs, stage funnel, rep leaderboard, closing deals and activity."
+  ],
+  "avoidWhen": [
+    "HR metrics — use dashboard-03.",
+    "Billing and delivery — use dashboard-04."
+  ],
+  "related": [
+    "funnel",
+    "bar-chart",
+    "stat",
+    "activity-timeline"
+  ],
+  "a11y": [
+    "Leaderboard tables have captions; KPI deltas are described in text."
+  ]
+}

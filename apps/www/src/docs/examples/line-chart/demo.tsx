@@ -1,4 +1,4 @@
-import { LineChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { LineChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const conversion = [
   { week: "2026-09-07", landing: 0.042, pricing: 0.067, blog: 0.011 },

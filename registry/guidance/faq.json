@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Questions and answers on website pages: parking, cancellation, payment, pricing.",
+    "Long-tail search content with FAQPage structured data."
+  ],
+  "avoidWhen": [
+    "In-app collapsible panels — use Accordion.",
+    "Content everyone must read."
+  ],
+  "related": [
+    "accordion",
+    "page-pricing-01",
+    "page-contact-01"
+  ],
+  "a11y": [
+    "Native details/summary: works without JS and is keyboard accessible.",
+    "Questions are concise; answers can contain links and lists."
+  ]
+}

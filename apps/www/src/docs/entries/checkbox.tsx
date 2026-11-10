@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Independent yes/no choices and multi-select: consent, row selection, permissions, modules. Tri-state (indeterminate), a labelled row with description, a selectable card, and CheckboxGroup for array values. Reads the surrounding Field.",
   source: ["components/checkbox.tsx", "lib/field-context.tsx", "styles/forms.css"],
   basedOn: "Radix Checkbox",
-  usage: `import { Checkbox, CheckboxGroup, Field } from "@vamos-cms/ui";
+  usage: `import { Checkbox, CheckboxGroup, Field } from "@vamos-ui/react";
 
 <Checkbox label="Allow comments" defaultChecked />
 

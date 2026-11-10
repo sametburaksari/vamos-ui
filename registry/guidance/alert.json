@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "A persistent inline status in a page, card or form: unsaved revision, missing tax ID, trial ending.",
+    "Explaining why an action is unavailable, next to where it would be.",
+    "A form-level error summary above the fields."
+  ],
+  "avoidWhen": [
+    "Feedback after an action that should not stay — use Toast.",
+    "Decisions the user must make before continuing — use Alert Dialog.",
+    "Site-wide time-boxed notices on a website — use Announcement bar."
+  ],
+  "related": [
+    "toast",
+    "alert-dialog",
+    "empty-state",
+    "announcement-bar"
+  ],
+  "a11y": [
+    "Danger and warning alerts use role=alert only when they appear dynamically; static ones stay plain regions.",
+    "Never rely on tone colour alone — the title must say what happened."
+  ]
+}

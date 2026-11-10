@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/data-table — Data Table, Filter bar, Saved views and the shared list-state contract.
+// Public API of @vamos-ui/react/data-table — Data Table, Filter bar, Saved views and the shared list-state contract.
 export * from "./types";
 export * from "./filter-fns";
 export * from "./url-state";

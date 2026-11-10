@@ -1,4 +1,4 @@
-import { Avatar, Carousel, CarouselDots, CarouselSlide, CarouselViewport } from "@vamos-cms/ui";
+import { Avatar, Carousel, CarouselDots, CarouselSlide, CarouselViewport } from "@vamos-ui/react";
 
 const quotes = [
   { name: "Deniz Arslan", role: "Head of Ops, Atlas Lojistik", text: "We moved 40 dispatchers onto one panel in a week. Nobody asked for the old tool back.", photo: "photo-1500648767791-00dcc994a43e" },

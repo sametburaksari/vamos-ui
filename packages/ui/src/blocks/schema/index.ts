@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/blocks/schema — layer 2 (zod, no React). Server, edge and admin only:
+// Public API of @vamos-ui/react/blocks/schema — layer 2 (zod, no React). Server, edge and admin only:
 // a site's client bundle never imports this entry (components use `import type`).
 
 export { z } from "zod";

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Ready reorderable lists, grids and nested trees: menu builders, category order, dashboard tiles.",
+    "Move menus on every item for keyboard and touch users."
+  ],
+  "avoidWhen": [
+    "Custom reorder UIs not covered here — use the Sortable primitive.",
+    "Stage columns — use Kanban."
+  ],
+  "related": [
+    "sortable",
+    "kanban",
+    "tree-view"
+  ],
+  "a11y": [
+    "Every item has a Move menu and keyboard dragging with spoken announcements.",
+    "Drag handles are labelled buttons."
+  ]
+}

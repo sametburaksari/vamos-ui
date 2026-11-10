@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader } from "@vamos-ui/react";
 
 export default function CardLoading() {
   return (

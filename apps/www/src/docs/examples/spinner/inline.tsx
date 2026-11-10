@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { Spinner } from "@vamos-cms/ui";
+import { Spinner } from "@vamos-ui/react";
 
 export default function SpinnerInline() {
   return (

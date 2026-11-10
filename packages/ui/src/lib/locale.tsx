@@ -87,7 +87,7 @@ const LocaleContext = React.createContext<LocaleValue>(defaultValue);
  * Zero config means English (`en-US`, USD, UTC). Nest providers to override a subtree.
  *
  * ```tsx
- * import { tr } from "@vamos-cms/ui/locale/tr";
+ * import { tr } from "@vamos-ui/react/locale/tr";
  * <LocaleProvider locale="tr-TR" messages={tr} timeZone="Europe/Istanbul" currency="TRY">…</LocaleProvider>
  *
  * // Rename one string without writing a locale:

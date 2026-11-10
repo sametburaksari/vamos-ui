@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A row of cards or testimonials that would not fit; a fading hero slider; a gallery with thumbnails.",
+    "A swipeable KPI strip on phones."
+  ],
+  "avoidWhen": [
+    "Content users must see — carousels hide everything except the first slide.",
+    "A full photo grid — use Gallery grid or Gallery section.",
+    "Primary navigation."
+  ],
+  "related": [
+    "gallery",
+    "lightbox",
+    "testimonials",
+    "hero"
+  ],
+  "a11y": [
+    "Follows the WAI-ARIA carousel pattern; autoplay pauses on hover, focus and reduced motion, and has a pause button.",
+    "Each slide is labelled (2 of 5)."
+  ]
+}

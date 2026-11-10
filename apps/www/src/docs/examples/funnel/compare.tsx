@@ -1,4 +1,4 @@
-import { Funnel } from "@vamos-cms/ui/charts";
+import { Funnel } from "@vamos-ui/react/charts";
 
 const october = [
   { key: "visit", label: "Visited pricing", value: 18_420 },

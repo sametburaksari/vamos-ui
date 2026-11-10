@@ -1,4 +1,4 @@
-// REST adapter for the default vamos-cms media endpoints (plan 05 · D2), plus a presigned-upload
+// REST adapter for the default vamos-ui media endpoints (plan 05 · D2), plus a presigned-upload
 // helper for S3 / R2. Upload progress uses XHR: fetch upload progress is still unreliable.
 import type { MediaAdapter, MediaAsset, MediaCapabilities, MediaEvent, MediaFolder, MediaPage, MediaQuery, UploadOptions, ImageLoader } from "./types";
 
@@ -124,7 +124,7 @@ export interface RestAdapterOptions {
 }
 
 /**
- * Adapter for the default vamos-cms media API:
+ * Adapter for the default vamos-ui media API:
  *
  * | Method | Endpoint |
  * |---|---|

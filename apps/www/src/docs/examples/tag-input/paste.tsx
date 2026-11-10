@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Field, TagInput } from "@vamos-cms/ui";
+import { Button, Field, TagInput } from "@vamos-ui/react";
 
 const fromSpreadsheet = "Figma, React, TypeScript\nSQL; Data visualisation\nUser research";
 

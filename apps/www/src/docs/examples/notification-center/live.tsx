@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Inbox } from "lucide-react";
-import { Button, NotificationCenter, createMemoryNotificationAdapter } from "@vamos-cms/ui";
+import { Button, NotificationCenter, createMemoryNotificationAdapter } from "@vamos-ui/react";
 import { inboxSeed } from "./data";
 
 const inbox = createMemoryNotificationAdapter(inboxSeed().slice(3));

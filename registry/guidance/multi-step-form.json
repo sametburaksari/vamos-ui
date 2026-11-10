@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Long forms split into steps: applications, leave requests, onboarding, checkout.",
+    "Per-step validation, conditional steps, drafts and URL resume."
+  ],
+  "avoidWhen": [
+    "Short forms (under ~8 fields) — keep one page.",
+    "Imports — use Import wizard."
+  ],
+  "related": [
+    "stepper",
+    "form-01",
+    "input",
+    "onboarding-02"
+  ],
+  "a11y": [
+    "Focus moves to the step heading on navigation; an error summary links to fields.",
+    "Step position is announced (Step 2 of 4)."
+  ]
+}

@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Parts of a whole, up to about six slices. The legend is a real list with value and share; hovering a slice or focusing a row shows it in the centre, clicking a row hides it. Donut, pie and half-ring variants.",
   source: ["charts/donut-chart.tsx"],
   basedOn: "Recharts PieChart",
-  usage: `import { DonutChart } from "@vamos-cms/ui/charts";
+  usage: `import { DonutChart } from "@vamos-ui/react/charts";
 
 <DonutChart title="Leads by source" data={rows} nameKey="source" valueKey="leads"
   config={{ organic: { label: "Organic search" }, paid: { label: "Paid ads" } }} />`,

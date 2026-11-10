@@ -3,7 +3,7 @@
  * done in BigInt minor units with half-up rounding, so totals never drift by a cent.
  *
  * Tax is generic: a `LineTaxPack` lists rates and optional withholding codes (X8). The `tr`
- * pack (`trLineTaxPack`) is built from the KDV data in `@vamos-cms/ui/locale-data`.
+ * pack (`trLineTaxPack`) is built from the KDV data in `@vamos-ui/react/locale-data`.
  */
 import { fromUnits, mulDivRound, toUnits } from "../locale-data/core/decimal";
 import { activeTaxRates, allocateProRata, trKdv } from "../locale-data/tr/kdv";

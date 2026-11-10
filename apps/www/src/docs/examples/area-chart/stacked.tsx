@@ -1,4 +1,4 @@
-import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const sessions = [
   { week: "Sep 7", organic: 4210, paid: 1860, social: 920, email: 640 },

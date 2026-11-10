@@ -1,4 +1,4 @@
-import { Card, SkeletonGroup, SkeletonRow } from "@vamos-cms/ui";
+import { Card, SkeletonGroup, SkeletonRow } from "@vamos-ui/react";
 
 export default function SkeletonTable() {
   // Row height and padding come from --row-h / --cell-px, so they follow data-density.

@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Button, Card, CardBody, CardHeader, Input, cn } from "@vamos-cms/ui";
+import { Badge, Button, Card, CardBody, CardHeader, Input, cn } from "@vamos-ui/react";
 
 type Axis = "theme" | "material" | "accent" | "density" | "font";
 

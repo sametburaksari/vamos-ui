@@ -1,7 +1,7 @@
 "use client";
 
 import { Bell, Mail, Settings, Shield, Users } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarNav, VamosProvider, type NavNode } from "@vamos-cms/ui";
+import { Sidebar, SidebarContent, SidebarNav, VamosProvider, type NavNode } from "@vamos-ui/react";
 import { useMemoryRouter } from "../app-shell/demo-kit";
 
 const nav: NavNode[] = [

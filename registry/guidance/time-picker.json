@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A time of day: meetings, shifts, pickups, opening hours.",
+    "Segmented input with an optional slot list."
+  ],
+  "avoidWhen": [
+    "Durations — use a Formatted input or the Time tracker.",
+    "Date and time together — use DateTimePicker."
+  ],
+  "related": [
+    "date-picker",
+    "scheduler",
+    "time-tracker"
+  ],
+  "a11y": [
+    "Each segment is a spinbutton with a label; 12/24h follows the locale."
+  ]
+}

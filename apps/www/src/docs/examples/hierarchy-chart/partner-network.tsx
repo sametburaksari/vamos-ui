@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Building2, Store, Warehouse } from "lucide-react";
-import { Badge, HierarchyChart, HierarchyNodeCard, useFormat } from "@vamos-cms/ui";
+import { Badge, HierarchyChart, HierarchyNodeCard, useFormat } from "@vamos-ui/react";
 
 interface Partner {
   id: string;

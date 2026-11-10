@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A one-line, time-boxed notice at the top of a website: holiday closure, new release, limited offer.",
+    "A dismissible notice whose state the server reads from a cookie."
+  ],
+  "avoidWhen": [
+    "In-app status messages — use Alert.",
+    "Cookie consent — use Consent banner.",
+    "Anything that needs more than one sentence."
+  ],
+  "related": [
+    "navbar",
+    "alert",
+    "consent-banner"
+  ],
+  "a11y": [
+    "Lives in a labelled region above the navbar; the dismiss button has an accessible name.",
+    "Keep the link text meaningful on its own (Read the v2.4 notes, not Click here)."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "whenToUse": [
+    "Every collection screen with more than a handful of rows: posts, contacts, invoices, employees.",
+    "Sorting, search, column visibility/pinning, selection with bulk actions, saved views and export.",
+    "Start from list-01 / list-02 / list-03 blocks."
+  ],
+  "avoidWhen": [
+    "Small static tables (invoice lines, settings lists) — use Table.",
+    "Visual pipelines — use Kanban.",
+    "Lists of rich rows without columns — use Item."
+  ],
+  "related": [
+    "table",
+    "filter-bar",
+    "saved-views",
+    "pagination",
+    "list-layout",
+    "export"
+  ],
+  "a11y": [
+    "Sortable headers are buttons with aria-sort; the selection checkbox names its row.",
+    "The bulk bar announces the selection count; row actions menus name the record."
+  ]
+}

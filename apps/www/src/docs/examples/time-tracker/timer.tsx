@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TimeEntryList, TimerButton, createLocalTimerAdapter, type TimeEntry } from "@vamos-cms/ui/scheduler";
+import { TimeEntryList, TimerButton, createLocalTimerAdapter, type TimeEntry } from "@vamos-ui/react/scheduler";
 
 const projects = [
   { id: "mobile", label: "Mobile app", meta: "Northwind" },

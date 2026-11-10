@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Badge } from "@vamos-cms/ui";
+import { Avatar, AvatarGroup, Badge } from "@vamos-ui/react";
 
 const contacts = [
   { name: "Lumen Architects", person: "Hannah Okafor", deal: "$48,000", stage: "Proposal", owners: ["Elif Kaya", "Mert Demir"] },

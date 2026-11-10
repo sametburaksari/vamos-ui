@@ -1,4 +1,4 @@
-import { Steps } from "@vamos-cms/ui/blocks";
+import { Steps } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Vertical: a thin rule along the start edge with mono numbers on it, a duration tag per

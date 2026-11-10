@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Label/value details on a record page or summary: owner, created, tax number, plan.",
+    "Review steps of a form before submitting."
+  ],
+  "avoidWhen": [
+    "Editable settings rows — use Settings layout rows.",
+    "Comparing many records — use Table."
+  ],
+  "related": [
+    "record-detail-layout",
+    "entity-card",
+    "table"
+  ],
+  "a11y": [
+    "A native dl so labels and values are paired for screen readers.",
+    "Empty values show a visible placeholder (Not set), not a blank."
+  ]
+}

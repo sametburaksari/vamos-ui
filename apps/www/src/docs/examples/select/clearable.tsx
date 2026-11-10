@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Select } from "@vamos-cms/ui";
+import { Select } from "@vamos-ui/react";
 
 const owners = [
   { value: "leyla", label: "Leyla Aksoy" },

@@ -16,7 +16,7 @@ const entry: DocEntry = {
     "One scrolling core for panels and websites: card sliders, a fade + autoplay hero, a gallery with thumbnails, a KPI strip. Presets set the control layout; the WAI-ARIA carousel pattern, keyboard support, inert off-screen slides, a mandatory pause button and reduced motion come built in. Marquee is a pure-CSS logo band.",
   source: ["components/carousel.tsx", "styles/media.css"],
   basedOn: "Embla Carousel (+ fade, + autoplay)",
-  usage: `import { Carousel, CarouselViewport, CarouselSlide, CarouselDots } from "@vamos-cms/ui";
+  usage: `import { Carousel, CarouselViewport, CarouselSlide, CarouselDots } from "@vamos-ui/react";
 
 <Carousel label="Featured stays" slidesPerView={{ base: 1, md: 2, lg: 3 }}>
   <CarouselViewport>

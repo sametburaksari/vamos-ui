@@ -16,7 +16,7 @@ const entry: DocEntry = {
     "One metric with its change and a mini trend: KPI rows, dashboard tiles, record summaries. Values are formatted with Intl in the current locale; the Delta colour follows the metric's intent (is lower better?) and never carries meaning alone. Server-component compatible, no chart library.",
   source: ["components/stat.tsx", "components/sparkline.tsx", "lib/data-islands.tsx", "lib/value-format.ts"],
   basedOn: "Native <dl> + plain SVG",
-  usage: `import { Stat, StatGroup } from "@vamos-cms/ui";
+  usage: `import { Stat, StatGroup } from "@vamos-ui/react";
 
 <StatGroup>
   <Stat label="Visitors" value={28412} delta={0.124} trend={[4, 6, 5, 8, 7, 9, 12]} comparison="vs previous 30 days" />

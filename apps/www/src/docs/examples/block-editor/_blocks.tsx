@@ -1,6 +1,6 @@
 // Site blocks shared by the block-editor examples: defined once, rendered by the site and the editor.
-import { Container, Section, SectionHeader, BlockLink, RichText, type BlockComponentProps, type RichDoc } from "@vamos-cms/ui/blocks";
-import { z, f, defineBlock, createRegistry, type VamosDoc } from "@vamos-cms/ui/blocks/schema";
+import { Container, Section, SectionHeader, BlockLink, RichText, type BlockComponentProps, type RichDoc } from "@vamos-ui/react/blocks";
+import { z, f, defineBlock, createRegistry, type VamosDoc } from "@vamos-ui/react/blocks/schema";
 
 // ---------------------------------------------------------------- Hero
 

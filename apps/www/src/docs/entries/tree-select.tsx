@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Pick from hierarchical data — product categories, departments, locations and warehouses, folder destinations, a chart of accounts. A searchable tree in a popover (or inline), single or multi with tri-state cascade, lazy branches, search that keeps ancestors, leaf-only selection and “Add category”. Built on the same useTree model as Tree view.",
   source: ["components/tree-select.tsx", "components/tree-view.tsx", "lib/use-tree.ts"],
   basedOn: "Radix Popover + WAI-ARIA treeview",
-  usage: `import { Field, TreeSelect, type TreeNode } from "@vamos-cms/ui";
+  usage: `import { Field, TreeSelect, type TreeNode } from "@vamos-ui/react";
 
 <Field label="Category">
   <TreeSelect nodes={categories} value={categoryId} onValueChange={setCategoryId} />

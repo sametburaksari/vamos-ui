@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SchemaForm } from "@vamos-cms/ui/editor";
+import { SchemaForm } from "@vamos-ui/react/editor";
 import { pricingBlock } from "./_blocks";
 
 export default function InspectorForm() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Carousel, CarouselSlide, CarouselViewport, IconButton, Progress, useCarousel } from "@vamos-cms/ui";
+import { Carousel, CarouselSlide, CarouselViewport, IconButton, Progress, useCarousel } from "@vamos-ui/react";
 
 const steps = [
   { title: "Connect your calendar", body: "Google or Outlook. We read busy times only, never event details." },

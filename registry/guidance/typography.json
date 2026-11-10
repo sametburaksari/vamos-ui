@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "All text: Heading (level and size decoupled), Text, Lead, Code, Blockquote, Numeric, Prose.",
+    "Following the data-font axis instead of hard-coded fonts."
+  ],
+  "avoidWhen": [
+    "Raw font-family or arbitrary font sizes — use the type scale tokens."
+  ],
+  "related": [
+    "page-header",
+    "rich-text-section",
+    "kbd"
+  ],
+  "a11y": [
+    "Choose heading level by outline, size by design; never skip levels.",
+    "Use Numeric/tabular digits for figures in tables."
+  ]
+}

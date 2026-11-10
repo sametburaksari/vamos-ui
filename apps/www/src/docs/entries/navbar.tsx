@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Site top navigation in four characters — corporate bar, restaurant split, minimal full-screen menu, SaaS rail. Server component: the mobile menu is a native popover (0 JS), submenus a ~1 KB disclosure island rendered only when items have children, and the scrolled background a CSS scroll timeline.",
   source: ["blocks/site/navbar.tsx", "blocks/site/navbar-submenu.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
   basedOn: "Native popover + disclosure pattern",
-  usage: `import { Navbar } from "@vamos-cms/ui/blocks";
+  usage: `import { Navbar } from "@vamos-ui/react/blocks";
 
 <Navbar
   wordmark="Kıyı"

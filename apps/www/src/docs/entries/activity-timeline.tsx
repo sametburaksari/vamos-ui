@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Chronological, human-readable history: dashboard activity, record history, approval and order steps. Groups by day (\"Today\", \"Yesterday\", \"Friday, Nov 6\"), shows relative times that stay fresh from one shared ticker, and renders people as Avatars and events as icons.",
   source: ["components/activity-timeline.tsx", "lib/data-islands.tsx", "styles/data.css"],
   basedOn: "Native <ol> + Intl.RelativeTimeFormat",
-  usage: `import { ActivityTimeline } from "@vamos-cms/ui";
+  usage: `import { ActivityTimeline } from "@vamos-ui/react";
 import { Inbox } from "lucide-react";
 
 <ActivityTimeline groupBy="day" items={[

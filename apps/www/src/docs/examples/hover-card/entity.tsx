@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Building2, Mail, Phone } from "lucide-react";
-import { Badge, HoverCard, HoverCardContent, HoverCardTrigger, Skeleton, SkeletonText } from "@vamos-cms/ui";
+import { Badge, HoverCard, HoverCardContent, HoverCardTrigger, Skeleton, SkeletonText } from "@vamos-ui/react";
 
 interface Contact {
   name: string;

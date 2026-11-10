@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@vamos-cms/ui";
-import { ExportDialog, type ExportColumn, type ExportJobState } from "@vamos-cms/ui/business";
+import { Button } from "@vamos-ui/react";
+import { ExportDialog, type ExportColumn, type ExportJobState } from "@vamos-ui/react/business";
 import { Download } from "lucide-react";
 
 const columns: ExportColumn[] = [

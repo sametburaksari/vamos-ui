@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "A list of actions attached to a button: the row \"⋯\" menu, \"New ▾\", the user menu, column visibility. Icons, shortcuts, descriptions, checkbox and radio items, submenus and destructive items — plus ActionMenu, a one-line menu built from data.",
   source: ["components/dropdown-menu.tsx", "lib/menu.tsx", "lib/variants.ts"],
   basedOn: "Radix Dropdown Menu",
-  usage: `import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, ActionMenu } from "@vamos-cms/ui";
+  usage: `import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, ActionMenu } from "@vamos-ui/react";
 
 <DropdownMenu>
   <DropdownMenuTrigger asChild><Button>New</Button></DropdownMenuTrigger>

@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Input, KbdGroup } from "@vamos-cms/ui";
+import { Input, KbdGroup } from "@vamos-ui/react";
 
 export default function KbdSearchHint() {
   return (

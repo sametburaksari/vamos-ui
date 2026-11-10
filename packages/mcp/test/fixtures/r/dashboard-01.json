@@ -1,0 +1,25 @@
+{
+  "name": "dashboard-01",
+  "type": "block",
+  "title": "Revenue dashboard",
+  "description": "KPI row, revenue area chart and recent orders table for an ops panel.",
+  "category": "Dashboards",
+  "tags": [
+    "ops",
+    "any"
+  ],
+  "docs": "https://ui.vamos.ist/blocks/dashboard-01",
+  "dependencies": [],
+  "registryDependencies": [
+    "area-chart",
+    "data-table",
+    "badge",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "blocks/dashboard-01/page.tsx",
+      "content": "import { Button } from \"@vamos-ui/react\";\nexport default function Page() { return <Button variant=\"primary\">Export</Button>; }\n"
+    }
+  ]
+}

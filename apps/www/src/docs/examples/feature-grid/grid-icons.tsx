@@ -1,4 +1,4 @@
-import { FeatureGrid } from "@vamos-cms/ui/blocks";
+import { FeatureGrid } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Grid: 3–4 columns, a 1px top rule per item. Icons are lucide names (f.icon()), 20px at

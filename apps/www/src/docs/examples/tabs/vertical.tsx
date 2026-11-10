@@ -1,5 +1,5 @@
 import { Bell, CreditCard, Shield, User } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-cms/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-ui/react";
 
 export default function TabsVertical() {
   return (

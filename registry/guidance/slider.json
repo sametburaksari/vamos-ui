@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Choosing a number or range by dragging: price filter, salary band, probability, opacity.",
+    "Marks and synced number inputs for precise values."
+  ],
+  "avoidWhen": [
+    "Exact values typed by users — use Formatted inputs.",
+    "Few discrete options — use Radio Group."
+  ],
+  "related": [
+    "formatted-input",
+    "filter-bar",
+    "radio-group"
+  ],
+  "a11y": [
+    "Each thumb is a slider with a label and formatted aria-valuetext.",
+    "Arrow keys and Page Up/Down adjust values."
+  ]
+}

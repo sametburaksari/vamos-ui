@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Right-click or long-press actions on files, kanban cards, tree nodes and table rows.",
+    "Power-user shortcuts that mirror an existing ⋯ menu (same MenuEntry[] data)."
+  ],
+  "avoidWhen": [
+    "The only way to reach an action — always also offer a visible ⋯ Dropdown Menu.",
+    "Primary actions."
+  ],
+  "related": [
+    "dropdown-menu",
+    "kanban",
+    "tree-view",
+    "data-table"
+  ],
+  "a11y": [
+    "Opens with Shift+F10 / the Menu key; items follow the menu pattern.",
+    "Destructive items are labelled clearly and confirmed."
+  ]
+}

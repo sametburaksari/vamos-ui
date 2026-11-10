@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "Items in stage columns: deal pipelines, editorial workflows, recruiting, support queues. Drag between columns, or move with the card menu and Alt + arrow keys. Column totals, WIP limits, collapsible columns, swimlanes, quick add, move rules with reasons, optimistic saves with rollback, and virtualized columns for thousands of cards.",
   source: ["sortable/kanban.tsx", "sortable/kanban-core.ts", "sortable/sortable.tsx"],
   basedOn: "Sortable (multi-container) + @tanstack/react-virtual",
-  usage: `import { Kanban, KanbanCardTitle, applyKanbanMove, sumBy, type Stage } from "@vamos-cms/ui/sortable";
+  usage: `import { Kanban, KanbanCardTitle, applyKanbanMove, sumBy, type Stage } from "@vamos-ui/react/sortable";
 
 const stages: Stage[] = [
   { key: "lead", label: "Lead", tone: "chart-1", probability: 0.1 },

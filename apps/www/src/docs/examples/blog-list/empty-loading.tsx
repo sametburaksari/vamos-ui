@@ -1,4 +1,4 @@
-import { BlogList, BlogListSkeleton, BlockLink } from "@vamos-cms/ui/blocks";
+import { BlogList, BlogListSkeleton, BlockLink } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Empty category with a newsletter action, and the Suspense fallback used while posts stream in:

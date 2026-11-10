@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "How we work sections on websites: discovery → design → launch, first visit.",
+    "An ordered list with visual numbers."
+  ],
+  "avoidWhen": [
+    "Interactive progress in apps — use Stepper."
+  ],
+  "related": [
+    "stepper",
+    "feature-grid",
+    "site-agency-01"
+  ],
+  "a11y": [
+    "An ol so the order is announced; numbers are visual only."
+  ]
+}

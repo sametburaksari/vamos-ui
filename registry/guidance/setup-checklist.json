@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A Get started panel: ordered setup steps with progress, deep links and estimates.",
+    "Onboarding dashboards and trial activation."
+  ],
+  "avoidWhen": [
+    "Personal to-dos — use Task list.",
+    "A sequential wizard — use Multi-step form."
+  ],
+  "related": [
+    "onboarding-01",
+    "progress",
+    "task-list",
+    "empty-01"
+  ],
+  "a11y": [
+    "Steps are a list; completed state is in text, not only a check icon.",
+    "Skip and undo are buttons naming the step."
+  ]
+}

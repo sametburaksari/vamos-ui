@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Field, Fieldset, Input } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, Field, Fieldset, Input } from "@vamos-ui/react";
 
 export default function FieldLayouts() {
   return (

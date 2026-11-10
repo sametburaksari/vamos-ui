@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Button, ConfirmProvider, useConfirm } from "@vamos-cms/ui";
+import { Badge, Button, ConfirmProvider, useConfirm } from "@vamos-ui/react";
 
 function TerminateButton() {
   const confirm = useConfirm();

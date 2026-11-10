@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Styled semantic table primitives for small and static data — invoice lines, settings lists, chart data. Row height and cell padding follow the density axis (--row-h, --cell-px); numbers align to the end with tabular figures; the header and first column can stick without ever blurring.",
   source: ["components/table.tsx", "styles/data.css"],
   basedOn: "Native <table>",
-  usage: `import { Table, TableBody, TableCaption, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
+  usage: `import { Table, TableBody, TableCaption, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 
 <TableContainer aria-label="Invoice lines">
   <Table>

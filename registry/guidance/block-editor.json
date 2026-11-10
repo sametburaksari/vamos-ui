@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Editing rich content as blocks: posts, pages, product descriptions, knowledge-base articles.",
+    "Mixing text blocks with page blocks (hero, gallery) in a CMS editor."
+  ],
+  "avoidWhen": [
+    "A short plain description or note — use Textarea.",
+    "Structured fields with fixed shape — use a form."
+  ],
+  "related": [
+    "editor-layout",
+    "rich-text-section",
+    "editor-01",
+    "media-picker"
+  ],
+  "a11y": [
+    "Every toolbar button has a label and shortcut; the slash menu is keyboard navigable.",
+    "Block reordering has a keyboard path (Move up/down), not only drag."
+  ]
+}

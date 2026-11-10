@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Multi-series trends and rates: conversion, win rate, turnover.",
+    "Step curves for discrete changes and direct end labels."
+  ],
+  "avoidWhen": [
+    "Volumes or cumulative totals — use Area chart.",
+    "Category comparison — use Bar chart."
+  ],
+  "related": [
+    "area-chart",
+    "combo-chart",
+    "chart",
+    "sparkline"
+  ],
+  "a11y": [
+    "Direct end labels name each series so colour is not required.",
+    "Provide a title; the summary states the range and latest values."
+  ]
+}

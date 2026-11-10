@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Venue, food and project photos. A server-rendered grid — mosaic with author-chosen spans, a scroll-snapped filmstrip, equal cells, or a sticky caption beside an image stream — with the Media group's Lightbox as an island: thumbnails are buttons (“Open image 3 of 12”), the viewer traps focus, closes on Esc and navigates with arrows. Alt text is required.",
   source: ["blocks/site/gallery-section.tsx", "blocks/site/shared/gallery-lightbox.tsx", "media/lightbox.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
   basedOn: "Lightbox (Media group)",
-  usage: `import { GallerySection } from "@vamos-cms/ui/blocks";
+  usage: `import { GallerySection } from "@vamos-ui/react/blocks";
 
 <GallerySection
   title="The *room*"

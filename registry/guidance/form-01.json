@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A multi-step request form with review and approval chain: leave, expense, purchase requests."
+  ],
+  "avoidWhen": [
+    "Single-page forms with few fields — compose Field + Input in a Card."
+  ],
+  "related": [
+    "multi-step-form",
+    "stepper",
+    "date-range-picker",
+    "approval-flow",
+    "user-picker"
+  ],
+  "a11y": [
+    "Each step has an error summary; the review step uses a description list."
+  ]
+}

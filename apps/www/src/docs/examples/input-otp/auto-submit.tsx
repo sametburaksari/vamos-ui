@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Field, InputOTP } from "@vamos-cms/ui";
+import { Button, Field, InputOTP } from "@vamos-ui/react";
 
 // In this demo the right code is 246810.
 async function verify(code: string) {

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, FileUpload, type UploadFile } from "@vamos-cms/ui";
+import { Field, FileUpload, type UploadFile } from "@vamos-ui/react";
 import { fakeUpload } from "./fake-upload";
 
 const serverFiles: UploadFile[] = [

@@ -1,4 +1,4 @@
-import { Badge, Card, CardBody, CardHeader, DescriptionList } from "@vamos-cms/ui";
+import { Badge, Card, CardBody, CardHeader, DescriptionList } from "@vamos-ui/react";
 
 export default function DescriptionListDemo() {
   return (

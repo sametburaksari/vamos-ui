@@ -1,4 +1,4 @@
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 import { C, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
 import { LocaleSamples } from "@/components/docs/locale-samples";
 
@@ -25,8 +25,8 @@ export default function LocalizationPage() {
         No i18n library is required. The kit works with zero config in English. To change the locale, wrap your app in{" "}
         <C>LocaleProvider</C> and pass a messages object of type <C>Messages</C>.
       </P>
-      <Code code={`import { LocaleProvider } from "@vamos-cms/ui";
-import { tr } from "@vamos-cms/ui/locale/tr"; // same shape as the built-in \`en\`
+      <Code code={`import { LocaleProvider } from "@vamos-ui/react";
+import { tr } from "@vamos-ui/react/locale/tr"; // same shape as the built-in \`en\`
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -36,7 +36,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 }`} />
       <P>Inside components, read strings and formatters with hooks:</P>
-      <Code code={`import { useFormat, useLocale } from "@vamos-cms/ui";
+      <Code code={`import { useFormat, useLocale } from "@vamos-ui/react";
 
 function Footer({ page, total, amount }: { page: number; total: number; amount: string }) {
   const { t } = useLocale();

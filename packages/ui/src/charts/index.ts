@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/charts — owned by the charts group.
+// Public API of @vamos-ui/react/charts — owned by the charts group.
 // Recharts is only reachable through this subpath; pages without charts never load it.
 
 export {

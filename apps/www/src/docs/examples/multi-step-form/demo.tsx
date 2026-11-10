@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Field, Input, Select, toast } from "@vamos-cms/ui";
-import { MultiStepForm, MultiStepFormFooter, MultiStepFormReview, MultiStepFormStep, MultiStepFormStepper, type StepDef } from "@vamos-cms/ui/business";
+import { Field, Input, Select, toast } from "@vamos-ui/react";
+import { MultiStepForm, MultiStepFormFooter, MultiStepFormReview, MultiStepFormStep, MultiStepFormStepper, type StepDef } from "@vamos-ui/react/business";
 
 interface Employee {
   firstName: string;

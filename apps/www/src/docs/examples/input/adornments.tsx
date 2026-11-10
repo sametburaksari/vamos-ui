@@ -1,5 +1,5 @@
 import { AtSign, Check, Search } from "lucide-react";
-import { Button, Input } from "@vamos-cms/ui";
+import { Button, Input } from "@vamos-ui/react";
 
 export default function InputAdornments() {
   return (

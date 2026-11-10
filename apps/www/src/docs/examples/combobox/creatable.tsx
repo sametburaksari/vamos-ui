@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Combobox, Field, type ComboboxOption } from "@vamos-cms/ui";
+import { Combobox, Field, type ComboboxOption } from "@vamos-ui/react";
 
 const initial: ComboboxOption[] = [
   { value: "product-updates", label: "Product updates" },

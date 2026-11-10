@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ImageCropper, type CropPreset } from "@vamos-cms/ui/media";
+import { ImageCropper, type CropPreset } from "@vamos-ui/react/media";
 
 // Named presets are stored as asset.crops[name]; the loader applies the right one per placement.
 const presets: CropPreset[] = [

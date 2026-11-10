@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DateRangePicker, Field, type IsoDateRange } from "@vamos-cms/ui";
+import { DateRangePicker, Field, type IsoDateRange } from "@vamos-ui/react";
 
 export default function DateRangePickerInput() {
   const [leave, setLeave] = React.useState<IsoDateRange | null>({ from: "2026-12-21", to: "2027-01-02" });

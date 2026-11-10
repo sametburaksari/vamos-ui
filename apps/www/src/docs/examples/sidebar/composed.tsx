@@ -1,7 +1,7 @@
 "use client";
 
 import { FileText, Files, Inbox, LayoutDashboard, MessageSquare } from "lucide-react";
-import { Sidebar, SidebarCollapseButton, SidebarContent, SidebarFooter, SidebarGroup, SidebarItem, SidebarSeparator, SidebarSubItem, VamosProvider } from "@vamos-cms/ui";
+import { Sidebar, SidebarCollapseButton, SidebarContent, SidebarFooter, SidebarGroup, SidebarItem, SidebarSeparator, SidebarSubItem, VamosProvider } from "@vamos-ui/react";
 import { useMemoryRouter } from "../app-shell/demo-kit";
 
 /** The same parts SidebarNav renders, written by hand. */

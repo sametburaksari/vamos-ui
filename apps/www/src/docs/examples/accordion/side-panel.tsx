@@ -1,5 +1,5 @@
 import { CalendarClock, FolderTree, Plus, Search } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Badge, IconButton } from "@vamos-cms/ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Badge, IconButton } from "@vamos-ui/react";
 
 // CMS editor side panel: summaries in the header, actions beside it.
 export default function AccordionSidePanel() {

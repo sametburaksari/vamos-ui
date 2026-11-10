@@ -1,5 +1,5 @@
 import { FileImage, FileText } from "lucide-react";
-import { Progress } from "@vamos-cms/ui";
+import { Progress } from "@vamos-ui/react";
 
 const files = [
   { name: "hero-winter-menu.jpg", size: "2.4 MB", value: 100, icon: FileImage },

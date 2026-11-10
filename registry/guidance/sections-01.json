@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "Comparing every Hero, FeatureGrid and Cta variant in the current theme before building a site."
+  ],
+  "avoidWhen": [
+    "Shipping as a real page — pick the variants and use a site-* block."
+  ],
+  "related": [
+    "hero",
+    "feature-grid",
+    "cta"
+  ],
+  "a11y": [
+    "Each section keeps its own heading order; only one h1 in a real page."
+  ]
+}

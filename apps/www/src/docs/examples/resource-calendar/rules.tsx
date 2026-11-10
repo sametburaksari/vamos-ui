@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ResourceCalendar, maxConcurrentRule, maxHoursRule, minRestRule, type ResourceBlock } from "@vamos-cms/ui/scheduler";
+import { ResourceCalendar, maxConcurrentRule, maxHoursRule, minRestRule, type ResourceBlock } from "@vamos-ui/react/scheduler";
 
 // Example dataset: Turkish labour-law values (11 h rest between shifts, 45 h week).
 // The kit ships the rule mechanism; the values are yours.

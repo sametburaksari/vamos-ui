@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Address, map, hours and directions — the most visited section of restaurant, spa and clinic sites, and the source of LocalBusiness SEO. The map is a ConsentGate facade (a greyscale static image with an accent pin; the keyless Google Maps or OpenStreetMap iframe loads after a click or functional consent — no Maps JS API, no key). Hours run through the OpeningHours module: IANA time zone, ranges past midnight, special days, Intl weekday names, week start and 12/24 h. “Open now” is a ~1 KB island that renders nothing without JS, so a cached page never shows a stale status.",
   source: ["blocks/site/map-hours.tsx", "blocks/site/shared/opening-hours.ts", "blocks/site/shared/open-now.tsx", "blocks/site/shared/consent-gate.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
   basedOn: "Intl.DateTimeFormat (time zones)",
-  usage: `import { MapHours, isOpenAt, hoursStatus } from "@vamos-cms/ui/blocks";
+  usage: `import { MapHours, isOpenAt, hoursStatus } from "@vamos-ui/react/blocks";
 
 const hours = { timeZone: "Europe/Istanbul", weekly: { fri: [{ open: "17:00", close: "01:00" }] },
   special: [{ date: "2027-01-01", closed: true, note: "New Year’s Day" }] };

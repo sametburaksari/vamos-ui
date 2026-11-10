@@ -1,5 +1,5 @@
 import { Copy, Download, Share2, Trash2 } from "lucide-react";
-import { Button, Drawer, DrawerBody, DrawerClose, DrawerContent, DrawerHeader, DrawerTrigger } from "@vamos-cms/ui";
+import { Button, Drawer, DrawerBody, DrawerClose, DrawerContent, DrawerHeader, DrawerTrigger } from "@vamos-ui/react";
 
 const actions = [
   { icon: Share2, label: "Share link" },

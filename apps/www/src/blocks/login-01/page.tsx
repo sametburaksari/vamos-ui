@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { Button, Card, Field, Input } from "@vamos-cms/ui";
+import { Button, Card, Field, Input } from "@vamos-ui/react";
 
 /** Sign-in page: editorial split layout, works for any panel. */
 export default function Login01() {
@@ -8,7 +8,7 @@ export default function Login01() {
       <section className="surface-nav hidden flex-col justify-between p-10 lg:flex">
         <div className="flex items-center gap-2 text-nav-fg-strong">
           <span className="grid size-7 place-items-center rounded-[9px] bg-accent font-display text-[19px] italic leading-none text-accent-fg">v</span>
-          <span className="font-semibold">Acme Workspace</span>
+          <span className="font-semibold">Northpoint Workspace</span>
         </div>
         <blockquote className="max-w-md">
           <p className="font-display text-[length:calc(34px*var(--display-scale))] leading-[1.15] text-nav-fg-strong">
@@ -16,7 +16,7 @@ export default function Login01() {
           </p>
           <footer className="mt-4 text-[13px] text-nav-fg/70">Operations lead, 40-person agency</footer>
         </blockquote>
-        <div className="text-[12px] text-nav-fg/50">© 2026 Acme</div>
+        <div className="text-[12px] text-nav-fg/50">© 2026 Northpoint</div>
       </section>
 
       <section className="grid place-items-center p-6">

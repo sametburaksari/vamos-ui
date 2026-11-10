@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "A person or organisation: photo with a locale-correct initials fallback, a colour derived from the name, five sizes, a square shape for logos, a presence dot, and AvatarGroup with a labelled +N overflow.",
   source: ["components/avatar.tsx", "lib/text.ts", "styles/forms.css"],
   basedOn: "Radix Avatar",
-  usage: `import { Avatar, AvatarGroup } from "@vamos-cms/ui";
+  usage: `import { Avatar, AvatarGroup } from "@vamos-ui/react";
 
 <Avatar name="Selin Aydın" src="/people/selin.jpg" status="online" />
 

@@ -16,7 +16,7 @@ const entry: DocEntry = {
     "Switch between views of the same context — a record's sections, status filters, a List/Grid switch. Three variants, vertical orientation, counts, scrolling overflow, and route-based link tabs.",
   source: ["components/tabs.tsx", "lib/use-edge-fade.ts", "styles/navigation.css"],
   basedOn: "Radix Tabs",
-  usage: `import { Tabs, TabsList, TabsTrigger, TabsContent } from "@vamos-cms/ui";
+  usage: `import { Tabs, TabsList, TabsTrigger, TabsContent } from "@vamos-ui/react";
 
 <Tabs defaultValue="overview">
   <TabsList aria-label="Contact">

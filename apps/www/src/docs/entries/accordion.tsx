@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Collapsible sections for FAQs, policy pages, editor side panels and the mobile menu. Single or multiple open, three variants, header summaries and actions.",
   source: ["components/accordion.tsx"],
   basedOn: "Radix Accordion",
-  usage: `import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@vamos-cms/ui";
+  usage: `import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@vamos-ui/react";
 
 <Accordion type="single" collapsible>
   <AccordionItem value="refunds">

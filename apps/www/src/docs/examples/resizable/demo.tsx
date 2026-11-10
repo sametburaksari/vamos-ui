@@ -1,5 +1,5 @@
 import { FileText, Folder } from "lucide-react";
-import { ResizableGroup, ResizableHandle, ResizablePanel } from "@vamos-cms/ui";
+import { ResizableGroup, ResizableHandle, ResizablePanel } from "@vamos-ui/react";
 
 const folders = [
   { name: "Contracts", count: 18 },

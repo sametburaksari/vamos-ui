@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description:
     "The h1 and breadcrumb of an inner page — About, Services, Contact — where a hero is too heavy. Breadcrumb as a labelled nav with aria-current, and BreadcrumbList JSON-LD from the same data. Server component.",
   source: ["blocks/site/page-intro.tsx", "blocks/site/registry-1.ts"],
-  usage: `import { PageIntro, breadcrumbJsonLd, JsonLd } from "@vamos-cms/ui/blocks";
+  usage: `import { PageIntro, breadcrumbJsonLd, JsonLd } from "@vamos-ui/react/blocks";
 
 const crumbs = [{ label: "Home", href: "/" }, { label: "Treatments" }];
 <PageIntro breadcrumb={crumbs} title="Treatments, *by the hour*" lead="…" />

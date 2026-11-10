@@ -1,4 +1,4 @@
-import { Stepper } from "@vamos-cms/ui";
+import { Stepper } from "@vamos-ui/react";
 
 // PRM contract approval: an error on a past step, a skipped optional step, a loading current step.
 export default function StepperStates() {

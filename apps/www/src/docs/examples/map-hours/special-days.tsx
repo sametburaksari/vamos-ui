@@ -1,4 +1,4 @@
-import { MapHours, site2LabelsTr, type Branch } from "@vamos-cms/ui/blocks";
+import { MapHours, site2LabelsTr, type Branch } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { meyhane } from "../_site-2/data";
 

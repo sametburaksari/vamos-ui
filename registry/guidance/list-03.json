@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A people or asset directory with a cards / table switch over one data source."
+  ],
+  "avoidWhen": [
+    "Dense operational lists — use list-01 or list-02."
+  ],
+  "related": [
+    "entity-card",
+    "data-table",
+    "list-layout",
+    "empty-state"
+  ],
+  "a11y": [
+    "The view switch is a labelled toggle group; cards have one primary link."
+  ]
+}

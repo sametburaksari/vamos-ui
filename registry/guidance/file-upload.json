@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Picking or dropping files with progress, retry and cancel: documents, imports, attachments.",
+    "Forms that require one or more files with type and size limits."
+  ],
+  "avoidWhen": [
+    "A single image with crop and focal point — use Image field.",
+    "Choosing from existing files — use Media picker."
+  ],
+  "related": [
+    "image-field",
+    "media-picker",
+    "attachment-list",
+    "import-wizard"
+  ],
+  "a11y": [
+    "The drop target is a real button with the same keyboard path as the pointer.",
+    "Accepted types and size limits are stated in text; errors are announced per file."
+  ]
+}

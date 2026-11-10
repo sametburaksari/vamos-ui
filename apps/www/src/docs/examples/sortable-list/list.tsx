@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge } from "@vamos-cms/ui";
-import { SortableList } from "@vamos-cms/ui/sortable";
+import { Badge } from "@vamos-ui/react";
+import { SortableList } from "@vamos-ui/react/sortable";
 
 interface Step {
   id: string;

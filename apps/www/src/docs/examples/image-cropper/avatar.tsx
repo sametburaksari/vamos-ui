@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ImageCropper } from "@vamos-cms/ui/media";
+import { ImageCropper } from "@vamos-ui/react/media";
 
 // HR profile photo: round mask, fixed 1:1, no rotate / flip.
 export default function ImageCropperAvatar() {

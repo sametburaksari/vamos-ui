@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "An edge panel that keeps the list in view: quick edit, record preview, mobile filters and navigation.",
+    "Side panels on phones that would be popovers on desktop."
+  ],
+  "avoidWhen": [
+    "Blocking confirmations — use Alert Dialog.",
+    "Centered short tasks — use Dialog.",
+    "Persistent split views — use Resizable."
+  ],
+  "related": [
+    "dialog",
+    "resizable",
+    "app-shell",
+    "filter-bar"
+  ],
+  "a11y": [
+    "A modal dialog with a title; focus is trapped and returned.",
+    "Logical sides (start/end) flip in RTL."
+  ]
+}

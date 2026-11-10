@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, EditorBar, EditorCanvas, EditorLayout, EditorPanel, EditorPanelContent, EditorPanelSection, Input, SaveStatus, Select, Switch } from "@vamos-cms/ui";
+import { Button, EditorBar, EditorCanvas, EditorLayout, EditorPanel, EditorPanelContent, EditorPanelSection, Input, SaveStatus, Select, Switch } from "@vamos-ui/react";
 
 // Email template editor: "Document" and "Block" tabs in the panel, each with its own sections.
 export default function EditorLayoutPanelTabs() {

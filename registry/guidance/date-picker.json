@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A single date in a form: due, hire, birth, publish date.",
+    "DateTimePicker for scheduling with a time zone."
+  ],
+  "avoidWhen": [
+    "A from–to range — use Date range picker.",
+    "Always-visible month views — use Calendar.",
+    "Only a time of day — use Time picker."
+  ],
+  "related": [
+    "date-range-picker",
+    "calendar",
+    "time-picker",
+    "input"
+  ],
+  "a11y": [
+    "Typeable in the locale pattern; the calendar button has an accessible name.",
+    "Values are YYYY-MM-DD strings, never toISOString()."
+  ]
+}

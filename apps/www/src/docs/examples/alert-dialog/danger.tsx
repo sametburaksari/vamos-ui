@@ -7,7 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogTrigger,
   Button,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 import { Trash2 } from "lucide-react";
 
 export default function AlertDialogDanger() {

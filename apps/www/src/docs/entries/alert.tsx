@@ -12,7 +12,7 @@ const entry: DocEntry = {
   description:
     "A persistent inline status message in a page, card or form: an unsaved revision, a missing tax ID, a filing deadline, a subscription banner. Six tones, three variants, optional actions and dismiss. Server-compatible.",
   source: ["components/alert.tsx"],
-  usage: `import { Alert, Button } from "@vamos-cms/ui";
+  usage: `import { Alert, Button } from "@vamos-ui/react";
 
 <Alert tone="warning" title="Payroll filing due in 3 days" actions={<Button size="xs">Review</Button>}>
   Submit the November declaration before Dec 26.

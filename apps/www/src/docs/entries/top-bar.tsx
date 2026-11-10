@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "The sticky bar above the content: mobile menu button, a ⌘K search trigger, contextual actions, notifications and the user menu. Translucent on glass, a hairline on solid, the same in every app.",
   source: ["components/top-bar.tsx", "styles/navigation.css"],
   basedOn: "Radix Dropdown Menu (user menu)",
-  usage: `import { TopBar, TopBarStart, TopBarMenuButton, TopBarSearch, TopBarSpacer, TopBarActions, UserMenu } from "@vamos-cms/ui";
+  usage: `import { TopBar, TopBarStart, TopBarMenuButton, TopBarSearch, TopBarSpacer, TopBarActions, UserMenu } from "@vamos-ui/react";
 
 <TopBar>
   <TopBarStart><TopBarMenuButton /></TopBarStart>

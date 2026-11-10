@@ -1,4 +1,4 @@
-import { BarList } from "@vamos-cms/ui/charts";
+import { BarList } from "@vamos-ui/react/charts";
 
 const sources = [
   { key: "google", label: "google.com", value: 18_420, delta: 0.124 },

@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "A one-line, time-boxed notice at the very top of a site — “Closed 1–3 April for the holiday”, “v2.4 is out”. Server component; the optional dismiss button is a ~0.5 KB island that writes a cookie your server can read. Always solid, even in glass mode.",
   source: ["blocks/site/announcement-bar.tsx", "blocks/site/announcement-dismiss.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { AnnouncementBar, Navbar } from "@vamos-cms/ui/blocks";
+  usage: `import { AnnouncementBar, Navbar } from "@vamos-ui/react/blocks";
 
 <AnnouncementBar
   text="Closed 1–3 April for Eid — open again Thursday from noon."

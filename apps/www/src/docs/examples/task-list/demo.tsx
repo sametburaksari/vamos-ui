@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardBody, CardHeader, TaskList, type TaskData } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, TaskList, type TaskData } from "@vamos-ui/react";
 
 const iso = (days: number) => {
   const d = new Date();

@@ -1,4 +1,4 @@
-import { Field, NumberInput, PercentInput } from "@vamos-cms/ui";
+import { Field, NumberInput, PercentInput } from "@vamos-ui/react";
 
 export default function NumberExample() {
   return (

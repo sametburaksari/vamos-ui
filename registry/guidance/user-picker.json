@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Assigning or mentioning people and teams: assignee, approvers, owner, reviewers, share-with.",
+    "Avatars, presence and role line in results."
+  ],
+  "avoidWhen": [
+    "Non-person records — use Record picker.",
+    "Static option lists — use Combobox."
+  ],
+  "related": [
+    "record-picker",
+    "avatar",
+    "combobox",
+    "form-01"
+  ],
+  "a11y": [
+    "Wrap in Field; selected people are announced and removable with keyboard."
+  ]
+}

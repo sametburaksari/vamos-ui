@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "General workspace or account settings with section nav, validation, save bar and danger zone."
+  ],
+  "avoidWhen": [
+    "Appearance and locale settings — use settings-02.",
+    "Members and roles — use users-roles-01."
+  ],
+  "related": [
+    "settings-layout",
+    "switch",
+    "input",
+    "alert-dialog"
+  ],
+  "a11y": [
+    "Each row label is the control's label; the save bar is announced."
+  ]
+}

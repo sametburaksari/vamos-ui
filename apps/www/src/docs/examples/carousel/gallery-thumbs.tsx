@@ -1,4 +1,4 @@
-import { Carousel, CarouselCounter, CarouselSlide, CarouselThumbs, CarouselViewport, Image } from "@vamos-cms/ui";
+import { Carousel, CarouselCounter, CarouselSlide, CarouselThumbs, CarouselViewport, Image } from "@vamos-ui/react";
 
 const photos = [
   { id: "p1", photo: "photo-1600596542815-ffad4c1539a9", alt: "Front of the villa with the pool lit at dusk" },
