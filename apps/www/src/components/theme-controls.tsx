@@ -67,7 +67,7 @@ function readStored(): StoredFontPairing | undefined {
 }
 
 /** Live switcher for the theme axes (development / demo). */
-export function ThemeControls() {
+export function ThemeControls({ layout = "bar" }: { layout?: "bar" | "panel" }) {
   const [s, setS] = React.useState<State | null>(null);
   React.useEffect(() => {
     const h = document.documentElement;
@@ -82,13 +82,16 @@ export function ThemeControls() {
       fontPairing: stored?.id === font ? stored : undefined,
     });
   }, []);
-  if (!s) return <div className="h-8 w-56" />;
+  if (!s) return <div className={layout === "panel" ? "h-24" : "h-8 w-8 md:w-56"} />;
   const set = (p: Partial<State>) => { const n = { ...s, ...p }; setS(n); apply(n); };
   const pairing = parseFontPairing(s.fontPairing) ?? getFontPairing(s.font) ?? fontPairings[0]!;
   const setPairing = (p: FontPairing) => set({ font: p.id, fontPairing: serializeFontPairing(p) });
 
+  const panel = layout === "panel";
   return (
-    <div className="flex items-center gap-1">
+    <div className={panel ? "grid gap-4" : "flex items-center gap-1"}>
+      <div className={cn(panel ? "flex flex-wrap items-center gap-3" : "hidden items-center gap-1 md:flex")}>
+      {panel ? <span className="w-full text-[12px] font-medium uppercase tracking-wide text-fg-subtle">Theme</span> : null}
       <div className="me-1 flex items-center gap-1 rounded-full border border-field-border bg-field p-1" role="radiogroup" aria-label="Accent colour">
         {accents.map((a) => (
           <button
@@ -109,9 +112,12 @@ export function ThemeControls() {
       <IconButton size="sm" label={s.material === "glass" ? "Switch to solid" : "Switch to glass"} onClick={() => set({ material: s.material === "glass" ? "solid" : "glass" })}>
         {s.material === "glass" ? <Layers /> : <Square />}
       </IconButton>
-      <IconButton size="sm" label={s.dark ? "Light theme" : "Dark theme"} onClick={() => set({ dark: !s.dark })}>
-        {s.dark ? <Sun /> : <Moon />}
-      </IconButton>
+      </div>
+      {panel ? null : (
+        <IconButton size="sm" label={s.dark ? "Light theme" : "Dark theme"} onClick={() => set({ dark: !s.dark })}>
+          {s.dark ? <Sun /> : <Moon />}
+        </IconButton>
+      )}
     </div>
   );
 }

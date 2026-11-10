@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, Component, LayoutTemplate, Search } from "lucide-react";
+import { BookOpen, Component, LayoutTemplate, Menu, Search } from "lucide-react";
 import {
   cn,
   CommandDialog,
@@ -15,6 +15,10 @@ import {
   CommandLoading,
   IconButton,
   KbdGroup,
+  Sheet,
+  SheetBody,
+  SheetContent,
+  SheetHeader,
   useHotkeys,
 } from "@vamos-ui/react";
 import { docSections, mainNav, site } from "@/lib/site";
@@ -116,12 +120,14 @@ function DocsSearch() {
 
 export function SiteHeader() {
   const path = usePathname();
+  const [menu, setMenu] = React.useState(false);
+  React.useEffect(() => setMenu(false), [path]);
   const isActive = (href: string) =>
     href === "/docs" ? path === "/docs" || (path.startsWith("/docs/") && !path.startsWith("/docs/components") && !path.startsWith("/docs/changelog")) : path === href || path.startsWith(href + "/");
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-[color-mix(in_srgb,var(--scene)_78%,transparent)] backdrop-blur-xl">
-      <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-6 px-5">
+      <div className="flex h-14 w-full items-center gap-3 md:gap-6 px-5 md:px-8 xl:px-12">
         <Logo />
         <nav aria-label="Main" className="hidden items-center gap-0.5 md:flex">
           {mainNav.map((n) => (
@@ -138,10 +144,36 @@ export function SiteHeader() {
         <div className="flex-1" />
         <DocsSearch />
         <ThemeControls />
-        <IconButton asChild size="sm" label="GitHub">
+        <IconButton asChild size="sm" label="GitHub" className="max-md:hidden">
           <a href={site.github} target="_blank" rel="noreferrer"><GithubMark /></a>
         </IconButton>
+        <IconButton size="sm" label="Open menu" className="md:hidden" onClick={() => setMenu(true)}>
+          <Menu />
+        </IconButton>
       </div>
+      <Sheet open={menu} onOpenChange={setMenu}>
+        <SheetContent side="end" size="sm" className="max-w-[86vw]">
+          <SheetHeader title="Menu" srOnly />
+          <SheetBody className="grid content-start gap-6">
+            <nav aria-label="Main" className="grid gap-0.5">
+              {mainNav.map((n) => (
+                <Link
+                  key={n.href}
+                  href={n.href}
+                  aria-current={isActive(n.href) ? "page" : undefined}
+                  className={cn("rounded-md px-2.5 py-2 text-[15px] transition-colors focus-ring", isActive(n.href) ? "bg-fg/5 font-medium text-fg" : "text-fg-muted hover:text-fg")}
+                >
+                  {n.label}
+                </Link>
+              ))}
+              <a href={site.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded-md px-2.5 py-2 text-[15px] text-fg-muted hover:text-fg focus-ring">
+                <span className="size-4"><GithubMark /></span> GitHub
+              </a>
+            </nav>
+            <ThemeControls layout="panel" />
+          </SheetBody>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }

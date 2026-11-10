@@ -20,7 +20,7 @@ export default async function BlocksPage() {
   );
 
   return (
-    <main id="main" className="mx-auto max-w-[1440px] px-5 py-12">
+    <main id="main" className="w-full px-5 md:px-8 xl:px-12 py-12">
       <div className="max-w-2xl">
         <div className="mb-2 text-[11.5px] font-medium uppercase tracking-[0.14em] text-fg-subtle">Blocks</div>
         <h1 className="font-display text-[length:calc(48px*var(--display-scale))] leading-[1.03]">Whole screens, ready to copy.</h1>

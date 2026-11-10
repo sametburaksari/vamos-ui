@@ -17,7 +17,7 @@ export default function Home() {
   const ready = all.filter((i) => i.status === "ready").length;
 
   return (
-    <main id="main" className="mx-auto max-w-[1440px] px-5">
+    <main id="main" className="w-full px-5 md:px-8 xl:px-12">
       <section className="grid gap-10 pt-16 pb-12 lg:grid-cols-[1.05fr_1fr] lg:items-end">
         <div>
           <Badge tone="accent" size="md">v0.1 · early preview</Badge>

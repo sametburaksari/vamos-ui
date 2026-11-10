@@ -31,7 +31,7 @@ const charts = [
 
 export default function ChartsPage() {
   return (
-    <main id="main" className="mx-auto max-w-[1100px] px-5 py-12">
+    <main id="main" className="w-full px-5 md:px-8 xl:px-12 py-12">
       <div className="max-w-2xl">
         <div className="mb-2 text-[11.5px] font-medium tracking-[0.14em] text-fg-subtle uppercase">Charts</div>
         <h1 className="font-display text-[length:calc(48px*var(--display-scale))] leading-[1.03]">Charts that read your theme.</h1>
