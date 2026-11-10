@@ -1,0 +1,48 @@
+#!/bin/bash
+# Deploy the docs site (apps/www) to https://ui.vamos.ist as a static export.
+# Builds from a clean checkout of a git ref (default: origin/main), so uncommitted
+# or in-progress local work never reaches production.
+#   scripts/deploy-www.sh            # deploy origin/main
+#   REF=HEAD scripts/deploy-www.sh   # deploy the local HEAD commit
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+REF="${REF:-origin/main}"
+SERVER="${SERVER:-vamos-ts}"
+TARGET="/home/vamosist/public_html/subdomains/ui"
+WORK="$(mktemp -d /tmp/vamos-ui-deploy.XXXXXX)"
+trap 'git -C "$ROOT" worktree remove --force "$WORK/src" >/dev/null 2>&1 || true; rm -rf "$WORK"' EXIT
+
+git -C "$ROOT" fetch -q origin || true
+git -C "$ROOT" worktree add -q --detach "$WORK/src" "$REF"
+cd "$WORK/src"
+echo "→ building $(git rev-parse --short HEAD) ($REF)"
+pnpm install --frozen-lockfile --prefer-offline >/dev/null
+node scripts/gen.mjs
+( cd apps/www && STATIC_EXPORT=1 NEXT_PUBLIC_ADMIN_URL="https://ui.vamos.ist/blocks" pnpm exec next build )
+OUT="apps/www/out"
+test -f "$OUT/index.html" && test -d "$OUT/docs"
+# Apache: clean URLs, caching, security headers, custom 404
+cat > "$OUT/.htaccess" <<'HT'
+Options -Indexes
+ErrorDocument 404 /404.html
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  <FilesMatch "\.(js|css|woff2|svg|png|jpg|webp)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=300"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+HT
+echo "→ uploading $(find "$OUT" -type f | wc -l | tr -d ' ') files to $SERVER:$TARGET"
+rsync -az --delete --chmod=D755,F644 "$OUT/" "$SERVER:$TARGET/"
+ssh "$SERVER" "chown -R vamosist:vamosist $TARGET"
+echo "→ done: https://ui.vamos.ist ($(git rev-parse --short HEAD))"
