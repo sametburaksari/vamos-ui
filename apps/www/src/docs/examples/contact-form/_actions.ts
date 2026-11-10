@@ -1,4 +1,5 @@
-"use server";
+// In your app, put `"use server";` at the top of this file. The docs site is a static export,
+// so here the same function runs in the browser.
 
 import { validateContactForm, type ContactFieldConfig, type SiteFormState } from "@vamos-cms/ui/blocks";
 
