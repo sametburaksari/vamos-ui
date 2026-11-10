@@ -1,10 +1,23 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Search } from "lucide-react";
-import { cn, IconButton } from "@vamos-cms/ui";
-import { mainNav, site } from "@/lib/site";
+import { usePathname, useRouter } from "next/navigation";
+import { BookOpen, Component, LayoutTemplate, Search } from "lucide-react";
+import {
+  cn,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandLoading,
+  IconButton,
+  KbdGroup,
+  useHotkeys,
+} from "@vamos-cms/ui";
+import { docSections, mainNav, site } from "@/lib/site";
 import { ThemeControls } from "./theme-controls";
 import { VamosLogo } from "./brand";
 
@@ -21,6 +34,83 @@ export function Logo({ className }: { className?: string }) {
     <Link href="/" className={cn("rounded-md focus-ring", className)}>
       <VamosLogo />
     </Link>
+  );
+}
+
+type SearchEntry = { id: string; title: string; subtitle?: string; href: string; keywords: string[] };
+type SearchIndex = { components: SearchEntry[]; blocks: SearchEntry[] };
+
+// Loaded on first use: the entries and blocks modules pull in every live example.
+let indexPromise: Promise<SearchIndex> | null = null;
+function loadIndex(): Promise<SearchIndex> {
+  indexPromise ??= Promise.all([import("@/docs/entries"), import("@/blocks")]).then(([{ entries }, { blocks }]) => ({
+    components: [...entries]
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .map((e) => ({ id: `c:${e.slug}`, title: e.title, subtitle: e.group, href: `/docs/components/${e.slug}`, keywords: [...e.covers, e.group, e.basedOn ?? ""] })),
+    blocks: blocks.map((b) => ({ id: `b:${b.name}`, title: b.title, subtitle: b.category, href: `/blocks#${b.name}`, keywords: [b.name, b.category, ...(b.tags ?? [])] })),
+  }));
+  return indexPromise;
+}
+
+/** ⌘K: search docs pages, components and blocks. */
+function DocsSearch() {
+  const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const [index, setIndex] = React.useState<SearchIndex | null>(null);
+  const [failed, setFailed] = React.useState(false);
+  useHotkeys("mod+k", () => setOpen((o) => !o));
+  const prefetch = React.useCallback(() => {
+    loadIndex().then(setIndex, () => {
+      indexPromise = null;
+      setFailed(true);
+    });
+  }, []);
+  React.useEffect(() => {
+    if (open && !index) prefetch();
+  }, [open, index, prefetch]);
+  const go = (href: string) => {
+    setOpen(false);
+    router.push(href);
+  };
+  const row = (e: SearchEntry, icon: React.ReactNode) => (
+    <CommandItem key={e.id} value={`${e.title} ${e.id}`} keywords={e.keywords} icon={icon} description={e.subtitle} onSelect={() => go(e.href)}>
+      {e.title}
+    </CommandItem>
+  );
+  return (
+    <>
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Meta+K Control+K"
+        onClick={() => setOpen(true)}
+        onPointerEnter={prefetch}
+        onFocus={prefetch}
+        className="hidden h-8 w-60 items-center gap-2 rounded-ui-sm border border-field-border bg-field ps-2.5 pe-1.5 text-[13px] text-fg-subtle hover:border-field-border-hover focus-ring lg:flex"
+      >
+        <Search className="size-3.5" aria-hidden />
+        <span className="flex-1 text-start">Search documentation…</span>
+        <KbdGroup keys="mod+k" size="sm" />
+      </button>
+      <IconButton size="sm" label="Search documentation" className="lg:hidden" onClick={() => setOpen(true)}>
+        <Search />
+      </IconButton>
+      <CommandDialog open={open} onOpenChange={setOpen} title="Search documentation">
+        <CommandInput placeholder="Search docs, components and blocks…" />
+        <CommandList>
+          {index ? <CommandEmpty /> : failed ? <p className="px-3 py-6 text-center text-sm text-danger">Couldn&apos;t load the search index.</p> : <CommandLoading />}
+          <CommandGroup heading="Docs">
+            {docSections.map((d) => row({ id: `d:${d.href}`, title: d.label, href: d.href, keywords: [] }, <BookOpen />))}
+          </CommandGroup>
+          {index ? (
+            <>
+              <CommandGroup heading="Components">{index.components.map((e) => row(e, <Component />))}</CommandGroup>
+              <CommandGroup heading="Blocks">{index.blocks.map((e) => row(e, <LayoutTemplate />))}</CommandGroup>
+            </>
+          ) : null}
+        </CommandList>
+      </CommandDialog>
+    </>
   );
 }
 
@@ -46,11 +136,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="flex-1" />
-        <button className="hidden h-8 w-60 items-center gap-2 rounded-ui-sm border border-field-border bg-field px-2.5 text-[13px] text-fg-subtle hover:border-field-border-hover focus-ring lg:flex">
-          <Search className="size-3.5" />
-          <span className="flex-1 text-start">Search documentation…</span>
-          <kbd className="rounded border border-line px-1 font-mono text-[10.5px]">⌘K</kbd>
-        </button>
+        <DocsSearch />
         <ThemeControls />
         <IconButton asChild size="sm" label="GitHub">
           <a href={site.github} target="_blank" rel="noreferrer"><GithubMark /></a>

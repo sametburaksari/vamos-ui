@@ -26,35 +26,40 @@ export default function LocalizationPage() {
         <C>LocaleProvider</C> and pass a messages object of type <C>Messages</C>.
       </P>
       <Code code={`import { LocaleProvider } from "@vamos-cms/ui";
-import { tr } from "./locales/tr"; // same shape as the built-in \`en\`
+import { tr } from "@vamos-cms/ui/locale/tr"; // same shape as the built-in \`en\`
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <LocaleProvider locale="tr-TR" messages={tr}>
+    <LocaleProvider locale="tr-TR" messages={tr} timeZone="Europe/Istanbul" currency="TRY">
       {children}
     </LocaleProvider>
   );
 }`} />
       <P>Inside components, read strings and formatters with hooks:</P>
-      <Code code={`import { useMessages, useFormat } from "@vamos-cms/ui";
+      <Code code={`import { useFormat, useLocale } from "@vamos-cms/ui";
 
-function Footer({ page, total, amount }: { page: number; total: number; amount: number }) {
-  const t = useMessages();
+function Footer({ page, total, amount }: { page: number; total: number; amount: string }) {
+  const { t } = useLocale();
   const f = useFormat();
   return (
     <p>
-      {t.pagination.page(page, total)} · {f.currency(amount, "TRY")}
+      {t("pagination.page", { page, total })} · {f.currency(amount)}
     </p>
   );
 }`} />
-      <P>The built-in dictionary currently covers <C>common</C>, <C>pagination</C> and <C>command</C>; it grows with each component.</P>
+      <P>
+        Messages are plain string templates with named placeholders (<C>{"\"Page {page} of {total}\""}</C>), so a dictionary
+        is serialisable JSON. The built-in dictionary covers <C>common</C>, <C>pagination</C>, <C>command</C> and the
+        namespaces of each shipped component; it grows with each component.
+      </P>
 
       <H2 id="overrides">Partial overrides</H2>
       <P>
         Rename one string without writing a full locale: any prop that shows built-in text (<C>closeLabel</C>,{" "}
-        <C>emptyLabel</C>, <C>labels</C>) wins over the dictionary. Deep-merged partial dictionaries are{" "}
-        <Badge tone="outline">Planned</Badge>.
+        <C>emptyLabel</C>, <C>labels</C>) wins over the dictionary. Dictionaries are deep-merged, so a partial object only
+        replaces the keys it names.
       </P>
+      <Code code={`<LocaleProvider messages={{ common: { remove: "Move to bin" } }}>{children}</LocaleProvider>`} />
 
       <H2 id="formatting">Formatting</H2>
       <P>
@@ -74,7 +79,7 @@ function Footer({ page, total, amount }: { page: number; total: number; amount: 
           ["KDV rates, withholding codes, rounding", "Line items", <Badge key="3" tone="outline">Planned</Badge>],
           ["Public holidays", "Calendar, resource calendar", <Badge key="4" tone="outline">Planned</Badge>],
           ["Provinces and districts", "Address field", <Badge key="5" tone="outline">Planned</Badge>],
-          ["Turkish-aware search and slugs (İ/ı, ş, ğ)", "Combobox, pickers, slug input", <Badge key="6" tone="outline">Planned</Badge>],
+          ["Turkish-aware search and slugs (İ/ı, ş, ğ)", "Combobox, pickers, slug input", <Badge key="6" tone="success">Ready</Badge>],
         ]}
       />
 
