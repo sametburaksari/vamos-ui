@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "The show-one-record page: contact, company, employee, invoice, project.",
+    "Record header with key facts and pager, main tabs and a side column."
+  ],
+  "avoidWhen": [
+    "Editing long content — use Editor layout.",
+    "Collections — use List layout."
+  ],
+  "related": [
+    "description-list",
+    "activity-timeline",
+    "entity-card",
+    "detail-01",
+    "detail-02",
+    "detail-03"
+  ],
+  "a11y": [
+    "The record name is the page h1; the pager buttons name the next record.",
+    "Side column sections are labelled regions."
+  ]
+}

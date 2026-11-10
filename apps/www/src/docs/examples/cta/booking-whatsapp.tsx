@@ -1,4 +1,4 @@
-import { Cta } from "@vamos-cms/ui/blocks";
+import { Cta } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Booking bar → prefilled WhatsApp: "Hi, I'd like to book for 4 guests on Fri, November 14 at

@@ -1,4 +1,4 @@
-import { Avatar } from "@vamos-cms/ui";
+import { Avatar } from "@vamos-ui/react";
 
 export default function AvatarDemo() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { Folder, Image as ImageIcon } from "lucide-react";
-import { TreeView, type TreeNode } from "@vamos-cms/ui";
+import { TreeView, type TreeNode } from "@vamos-ui/react";
 
 const folder = (id: string, label: string, count: number): TreeNode => ({ id, label, hasChildren: true, icon: <Folder />, badge: count });
 

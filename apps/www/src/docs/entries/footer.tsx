@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "Site footer: navigation, contact, socials, legal links and the company details e-commerce law requires in many countries (legal name, tax office and number, MERSİS, trade registry — labels are free text so any country's identifiers fit). A footer landmark with labelled inner navs, social links named by network, and “Cookie settings” as a button that reopens the consent preferences. Dark mode is the recommended default, not enforced.",
   source: ["blocks/site/footer.tsx", "blocks/site/shared/brand-icons.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
-  usage: `import { Footer } from "@vamos-cms/ui/blocks";
+  usage: `import { Footer } from "@vamos-ui/react/blocks";
 
 <Footer
   theme={{ mode: "dark" }}

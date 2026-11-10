@@ -1,4 +1,4 @@
-import { ProgressRing } from "@vamos-cms/ui/charts";
+import { ProgressRing } from "@vamos-ui/react/charts";
 
 const bands = [
   { at: 0, color: "danger", label: "At risk" },

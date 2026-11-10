@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSwitcher, Sidebar, SidebarCollapseButton, SidebarContent, SidebarFooter, SidebarHeader, SidebarNav, VamosProvider } from "@vamos-cms/ui";
+import { AppSwitcher, Sidebar, SidebarCollapseButton, SidebarContent, SidebarFooter, SidebarHeader, SidebarNav, VamosProvider } from "@vamos-ui/react";
 import { crmApp, siteApp, siteNav, useMemoryRouter } from "../app-shell/demo-kit";
 
 /** The rail: hover or press → on an item to open its submenu as a flyout; leaves show a tooltip. */

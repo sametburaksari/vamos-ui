@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Gantt, type GanttTask } from "@vamos-cms/ui/scheduler";
+import { Gantt, type GanttTask } from "@vamos-ui/react/scheduler";
 
 const phases = ["Plan", "Design", "Build", "Test", "Ship"];
 const add = (d: string, n: number) => new Date(Date.parse(`${d}T12:00:00Z`) + n * 86_400_000).toISOString().slice(0, 10);

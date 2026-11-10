@@ -1,4 +1,4 @@
-import { AddressField } from "@vamos-cms/ui";
+import { AddressField } from "@vamos-ui/react";
 
 export default function AddressFieldDemo() {
   return (

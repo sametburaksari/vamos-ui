@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { FileCode2, Folder } from "lucide-react";
-import { TreeView, type TreeNode } from "@vamos-cms/ui";
+import { TreeView, type TreeNode } from "@vamos-ui/react";
 
 const dir = (id: string, label: string, children: TreeNode[]): TreeNode => ({ id, label, children, icon: <Folder /> });
 const file = (id: string, label: string): TreeNode => ({ id, label, icon: <FileCode2 /> });

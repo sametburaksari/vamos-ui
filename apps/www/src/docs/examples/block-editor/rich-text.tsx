@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Button, Field, NativeSelect } from "@vamos-cms/ui";
-import { RichTextEditor, isRichDocEmpty } from "@vamos-cms/ui/editor";
-import type { RichDoc } from "@vamos-cms/ui/blocks/schema";
+import { Button, Field, NativeSelect } from "@vamos-ui/react";
+import { RichTextEditor, isRichDocEmpty } from "@vamos-ui/react/editor";
+import type { RichDoc } from "@vamos-ui/react/blocks/schema";
 
 export default function RichTextField() {
   const [note, setNote] = React.useState<RichDoc>({

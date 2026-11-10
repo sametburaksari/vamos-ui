@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Free-form multi-value entry: post tags, contact segments, skills, invoice recipients, keywords. Chips sit inside the box with a trailing text input; Enter, Tab or comma add, pasted lists split, duplicates are caught with locale folding, and every add or removal is announced.",
   source: ["components/tag-input.tsx", "lib/use-async-list.ts", "lib/text.ts", "components/badge.tsx", "styles/forms.css"],
   basedOn: "Badge chips + Radix Popover (suggestions)",
-  usage: `import { Field, TagInput } from "@vamos-cms/ui";
+  usage: `import { Field, TagInput } from "@vamos-ui/react";
 
 <Field label="Tags">
   <TagInput name="tags" suggestions={existingTags} max={10} />

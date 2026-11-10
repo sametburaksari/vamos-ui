@@ -1,5 +1,5 @@
 import { CalendarDays } from "lucide-react";
-import { Badge, Button, Card, CardAction, CardBody, CardDescription, CardEyebrow, CardTitle } from "@vamos-cms/ui";
+import { Badge, Button, Card, CardAction, CardBody, CardDescription, CardEyebrow, CardTitle } from "@vamos-ui/react";
 
 const people = [
   { name: "Elif Demir", reason: "Annual leave", until: "Nov 14" },

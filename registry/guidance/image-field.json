@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A form field holding one image: featured image, logo, profile photo.",
+    "Pick from library or drop a file, then crop and set focal point and alt text."
+  ],
+  "avoidWhen": [
+    "Several files — use File upload or Media picker with multiple.",
+    "Non-image documents."
+  ],
+  "related": [
+    "media-picker",
+    "image-cropper",
+    "file-upload",
+    "editor-01"
+  ],
+  "a11y": [
+    "Asks for alt text as part of the field.",
+    "Replace and remove buttons are labelled; the preview has the image's alt."
+  ]
+}

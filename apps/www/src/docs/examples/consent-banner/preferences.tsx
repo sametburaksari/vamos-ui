@@ -1,4 +1,4 @@
-import { ConsentBanner } from "@vamos-cms/ui/blocks";
+import { ConsentBanner } from "@vamos-ui/react/blocks";
 
 // Preferences: one Switch per category, none pre-checked; "Necessary" is locked on.
 // Saved as a first-party vb_consent cookie for six months.

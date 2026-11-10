@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "An in-app inbox: the bell with an unread badge, a panel (popover on desktop, sheet on phones) with filter tabs, a feed grouped by day, read/unread, inline actions and “Mark all as read”. The kit owns the UI; your adapter owns the transport.",
   source: ["components/notification-center.tsx"],
   basedOn: "Radix Popover, Sheet, Toast",
-  usage: `import { NotificationCenter, type NotificationAdapter } from "@vamos-cms/ui";
+  usage: `import { NotificationCenter, type NotificationAdapter } from "@vamos-ui/react";
 
 const inbox: NotificationAdapter = {
   list: ({ cursor, filter, signal }) => api.get("/notifications", { cursor, filter, signal }),

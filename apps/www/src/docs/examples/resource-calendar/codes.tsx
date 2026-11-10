@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ResourceCalendar, type ResourceBlock, type ResourceTemplate } from "@vamos-cms/ui/scheduler";
+import { ResourceCalendar, type ResourceBlock, type ResourceTemplate } from "@vamos-ui/react/scheduler";
 
 const codes: ResourceTemplate[] = [
   { id: "w", label: "Worked", code: "W", tone: "chart-2" },

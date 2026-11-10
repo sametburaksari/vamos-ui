@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Calendar, CalendarSlots, addIsoDays, todayIso, type CalendarMarker, type CalendarSlot } from "@vamos-cms/ui";
+import { Button, Calendar, CalendarSlots, addIsoDays, todayIso, type CalendarMarker, type CalendarSlot } from "@vamos-ui/react";
 
 // Spa appointment booking: pick a day, then a time.
 function slotsFor(day: string): CalendarSlot[] {

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DiffView, ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
+import { DiffView, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 
 const before = `Vamos builds websites and panels for restaurants, clinics and agencies.
 Our team is based in Istanbul and works with clients across Europe.

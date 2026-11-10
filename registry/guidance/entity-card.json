@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A record's identity at a glance: contact, company, product, employee.",
+    "Grid cards in a directory, a side-column summary on a detail page, hover previews."
+  ],
+  "avoidWhen": [
+    "Dense lists of many records — use Data Table.",
+    "Generic content containers — use Card."
+  ],
+  "related": [
+    "card",
+    "item",
+    "hover-card",
+    "list-03",
+    "record-detail-layout"
+  ],
+  "a11y": [
+    "The record name is the card's heading and its single primary link.",
+    "Quick actions are labelled with the record name."
+  ]
+}

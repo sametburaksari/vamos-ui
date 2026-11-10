@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Exactly one of a small set (2–5) that should all be visible: visibility, invoice type, plan.",
+    "Selectable cards with descriptions or a compact segmented control."
+  ],
+  "avoidWhen": [
+    "More than ~6 options — use Select or Combobox.",
+    "Independent choices — use Checkbox.",
+    "Immediate on/off — use Switch."
+  ],
+  "related": [
+    "select",
+    "checkbox",
+    "combobox",
+    "button-group"
+  ],
+  "a11y": [
+    "A fieldset with a legend; one tab stop and arrow keys move the selection.",
+    "Descriptions are linked to each option."
+  ]
+}

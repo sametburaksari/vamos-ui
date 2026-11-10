@@ -1,4 +1,4 @@
-import { PageIntro } from "@vamos-cms/ui/blocks";
+import { PageIntro } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Ruled: title at the start, up to three facts behind a vertical rule, a hairline below.

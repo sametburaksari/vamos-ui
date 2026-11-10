@@ -1,4 +1,4 @@
-// React-free core of @vamos-cms/ui/scheduler: time scale, working-day math, event layout,
+// React-free core of @vamos-ui/react/scheduler: time scale, working-day math, event layout,
 // Gantt scheduling and time-tracking helpers. Importable from server components and workers.
 export {
   createTimeScale,

@@ -1,5 +1,5 @@
 import { Archive, Copy, ExternalLink, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import { Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, IconButton } from "@vamos-cms/ui";
+import { Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, IconButton } from "@vamos-ui/react";
 
 const deals = [
   { name: "Northwind Logistics — fleet renewal", value: "$48,200", stage: "Negotiation" },

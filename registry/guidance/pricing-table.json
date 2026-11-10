@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Plan pricing for SaaS, agency packages and retainers with monthly/yearly toggle.",
+    "Highlighting one recommended plan."
+  ],
+  "avoidWhen": [
+    "Detailed feature matrices — add a Comparison table below.",
+    "Menus or service price lists — use Menu / price list."
+  ],
+  "related": [
+    "comparison-table",
+    "page-pricing-01",
+    "cta",
+    "faq"
+  ],
+  "a11y": [
+    "Each plan has a heading and a clear price with billing period in text.",
+    "The highlighted plan is marked in text (Most popular), not only by colour."
+  ]
+}

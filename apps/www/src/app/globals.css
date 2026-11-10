@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@vamos-cms/ui/styles.css";
+@import "@vamos-ui/react/styles.css";
 
 @source "../";
 

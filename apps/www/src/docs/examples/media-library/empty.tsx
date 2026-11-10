@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MediaLibrary, createMemoryAdapter } from "@vamos-cms/ui/media";
+import { MediaLibrary, createMemoryAdapter } from "@vamos-ui/react/media";
 
 // A brand-new site: the empty state invites a drop or an upload.
 export default function MediaLibraryEmpty() {

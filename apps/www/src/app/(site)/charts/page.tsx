@@ -31,14 +31,14 @@ const charts = [
 
 export default function ChartsPage() {
   return (
-    <div className="mx-auto max-w-[1100px] px-5 py-12">
+    <main id="main" className="mx-auto max-w-[1100px] px-5 py-12">
       <div className="max-w-2xl">
         <div className="mb-2 text-[11.5px] font-medium tracking-[0.14em] text-fg-subtle uppercase">Charts</div>
         <h1 className="font-display text-[length:calc(48px*var(--display-scale))] leading-[1.03]">Charts that read your theme.</h1>
         <p className="mt-3 text-[15.5px] leading-relaxed text-fg-muted">
           Series name a colour token (<code className="font-mono text-[13px]">chart-1…6</code>, <code className="font-mono text-[13px]">success</code>…), never a hex value, so every
           chart follows light/dark, accent and glass on its own. Numbers and dates are written by your locale, every chart carries a text summary and a
-          data-table alternative, and the legend toggles series. Recharts loads only through <code className="font-mono text-[13px]">@vamos-cms/ui/charts</code>; Funnel,
+          data-table alternative, and the legend toggles series. Recharts loads only through <code className="font-mono text-[13px]">@vamos-ui/react/charts</code>; Funnel,
           Gauge, Bar list and Heatmap are plain SVG and DOM.
         </p>
       </div>
@@ -65,6 +65,6 @@ export default function ChartsPage() {
           </section>
         ))}
       </div>
-    </div>
+    </main>
   );
 }

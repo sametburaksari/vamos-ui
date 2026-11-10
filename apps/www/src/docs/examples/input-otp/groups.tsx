@@ -1,4 +1,4 @@
-import { Field, InputOTP } from "@vamos-cms/ui";
+import { Field, InputOTP } from "@vamos-ui/react";
 
 export default function InputOTPGroups() {
   return (

@@ -1,4 +1,4 @@
-import { Field, Switch } from "@vamos-cms/ui";
+import { Field, Switch } from "@vamos-ui/react";
 
 export default function SwitchStates() {
   return (

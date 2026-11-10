@@ -1,4 +1,4 @@
-import { createMemoryNotificationAdapter, type AppNotification } from "@vamos-cms/ui";
+import { createMemoryNotificationAdapter, type AppNotification } from "@vamos-ui/react";
 
 const minutesAgo = (m: number) => new Date(Date.now() - m * 60_000).toISOString();
 

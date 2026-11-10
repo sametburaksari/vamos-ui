@@ -1,6 +1,6 @@
 "use client";
 
-import { AuditLog } from "@vamos-cms/ui";
+import { AuditLog } from "@vamos-ui/react";
 import { actionLabels, auditEvents, changeFields } from "./data";
 
 export default function AuditLogDemo() {

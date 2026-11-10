@@ -1,5 +1,5 @@
 import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Link2, Underline } from "lucide-react";
-import { Separator, Toggle, ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
+import { Separator, Toggle, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 
 export default function ButtonGroupToolbar() {
   return (

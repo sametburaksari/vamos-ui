@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AttachmentList, type AttachmentData } from "@vamos-cms/ui";
+import { AttachmentList, type AttachmentData } from "@vamos-ui/react";
 
 export default function AttachmentListUploadStates() {
   const [progress, setProgress] = React.useState(12);

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CreditCard, Keyboard, LogOut, UserRound } from "lucide-react";
-import { Badge, UserMenu, type MenuEntry } from "@vamos-cms/ui";
+import { Badge, UserMenu, type MenuEntry } from "@vamos-ui/react";
 
 export default function TopBarUserMenu() {
   const [dark, setDark] = React.useState(false);

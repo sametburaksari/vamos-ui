@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button, ButtonGroup } from "@vamos-cms/ui";
-import { Lightbox, type MediaSource } from "@vamos-cms/ui/media";
+import { Button, ButtonGroup } from "@vamos-ui/react";
+import { Lightbox, type MediaSource } from "@vamos-ui/react/media";
 
 const url = (id: string) => `https://images.unsplash.com/${id}?w=1800&q=80&auto=format&fit=crop`;
 const receipts: MediaSource[] = [

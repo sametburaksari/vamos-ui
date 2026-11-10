@@ -6,8 +6,8 @@
 
 /* Opaque header/pinned-cell fill: never blurred (glass budget X10), never see-through. */
 .ui-table {
-  --table-head-bg: color-mix(in oklch, var(--surface) 92%, var(--scene));
-  --table-pin-bg: color-mix(in oklch, var(--surface) 96%, var(--scene));
+  --table-head-bg: color-mix(in oklab, var(--surface) 92%, var(--scene));
+  --table-pin-bg: color-mix(in oklab, var(--surface) 96%, var(--scene));
 }
 .ui-table > thead > tr > th {
   background: color-mix(in srgb, var(--surface-2) 70%, transparent);
@@ -55,7 +55,7 @@
   box-shadow: inset calc(-1px * var(--dir)) 0 0 var(--line);
 }
 .ui-table[data-sticky-column] > tbody > tr:hover > :first-child {
-  background: color-mix(in oklch, var(--table-pin-bg), var(--fg) 4%);
+  background: color-mix(in oklab, var(--table-pin-bg), var(--fg) 4%);
 }
 .ui-table[data-sticky-header][data-sticky-column] > thead > tr > :first-child {
   z-index: 3;
@@ -173,10 +173,10 @@
   background: var(--table-head-bg);
 }
 .ui-dt-table > tbody > tr:hover > td[data-pinned] {
-  background: color-mix(in oklch, var(--table-pin-bg), var(--fg) 3%);
+  background: color-mix(in oklab, var(--table-pin-bg), var(--fg) 3%);
 }
 .ui-dt-table > tbody > tr[data-state="selected"] > td[data-pinned] {
-  background: color-mix(in oklch, var(--table-pin-bg), var(--accent-ink) 7%);
+  background: color-mix(in oklab, var(--table-pin-bg), var(--accent-ink) 7%);
 }
 .ui-dt-table :is(th, td)[data-pinned="start"][data-pin-edge] {
   box-shadow: inset calc(-1px * var(--dir)) 0 0 var(--line), calc(6px * var(--dir)) 0 8px -6px rgb(0 0 0 / 0.12);
@@ -397,7 +397,7 @@ del.ui-diff-text { text-decoration: none; }
   font-size: 11px;
   font-weight: 500;
   color: var(--fg-muted);
-  background: color-mix(in oklch, var(--surface-2) 94%, var(--scene));
+  background: color-mix(in oklab, var(--surface-2) 94%, var(--scene));
   border-bottom: 1px solid var(--line);
 }
 .ui-diff-head > span { padding: 0.35rem 0.75rem; }
@@ -456,7 +456,7 @@ del.ui-diff-text { text-decoration: none; }
 /* ------------------------------------------------------------------ */
 
 .ui-audit {
-  --audit-head-bg: color-mix(in oklch, var(--surface) 94%, var(--scene));
+  --audit-head-bg: color-mix(in oklab, var(--surface) 94%, var(--scene));
 }
 .ui-audit-table { border-collapse: separate; border-spacing: 0; }
 .ui-audit-table > thead > tr > th {

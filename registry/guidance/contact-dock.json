@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Local business sites where call, directions and WhatsApp are the main conversions (restaurant, spa, clinic).",
+    "A sticky mobile action bar plus a floating message button on desktop."
+  ],
+  "avoidWhen": [
+    "SaaS or B2B sites where a form is the primary path — use CTA or Contact form.",
+    "Admin apps."
+  ],
+  "related": [
+    "cta",
+    "map-hours",
+    "contact-form",
+    "site-restaurant-01"
+  ],
+  "a11y": [
+    "Each action is a labelled link (tel:, maps, wa.me) with text, not icon-only.",
+    "The bar must not cover the page footer or focused content; content gets bottom padding."
+  ]
+}

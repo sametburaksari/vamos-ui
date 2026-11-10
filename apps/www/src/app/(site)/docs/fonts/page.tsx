@@ -1,4 +1,4 @@
-import { fontCategories, fontPairings, googleFonts } from "@vamos-cms/ui/fonts";
+import { fontCategories, fontPairings, googleFonts } from "@vamos-ui/react/fonts";
 import { A, C, Callout, Code, DocPage, H2, H3, P, Table } from "@/components/docs/prose";
 import { FontCatalog, PairingGallery } from "./specimens";
 
@@ -72,7 +72,7 @@ export default function FontsPage() {
         both Google origins. Calling it again with the same families does nothing.
       </P>
       <Code
-        code={`import { loadGoogleFonts, applyFontPairing, getFontPairing } from "@vamos-cms/ui/fonts";
+        code={`import { loadGoogleFonts, applyFontPairing, getFontPairing } from "@vamos-ui/react/fonts";
 
 await loadGoogleFonts(["Fraunces", "Figtree"], { display: "swap" });
 
@@ -81,7 +81,7 @@ await applyFontPairing(document.documentElement, getFontPairing("boutique")!);`}
       />
       <P>On the server, render the link yourself with the same URL:</P>
       <Code
-        code={`import { googleFontsUrl } from "@vamos-cms/ui/fonts";
+        code={`import { googleFontsUrl } from "@vamos-ui/react/fonts";
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -92,7 +92,7 @@ await applyFontPairing(document.documentElement, getFontPairing("boutique")!);`}
         fonts.
       </P>
       <Code
-        code={`import { FontProvider, createFontPairing } from "@vamos-cms/ui/fonts";
+        code={`import { FontProvider, createFontPairing } from "@vamos-ui/react/fonts";
 
 const brand = createFontPairing({ heading: "Young Serif", body: "Plus Jakarta Sans", mono: "JetBrains Mono" });
 
@@ -114,7 +114,7 @@ const brand = createFontPairing({ heading: "Young Serif", body: "Plus Jakarta Sa
         wait for the CSS (not the font files) and <C>font-display: swap</C> covers the rest.
       </P>
       <Code
-        code={`import { fontBootScript, serializeFontPairing } from "@vamos-cms/ui/fonts";
+        code={`import { fontBootScript, serializeFontPairing } from "@vamos-ui/react/fonts";
 
 // When the user picks:
 localStorage.setItem("vamos-theme", JSON.stringify({ ...theme, fontPairing: serializeFontPairing(pairing) }));
@@ -153,7 +153,7 @@ export const mono = DM_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "
       <Code
         title="app/layout.tsx"
         code={`import { heading, body, mono } from "./fonts";
-import { fontPairings, pairingVars } from "@vamos-cms/ui/fonts";
+import { fontPairings, pairingVars } from "@vamos-ui/react/fonts";
 
 const boutique = fontPairings.find((p) => p.id === "boutique")!;
 // Keep the pairing's display tokens, swap the families for the self-hosted variables.

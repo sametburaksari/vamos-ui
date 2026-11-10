@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Day, week, month and list views of events: appointments, meetings, classes.",
+    "Creating, moving and resizing timed events."
+  ],
+  "avoidWhen": [
+    "Resource rows (staff, rooms) — use Resource calendar.",
+    "Date picking — use Calendar or Date Picker."
+  ],
+  "related": [
+    "resource-calendar",
+    "calendar",
+    "time-picker",
+    "gantt"
+  ],
+  "a11y": [
+    "Events are focusable with time and title in their label; a list view is the accessible fallback.",
+    "Drag operations have a keyboard/dialog alternative."
+  ]
+}

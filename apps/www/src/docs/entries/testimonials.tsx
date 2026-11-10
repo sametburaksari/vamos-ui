@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Customer voices — agency references, Google reviews for a spa or a restaurant, SaaS quotes. figure > blockquote + figcaption with locale quotation marks; no avatar means name only (never an initials circle); star ratings appear only with a named source. The carousel is a ~1 KB scroll-snap island with arrows and a “3 / 8” counter, never autoplaying.",
   source: ["blocks/site/testimonials.tsx", "blocks/site/shared/testimonials-carousel.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
   basedOn: "CSS scroll-snap (carousel)",
-  usage: `import { Testimonials } from "@vamos-cms/ui/blocks";
+  usage: `import { Testimonials } from "@vamos-ui/react/blocks";
 
 <Testimonials
   variant="reviews"

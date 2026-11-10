@@ -1,4 +1,4 @@
-import { ContactForm } from "@vamos-cms/ui/blocks";
+import { ContactForm } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { clinicHours } from "../_site-2/data";
 

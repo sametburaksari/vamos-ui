@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "The \"edit one thing\" page: a sticky publish bar (back, title, save status, actions), a wide content canvas, and a side panel of folding meta boxes — status, permalink, categories, SEO — that remember whether they're open. Below 44rem (704px) of its own width the panel opens as a non-modal sheet; focus mode hides the panel and fades the bar.",
   source: ["components/editor-layout.tsx", "styles/navigation.css"],
   basedOn: "CSS grid + container queries · Radix Collapsible · Tabs · Sheet",
-  usage: `import { EditorLayout, EditorBar, SaveStatus, EditorCanvas, EditorPanel, EditorPanelSection } from "@vamos-cms/ui";
+  usage: `import { EditorLayout, EditorBar, SaveStatus, EditorCanvas, EditorPanel, EditorPanelSection } from "@vamos-ui/react";
 
 <EditorLayout>
   <EditorBar

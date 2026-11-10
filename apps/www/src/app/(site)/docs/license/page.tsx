@@ -1,4 +1,4 @@
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 import { A, C, DocPage, H2, P, Table, UL } from "@/components/docs/prose";
 
 export const metadata = { title: "License" };
@@ -24,7 +24,7 @@ export default function LicensePage() {
     >
       <H2 id="kit">Component kit — MIT</H2>
       <P>
-        <C>@vamos-cms/ui</C>, the docs examples and the registry items are released under the MIT license. Use them in any
+        <C>@vamos-ui/react</C>, the docs examples and the registry items are released under the MIT license. Use them in any
         project, commercial or not. Keep the copyright notice in copied files.
       </P>
 

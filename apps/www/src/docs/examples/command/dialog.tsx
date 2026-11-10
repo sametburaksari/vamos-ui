@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CalendarDays, Contact, FileText, KanbanSquare } from "lucide-react";
-import { Button, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, KbdGroup, useHotkeys } from "@vamos-cms/ui";
+import { Button, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, KbdGroup, useHotkeys } from "@vamos-ui/react";
 
 export default function CommandDialogExample() {
   const [open, setOpen] = React.useState(false);

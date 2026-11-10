@@ -1,4 +1,4 @@
-import { Card, Skeleton, SkeletonGroup } from "@vamos-cms/ui";
+import { Card, Skeleton, SkeletonGroup } from "@vamos-ui/react";
 
 export default function SkeletonDemo() {
   return (

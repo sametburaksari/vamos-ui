@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, RecordPicker, arrayRecordSource } from "@vamos-cms/ui";
+import { Field, RecordPicker, arrayRecordSource } from "@vamos-ui/react";
 
 interface Post {
   id: string;

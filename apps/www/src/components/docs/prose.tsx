@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Info, TriangleAlert } from "lucide-react";
-import { cn } from "@vamos-cms/ui";
+import { cn } from "@vamos-ui/react";
 import { highlight } from "@/lib/highlight";
 import { CodeFrame } from "./code-frame";
 

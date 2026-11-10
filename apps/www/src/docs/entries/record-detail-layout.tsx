@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "The \"show one record\" page: a record header (media, h1, status, key facts, actions, previous/next pager), a main column for tabs, activity and related lists, and a side column of details. It responds to its own width — below 42rem (672px) of layout width the side column moves under the header, its sections fold and the key facts become a scrolling strip. It measures itself, not the viewport.",
   source: ["components/record-detail-layout.tsx", "styles/navigation.css"],
   basedOn: "CSS grid + container queries · Radix Collapsible (aside sections)",
-  usage: `import { RecordLayout, RecordHeader, RecordPager, RecordMain, RecordSection, RecordAside, RecordAsideSection } from "@vamos-cms/ui";
+  usage: `import { RecordLayout, RecordHeader, RecordPager, RecordMain, RecordSection, RecordAside, RecordAsideSection } from "@vamos-ui/react";
 
 <RecordLayout>
   <RecordHeader

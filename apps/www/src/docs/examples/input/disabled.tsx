@@ -1,4 +1,4 @@
-import { Field, Input } from "@vamos-cms/ui";
+import { Field, Input } from "@vamos-ui/react";
 
 export default function InputStates() {
   return (

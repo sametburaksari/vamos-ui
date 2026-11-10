@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DataTable, applyFilters, filterFieldsFromColumns, searchRows, type DataTableColumn, type ListState } from "@vamos-cms/ui/data-table";
+import { DataTable, applyFilters, filterFieldsFromColumns, searchRows, type DataTableColumn, type ListState } from "@vamos-ui/react/data-table";
 import { makeContact, owners, stageOptions, type Contact } from "./_data";
 
 const TOTAL = 12480;

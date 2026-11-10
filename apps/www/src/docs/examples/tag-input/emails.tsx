@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, TagInput } from "@vamos-cms/ui";
+import { Field, TagInput } from "@vamos-ui/react";
 
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || "Not a valid email address";
 

@@ -1,4 +1,4 @@
-import { PageIntro } from "@vamos-cms/ui/blocks";
+import { PageIntro } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Simple: breadcrumb, display-l title, the lead beside it on wide containers. The page's h1.

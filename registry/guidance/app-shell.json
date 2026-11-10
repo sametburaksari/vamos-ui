@@ -1,0 +1,24 @@
+{
+  "whenToUse": [
+    "The frame of every admin app (CMS, CRM, HR, ops): sidebar, top bar, content, ⌘K palette and toasts.",
+    "Multi-app products that share one navigation definition.",
+    "Start every panel screen from a shell-* block, which wires AppShell for you."
+  ],
+  "avoidWhen": [
+    "Public websites — use Navbar and Footer site blocks.",
+    "Full-screen focused flows like sign-in or onboarding wizards."
+  ],
+  "related": [
+    "sidebar",
+    "top-bar",
+    "command",
+    "shell-01",
+    "shell-02",
+    "shell-03",
+    "shell-04"
+  ],
+  "a11y": [
+    "Includes a skip link and a single main landmark; keep one h1 per page inside the content.",
+    "Mobile navigation opens as a sheet with focus trapped and restored."
+  ]
+}

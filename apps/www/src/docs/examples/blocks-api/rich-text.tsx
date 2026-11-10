@@ -1,4 +1,4 @@
-import { RichText, type RichDoc } from "@vamos-cms/ui/blocks";
+import { RichText, type RichDoc } from "@vamos-ui/react/blocks";
 
 // RichDoc → semantic HTML on the server. No editor code ships to the site.
 const policy: RichDoc = {

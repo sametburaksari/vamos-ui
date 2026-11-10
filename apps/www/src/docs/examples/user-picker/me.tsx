@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Field, UserPicker, type PickerUser } from "@vamos-cms/ui";
+import { Badge, Field, UserPicker, type PickerUser } from "@vamos-ui/react";
 
 const agents: PickerUser[] = [
   { id: "a1", name: "Elif Şahin", meta: "Tier 2 support", status: "online" },

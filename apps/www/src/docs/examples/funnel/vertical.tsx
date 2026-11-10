@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Funnel, type FunnelStep } from "@vamos-cms/ui/charts";
+import { Funnel, type FunnelStep } from "@vamos-ui/react/charts";
 
 const hiring: FunnelStep[] = [
   { key: "applied", label: "Applied", value: 486 },

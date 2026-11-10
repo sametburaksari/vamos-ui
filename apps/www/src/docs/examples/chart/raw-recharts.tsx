@@ -1,7 +1,7 @@
 "use client";
 
 import { Area, AreaChart as RAreaChart, Line } from "recharts";
-import { Chart, ChartFrame, ChartGrid, ChartReferenceLine, ChartTooltip, ChartXAxis, ChartYAxis, seriesColor, type ChartConfig } from "@vamos-cms/ui/charts";
+import { Chart, ChartFrame, ChartGrid, ChartReferenceLine, ChartTooltip, ChartXAxis, ChartYAxis, seriesColor, type ChartConfig } from "@vamos-ui/react/charts";
 
 const latency = [
   { hour: "00:00", p50: 112, p95: 284 },

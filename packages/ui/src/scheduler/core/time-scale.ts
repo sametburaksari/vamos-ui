@@ -1,7 +1,7 @@
 /**
  * Time scale: instant ↔ pixel mapping, zoom presets, calendar ticks in an explicit time zone,
  * snapping and visible-window math. Shared by Agenda, Resource calendar and Gantt.
- * React-free (the hook `useTimeScale` lives in `@vamos-cms/ui/sortable`, next to `usePointerDrag`).
+ * React-free (the hook `useTimeScale` lives in `@vamos-ui/react/sortable`, next to `usePointerDrag`).
  */
 import { TZDate } from "@date-fns/tz";
 import {

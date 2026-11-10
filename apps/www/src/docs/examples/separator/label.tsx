@@ -1,4 +1,4 @@
-import { Button, Field, Input, Separator } from "@vamos-cms/ui";
+import { Button, Field, Input, Separator } from "@vamos-ui/react";
 
 export default function SeparatorLabel() {
   return (

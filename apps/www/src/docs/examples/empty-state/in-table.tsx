@@ -1,5 +1,5 @@
 import { CalendarCheck } from "lucide-react";
-import { EmptyState } from "@vamos-cms/ui";
+import { EmptyState } from "@vamos-ui/react";
 
 export default function EmptyStateInTable() {
   return (

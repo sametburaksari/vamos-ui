@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Small interactive content anchored to a trigger: a quick form, a picker, a filter.",
+    "The base for custom pickers."
+  ],
+  "avoidWhen": [
+    "Short non-interactive labels — use Tooltip.",
+    "Tasks that need focus and space — use Dialog.",
+    "Action lists — use Dropdown Menu."
+  ],
+  "related": [
+    "tooltip",
+    "dialog",
+    "dropdown-menu",
+    "hover-card"
+  ],
+  "a11y": [
+    "Labelled by its title; Escape closes and focus returns to the trigger.",
+    "Use Layer + usePortalContainer so it keeps the theme and glass budget."
+  ]
+}

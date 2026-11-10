@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, Badge } from "@vamos-cms/ui";
-import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type KanbanLane, type Stage } from "@vamos-cms/ui/sortable";
+import { Avatar, Badge } from "@vamos-ui/react";
+import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type KanbanLane, type Stage } from "@vamos-ui/react/sortable";
 
 interface Candidate {
   id: string;

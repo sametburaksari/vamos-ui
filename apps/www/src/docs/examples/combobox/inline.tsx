@@ -1,4 +1,4 @@
-import { Combobox, Field } from "@vamos-cms/ui";
+import { Combobox, Field } from "@vamos-ui/react";
 
 const permissions = [
   { value: "posts.read", label: "Read posts", group: "Content" },

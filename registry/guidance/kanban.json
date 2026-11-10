@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Items moving through stage columns: deal pipelines, editorial workflow, recruiting, support.",
+    "WIP limits, column totals and swimlanes."
+  ],
+  "avoidWhen": [
+    "Many records with many attributes — use Data Table.",
+    "Strictly time-based plans — use Gantt."
+  ],
+  "related": [
+    "sortable",
+    "board-01",
+    "funnel",
+    "status-picker"
+  ],
+  "a11y": [
+    "Cards move with the card menu and Alt+arrow keys, not only drag; moves are announced.",
+    "Columns are labelled with name and count."
+  ]
+}

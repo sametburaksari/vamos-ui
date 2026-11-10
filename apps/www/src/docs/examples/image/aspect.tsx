@@ -1,4 +1,4 @@
-import { Image } from "@vamos-cms/ui";
+import { Image } from "@vamos-ui/react";
 
 const src = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80&auto=format&fit=crop";
 const ratios = ["1/1", "4/5", "4/3", "3/2", "16/9", "1.91/1"] as const;

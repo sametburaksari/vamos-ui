@@ -34,7 +34,7 @@ const registry = new Map<string, IdInputRule>([
  * their own (employee numbers, membership codes).
  *
  * ```ts
- * import { trPack } from "@vamos-cms/ui/locale-data";
+ * import { trPack } from "@vamos-ui/react/locale-data";
  * trPack.idRules?.forEach(registerIdRule);
  * registerIdRule({ id: "de-steuer-id", label: "German tax ID", lengths: [11], normalize, validate });
  * ```

@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "The sticky bar above app content: mobile menu, ⌘K search, actions, notifications, user menu."
+  ],
+  "avoidWhen": [
+    "Website headers — use Navbar.",
+    "Page titles — use Page header below it."
+  ],
+  "related": [
+    "app-shell",
+    "sidebar",
+    "notification-center",
+    "command"
+  ],
+  "a11y": [
+    "A banner region; icon buttons have labels and tooltips."
+  ]
+}

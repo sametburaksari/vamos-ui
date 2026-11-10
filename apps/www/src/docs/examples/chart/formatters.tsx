@@ -1,5 +1,5 @@
-import { LocaleProvider } from "@vamos-cms/ui";
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { LocaleProvider } from "@vamos-ui/react";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const revenue = [
   { month: "2026-06-01", revenue: 1_184_000, margin: 0.31 },

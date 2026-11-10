@@ -1,6 +1,6 @@
 // Two site blocks defined once (schema + component), shared by the blocks-api examples.
-import { Container, Section, SectionHeader, BlockImage, BlockLink, RichText, type BlockComponentProps } from "@vamos-cms/ui/blocks";
-import { z, f, defineBlock, createRegistry, type VamosDoc } from "@vamos-cms/ui/blocks/schema";
+import { Container, Section, SectionHeader, BlockImage, BlockLink, RichText, type BlockComponentProps } from "@vamos-ui/react/blocks";
+import { z, f, defineBlock, createRegistry, type VamosDoc } from "@vamos-ui/react/blocks/schema";
 
 const IMG_DINING = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=70&auto=format&fit=crop";
 const IMG_TABLE = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=70&auto=format&fit=crop";
@@ -61,7 +61,7 @@ export const introBlock = defineBlock({
 
 // ---------------------------------------------------------------- Visit (hours + notes)
 
-type VisitProps = BlockComponentProps<{ title: string; body: import("@vamos-cms/ui/blocks").RichDoc; hours: { days: string; time: string }[] }>;
+type VisitProps = BlockComponentProps<{ title: string; body: import("@vamos-ui/react/blocks").RichDoc; hours: { days: string; time: string }[] }>;
 
 export function Visit({ id = "visit", title, body, hours, headingLevel = 2, theme, anchor, components, editMode }: VisitProps) {
   const hid = `${id}-title`;

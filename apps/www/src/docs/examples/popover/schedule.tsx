@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CalendarClock } from "lucide-react";
-import { Badge, Button, Field, Input, Popover, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger } from "@vamos-cms/ui";
+import { Badge, Button, Field, Input, Popover, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger } from "@vamos-ui/react";
 
 export default function PopoverSchedule() {
   const [open, setOpen] = React.useState(false);

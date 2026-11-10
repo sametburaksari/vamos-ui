@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, rangeLength, type CalendarMarker, type IsoDateRange } from "@vamos-cms/ui";
+import { Calendar, rangeLength, type CalendarMarker, type IsoDateRange } from "@vamos-ui/react";
 
 // Time-off request: the team's existing absences under each day.
 const absences: Record<string, CalendarMarker[]> = {

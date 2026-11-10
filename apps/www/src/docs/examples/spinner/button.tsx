@@ -1,5 +1,5 @@
 import { Upload } from "lucide-react";
-import { Button, IconButton } from "@vamos-cms/ui";
+import { Button, IconButton } from "@vamos-ui/react";
 
 export default function SpinnerInButton() {
   // Buttons render a decorative Spinner and set aria-busy themselves.

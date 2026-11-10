@@ -1,4 +1,4 @@
-import { BlogList } from "@vamos-cms/ui/blocks";
+import { BlogList } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { photos, more } from "../_site-2/data";
 

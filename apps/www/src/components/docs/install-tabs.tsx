@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@vamos-cms/ui";
+import { cn } from "@vamos-ui/react";
 import { CodeFrame } from "./code-frame";
 
 const pms = {
@@ -29,7 +29,7 @@ export function InstallTabs({ slug, deps, sources }: { slug: string; deps: strin
   const [pm, setPm] = React.useState<keyof typeof pms>("pnpm");
   const cmd =
     mode === "Package"
-      ? pms[pm]("{add} @vamos-cms/ui")
+      ? pms[pm]("{add} @vamos-ui/react")
       : pms[pm](`{x} vamos-ui add ${slug}`);
 
   return (
@@ -51,7 +51,7 @@ export function InstallTabs({ slug, deps, sources }: { slug: string; deps: strin
           </div>
           <p className="text-[12.5px] text-fg-subtle">
             {mode === "Package"
-              ? "The whole kit as one package — get updates by bumping the version. Add the styles to globals.css: @import \"@vamos-cms/ui/styles.css\";"
+              ? "The whole kit as one package — get updates by bumping the version. Add the styles to globals.css: @import \"@vamos-ui/react/styles.css\";"
               : "Copies just this component into your project. The code is yours to change, and vamos-ui diff/upgrade can still bring in fixes later. Available once the registry is published."}
           </p>
         </>

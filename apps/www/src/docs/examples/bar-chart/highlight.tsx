@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const posts = [
   { month: "2026-05-01", published: 34 },

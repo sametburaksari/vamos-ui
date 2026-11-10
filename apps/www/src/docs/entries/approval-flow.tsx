@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Shows and acts on a multi-stage approval: sequential and parallel stages (\"all of\" / \"any of\"), approvers with decisions, timestamps and comments, rule conditions, SLA deadlines and delegation. ApprovalActions confirms each decision in a dialog with a note; ApprovalSummary is the one-line status for table rows.",
   source: ["business/approval-flow.tsx"],
   basedOn: "Avatar · Badge · Dialog · Select",
-  usage: `import { ApprovalFlow, ApprovalActions, ApprovalSummary } from "@vamos-cms/ui/business";
+  usage: `import { ApprovalFlow, ApprovalActions, ApprovalSummary } from "@vamos-ui/react/business";
 
 <ApprovalFlow requester={{ name: "Deniz Aydın", at: request.createdAt }} stages={request.stages} />
 <ApprovalActions canAct={me.isApprover} onApprove={approve} onReject={reject} onRequestChanges={sendBack} />

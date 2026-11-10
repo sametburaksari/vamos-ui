@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Field, Input, Textarea } from "@vamos-cms/ui";
-import { LengthMeter, SearchPreview } from "@vamos-cms/ui/media";
+import { Field, Input, Textarea } from "@vamos-ui/react";
+import { LengthMeter, SearchPreview } from "@vamos-ui/react/media";
 
 // The SEO panel of a post editor: meters count graphemes and rendered pixels.
 export default function LinkPreviewsLengthMeter() {

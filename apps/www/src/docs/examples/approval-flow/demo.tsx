@@ -1,4 +1,4 @@
-import { ApprovalFlow, type ApprovalStageData } from "@vamos-cms/ui/business";
+import { ApprovalFlow, type ApprovalStageData } from "@vamos-ui/react/business";
 
 // HR time-off request: Employee → Manager → HR, sequential.
 const stages: ApprovalStageData[] = [

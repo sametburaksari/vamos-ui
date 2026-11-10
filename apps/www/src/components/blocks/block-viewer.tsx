@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import { Eye, Code2, Monitor, Tablet, Smartphone, ExternalLink, FileCode2, Terminal } from "lucide-react";
-import { cn, IconButton } from "@vamos-cms/ui";
+import { cn, IconButton } from "@vamos-ui/react";
 import { CopyButton } from "../docs/copy-button";
+import { LazyFrame } from "./lazy-frame";
 
 export interface BlockFile { path: string; html: string; raw: string }
 
@@ -21,10 +22,10 @@ export function BlockViewer({ name, title, description, files }: { name: string;
   const cli = `npx vamos-ui add ${name}`;
 
   return (
-    <section id={name} className="scroll-mt-20">
+    <section id={name} aria-labelledby={`${name}-title`} className="scroll-mt-20">
       <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-[17px] font-semibold tracking-[-0.01em]">{title} <span className="ms-1 font-mono text-[12px] font-normal text-fg-subtle">{name}</span></h2>
+          <h2 id={`${name}-title`} className="text-[17px] font-semibold tracking-[-0.01em]">{title} <span className="ms-1 font-mono text-[12px] font-normal text-fg-subtle">{name}</span></h2>
           <p className="mt-0.5 max-w-2xl text-[13.5px] text-fg-muted">{description}</p>
         </div>
         <div className="flex items-center gap-1.5">
@@ -55,7 +56,7 @@ export function BlockViewer({ name, title, description, files }: { name: string;
       {tab === "preview" ? (
         <div className="preview-stage overflow-hidden rounded-ui-lg border border-line bg-scene p-0">
           <div className="mx-auto transition-[width] duration-300" style={{ width: widths[size], maxWidth: "100%" }}>
-            <iframe src={`/view/${name}`} title={`${title} preview`} loading="lazy" className="block h-[760px] w-full border-0 bg-scene" />
+            <LazyFrame src={`/view/${name}`} title={`${title} preview`} className="h-[760px] w-full" />
           </div>
         </div>
       ) : (

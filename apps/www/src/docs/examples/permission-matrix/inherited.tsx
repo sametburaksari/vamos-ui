@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-cms/ui/business";
+import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-ui/react/business";
 
 const resources: PermissionResource[] = [
   { id: "employees", label: "Employees", description: "Profiles and job history" },

@@ -1,6 +1,6 @@
 "use client";
 
-import { NotificationCenter, NotificationItem, createMemoryNotificationAdapter, toast } from "@vamos-cms/ui";
+import { NotificationCenter, NotificationItem, createMemoryNotificationAdapter, toast } from "@vamos-ui/react";
 import { inboxSeed } from "./data";
 
 const approvals = inboxSeed().filter((n) => n.actions);

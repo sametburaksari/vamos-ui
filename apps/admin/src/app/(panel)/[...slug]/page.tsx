@@ -1,6 +1,6 @@
 import { Construction } from "lucide-react";
-import { Card } from "@vamos-cms/ui";
-import { PageHeader } from "@vamos-cms/ui";
+import { Card } from "@vamos-ui/react";
+import { PageHeader } from "@vamos-ui/react";
 
 export default async function Placeholder({ params }: { params: Promise<{ slug: string[] }> }) {
   const { slug } = await params;

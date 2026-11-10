@@ -1,4 +1,4 @@
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const reps = [
   { rep: "Maya Chen", won: 184_000 },

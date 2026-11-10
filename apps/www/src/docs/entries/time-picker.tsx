@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "A time of day for meetings, shifts, pickups and opening hours. Segmented input where each part is a spinbutton (type digits, ↑ ↓, ← →), an optional slot list every N minutes, and a start–end range with duration. The value is always \"HH:mm\" 24h; the display follows the locale (2:30 PM / 14:30).",
   source: ["components/time-picker.tsx", "lib/date.ts"],
   basedOn: "WAI-ARIA spinbutton + Radix Popover",
-  usage: `import { Field, TimePicker } from "@vamos-cms/ui";
+  usage: `import { Field, TimePicker } from "@vamos-ui/react";
 
 <Field label="Meeting starts">
   <TimePicker value={time} onValueChange={setTime} slots step={30} />

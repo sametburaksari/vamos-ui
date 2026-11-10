@@ -1,5 +1,5 @@
 import { FileText, Receipt } from "lucide-react";
-import { Avatar, Card, Checkbox, Item, ItemContent, ItemDescription, ItemLeading, ItemList, ItemMeta, ItemTitle } from "@vamos-cms/ui";
+import { Avatar, Card, Checkbox, Item, ItemContent, ItemDescription, ItemLeading, ItemList, ItemMeta, ItemTitle } from "@vamos-ui/react";
 
 export default function ItemLeadingExample() {
   return (

@@ -1,4 +1,4 @@
-import { Badge, Carousel, CarouselDots, CarouselSlide, CarouselViewport, Image } from "@vamos-cms/ui";
+import { Badge, Carousel, CarouselDots, CarouselSlide, CarouselViewport, Image } from "@vamos-ui/react";
 
 const stays = [
   { id: "s1", name: "Moda loft with sea view", area: "Kadıköy", price: "$142", rating: "4.92", photo: "photo-1502672260266-1c1ef2d93688", alt: "Bright living room with a grey sofa and tall windows" },

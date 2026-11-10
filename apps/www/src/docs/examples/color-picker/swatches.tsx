@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Badge, ColorSwatchPicker, Field } from "@vamos-cms/ui";
+import { Badge, ColorSwatchPicker, Field } from "@vamos-ui/react";
 
 const palette = [
   { value: "#2f6fd6", name: "Blue" },

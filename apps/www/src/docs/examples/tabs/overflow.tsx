@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@vamos-cms/ui";
+import { Tabs, TabsList, TabsTrigger } from "@vamos-ui/react";
 
 const sections = ["General", "Branding", "Domains", "Members", "Roles", "Billing", "Integrations", "Webhooks", "API keys", "Audit log", "Data export", "Danger zone"];
 

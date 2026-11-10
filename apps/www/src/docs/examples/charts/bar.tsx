@@ -1,4 +1,4 @@
-import { BarChart, BarList, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, BarList, type ChartConfig } from "@vamos-ui/react/charts";
 
 const stages = [
   { stage: "Lead", deals: 412_000 },

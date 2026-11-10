@@ -1,4 +1,4 @@
-import { Combobox, Field } from "@vamos-cms/ui";
+import { Combobox, Field } from "@vamos-ui/react";
 
 const countries = [
   { value: "de", label: "Germany", keywords: ["Deutschland"] },

@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description: "A rich preview when the pointer rests on a name or link: an author, a CRM contact, an @mention. Extra information for mouse users only.",
   source: ["components/hover-card.tsx", "lib/floating-arrow.tsx"],
   basedOn: "Radix Hover Card",
-  usage: `import { HoverCard, HoverCardTrigger, HoverCardContent } from "@vamos-cms/ui";
+  usage: `import { HoverCard, HoverCardTrigger, HoverCardContent } from "@vamos-ui/react";
 
 <HoverCard>
   <HoverCardTrigger href="/contacts/482">Amelia Hart</HoverCardTrigger>

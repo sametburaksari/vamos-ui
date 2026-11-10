@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Editing what a role or plan may do: resources × actions with checkboxes or scopes.",
+    "Admin role editors and plan feature toggles."
+  ],
+  "avoidWhen": [
+    "Assigning roles to users — use Data Table with Select.",
+    "A handful of yes/no settings — use Switch rows."
+  ],
+  "related": [
+    "users-roles-01",
+    "checkbox",
+    "table"
+  ],
+  "a11y": [
+    "A real grid with row and column headers; each cell control names resource and action.",
+    "Scope levels are announced by name, not fill level."
+  ]
+}

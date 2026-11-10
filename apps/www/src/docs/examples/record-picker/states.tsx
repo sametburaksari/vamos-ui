@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, RecordPicker, arrayRecordSource } from "@vamos-cms/ui";
+import { Field, RecordPicker, arrayRecordSource } from "@vamos-ui/react";
 
 const owners = [
   { id: "acc_1", name: "Harbor & Pine Legal", plan: "Scale" },

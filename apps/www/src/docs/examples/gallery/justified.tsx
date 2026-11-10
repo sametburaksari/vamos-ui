@@ -1,4 +1,4 @@
-import { Gallery, type MediaSource } from "@vamos-cms/ui/media";
+import { Gallery, type MediaSource } from "@vamos-ui/react/media";
 
 const url = (id: string, w: number, h: number) => `https://images.unsplash.com/${id}?w=${w}&h=${h}&q=75&auto=format&fit=crop`;
 

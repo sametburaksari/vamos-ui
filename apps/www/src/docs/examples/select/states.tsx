@@ -1,4 +1,4 @@
-import { Field, Select } from "@vamos-cms/ui";
+import { Field, Select } from "@vamos-ui/react";
 
 const currencies = [
   { value: "usd", label: "USD — US dollar" },

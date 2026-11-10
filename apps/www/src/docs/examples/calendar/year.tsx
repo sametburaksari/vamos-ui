@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, type CalendarMarker } from "@vamos-cms/ui";
+import { Calendar, type CalendarMarker } from "@vamos-ui/react";
 
 // Support tickets closed per day (deterministic sample data).
 function density(year: number): Record<string, CalendarMarker[]> {

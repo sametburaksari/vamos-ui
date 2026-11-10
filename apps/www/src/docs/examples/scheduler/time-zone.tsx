@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Scheduler, type SchedulerEvent } from "@vamos-cms/ui/scheduler";
+import { Scheduler, type SchedulerEvent } from "@vamos-ui/react/scheduler";
 
 // Stored once, in UTC. Each scheduler shows them in its own explicit zone.
 const events: SchedulerEvent[] = [

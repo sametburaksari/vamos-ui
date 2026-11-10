@@ -9,7 +9,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   IconButton,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 const folders = [
   { name: "Campaigns", count: 214 },

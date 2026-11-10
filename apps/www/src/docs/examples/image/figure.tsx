@@ -1,4 +1,4 @@
-import { Figure, FigureCaption, Image } from "@vamos-cms/ui";
+import { Figure, FigureCaption, Image } from "@vamos-ui/react";
 
 export default function ImageFigure() {
   return (

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Stage-by-stage conversion: leads → qualified → won, visit → cart → checkout.",
+    "Showing drop-off and overall conversion with amounts."
+  ],
+  "avoidWhen": [
+    "Unordered category comparison — use Bar chart.",
+    "Working on deals per stage — use Kanban."
+  ],
+  "related": [
+    "bar-chart",
+    "dashboard-02",
+    "kanban"
+  ],
+  "a11y": [
+    "Each stage states its value and conversion in text.",
+    "Do not encode stages by colour alone."
+  ]
+}

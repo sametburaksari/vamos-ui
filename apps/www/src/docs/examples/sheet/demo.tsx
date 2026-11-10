@@ -1,4 +1,4 @@
-import { Button, Field, Input, Sheet, SheetBody, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, Textarea } from "@vamos-cms/ui";
+import { Button, Field, Input, Sheet, SheetBody, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, Textarea } from "@vamos-ui/react";
 
 export default function SheetDemo() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Checkbox, Field, SignaturePad, type SignatureValue } from "@vamos-cms/ui";
+import { Button, Checkbox, Field, SignaturePad, type SignatureValue } from "@vamos-ui/react";
 
 export default function SignatureConsentForm() {
   const [signature, setSignature] = React.useState<SignatureValue | null>(null);

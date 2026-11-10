@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Choose a number or a range by dragging: a price filter, a salary band, deal probability, image opacity. Marks, a value bubble, synced number inputs, and Intl formatting with the provider locale.",
   source: ["components/slider.tsx", "components/input.tsx", "lib/locale.tsx"],
   basedOn: "Radix Slider",
-  usage: `import { Field, Slider } from "@vamos-cms/ui";
+  usage: `import { Field, Slider } from "@vamos-ui/react";
 
 <Field label="Price per night">
   <Slider

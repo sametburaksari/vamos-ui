@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Representing a person or organisation in rows, cards, comments, pickers and menus.",
+    "Stacked participants with AvatarGroup (+N overflow).",
+    "Presence (online, away) next to a person."
+  ],
+  "avoidWhen": [
+    "Decorative illustrations or product images — use Image.",
+    "Status labels — use Badge."
+  ],
+  "related": [
+    "user-picker",
+    "entity-card",
+    "item",
+    "hover-card"
+  ],
+  "a11y": [
+    "Give the person's name as alt or adjacent text; when the name is already visible, mark the avatar decorative.",
+    "Presence must also be available as text (aria-label or tooltip)."
+  ]
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, LocaleProvider } from "@vamos-cms/ui";
+import { Calendar, LocaleProvider } from "@vamos-ui/react";
 
 export default function CalendarWeekNumbers() {
   return (

@@ -17,7 +17,7 @@ const entry: DocEntry = {
     "The shell every chart shares: series mapped to colour tokens, locale-aware formatting, an interactive legend, loading / refreshing / empty / error states, a generated text summary and a data-table alternative. Ready charts sit on top of it; raw Recharts works inside it too.",
   source: ["charts/chart-shell.tsx", "charts/chart.tsx", "charts/utils.ts"],
   basedOn: "Recharts 3",
-  usage: `import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+  usage: `import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const config = {
   visits: { label: "Visits" },
@@ -77,7 +77,7 @@ const config = {
     ] },
   ],
   notes: [
-    "Recharts loads only through @vamos-cms/ui/charts — pages without charts never ship it.",
+    "Recharts loads only through @vamos-ui/react/charts — pages without charts never ship it.",
     "Tooltips are opaque (--chart-tooltip) and never blur, even in glass mode: they re-render on every pointer move.",
     "Strokes and text never use the raw accent (lime fails contrast on white); chart-1 is accent-ink.",
   ],

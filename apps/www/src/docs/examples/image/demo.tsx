@@ -1,5 +1,5 @@
-import { Image } from "@vamos-cms/ui";
-import type { MediaAsset } from "@vamos-cms/ui/media";
+import { Image } from "@vamos-ui/react";
+import type { MediaAsset } from "@vamos-ui/react/media";
 
 const cover: MediaAsset = {
   id: "m_4821",

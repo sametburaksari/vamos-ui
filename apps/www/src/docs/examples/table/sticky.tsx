@@ -1,4 +1,4 @@
-import { Card, Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
+import { Card, Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const pages = [

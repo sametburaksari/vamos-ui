@@ -1,4 +1,4 @@
-import { Card, CardBody, Prose, ProseTable } from "@vamos-cms/ui";
+import { Card, CardBody, Prose, ProseTable } from "@vamos-ui/react";
 
 export default function TypographyProse() {
   return (

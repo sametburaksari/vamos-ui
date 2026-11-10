@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Alert, Input, SettingsLayout, SettingsRow, SettingsSection, Switch, ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
+import { Alert, Input, SettingsLayout, SettingsRow, SettingsSection, Switch, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 
 // Profile settings while loading, and read-only for members without the "settings.edit" permission.
 export default function SettingsLayoutStates() {

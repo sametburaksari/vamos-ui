@@ -12,7 +12,7 @@ const entry: DocEntry = {
   description:
     "Shows position and status in an ordered process — import wizards, onboarding, approvals, checkout. Horizontal or vertical, four variants, error / skipped / loading states and clickable completed steps.",
   source: ["components/stepper.tsx"],
-  usage: `import { Stepper } from "@vamos-cms/ui";
+  usage: `import { Stepper } from "@vamos-ui/react";
 
 <Stepper value={1} steps={[
   { title: "Upload" }, { title: "Map columns" }, { title: "Review" }, { title: "Import" },

@@ -1,6 +1,6 @@
 // Sample media for the Media library, Media picker and Image field examples.
 // In an app, swap createMemoryAdapter for createRestAdapter({ baseUrl: "/api" }).
-import { createMemoryAdapter, type MediaAsset, type MediaFolder } from "@vamos-cms/ui/media";
+import { createMemoryAdapter, type MediaAsset, type MediaFolder } from "@vamos-ui/react/media";
 
 const unsplash = (id: string, w: number) => `https://images.unsplash.com/${id}?w=${w}&q=78&auto=format&fit=crop`;
 

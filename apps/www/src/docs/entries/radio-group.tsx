@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Pick exactly one of a small set — post visibility, invoice type, a plan. Classic radios with descriptions, selectable cards, or a compact segmented control. One tab stop, arrow keys move and select.",
   source: ["components/radio-group.tsx", "lib/field-context.tsx", "styles/forms.css"],
   basedOn: "Radix Radio Group",
-  usage: `import { Field, RadioGroup } from "@vamos-cms/ui";
+  usage: `import { Field, RadioGroup } from "@vamos-ui/react";
 
 <Field label="Visibility">
   <RadioGroup

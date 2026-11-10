@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button, Dialog, DialogBody, DialogContent, DialogHeader, DialogTrigger, Field, Input, Textarea } from "@vamos-cms/ui";
-import { MultiStepForm, MultiStepFormFooter, MultiStepFormStep, MultiStepFormStepper } from "@vamos-cms/ui/business";
+import { Button, Dialog, DialogBody, DialogContent, DialogHeader, DialogTrigger, Field, Input, Textarea } from "@vamos-ui/react";
+import { MultiStepForm, MultiStepFormFooter, MultiStepFormStep, MultiStepFormStepper } from "@vamos-ui/react/business";
 
 export default function MultiStepFormDialog() {
   const [open, setOpen] = React.useState(false);

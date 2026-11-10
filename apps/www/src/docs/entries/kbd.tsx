@@ -13,7 +13,7 @@ const entry: DocEntry = {
   description:
     "Shows keyboard keys and shortcuts. Platform-aware: mod renders as ⌘ on Apple devices and Ctrl elsewhere, with spoken key names for screen readers.",
   source: ["components/kbd.tsx", "lib/use-hotkeys.ts"],
-  usage: `import { Kbd, KbdGroup } from "@vamos-cms/ui";
+  usage: `import { Kbd, KbdGroup } from "@vamos-ui/react";
 
 <Kbd>Esc</Kbd>
 <KbdGroup keys="mod+k" />`,

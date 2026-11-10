@@ -1,6 +1,6 @@
 "use client";
 
-import { BlockEditor } from "@vamos-cms/ui/editor";
+import { BlockEditor } from "@vamos-ui/react/editor";
 
 const sample = `## Spring opening hours
 

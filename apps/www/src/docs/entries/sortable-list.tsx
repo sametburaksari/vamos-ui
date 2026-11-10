@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Ready reorderable lists, grids and nested trees: menu builders, category order, onboarding steps, dashboard tiles, territory trees. Every item has a drag handle and a Move menu (up, down, top, bottom, and for trees indent, outdent and move into…), so nothing requires dragging. Trees pick the depth from the horizontal drag offset and enforce a max depth and your own drop rules.",
   source: ["sortable/sortable-tree.tsx", "sortable/sortable-list.tsx", "sortable/core.ts"],
   basedOn: "Sortable (dnd-kit, internal) + Tree view semantics",
-  usage: `import { SortableList, SortableGrid, SortableTree, moveTreeNode } from "@vamos-cms/ui/sortable";
+  usage: `import { SortableList, SortableGrid, SortableTree, moveTreeNode } from "@vamos-ui/react/sortable";
 
 <SortableList aria-label="Steps" items={steps} onReorder={setSteps} renderItem={(s) => s.title} />
 

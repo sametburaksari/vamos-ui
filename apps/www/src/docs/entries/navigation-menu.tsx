@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "A website's top navigation with dropdown and mega-menu panels, a floating glass variant, and a matching mobile sheet — all from one nav array. Admin panels use Sidebar instead.",
   source: ["components/navigation-menu.tsx", "components/accordion.tsx", "styles/navigation.css"],
   basedOn: "Radix Navigation Menu, Radix Dialog (mobile)",
-  usage: `import { NavigationMenu, MobileNav, type SiteNavItem } from "@vamos-cms/ui";
+  usage: `import { NavigationMenu, MobileNav, type SiteNavItem } from "@vamos-ui/react";
 
 const nav: SiteNavItem[] = [
   { label: "Products", children: [{ label: "vTag", href: "/vtag", description: "NFC business cards" }] },

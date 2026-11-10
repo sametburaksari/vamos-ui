@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "User-sized panes for split views: inbox + message, media grid + details, editor + preview. Keyboard resizing, pixel or percent limits, collapsible panes, nested groups and a remembered layout.",
   source: ["components/resizable.tsx", "styles/navigation.css"],
   basedOn: "react-resizable-panels v4",
-  usage: `import { ResizableGroup, ResizablePanel, ResizableHandle } from "@vamos-cms/ui";
+  usage: `import { ResizableGroup, ResizablePanel, ResizableHandle } from "@vamos-ui/react";
 
 <ResizableGroup autoSaveId="inbox" className="h-[560px]">
   <ResizablePanel id="list" defaultSize="35%" minSize="25%">…</ResizablePanel>

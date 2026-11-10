@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Button, EditorBar, EditorCanvas, EditorLayout, EditorPanel, EditorPanelSection, Input, SaveStatus } from "@vamos-cms/ui";
+import { Alert, Button, EditorBar, EditorCanvas, EditorLayout, EditorPanel, EditorPanelSection, Input, SaveStatus } from "@vamos-ui/react";
 
 // Narrow container: the panel opens as a non-modal sheet from the bar; the bar keeps the primary
 // action and moves the rest into "⋯". The read-only variant locks the panel and hides actions.

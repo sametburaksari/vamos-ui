@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "Single-line and multi-line text entry; Field wraps any control with label, hint and error.",
+    "Fieldset to group related fields with a legend."
+  ],
+  "avoidWhen": [
+    "Formatted business values (money, phone, IBAN) — use Formatted inputs.",
+    "Picking from options — use Select or Combobox.",
+    "Rich content — use Block editor."
+  ],
+  "related": [
+    "formatted-input",
+    "select",
+    "combobox",
+    "tag-input",
+    "slug-input"
+  ],
+  "a11y": [
+    "Always wrap in Field with a visible label; placeholders are not labels.",
+    "Errors are linked with aria-describedby and set aria-invalid."
+  ]
+}

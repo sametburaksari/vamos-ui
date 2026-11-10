@@ -1,0 +1,11 @@
+@font-face{font-family:'__Inter_d65c78';font-style:normal;font-weight:100 900;font-display:swap;src:url(/_next/static/media/a34f9d1faa5f3315-s.p.woff2) format('woff2')}
+@font-face{font-family:'__Inter_Fallback_d65c78';src:local("Arial");ascent-override:90.20%}
+.__className_d65c78{font-family:'__Inter_d65c78','__Inter_Fallback_d65c78';font-style:normal}
+.__variable_d65c78{--font-sans:'__Inter_d65c78','__Inter_Fallback_d65c78'}
+:root{--background:0 0% 100%;--foreground:222 47% 11%;--primary:192 91% 31%;--primary-foreground:0 0% 100%;--radius:9999px}
+.dark{--background:222 47% 6%;--foreground:210 40% 98%;--primary:187 92% 69%;--primary-foreground:222 47% 11%}
+body{background-color:hsl(var(--background));color:hsl(var(--foreground))}
+.bg-primary{background-color:hsl(var(--primary))}
+.text-primary-foreground{color:hsl(var(--primary-foreground))}
+.rounded-full{border-radius:9999px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}

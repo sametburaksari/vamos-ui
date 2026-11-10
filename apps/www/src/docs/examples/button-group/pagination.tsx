@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ButtonGroup, ButtonGroupText, IconButton, useFormat } from "@vamos-cms/ui";
+import { ButtonGroup, ButtonGroupText, IconButton, useFormat } from "@vamos-ui/react";
 
 const TOTAL = 340;
 const PER_PAGE = 20;

@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Customer quotes, Google reviews and references on websites."
+  ],
+  "avoidWhen": [
+    "Unsourced or invented quotes.",
+    "In-app comments — use Comment thread."
+  ],
+  "related": [
+    "logo-strip",
+    "stats-band",
+    "carousel"
+  ],
+  "a11y": [
+    "figure > blockquote + figcaption so quotes are attributed.",
+    "Star ratings are given in text (4.8 out of 5)."
+  ]
+}

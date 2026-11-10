@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BookOpen, Component, LayoutTemplate, Palette } from "lucide-react";
-import { AppShell, AppShellProvider, PageHeader, type AppDefinition } from "@vamos-cms/ui";
+import { AppShell, AppShellProvider, PageHeader, type AppDefinition } from "@vamos-ui/react";
 import { ShellFrame } from "./demo-kit";
 
 // App definitions hold components (icons), so define them in a client module.

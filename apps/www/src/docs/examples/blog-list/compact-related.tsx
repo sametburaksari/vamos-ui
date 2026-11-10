@@ -1,4 +1,4 @@
-import { BlogList } from "@vamos-cms/ui/blocks";
+import { BlogList } from "@vamos-ui/react/blocks";
 import { posts } from "../_site-2/data";
 
 // Compact: titles and dates only, for sidebars, footers and "related posts".

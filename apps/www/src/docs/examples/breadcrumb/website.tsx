@@ -1,4 +1,4 @@
-import { Breadcrumb } from "@vamos-cms/ui";
+import { Breadcrumb } from "@vamos-ui/react";
 
 // Product page on a shop: also outputs schema.org BreadcrumbList JSON-LD for search results.
 export default function BreadcrumbWebsite() {

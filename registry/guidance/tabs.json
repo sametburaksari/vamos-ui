@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Switching between views of the same context: record sections, status filters, List/Grid.",
+    "Route-based tabs under a page header."
+  ],
+  "avoidWhen": [
+    "Sequential steps — use Stepper.",
+    "Comparing content side by side.",
+    "More than ~7 tabs — use a Select or sidebar section nav."
+  ],
+  "related": [
+    "accordion",
+    "saved-views",
+    "button-group",
+    "page-header"
+  ],
+  "a11y": [
+    "Follows the tabs pattern: arrow keys move, panels are labelled by tabs.",
+    "Counts are part of the tab's accessible name."
+  ]
+}

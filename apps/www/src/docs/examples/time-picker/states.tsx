@@ -1,4 +1,4 @@
-import { Field, TimeInput } from "@vamos-cms/ui";
+import { Field, TimeInput } from "@vamos-ui/react";
 
 export default function TimePickerStates() {
   return (

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Files attached to a record: contracts on a deal, employee documents, post downloads.",
+    "A compact list with download, preview and remove actions."
+  ],
+  "avoidWhen": [
+    "Browsing and managing a whole file store — use Media library.",
+    "Uploading new files — pair with or use File upload."
+  ],
+  "related": [
+    "file-upload",
+    "media-library",
+    "lightbox",
+    "record-detail-layout"
+  ],
+  "a11y": [
+    "Each row's actions name the file (Download contract.pdf).",
+    "File type is given in text, not only by the tinted icon."
+  ]
+}

@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Change a record's status inside a workflow — task To do → Done, deal stages, content Draft → Published, leave Pending → Approved. The trigger is the status badge itself. Every status has a category with its own icon (shape, not only colour), transitions not allowed from the current status stay visible with the reason, a transition can ask for confirmation and a note, and async saves are optimistic and revert on failure.",
   source: ["components/status-picker.tsx", "components/badge.tsx", "components/alert-dialog.tsx"],
   basedOn: "Radix Select + Alert Dialog",
-  usage: `import { StatusPicker, type StatusDef } from "@vamos-cms/ui";
+  usage: `import { StatusPicker, type StatusDef } from "@vamos-ui/react";
 
 const statuses: StatusDef[] = [
   { value: "todo", label: "To do", category: "todo" },

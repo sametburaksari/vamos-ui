@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "URL segments derived from a title with locale transliteration.",
+    "Permalink fields in CMS editors and settings."
+  ],
+  "avoidWhen": [
+    "General text — use Input."
+  ],
+  "related": [
+    "input",
+    "editor-01",
+    "link-previews"
+  ],
+  "a11y": [
+    "Shows the full URL preview as text; the lock/edit toggle is labelled.",
+    "Wrap in Field."
+  ]
+}

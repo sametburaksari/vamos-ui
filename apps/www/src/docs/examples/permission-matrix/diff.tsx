@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { toast } from "@vamos-cms/ui";
-import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-cms/ui/business";
+import { toast } from "@vamos-ui/react";
+import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-ui/react/business";
 
 const resources: PermissionResource[] = [
   { id: "resellers", label: "Resellers", group: "Partners" },

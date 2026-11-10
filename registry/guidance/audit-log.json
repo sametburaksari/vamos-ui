@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A security or compliance ledger: sign-ins, permission changes, exports, deletions with actor, IP and severity.",
+    "Admin settings pages where investigators filter and expand events."
+  ],
+  "avoidWhen": [
+    "Friendly record history for everyday users — use Activity timeline.",
+    "Content revisions with restore — use Version history."
+  ],
+  "related": [
+    "activity-timeline",
+    "version-history",
+    "data-table",
+    "filter-bar"
+  ],
+  "a11y": [
+    "Expandable rows use buttons with aria-expanded; severity is spelled out, not colour-only.",
+    "Timestamps show the time zone explicitly."
+  ]
+}

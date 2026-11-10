@@ -13,7 +13,7 @@ const entry: DocEntry = {
   description:
     "Points to the next step when a list is empty, a search finds nothing, access is denied or something failed. Five kinds with default icons and copy, three sizes, an illustration slot and a dashed frame. Server-compatible.",
   source: ["components/empty-state.tsx", "styles/overlays.css"],
-  usage: `import { EmptyState, Button } from "@vamos-cms/ui";
+  usage: `import { EmptyState, Button } from "@vamos-ui/react";
 
 <EmptyState
   title="No posts yet"

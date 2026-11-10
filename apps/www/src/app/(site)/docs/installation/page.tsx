@@ -51,19 +51,19 @@ export default function InstallationPage() {
           <Code lang="bash" code="pnpm create next-app@latest my-panel --typescript --tailwind --app" />
         </Step>
         <Step title="Install the kit">
-          <Code lang="bash" code="pnpm add @vamos-cms/ui" />
+          <Code lang="bash" code="pnpm add @vamos-ui/react" />
           <P>The package ships TypeScript source. Let Next compile it:</P>
           <Code title="next.config.ts" code={`import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  transpilePackages: ["@vamos-cms/ui"],
+  transpilePackages: ["@vamos-ui/react"],
 };
 
 export default config;`} />
         </Step>
         <Step title="Import the styles">
           <Code lang="css" title="app/globals.css" code={`@import "tailwindcss";
-@import "@vamos-cms/ui/styles.css";`} />
+@import "@vamos-ui/react/styles.css";`} />
         </Step>
         <Step title="Load the fonts">
           <P>The <C>data-font</C> axis reads <C>--ff-*</C> variables. Load the fonts of the presets you use:</P>
@@ -77,7 +77,7 @@ export default config;`} />
           <Code title="app/layout.tsx" code={htmlCode} />
         </Step>
         <Step title="Use a component">
-          <Code code={`import { Button } from "@vamos-cms/ui";
+          <Code code={`import { Button } from "@vamos-ui/react";
 
 export default function Page() {
   return <Button variant="primary">Publish</Button>;

@@ -1,4 +1,4 @@
-import { SetupChecklist } from "@vamos-cms/ui/business";
+import { SetupChecklist } from "@vamos-ui/react/business";
 
 export default function SetupChecklistSidebar() {
   // Compact variant for the app shell sidebar footer: small ring, tighter rows, no estimates.

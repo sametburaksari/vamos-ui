@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Copy, Eye, Pencil, Send, Trash2 } from "lucide-react";
-import { DataTable, type DataTableBulkAction, type DataTableColumn } from "@vamos-cms/ui/data-table";
+import { DataTable, type DataTableBulkAction, type DataTableColumn } from "@vamos-ui/react/data-table";
 import { posts as initialPosts, type Post } from "./_data";
 
 const columns: DataTableColumn<Post>[] = [

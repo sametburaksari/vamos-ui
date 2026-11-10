@@ -212,7 +212,7 @@ export interface DescriptionGroupProps extends Omit<React.HTMLAttributes<HTMLEle
 export function DescriptionGroup({ title, description, titleAs: H = "h4", action, className, children, ...props }: DescriptionGroupProps) {
   const id = React.useId();
   return (
-    <section data-slot="description-group" aria-labelledby={id} className={cn("grid gap-2", className)} {...props}>
+    <section data-slot="description-group" aria-labelledby={id} className={cn("grid content-start gap-2", className)} {...props}>
       <div className="flex items-end justify-between gap-3">
         <div className="min-w-0">
           <H id={id} className="font-mono text-[11px] font-medium tracking-[0.06em] text-fg-subtle">

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { RecordLayout } from "@vamos-cms/ui";
+import { RecordLayout } from "@vamos-ui/react";
 import { ContactAside, ContactHeader, ContactMain } from "./contact";
 
 // Drag the side column's edge, or focus it and use ←/→ (Shift for bigger steps), Home/End; double-click resets.

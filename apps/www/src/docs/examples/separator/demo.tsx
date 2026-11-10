@@ -1,4 +1,4 @@
-import { Separator } from "@vamos-cms/ui";
+import { Separator } from "@vamos-ui/react";
 
 export default function SeparatorDemo() {
   return (

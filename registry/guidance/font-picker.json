@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Choosing a website typeface or a type pairing in appearance settings.",
+    "Previewing Google Fonts families in their own face."
+  ],
+  "avoidWhen": [
+    "Changing the app's own type — set the data-font axis.",
+    "Free font-family strings in components — fonts come from tokens."
+  ],
+  "related": [
+    "color-picker",
+    "settings-02",
+    "onboarding-02",
+    "typography"
+  ],
+  "a11y": [
+    "Each option has its family name as text, not only the preview.",
+    "The list is a searchable listbox with grouped categories."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, TreeSelect, type TreeNode } from "@vamos-cms/ui";
+import { Field, TreeSelect, type TreeNode } from "@vamos-ui/react";
 
 // Chart of accounts: search "rent" or "kira" — matches keep their parents, folded for Turkish İ/ı.
 const accounts: TreeNode[] = [

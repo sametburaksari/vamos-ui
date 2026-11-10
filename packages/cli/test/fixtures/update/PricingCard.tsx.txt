@@ -1,0 +1,20 @@
+import { useState } from "react";
+
+export function PricingCard({ plan, featured }: { plan: { name: string; price: string }; featured?: boolean }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={featured ? "rounded-xl border border-indigo-500 bg-indigo-50" : "rounded-xl border border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-800"}>
+      <h3 className="font-['Sora'] text-gray-900 dark:text-white">{plan.name}</h3>
+      <p className="text-sm text-gray-500 dark:text-gray-400">{plan.price}</p>
+      <span className="text-[#6b7280]">per month</span>
+      <button className="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700" onClick={() => setOpen(!open)}>
+        Choose {plan.name}
+      </button>
+      <p className="text-red-600 bg-red-50 border-red-200">Card declined</p>
+      <p className="text-purple-600">Limited offer</p>
+      <p style={{ color: "#333", fontFamily: "Inter, sans-serif", padding: 4 }}>Fine print</p>
+      {/* vamos-ui-ignore: brand gradient from marketing */}
+      <div className="bg-indigo-600 text-pink-500" />
+    </div>
+  );
+}

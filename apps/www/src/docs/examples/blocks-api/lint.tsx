@@ -1,4 +1,4 @@
-import { lintPage, type VamosDoc } from "@vamos-cms/ui/blocks/schema";
+import { lintPage, type VamosDoc } from "@vamos-ui/react/blocks/schema";
 import { siteBlocks, kiyiPage } from "./_site-blocks";
 
 // lintPage: structure, the "doesn't look AI-generated" rules and translation completeness.

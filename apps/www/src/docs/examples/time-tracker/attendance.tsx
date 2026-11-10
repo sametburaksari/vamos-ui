@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { LocaleProvider } from "@vamos-cms/ui";
-import { ResourceCalendar, type ResourceBlock, type ResourceTemplate } from "@vamos-cms/ui/scheduler";
+import { LocaleProvider } from "@vamos-ui/react";
+import { ResourceCalendar, type ResourceBlock, type ResourceTemplate } from "@vamos-ui/react/scheduler";
 
 // tr attendance dataset (puantaj): Ç çalıştı, İ izin, R rapor, HT hafta tatili, RT resmî tatil, Ü ücretsiz izin.
 const codes: ResourceTemplate[] = [

@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "A long form split into steps on top of the Stepper: per-step validation with an error summary, conditional steps, draft saving and autosave, URL resume, a review step with Edit links, and a leave-page warning. Form-library agnostic — each step exposes validate().",
   source: ["business/multi-step-form.tsx"],
   basedOn: "Stepper · native <form>",
-  usage: `import { MultiStepForm, MultiStepFormStepper, MultiStepFormStep, MultiStepFormReview, MultiStepFormFooter } from "@vamos-cms/ui/business";
+  usage: `import { MultiStepForm, MultiStepFormStepper, MultiStepFormStep, MultiStepFormReview, MultiStepFormFooter } from "@vamos-ui/react/business";
 
 const steps = [
   { id: "identity", title: "Identity", validate: () => (name ? true : "Enter a name.") },

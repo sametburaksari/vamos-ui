@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "Passwordless sign-in: check-your-email state, resend cooldown and change address."
+  ],
+  "avoidWhen": [
+    "Password-based sign-in — use login-01."
+  ],
+  "related": [
+    "login-01",
+    "otp-01",
+    "forgot-password-01"
+  ],
+  "a11y": [
+    "The resend cooldown is announced in text, not just a disabled button."
+  ]
+}

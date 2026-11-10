@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { LocaleProvider } from "@vamos-cms/ui";
-import { LineItems, trLineTaxPack, type LineItem } from "@vamos-cms/ui/business";
-import { trAmountInWords } from "@vamos-cms/ui/locale-data";
+import { LocaleProvider } from "@vamos-ui/react";
+import { LineItems, trLineTaxPack, type LineItem } from "@vamos-ui/react/business";
+import { trAmountInWords } from "@vamos-ui/react/locale-data";
 
 // KDV rates in force on the invoice date (0 / 1 / 10 / 20) and tevkifat codes as withholding.
 const pack = trLineTaxPack("2026-11-10", undefined, { localLabels: true });

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, ConfirmProvider, useConfirm } from "@vamos-cms/ui";
+import { Button, ConfirmProvider, useConfirm } from "@vamos-ui/react";
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 

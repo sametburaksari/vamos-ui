@@ -1,4 +1,4 @@
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 
 // Colours users pick for CRM labels; any CSS colour works.
 const labels = [

@@ -1,4 +1,4 @@
-import { Hero } from "@vamos-cms/ui/blocks";
+import { Hero } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Brand manifesto / agency home: no image, one centred sentence, services as slash-separated links.

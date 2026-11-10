@@ -431,7 +431,7 @@
 }
 
 /* ---------------------------------------------------------------- */
-/* Block editor (@vamos-cms/ui/editor)                               */
+/* Block editor (@vamos-ui/react/editor)                               */
 /* Canvas wears the site theme and is always solid; chrome uses the  */
 /* admin popover surface. Accent only for the drop line, the active  */
 /* toolbar state and the caret.                                      */

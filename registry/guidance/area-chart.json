@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "Volume or cumulative trend over time: traffic, pipeline value, headcount.",
+    "Stacked parts of a total over time, or a previous-period comparison."
+  ],
+  "avoidWhen": [
+    "Comparing rates or many overlapping series — use Line chart.",
+    "Comparing categories — use Bar chart.",
+    "A tiny trend in a table cell or KPI — use Sparkline."
+  ],
+  "related": [
+    "line-chart",
+    "bar-chart",
+    "chart",
+    "sparkline",
+    "stat"
+  ],
+  "a11y": [
+    "Give the chart a title and let the Chart frame generate its text summary.",
+    "Series colours come from chart tokens; keep series distinguishable by legend labels, not colour only."
+  ]
+}

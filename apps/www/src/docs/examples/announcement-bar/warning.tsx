@@ -1,4 +1,4 @@
-import { AnnouncementBar } from "@vamos-cms/ui/blocks";
+import { AnnouncementBar } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // A day spa's maintenance notice in the warning tone (always solid, also in glass mode).

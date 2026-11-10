@@ -1,0 +1,23 @@
+{
+  "whenToUse": [
+    "Comparing values across categories: revenue by channel, deals by owner, headcount by department.",
+    "Ranked lists with Bar list when a full chart is too heavy.",
+    "Grouped or stacked comparisons and negative values with a zero line."
+  ],
+  "avoidWhen": [
+    "Trends over continuous time — use Line or Area chart.",
+    "Parts of a whole with few slices — consider Donut chart.",
+    "Stage conversion — use Funnel."
+  ],
+  "related": [
+    "line-chart",
+    "donut-chart",
+    "funnel",
+    "chart",
+    "combo-chart"
+  ],
+  "a11y": [
+    "Value labels or the generated summary make exact values available without hover.",
+    "Keep category labels short and readable; horizontal bars for long labels."
+  ]
+}

@@ -1,4 +1,4 @@
-import { Field, RadioGroup } from "@vamos-cms/ui";
+import { Field, RadioGroup } from "@vamos-ui/react";
 
 export default function RadioGroupDemo() {
   return (

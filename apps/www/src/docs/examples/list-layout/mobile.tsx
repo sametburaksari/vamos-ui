@@ -1,7 +1,7 @@
 "use client";
 
 import { KanbanSquare, Plus, Search, Table2 } from "lucide-react";
-import { Button, Input, ListContent, ListLayout, ListToolbar, ListViewSwitch, PageHeader, Select } from "@vamos-cms/ui";
+import { Button, Input, ListContent, ListLayout, ListToolbar, ListViewSwitch, PageHeader, Select } from "@vamos-ui/react";
 
 const partners = [
   { name: "Atlas Distribution", tier: "Gold", region: "EMEA" },

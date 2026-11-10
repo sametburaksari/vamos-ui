@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "One of a small fixed set (about 4–10): content status, currency, department, sort order.",
+    "Form fields that share the Input box."
+  ],
+  "avoidWhen": [
+    "More than ~10 options or typing helps — use Combobox.",
+    "2–5 options worth showing at once — use Radio Group.",
+    "Actions — use Dropdown Menu."
+  ],
+  "related": [
+    "combobox",
+    "radio-group",
+    "dropdown-menu",
+    "input"
+  ],
+  "a11y": [
+    "Wrap in Field for the label; typeahead and arrow keys work in the list.",
+    "Do not use placeholder as the only label."
+  ]
+}

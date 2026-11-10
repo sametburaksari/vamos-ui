@@ -1,7 +1,7 @@
 "use client";
 
 import { LogOut, Settings, UserRound } from "lucide-react";
-import { AppShell, AppShellProvider, Button, NotificationCenter, PageHeader, createMemoryNotificationAdapter } from "@vamos-cms/ui";
+import { AppShell, AppShellProvider, Button, NotificationCenter, PageHeader, createMemoryNotificationAdapter } from "@vamos-ui/react";
 import { DemoPage, ShellFrame, sharedNav, siteApp, useMemoryRouter } from "./demo-kit";
 
 const inbox = createMemoryNotificationAdapter([

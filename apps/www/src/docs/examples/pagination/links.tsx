@@ -1,6 +1,6 @@
 "use client";
 
-import { Pagination } from "@vamos-cms/ui";
+import { Pagination } from "@vamos-ui/react";
 
 // Blog archive: real <a href> links (crawlable), rendered with your router's Link.
 export default function PaginationLinks() {

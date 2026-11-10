@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useFormat } from "@vamos-cms/ui";
-import { SortableGrid } from "@vamos-cms/ui/sortable";
+import { useFormat } from "@vamos-ui/react";
+import { SortableGrid } from "@vamos-ui/react/sortable";
 
 interface Tile {
   id: string;

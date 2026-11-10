@@ -1,5 +1,5 @@
 import { Mail, Phone } from "lucide-react";
-import { Avatar, Badge, Button, PageHeader } from "@vamos-cms/ui";
+import { Avatar, Badge, Button, PageHeader } from "@vamos-ui/react";
 
 export default function PageHeaderRecord() {
   return (

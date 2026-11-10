@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, Field, Input } from "@vamos-cms/ui";
+import { Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, Field, Input } from "@vamos-ui/react";
 
 export default function DialogDemo() {
   return (

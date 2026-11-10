@@ -1,5 +1,5 @@
 import { Info } from "lucide-react";
-import { Badge, Tooltip } from "@vamos-cms/ui";
+import { Badge, Tooltip } from "@vamos-ui/react";
 
 export default function TooltipTones() {
   return (

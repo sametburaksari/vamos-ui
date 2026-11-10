@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Laying out an image collection in panels: product photos, listing images, gallery blocks.",
+    "Edit mode to reorder, set cover and remove images."
+  ],
+  "avoidWhen": [
+    "Website photo sections — use Gallery section.",
+    "Browsing a whole file store — use Media library."
+  ],
+  "related": [
+    "lightbox",
+    "media-library",
+    "image",
+    "sortable"
+  ],
+  "a11y": [
+    "Each thumbnail is a button naming the image; reordering has a keyboard path.",
+    "Alt text is required per image."
+  ]
+}

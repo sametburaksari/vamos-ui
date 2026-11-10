@@ -1,4 +1,4 @@
-import { ScrollArea } from "@vamos-cms/ui";
+import { ScrollArea } from "@vamos-ui/react";
 
 const payload = `{
   "event": "order.created",

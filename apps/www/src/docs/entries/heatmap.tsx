@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "Density patterns as tinted cells: a calendar (weeks × weekdays — publishing, activity, attendance) or a matrix (weekday × hour, department × month). Sequential, diverging and categorical scales; an ARIA grid with full keyboard support and a data-table alternative. Plain DOM — no chart library.",
   source: ["charts/heatmap.tsx", "charts/chart-shell.tsx"],
-  usage: `import { Heatmap } from "@vamos-cms/ui/charts";
+  usage: `import { Heatmap } from "@vamos-ui/react/charts";
 
 <Heatmap mode="calendar" title="Posts published" data={[{ x: "2026-11-10", value: 3 }]} valueLabel="Posts" />`,
   demo: ex("calendar", "Calendar (CMS)", "heatmap/calendar.tsx", HeatmapCalendar),

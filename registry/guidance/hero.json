@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The first screen and h1 of a website homepage or landing page.",
+    "Choosing a character per sector: editorial, split media, full bleed, product, statement."
+  ],
+  "avoidWhen": [
+    "Inner pages like About or Contact — use Page intro.",
+    "App screens — use Page header."
+  ],
+  "related": [
+    "page-intro",
+    "navbar",
+    "cta",
+    "sections-01"
+  ],
+  "a11y": [
+    "Exactly one h1; background images are decorative or carry alt text.",
+    "Text over media keeps contrast via the built-in scrim."
+  ]
+}

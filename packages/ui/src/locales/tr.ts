@@ -4,7 +4,7 @@ import type { Messages } from "./en";
  * Turkish UI strings — the first extra locale.
  *
  * ```tsx
- * import { tr } from "@vamos-cms/ui/locale/tr";
+ * import { tr } from "@vamos-ui/react/locale/tr";
  * <LocaleProvider locale="tr-TR" messages={tr} timeZone="Europe/Istanbul" currency="TRY">…</LocaleProvider>
  * ```
  */

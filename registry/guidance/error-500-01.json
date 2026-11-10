@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "error.tsx for apps: reassures that work is saved, retries, and gives a copyable error ID."
+  ],
+  "avoidWhen": [
+    "Partial failures inside a working page — use Alert."
+  ],
+  "related": [
+    "not-found",
+    "alert",
+    "accordion"
+  ],
+  "a11y": [
+    "Retry results are announced; technical details are in a disclosure."
+  ]
+}

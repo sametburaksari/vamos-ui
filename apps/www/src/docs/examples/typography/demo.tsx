@@ -1,4 +1,4 @@
-import { Heading, Lead, Text } from "@vamos-cms/ui";
+import { Heading, Lead, Text } from "@vamos-ui/react";
 
 const presets = ["editorial", "grotesk", "corporate"] as const;
 

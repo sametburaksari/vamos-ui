@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useFormat } from "@vamos-cms/ui";
-import { usePointerDrag, useTimeScale } from "@vamos-cms/ui/sortable";
+import { useFormat } from "@vamos-ui/react";
+import { usePointerDrag, useTimeScale } from "@vamos-ui/react/sortable";
 
 const DAY_START = "2026-11-10T06:00:00Z"; // 09:00 Istanbul
 const DAY_END = "2026-11-10T13:00:00Z"; // 16:00 Istanbul

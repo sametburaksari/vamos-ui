@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Cropping avatars, logos, covers or product images to a ratio.",
+    "Non-destructive crops with zoom, rotate and flip."
+  ],
+  "avoidWhen": [
+    "Simple image upload without cropping — use Image field or File upload.",
+    "Photo editing beyond crop."
+  ],
+  "related": [
+    "image-field",
+    "media-library",
+    "file-upload"
+  ],
+  "a11y": [
+    "The crop area moves with arrow keys and zooms with +/-.",
+    "Toolbar buttons have labels; the selected ratio is announced."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Alert, Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, Field, Input } from "@vamos-cms/ui";
+import { Alert, Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, Field, Input } from "@vamos-ui/react";
 
 export default function DialogSubmitting() {
   const [open, setOpen] = React.useState(false);

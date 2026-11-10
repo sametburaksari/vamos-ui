@@ -1,0 +1,129 @@
+{
+  "name": "vamos-ui",
+  "version": "0.2.0",
+  "homepage": "https://ui.vamos.ist",
+  "items": [
+    {
+      "name": "button",
+      "type": "component",
+      "title": "Button",
+      "description": "Triggers an action. One primary per region; secondary is the default.",
+      "group": "Forms & inputs",
+      "tags": [
+        "action"
+      ],
+      "docs": "https://ui.vamos.ist/docs/components/button"
+    },
+    {
+      "name": "dialog",
+      "type": "component",
+      "title": "Dialog",
+      "description": "Modal window for a focused task with focus trap and Escape to close.",
+      "group": "Overlays & feedback",
+      "tags": [
+        "overlay",
+        "modal"
+      ],
+      "docs": "https://ui.vamos.ist/docs/components/dialog"
+    },
+    {
+      "name": "date-range-picker",
+      "type": "component",
+      "title": "Date range picker",
+      "description": "Pick a start and end date with presets.",
+      "group": "Pickers",
+      "tags": [
+        "date"
+      ],
+      "docs": "https://ui.vamos.ist/docs/components/date-range-picker"
+    },
+    {
+      "name": "data-table",
+      "type": "component",
+      "title": "Data table",
+      "description": "Sortable, selectable, paginated table for records.",
+      "group": "Data display",
+      "tags": [
+        "table"
+      ],
+      "docs": "https://ui.vamos.ist/docs/components/data-table"
+    },
+    {
+      "name": "badge",
+      "type": "component",
+      "title": "Badge",
+      "description": "Small status label.",
+      "group": "Data display",
+      "tags": [
+        "status"
+      ],
+      "docs": "https://ui.vamos.ist/docs/components/badge"
+    },
+    {
+      "name": "area-chart",
+      "type": "component",
+      "title": "Area chart",
+      "description": "Trend over time with token colours.",
+      "group": "Charts",
+      "tags": [
+        "chart"
+      ],
+      "docs": "https://ui.vamos.ist/docs/components/area-chart"
+    },
+    {
+      "name": "dashboard-01",
+      "type": "block",
+      "title": "Revenue dashboard",
+      "description": "KPI row, revenue area chart and recent orders table for an ops panel.",
+      "category": "Dashboards",
+      "tags": [
+        "ops",
+        "any"
+      ],
+      "docs": "https://ui.vamos.ist/blocks/dashboard-01"
+    },
+    {
+      "name": "login-01",
+      "type": "block",
+      "title": "Login",
+      "description": "Email and password sign-in with remember me and SSO.",
+      "category": "Authentication",
+      "tags": [
+        "any"
+      ],
+      "docs": "https://ui.vamos.ist/blocks/login-01"
+    },
+    {
+      "name": "list-01",
+      "type": "block",
+      "title": "Invoices list",
+      "description": "Filterable records list with bulk actions and status badges.",
+      "category": "List pages",
+      "tags": [
+        "crm"
+      ],
+      "docs": "https://ui.vamos.ist/blocks/list-01"
+    },
+    {
+      "name": "lib-utils",
+      "type": "lib",
+      "title": "Utils",
+      "description": "cn() class merge helper.",
+      "docs": "https://ui.vamos.ist/docs"
+    },
+    {
+      "name": "lib-layer",
+      "type": "lib",
+      "title": "Layer",
+      "description": "Portal layer depth for the glass budget.",
+      "docs": "https://ui.vamos.ist/docs"
+    },
+    {
+      "name": "styles",
+      "type": "style",
+      "title": "Styles",
+      "description": "Tokens and component CSS.",
+      "docs": "https://ui.vamos.ist/docs/theming"
+    }
+  ]
+}

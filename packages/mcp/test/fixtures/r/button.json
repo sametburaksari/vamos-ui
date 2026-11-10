@@ -1,0 +1,66 @@
+{
+  "name": "button",
+  "type": "component",
+  "title": "Button",
+  "description": "Triggers an action. One primary per region; secondary is the default.",
+  "group": "Forms & inputs",
+  "tags": [
+    "action"
+  ],
+  "docs": "https://ui.vamos.ist/docs/components/button",
+  "dependencies": [
+    "class-variance-authority@^0.7.1",
+    "radix-ui@^1.4.3"
+  ],
+  "registryDependencies": [
+    "lib-utils"
+  ],
+  "files": [
+    {
+      "path": "components/button.tsx",
+      "content": "import { cn } from \"../lib/utils\";\nexport function Button() { return null; }\n"
+    }
+  ],
+  "usage": "import { Button } from \"@vamos-ui/react\";\n\n<Button variant=\"primary\">Save</Button>",
+  "props": [
+    {
+      "component": "Button",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"primary\" | \"secondary\" | \"ghost\"",
+          "default": "\"secondary\"",
+          "description": "Visual weight."
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\" | \"lg\" | \"icon\"",
+          "default": "\"md\"",
+          "description": "Height from --control-h."
+        }
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "title": "Primary and secondary",
+      "description": "One loud action.",
+      "code": "<Button variant=\"primary\">Send invoice</Button>\n<Button>Save draft</Button>"
+    }
+  ],
+  "guidance": {
+    "whenToUse": [
+      "Any action the user can take on the current screen"
+    ],
+    "avoidWhen": [
+      "Navigation to another page — use a link"
+    ],
+    "related": [
+      "button-group",
+      "dropdown-menu"
+    ],
+    "a11y": [
+      "Icon-only buttons need aria-label"
+    ]
+  }
+}

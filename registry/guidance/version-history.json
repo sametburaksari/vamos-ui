@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Revisions of a record: compare two versions, see word-level changes, restore."
+  ],
+  "avoidWhen": [
+    "Event history without content diffs — use Activity timeline.",
+    "Security audits — use Audit log."
+  ],
+  "related": [
+    "activity-timeline",
+    "audit-log",
+    "editor-layout"
+  ],
+  "a11y": [
+    "Insertions and deletions are marked with ins/del, not only colour.",
+    "Restore asks for confirmation."
+  ]
+}

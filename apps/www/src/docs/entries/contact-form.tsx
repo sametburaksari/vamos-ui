@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Contact and quote requests feeding whatever lead store the app uses — CRM, email or a webhook. A server component around a ~2 KB useActionState island: the same validation runs in the browser and in your server action (validateContactForm, or the zod contactFormSchema), native HTML constraints cover the no-JS path, a honeypot and a time trap catch bots (answered with a silent fake success), and an error summary with role=alert links to each field. KVKK/GDPR: a linked privacy notice, consent boxes never pre-checked, marketing consent always separate.",
   source: ["blocks/site/contact-form.tsx", "blocks/site/shared/contact-form-island.tsx", "blocks/site/shared/site-form.ts", "blocks/site/registry-2.ts"],
   basedOn: "React 19 useActionState",
-  usage: `import { ContactForm, validateContactForm, type SiteFormState } from "@vamos-cms/ui/blocks";
+  usage: `import { ContactForm, validateContactForm, type SiteFormState } from "@vamos-ui/react/blocks";
 
 const fields = [{ name: "name", required: true }, { name: "email", required: true }, { name: "message", required: true }] as const;
 

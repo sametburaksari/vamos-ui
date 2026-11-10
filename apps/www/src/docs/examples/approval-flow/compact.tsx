@@ -1,5 +1,5 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
-import { ApprovalSummary, type ApprovalStageData } from "@vamos-cms/ui/business";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
+import { ApprovalSummary, type ApprovalStageData } from "@vamos-ui/react/business";
 
 const s = (statuses: ApprovalStageData["status"][]): ApprovalStageData[] =>
   statuses.map((status, i) => ({ id: String(i), title: ["Manager", "Finance", "Director"][i]!, mode: "all", status, approvers: [] }));

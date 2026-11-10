@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const leave = [
   { team: "Engineering", annual: 142, sick: 38, parental: 60 },

@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "A short label for icon buttons, abbreviations and disabled actions. Opens on hover and keyboard focus, shows an optional shortcut, never blurs and never shows on touch screens.",
   source: ["components/tooltip.tsx", "components/button.tsx", "lib/floating-arrow.tsx"],
   basedOn: "Radix Tooltip",
-  usage: `import { Tooltip, TooltipProvider, IconButton } from "@vamos-cms/ui";
+  usage: `import { Tooltip, TooltipProvider, IconButton } from "@vamos-ui/react";
 
 // once, at the app root (App shell ships it)
 <TooltipProvider>{children}</TooltipProvider>

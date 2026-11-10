@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "Searchable selection — single or multiple, static or server-backed, optionally creatable: country, assignee, labels, category. Search folds locale characters (“istanbul” finds “İstanbul”, “cagri” finds “Çağrı”) and highlights matches by weight. Multi-select shows removable chips; async search is debounced, abortable and paged through useAsyncList.",
   source: ["components/combobox.tsx", "lib/use-async-list.ts", "lib/text.ts", "components/popover.tsx", "components/badge.tsx"],
   basedOn: "cmdk + Radix Popover",
-  usage: `import { Combobox, Field } from "@vamos-cms/ui";
+  usage: `import { Combobox, Field } from "@vamos-ui/react";
 
 <Field label="Country">
   <Combobox name="country" items={countries} clearable />

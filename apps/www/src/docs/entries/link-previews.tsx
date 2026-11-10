@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Shows how a URL will look in a search result (desktop and mobile, truncated by pixel width like the real thing) and as a shared card on Facebook, LinkedIn, X, WhatsApp and Slack, with length meters and image warnings. For SEO panels, product pages and shareable quote links.",
   source: ["media/link-preview.tsx", "media/serp.ts", "styles/media.css"],
   basedOn: "Pure (canvas measureText for pixel widths)",
-  usage: `import { LinkPreviewTabs, SearchPreview, SocialCardPreview, LengthMeter } from "@vamos-cms/ui/media";
+  usage: `import { LinkPreviewTabs, SearchPreview, SocialCardPreview, LengthMeter } from "@vamos-ui/react/media";
 
 <LinkPreviewTabs data={{ url, title, description, siteName, image }} highlight={focusKeyword} />
 <LengthMeter value={seoTitle} field="title" label="SEO title" />`,

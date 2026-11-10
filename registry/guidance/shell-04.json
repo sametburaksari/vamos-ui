@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "A two-level sidebar: app tiles beside the active app's menu, for team workspaces."
+  ],
+  "avoidWhen": [
+    "Single-app products — use shell-01 or shell-03."
+  ],
+  "related": [
+    "app-shell",
+    "sidebar",
+    "tabs"
+  ],
+  "a11y": [
+    "App tiles are labelled links with tooltips; the active app is marked."
+  ]
+}

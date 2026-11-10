@@ -1,0 +1,23 @@
+{
+  "name": "list-01",
+  "type": "block",
+  "title": "Invoices list",
+  "description": "Filterable records list with bulk actions and status badges.",
+  "category": "List pages",
+  "tags": [
+    "crm"
+  ],
+  "docs": "https://ui.vamos.ist/blocks/list-01",
+  "dependencies": [],
+  "registryDependencies": [
+    "data-table",
+    "badge",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "blocks/list-01/page.tsx",
+      "content": "export default function Page() { return null; }\n"
+    }
+  ]
+}

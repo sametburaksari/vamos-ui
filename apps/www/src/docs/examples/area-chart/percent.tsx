@@ -1,4 +1,4 @@
-import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const devices = [
   { month: "2026-05-01", mobile: 5840, desktop: 4120, tablet: 610 },

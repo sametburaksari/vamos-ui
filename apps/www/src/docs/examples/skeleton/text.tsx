@@ -1,4 +1,4 @@
-import { Skeleton, SkeletonGroup, SkeletonText } from "@vamos-cms/ui";
+import { Skeleton, SkeletonGroup, SkeletonText } from "@vamos-ui/react";
 
 export default function SkeletonTextExample() {
   return (

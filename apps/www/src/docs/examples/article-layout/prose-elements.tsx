@@ -1,4 +1,4 @@
-import { ArticleLayout } from "@vamos-cms/ui/blocks";
+import { ArticleLayout } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Every body element: headings (anchored, locale-aware slugs), lists, quote, code, rule, marks and links.

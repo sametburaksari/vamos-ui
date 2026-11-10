@@ -1,4 +1,4 @@
-import { cn } from "@vamos-cms/ui";
+import { cn } from "@vamos-ui/react";
 
 /**
  * Vamos mark (traced from the official logo). Uses currentColor.

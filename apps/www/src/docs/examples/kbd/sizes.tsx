@@ -1,4 +1,4 @@
-import { Kbd, KbdGroup } from "@vamos-cms/ui";
+import { Kbd, KbdGroup } from "@vamos-ui/react";
 
 export default function KbdSizes() {
   return (

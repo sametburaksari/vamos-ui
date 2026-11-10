@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, toast, Toaster } from "@vamos-cms/ui";
+import { Button, toast, Toaster } from "@vamos-ui/react";
 
 export default function ToastDemo() {
   return (

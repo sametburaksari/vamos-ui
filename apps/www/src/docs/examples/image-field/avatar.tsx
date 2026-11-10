@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ImageField, type ImageFieldValue } from "@vamos-cms/ui/media";
+import { ImageField, type ImageFieldValue } from "@vamos-ui/react/media";
 import { createDemoMedia, demoAsset } from "../media-library/sample-media";
 
 // HR profile photo: round, 96px, actions beside the preview. Crop locks to 1:1.

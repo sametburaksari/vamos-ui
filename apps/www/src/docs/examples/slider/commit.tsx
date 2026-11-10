@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, Slider, useFormat } from "@vamos-cms/ui";
+import { Field, Slider, useFormat } from "@vamos-ui/react";
 
 const listings = [
   { name: "Moda loft with sea view", price: 145 },

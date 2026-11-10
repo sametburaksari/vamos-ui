@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "The most used body section: an image or video beside text — “Our kitchen”, “How we work”, a feature deep-dive. Text is top-aligned with the image, not vertically centred. Video is a click-to-load facade (YouTube via youtube-nocookie, Vimeo with dnt, or MP4), so no third-party request happens before the visitor asks.",
   source: ["blocks/site/media-text.tsx", "blocks/site/embed-facade.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { MediaText } from "@vamos-cms/ui/blocks";
+  usage: `import { MediaText } from "@vamos-ui/react/blocks";
 
 <MediaText
   eyebrow="The kitchen"

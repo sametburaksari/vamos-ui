@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Flame, Inbox, Trophy } from "lucide-react";
-import { FilterBar, SavedViews, createListState, toViewState, viewStateEqual, type FilterFieldDef, type SavedView, type ViewState } from "@vamos-cms/ui/data-table";
+import { FilterBar, SavedViews, createListState, toViewState, viewStateEqual, type FilterFieldDef, type SavedView, type ViewState } from "@vamos-ui/react/data-table";
 import { owners, stageOptions } from "../data-table/_data";
 
 const fields: FilterFieldDef[] = [

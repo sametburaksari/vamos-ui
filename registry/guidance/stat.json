@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "One metric with change and trend: dashboard KPI rows, record summaries.",
+    "StatGroup for a row of KPIs."
+  ],
+  "avoidWhen": [
+    "Time series details — use a chart.",
+    "Website number bands — use Stats band."
+  ],
+  "related": [
+    "sparkline",
+    "chart",
+    "stats-band",
+    "dashboard-01"
+  ],
+  "a11y": [
+    "The delta direction is described in text (up 12% vs last month), not only colour or arrow.",
+    "Values are Intl-formatted in the current locale."
+  ]
+}

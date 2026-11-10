@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "A structured postal address in one fieldset: country, then province and district pickers for countries with region data (Türkiye's 81 provinces and 973 districts ship built in, loaded on demand), free text everywhere else. Changing a parent clears its children; read-only prints the address the way the country writes it.",
   source: ["components/address-field.tsx", "locale-data/tr/address.ts", "locale-data/core/types.ts"],
   basedOn: "Fieldset · Field · native select",
-  usage: `import { AddressField } from "@vamos-cms/ui";
+  usage: `import { AddressField } from "@vamos-ui/react";
 
 <AddressField
   legend="Billing address"
@@ -46,7 +46,7 @@ const entry: DocEntry = {
       { name: "labels", type: "Partial<AddressFieldLabels>", description: "Built-in strings (address namespace)." },
     ] },
     { name: "RegionSelect", props: [
-      { name: "source", type: "AddressDataSource", description: "e.g. trAddress from @vamos-cms/ui/locale-data." },
+      { name: "source", type: "AddressDataSource", description: "e.g. trAddress from @vamos-ui/react/locale-data." },
       { name: "level", type: '"province" | "district"', description: "Which list to show." },
       { name: "province", type: "string", description: "Parent province name for districts; disabled until set." },
       { name: "value / defaultValue / onValueChange", type: "string", description: "The region name." },

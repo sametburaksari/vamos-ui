@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Structured filters as chips above tables, boards, calendars and galleries.",
+    "Field → condition → value filters with editable chips."
+  ],
+  "avoidWhen": [
+    "One or two simple filters — use a Select or Tabs.",
+    "Free-text search only — use the table search input."
+  ],
+  "related": [
+    "data-table",
+    "saved-views",
+    "board-01",
+    "list-02"
+  ],
+  "a11y": [
+    "Each chip segment is a labelled button; removing a chip is announced.",
+    "The add-filter popover is keyboard navigable end to end."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SavedViews, createListState, toViewState, type SavedView, type ViewState } from "@vamos-cms/ui/data-table";
+import { SavedViews, createListState, toViewState, type SavedView, type ViewState } from "@vamos-ui/react/data-table";
 
 const base = toViewState(createListState());
 const views: SavedView[] = [

@@ -7,7 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogTrigger,
   Button,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 export default function AlertDialogDemo() {
   return (

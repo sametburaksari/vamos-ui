@@ -1,4 +1,4 @@
-import { SocialCardPreview, type LinkPreviewData, type SocialPlatform } from "@vamos-cms/ui/media";
+import { SocialCardPreview, type LinkPreviewData, type SocialPlatform } from "@vamos-ui/react/media";
 
 const quote: LinkPreviewData = {
   url: "https://kalamisbistro.com/events/new-years-eve-2026",

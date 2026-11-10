@@ -1,4 +1,4 @@
-import { ComparisonTable } from "@vamos-cms/ui/blocks";
+import { ComparisonTable } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Plan × feature table: sticky header, scoped headers, hidden Yes/No text, faint band on the highlighted plan.

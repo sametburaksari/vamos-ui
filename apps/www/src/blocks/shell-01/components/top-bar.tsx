@@ -1,10 +1,15 @@
-import { Bell, Plus, Search } from "lucide-react";
-import { Button, IconButton } from "@vamos-cms/ui";
+import { Bell, Menu, Plus, Search } from "lucide-react";
+import { Button, IconButton } from "@vamos-ui/react";
 
-export function TopBar({ title }: { title: string }) {
+export function TopBar({ title, onMenu }: { title: string; onMenu?: () => void }) {
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-line bg-[color-mix(in_srgb,var(--scene)_72%,transparent)] px-6 backdrop-blur-xl">
-      <span className="text-[13px] font-medium text-fg-muted">{title}</span>
+    <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-line bg-[color-mix(in_srgb,var(--scene)_72%,transparent)] px-4 backdrop-blur-xl md:px-6">
+      {onMenu && (
+        <IconButton size="sm" label="Open menu" className="md:hidden" onClick={onMenu}>
+          <Menu />
+        </IconButton>
+      )}
+      <span className="min-w-0 truncate text-[13px] font-medium text-fg-muted">{title}</span>
       <div className="flex-1" />
       <button className="hidden h-8 w-64 items-center gap-2 rounded-full border border-field-border bg-field px-3 text-[13px] text-fg-subtle hover:border-field-border-hover focus-ring md:flex">
         <Search className="size-3.5" />

@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "An on/off setting that applies immediately: maintenance mode, online bookings, active/inactive in a table row. Two sizes, label + description on either side, and a loading state for optimistic saves.",
   source: ["components/switch.tsx", "components/spinner.tsx", "styles/forms.css"],
   basedOn: "Radix Switch",
-  usage: `import { Switch } from "@vamos-cms/ui";
+  usage: `import { Switch } from "@vamos-ui/react";
 
 <Switch label="Accept online bookings" description="Guests can reserve from your website." defaultChecked />`,
   demo: ex("demo", "Demo", "switch/demo.tsx", SwitchDemo),

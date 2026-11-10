@@ -1,4 +1,4 @@
-import { SearchPreview, type LinkPreviewData } from "@vamos-cms/ui/media";
+import { SearchPreview, type LinkPreviewData } from "@vamos-ui/react/media";
 
 const page: LinkPreviewData = {
   url: "https://atlaslojistik.com/services/same-day-delivery-istanbul",

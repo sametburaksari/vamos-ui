@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Website 404, error and maintenance pages (not-found.tsx, error.tsx).",
+    "A useful way back: home, search, popular links."
+  ],
+  "avoidWhen": [
+    "App-internal 404s inside the shell — use error-404-01.",
+    "Empty lists — use Empty state."
+  ],
+  "related": [
+    "error-404-01",
+    "error-500-01",
+    "maintenance-01",
+    "empty-state"
+  ],
+  "a11y": [
+    "The sentence title is the page h1; the code is secondary text.",
+    "Return links are specific (Back to the menu)."
+  ]
+}

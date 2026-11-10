@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A website contact page: intro, form with consent, contact details, branch map and hours, FAQ."
+  ],
+  "avoidWhen": [
+    "In-app support forms — compose Field + Input in a Dialog."
+  ],
+  "related": [
+    "contact-form",
+    "map-hours",
+    "faq",
+    "contact-dock",
+    "page-intro"
+  ],
+  "a11y": [
+    "Every field has a label; the map has a text address alternative."
+  ]
+}

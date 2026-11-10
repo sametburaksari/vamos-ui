@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button, Image } from "@vamos-cms/ui";
-import { MediaPicker, type MediaAsset } from "@vamos-cms/ui/media";
+import { Button, Image } from "@vamos-ui/react";
+import { MediaPicker, type MediaAsset } from "@vamos-ui/react/media";
 import { createDemoMedia } from "../media-library/sample-media";
 
 // Property listing gallery: up to 6 photos. The confirm button pluralises ("Insert 3 images");

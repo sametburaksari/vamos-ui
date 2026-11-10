@@ -1,4 +1,4 @@
-import { ContactDock } from "@vamos-cms/ui/blocks";
+import { ContactDock } from "@vamos-ui/react/blocks";
 
 // Both: a WhatsApp button (desktop) and a bottom action bar (phones). `contained` shows both
 // inside this preview; on a site they're fixed and switch at 48rem.

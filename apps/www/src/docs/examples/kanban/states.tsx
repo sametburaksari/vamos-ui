@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Switch, Label, Toaster } from "@vamos-cms/ui";
-import { Kanban, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-cms/ui/sortable";
+import { Switch, Label, Toaster } from "@vamos-ui/react";
+import { Kanban, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-ui/react/sortable";
 
 interface Task {
   id: string;

@@ -12,7 +12,7 @@ const entry: DocEntry = {
   description: "Volume or trend over time — traffic, pipeline value, headcount. Stacked or 100% stacked, gradient / solid / no fill, a dashed previous-period series and reference lines.",
   source: ["charts/area-chart.tsx", "charts/chart-shell.tsx", "charts/chart.tsx"],
   basedOn: "Recharts AreaChart",
-  usage: `import { AreaChart } from "@vamos-cms/ui/charts";
+  usage: `import { AreaChart } from "@vamos-ui/react/charts";
 
 <AreaChart title="Traffic" data={rows} x="date" config={{ visits: { label: "Visits" } }} height="md" />`,
   demo: ex("demo", "Demo", "area-chart/demo.tsx", AreaChartDemo),

@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A CRM deal pipeline or any stage-based board with totals, filters and swimlanes.",
+    "Starting point for recruiting, editorial or support boards."
+  ],
+  "avoidWhen": [
+    "Large record sets where columns matter more than stages — start from list-02."
+  ],
+  "related": [
+    "kanban",
+    "filter-bar",
+    "stat",
+    "list-02"
+  ],
+  "a11y": [
+    "Card moves have a keyboard path (menu, Alt+arrows) and are announced."
+  ]
+}

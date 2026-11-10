@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "Scheduled maintenance pages with the window in local time, progress and a notify-me signup."
+  ],
+  "avoidWhen": [
+    "Unexpected errors — use error-500-01."
+  ],
+  "related": [
+    "not-found",
+    "progress",
+    "alert"
+  ],
+  "a11y": [
+    "Times show the time zone; progress has value text."
+  ]
+}

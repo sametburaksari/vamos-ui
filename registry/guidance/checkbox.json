@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "Independent yes/no choices: consent, opt-ins, module selection.",
+    "Selecting several options from a small visible list (CheckboxGroup).",
+    "Row selection in tables and tri-state select-all."
+  ],
+  "avoidWhen": [
+    "Exactly one of several options — use Radio Group.",
+    "Settings that apply immediately — use Switch.",
+    "Many options (>10) — use Combobox with multiple."
+  ],
+  "related": [
+    "radio-group",
+    "switch",
+    "combobox",
+    "permission-matrix"
+  ],
+  "a11y": [
+    "Every checkbox has a visible label; groups use a fieldset with a legend.",
+    "Indeterminate state is announced as mixed."
+  ]
+}

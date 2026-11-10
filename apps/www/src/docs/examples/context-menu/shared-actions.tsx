@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { CheckCircle2, Copy, Pencil, Trash2, UserPlus } from "lucide-react";
-import { ActionMenu, Badge, ContextMenu, type MenuEntry } from "@vamos-cms/ui";
+import { ActionMenu, Badge, ContextMenu, type MenuEntry } from "@vamos-ui/react";
 
 const tasks = [
   { id: "T-318", title: "Collect signed offer letter from new barista", owner: "Mira Castell", due: "Nov 12" },

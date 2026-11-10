@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A full-screen CMS post or page editor with autosave, block canvas, SEO and publish panels."
+  ],
+  "avoidWhen": [
+    "Short records — use a Dialog or detail page.",
+    "Settings — use settings-01."
+  ],
+  "related": [
+    "editor-layout",
+    "block-editor",
+    "slug-input",
+    "image-field",
+    "link-previews"
+  ],
+  "a11y": [
+    "Save status is a live region; panels are labelled and collapsible."
+  ]
+}

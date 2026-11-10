@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Axis-less mini trends in table rows, KPI tiles and record summaries.",
+    "Win/loss and bar mini charts."
+  ],
+  "avoidWhen": [
+    "Trends users must read precisely — use Line or Area chart."
+  ],
+  "related": [
+    "stat",
+    "line-chart",
+    "data-table"
+  ],
+  "a11y": [
+    "Decorative when the trend is also given in text; otherwise provide an aria-label summary."
+  ]
+}

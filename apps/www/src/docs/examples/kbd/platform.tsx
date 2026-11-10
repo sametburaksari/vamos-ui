@@ -1,4 +1,4 @@
-import { KbdGroup } from "@vamos-cms/ui";
+import { KbdGroup } from "@vamos-ui/react";
 
 const shortcuts = [
   { label: "Save draft", keys: "mod+s" },

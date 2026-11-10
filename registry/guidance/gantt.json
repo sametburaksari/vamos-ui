@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Project plans on a time axis with dependencies, progress and WBS numbers.",
+    "Editing task dates and predecessors inline."
+  ],
+  "avoidWhen": [
+    "Simple to-do lists — use Task list.",
+    "Staff shifts or room bookings — use Resource calendar.",
+    "Event agendas — use Agenda / scheduler."
+  ],
+  "related": [
+    "task-list",
+    "resource-calendar",
+    "scheduler",
+    "kanban"
+  ],
+  "a11y": [
+    "The task list is a WAI-ARIA treegrid; every bar edit is also possible in the grid.",
+    "Dependencies are listed as text (predecessors column)."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A trial sign-up with SSO, company fields, password strength and terms consent."
+  ],
+  "avoidWhen": [
+    "Invite-only products — use an accept-invitation flow."
+  ],
+  "related": [
+    "login-01",
+    "login-02",
+    "checkbox",
+    "progress"
+  ],
+  "a11y": [
+    "Password rules are listed as text and update live politely."
+  ]
+}

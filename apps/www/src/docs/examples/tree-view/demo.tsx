@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { FileText, House, Plus } from "lucide-react";
-import { Badge, IconButton, TreeView, type TreeNode } from "@vamos-cms/ui";
+import { Badge, IconButton, TreeView, type TreeNode } from "@vamos-ui/react";
 
 const page = (id: string, label: string, children?: TreeNode[], badge?: React.ReactNode): TreeNode => ({ id, label, children, badge, icon: id === "home" ? <House /> : <FileText /> });
 

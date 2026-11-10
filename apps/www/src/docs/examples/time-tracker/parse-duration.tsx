@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Input, LocaleProvider, ToggleGroup, ToggleGroupItem, useLocale } from "@vamos-cms/ui";
-import { formatDuration, parseDuration } from "@vamos-cms/ui/scheduler";
+import { Input, LocaleProvider, ToggleGroup, ToggleGroupItem, useLocale } from "@vamos-ui/react";
+import { formatDuration, parseDuration } from "@vamos-ui/react/scheduler";
 
 const samples = ["1.5", "1,5", "1:30", "90m", "1h 30m", "1 sa 30 dk", "2 hours", "45"];
 

@@ -1,0 +1,23 @@
+{
+  "name": "area-chart",
+  "type": "component",
+  "title": "Area chart",
+  "description": "Trend over time with token colours.",
+  "group": "Charts",
+  "tags": [
+    "chart"
+  ],
+  "docs": "https://ui.vamos.ist/docs/components/area-chart",
+  "dependencies": [
+    "recharts@^3.2.1"
+  ],
+  "registryDependencies": [
+    "lib-utils"
+  ],
+  "files": [
+    {
+      "path": "charts/area-chart.tsx",
+      "content": "export function AreaChart() { return null; }\n"
+    }
+  ]
+}

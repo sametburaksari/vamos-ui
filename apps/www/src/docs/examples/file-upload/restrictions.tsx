@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, FileUpload, type FileRejection } from "@vamos-cms/ui";
+import { Field, FileUpload, type FileRejection } from "@vamos-ui/react";
 
 export default function FileUploadRestrictions() {
   const [log, setLog] = React.useState<FileRejection[]>([]);

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, TimeRangePicker, type TimeRange } from "@vamos-cms/ui";
+import { Field, TimeRangePicker, type TimeRange } from "@vamos-ui/react";
 
 export default function TimePickerRange() {
   const [day, setDay] = React.useState<TimeRange>({ start: "09:00", end: "17:30" });

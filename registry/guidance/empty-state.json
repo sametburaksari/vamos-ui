@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A list with no records yet, a search with no results, no permission, or a failed load.",
+    "Giving one clear next step (Create, Import, Clear filters)."
+  ],
+  "avoidWhen": [
+    "Loading — use Skeleton.",
+    "Partial errors inside a working page — use Alert."
+  ],
+  "related": [
+    "skeleton",
+    "alert",
+    "empty-01",
+    "empty-02",
+    "no-access-01"
+  ],
+  "a11y": [
+    "The title is a heading that says what is empty and why; actions are real buttons.",
+    "Do not use decorative illustrations without alt=\"\"."
+  ]
+}

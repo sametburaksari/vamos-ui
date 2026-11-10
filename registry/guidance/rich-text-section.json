@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Long text on websites: about, privacy notice, service description, rendered from RichDoc.",
+    "Server-only rendering with no editor code shipped."
+  ],
+  "avoidWhen": [
+    "Blog posts with byline and TOC — use Article layout.",
+    "Editing content — use Block editor."
+  ],
+  "related": [
+    "article-layout",
+    "block-editor",
+    "page-intro"
+  ],
+  "a11y": [
+    "Heading levels continue from the page h1; links are descriptive.",
+    "Prose width uses the --measure token for readability."
+  ]
+}

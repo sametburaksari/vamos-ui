@@ -1,4 +1,4 @@
-import { Stat, StatGroup } from "@vamos-cms/ui";
+import { Stat, StatGroup } from "@vamos-ui/react";
 
 export default function StatDemo() {
   return (

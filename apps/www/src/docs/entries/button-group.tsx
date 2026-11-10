@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "ButtonGroup merges related buttons into one control — a split Publish ▾, pager arrows, a search field with its button. ToggleGroup adds a selected state with roving focus — view switches, chart ranges, text alignment and formatting. Toggle is a single pressed/unpressed button.",
   source: ["components/button-group.tsx", "components/toggle.tsx", "styles/forms.css"],
   basedOn: "Radix Toggle Group (ToggleGroup, Toggle); ButtonGroup is plain role=group",
-  usage: `import { Button, ButtonGroup, ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
+  usage: `import { Button, ButtonGroup, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 
 <ButtonGroup aria-label="Post actions">
   <Button>Preview</Button>

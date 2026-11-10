@@ -1,4 +1,4 @@
-import { StatsBand } from "@vamos-cms/ui/blocks";
+import { StatsBand } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Ledger: label, dotted leader, figure — an annual-report line with a mono source.

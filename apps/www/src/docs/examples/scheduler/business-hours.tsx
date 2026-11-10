@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { LocaleProvider, ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
-import { Scheduler, type SchedulerEvent } from "@vamos-cms/ui/scheduler";
-import { trWorkCalendar } from "@vamos-cms/ui/locale-data";
+import { LocaleProvider, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
+import { Scheduler, type SchedulerEvent } from "@vamos-ui/react/scheduler";
+import { trWorkCalendar } from "@vamos-ui/react/locale-data";
 
 const at = (day: string, time: string) => new Date(`${day}T${time}:00+03:00`).toISOString();
 

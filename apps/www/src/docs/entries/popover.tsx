@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Small interactive content anchored to a trigger: a quick form, a picker, a list. Non-modal, labelled by its title, and the base for Combobox and Date Picker.",
   source: ["components/popover.tsx", "lib/floating-arrow.tsx", "lib/layer.tsx"],
   basedOn: "Radix Popover",
-  usage: `import { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverFooter } from "@vamos-cms/ui";
+  usage: `import { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverFooter } from "@vamos-ui/react";
 
 <Popover>
   <PopoverTrigger asChild><Button>Add tag</Button></PopoverTrigger>

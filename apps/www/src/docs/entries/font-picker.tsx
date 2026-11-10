@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "Choose a typeface from a curated catalog of 59 Google Fonts families — searchable, grouped by category, every row previewed in its own face — or one of 16 type pairings. Ships with a deduped Google Fonts loader and a provider that applies a pairing to a page or a single section.",
   source: ["fonts/font-picker.tsx", "fonts/pairing-picker.tsx", "fonts/provider.tsx", "fonts/pairings.ts", "fonts/loader.ts", "fonts/catalog.ts"],
   basedOn: "Radix Popover · WAI-ARIA combobox + listbox · radio group",
-  usage: `import { FontPicker, FontPairingPicker, FontProvider } from "@vamos-cms/ui/fonts";
+  usage: `import { FontPicker, FontPairingPicker, FontProvider } from "@vamos-ui/react/fonts";
 
 <Field label="Heading font">
   <FontPicker value={family} onValueChange={setFamily} />

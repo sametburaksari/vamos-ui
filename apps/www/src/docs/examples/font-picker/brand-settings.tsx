@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Button, Card, Field } from "@vamos-cms/ui";
-import { FontPicker, FontProvider, createFontPairing, getFontPairing } from "@vamos-cms/ui/fonts";
+import { Badge, Button, Card, Field } from "@vamos-ui/react";
+import { FontPicker, FontProvider, createFontPairing, getFontPairing } from "@vamos-ui/react/fonts";
 
 const start = getFontPairing("bistro")!;
 

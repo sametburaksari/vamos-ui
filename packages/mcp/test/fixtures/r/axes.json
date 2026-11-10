@@ -1,0 +1,52 @@
+[
+  {
+    "name": "theme",
+    "attribute": "class",
+    "values": [
+      "light",
+      "dark"
+    ],
+    "default": "light"
+  },
+  {
+    "name": "material",
+    "attribute": "data-material",
+    "values": [
+      "solid",
+      "glass"
+    ],
+    "default": "solid"
+  },
+  {
+    "name": "accent",
+    "attribute": "data-accent",
+    "values": [
+      "lime",
+      "ocean",
+      "ember",
+      "rose",
+      "graphite"
+    ],
+    "default": "lime"
+  },
+  {
+    "name": "density",
+    "attribute": "data-density",
+    "values": [
+      "comfortable",
+      "compact"
+    ],
+    "default": "comfortable"
+  },
+  {
+    "name": "font",
+    "attribute": "data-font",
+    "values": [
+      "editorial",
+      "grotesk",
+      "corporate",
+      "system"
+    ],
+    "default": "editorial"
+  }
+]

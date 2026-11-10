@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { StatusPicker, type StatusDef } from "@vamos-cms/ui";
+import { StatusPicker, type StatusDef } from "@vamos-ui/react";
 
 const content: StatusDef[] = [
   { value: "draft", label: "Draft", category: "todo", description: "Only editors can see it" },

@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Picking from hierarchical data: categories, departments, locations, folders, chart of accounts."
+  ],
+  "avoidWhen": [
+    "Flat lists — use Combobox or Select.",
+    "Browsing and managing the tree — use Tree view."
+  ],
+  "related": [
+    "tree-view",
+    "combobox",
+    "record-picker"
+  ],
+  "a11y": [
+    "The tree follows the WAI-ARIA tree pattern inside a labelled popover; search results show their path."
+  ]
+}

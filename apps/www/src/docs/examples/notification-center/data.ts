@@ -1,4 +1,4 @@
-import type { AppNotification } from "@vamos-cms/ui";
+import type { AppNotification } from "@vamos-ui/react";
 
 const ago = (min: number) => new Date(Date.now() - min * 60_000).toISOString();
 

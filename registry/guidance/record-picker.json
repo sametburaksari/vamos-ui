@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Linking one or many related records: contact → company, order → customer, task → project.",
+    "Async search with rich rows and create-new."
+  ],
+  "avoidWhen": [
+    "People and teams — use User picker.",
+    "Static option lists — use Combobox or Select.",
+    "Hierarchical data — use Tree select."
+  ],
+  "related": [
+    "user-picker",
+    "combobox",
+    "tree-select"
+  ],
+  "a11y": [
+    "Wrap in Field; selected records are announced and removable with keyboard.",
+    "Loading and no-result states are announced."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MediaLibrary } from "@vamos-cms/ui/media";
+import { MediaLibrary } from "@vamos-ui/react/media";
 import { createDemoMedia } from "./sample-media";
 
 // Read-only (a viewer role, or an adapter with capabilities.edit = false): no upload, no delete,

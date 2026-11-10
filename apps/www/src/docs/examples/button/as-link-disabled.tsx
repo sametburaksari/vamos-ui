@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Download } from "lucide-react";
-import { Button } from "@vamos-cms/ui";
+import { Button } from "@vamos-ui/react";
 
 export default function ButtonAsLinkDisabled() {
   // asChild + disabled/loading: aria-disabled, out of the tab order, clicks blocked.

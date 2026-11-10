@@ -1,4 +1,4 @@
-import { Field, SlugInput } from "@vamos-cms/ui";
+import { Field, SlugInput } from "@vamos-ui/react";
 
 export default function SlugStates() {
   return (

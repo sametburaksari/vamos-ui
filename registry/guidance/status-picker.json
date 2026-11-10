@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Changing a record's workflow status: task, deal stage, content Draft → Published, leave approval.",
+    "The status badge itself is the trigger."
+  ],
+  "avoidWhen": [
+    "Displaying status only — use Badge.",
+    "Free choice of options — use Select."
+  ],
+  "related": [
+    "badge",
+    "select",
+    "kanban",
+    "approval-flow"
+  ],
+  "a11y": [
+    "The trigger states current status and that it can be changed; transitions are announced.",
+    "Disallowed transitions are disabled with a reason."
+  ]
+}

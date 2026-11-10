@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "A dialog that picks one or more files for a field: featured image, gallery blocks, company logo, profile photo, document attachment. Library, Upload and From URL tabs; new uploads are selected automatically; a selection tray, a pluralised confirm button, an optional alt-text check, and an imperative useMediaPicker() for code paths.",
   source: ["media/media-picker.tsx", "media/media-library.tsx"],
   basedOn: "Radix Dialog + Tabs · Media library",
-  usage: `import { MediaPicker } from "@vamos-cms/ui/media";
+  usage: `import { MediaPicker } from "@vamos-ui/react/media";
 
 <MediaPicker accept="image/*" confirmLabel="Set featured image" onSelect={([asset]) => setCover(asset)}>
   <Button>Set featured image</Button>

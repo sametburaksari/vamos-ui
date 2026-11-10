@@ -14,7 +14,7 @@ import {
   TopBarSpacer,
   UserMenu,
   createMemoryNotificationAdapter,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 const inbox = createMemoryNotificationAdapter([
   { id: "n1", title: "Hannah Lindqvist mentioned you in “Q4 pricing”", createdAt: new Date(Date.now() - 6e5).toISOString(), actor: { name: "Hannah Lindqvist" }, category: "mention" },

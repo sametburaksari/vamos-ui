@@ -11,7 +11,7 @@ const entry: DocEntry = {
     "One-time code entry for 2FA sign-in, SMS verification, customer-portal email codes and payment confirmation. One real input underneath — screen readers, SMS autofill, password managers and paste all see a single field — with visual slots drawn over it.",
   source: ["components/input-otp.tsx", "styles/forms.css"],
   basedOn: "input-otp",
-  usage: `import { Field, InputOTP } from "@vamos-cms/ui";
+  usage: `import { Field, InputOTP } from "@vamos-ui/react";
 
 <Field label="Verification code">
   <InputOTP name="code" groups={[3, 3]} onComplete={verify} />

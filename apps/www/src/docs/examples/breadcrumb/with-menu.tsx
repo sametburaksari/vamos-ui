@@ -1,5 +1,5 @@
 import { Building2 } from "lucide-react";
-import { Breadcrumb } from "@vamos-cms/ui";
+import { Breadcrumb } from "@vamos-ui/react";
 
 export default function BreadcrumbWithMenu() {
   return (

@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Edit what a role, group or plan may do: resources × actions with checkbox cells or scope cells (None / Own / Team / All, shown as increasing fill plus text), inheritance from a parent role, row, column and group bulk toggles, dependencies kept consistent (\"Edit needs View\"), sticky headers, and a review-before-save diff. PermissionCompare puts roles side by side.",
   source: ["business/permission-matrix.tsx", "business/permission-core.ts"],
   basedOn: "WAI-ARIA grid · Dropdown Menu · Dialog",
-  usage: `import { PermissionMatrix, PermissionCompare, diffPermissions } from "@vamos-cms/ui/business";
+  usage: `import { PermissionMatrix, PermissionCompare, diffPermissions } from "@vamos-ui/react/business";
 
 <PermissionMatrix
   resources={resources}

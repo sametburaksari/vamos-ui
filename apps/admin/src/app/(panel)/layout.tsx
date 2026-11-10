@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { parseSidebarCookie, SIDEBAR_COOKIE } from "@vamos-cms/ui";
+import { parseSidebarCookie, SIDEBAR_COOKIE } from "@vamos-ui/react";
 import { AdminShell } from "@/components/admin-shell";
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Rows of non-tabular lists: recent posts, contacts in a side panel, notifications, search results.",
+    "Leading visual, title, description, meta and actions in one row."
+  ],
+  "avoidWhen": [
+    "Columned data with sorting — use Data Table or Table.",
+    "A record's full identity card — use Entity card."
+  ],
+  "related": [
+    "entity-card",
+    "table",
+    "data-table",
+    "notification-center"
+  ],
+  "a11y": [
+    "ItemList renders a list; a clickable row uses one link, actions stay separate.",
+    "Hover-revealed actions are also visible on focus."
+  ]
+}

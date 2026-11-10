@@ -1,5 +1,5 @@
-import { Image } from "@vamos-cms/ui";
-import { Lightbox, LightboxTrigger, type MediaAsset } from "@vamos-cms/ui/media";
+import { Image } from "@vamos-ui/react";
+import { Lightbox, LightboxTrigger, type MediaAsset } from "@vamos-ui/react/media";
 
 // Media library preview: assets carry file details for the info panel (toggle with the ⓘ button).
 const assets: MediaAsset[] = [

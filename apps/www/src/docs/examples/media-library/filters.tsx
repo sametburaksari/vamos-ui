@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MediaLibrary, type MediaQuery } from "@vamos-cms/ui/media";
+import { MediaLibrary, type MediaQuery } from "@vamos-ui/react/media";
 import { createDemoMedia } from "./sample-media";
 
 // Controlled filters. URL sync is the app's job: write the query to search params on change

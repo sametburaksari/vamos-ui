@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FontPairingPicker } from "@vamos-cms/ui/fonts";
+import { FontPairingPicker } from "@vamos-ui/react/fonts";
 
 export default function FontPairings() {
   const [pairing, setPairing] = React.useState<string | null>("boutique");

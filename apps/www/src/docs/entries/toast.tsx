@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Reports the result of an action without interrupting: \"Post published · View\", \"Moved to trash · Undo\". Six tones with a thin status edge, actions, in-place updates by id, promise tracking, and a stack where only the front toast blurs.",
   source: ["components/toast.tsx", "styles/overlays.css"],
   basedOn: "sonner (wrapped — import only from the kit)",
-  usage: `import { toast, Toaster } from "@vamos-cms/ui";
+  usage: `import { toast, Toaster } from "@vamos-ui/react";
 
 // once, near the app root (App shell already includes it)
 <Toaster />
@@ -58,7 +58,7 @@ toast.success("Post published", { action: { label: "View", onClick: openPost } }
   notes: [
     "Critical information (\"Couldn't save\") must not live only in a toast — show an inline Alert too.",
     "Only the first mounted Toaster renders, so a page-level one next to the App shell's never doubles toasts.",
-    "Import toast from @vamos-cms/ui, never from the engine package, so it can be swapped later.",
+    "Import toast from @vamos-ui/react, never from the engine package, so it can be swapped later.",
   ],
   covers: ["Toast"],
 };

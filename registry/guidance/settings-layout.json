@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Settings pages: section nav with scroll-spy, label | control rows, sticky save bar.",
+    "A danger zone with typed confirmation."
+  ],
+  "avoidWhen": [
+    "Editing a record — use Record detail layout or a form.",
+    "Wizards — use Multi-step form."
+  ],
+  "related": [
+    "settings-01",
+    "settings-02",
+    "switch",
+    "input"
+  ],
+  "a11y": [
+    "Each row's label is the control's label; the save bar is announced when it appears.",
+    "⌘S saves; unsaved changes are guarded on navigation."
+  ]
+}
