@@ -43,6 +43,6 @@ ErrorDocument 404 /404.html
 </IfModule>
 HT
 echo "→ uploading $(find "$OUT" -type f | wc -l | tr -d ' ') files to $SERVER:$TARGET"
-rsync -az --delete --chmod=D755,F644 "$OUT/" "$SERVER:$TARGET/"
-ssh "$SERVER" "chown -R vamosist:vamosist $TARGET"
+rsync -az --delete "$OUT/" "$SERVER:$TARGET/"
+ssh "$SERVER" "chown -R vamosist:vamosist $TARGET && find $TARGET -type d -exec chmod 755 {} + && find $TARGET -type f -exec chmod 644 {} + && chmod 750 $TARGET"
 echo "→ done: https://ui.vamos.ist ($(git rev-parse --short HEAD))"
