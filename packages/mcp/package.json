@@ -8,7 +8,9 @@
     "vamos-ui-mcp": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=20"
@@ -28,5 +30,24 @@
     "tsup": "^9.0.0",
     "typescript": "^5.9.3",
     "vitest": "^5.1.0"
-  }
+  },
+  "homepage": "https://ui.vamos.ist",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sametburaksari/vamos-ui.git",
+    "directory": "packages/mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/sametburaksari/vamos-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "vamos-ui",
+    "mcp",
+    "model-context-protocol",
+    "design-system",
+    "ai-agents"
+  ]
 }

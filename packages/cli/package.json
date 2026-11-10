@@ -33,7 +33,8 @@
   "types": "./dist/verify.d.ts",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=20"
@@ -54,5 +55,16 @@
     "tsup": "^9.0.0",
     "typescript": "^5.9.3",
     "vitest": "^5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sametburaksari/vamos-ui.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/sametburaksari/vamos-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
