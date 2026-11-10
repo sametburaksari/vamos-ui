@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarNav, VamosProvider } from "@vamos-cms/ui";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarNav, VamosProvider } from "@vamos-ui/react";
 import { sharedNav, siteNav, useMemoryRouter } from "../app-shell/demo-kit";
 
 const roles = {

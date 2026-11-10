@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description: "A hairline divider between content: card sections, menu and toolbar groups, the \"or\" on a sign-in form.",
   source: ["components/separator.tsx"],
   basedOn: "Radix Separator",
-  usage: `import { Separator } from "@vamos-cms/ui";
+  usage: `import { Separator } from "@vamos-ui/react";
 
 <Separator />
 <Separator orientation="vertical" />

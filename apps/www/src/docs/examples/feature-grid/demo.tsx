@@ -1,4 +1,4 @@
-import { FeatureGrid } from "@vamos-cms/ui/blocks";
+import { FeatureGrid } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // List (default): two columns of rows — hairline, mono index, title, text. No cards, no icons.

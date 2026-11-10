@@ -1,0 +1,32 @@
+{
+  "name": "@vamos-ui/mcp",
+  "version": "0.2.0",
+  "description": "MCP server that gives AI agents the Vamos UI components, blocks, tokens and rules.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "vamos-ui-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7",
+    "vamos-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsup": "^9.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  }
+}

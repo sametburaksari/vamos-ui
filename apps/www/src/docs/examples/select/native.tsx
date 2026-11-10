@@ -1,4 +1,4 @@
-import { Field, NativeSelect } from "@vamos-cms/ui";
+import { Field, NativeSelect } from "@vamos-ui/react";
 
 export default function SelectNative() {
   return (

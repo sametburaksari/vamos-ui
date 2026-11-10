@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Onest, Instrument_Serif, JetBrains_Mono, Hanken_Grotesk, Bricolage_Grotesque, Geist_Mono, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
-import { fontBootScript } from "@vamos-cms/ui/fonts";
-import { TooltipProvider } from "@vamos-cms/ui";
+import { fontBootScript } from "@vamos-ui/react/fonts";
+import { TooltipProvider } from "@vamos-ui/react";
 import "./globals.css";
 
 // The four font presets. Only the default (editorial) is preloaded;

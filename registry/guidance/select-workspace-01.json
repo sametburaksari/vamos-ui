@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "After sign-in for multi-tenant products: searchable workspace list, pending invites, app picker."
+  ],
+  "avoidWhen": [
+    "Single-workspace products — go straight to the app."
+  ],
+  "related": [
+    "login-02",
+    "item",
+    "empty-state"
+  ],
+  "a11y": [
+    "Workspace rows are links/buttons with the workspace name as label."
+  ]
+}

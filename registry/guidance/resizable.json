@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "User-sized split views: inbox + message, media grid + details, editor + preview.",
+    "Collapsible side panes with keyboard resizing."
+  ],
+  "avoidWhen": [
+    "Fixed layouts that do not benefit from resizing.",
+    "Phones — stack panes instead."
+  ],
+  "related": [
+    "scroll-area",
+    "editor-layout",
+    "media-library"
+  ],
+  "a11y": [
+    "Handles are separators with aria-valuenow; arrow keys resize.",
+    "Collapsed panes remain reachable via a labelled button."
+  ]
+}

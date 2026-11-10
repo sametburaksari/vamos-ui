@@ -1,0 +1,22 @@
+:root {
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-fg: #ffffff;
+  --color-secondary: #0ea5e9;
+  --color-text: #111827;
+  --color-muted: #6b7280;
+  --font-heading: "Sora", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+body { font-family: var(--font-body); color: var(--color-text); background: #ffffff; }
+h1, h2, h3 { font-family: var(--font-heading); letter-spacing: -0.02em; }
+code, pre { font-family: "JetBrains Mono", ui-monospace, monospace; }
+a { color: var(--color-primary); }
+.btn { border-radius: 10px; padding: 10px 16px; }
+.btn-primary { background: var(--color-primary); color: var(--color-primary-fg); }
+.btn-primary:hover { background: var(--color-primary-hover); }
+.badge-info { background: #e0f2fe; color: #0369a1; }
+.alert-error { border-color: #fca5a5; color: #b91c1c; }
+@media (prefers-color-scheme: dark) {
+  :root { --color-primary: #818cf8; --color-text: #f9fafb; }
+}

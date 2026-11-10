@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, DatePicker, Field } from "@vamos-cms/ui";
+import { Button, DatePicker, Field } from "@vamos-ui/react";
 
 export default function DatePickerForm() {
   const [submitted, setSubmitted] = React.useState<Record<string, string> | null>(null);

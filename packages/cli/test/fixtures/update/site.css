@@ -1,0 +1,7 @@
+/* marketing overrides */
+.hero h1 { font-family: "Playfair Display", Georgia, serif; color: #111; }
+.hero p { color: #6b7280; }
+.cta { background: #4f46e5; color: #fff; border: 1px solid #e5e7eb; }
+.note { background-color: rgba(0, 0, 0, 0.04); }
+code { font-family: "Fira Code", monospace; }
+:root { --brand-raw: #4f46e5; }

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Download, Image as ImageIcon } from "lucide-react";
-import { Button, HierarchyChart, HierarchyNodeCard, type HierarchyChartHandle } from "@vamos-cms/ui";
+import { Button, HierarchyChart, HierarchyNodeCard, type HierarchyChartHandle } from "@vamos-ui/react";
 
 interface Branch {
   id: string;

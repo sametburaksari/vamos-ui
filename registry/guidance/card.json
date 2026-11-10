@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Grouping related content into a surface: a dashboard widget, a settings panel, a form section.",
+    "Header / body / footer layout with the density-aware --gap spacing."
+  ],
+  "avoidWhen": [
+    "Wrapping every element on a page — avoid card walls; use spacing and hairlines.",
+    "Marketing sections — site blocks are card-less by design.",
+    "A clickable record summary — use Entity card or Item."
+  ],
+  "related": [
+    "entity-card",
+    "item",
+    "stat",
+    "separator"
+  ],
+  "a11y": [
+    "A card is not a landmark; give it a heading (CardTitle) so it shows up in the outline.",
+    "If the whole card is clickable, use one link and keep other controls outside it."
+  ]
+}

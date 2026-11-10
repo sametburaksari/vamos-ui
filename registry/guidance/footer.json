@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Every website footer: navigation, contact, socials, legal links.",
+    "Company details required by e-commerce law (legal name, tax office, MERSİS)."
+  ],
+  "avoidWhen": [
+    "Admin apps — the app shell has no footer.",
+    "Primary navigation only reachable in the footer."
+  ],
+  "related": [
+    "navbar",
+    "consent-banner",
+    "map-hours"
+  ],
+  "a11y": [
+    "A contentinfo landmark with labelled nav groups.",
+    "Social links are text or have aria-labels."
+  ]
+}

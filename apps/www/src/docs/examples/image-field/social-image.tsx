@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Field } from "@vamos-cms/ui";
-import { ImageField, type ImageFieldValue } from "@vamos-cms/ui/media";
+import { Field } from "@vamos-ui/react";
+import { ImageField, type ImageFieldValue } from "@vamos-ui/react/media";
 import { createDemoMedia, demoAsset } from "../media-library/sample-media";
 
 // Social card image: 1.91:1, recommended 1200 × 630. A smaller image shows the low-res warning;

@@ -1,4 +1,4 @@
-import { Field, RadioGroup } from "@vamos-cms/ui";
+import { Field, RadioGroup } from "@vamos-ui/react";
 
 const shipping = [
   { value: "standard", label: "Standard", description: "3–5 business days · Free" },

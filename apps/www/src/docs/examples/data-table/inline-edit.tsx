@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DataTable, type DataTableColumn } from "@vamos-cms/ui/data-table";
+import { DataTable, type DataTableColumn } from "@vamos-ui/react/data-table";
 import { departmentOptions, makeEmployees, type Employee } from "./_data";
 
 const BAND_MAX = 180000;

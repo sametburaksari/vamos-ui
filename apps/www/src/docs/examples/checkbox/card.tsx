@@ -1,5 +1,5 @@
 import { CalendarClock, FileText, Megaphone, Users } from "lucide-react";
-import { CheckboxGroup, Field } from "@vamos-cms/ui";
+import { CheckboxGroup, Field } from "@vamos-ui/react";
 
 export default function CheckboxCard() {
   return (

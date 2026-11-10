@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ImportWizard, type ImportField, type MappingTemplate } from "@vamos-cms/ui/business";
+import { ImportWizard, type ImportField, type MappingTemplate } from "@vamos-ui/react/business";
 
 const fields: ImportField[] = [
   { id: "from", label: "From path", aliases: ["Source", "Old URL"], required: true, type: "text" },

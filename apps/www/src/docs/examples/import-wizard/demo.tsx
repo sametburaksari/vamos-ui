@@ -1,7 +1,7 @@
 "use client";
 
-import { toast } from "@vamos-cms/ui";
-import { ImportWizard, type ImportField } from "@vamos-cms/ui/business";
+import { toast } from "@vamos-ui/react";
+import { ImportWizard, type ImportField } from "@vamos-ui/react/business";
 
 const fields: ImportField[] = [
   { id: "name", label: "Full name", aliases: ["Name", "Contact", "Ad Soyad"], required: true, type: "text" },

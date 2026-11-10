@@ -1,4 +1,4 @@
-import { Button, Carousel, CarouselDots, CarouselSlide, CarouselViewport, Image } from "@vamos-cms/ui";
+import { Button, Carousel, CarouselDots, CarouselSlide, CarouselViewport, Image } from "@vamos-ui/react";
 
 const slides = [
   {

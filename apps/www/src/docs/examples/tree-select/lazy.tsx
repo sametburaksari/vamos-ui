@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, TreeSelect, type TreeNode } from "@vamos-cms/ui";
+import { Field, TreeSelect, type TreeNode } from "@vamos-ui/react";
 
 const roots: TreeNode[] = [
   { id: "ops", label: "Operations", hasChildren: true },

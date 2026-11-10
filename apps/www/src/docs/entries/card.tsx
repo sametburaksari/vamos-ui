@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "The main content surface. Takes its glass or solid material from tokens and its spacing from --gap; built from Header, Body, Footer and Inset parts, or composed CardTitle / CardDescription / CardAction.",
   source: ["components/card.tsx"],
   basedOn: "Radix Slot",
-  usage: `import { Card, CardHeader, CardBody } from "@vamos-cms/ui";
+  usage: `import { Card, CardHeader, CardBody } from "@vamos-ui/react";
 
 <Card>
   <CardHeader title="Traffic" description="Last 30 days" />

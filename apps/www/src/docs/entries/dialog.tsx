@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "A focused task that keeps the user in context — new contact, insert link, leave request. Fixed header and footer with a scrolling body, five sizes, a close guard for unsaved work, and a CSS-only bottom sheet below 640px.",
   source: ["components/dialog.tsx", "styles/overlays.css"],
   basedOn: "Radix Dialog",
-  usage: `import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogBody, DialogFooter, DialogClose, Button } from "@vamos-cms/ui";
+  usage: `import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogBody, DialogFooter, DialogClose, Button } from "@vamos-ui/react";
 
 <Dialog>
   <DialogTrigger asChild><Button>New contact</Button></DialogTrigger>

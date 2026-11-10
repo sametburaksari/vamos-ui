@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "One-time codes: 2FA sign-in, SMS verification, email codes, payment confirmation.",
+    "Auto-submit when all digits are entered."
+  ],
+  "avoidWhen": [
+    "Passwords or general text — use Input.",
+    "Long recovery codes — use a plain Input."
+  ],
+  "related": [
+    "otp-01",
+    "input",
+    "magic-link-01"
+  ],
+  "a11y": [
+    "One real input underneath: SMS autofill (autocomplete=one-time-code) and screen readers work.",
+    "Wrong-code errors are announced and keep focus in the field."
+  ]
+}

@@ -1,4 +1,4 @@
-import { DonutChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { DonutChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const leads = [
   { source: "organic", leads: 1_284 },

@@ -86,7 +86,11 @@ export async function componentPages(page: Page): Promise<string[]> {
 /** All block preview routes (/view/<name>), read from the /blocks index. */
 export async function blockPages(page: Page): Promise<string[]> {
   await page.goto("/blocks");
-  const srcs = await page.locator("iframe[src^='/view/']").evaluateAll((fs) => fs.map((f) => f.getAttribute("src")!));
+  // Previews mount lazily (only the first iframes exist on load), so read the "open in new tab"
+  // links every block card carries as well as any mounted iframe.
+  const srcs = await page
+    .locator("main iframe[src^='/view/'], main a[href^='/view/']")
+    .evaluateAll((els) => els.map((e) => e.getAttribute("src") ?? e.getAttribute("href")!));
   return [...new Set(srcs)];
 }
 
@@ -107,7 +111,12 @@ export async function visitAllComponentPages(
   const visit = async (href: string) => {
     const errors = collectConsoleErrors(page);
     const res = await gotoWithRetry(page, href);
-    if (!href.startsWith("/view/")) await expect(page.locator("h1").first(), href).toBeVisible();
+    if (!href.startsWith("/view/")) {
+      // A dev-server restart mid-load leaves "Application error" instead of the page, so a missing
+      // h1 is judged together with the console: restart noise only → retried below; else it fails.
+      const h1 = await expect(page.locator("h1").first(), href).toBeVisible().then(() => true, () => false);
+      if (!h1 && !onlyRestartNoise(errors)) errors.push(`${href}: no visible h1`);
+    }
     errors.stop();
     return { res, errors: [...errors] };
   };

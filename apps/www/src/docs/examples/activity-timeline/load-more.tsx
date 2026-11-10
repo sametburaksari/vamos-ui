@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { FilePen, FileText, Globe, Trash2 } from "lucide-react";
-import { ActivityTimeline, Badge, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-cms/ui";
+import { ActivityTimeline, Badge, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-ui/react";
 
 const day = 86_400_000;
 const at = (daysAgo: number, hour: number) => new Date(Math.floor(Date.now() / day) * day - daysAgo * day + hour * 3_600_000).toISOString();

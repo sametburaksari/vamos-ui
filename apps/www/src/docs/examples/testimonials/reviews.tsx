@@ -1,4 +1,4 @@
-import { Testimonials } from "@vamos-cms/ui/blocks";
+import { Testimonials } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Reviews: a sticky summary ("4.8 on Google — 1,240 reviews") beside a dated list. Imported reviews, not fetched.

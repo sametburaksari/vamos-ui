@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DataTable, DataTableContent, DataTableFilterBar, DataTableFooter, DataTableSavedViews, DataTableToolbar, createListState, toViewState, type DataTableColumn, type SavedView } from "@vamos-cms/ui/data-table";
+import { DataTable, DataTableContent, DataTableFilterBar, DataTableFooter, DataTableSavedViews, DataTableToolbar, createListState, toViewState, type DataTableColumn, type SavedView } from "@vamos-ui/react/data-table";
 import { makeContact, stageOptions, type Contact } from "../data-table/_data";
 
 const partners = Array.from({ length: 80 }, (_, i) => makeContact(i + 5000));

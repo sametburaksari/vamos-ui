@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "A form field that holds one image: pick it from the library or drop a file, preview, replace, remove, crop to a ratio (non-destructive or as a new copy), set a focal point and a per-use alt text. Warns about missing alt text and low resolution. For featured images, social cards, logos, profile photos and block props.",
   source: ["media/image-field.tsx", "media/focal-point.tsx", "media/image-cropper.tsx", "media/media-picker.tsx"],
   basedOn: "Media picker · Image cropper (react-easy-crop) · own focal-point control",
-  usage: `import { ImageField } from "@vamos-cms/ui/media";
+  usage: `import { ImageField } from "@vamos-ui/react/media";
 
 <Field label="Featured image">
   <ImageField aspect="16/9" recommended={{ width: 1200, height: 630 }} value={cover} onChange={setCover} />

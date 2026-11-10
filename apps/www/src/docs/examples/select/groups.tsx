@@ -1,4 +1,4 @@
-import { Field, Select } from "@vamos-cms/ui";
+import { Field, Select } from "@vamos-ui/react";
 
 export default function SelectGroups() {
   return (

@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@vamos-cms/ui";
+import { Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@vamos-ui/react";
 
 const modes = [
   { mobile: "sheet", label: "Sheet (default)", note: "Anchors to the bottom; footer buttons stack with the primary on top." },

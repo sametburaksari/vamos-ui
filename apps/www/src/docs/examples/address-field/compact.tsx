@@ -14,7 +14,7 @@ import {
   DialogTrigger,
   formatAddress,
   type Address,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 export default function AddressCompact() {
   const [saved, setSaved] = React.useState<Address>({ country: "TR", region1: "İzmir", region2: "Konak", line1: "Alsancak Mah. 1482 Sk. No: 7 D: 3", postalCode: "35220" });

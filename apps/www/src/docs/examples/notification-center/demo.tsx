@@ -1,6 +1,6 @@
 "use client";
 
-import { NotificationCenter, createMemoryNotificationAdapter } from "@vamos-cms/ui";
+import { NotificationCenter, createMemoryNotificationAdapter } from "@vamos-ui/react";
 import { inboxSeed } from "./data";
 
 // Your adapter talks to your API; the memory adapter is for demos and tests.

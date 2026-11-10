@@ -10,8 +10,9 @@ test.beforeEach(async ({ page }) => {
 test.describe.serial("theme matrix", () => {
 for (const theme of THEME_MATRIX) {
   test(`component pages + blocks render (${theme.name})`, async ({ page }) => {
-    // ~60 component pages + blocks; first visits compile on demand in the dev server.
-    test.setTimeout(900_000);
+    // ~145 component pages + ~45 blocks (wave 4); first visits compile on demand in the dev server,
+    // and a dev-server restart under memory pressure costs a minute or two.
+    test.setTimeout(1_500_000);
     const results = await visitAllComponentPages(page, { blocks: true, theme });
     expect(results.length).toBeGreaterThan(0);
     for (const r of results) {

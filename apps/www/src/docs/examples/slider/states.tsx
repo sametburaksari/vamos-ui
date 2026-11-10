@@ -1,4 +1,4 @@
-import { Field, Slider } from "@vamos-cms/ui";
+import { Field, Slider } from "@vamos-ui/react";
 
 export default function SliderStates() {
   return (

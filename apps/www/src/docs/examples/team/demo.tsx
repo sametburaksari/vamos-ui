@@ -1,4 +1,4 @@
-import { Team } from "@vamos-cms/ui/blocks";
+import { Team } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { more } from "../_site-2/data";
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { Image, ImageLoaderProvider } from "@vamos-cms/ui";
-import type { ImageLoader } from "@vamos-cms/ui/media";
+import { Image, ImageLoaderProvider } from "@vamos-ui/react";
+import type { ImageLoader } from "@vamos-ui/react/media";
 
 // Same signature as the Next.js loader, so one function serves both.
 // Cloudflare Images:  `https://example.com/cdn-cgi/image/width=${width},quality=${quality ?? 75},format=auto/${src}`

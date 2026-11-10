@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Sortable, SortableHandle, SortableItem, SortableOverlay, keepMountedRange, useSortableActiveId } from "@vamos-cms/ui/sortable";
+import { Sortable, SortableHandle, SortableItem, SortableOverlay, keepMountedRange, useSortableActiveId } from "@vamos-ui/react/sortable";
 
 interface Product {
   id: string;

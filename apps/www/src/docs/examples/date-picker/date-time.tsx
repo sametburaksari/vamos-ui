@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DateTimePicker, Field, todayIso } from "@vamos-cms/ui";
+import { DateTimePicker, Field, todayIso } from "@vamos-ui/react";
 
 export default function DatePickerDateTime() {
   const [publishAt, setPublishAt] = React.useState<string | null>(null);

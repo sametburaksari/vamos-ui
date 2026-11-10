@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, FileUpload } from "@vamos-cms/ui";
+import { Field, FileUpload } from "@vamos-ui/react";
 import { fakeUpload } from "./fake-upload";
 
 export default function FileUploadDemo() {

@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   IconButton,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 export default function ButtonGroupSplit() {
   return (

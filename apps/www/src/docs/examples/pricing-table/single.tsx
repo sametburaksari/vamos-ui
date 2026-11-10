@@ -1,4 +1,4 @@
-import { PricingTable } from "@vamos-cms/ui/blocks";
+import { PricingTable } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // One package: price and action beside a two-column inclusion list; "Not included" below.

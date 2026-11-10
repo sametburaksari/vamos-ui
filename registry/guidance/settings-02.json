@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Language, formats and appearance settings: locale, currency, time zone, theme axes and fonts."
+  ],
+  "avoidWhen": [
+    "General account settings — use settings-01."
+  ],
+  "related": [
+    "settings-layout",
+    "font-picker",
+    "radio-group",
+    "select"
+  ],
+  "a11y": [
+    "Theme previews are labelled; changes apply via ThemeScope without flashing."
+  ]
+}

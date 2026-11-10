@@ -1,4 +1,4 @@
-import { Faq } from "@vamos-cms/ui/blocks";
+import { Faq } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Stacked: title above, accordion at a 42rem measure. Answers are RichDoc (links, lists, bold).

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A ⌘K palette for navigation, actions and record search across the app.",
+    "Keyboard-first pickers built on the list primitives."
+  ],
+  "avoidWhen": [
+    "The main navigation — use Sidebar; ⌘K is a shortcut, not the only path.",
+    "Choosing a value inside a form — use Combobox."
+  ],
+  "related": [
+    "app-shell",
+    "combobox",
+    "kbd",
+    "top-bar"
+  ],
+  "a11y": [
+    "The dialog has a label; results are a listbox with aria-activedescendant.",
+    "Every command is also reachable without the palette."
+  ]
+}

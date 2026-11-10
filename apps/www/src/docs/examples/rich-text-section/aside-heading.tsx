@@ -1,4 +1,4 @@
-import { RichTextSection } from "@vamos-cms/ui/blocks";
+import { RichTextSection } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Aside heading: a sticky title on the start side, the text on the end side — legal texts.

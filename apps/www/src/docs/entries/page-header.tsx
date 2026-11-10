@@ -13,7 +13,7 @@ const entry: DocEntry = {
   description:
     "The title block of a page: breadcrumb or eyebrow, the page's one h1 in the display font, description, status meta, actions and sub-tabs. Server-compatible; the automatic breadcrumb reads the App shell's active trail.",
   source: ["components/page-header.tsx"],
-  usage: `import { PageHeader, Button } from "@vamos-cms/ui";
+  usage: `import { PageHeader, Button } from "@vamos-ui/react";
 
 <PageHeader
   eyebrow="Content"

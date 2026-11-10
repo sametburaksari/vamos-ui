@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Image as ImageIcon, LayoutGrid, List } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-cms/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-ui/react";
 
 const files = [
   { name: "Hero — autumn campaign.jpg", meta: "2400 × 1350 · 1.8 MB" },

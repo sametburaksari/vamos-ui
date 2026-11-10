@@ -14,7 +14,7 @@ const entry: DocEntry = {
   description:
     "End-of-page call to action — “Get a quote”, “Book a table”, “Start a 14-day trial” — plus a newsletter signup and a booking bar for appointments and reservations. Server component: the newsletter is a plain form that works without JS, the booking bar a ~2 KB island that prefills WhatsApp with Intl-formatted dates, and calendar embeds a click-to-load facade.",
   source: ["blocks/site/cta.tsx", "blocks/site/cta-booking.tsx", "blocks/site/embed-facade.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { Cta, waLink } from "@vamos-cms/ui/blocks";
+  usage: `import { Cta, waLink } from "@vamos-ui/react/blocks";
 
 <Cta
   title="Book the *long table*"

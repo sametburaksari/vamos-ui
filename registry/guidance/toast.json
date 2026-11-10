@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Results of an action without interrupting: Post published · View, Moved to trash · Undo.",
+    "In-place updates for long operations."
+  ],
+  "avoidWhen": [
+    "Errors that block progress — use Alert inline.",
+    "Information users must act on later — use Notification center."
+  ],
+  "related": [
+    "alert",
+    "notification-center",
+    "alert-dialog"
+  ],
+  "a11y": [
+    "Announced politely (errors assertively); actions are reachable with keyboard.",
+    "Do not auto-dismiss toasts that contain the only Undo too quickly."
+  ]
+}

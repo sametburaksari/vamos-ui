@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { Badge, Input, cn } from "@vamos-cms/ui";
+import { Badge, Input, cn } from "@vamos-ui/react";
 import { directory, type DirectoryCategory } from "@/lib/directory";
 
 const categories: ("All" | DirectoryCategory)[] = ["All", "Components", "Blocks", "Charts", "Locale"];

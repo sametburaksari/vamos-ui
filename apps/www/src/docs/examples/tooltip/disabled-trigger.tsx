@@ -1,5 +1,5 @@
 import { Rocket } from "lucide-react";
-import { Button, Tooltip } from "@vamos-cms/ui";
+import { Button, Tooltip } from "@vamos-ui/react";
 
 export default function TooltipDisabledTrigger() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, Input, RadioGroup } from "@vamos-cms/ui";
+import { Field, Input, RadioGroup } from "@vamos-ui/react";
 
 export default function RadioGroupHorizontal() {
   const [type, setType] = React.useState<"individual" | "company">("company");

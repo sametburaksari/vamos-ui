@@ -1,5 +1,5 @@
 import { EyeOff, Globe, Link2, Lock } from "lucide-react";
-import { Field, Select } from "@vamos-cms/ui";
+import { Field, Select } from "@vamos-ui/react";
 
 export default function SelectRichItems() {
   return (

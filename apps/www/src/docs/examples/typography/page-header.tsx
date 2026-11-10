@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { Button, Heading, Text } from "@vamos-cms/ui";
+import { Button, Heading, Text } from "@vamos-ui/react";
 
 export default function TypographyPageHeader() {
   return (

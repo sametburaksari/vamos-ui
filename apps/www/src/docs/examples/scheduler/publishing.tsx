@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { ToggleGroup, ToggleGroupItem } from "@vamos-cms/ui";
-import { Scheduler, type SchedulerEvent } from "@vamos-cms/ui/scheduler";
+import { ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
+import { Scheduler, type SchedulerEvent } from "@vamos-ui/react/scheduler";
 
 type Channel = "blog" | "instagram" | "newsletter";
 const tone: Record<Channel, SchedulerEvent["tone"]> = { blog: "chart-1", instagram: "chart-4", newsletter: "chart-2" };

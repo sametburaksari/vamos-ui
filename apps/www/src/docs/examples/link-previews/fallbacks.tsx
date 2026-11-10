@@ -1,4 +1,4 @@
-import { SearchPreview, SocialCardPreview } from "@vamos-cms/ui/media";
+import { SearchPreview, SocialCardPreview } from "@vamos-ui/react/media";
 
 // Missing fields show greyed fallbacks; a wrong image ratio and noindex get warnings in words.
 export default function LinkPreviewsFallbacks() {

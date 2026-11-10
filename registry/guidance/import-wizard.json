@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Importing CSV or XLSX into a collection: contacts, products, employees.",
+    "Column mapping, validation preview and dedupe before committing."
+  ],
+  "avoidWhen": [
+    "Uploading a file as an attachment — use File upload.",
+    "Exporting — use Export."
+  ],
+  "related": [
+    "export",
+    "file-upload",
+    "stepper",
+    "data-table"
+  ],
+  "a11y": [
+    "Each step has a heading and the Stepper shows position; errors are listed with row numbers.",
+    "Mapping selects are labelled by the source column name."
+  ]
+}

@@ -1,4 +1,4 @@
-import { ApprovalFlow, type ApprovalStageData } from "@vamos-cms/ui/business";
+import { ApprovalFlow, type ApprovalStageData } from "@vamos-ui/react/business";
 
 // Purchase request: a Director stage is added because the amount crossed a threshold.
 const stages: ApprovalStageData[] = [

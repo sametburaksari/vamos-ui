@@ -1,6 +1,6 @@
 "use client";
 
-import { RecordLayout, RecordPager } from "@vamos-cms/ui";
+import { RecordLayout, RecordPager } from "@vamos-ui/react";
 import { ContactAside, ContactHeader, ContactMain } from "./contact";
 
 // In a narrow container the side column moves under the header and its sections fold;

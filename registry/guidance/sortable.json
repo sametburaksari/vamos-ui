@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "The reordering primitive for custom lists, grids, tables and multi-list boards.",
+    "Pointer, touch and keyboard dragging with announcements."
+  ],
+  "avoidWhen": [
+    "Standard lists and trees — use Sortable list / tree.",
+    "Pipelines — use Kanban."
+  ],
+  "related": [
+    "sortable-list",
+    "kanban",
+    "gallery"
+  ],
+  "a11y": [
+    "Always provide announcements and a non-drag Move alternative.",
+    "Blur turns off during drag (glass budget)."
+  ]
+}

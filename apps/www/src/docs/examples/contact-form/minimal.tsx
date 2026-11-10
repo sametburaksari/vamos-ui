@@ -1,4 +1,4 @@
-import { ContactForm } from "@vamos-cms/ui/blocks";
+import { ContactForm } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Minimal: name, contact and message with the button in the same row — under a CTA.

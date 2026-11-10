@@ -1,5 +1,5 @@
 import { ArrowUpRight, ArrowDownRight, FileText, MessageSquare, Inbox, Image as ImageIcon, MoreHorizontal } from "lucide-react";
-import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Field, IconButton, Input, Textarea } from "@vamos-cms/ui";
+import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Field, IconButton, Input, Textarea } from "@vamos-ui/react";
 import { TrafficChart } from "./traffic-chart";
 import { Sparkline } from "./sparkline";
 

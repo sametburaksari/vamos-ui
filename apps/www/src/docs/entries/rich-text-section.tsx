@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description:
     "Long text — an about page, a privacy notice, a service description — rendered from the RichDoc format by a pure server renderer (no editor code reaches the site). The column sits on grid columns 2–9 rather than dead centre; body headings shift one level below the block title.",
   source: ["blocks/site/rich-text-section.tsx", "blocks/rich-text.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { RichTextSection } from "@vamos-cms/ui/blocks";
+  usage: `import { RichTextSection } from "@vamos-ui/react/blocks";
 
 <RichTextSection variant="aside-heading" title="Privacy notice" note="Last updated 4 November 2026" body={doc} />
 <RichTextSection body={"First paragraph.\\n\\nSecond paragraph."} />   // plain text works too`,

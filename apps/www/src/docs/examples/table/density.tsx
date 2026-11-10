@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 
 const people = [
   { name: "Ece Demir", role: "Product designer", team: "Studio", since: "Mar 2023" },

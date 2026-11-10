@@ -1,4 +1,4 @@
-import { ComparisonTable } from "@vamos-cms/ui/blocks";
+import { ComparisonTable } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // At phone width a radio plan picker shows one column at a time (CSS only).

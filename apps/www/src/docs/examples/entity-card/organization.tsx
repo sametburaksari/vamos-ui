@@ -1,4 +1,4 @@
-import { EntityCard } from "@vamos-cms/ui";
+import { EntityCard } from "@vamos-ui/react";
 
 export default function EntityCardOrganization() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ImageField, type ImageFieldValue } from "@vamos-cms/ui/media";
+import { ImageField, type ImageFieldValue } from "@vamos-ui/react/media";
 import { createDemoMedia, demoAsset } from "../media-library/sample-media";
 
 // crop="metadata" stores a non-destructive rect (the loader applies it); crop="copy" bakes a

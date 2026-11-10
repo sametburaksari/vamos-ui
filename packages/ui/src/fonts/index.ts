@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/fonts — Google Fonts catalog, pairings, loader, pickers.
+// Public API of @vamos-ui/react/fonts — Google Fonts catalog, pairings, loader, pickers.
 export {
   googleFonts,
   fontGroups,

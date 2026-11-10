@@ -1,4 +1,4 @@
-import { Badge, Button, PageHeader } from "@vamos-cms/ui";
+import { Badge, Button, PageHeader } from "@vamos-ui/react";
 
 export default function PageHeaderSizes() {
   return (

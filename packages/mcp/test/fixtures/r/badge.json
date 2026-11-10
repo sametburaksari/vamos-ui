@@ -1,0 +1,21 @@
+{
+  "name": "badge",
+  "type": "component",
+  "title": "Badge",
+  "description": "Small status label.",
+  "group": "Data display",
+  "tags": [
+    "status"
+  ],
+  "docs": "https://ui.vamos.ist/docs/components/badge",
+  "dependencies": [],
+  "registryDependencies": [
+    "lib-utils"
+  ],
+  "files": [
+    {
+      "path": "components/badge.tsx",
+      "content": "export function Badge() { return null; }\n"
+    }
+  ]
+}

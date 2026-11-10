@@ -1,6 +1,6 @@
 "use client";
 
-import { LineItems } from "@vamos-cms/ui/business";
+import { LineItems } from "@vamos-ui/react/business";
 
 export default function LineItemsMobile() {
   // Container query: under 40rem the rows stack into cards, each field keeps its header as a label.

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Avatar } from "@vamos-cms/ui";
-import { FilterBar, type FilterFieldDef, type FilterGroup, type FilterOption } from "@vamos-cms/ui/data-table";
+import { Avatar } from "@vamos-ui/react";
+import { FilterBar, type FilterFieldDef, type FilterGroup, type FilterOption } from "@vamos-ui/react/data-table";
 
 const directory = [
   "Ada Park", "Selin Kaya", "Marcus Webb", "Leila Haddad", "Tom Brennan", "Ines Laurent", "Omar Haddad", "Grace Whitfield",

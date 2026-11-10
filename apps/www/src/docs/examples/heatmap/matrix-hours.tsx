@@ -1,4 +1,4 @@
-import { Heatmap, type HeatmapCell } from "@vamos-cms/ui/charts";
+import { Heatmap, type HeatmapCell } from "@vamos-ui/react/charts";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const hours = Array.from({ length: 12 }, (_, i) => `${String(i + 8).padStart(2, "0")}:00`);

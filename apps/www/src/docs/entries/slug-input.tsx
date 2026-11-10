@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "A URL segment derived from a title with locale transliteration — \"İşe Alım & Oryantasyon\" becomes ise-alim-ve-oryantasyon in Turkish. It follows the title until someone edits it, sanitises as you type without moving the caret, and can check uniqueness and suggest a free alternative.",
   source: ["components/slug-input.tsx", "lib/text.ts", "lib/use-formatted-input.ts"],
   basedOn: "Input · slugify (lib/text)",
-  usage: `import { Field, SlugInput } from "@vamos-cms/ui";
+  usage: `import { Field, SlugInput } from "@vamos-ui/react";
 
 <Field label="URL">
   <SlugInput

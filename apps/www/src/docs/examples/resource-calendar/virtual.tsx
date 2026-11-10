@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ResourceCalendar, type ResourceBlock } from "@vamos-cms/ui/scheduler";
+import { ResourceCalendar, type ResourceBlock } from "@vamos-ui/react/scheduler";
 
 const first = ["Ada", "Burak", "Chloe", "Derya", "Ethan", "Fatma", "Gabriel", "Hira", "Ivan", "Julia", "Kaan", "Lucía"];
 const last = ["Yılmaz", "Morgan", "Şahin", "Novak", "Kaya", "Bauer", "Doğan", "Rossi", "Aksoy", "Lindgren"];

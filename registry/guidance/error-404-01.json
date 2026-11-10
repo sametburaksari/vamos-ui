@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "A 404 inside an app shell: keeps navigation, shows the missing address, offers search and recent links."
+  ],
+  "avoidWhen": [
+    "Public website 404s — use the Not found site block."
+  ],
+  "related": [
+    "not-found",
+    "empty-state",
+    "shell-01"
+  ],
+  "a11y": [
+    "The sentence title is the h1; the bad URL is shown as code text."
+  ]
+}

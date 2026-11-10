@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "The standard index page — Page header, a sticky toolbar (search, filters, saved views, view switch), a bulk-action bar that takes the toolbar's place, the content (table, grid or board) and footer pagination — with one consistent set of loading, refreshing, empty, no-results and error states. It arranges and announces; filtering, selection and data fetching stay with your Data Table and data layer.",
   source: ["components/list-layout.tsx", "styles/navigation.css"],
   basedOn: "Radix Toggle Group (view switch) · Sheet (mobile filters)",
-  usage: `import { ListLayout, ListToolbar, ListViewSwitch, ListBulkBar, ListContent, ListFooter, PageHeader, PaginationBar } from "@vamos-cms/ui";
+  usage: `import { ListLayout, ListToolbar, ListViewSwitch, ListBulkBar, ListContent, ListFooter, PageHeader, PaginationBar } from "@vamos-ui/react";
 
 <ListLayout>
   <PageHeader title="Contacts" meta={<Badge>1,284</Badge>} actions={<Button variant="primary">New contact</Button>} />

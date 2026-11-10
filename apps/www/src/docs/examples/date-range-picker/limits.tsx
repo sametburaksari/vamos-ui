@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DateRangePicker, Field, addIsoDays, todayIso, type IsoDateRange } from "@vamos-cms/ui";
+import { DateRangePicker, Field, addIsoDays, todayIso, type IsoDateRange } from "@vamos-ui/react";
 
 export default function DateRangePickerLimits() {
   const today = todayIso();

@@ -16,7 +16,7 @@ import {
   Select,
   Textarea,
   type SaveState,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 // CMS post editor: publish bar, prose canvas, WordPress-style meta boxes that remember if they're open.
 export default function EditorLayoutDemo() {

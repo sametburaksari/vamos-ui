@@ -1,5 +1,5 @@
 import { Inbox } from "lucide-react";
-import { Button, EmptyState } from "@vamos-cms/ui";
+import { Button, EmptyState } from "@vamos-ui/react";
 
 export default function EmptyStateSizes() {
   return (

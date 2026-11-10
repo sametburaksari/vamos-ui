@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, UserPicker, type PickerUser } from "@vamos-cms/ui";
+import { Field, UserPicker, type PickerUser } from "@vamos-ui/react";
 
 const team: PickerUser[] = [
   { id: "u_ayse", name: "Ayşe Demir", email: "ayse@northwind.com", meta: "Account executive · Sales", status: "online" },

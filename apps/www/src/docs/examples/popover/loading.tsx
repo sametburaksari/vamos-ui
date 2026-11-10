@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { History } from "lucide-react";
-import { Button, Popover, PopoverContent, PopoverHeader, PopoverTrigger, SkeletonText } from "@vamos-cms/ui";
+import { Button, Popover, PopoverContent, PopoverHeader, PopoverTrigger, SkeletonText } from "@vamos-ui/react";
 
 const revisions = [
   { who: "Leyla Aksoy", when: "Today, 10:42", what: "Updated pricing table" },

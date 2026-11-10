@@ -1,4 +1,4 @@
-import { Navbar } from "@vamos-cms/ui/blocks";
+import { Navbar } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Items with children get a disclosure dropdown (a ~1 KB island, only when needed):

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The edit-one-thing page: post, product, page, email template.",
+    "A sticky publish bar with save status plus a side panel of meta boxes."
+  ],
+  "avoidWhen": [
+    "Short records edited in place — use Record detail layout or a Dialog.",
+    "Settings — use Settings layout."
+  ],
+  "related": [
+    "block-editor",
+    "editor-01",
+    "slug-input",
+    "image-field"
+  ],
+  "a11y": [
+    "The save status is a live region; the publish bar keeps the record title as the h1.",
+    "Side panel sections are labelled and collapsible with buttons."
+  ]
+}

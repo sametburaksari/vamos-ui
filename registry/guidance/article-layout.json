@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The single blog post or news article template on a website.",
+    "Long-form guides that need a table of contents, byline and reading time."
+  ],
+  "avoidWhen": [
+    "Short static pages like About — use Page intro + Rich text section.",
+    "Post indexes — use Blog list."
+  ],
+  "related": [
+    "blog-list",
+    "rich-text-section",
+    "page-intro",
+    "breadcrumb"
+  ],
+  "a11y": [
+    "Exactly one h1; the table of contents is a labelled nav of in-page links.",
+    "Published and updated dates use time elements with machine-readable values."
+  ]
+}

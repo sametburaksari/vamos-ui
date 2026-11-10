@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AttachmentList, Card, CardBody, CardHeader, toast, type AttachmentData } from "@vamos-cms/ui";
+import { AttachmentList, Card, CardBody, CardHeader, toast, type AttachmentData } from "@vamos-ui/react";
 
 const initial: AttachmentData[] = [
   { id: "f1", name: "Master services agreement — Northwind Traders 2027.pdf", size: 1_240_000, mime: "application/pdf", url: "#", uploadedBy: "Ayşe Kaya", uploadedAt: "2026-11-04" },

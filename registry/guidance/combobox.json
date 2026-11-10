@@ -1,0 +1,23 @@
+{
+  "whenToUse": [
+    "More than about 10 options, or when typing helps: country, assignee, category, labels.",
+    "Server-backed search with paging (loadItems) and creatable values (onCreate).",
+    "Multiple selection with removable chips."
+  ],
+  "avoidWhen": [
+    "Fewer than 6 options — use Radio Group; 6–10 fixed options — use Select.",
+    "Linking database records with rich rows — use Record picker or User picker.",
+    "Free-form values — use Tag input."
+  ],
+  "related": [
+    "select",
+    "record-picker",
+    "user-picker",
+    "tag-input",
+    "radio-group"
+  ],
+  "a11y": [
+    "Wrap in Field so the trigger gets a label; the search box is named by searchPlaceholder.",
+    "Chips are removable with Backspace/Delete and announced; +N overflow is announced as N more selected."
+  ]
+}

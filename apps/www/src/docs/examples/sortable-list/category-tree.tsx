@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useFormat } from "@vamos-cms/ui";
-import { SortableTree, moveTreeNode } from "@vamos-cms/ui/sortable";
+import { useFormat } from "@vamos-ui/react";
+import { SortableTree, moveTreeNode } from "@vamos-ui/react/sortable";
 
 interface Category {
   id: string;

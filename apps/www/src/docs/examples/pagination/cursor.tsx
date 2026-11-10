@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CursorPagination } from "@vamos-cms/ui";
+import { CursorPagination } from "@vamos-ui/react";
 
 // Cursor APIs (10,000+ contacts): no total, only "is there more?".
 export default function PaginationCursor() {

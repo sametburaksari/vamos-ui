@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, ItemList, ItemSkeleton } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, ItemList, ItemSkeleton } from "@vamos-ui/react";
 
 export default function ItemStates() {
   return (

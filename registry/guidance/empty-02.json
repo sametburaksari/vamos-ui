@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "A search or filter that finds nothing: names the query, suggests a close match, clear and create actions."
+  ],
+  "avoidWhen": [
+    "A collection that has never had data — use empty-01."
+  ],
+  "related": [
+    "empty-state",
+    "list-layout",
+    "filter-bar"
+  ],
+  "a11y": [
+    "The no-results message is announced when the search settles."
+  ]
+}

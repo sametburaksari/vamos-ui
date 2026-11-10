@@ -16,7 +16,7 @@ const entry: DocEntry = {
     "A single date in a typeable field with a popover calendar: due dates, hire dates, birth dates, publish dates. Type in the locale's pattern, digits only, a partial date or “tomorrow”. The value is always a YYYY-MM-DD string that never shifts across time zones. DateTimePicker adds a time for scheduling.",
   source: ["components/date-picker.tsx", "components/calendar.tsx", "components/time-picker.tsx", "lib/date.ts", "styles/calendar.css"],
   basedOn: "react-day-picker v9 + date-fns v4 + Radix Popover",
-  usage: `import { DatePicker, Field } from "@vamos-cms/ui";
+  usage: `import { DatePicker, Field } from "@vamos-ui/react";
 
 const [due, setDue] = React.useState<string | null>("2026-12-04");
 

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button, Field, Input } from "@vamos-cms/ui";
-import { ImageField, type ImageFieldValue } from "@vamos-cms/ui/media";
+import { Button, Field, Input } from "@vamos-ui/react";
+import { ImageField, type ImageFieldValue } from "@vamos-ui/react/media";
 import { createDemoMedia } from "../media-library/sample-media";
 
 // Inside a form: Field supplies the label, hint, error and required; `name` posts the asset id.

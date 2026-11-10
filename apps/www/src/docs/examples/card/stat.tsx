@@ -1,4 +1,4 @@
-import { Card } from "@vamos-cms/ui";
+import { Card } from "@vamos-ui/react";
 
 export default function CardStat() {
   return (

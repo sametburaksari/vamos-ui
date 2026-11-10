@@ -1,5 +1,5 @@
 import { ClipboardPaste, Copy, RefreshCw, Scissors } from "lucide-react";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from "@vamos-cms/ui";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from "@vamos-ui/react";
 
 export default function ContextMenuDemo() {
   return (

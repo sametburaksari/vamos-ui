@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Self-hosted video with consistent controls, captions and speed.",
+    "Privacy-friendly lite embeds for YouTube/Vimeo."
+  ],
+  "avoidWhen": [
+    "Autoplaying decorative background video — use muted video with no controls sparingly.",
+    "Galleries — use Lightbox."
+  ],
+  "related": [
+    "lightbox",
+    "media-text",
+    "consent-banner"
+  ],
+  "a11y": [
+    "Captions are supported and every control has a label and keyboard shortcut.",
+    "No autoplay with sound."
+  ]
+}

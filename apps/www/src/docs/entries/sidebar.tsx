@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "The primary app navigation, dark in both themes. The active section's submenu stays open in place, other sections open as flyouts, and the rail turns every submenu into a flyout. Data-driven from one nav config that also feeds Breadcrumb, Page header and ⌘K — or composed by hand with identical DOM.",
   source: ["components/sidebar.tsx", "lib/nav.ts", "styles/navigation.css"],
   basedOn: "Radix Popover (flyouts), Radix Collapsible, Tooltip",
-  usage: `import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarNav, SidebarCollapseButton, AppSwitcher, type NavNode } from "@vamos-cms/ui";
+  usage: `import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarNav, SidebarCollapseButton, AppSwitcher, type NavNode } from "@vamos-ui/react";
 
 const nav: NavNode[] = [
   { id: "dashboard", label: "Dashboard", href: "/site", icon: LayoutDashboard },

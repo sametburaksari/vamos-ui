@@ -1,6 +1,6 @@
 "use client";
 
-// Public API of @vamos-cms/ui/next — Next.js App Router bindings for VamosProvider.
+// Public API of @vamos-ui/react/next — Next.js App Router bindings for VamosProvider.
 // The kit never imports `next/*` itself (it isn't a dependency); you hand the pieces in once.
 
 import * as React from "react";
@@ -30,7 +30,7 @@ export type NextVamosProviderProps = Omit<VamosProviderProps, "Link" | "Image" |
  * import Link from "next/link";
  * import Image from "next/image";
  * import { usePathname, useRouter } from "next/navigation";
- * import { createVamosNextProvider } from "@vamos-cms/ui/next";
+ * import { createVamosNextProvider } from "@vamos-ui/react/next";
  *
  * export const Providers = createVamosNextProvider({ Link, Image, useRouter, usePathname });
  *

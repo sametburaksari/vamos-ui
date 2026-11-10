@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@vamos-cms/ui";
-import { MediaLibrary, createMemoryAdapter, type MediaLibraryHandle } from "@vamos-cms/ui/media";
+import { Button } from "@vamos-ui/react";
+import { MediaLibrary, createMemoryAdapter, type MediaLibraryHandle } from "@vamos-ui/react/media";
 
 // Upload queue: three at a time, per-file progress, cancel, retry, and the reason a file was
 // rejected (type, size). Drop files anywhere on the library, paste them, or use the buttons.

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Card, CardBody, CardHeader, SkeletonGroup, SkeletonText } from "@vamos-cms/ui";
+import { Button, Card, CardBody, CardHeader, SkeletonGroup, SkeletonText } from "@vamos-ui/react";
 
 export default function SkeletonLoadingState() {
   const [loading, setLoading] = React.useState(true);

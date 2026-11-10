@@ -1,4 +1,4 @@
-import { Cta } from "@vamos-cms/ui/blocks";
+import { Cta } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Spa booking with a service picker, sent as query params to the booking page (GET, no JS needed).

@@ -1,4 +1,4 @@
-import { Avatar, Switch } from "@vamos-cms/ui";
+import { Avatar, Switch } from "@vamos-ui/react";
 
 const staff = [
   { name: "Elif Kaya", role: "Head chef", active: true },

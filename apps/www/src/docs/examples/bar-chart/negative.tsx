@@ -1,4 +1,4 @@
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const pnl = [
   { month: "2026-05-01", net: 42_300 },

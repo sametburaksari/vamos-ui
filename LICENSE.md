@@ -4,7 +4,7 @@ This repository contains parts under different licenses.
 
 | Path | What | License |
 |---|---|---|
-| `packages/ui` | Vamos UI component kit (`@vamos-cms/ui`), tokens, registry items | [MIT](packages/ui/LICENSE) |
+| `packages/ui` | Vamos UI component kit (`@vamos-ui/react`), tokens, registry items | [MIT](packages/ui/LICENSE) |
 | `apps/www` | Documentation site, examples and blocks | [MIT](apps/www/LICENSE) |
 | `apps/admin` | Vamos panel apps (Site/CMS, CRM, People, Work) | [FSL-1.1-ALv2](apps/admin/LICENSE.md) — Functional Source License; each release converts to Apache-2.0 two years after it is published |
 | everything else | tooling, docs, plans | [MIT](LICENSE-MIT) unless a file says otherwise |

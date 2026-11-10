@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Pagination } from "@vamos-cms/ui";
+import { Pagination } from "@vamos-ui/react";
 
 export default function PaginationDemo() {
   const [page, setPage] = React.useState(6);

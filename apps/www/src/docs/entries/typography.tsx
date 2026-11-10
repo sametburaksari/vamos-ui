@@ -12,7 +12,7 @@ const entry: DocEntry = {
   description:
     "One typographic language bound to the data-font axis: Heading (level and size decoupled), Text with sizes, tones and truncation, Lead, Code, Blockquote, Numeric, and Prose for rich content from the editor or CMS. Server-compatible.",
   source: ["components/typography.tsx", "styles/forms.css"],
-  usage: `import { Heading, Text, Prose } from "@vamos-cms/ui";
+  usage: `import { Heading, Text, Prose } from "@vamos-ui/react";
 
 <Heading level={1} size="display">Dinner, <em>slowly</em>.</Heading>
 <Text tone="muted">Last edited 3 minutes ago.</Text>

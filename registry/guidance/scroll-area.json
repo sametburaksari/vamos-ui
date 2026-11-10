@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Bounded scroll regions: activity feeds, option lists, chip strips, code blocks.",
+    "Edge fades to hint more content."
+  ],
+  "avoidWhen": [
+    "Whole pages — let the document scroll.",
+    "Hiding content that should be paginated."
+  ],
+  "related": [
+    "resizable",
+    "item",
+    "activity-timeline"
+  ],
+  "a11y": [
+    "A focusable region with a label when it contains no other focusable elements.",
+    "Native scrolling is kept so keyboard and assistive scrolling work."
+  ]
+}

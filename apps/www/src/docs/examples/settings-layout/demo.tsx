@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Bell, Globe, Link2, Settings2, TriangleAlert } from "lucide-react";
-import { Badge, Button, Input, Select, SettingsLayout, SettingsNav, SettingsRow, SettingsSaveBar, SettingsSection, Switch, Textarea, toast } from "@vamos-cms/ui";
+import { Badge, Button, Input, Select, SettingsLayout, SettingsNav, SettingsRow, SettingsSaveBar, SettingsSection, Switch, Textarea, toast } from "@vamos-ui/react";
 
 const saved = { name: "Northwind Journal", tagline: "Stories from the harbour kitchen", perPage: "10", maintenance: false };
 

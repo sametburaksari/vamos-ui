@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "An invoice, quote or order detail: parties, line items, VAT, payments and balance due."
+  ],
+  "avoidWhen": [
+    "Editing line items — use the Line items component in a form."
+  ],
+  "related": [
+    "line-items",
+    "description-list",
+    "record-detail-layout",
+    "attachment-list"
+  ],
+  "a11y": [
+    "Totals use tabular numerals; amounts include currency in text."
+  ]
+}

@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "A consistent thin scrollbar for bounded regions — activity feeds, option lists, chip strips, code blocks — with optional edge fades. Native scrolling is kept.",
   source: ["components/scroll-area.tsx", "lib/use-edge-fade.ts", "styles/navigation.css"],
   basedOn: "Radix Scroll Area",
-  usage: `import { ScrollArea } from "@vamos-cms/ui";
+  usage: `import { ScrollArea } from "@vamos-ui/react";
 
 <ScrollArea maxHeight={320} fade aria-label="Recent activity">…</ScrollArea>`,
   demo: ex("demo", "Demo", "scroll-area/demo.tsx", ScrollAreaDemo),

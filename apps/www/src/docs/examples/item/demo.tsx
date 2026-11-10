@@ -1,5 +1,5 @@
 import { MoreHorizontal } from "lucide-react";
-import { Badge, Button, Card, CardHeader, IconButton, Item, ItemActions, ItemContent, ItemDescription, ItemList, ItemMeta, ItemTitle } from "@vamos-cms/ui";
+import { Badge, Button, Card, CardHeader, IconButton, Item, ItemActions, ItemContent, ItemDescription, ItemList, ItemMeta, ItemTitle } from "@vamos-ui/react";
 
 const posts = [
   { title: "A practical guide to QR menus for restaurants", author: "Samet", status: "Published", tone: "success", date: "Today, 09:00" },

@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Plan pricing for SaaS subscriptions, agency packages and retainers. Plans are separated by hairline rules, not cards; the highlighted plan gets a 2px accent rule and a label (no glow, no scale). The monthly/yearly switch is a fieldset of hidden radios read by :has() — zero JavaScript. Money goes through Intl per locale and currency, and a tax note is required.",
   source: ["blocks/site/pricing-table.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
   basedOn: "Native radios + :has()",
-  usage: `import { PricingTable } from "@vamos-cms/ui/blocks";
+  usage: `import { PricingTable } from "@vamos-ui/react/blocks";
 
 <PricingTable
   title="One booking page, three *sizes*"

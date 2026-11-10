@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Switch } from "@vamos-cms/ui";
-import { Gantt, type GanttLink, type GanttTask } from "@vamos-cms/ui/scheduler";
-import { trWorkCalendar } from "@vamos-cms/ui/locale-data";
+import { Switch } from "@vamos-ui/react";
+import { Gantt, type GanttLink, type GanttTask } from "@vamos-ui/react/scheduler";
+import { trWorkCalendar } from "@vamos-ui/react/locale-data";
 
 const initial: GanttTask[] = [
   { id: "a", title: "Partner contract signed", start: "2026-10-23", end: "2026-10-23", type: "milestone", progress: 1 },

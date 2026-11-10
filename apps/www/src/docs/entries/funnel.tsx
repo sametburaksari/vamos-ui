@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "Stage-by-stage conversion as aligned bars: each stage's value, conversion from the previous stage, drop-off, overall rate and an optional amount. Columns in a wide container, rows in a narrow one. Plain DOM — no chart library.",
   source: ["charts/funnel.tsx"],
-  usage: `import { Funnel } from "@vamos-cms/ui/charts";
+  usage: `import { Funnel } from "@vamos-ui/react/charts";
 
 <Funnel title="Sales pipeline" steps={[
   { key: "leads", label: "Leads", value: 1240 },

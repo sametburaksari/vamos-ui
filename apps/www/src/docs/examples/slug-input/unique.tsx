@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, SlugInput } from "@vamos-cms/ui";
+import { Field, SlugInput } from "@vamos-ui/react";
 
 const taken: Record<string, string> = {
   "summer-campaign": "Used by “Summer campaign 2025”",

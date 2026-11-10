@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A SaaS pricing page: plans with monthly/yearly switch, logos, comparison table, FAQ and CTA."
+  ],
+  "avoidWhen": [
+    "Restaurant or spa price lists — use Menu / price list."
+  ],
+  "related": [
+    "pricing-table",
+    "comparison-table",
+    "faq",
+    "cta",
+    "logo-strip"
+  ],
+  "a11y": [
+    "Prices state the billing period in text; the comparison table has a caption."
+  ]
+}

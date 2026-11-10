@@ -1,5 +1,5 @@
 import { Minus, Plus, LocateFixed } from "lucide-react";
-import { ButtonGroup, IconButton } from "@vamos-cms/ui";
+import { ButtonGroup, IconButton } from "@vamos-ui/react";
 
 export default function ButtonGroupVertical() {
   return (

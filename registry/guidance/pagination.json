@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Paging long lists and search results; a table footer with range and rows per page.",
+    "SEO-friendly page links on websites and cursor paging for APIs."
+  ],
+  "avoidWhen": [
+    "Short lists that fit — show everything.",
+    "Feeds where infinite scroll or Load more is expected."
+  ],
+  "related": [
+    "data-table",
+    "blog-list",
+    "table"
+  ],
+  "a11y": [
+    "A labelled nav; the current page has aria-current=page.",
+    "Previous/Next buttons have text labels or aria-labels."
+  ]
+}

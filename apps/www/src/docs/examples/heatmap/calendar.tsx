@@ -1,4 +1,4 @@
-import { Heatmap, type HeatmapCell } from "@vamos-cms/ui/charts";
+import { Heatmap, type HeatmapCell } from "@vamos-ui/react/charts";
 
 // One year of published posts (deterministic sample; load yours from the CMS).
 const posts: HeatmapCell[] = Array.from({ length: 365 }, (_, i) => {

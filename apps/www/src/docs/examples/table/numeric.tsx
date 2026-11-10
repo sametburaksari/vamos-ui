@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Card, Delta, Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, useFormat } from "@vamos-cms/ui";
+import { Card, Delta, Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, useFormat } from "@vamos-ui/react";
 
 type Row = { client: string; mrr: string; seats: number; change: number };
 const rows: Row[] = [

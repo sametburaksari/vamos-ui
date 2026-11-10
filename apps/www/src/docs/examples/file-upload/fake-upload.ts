@@ -1,4 +1,4 @@
-import type { UploadHandler } from "@vamos-cms/ui";
+import type { UploadHandler } from "@vamos-ui/react";
 
 /** Simulated upload with progress — swap for your S3 / API call. */
 export const fakeUpload: UploadHandler = (file, { signal, onProgress }) =>

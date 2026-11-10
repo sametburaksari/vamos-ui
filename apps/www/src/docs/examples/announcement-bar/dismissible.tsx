@@ -1,4 +1,4 @@
-import { AnnouncementBar } from "@vamos-cms/ui/blocks";
+import { AnnouncementBar } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // SaaS release notice. Dismissing writes a cookie (vb_ann_<hash of the text>), so new copy shows again.

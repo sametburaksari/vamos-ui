@@ -1,4 +1,4 @@
-import { ContactDock } from "@vamos-cms/ui/blocks";
+import { ContactDock } from "@vamos-ui/react/blocks";
 import { spaHours } from "../_site-2/data";
 
 // Fab with off-hours label: outside opening hours (computed in Europe/Istanbul on the client)

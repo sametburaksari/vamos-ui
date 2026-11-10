@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { LocaleProvider } from "@vamos-cms/ui";
-import { exportToBlob, QuickExportButton, toExportMatrix, type ExportColumn } from "@vamos-cms/ui/business";
+import { LocaleProvider } from "@vamos-ui/react";
+import { exportToBlob, QuickExportButton, toExportMatrix, type ExportColumn } from "@vamos-ui/react/business";
 
 const rows = [
   { sku: "VT-PVC-01", name: "NFC card, PVC", price: 500, stock: 1240 },

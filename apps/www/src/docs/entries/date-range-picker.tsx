@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Pick a from–to range for report filters, leave requests, bookings and campaign flights. Presets column, two months side by side (one on phones), a hover preview of the band, min / max length, and an Apply mode for expensive queries. Values are YYYY-MM-DD strings.",
   source: ["components/date-range-picker.tsx", "components/calendar.tsx", "components/date-picker.tsx", "lib/date.ts", "styles/calendar.css"],
   basedOn: "react-day-picker v9 (range mode) + Radix Popover",
-  usage: `import { DateRangePicker, type IsoDateRange } from "@vamos-cms/ui";
+  usage: `import { DateRangePicker, type IsoDateRange } from "@vamos-ui/react";
 
 const [range, setRange] = React.useState<IsoDateRange | null>(null);
 

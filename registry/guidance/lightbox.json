@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Full-screen viewing of images and video with zoom, swipe and captions.",
+    "A file-details panel in the media library."
+  ],
+  "avoidWhen": [
+    "Inline media — use Image or Video player.",
+    "Previewing documents that need an editor."
+  ],
+  "related": [
+    "gallery",
+    "gallery-section",
+    "media-library",
+    "carousel"
+  ],
+  "a11y": [
+    "A modal dialog with title; arrow keys browse and Escape closes.",
+    "Captions and alt text are read for each item."
+  ]
+}

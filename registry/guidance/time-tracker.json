@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Tracking billable time with a running timer, weekly timesheet and entry list."
+  ],
+  "avoidWhen": [
+    "Shift planning — use Resource calendar.",
+    "One-off duration fields — use Input."
+  ],
+  "related": [
+    "dashboard-04",
+    "time-picker",
+    "scheduler"
+  ],
+  "a11y": [
+    "The running timer is announced on start/stop, not every second.",
+    "Timesheet cells are labelled by project and day."
+  ]
+}

@@ -1,4 +1,4 @@
-import { VideoPlayer } from "@vamos-cms/ui/media";
+import { VideoPlayer } from "@vamos-ui/react/media";
 
 export default function VideoPlayerDemo() {
   return (

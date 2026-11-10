@@ -1,6 +1,6 @@
 "use client";
 
-import { ComboChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { ComboChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const hiring = [
   { quarter: "Q1 2026", engineering: 9, sales: 5, support: 3, days: 41 },

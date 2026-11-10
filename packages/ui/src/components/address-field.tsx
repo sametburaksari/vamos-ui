@@ -165,7 +165,7 @@ function useRegions(source: AddressDataSource | undefined, level: "province" | "
 }
 
 export interface RegionSelectProps extends Omit<NativeSelectProps, "value" | "defaultValue" | "onChange"> {
-  /** Region data (e.g. `trAddress` from `@vamos-cms/ui/locale-data`). */
+  /** Region data (e.g. `trAddress` from `@vamos-ui/react/locale-data`). */
   source: AddressDataSource;
   level: "province" | "district";
   /** Parent province name, for `level="district"`. */

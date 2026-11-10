@@ -1,5 +1,5 @@
 import { ArrowRight, Plus } from "lucide-react";
-import { Button, IconButton } from "@vamos-cms/ui";
+import { Button, IconButton } from "@vamos-ui/react";
 
 export default function ButtonSizes() {
   return (

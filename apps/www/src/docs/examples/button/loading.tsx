@@ -1,5 +1,5 @@
 import { Save } from "lucide-react";
-import { Button } from "@vamos-cms/ui";
+import { Button } from "@vamos-ui/react";
 
 export default function ButtonLoading() {
   return (

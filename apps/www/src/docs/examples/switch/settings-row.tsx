@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Switch } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, Switch } from "@vamos-ui/react";
 
 const rows = [
   { id: "maintenance", label: "Maintenance mode", description: "Visitors see a holding page. Signed-in staff can still browse.", on: false },

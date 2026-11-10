@@ -1,4 +1,4 @@
-import { Testimonials } from "@vamos-cms/ui/blocks";
+import { Testimonials } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { wordmark } from "../_site-1/assets";
 

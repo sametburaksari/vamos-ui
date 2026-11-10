@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { FileText, Image as ImageIcon, Video } from "lucide-react";
-import { Avatar, Badge, Toaster, useFormat } from "@vamos-cms/ui";
-import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-cms/ui/sortable";
+import { Avatar, Badge, Toaster, useFormat } from "@vamos-ui/react";
+import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-ui/react/sortable";
 
 interface Story {
   id: string;

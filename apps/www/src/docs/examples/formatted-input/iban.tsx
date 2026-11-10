@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, IbanInput } from "@vamos-cms/ui";
+import { Field, IbanInput } from "@vamos-ui/react";
 
 export default function IbanExample() {
   const [error, setError] = React.useState<string>();

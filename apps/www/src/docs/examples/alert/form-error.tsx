@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Alert, Button, Field, Input } from "@vamos-cms/ui";
+import { Alert, Button, Field, Input } from "@vamos-ui/react";
 
 export default function AlertFormError() {
   const [error, setError] = React.useState(false);

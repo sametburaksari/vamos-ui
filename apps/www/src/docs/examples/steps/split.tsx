@@ -1,4 +1,4 @@
-import { Steps } from "@vamos-cms/ui/blocks";
+import { Steps } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Split: a sticky title on the start side, big display-size numbers with hairline-separated

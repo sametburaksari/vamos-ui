@@ -1,4 +1,4 @@
-import { StatsBand } from "@vamos-cms/ui/blocks";
+import { StatsBand } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // With text: a paragraph on the start side, a 2×2 grid of figures on the end side.

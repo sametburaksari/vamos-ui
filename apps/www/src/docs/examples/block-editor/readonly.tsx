@@ -1,7 +1,7 @@
 "use client";
 
-import { BlockEditor, BlockEditorContent, BlockEditorOutline } from "@vamos-cms/ui/editor";
-import type { VamosDoc } from "@vamos-cms/ui/blocks/schema";
+import { BlockEditor, BlockEditorContent, BlockEditorOutline } from "@vamos-ui/react/editor";
+import type { VamosDoc } from "@vamos-ui/react/blocks/schema";
 
 // An HR policy, published and locked: readable, outlined, not editable.
 const policy: VamosDoc = {

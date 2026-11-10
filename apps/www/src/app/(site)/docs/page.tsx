@@ -1,4 +1,4 @@
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 import { A, C, DocPage, H2, P, Table, UL } from "@/components/docs/prose";
 import { inventory } from "@/lib/catalog";
 

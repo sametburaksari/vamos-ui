@@ -1,4 +1,4 @@
-import { ComboChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { ComboChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const quotes = [
   { month: "2026-05-01", sent: 42, winRate: 0.31 },

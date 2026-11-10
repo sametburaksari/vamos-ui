@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "A centred sign-in card with Google, Microsoft, GitHub and SAML SSO above email + password."
+  ],
+  "avoidWhen": [
+    "Simple products with only email/password — use login-01."
+  ],
+  "related": [
+    "login-01",
+    "otp-01",
+    "select-workspace-01"
+  ],
+  "a11y": [
+    "SSO buttons name the provider in text; the password toggle is a labelled button."
+  ]
+}

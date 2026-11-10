@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Input, Step, Stepper } from "@vamos-cms/ui";
+import { Button, Input, Step, Stepper } from "@vamos-ui/react";
 
 // HR onboarding: the current step shows its content inline.
 export default function StepperVertical() {

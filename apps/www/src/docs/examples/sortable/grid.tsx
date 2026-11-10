@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Image as ImageIcon, Star } from "lucide-react";
-import { SortableGrid } from "@vamos-cms/ui/sortable";
+import { SortableGrid } from "@vamos-ui/react/sortable";
 
 interface Photo {
   id: string;

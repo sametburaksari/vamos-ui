@@ -13,7 +13,7 @@ const entry: DocEntry = {
   description:
     "Page through long lists. Numbered pages with a stable width, a table footer bar with \"1–20 of 312\" and rows per page, SEO-friendly links, and cursor paging for APIs without a total.",
   source: ["components/pagination.tsx"],
-  usage: `import { Pagination, PaginationBar } from "@vamos-cms/ui";
+  usage: `import { Pagination, PaginationBar } from "@vamos-ui/react";
 
 <Pagination page={page} pageCount={52} onPageChange={setPage} />
 <PaginationBar total={312} page={page} pageSize={20} onPageChange={setPage} onPageSizeChange={setPageSize} />`,

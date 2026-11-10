@@ -1,7 +1,7 @@
 "use client";
 
-import { BlockEditor } from "@vamos-cms/ui/editor";
-import type { VamosDoc } from "@vamos-cms/ui/blocks/schema";
+import { BlockEditor } from "@vamos-ui/react/editor";
+import type { VamosDoc } from "@vamos-ui/react/blocks/schema";
 
 // A CRM quote description: text, lists and a table only. Page blocks are not offered.
 const scope: VamosDoc = {

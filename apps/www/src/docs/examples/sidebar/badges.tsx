@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Sidebar, SidebarContent, SidebarNav, VamosProvider } from "@vamos-cms/ui";
+import { Sidebar, SidebarContent, SidebarNav, VamosProvider } from "@vamos-ui/react";
 import { siteNav, useMemoryRouter } from "../app-shell/demo-kit";
 
 /** Live counts live outside the config, so updates never rebuild the tree. */

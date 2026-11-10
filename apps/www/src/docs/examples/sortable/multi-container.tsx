@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Columns3 } from "lucide-react";
-import { Sortable, SortableContainer, SortableHandle, SortableItem, SortableMoveMenu, SortableOverlay, type SortableMoveBetweenEvent } from "@vamos-cms/ui/sortable";
+import { Sortable, SortableContainer, SortableHandle, SortableItem, SortableMoveMenu, SortableOverlay, type SortableMoveBetweenEvent } from "@vamos-ui/react/sortable";
 
 interface Column {
   id: string;

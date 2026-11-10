@@ -1,5 +1,5 @@
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
-import { Card } from "@vamos-cms/ui";
+import { Card } from "@vamos-ui/react";
 
 function Sparkline({ values, className }: { values: number[]; className?: string }) {
   const w = 96, h = 32, min = Math.min(...values), max = Math.max(...values);

@@ -14,7 +14,7 @@ const entry: DocEntry = {
   description: "A small label for status, counts and tags — and the kit's removable chip, reused by Tag input, Combobox and Filter bar. Server-compatible.",
   source: ["components/badge.tsx", "lib/islands.tsx"],
   basedOn: "Radix Slot",
-  usage: `import { Badge } from "@vamos-cms/ui";
+  usage: `import { Badge } from "@vamos-ui/react";
 
 <Badge tone="success" dot>Published</Badge>`,
   demo: ex("demo", "Demo", "badge/demo.tsx", BadgeDemo),

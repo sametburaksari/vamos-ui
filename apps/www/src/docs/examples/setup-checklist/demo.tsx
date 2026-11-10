@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { toast } from "@vamos-cms/ui";
-import { SetupChecklist, type SetupItem } from "@vamos-cms/ui/business";
+import { toast } from "@vamos-ui/react";
+import { SetupChecklist, type SetupItem } from "@vamos-ui/react/business";
 
 const initial: SetupItem[] = [
   { id: "store", title: "Connect your store", status: "done" },

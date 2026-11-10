@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A people/HR dashboard: headcount, attrition, departments, leave calendar, anniversaries, open roles."
+  ],
+  "avoidWhen": [
+    "Sales or marketing KPIs — use dashboard-02 or dashboard-05."
+  ],
+  "related": [
+    "bar-chart",
+    "donut-chart",
+    "stat",
+    "calendar"
+  ],
+  "a11y": [
+    "Donut legends carry values as text; tables have captions."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A compact icon-rail shell with tooltips and flyouts for dense operational tools."
+  ],
+  "avoidWhen": [
+    "Apps where labels matter for discovery — use shell-01."
+  ],
+  "related": [
+    "app-shell",
+    "sidebar",
+    "tooltip",
+    "notification-center"
+  ],
+  "a11y": [
+    "Every rail icon has an accessible name and tooltip."
+  ]
+}

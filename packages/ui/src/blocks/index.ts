@@ -1,5 +1,5 @@
-// Public API of @vamos-cms/ui/blocks — layer 1 (plain components, server-compatible, no zod).
-// Schema: @vamos-cms/ui/blocks/schema · Renderer: @vamos-cms/ui/render.
+// Public API of @vamos-ui/react/blocks — layer 1 (plain components, server-compatible, no zod).
+// Schema: @vamos-ui/react/blocks/schema · Renderer: @vamos-ui/react/render.
 
 export { Section, Container, SkipLink, sectionThemeAttributes, accentForeground, type SectionProps, type ContainerProps, type ContainerSize, type SkipLinkProps } from "./section";
 export { SectionHeader, type SectionHeaderProps } from "./section-header";

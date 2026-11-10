@@ -1,4 +1,4 @@
-import { ArticleLayout } from "@vamos-cms/ui/blocks";
+import { ArticleLayout } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Minimal: no cover, mono date above a large title — notes and announcements. `draft` adds the preview strip.

@@ -1,4 +1,4 @@
-import { Button, PageHeader, TabsLink, TabsLinkList, VamosProvider } from "@vamos-cms/ui";
+import { Button, PageHeader, TabsLink, TabsLinkList, VamosProvider } from "@vamos-ui/react";
 
 export default function PageHeaderWithTabs() {
   return (

@@ -11,7 +11,7 @@ import {
   Inbox, KanbanSquare, LayoutDashboard, ListChecks, Menu, MessageSquare, Paintbrush, ReceiptText, Settings,
   ShieldCheck, Timer, UserRound, Users, Briefcase, Network, Clock,
 } from "lucide-react";
-import type { AppDefinition, NavNode, VamosLinkProps } from "@vamos-cms/ui";
+import type { AppDefinition, NavNode, VamosLinkProps } from "@vamos-ui/react";
 
 export function useMemoryRouter(initial: string) {
   const [currentPath, setPath] = React.useState(initial);

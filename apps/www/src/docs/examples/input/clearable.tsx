@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Input } from "@vamos-cms/ui";
+import { Input } from "@vamos-ui/react";
 
 export default function InputClearable() {
   // The clear button is skipped in the tab order; Esc clears too.

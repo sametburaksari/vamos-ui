@@ -1,7 +1,7 @@
 "use client";
 
-import { arrayRecordSource } from "@vamos-cms/ui";
-import { LineItems } from "@vamos-cms/ui/business";
+import { arrayRecordSource } from "@vamos-ui/react";
+import { LineItems } from "@vamos-ui/react/business";
 
 interface Product {
   id: string;

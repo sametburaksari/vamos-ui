@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Pages deep in a hierarchy: Settings › Billing › Invoices, a CRM record under its company.",
+    "Website inner pages where BreadcrumbList JSON-LD helps search."
+  ],
+  "avoidWhen": [
+    "Top-level pages with no parent.",
+    "Showing progress through steps — use Stepper."
+  ],
+  "related": [
+    "page-header",
+    "page-intro",
+    "navigation-menu"
+  ],
+  "a11y": [
+    "Rendered as a labelled nav with an ordered list; the current page has aria-current=page.",
+    "The collapsed trail menu button has an accessible name."
+  ]
+}

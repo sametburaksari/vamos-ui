@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ResourceCalendar, type ResourceBlock, type ResourceBlocksChange } from "@vamos-cms/ui/scheduler";
+import { ResourceCalendar, type ResourceBlock, type ResourceBlocksChange } from "@vamos-ui/react/scheduler";
 
 const rooms = [
   { id: "r1", title: "Treatment room 1", meta: "Massage" },

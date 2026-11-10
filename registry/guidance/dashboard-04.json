@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "An agency or services dashboard: hours vs capacity, per-person load, budget burn, receivables aging."
+  ],
+  "avoidWhen": [
+    "Product analytics — use dashboard-05.",
+    "Simple CMS overviews — use dashboard-01."
+  ],
+  "related": [
+    "bar-chart",
+    "gauge",
+    "progress",
+    "time-tracker"
+  ],
+  "a11y": [
+    "Budget burn and aging use text values alongside bars and rings."
+  ]
+}

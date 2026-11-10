@@ -5,7 +5,7 @@ import {
   CalendarDays, Clock, Network, UserRound, FolderKanban, ListChecks, Timer, HeartHandshake, Receipt,
   FilePlus2, UserPlus, Upload,
 } from "lucide-react";
-import type { AppDefinition, NavNode } from "@vamos-cms/ui";
+import type { AppDefinition, NavNode } from "@vamos-ui/react";
 
 /**
  * Apps share one shell (the kit's AppShell). Each app brings its own menu; the shared menu at the

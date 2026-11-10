@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Shows where a page sits in a hierarchy and offers a way up. Data-driven or compound, collapses long trails into a menu, jumps to sibling records, and outputs JSON-LD on websites.",
   source: ["components/breadcrumb.tsx"],
   basedOn: "Radix Dropdown Menu (hidden items, siblings)",
-  usage: `import { Breadcrumb } from "@vamos-cms/ui";
+  usage: `import { Breadcrumb } from "@vamos-ui/react";
 
 <Breadcrumb items={[
   { label: "Companies", href: "/companies" },

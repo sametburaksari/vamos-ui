@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Team and specialist introductions on websites: therapists, doctors, agency team."
+  ],
+  "avoidWhen": [
+    "App user directories — use list-03 or Entity card.",
+    "Testimonials."
+  ],
+  "related": [
+    "testimonials",
+    "site-spa-01",
+    "site-agency-01"
+  ],
+  "a11y": [
+    "Portraits have alt text with the person's name; roles are text."
+  ]
+}

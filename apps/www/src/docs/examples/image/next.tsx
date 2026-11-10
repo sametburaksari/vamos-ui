@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import NextImage from "next/image";
-import { Image, VamosProvider, type VamosImageComponent, type VamosImageProps } from "@vamos-cms/ui";
+import { Image, VamosProvider, type VamosImageComponent, type VamosImageProps } from "@vamos-ui/react";
 
 // A thin bridge: pass `unoptimized` here (or configure images.remotePatterns in next.config).
 const NextImageBridge = React.forwardRef<HTMLImageElement, VamosImageProps>(function NextImageBridge(props, ref) {

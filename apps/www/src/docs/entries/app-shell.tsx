@@ -17,7 +17,7 @@ const entry: DocEntry = {
   usage: `"use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { AppShellProvider, AppShell, NotificationCenter, type AppDefinition } from "@vamos-cms/ui";
+import { AppShellProvider, AppShell, NotificationCenter, type AppDefinition } from "@vamos-ui/react";
 
 const site: AppDefinition = { id: "site", name: "Site", href: "/site", icon: Globe, nav: siteNav, links: [{ id: "view", label: "View site", href: "https://example.com" }] };
 const crm: AppDefinition = { id: "crm", name: "CRM", href: "/crm", icon: Handshake, nav: crmNav, accent: "ocean" };

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Density patterns: activity calendars, publishing frequency, weekday × hour traffic.",
+    "Department × month matrices."
+  ],
+  "avoidWhen": [
+    "Exact comparisons between a few values — use Bar chart.",
+    "Daily events with details — use Calendar."
+  ],
+  "related": [
+    "calendar",
+    "bar-chart",
+    "chart"
+  ],
+  "a11y": [
+    "Cells have value text; a legend explains the scale.",
+    "Keyboard navigation moves between cells with arrow keys."
+  ]
+}

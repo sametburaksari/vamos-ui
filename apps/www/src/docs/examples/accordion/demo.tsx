@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@vamos-cms/ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@vamos-ui/react";
 
 const faq = [
   { q: "Can I change plans in the middle of a billing cycle?", a: "Yes. Upgrades apply immediately and are prorated to the day; downgrades take effect at the next renewal." },

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TreeView, type TreeNode } from "@vamos-cms/ui";
+import { TreeView, type TreeNode } from "@vamos-ui/react";
 
 const permissions: TreeNode[] = [
   {

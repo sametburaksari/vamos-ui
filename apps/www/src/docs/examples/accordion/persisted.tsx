@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@vamos-cms/ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@vamos-ui/react";
 
 const KEY = "deal-panel-sections";
 

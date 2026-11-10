@@ -1,4 +1,4 @@
-import { Field, SignaturePad } from "@vamos-cms/ui";
+import { Field, SignaturePad } from "@vamos-ui/react";
 
 export default function SignaturePadDemo() {
   return (

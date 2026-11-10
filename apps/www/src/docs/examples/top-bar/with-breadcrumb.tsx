@@ -1,7 +1,7 @@
 "use client";
 
 import { Share2 } from "lucide-react";
-import { Breadcrumb, Button, TopBar, TopBarActions, TopBarSearch, TopBarSpacer, TopBarStart, UserMenu } from "@vamos-cms/ui";
+import { Breadcrumb, Button, TopBar, TopBarActions, TopBarSearch, TopBarSpacer, TopBarStart, UserMenu } from "@vamos-ui/react";
 
 export default function TopBarWithBreadcrumb() {
   return (

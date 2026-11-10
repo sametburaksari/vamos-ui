@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TreeView, type TreeNode } from "@vamos-cms/ui";
+import { TreeView, type TreeNode } from "@vamos-ui/react";
 
 // 50 warehouses × 10 aisles × 10 bins = 5,550 nodes. Only the rows in view are rendered.
 function buildLocations(): TreeNode[] {

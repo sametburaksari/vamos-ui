@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { Flag, User } from "lucide-react";
-import { Avatar, Badge, useLocale } from "@vamos-cms/ui";
-import { FilterBar, applyFilters, emptyFilterGroup, searchRows, type FilterFieldDef, type FilterGroup } from "@vamos-cms/ui/data-table";
-import { Kanban, KanbanCardFooter, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-cms/ui/sortable";
+import { Avatar, Badge, useLocale } from "@vamos-ui/react";
+import { FilterBar, applyFilters, emptyFilterGroup, searchRows, type FilterFieldDef, type FilterGroup } from "@vamos-ui/react/data-table";
+import { Kanban, KanbanCardFooter, KanbanCardTitle, applyKanbanMove, type Stage } from "@vamos-ui/react/sortable";
 
 interface Ticket {
   id: string;

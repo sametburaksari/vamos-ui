@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@vamos-cms/ui";
-import { ImageCropper, getCroppedBlob, type CropRect } from "@vamos-cms/ui/media";
+import { Button } from "@vamos-ui/react";
+import { ImageCropper, getCroppedBlob, type CropRect } from "@vamos-ui/react/media";
 
 const src = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80&auto=format&fit=crop";
 

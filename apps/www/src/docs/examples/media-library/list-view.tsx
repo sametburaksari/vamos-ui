@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MediaLibrary } from "@vamos-cms/ui/media";
+import { MediaLibrary } from "@vamos-ui/react/media";
 import { createDemoMedia } from "./sample-media";
 
 // HR document archive: list view (a real <table>), documents only, details in a dialog.

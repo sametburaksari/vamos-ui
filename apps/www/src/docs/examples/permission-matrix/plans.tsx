@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-cms/ui/business";
+import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-ui/react/business";
 
 // SaaS entitlements: features as rows, plans as columns, boolean cells.
 const features: PermissionResource[] = [

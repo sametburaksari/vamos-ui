@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Keyboard navigation, actions and record search from anywhere. Three layers: list primitives, a top-anchored CommandDialog, and a ready-made CommandPalette wired to a registry that pages, apps and the App shell's nav all contribute to.",
   source: ["components/command.tsx", "styles/navigation.css"],
   basedOn: "cmdk, Radix Dialog",
-  usage: `import { CommandProvider, CommandPalette, useRegisterCommands } from "@vamos-cms/ui";
+  usage: `import { CommandProvider, CommandPalette, useRegisterCommands } from "@vamos-ui/react";
 
 // App shell mounts these for you.
 <CommandProvider actions={[{ id: "cms.post.new", title: "New post", shortcut: "mod+shift+n", global: true, perform: newPost }]}>

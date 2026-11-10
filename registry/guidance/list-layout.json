@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "Every index page: page header, sticky toolbar, bulk bar, content, footer.",
+    "Switching between table, board and card views over one data source."
+  ],
+  "avoidWhen": [
+    "Record pages — use Record detail layout.",
+    "Dashboards — use Page header + a grid of Cards."
+  ],
+  "related": [
+    "data-table",
+    "page-header",
+    "filter-bar",
+    "list-01",
+    "list-02",
+    "list-03"
+  ],
+  "a11y": [
+    "The toolbar is a labelled region; the bulk bar announces the selection.",
+    "View switch is a toggle group with labels."
+  ]
+}

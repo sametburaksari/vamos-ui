@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardTitle } from "@vamos-cms/ui";
+import { Card, CardDescription, CardTitle } from "@vamos-ui/react";
 
 const variants = [
   { variant: "surface", note: "Main surface — glass or solid" },

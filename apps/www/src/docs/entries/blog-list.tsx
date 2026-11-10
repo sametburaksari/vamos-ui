@@ -12,7 +12,7 @@ const entry: DocEntry = {
   description:
     "Latest posts and category archives. It receives posts as data (PostSummary) — any CMS maps into that shape; in stored pages an f.query field is resolved by the app's resolvers.posts. Each post is an article with one link on its title that covers the whole item (::after), dates are time[datetime], pagination is plain URLs in a labelled nav.",
   source: ["blocks/site/blog-list.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
-  usage: `import { BlogList, BlogListSkeleton, type PostSummary } from "@vamos-cms/ui/blocks";
+  usage: `import { BlogList, BlogListSkeleton, type PostSummary } from "@vamos-ui/react/blocks";
 
 const posts: PostSummary[] = await cms.posts({ limit: 6 }).then(toPostSummary);
 

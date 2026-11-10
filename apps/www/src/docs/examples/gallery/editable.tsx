@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Gallery, type MediaSource } from "@vamos-cms/ui/media";
+import { Gallery, type MediaSource } from "@vamos-ui/react/media";
 
 const url = (id: string) => `https://images.unsplash.com/${id}?w=600&q=72&auto=format&fit=crop`;
 

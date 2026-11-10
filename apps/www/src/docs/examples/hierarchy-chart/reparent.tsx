@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { HierarchyChart, HierarchyPersonNode, Toaster, toast } from "@vamos-cms/ui";
+import { HierarchyChart, HierarchyPersonNode, Toaster, toast } from "@vamos-ui/react";
 
 interface Contact {
   id: string;

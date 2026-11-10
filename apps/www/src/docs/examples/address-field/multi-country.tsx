@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AddressField, formatAddress, type Address } from "@vamos-cms/ui";
+import { AddressField, formatAddress, type Address } from "@vamos-ui/react";
 
 export default function AddressMultiCountry() {
   const [address, setAddress] = React.useState<Address>({ country: "DE", line1: "Torstraße 109", region2: "Berlin", postalCode: "10119" });

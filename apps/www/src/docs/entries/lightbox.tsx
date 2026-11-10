@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Full-screen viewer for images and video: swipe or arrow keys to browse, pinch / wheel / double-tap zoom with pan, thumbnails, captions, download and a file-details panel for the media library. Dialog pattern: focus trap, Esc closes, focus returns to the thumbnail.",
   source: ["media/lightbox.tsx", "media/use-pan-zoom.ts"],
   basedOn: "Radix Dialog + Carousel + usePanZoom",
-  usage: `import { Lightbox, LightboxTrigger } from "@vamos-cms/ui/media";
+  usage: `import { Lightbox, LightboxTrigger } from "@vamos-ui/react/media";
 
 <Lightbox items={photos} download>
   {photos.map((p, i) => (

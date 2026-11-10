@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { UserPlus } from "lucide-react";
-import { Button, EmptyState, RadioGroup } from "@vamos-cms/ui";
-import { DataTable, type DataTableColumn } from "@vamos-cms/ui/data-table";
+import { Button, EmptyState, RadioGroup } from "@vamos-ui/react";
+import { DataTable, type DataTableColumn } from "@vamos-ui/react/data-table";
 import { departmentOptions, makeEmployees, type Employee } from "./_data";
 
 const employees = makeEmployees(6);

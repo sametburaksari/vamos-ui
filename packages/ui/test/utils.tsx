@@ -1,5 +1,5 @@
 /**
- * Shared test helpers for @vamos-cms/ui. See docs/testing/PLAN.md.
+ * Shared test helpers for @vamos-ui/react. See docs/testing/PLAN.md.
  *
  *   import { renderWithProviders, expectNoA11yViolations, keys } from "../../test/utils";
  *

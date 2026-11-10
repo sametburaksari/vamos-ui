@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, Settings, UserRound } from "lucide-react";
-import { AppShell, AppShellProvider, NotificationCenter, type MenuEntry } from "@vamos-cms/ui";
+import { AppShell, AppShellProvider, NotificationCenter, type MenuEntry } from "@vamos-ui/react";
 import { apps, badges, sharedNav } from "@/lib/nav";
 import { notificationAdapter } from "@/lib/notifications";
 import { ThemeControls } from "./theme-controls";

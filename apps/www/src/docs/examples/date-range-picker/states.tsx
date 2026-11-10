@@ -1,4 +1,4 @@
-import { DateRangePicker, Field } from "@vamos-cms/ui";
+import { DateRangePicker, Field } from "@vamos-ui/react";
 
 export default function DateRangePickerStates() {
   return (

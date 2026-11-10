@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LineItems, type LineItem } from "@vamos-cms/ui/business";
+import { LineItems, type LineItem } from "@vamos-ui/react/business";
 
 const quote: LineItem[] = [
   { id: "l1", description: "Discovery workshop (2 days, on site)", quantity: "2", unit: "day", unitPrice: "1450.00", taxRate: "20" },

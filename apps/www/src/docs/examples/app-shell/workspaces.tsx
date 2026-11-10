@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AppShell, AppShellProvider, PageHeader } from "@vamos-cms/ui";
+import { AppShell, AppShellProvider, PageHeader } from "@vamos-ui/react";
 import { crmApp, DemoPage, ShellFrame, siteApp, useMemoryRouter } from "./demo-kit";
 
 const workspaces = [

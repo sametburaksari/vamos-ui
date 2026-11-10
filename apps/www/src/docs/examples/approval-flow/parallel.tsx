@@ -1,4 +1,4 @@
-import { ApprovalFlow, type ApprovalStageData } from "@vamos-cms/ui/business";
+import { ApprovalFlow, type ApprovalStageData } from "@vamos-ui/react/business";
 
 // Legal contract sign-off: Finance (any of 2) and Legal (all of 2) review in parallel, then the CEO.
 const stages: ApprovalStageData[] = [

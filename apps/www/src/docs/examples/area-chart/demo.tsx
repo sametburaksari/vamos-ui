@@ -1,4 +1,4 @@
-import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const traffic = Array.from({ length: 30 }, (_, i) => {
   const base = 820 + Math.sin(i / 3.2) * 180 + i * 14;

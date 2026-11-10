@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Alert, Button } from "@vamos-cms/ui";
+import { Alert, Button } from "@vamos-ui/react";
 
 export default function AlertWithActions() {
   const [visible, setVisible] = React.useState(true);

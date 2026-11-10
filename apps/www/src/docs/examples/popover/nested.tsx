@@ -1,5 +1,5 @@
 import { Palette } from "lucide-react";
-import { Button, Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "@vamos-cms/ui";
+import { Button, Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "@vamos-ui/react";
 
 const swatches = ["var(--accent)", "var(--info)", "var(--success)", "var(--warning)", "var(--danger)"];
 

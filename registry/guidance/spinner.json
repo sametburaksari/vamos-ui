@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Indeterminate loading for short waits inside buttons, panels or overlays."
+  ],
+  "avoidWhen": [
+    "Known-shape content loading — use Skeleton.",
+    "Measurable progress — use Progress."
+  ],
+  "related": [
+    "skeleton",
+    "progress",
+    "button"
+  ],
+  "a11y": [
+    "Decorative by default; give it a label to announce loading politely."
+  ]
+}

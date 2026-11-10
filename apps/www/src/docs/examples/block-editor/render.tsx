@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { BlockEditor } from "@vamos-cms/ui/editor";
-import { renderDoc } from "@vamos-cms/ui/render";
-import type { VamosDoc } from "@vamos-cms/ui/blocks/schema";
+import { BlockEditor } from "@vamos-ui/react/editor";
+import { renderDoc } from "@vamos-ui/react/render";
+import type { VamosDoc } from "@vamos-ui/react/blocks/schema";
 import { siteBlocks } from "./_blocks";
 
 const initial: VamosDoc = {

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Showing position and status in an ordered process: import wizard, onboarding, approvals, checkout.",
+    "Horizontal or vertical with error, skipped and loading states."
+  ],
+  "avoidWhen": [
+    "Approvals with approvers — use Approval flow.",
+    "Marketing process sections — use Process / steps."
+  ],
+  "related": [
+    "multi-step-form",
+    "approval-flow",
+    "import-wizard",
+    "steps"
+  ],
+  "a11y": [
+    "An ordered list; the current step has aria-current=step and status in text."
+  ]
+}

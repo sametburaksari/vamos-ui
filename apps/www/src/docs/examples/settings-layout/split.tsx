@@ -1,4 +1,4 @@
-import { Input, Select, SettingsLayout, SettingsRow, SettingsSection, Switch } from "@vamos-cms/ui";
+import { Input, Select, SettingsLayout, SettingsRow, SettingsSection, Switch } from "@vamos-ui/react";
 
 // HR leave policies: split sections put the title and description in a start column.
 export default function SettingsLayoutSplit() {

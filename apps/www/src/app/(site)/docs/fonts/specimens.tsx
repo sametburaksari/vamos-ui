@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronDown, Search } from "lucide-react";
-import { cn, controlVariants, matchText } from "@vamos-cms/ui";
+import { cn, controlVariants, matchText } from "@vamos-ui/react";
 import {
   FontPairingPicker,
   FONT_PREVIEW_TEXT,
@@ -17,7 +17,7 @@ import {
   loadGoogleFonts,
   type FontCategory,
   type GoogleFont,
-} from "@vamos-cms/ui/fonts";
+} from "@vamos-ui/react/fonts";
 
 const WATERFALL = "Ağaç işçiliği, şık İzmir çayı";
 

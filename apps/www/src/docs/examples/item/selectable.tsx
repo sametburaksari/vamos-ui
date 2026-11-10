@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, Card, CardHeader, Item, ItemContent, ItemDescription, ItemLeading, ItemList, ItemMeta, ItemTitle } from "@vamos-cms/ui";
+import { Avatar, Card, CardHeader, Item, ItemContent, ItemDescription, ItemLeading, ItemList, ItemMeta, ItemTitle } from "@vamos-ui/react";
 
 const team = [
   { id: "ece", name: "Ece Demir", role: "Product designer", load: "3 open tasks" },

@@ -1,4 +1,4 @@
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const quarters = [
   { quarter: "Q1", target: 420_000, actual: 386_500 },

@@ -1,5 +1,5 @@
-import { ThemeScope } from "@vamos-cms/ui";
-import { AreaChart } from "@vamos-cms/ui/charts";
+import { ThemeScope } from "@vamos-ui/react";
+import { AreaChart } from "@vamos-ui/react/charts";
 
 const signups = [
   { week: "W40", signups: 182, trials: 96 },

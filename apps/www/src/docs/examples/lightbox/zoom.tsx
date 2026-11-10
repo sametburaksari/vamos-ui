@@ -1,5 +1,5 @@
-import { Button } from "@vamos-cms/ui";
-import { Lightbox, LightboxTrigger } from "@vamos-cms/ui/media";
+import { Button } from "@vamos-ui/react";
+import { Lightbox, LightboxTrigger } from "@vamos-ui/react/media";
 import { Maximize2 } from "lucide-react";
 
 // Floor plans and contracts need real zoom: pinch, wheel, double-tap, or + − 0 on the keyboard.

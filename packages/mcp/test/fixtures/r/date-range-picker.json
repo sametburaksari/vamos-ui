@@ -1,0 +1,37 @@
+{
+  "name": "date-range-picker",
+  "type": "component",
+  "title": "Date range picker",
+  "description": "Pick a start and end date with presets.",
+  "group": "Pickers",
+  "tags": [
+    "date"
+  ],
+  "docs": "https://ui.vamos.ist/docs/components/date-range-picker",
+  "dependencies": [
+    "react-day-picker@^9.11.1",
+    "date-fns@^4.1.0"
+  ],
+  "registryDependencies": [
+    "lib-utils",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "components/date-range-picker.tsx",
+      "content": "export function DateRangePicker() { return null; }\n"
+    }
+  ],
+  "guidance": {
+    "whenToUse": [
+      "Filtering reports or tables by a period (tarih aralığı)"
+    ],
+    "avoidWhen": [
+      "A single date — use date-picker"
+    ],
+    "related": [
+      "date-picker",
+      "calendar"
+    ]
+  }
+}

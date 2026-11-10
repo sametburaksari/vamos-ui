@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-cms/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-ui/react";
 
 const TABS = ["overview", "activity", "deals"] as const;
 

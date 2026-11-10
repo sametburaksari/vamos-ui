@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A CMS or website admin home: KPIs, traffic chart, quick draft, recent posts, activity."
+  ],
+  "avoidWhen": [
+    "Sales or pipeline overviews — use dashboard-02.",
+    "E-commerce — use dashboard-05."
+  ],
+  "related": [
+    "stat",
+    "area-chart",
+    "activity-timeline",
+    "shell-01"
+  ],
+  "a11y": [
+    "One h1 in the page header; each card has a heading; charts have titles and summaries."
+  ]
+}

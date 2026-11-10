@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, NotificationItem, PageHeader, Pagination, type AppNotification } from "@vamos-cms/ui";
+import { Button, NotificationItem, PageHeader, Pagination, type AppNotification } from "@vamos-ui/react";
 import { inboxSeed } from "./data";
 
 const all = [...inboxSeed(), ...inboxSeed().map((n) => ({ ...n, id: `${n.id}-b`, createdAt: new Date(new Date(n.createdAt).getTime() - 6 * 864e5).toISOString(), readAt: n.createdAt }))];

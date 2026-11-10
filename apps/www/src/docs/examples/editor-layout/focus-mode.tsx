@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, EditorBar, EditorCanvas, EditorLayout, EditorPanel, EditorPanelSection, Select, SaveStatus } from "@vamos-cms/ui";
+import { Button, EditorBar, EditorCanvas, EditorLayout, EditorPanel, EditorPanelSection, Select, SaveStatus } from "@vamos-ui/react";
 
 // HR job posting: focus mode hides the panel and fades the bar until the pointer moves.
 // In an app, hide the App shell sidebar from onFocusModeChange. ⌘/Ctrl+Shift+F toggles, Esc leaves.

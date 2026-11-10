@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "First-run state of a collection page: one next step, starter templates and a setup checklist."
+  ],
+  "avoidWhen": [
+    "Searches with no results — use empty-02."
+  ],
+  "related": [
+    "empty-state",
+    "setup-checklist",
+    "list-layout"
+  ],
+  "a11y": [
+    "The empty-state title is a heading; the primary action is the only accent button."
+  ]
+}

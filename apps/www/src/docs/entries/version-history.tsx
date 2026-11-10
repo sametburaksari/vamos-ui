@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Revisions of a record: pick two, see what changed and restore an older one. Text diffs highlight changed words inside changed lines (jsdiff), side by side or unified, with collapsed unchanged runs and change navigation. Records diff field by field with locale formatting.",
   source: ["components/version-history.tsx", "styles/data.css"],
   basedOn: "jsdiff (diff) + listbox pattern",
-  usage: `import { VersionHistory, DiffView, FieldDiff } from "@vamos-cms/ui";
+  usage: `import { VersionHistory, DiffView, FieldDiff } from "@vamos-ui/react";
 
 <VersionHistory
   versions={revisions}

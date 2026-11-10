@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DatePicker, Field, addIsoDays, todayIso } from "@vamos-cms/ui";
+import { DatePicker, Field, addIsoDays, todayIso } from "@vamos-ui/react";
 
 export default function DatePickerMinMax() {
   const today = todayIso();

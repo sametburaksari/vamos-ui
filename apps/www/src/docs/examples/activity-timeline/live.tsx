@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Inbox, ShoppingBag, UserPlus } from "lucide-react";
-import { ActivityTimeline, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-cms/ui";
+import { ActivityTimeline, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-ui/react";
 
 const incoming: Omit<TimelineEntry, "id" | "at">[] = [
   { icon: ShoppingBag, tone: "success", title: <>Order <b>#10483</b> paid · $86.40</> },

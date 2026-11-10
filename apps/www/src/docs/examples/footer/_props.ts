@@ -1,4 +1,4 @@
-import type { FooterProps } from "@vamos-cms/ui/blocks";
+import type { FooterProps } from "@vamos-ui/react/blocks";
 
 export const studioFooter: FooterProps = {
   brand: { name: "Vamos", href: "/" },

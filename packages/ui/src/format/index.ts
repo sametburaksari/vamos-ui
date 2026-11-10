@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/format — React-free core (works in RSC) + the client `useFormat` hook.
+// Public API of @vamos-ui/react/format — React-free core (works in RSC) + the client `useFormat` hook.
 export {
   createFormatter,
   numberFormat,

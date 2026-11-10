@@ -1,4 +1,4 @@
-import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const mrr = [
   { month: "2026-04-01", mrr: 38_200 },

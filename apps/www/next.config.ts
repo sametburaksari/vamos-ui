@@ -4,7 +4,7 @@ import type { NextConfig } from "next";
 const isExport = process.env.STATIC_EXPORT === "1";
 
 const config: NextConfig = {
-  transpilePackages: ["@vamos-cms/ui"],
+  transpilePackages: ["@vamos-ui/react"],
   // 143 docs pages with heavy examples: the 60s default fails on a busy build machine.
   staticPageGenerationTimeout: 300,
   ...(isExport ? { output: "export" as const, trailingSlash: true, images: { unoptimized: true } } : {}),

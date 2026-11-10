@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A score or attainment against a target: quota, NPS, SLA.",
+    "Progress rings from table-cell size to dashboard size."
+  ],
+  "avoidWhen": [
+    "Comparing several values — use Bar list.",
+    "Simple task progress — use Progress."
+  ],
+  "related": [
+    "progress",
+    "stat",
+    "chart"
+  ],
+  "a11y": [
+    "Exposes role=meter (or progressbar) with value text including the target.",
+    "Threshold bands are described in text, not only colour."
+  ]
+}

@@ -1,4 +1,4 @@
-import { Progress } from "@vamos-cms/ui";
+import { Progress } from "@vamos-ui/react";
 
 const quotas = [
   { label: "Team seats", value: 12, max: 25 },

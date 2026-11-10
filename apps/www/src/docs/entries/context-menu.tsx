@@ -11,7 +11,7 @@ const entry: DocEntry = {
     "A right-click (or long-press) menu for files, kanban cards, chart nodes and table rows. Same parts and the same MenuEntry[] data as Dropdown Menu, so one model can drive both.",
   source: ["components/context-menu.tsx", "lib/menu.tsx", "lib/variants.ts"],
   basedOn: "Radix Context Menu",
-  usage: `import { ContextMenu } from "@vamos-cms/ui";
+  usage: `import { ContextMenu } from "@vamos-ui/react";
 
 <ContextMenu items={fileActions}>
   <FileTile file={file} />

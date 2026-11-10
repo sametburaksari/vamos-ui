@@ -1,4 +1,4 @@
-import { Image } from "@vamos-cms/ui";
+import { Image } from "@vamos-ui/react";
 
 export default function ImageError() {
   return (

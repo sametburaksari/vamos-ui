@@ -13,7 +13,7 @@ const entry: DocEntry = {
   description:
     "The first screen and the page h1, in five characters per sector — editorial (agency), split media (spa, clinic), full bleed (restaurant), product (SaaS) and statement (manifesto). The generic “centred title + two buttons + abstract visual” is deliberately absent. Server component, above the fold, so nothing animates in; the hero image gets fetchpriority=high.",
   source: ["blocks/site/hero.tsx", "blocks/site/hero-video.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
-  usage: `import { Hero } from "@vamos-cms/ui/blocks";
+  usage: `import { Hero } from "@vamos-ui/react/blocks";
 
 <Hero
   variant="split-media"

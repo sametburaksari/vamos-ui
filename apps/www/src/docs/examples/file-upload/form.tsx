@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Field, FileUpload, Input } from "@vamos-cms/ui";
+import { Button, Field, FileUpload, Input } from "@vamos-ui/react";
 
 export default function FileUploadForm() {
   const [sent, setSent] = React.useState<string>();

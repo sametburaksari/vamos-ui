@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "The single-post template: breadcrumb, category, h1, dek, byline with published/updated dates and reading time, cover, table of contents generated on the server from the body's h2s (hidden under three), the RichDoc body, share links as plain URLs (no SDKs), tags and an author box, then related posts. Heading anchors are locale-aware slugs (Çiroz → ciroz). Only “Copy link” is an island.",
   source: ["blocks/site/article-layout.tsx", "blocks/site/shared/copy-link.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
-  usage: `import { ArticleLayout } from "@vamos-cms/ui/blocks";
+  usage: `import { ArticleLayout } from "@vamos-ui/react/blocks";
 
 // app/journal/[slug]/page.tsx
 <ArticleLayout

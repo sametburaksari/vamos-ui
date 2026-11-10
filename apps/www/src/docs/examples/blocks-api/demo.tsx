@@ -1,4 +1,4 @@
-import { Section, Container, SectionHeader, BlockImage, BlockLink, RichText } from "@vamos-cms/ui/blocks";
+import { Section, Container, SectionHeader, BlockImage, BlockLink, RichText } from "@vamos-ui/react/blocks";
 
 // A page section written as plain JSX — no CMS, no JSON, no schema.
 export default function BlocksApiDemo() {

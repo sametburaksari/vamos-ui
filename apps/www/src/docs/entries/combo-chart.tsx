@@ -11,7 +11,7 @@ const entry: DocEntry = {
     "Volume and rate together: bars on the start axis, a line on the end axis. Both axes share the zero line and the grid, so neither scale exaggerates; axis sides are logical and swap in RTL.",
   source: ["charts/combo-chart.tsx"],
   basedOn: "Recharts ComposedChart",
-  usage: `import { ComboChart } from "@vamos-cms/ui/charts";
+  usage: `import { ComboChart } from "@vamos-ui/react/charts";
 
 <ComboChart title="Quotes and win rate" data={rows} x="month" bars={["sent"]} lines={["winRate"]}
   config={{ sent: { label: "Quotes sent" }, winRate: { label: "Win rate", format: "percent" } }} />`,

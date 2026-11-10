@@ -1,4 +1,4 @@
-import { Input } from "@vamos-cms/ui";
+import { Input } from "@vamos-ui/react";
 
 export default function InputSizes() {
   // Heights follow --control-h, so they shrink with data-density="compact".

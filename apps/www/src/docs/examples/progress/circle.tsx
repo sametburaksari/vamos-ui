@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { ProgressCircle } from "@vamos-cms/ui";
+import { ProgressCircle } from "@vamos-ui/react";
 
 export default function ProgressCircleExample() {
   return (

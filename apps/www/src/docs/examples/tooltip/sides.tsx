@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
-import { IconButton, Tooltip, TooltipProvider } from "@vamos-cms/ui";
+import { IconButton, Tooltip, TooltipProvider } from "@vamos-ui/react";
 
 const sides = [
   { side: "top", label: "Opens above", Icon: ArrowUp },

@@ -1,4 +1,4 @@
-import { SetupChecklist } from "@vamos-cms/ui/business";
+import { SetupChecklist } from "@vamos-ui/react/business";
 
 export default function SetupChecklistLoading() {
   return (

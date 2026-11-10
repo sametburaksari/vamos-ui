@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Card } from "@vamos-cms/ui";
-import { FontPickerList } from "@vamos-cms/ui/fonts";
+import { Card } from "@vamos-ui/react";
+import { FontPickerList } from "@vamos-ui/react/fonts";
 
 export default function FontPickerInline() {
   const [family, setFamily] = React.useState<string | null>("Bricolage Grotesque");

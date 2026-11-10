@@ -1,5 +1,5 @@
 import { Mail, Phone } from "lucide-react";
-import { Avatar, Card, CardHeader, IconButton, Item, ItemActions, ItemContent, ItemDescription, ItemLeading, ItemList, ItemTitle } from "@vamos-cms/ui";
+import { Avatar, Card, CardHeader, IconButton, Item, ItemActions, ItemContent, ItemDescription, ItemLeading, ItemList, ItemTitle } from "@vamos-ui/react";
 
 const contacts = [
   { name: "Ayşe Kaya", role: "Head of Sales", company: "Northwind Traders" },

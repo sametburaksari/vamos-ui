@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CommentThread, type CommentData } from "@vamos-cms/ui";
+import { CommentThread, type CommentData } from "@vamos-ui/react";
 
 const me = { id: "u1", name: "Selin Arslan" };
 const initial: CommentData[] = [

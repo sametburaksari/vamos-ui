@@ -1,4 +1,4 @@
-import { Badge, ScrollArea } from "@vamos-cms/ui";
+import { Badge, ScrollArea } from "@vamos-ui/react";
 
 const cuisines = ["All", "Breakfast", "Turkish", "Seafood", "Vegan", "Coffee", "Kebab", "Meze", "Bakery", "Italian", "Japanese", "Street food", "Fine dining", "Desserts"];
 

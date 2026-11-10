@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Combobox, Field } from "@vamos-cms/ui";
+import { Avatar, Combobox, Field } from "@vamos-ui/react";
 
 const contacts = [
   { value: "c1", label: "Maria Santos", email: "maria@northwind.com", company: "Northwind" },

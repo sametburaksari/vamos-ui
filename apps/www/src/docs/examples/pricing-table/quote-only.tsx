@@ -1,4 +1,4 @@
-import { PricingTable } from "@vamos-cms/ui/blocks";
+import { PricingTable } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Quote-only plans: no price, a short custom line instead. Two columns.

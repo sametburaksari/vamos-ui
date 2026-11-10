@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, ChevronRight, FileCode2 } from "lucide-react";
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 import { docs, docsBySlug } from "@/docs/registry";
 import { highlight, readUiSource } from "@/lib/highlight";
 import { ComponentPreview } from "@/components/docs/component-preview";

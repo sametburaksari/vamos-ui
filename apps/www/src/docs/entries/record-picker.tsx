@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "Link one or many related records from any collection — a contact to a company, a post to its author, an order to a customer, a task to a project. Async search (debounced, abortable, paged), recent picks, inline create, a browse dialog for big sets, chips or cards, and ids → labels resolution with a deleted-record state. The kit never knows your API: you pass a RecordSource.",
   source: ["components/record-picker.tsx", "components/avatar.tsx", "lib/text.ts"],
   basedOn: "Radix Popover + WAI-ARIA combobox / listbox",
-  usage: `import { Field, RecordPicker, type RecordSource } from "@vamos-cms/ui";
+  usage: `import { Field, RecordPicker, type RecordSource } from "@vamos-ui/react";
 
 const companies: RecordSource<Company> = {
   key: "companies",

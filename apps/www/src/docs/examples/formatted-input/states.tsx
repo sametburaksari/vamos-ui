@@ -1,4 +1,4 @@
-import { CurrencyInput, Field, IbanInput, NumberInput, PhoneInput } from "@vamos-cms/ui";
+import { CurrencyInput, Field, IbanInput, NumberInput, PhoneInput } from "@vamos-ui/react";
 
 export default function FormattedStates() {
   return (

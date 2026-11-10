@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Choose a colour — website brand colour, label colours, campaign or chart series colour. A saturation/brightness area and hue strip (keyboard sliders), an optional opacity strip, a value field that accepts hex, rgb() and oklch(), swatches as a radio group, the screen eyedropper where supported, and a WCAG contrast hint. The value is always hex.",
   source: ["components/color-picker.tsx", "lib/color.ts", "components/radio-group.tsx", "components/popover.tsx", "styles/forms.css"],
   basedOn: "react-colorful + Radix Popover / Radio Group",
-  usage: `import { ColorPicker, ColorSwatchPicker, Field } from "@vamos-cms/ui";
+  usage: `import { ColorPicker, ColorSwatchPicker, Field } from "@vamos-ui/react";
 
 <Field label="Brand color">
   <ColorPicker name="brand" defaultValue="#2f6fd6" contrastAgainst="#ffffff" />

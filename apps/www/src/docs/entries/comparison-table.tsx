@@ -11,7 +11,7 @@ const entry: DocEntry = {
     "A plan × feature detail table, or a two-column “us vs. them”. A real <table> with a caption, scoped row and column headers, grouped rows with inset band headings and hidden Yes/No text behind every icon. The header row sticks; the highlighted plan gets a faint accent band. On narrow containers a radio plan picker shows one column at a time — CSS only.",
   source: ["blocks/site/comparison-table.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
   basedOn: "Native table + radios + :has()",
-  usage: `import { ComparisonTable } from "@vamos-cms/ui/blocks";
+  usage: `import { ComparisonTable } from "@vamos-ui/react/blocks";
 
 <ComparisonTable
   title="Every plan, *line by line*"

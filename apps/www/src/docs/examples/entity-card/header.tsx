@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { Badge, Button, EntityCard } from "@vamos-cms/ui";
+import { Badge, Button, EntityCard } from "@vamos-ui/react";
 
 export default function EntityCardHeader() {
   return (

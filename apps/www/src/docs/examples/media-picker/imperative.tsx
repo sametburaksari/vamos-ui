@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, Button } from "@vamos-cms/ui";
-import { MediaPickerProvider, MediaProvider, useMediaPicker, type MediaAsset } from "@vamos-cms/ui/media";
+import { Avatar, Button } from "@vamos-ui/react";
+import { MediaPickerProvider, MediaProvider, useMediaPicker, type MediaAsset } from "@vamos-ui/react/media";
 import { createDemoMedia } from "../media-library/sample-media";
 
 // From code: `await pick(options)` resolves with the chosen assets ([] when cancelled).

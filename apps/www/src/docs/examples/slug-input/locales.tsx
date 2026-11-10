@@ -1,4 +1,4 @@
-import { slugify } from "@vamos-cms/ui";
+import { slugify } from "@vamos-ui/react";
 
 const rows = [
   { locale: "en", title: "Q3 Results & Next Steps" },

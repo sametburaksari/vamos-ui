@@ -1,6 +1,6 @@
 "use client";
 
-import { AttachmentList, type AttachmentData } from "@vamos-cms/ui";
+import { AttachmentList, type AttachmentData } from "@vamos-ui/react";
 
 // Sample photos (Unsplash): a spa treatment room and a hot-stone session.
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=360&h=270&q=70&auto=format&fit=crop`;

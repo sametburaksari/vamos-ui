@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable, type DataTableColumn } from "@vamos-cms/ui/data-table";
+import { DataTable, type DataTableColumn } from "@vamos-ui/react/data-table";
 import { actionOptions, makeEvents, type AuditEvent } from "./_data";
 
 const events = makeEvents(10000);

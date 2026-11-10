@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@vamos-cms/ui";
+import { cn } from "@vamos-ui/react";
 import { inventory } from "@/lib/catalog";
 import { docSections } from "@/lib/site";
 

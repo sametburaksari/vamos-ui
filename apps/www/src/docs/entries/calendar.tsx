@@ -15,7 +15,7 @@ const entry: DocEntry = {
     "A month, multi-month or year calendar with something on each day: event dots, holidays, absences, availability. Single, multiple or range selection with YYYY-MM-DD values; week start, weekend and week numbers from the locale; Turkish public holidays built in. CalendarGrid is the shared grid behind every date picker.",
   source: ["components/calendar.tsx", "lib/date.ts", "styles/calendar.css", "locale-data/core/week-info.ts", "locale-data/tr/holidays.ts"],
   basedOn: "react-day-picker v9 + date-fns v4",
-  usage: `import { Calendar } from "@vamos-cms/ui";
+  usage: `import { Calendar } from "@vamos-ui/react";
 
 <Calendar
   value={day}

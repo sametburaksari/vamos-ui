@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Display and navigate hierarchies — a CMS page tree, category tree, media folders, a department tree, file explorer panes. A flat WAI-ARIA tree (level, set size and position on every row) with single, multiple or tri-state checkbox selection, lazy children with retry, filtering that keeps ancestors, hover actions, indent guides and virtualisation for thousands of nodes. The useTree hook underneath is exported for custom trees.",
   source: ["components/tree-view.tsx", "lib/use-tree.ts"],
   basedOn: "WAI-ARIA treeview + @tanstack/react-virtual",
-  usage: `import { TreeView, type TreeNode } from "@vamos-cms/ui";
+  usage: `import { TreeView, type TreeNode } from "@vamos-ui/react";
 
 <TreeView aria-label="Pages" data={pages} defaultExpanded={["company"]} onAction={(node) => openPage(node.id)} />`,
   demo: ex("demo", "Page hierarchy", "tree-view/demo.tsx", TreeViewDemo),

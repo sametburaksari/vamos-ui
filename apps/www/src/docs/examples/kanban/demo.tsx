@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { Building2, CalendarClock } from "lucide-react";
-import { Avatar, Badge, Toaster, useFormat } from "@vamos-cms/ui";
-import { Kanban, KanbanCardFooter, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, sumBy, weightedSum, type Stage } from "@vamos-cms/ui/sortable";
+import { Avatar, Badge, Toaster, useFormat } from "@vamos-ui/react";
+import { Kanban, KanbanCardFooter, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, sumBy, weightedSum, type Stage } from "@vamos-ui/react/sortable";
 
 interface Deal {
   id: string;

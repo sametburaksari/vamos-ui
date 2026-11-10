@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A CRM contacts or companies list with avatars, lifecycle badges, owner, tags and bulk assign."
+  ],
+  "avoidWhen": [
+    "Pipeline views — use board-01.",
+    "Card directories — use list-03."
+  ],
+  "related": [
+    "data-table",
+    "filter-bar",
+    "saved-views",
+    "avatar",
+    "list-layout"
+  ],
+  "a11y": [
+    "Row selection checkboxes name the contact; badges carry text."
+  ]
+}

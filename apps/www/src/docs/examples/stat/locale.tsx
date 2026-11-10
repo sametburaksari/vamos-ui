@@ -1,5 +1,5 @@
-import { LocaleProvider, Stat, StatGroup } from "@vamos-cms/ui";
-import { tr } from "@vamos-cms/ui/locale/tr";
+import { LocaleProvider, Stat, StatGroup } from "@vamos-ui/react";
+import { tr } from "@vamos-ui/react/locale/tr";
 
 function Row() {
   return (

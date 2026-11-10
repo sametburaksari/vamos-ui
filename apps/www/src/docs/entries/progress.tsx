@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Task progress and quota use — uploads, imports, leave balance, plan limits. Linear and circular, indeterminate, an automatic quota tone, and values formatted for the current locale (42% / %42).",
   source: ["components/progress.tsx", "styles/overlays.css"],
   basedOn: "WAI-ARIA progressbar",
-  usage: `import { Progress, ProgressCircle } from "@vamos-cms/ui";
+  usage: `import { Progress, ProgressCircle } from "@vamos-ui/react";
 
 <Progress label="Uploading" value={42} showValue />
 <ProgressCircle aria-label="Profile complete" value={72} size="lg" />`,

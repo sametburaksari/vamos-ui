@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, ConfirmProvider, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, Field, Input, Textarea, useConfirm } from "@vamos-cms/ui";
+import { Button, ConfirmProvider, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, Field, Input, Textarea, useConfirm } from "@vamos-ui/react";
 
 function LeaveRequestDialog() {
   const confirm = useConfirm();

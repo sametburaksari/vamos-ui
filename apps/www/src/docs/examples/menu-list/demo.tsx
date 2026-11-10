@@ -1,4 +1,4 @@
-import { MenuList, type MenuCategory } from "@vamos-cms/ui/blocks";
+import { MenuList, type MenuCategory } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 const TRY = (amount: string) => ({ amount, currency: "TRY" });

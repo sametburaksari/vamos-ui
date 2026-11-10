@@ -1,0 +1,130 @@
+# @vamos-ui/mcp
+
+MCP server that gives AI coding agents the Vamos UI kit: components, blocks (whole screens), theme axes, tokens, the design rules, a code verifier, the exact install commands, and the project's brand profile (`vamos.brand.json`). Docs: https://ui.vamos.ist
+
+It runs over stdio and reads the public registry at `https://ui.vamos.ist/r` (cached in memory). Nothing is written to your project unless you call `apply_design_system` with `write: true`, and then only inside `projectDir`. The agent installs code with `npx vamos-ui add …` and applies a brand with `npx vamos-ui brand apply`.
+
+## Setup
+
+### Claude Code
+
+```sh
+claude mcp add vamos-ui -- npx -y @vamos-ui/mcp
+```
+
+Add `--scope project` to share it with your team through `.mcp.json`.
+
+### Claude Desktop
+
+`claude_desktop_config.json` (Settings → Developer → Edit Config):
+
+```json
+{
+  "mcpServers": {
+    "vamos-ui": {
+      "command": "npx",
+      "args": ["-y", "@vamos-ui/mcp"]
+    }
+  }
+}
+```
+
+### Cursor
+
+`.cursor/mcp.json` in the project (or `~/.cursor/mcp.json` for every project):
+
+```json
+{
+  "mcpServers": {
+    "vamos-ui": {
+      "command": "npx",
+      "args": ["-y", "@vamos-ui/mcp"]
+    }
+  }
+}
+```
+
+### VS Code (Copilot agent mode)
+
+`.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "vamos-ui": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@vamos-ui/mcp"]
+    }
+  }
+}
+```
+
+### Codex
+
+`~/.codex/config.toml`:
+
+```toml
+[mcp_servers.vamos-ui]
+command = "npx"
+args = ["-y", "@vamos-ui/mcp"]
+```
+
+Or: `codex mcp add vamos-ui -- npx -y @vamos-ui/mcp`.
+
+### Another registry
+
+Point the server at a mirror or a local build with `--registry` or `VAMOS_REGISTRY` (URL or directory):
+
+```sh
+claude mcp add vamos-ui -e VAMOS_REGISTRY=./apps/www/public/r -- npx -y @vamos-ui/mcp
+npx -y @vamos-ui/mcp --registry https://ui.example.com/r
+```
+
+## Tools
+
+| Tool | When the agent calls it |
+|---|---|
+| `get_rules` | Once at the start of any UI task: tokens only, accent scarcity, glass budget, density, kit over hand-rolled markup, no AI-looking patterns, realistic content, accessibility. |
+| `plan_screen(description)` | First, for a new page: suggests the block to start from, extra components with reasons, density and the install command. |
+| `get_block(name)` | Full source of a block plus the kit components it uses. |
+| `search(query, type?, limit?)` | Find items by need, in English or Turkish ("date range picker", "tarih seçici"). |
+| `get_item(name, include?, format?)` | Usage, props, examples, when-to-use guidance, dependencies; source with `include: ["files"]`. |
+| `list_items(type?, group?, category?, tag?)` | Browse by docs group or block category. |
+| `get_theming(include_tokens?)` | The 5 axes, semantic classes, brand accents, token table. |
+| `verify_code(code, filename)` | Lints a file (raw colours, `dark:`, fonts, missing labels/alt, click handlers on divs, z-index, hand-rolled overlays…). Returns text plus structured `{ ok, issues }`. |
+| `install_command(names)` | The exact `npx vamos-ui add …` command, with names validated. |
+
+### Design system (brand profile)
+
+| Tool | When the agent calls it |
+|---|---|
+| `get_brand(projectDir?)` | At the start of UI work: accent (with the generated variables), fonts, theme defaults, voice, assets and any problems from `vamos.brand.json`. |
+| `import_design_system(url \| html, css?, base_url?, name?)` | Drafts a `vamos.brand.json` from a website or page source, with the evidence for each value, a contrast-checked accent and what is missing. Writes nothing; the agent confirms the draft with the user. |
+| `propose_accent(colour, dark?)` | One colour → `--accent-base`, `--accent-fg`, `--accent-ink-light`, `--accent-ink-dark` (OKLCH), WCAG contrast per pair and what was adjusted. |
+| `apply_design_system(projectDir, brand?, write?)` | The exact edits (brand.css, the CSS import, vamos.json theme, `<html>` attributes, font loading) and the command `npx vamos-ui brand apply`. Writes only with `write: true`, never outside `projectDir`. |
+| `verify_design(code \| projectDir, filename?, paths?)` | Lints one file, or the project (kit folder skipped) plus the brand checks: profile valid, asset files present, brand.css up to date, import order, vamos.json, `<html>`. Lists what needs screenshots. |
+| `update_design(projectDir, paths?)` | The plan `npx vamos-ui update --dry-run` shows: the automatic fixes `update --fix` would make (with the mapping table), brand edits, and the rule violations grouped by rule and file. Changes nothing. |
+
+Brand tools use `vamos-ui/brand` from the CLI (bundled at build time). If it is missing, they say so and point to the CLI command.
+
+Resources: `vamos://rules`, `vamos://theming`, `vamos://items/{name}`.
+Prompts: `build-screen` (description, framework?) and `review-ui` (code, filename?).
+
+## Development
+
+```sh
+pnpm --filter @vamos-ui/mcp build      # dist/index.js (bundles vamos-ui/verify)
+pnpm --filter @vamos-ui/mcp test       # vitest: handlers, in-memory client/server, built bin over stdio
+pnpm --filter @vamos-ui/mcp typecheck
+
+# try it against the local registry
+node scripts/build-registry.mjs
+npx @modelcontextprotocol/inspector node packages/mcp/dist/index.js --registry apps/www/public/r
+```
+
+Tests run against `test/fixtures/r` and temporary project folders. Brand tool logic is tested with a stand-in library; `test/brand-real.test.ts` runs against the real `vamos-ui/brand` once `packages/cli/src/brand/index.ts` (or `brand.ts`) exists and skips until then. The stdio test runs after a build. The real-verifier test runs once `packages/cli/src/verify.ts` exists.
+
+## License
+
+MIT

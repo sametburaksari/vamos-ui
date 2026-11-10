@@ -1,6 +1,6 @@
 "use client";
 
-import { Combobox, Field } from "@vamos-cms/ui";
+import { Combobox, Field } from "@vamos-ui/react";
 
 interface Person {
   id: string;

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Website navigation with dropdowns and mega-menu panels, plus a matching mobile sheet.",
+    "A floating glass nav on marketing sites."
+  ],
+  "avoidWhen": [
+    "Admin panels — use Sidebar.",
+    "Action menus — use Dropdown Menu."
+  ],
+  "related": [
+    "navbar",
+    "sidebar",
+    "breadcrumb"
+  ],
+  "a11y": [
+    "Follows the disclosure navigation pattern; links stay links.",
+    "Panels are reachable with keyboard and close with Escape."
+  ]
+}

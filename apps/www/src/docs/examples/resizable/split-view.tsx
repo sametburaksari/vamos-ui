@@ -1,4 +1,4 @@
-import { ResizableGroup, ResizableHandle, ResizablePanel } from "@vamos-cms/ui";
+import { ResizableGroup, ResizableHandle, ResizablePanel } from "@vamos-ui/react";
 
 const threads = [
   { from: "Laura Callahan", subject: "Renewal — revised quote", preview: "Thanks, the 3-year option works for us if…", time: "09:42", unread: true },

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Mail, Phone } from "lucide-react";
-import { Badge, Button, Sheet, SheetBody, SheetContent, SheetFooter, SheetHeader } from "@vamos-cms/ui";
+import { Badge, Button, Sheet, SheetBody, SheetContent, SheetFooter, SheetHeader } from "@vamos-ui/react";
 
 const contacts = [
   { name: "Elif Demir", company: "Moda Wellness", role: "Operations lead", email: "elif@modawellness.com", phone: "+90 532 418 22 10", stage: "Customer", value: "$4,500" },

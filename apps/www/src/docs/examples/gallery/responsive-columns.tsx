@@ -1,4 +1,4 @@
-import { Gallery, type MediaSource } from "@vamos-cms/ui/media";
+import { Gallery, type MediaSource } from "@vamos-ui/react/media";
 
 const people: MediaSource[] = [
   ["photo-1494790108377-be9c29b29330", "Elif Demir, Head of Design"],

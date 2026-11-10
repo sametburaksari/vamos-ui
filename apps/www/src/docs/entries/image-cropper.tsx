@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Crops an image to a ratio with drag, pinch, wheel and keyboard, plus a toolbar: ratio presets, zoom, rotate ±90°, flip and reset. It outputs a non-destructive crop rect in source pixels for asset.crops; getCroppedBlob() bakes a copy when you need a new file.",
   source: ["media/image-cropper.tsx"],
   basedOn: "react-easy-crop",
-  usage: `import { ImageCropper } from "@vamos-cms/ui/media";
+  usage: `import { ImageCropper } from "@vamos-ui/react/media";
 
 <ImageCropper src={asset} defaultAspect={1.91}
   onChange={(rect, preset) => adapter.update(asset.id, { crops: { ...asset.crops, [preset?.name ?? "custom"]: rect } })} />`,

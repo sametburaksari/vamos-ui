@@ -1,6 +1,6 @@
 "use client";
 
-import { NotFound } from "@vamos-cms/ui/blocks";
+import { NotFound } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // app/error.tsx is a client component: NotFound renders there too and wires Next's reset().

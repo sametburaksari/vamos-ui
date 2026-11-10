@@ -1,4 +1,4 @@
-import { GallerySection } from "@vamos-cms/ui/blocks";
+import { GallerySection } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { more, photos } from "../_site-2/data";
 

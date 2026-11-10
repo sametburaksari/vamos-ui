@@ -1,0 +1,36 @@
+{
+  "name": "data-table",
+  "type": "component",
+  "title": "Data table",
+  "description": "Sortable, selectable, paginated table for records.",
+  "group": "Data display",
+  "tags": [
+    "table"
+  ],
+  "docs": "https://ui.vamos.ist/docs/components/data-table",
+  "dependencies": [
+    "@tanstack/react-table@^9.0.0"
+  ],
+  "registryDependencies": [
+    "lib-utils",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "data-table/data-table.tsx",
+      "content": "export function DataTable() { return null; }\n"
+    }
+  ],
+  "guidance": {
+    "whenToUse": [
+      "Lists of records with sorting, selection and bulk actions"
+    ],
+    "avoidWhen": [
+      "A handful of key-value pairs — use description-list"
+    ],
+    "related": [
+      "table",
+      "filter-bar"
+    ]
+  }
+}

@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Checkable tasks with assignee, due date, priority and subtasks: deal follow-ups, onboarding, an editorial checklist, project to-dos. Optimistic toggles that revert on failure, inline add and edit, overdue and due-today tones, and a progress header that is announced politely.",
   source: ["components/task-list.tsx"],
   basedOn: "Checkbox + native lists",
-  usage: `import { TaskList } from "@vamos-cms/ui";
+  usage: `import { TaskList } from "@vamos-ui/react";
 
 <TaskList
   title="Follow-ups"

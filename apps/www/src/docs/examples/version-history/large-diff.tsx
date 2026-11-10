@@ -1,6 +1,6 @@
 "use client";
 
-import { DiffView } from "@vamos-cms/ui";
+import { DiffView } from "@vamos-ui/react";
 
 const policy = Array.from({ length: 60 }, (_, i) => `${i + 1}. ${
   [

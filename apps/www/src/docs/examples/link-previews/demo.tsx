@@ -1,4 +1,4 @@
-import { LinkPreviewTabs, type LinkPreviewData } from "@vamos-cms/ui/media";
+import { LinkPreviewTabs, type LinkPreviewData } from "@vamos-ui/react/media";
 
 const post: LinkPreviewData = {
   url: "https://lenaspa.com.tr/journal/hammam-ritual-guide",

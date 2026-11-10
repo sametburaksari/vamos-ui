@@ -17,7 +17,7 @@ const entry: DocEntry = {
     "The kit's one reordering primitive: lists, grids, tables and multi-list boards with pointer, touch and keyboard dragging, spoken announcements and a Move menu on every item so nothing requires dragging. Also ships usePointerDrag and useTimeScale, the drag and time-axis hooks behind the scheduler and Gantt.",
   source: ["sortable/sortable.tsx", "sortable/sortable-list.tsx", "sortable/use-pointer-drag.ts", "scheduler/core/time-scale.ts"],
   basedOn: "dnd-kit (internal; no engine types in the public API)",
-  usage: `import { SortableList } from "@vamos-cms/ui/sortable";
+  usage: `import { SortableList } from "@vamos-ui/react/sortable";
 
 <SortableList
   aria-label="Main menu"

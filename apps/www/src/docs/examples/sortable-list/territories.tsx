@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { Globe2, MapPin } from "lucide-react";
-import { Switch, Label, Toaster } from "@vamos-cms/ui";
-import { SortableTree, moveTreeNode, type SortableTreeMoveEvent } from "@vamos-cms/ui/sortable";
+import { Switch, Label, Toaster } from "@vamos-ui/react";
+import { SortableTree, moveTreeNode, type SortableTreeMoveEvent } from "@vamos-ui/react/sortable";
 
 interface Territory {
   id: string;

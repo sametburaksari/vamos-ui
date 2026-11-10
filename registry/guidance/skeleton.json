@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Placeholders while content loads in known shapes: rows, cards, charts.",
+    "SkeletonGroup announcing a loading region once."
+  ],
+  "avoidWhen": [
+    "Short waits under ~300ms — show nothing.",
+    "Actions in progress — use Button loading or Spinner.",
+    "No data — use Empty state."
+  ],
+  "related": [
+    "spinner",
+    "progress",
+    "empty-state"
+  ],
+  "a11y": [
+    "Skeletons are aria-hidden; the region sets aria-busy.",
+    "Shimmer stops under reduced motion."
+  ]
+}

@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, type DialogSize } from "@vamos-cms/ui";
+import { Button, Dialog, DialogBody, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger, type DialogSize } from "@vamos-ui/react";
 
 const sizes: { size: DialogSize; width: string }[] = [
   { size: "sm", width: "400px" },

@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "Human-readable history on a record: created, stage changed, email sent, comment added.",
+    "A dashboard activity feed grouped by day.",
+    "Approval and order steps that already happened."
+  ],
+  "avoidWhen": [
+    "A forensic who-did-what ledger with filters and IP data — use Audit log.",
+    "Future steps of a process — use Stepper or Approval flow.",
+    "Discussions people reply to — use Comment thread."
+  ],
+  "related": [
+    "audit-log",
+    "comment-thread",
+    "version-history",
+    "record-detail-layout"
+  ],
+  "a11y": [
+    "Entries form a list; actors are named in text, not only via avatars.",
+    "Relative times keep an absolute timestamp in the datetime attribute and tooltip."
+  ]
+}

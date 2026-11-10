@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Container, Section, SectionHeader, type BlockComponentProps } from "@vamos-cms/ui/blocks";
-import { z, f, defineBlock, createRegistry, type VamosDoc } from "@vamos-cms/ui/blocks/schema";
-import { BlockEditor, BlockEditorBubbleMenu, BlockEditorContent, BlockEditorDragHandle, BlockEditorSlashMenu, BlockInserter, BlockInspector } from "@vamos-cms/ui/editor";
+import { Container, Section, SectionHeader, type BlockComponentProps } from "@vamos-ui/react/blocks";
+import { z, f, defineBlock, createRegistry, type VamosDoc } from "@vamos-ui/react/blocks/schema";
+import { BlockEditor, BlockEditorBubbleMenu, BlockEditorContent, BlockEditorDragHandle, BlockEditorSlashMenu, BlockInserter, BlockInspector } from "@vamos-ui/react/editor";
 
 // 1. The component: a plain server-compatible React component the site renders.
 type StatsProps = BlockComponentProps<{ title: string; stats: { value: string; label: string }[]; source?: string }>;

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, IdInput, NationalIdInput, TaxIdInput } from "@vamos-cms/ui";
+import { Field, IdInput, NationalIdInput, TaxIdInput } from "@vamos-ui/react";
 
 export default function NationalIdExample() {
   const [errors, setErrors] = React.useState<Record<string, string | undefined>>({});

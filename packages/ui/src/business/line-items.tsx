@@ -373,10 +373,11 @@ function LineItemsInner<R>(props: LineItemsProps<R>, ref: React.ForwardedRef<HTM
               <button
                 type="button"
                 className="focus-ring -me-1 inline-flex h-5 min-w-6 items-center justify-center rounded-ui-sm px-1 text-[11px] font-medium text-fg-muted hover:bg-hover hover:text-fg"
-                aria-label={t("discountType", { type: other === "percent" ? t("discountPercent") : t("discountAmount") })}
                 onClick={() => patch(row.id, { discount: { type: other, value: row.discount?.value ?? "" } })}
               >
-                {type === "percent" ? t("percent") : currency}
+                {/* The symbol is the current unit; the (hidden) name says what pressing it does. No aria-label: it would not contain the visible symbol (WCAG 2.5.3). */}
+                <span aria-hidden="true">{type === "percent" ? t("percent") : currency}</span>
+                <span className="sr-only">{t("discountType", { type: other === "percent" ? t("discountPercent") : t("discountAmount") })}</span>
               </button>
             }
           />
@@ -426,7 +427,10 @@ function LineItemsInner<R>(props: LineItemsProps<R>, ref: React.ForwardedRef<HTM
     withholding: 7.5,
     total: 7.5,
   };
-  const tableMinRem = 2 + (editable ? 2.25 : 0) + 14 + columns.reduce((sum, c) => sum + (colRem[c] ?? 0), 0);
+  // Read-only cells hold plain text, not inputs, so the columns can be tighter and the total
+  // column stays visible in a card-width container (e.g. an invoice detail page).
+  if (!editable) Object.assign(colRem, { item: 9, quantity: 3.75, unit: 4.75, unitPrice: 6.75, discount: 5.5, tax: 4.25, withholding: 6.5, total: 7 });
+  const tableMinRem = 2 + (editable ? 2.25 : 0) + (editable ? 14 : 10) + columns.reduce((sum, c) => sum + (colRem[c] ?? 0), 0);
 
   const table = (
     <table className="vui-line-items-table w-full table-fixed border-collapse text-sm" style={{ ["--li-min-w" as string]: `${tableMinRem}rem` }} data-slot="line-items-table">
@@ -534,7 +538,8 @@ function LineItemsInner<R>(props: LineItemsProps<R>, ref: React.ForwardedRef<HTM
       aria-disabled={disabled || undefined}
       className={cn("vui-line-items flex flex-col gap-3", disabled && "opacity-60", className)}
     >
-      <div className="vui-line-items-frame overflow-x-auto rounded-ui-lg border border-line bg-surface">
+      {/* Read-only tables have nothing focusable inside, so the frame itself takes focus to scroll by keyboard. */}
+      <div className={cn("vui-line-items-frame overflow-x-auto rounded-ui-lg border border-line bg-surface", !editable && "focus-ring")} tabIndex={editable ? undefined : 0}>
         {editable ? (
           <Sortable items={rows} getLabel={(r) => r.description || t("cell", { column: t("item"), row: rows.indexOf(r) + 1 })} onReorder={(next) => commit(next)}>
             {table}
@@ -684,12 +689,12 @@ export function LineItemsSummary({
                   <button
                     type="button"
                     className="focus-ring -me-1 inline-flex h-5 min-w-6 items-center justify-center rounded-ui-sm px-1 text-[11px] font-medium text-fg-muted hover:bg-hover hover:text-fg"
-                    aria-label={t("discountType", { type: (documentDiscount?.type ?? "percent") === "percent" ? t("discountAmount") : t("discountPercent") })}
                     onClick={() =>
                       onDocumentDiscountChange({ type: (documentDiscount?.type ?? "percent") === "percent" ? "amount" : "percent", value: documentDiscount?.value ?? "" })
                     }
                   >
-                    {(documentDiscount?.type ?? "percent") === "percent" ? t("percent") : currency}
+                    <span aria-hidden="true">{(documentDiscount?.type ?? "percent") === "percent" ? t("percent") : currency}</span>
+                    <span className="sr-only">{t("discountType", { type: (documentDiscount?.type ?? "percent") === "percent" ? t("discountAmount") : t("discountPercent") })}</span>
                   </button>
                 }
               />

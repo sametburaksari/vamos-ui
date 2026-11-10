@@ -1,4 +1,4 @@
-import { TabsLink, TabsLinkList, VamosProvider } from "@vamos-cms/ui";
+import { TabsLink, TabsLinkList, VamosProvider } from "@vamos-ui/react";
 
 // In your app VamosProvider sits at the root with your router's Link and the current path.
 export default function TabsLinkTabs() {

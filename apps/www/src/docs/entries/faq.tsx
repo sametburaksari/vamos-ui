@@ -11,7 +11,7 @@ const entry: DocEntry = {
     "Questions and answers — parking, cancellation, payment — and long-tail search content. Zero JS: native <details name> makes an exclusive accordion, ::details-content animates the height where supported, and closed answers stay findable with in-page search. The renderer emits FAQPage JSON-LD.",
   source: ["blocks/site/faq.tsx", "blocks/site/registry-1.ts", "styles/blocks.css"],
   basedOn: "Native details / summary",
-  usage: `import { Faq, faqJsonLd } from "@vamos-cms/ui/blocks";
+  usage: `import { Faq, faqJsonLd } from "@vamos-ui/react/blocks";
 
 <Faq
   title="Before you *book*"

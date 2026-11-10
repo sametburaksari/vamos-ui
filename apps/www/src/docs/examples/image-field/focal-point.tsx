@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FocalPointPicker, type FocalPoint } from "@vamos-cms/ui/media";
+import { FocalPointPicker, type FocalPoint } from "@vamos-ui/react/media";
 import { demoAsset } from "../media-library/sample-media";
 
 // The focal point on its own: drag the marker, or focus it and use the arrow keys

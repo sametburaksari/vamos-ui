@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronsUpDown, Check, PanelLeftClose, PanelLeftOpen } from "lucide-react";
-import { cn } from "@vamos-cms/ui";
+import { cn } from "@vamos-ui/react";
 import { apps, sharedNav, appForPath, type AppDef, type NavEntry, type NavLink } from "./nav";
 
 const isLink = (e: NavEntry): e is NavLink => "href" in e;
@@ -28,7 +28,22 @@ type Flyout = { key: string; top: number; left: number; item: NavLink } | null;
  * - Bottom: shared menu (users, settings, kit), the same in every app.
  * Flyouts are fixed-positioned so the scrolling menu can't clip them.
  */
-export function AppSidebar({ path, onNavigate, collapsed, onToggle }: { path: string; onNavigate: (href: string) => void; collapsed: boolean; onToggle: () => void }) {
+export function AppSidebar({
+  path,
+  onNavigate,
+  collapsed,
+  onToggle,
+  mobile,
+  className,
+}: {
+  path: string;
+  onNavigate: (href: string) => void;
+  collapsed: boolean;
+  onToggle: () => void;
+  /** Rendered inside the mobile sheet: no collapse button. */
+  mobile?: boolean;
+  className?: string;
+}) {
   // In your app, replace `path`/`onNavigate` with your router (usePathname + <Link>).
   const Link = ({ href, onClick, ...rest }: React.ComponentProps<"a"> & { href: string }) => (
     <a href={href} {...rest} onClick={(e) => { e.preventDefault(); onClick?.(e); onNavigate(href); }} />
@@ -111,7 +126,7 @@ export function AppSidebar({ path, onNavigate, collapsed, onToggle }: { path: st
     });
 
   return (
-    <aside className={cn("surface-nav sticky top-0 z-30 flex h-dvh shrink-0 flex-col border-e border-nav-line transition-[width] duration-200", collapsed ? "w-[60px]" : "w-[240px]")}>
+    <aside className={cn("surface-nav sticky top-0 z-30 flex h-dvh shrink-0 flex-col border-e border-nav-line transition-[width] duration-200", collapsed ? "w-[60px]" : "w-[240px]", className)}>
       <AppSwitcher app={app} collapsed={collapsed} onNavigate={onNavigate} />
 
       <nav className="flex-1 overflow-y-auto py-2 scrollbar-none" aria-label={`${app.name} menu`}>
@@ -122,14 +137,14 @@ export function AppSidebar({ path, onNavigate, collapsed, onToggle }: { path: st
         <ul className="grid gap-px">{renderEntries(sharedNav, "shared")}</ul>
       </nav>
 
-      <button
+      {!mobile && <button
         onClick={onToggle}
         aria-label={collapsed ? "Expand menu" : "Collapse menu"}
         className={cn("flex h-10 items-center gap-3 border-t border-nav-line text-[12.5px] text-nav-fg/70 hover:text-nav-fg-strong focus-ring", collapsed ? "justify-center" : "px-4.5")}
       >
         {collapsed ? <PanelLeftOpen className="size-4" /> : <PanelLeftClose className="size-4" />}
         {!collapsed && "Collapse"}
-      </button>
+      </button>}
 
       {flyout && (
         <div

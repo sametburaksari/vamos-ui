@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@vamos-cms/ui";
-import { BarChart, DonutChart, LineChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { Button } from "@vamos-ui/react";
+import { BarChart, DonutChart, LineChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const weeks = [
   { week: "W41", tickets: 142 },

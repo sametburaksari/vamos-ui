@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 
 export default function BadgeAsLink() {
   return (

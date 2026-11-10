@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { RecordLayout, ToggleGroup, ToggleGroupItem, type RecordLayoutState } from "@vamos-cms/ui";
+import { RecordLayout, ToggleGroup, ToggleGroupItem, type RecordLayoutState } from "@vamos-ui/react";
 import { ContactAside, ContactHeader, ContactMain } from "./contact";
 
 // Loading skeleton, not found and forbidden — the same layout, no extra wiring.

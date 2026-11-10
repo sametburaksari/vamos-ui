@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, PageHeader, AppShellProvider } from "@vamos-cms/ui";
+import { Button, PageHeader, AppShellProvider } from "@vamos-ui/react";
 import { crmApp, siteApp } from "../app-shell/demo-kit";
 
 /** breadcrumb="auto" builds the trail from the App shell's active nav item — one source of truth. */

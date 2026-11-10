@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description:
     "Team and specialist introductions — spa therapists, clinic doctors, an agency team. Card-less: 4:5 portraits with a name and a small mono role, a typographic list with a hover portrait, or a founder feature with the name set like a signature. Honorifics (“Dr.”, “Op. Dr.”) are a separate field because their order varies by locale. Profile links are short text links, never rows of social icons.",
   source: ["blocks/site/team.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
-  usage: `import { Team } from "@vamos-cms/ui/blocks";
+  usage: `import { Team } from "@vamos-ui/react/blocks";
 
 <Team
   title="Hands you can *trust*"

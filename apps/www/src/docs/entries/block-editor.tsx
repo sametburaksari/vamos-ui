@@ -13,10 +13,10 @@ const entry: DocEntry = {
   title: "Rich text / block editor",
   group: "Editors & drag-and-drop",
   description:
-    "Edits content as blocks. Text blocks (paragraphs, headings, lists, quotes, code, tables, images, dividers) are edited inline; page blocks such as a hero or a pricing table render as the very component the site uses, configured in an inspector generated from the block's schema. Reads and writes VamosDoc, so the site renders the same content with @vamos-cms/ui/render and never loads the editor. A compact RichTextEditor covers notes, comments and announcements.",
+    "Edits content as blocks. Text blocks (paragraphs, headings, lists, quotes, code, tables, images, dividers) are edited inline; page blocks such as a hero or a pricing table render as the very component the site uses, configured in an inspector generated from the block's schema. Reads and writes VamosDoc, so the site renders the same content with @vamos-ui/react/render and never loads the editor. A compact RichTextEditor covers notes, comments and announcements.",
   source: ["editor/block-editor.tsx", "editor/schema-form.tsx", "editor/convert.ts", "styles/editors.css"],
   basedOn: "Tiptap v3 (ProseMirror, MIT extensions only) + cmdk + zod",
-  usage: `import { BlockEditor, RichTextEditor } from "@vamos-cms/ui/editor";
+  usage: `import { BlockEditor, RichTextEditor } from "@vamos-ui/react/editor";
 import { siteBlocks } from "@/blocks/registry"; // createRegistry([heroBlock, pricingBlock, …])
 
 // Posts and pages: text + page blocks, "/" menu, drag handle, inserter
@@ -26,7 +26,7 @@ import { siteBlocks } from "@/blocks/registry"; // createRegistry([heroBlock, pr
 <Field label="Summary"><RichTextEditor value={note} onChange={setNote} size="sm" /></Field>
 
 // The site (server component, no editor code)
-import { renderDoc } from "@vamos-cms/ui/render";
+import { renderDoc } from "@vamos-ui/react/render";
 renderDoc(doc, { registry: siteBlocks, locale: "en" });`,
   demo: ex(
     "demo",
@@ -40,7 +40,7 @@ renderDoc(doc, { registry: siteBlocks, locale: "en" });`,
     ex("custom-block", "Your own block, end to end", "block-editor/custom-block.tsx", BlockEditorCustomBlock, "defineBlock once: the component renders on the site and inside the editor; the zod schema drives validation and the inspector; preview props fill a new block. variant=\"canvas\" runs blocks edge to edge, canvasTheme puts the canvas in the site's accent."),
     ex("inspector", "SchemaForm on its own", "block-editor/inspector.tsx", BlockEditorInspector, "The inspector engine: widgets come from f.* metadata (text, toggle, nested group, sortable list with keyboard move buttons). Validation issues land on the field."),
     ex("allowed-blocks", "Restricted block set (CRM quote)", "block-editor/allowed-blocks.tsx", BlockEditorAllowedBlocks, "allowedBlocks limits what the / menu and the inserter offer. Tables use Tab to move between cells."),
-    ex("render", "Editor and site output side by side", "block-editor/render.tsx", BlockEditorRender, "The same VamosDoc through renderDoc from @vamos-cms/ui/render — RSC-safe and free of Tiptap."),
+    ex("render", "Editor and site output side by side", "block-editor/render.tsx", BlockEditorRender, "The same VamosDoc through renderDoc from @vamos-ui/react/render — RSC-safe and free of Tiptap."),
     ex("paste", "Markdown and Word paste", "block-editor/paste.tsx", BlockEditorPaste, "Markdown becomes headings, lists, quotes, code and tables; Word and Google Docs HTML is cleaned of styles before parsing; a bare URL becomes a link."),
     ex("readonly", "Read-only document with outline (HR policy)", "block-editor/readonly.tsx", BlockEditorReadOnly, "readOnly keeps the text selectable and hides every editing control. The outline lists headings with word count and reading time."),
   ],

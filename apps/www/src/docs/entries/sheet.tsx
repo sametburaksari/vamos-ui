@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "An edge panel that keeps the list behind it in view — quick edit, record preview, mobile filters and navigation. Logical sides, four widths, an inset floating style, a non-modal preview mode, and a Drawer that closes by dragging down.",
   source: ["components/sheet.tsx", "components/dialog.tsx", "styles/overlays.css"],
   basedOn: "Radix Dialog + pointer events",
-  usage: `import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetBody, SheetFooter, Button } from "@vamos-cms/ui";
+  usage: `import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetBody, SheetFooter, Button } from "@vamos-ui/react";
 
 <Sheet>
   <SheetTrigger asChild><Button>Quick edit</Button></SheetTrigger>

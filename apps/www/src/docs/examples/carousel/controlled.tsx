@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Carousel, CarouselSlide, CarouselViewport, Image } from "@vamos-cms/ui";
+import { Carousel, CarouselSlide, CarouselViewport, Image } from "@vamos-ui/react";
 
 const rooms = [
   { id: "r1", name: "Hammam", photo: "photo-1540555700478-4be289fbecef", alt: "Rolled towel and tulips beside a lit candle" },

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { FileText, LayoutGrid, List, PenTool, Search, Upload } from "lucide-react";
-import { Button, Input, ListContent, ListFooter, ListLayout, ListToolbar, ListViewSwitch, PageHeader } from "@vamos-cms/ui";
+import { Button, Input, ListContent, ListFooter, ListLayout, ListToolbar, ListViewSwitch, PageHeader } from "@vamos-ui/react";
 
 // Sample photos (Unsplash); files without a preview show their type instead.
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=400&h=300&q=70&auto=format&fit=crop`;

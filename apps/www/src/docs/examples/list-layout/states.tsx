@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { FileText, Search } from "lucide-react";
-import { Button, EmptyState, Input, ListContent, ListLayout, ListToolbar, ToggleGroup, ToggleGroupItem, type ListContentState } from "@vamos-cms/ui";
+import { Button, EmptyState, Input, ListContent, ListLayout, ListToolbar, ToggleGroup, ToggleGroupItem, type ListContentState } from "@vamos-ui/react";
 
 const posts = [
   { title: "How we cut onboarding time in half", author: "Defne Arslan", date: "Nov 8, 2026" },

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "The h1 and breadcrumb of inner website pages: About, Services, Contact.",
+    "BreadcrumbList JSON-LD for search."
+  ],
+  "avoidWhen": [
+    "Homepages — use Hero.",
+    "App pages — use Page header."
+  ],
+  "related": [
+    "hero",
+    "breadcrumb",
+    "page-contact-01",
+    "page-pricing-01"
+  ],
+  "a11y": [
+    "One h1; the breadcrumb is a labelled nav with aria-current."
+  ]
+}

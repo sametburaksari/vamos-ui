@@ -1,7 +1,7 @@
 "use client";
 
-import { Card } from "@vamos-cms/ui";
-import { FontPairingPicker, FontProvider, useFontPairing } from "@vamos-cms/ui/fonts";
+import { Card } from "@vamos-ui/react";
+import { FontPairingPicker, FontProvider, useFontPairing } from "@vamos-ui/react/fonts";
 
 function Article() {
   const { pairing } = useFontPairing();

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FilterBar, applyFilters, type FilterFieldDef, type FilterGroup } from "@vamos-cms/ui/data-table";
+import { FilterBar, applyFilters, type FilterFieldDef, type FilterGroup } from "@vamos-ui/react/data-table";
 import { departmentOptions, employeeStatusOptions, makeEmployees, managers } from "../data-table/_data";
 
 const employees = makeEmployees(120);

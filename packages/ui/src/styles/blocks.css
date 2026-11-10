@@ -808,3 +808,114 @@
   .vb-gallery-trigger > .vb-image > img,
   .vb-form-success { transition: none !important; animation: none !important; }
 }
+
+/* ------------------------------------------------------------------ */
+/* shell-04: the app column reads one step deeper than the menu next  */
+/* to it. Unlayered so it layers over surface-nav's background.        */
+/* ------------------------------------------------------------------ */
+.vb-app-rail {
+  background-image: linear-gradient(var(--nav-sub), var(--nav-sub));
+}
+
+/* ------------------------------------------------------------------ */
+/* settings-02: the appearance preview paints its own scene so the     */
+/* chosen theme reads on its own; glass gets a faint accent backdrop   */
+/* so the translucency is visible.                                     */
+/* ------------------------------------------------------------------ */
+.vb-appearance-preview {
+  background-color: var(--scene);
+  color: var(--fg);
+}
+.vb-appearance-preview[data-material="glass"] {
+  background-image: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 62%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Authentication blocks (login-02, signup-01, forgot-password-01,     */
+/* otp-01, magic-link-01, select-workspace-01): a faint hairline grid  */
+/* behind the centred column, fading out from the top.                 */
+/* ------------------------------------------------------------------ */
+.vb-auth {
+  isolation: isolate;
+}
+.vb-auth::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  mask-image: radial-gradient(70% 55% at 50% 0%, #000 10%, transparent 75%);
+  opacity: 0.7;
+}
+/* Magic link: the envelope sits in a soft accent well with one hairline ring. */
+.vb-auth-envelope {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 4.5rem;
+  block-size: 4.5rem;
+  border-radius: calc(var(--radius) + 6px);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-soft) 45%, transparent), 0 0 0 7px var(--line);
+}
+.vb-auth-envelope svg {
+  inline-size: 2rem;
+  block-size: 2rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .vb-auth-envelope svg {
+    animation: vb-auth-float 3.2s ease-in-out infinite;
+  }
+}
+@keyframes vb-auth-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty & error state screens (500, maintenance): a faint hairline    */
+/* field behind the content, fading out from the top. Tokens only.     */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .vb-state-backdrop {
+    isolation: isolate;
+  }
+  .vb-state-backdrop::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: center top;
+    opacity: 0.55;
+    mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black, transparent 78%);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Website page blocks (apps/www blocks: site-*, page-*, sections-01).   */
+/* ------------------------------------------------------------------ */
+
+/* Full-bleed hero: the container is content-box with gutters, so `w-full` on it overflowed the
+   viewport by two gutters on phones. A stretched grid item is already full width. */
+.vb-hero-bleed > .vb-container { width: auto; min-width: 0; }
+
+/* Skip link: the off-screen transform is relative to the sticky navbar, so with an announcement
+   bar above it the link peeked out over the bar. Clip it until it is focused. */
+.vb-skip:not(:focus-visible) { clip-path: inset(50%); }
+
+/* Media + text overlap, image at the start: the panel has a definite column, the image only a
+   definite row, so auto-placement pushed the image into 8 implicit columns. Pin it to column 1. */
+@container (min-width: 56rem) {
+  .vb-media-overlap:not([data-side="end"]) .vb-container > :first-child { grid-column-start: 1; }
+}

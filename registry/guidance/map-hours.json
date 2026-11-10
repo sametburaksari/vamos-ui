@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Address, map, opening hours and directions on restaurant, spa and clinic sites.",
+    "LocalBusiness structured data and multi-branch pickers."
+  ],
+  "avoidWhen": [
+    "Admin address forms — use Address field."
+  ],
+  "related": [
+    "contact-dock",
+    "footer",
+    "consent-banner",
+    "page-contact-01"
+  ],
+  "a11y": [
+    "The map is behind a ConsentGate and has a text address alternative.",
+    "Hours are a table/list with today's row marked in text."
+  ]
+}

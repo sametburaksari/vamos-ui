@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "A top-navigation shell for portals, self-service and small apps with few pages."
+  ],
+  "avoidWhen": [
+    "Apps with many sections — use shell-01."
+  ],
+  "related": [
+    "app-shell",
+    "top-bar",
+    "navigation-menu"
+  ],
+  "a11y": [
+    "The top nav is a labelled nav; the phone sheet menu traps focus."
+  ]
+}

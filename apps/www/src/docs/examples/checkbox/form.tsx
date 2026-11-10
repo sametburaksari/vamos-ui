@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Checkbox, Field } from "@vamos-cms/ui";
+import { Button, Checkbox, Field } from "@vamos-ui/react";
 
 export default function CheckboxForm() {
   const [error, setError] = React.useState<string>();

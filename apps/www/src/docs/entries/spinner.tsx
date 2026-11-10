@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "An indeterminate loading indicator: a thin track with a rotating, breathing arc. Decorative by default, announced politely when it has a label, and a slow pulse under reduced motion.",
   source: ["components/spinner.tsx", "styles/base.css"],
-  usage: `import { Spinner } from "@vamos-cms/ui";
+  usage: `import { Spinner } from "@vamos-ui/react";
 
 <Spinner label="Loading orders" />`,
   demo: ex("demo", "Sizes & tones", "spinner/demo.tsx", SpinnerDemo),

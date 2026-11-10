@@ -1,4 +1,4 @@
-import { CheckboxGroup, Field } from "@vamos-cms/ui";
+import { CheckboxGroup, Field } from "@vamos-ui/react";
 
 export default function CheckboxGroupExample() {
   return (

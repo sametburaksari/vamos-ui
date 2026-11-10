@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const categories = [
   { category: "Product news", posts: 18, ids: ["Release 4.2 is out", "Offline mode, explained", "New billing page"] },

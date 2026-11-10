@@ -1,8 +1,8 @@
 "use client";
 
-import { LocaleProvider } from "@vamos-cms/ui";
-import { ImportWizard, type ImportField } from "@vamos-cms/ui/business";
-import { validateTckn, validateTrIban } from "@vamos-cms/ui/locale-data";
+import { LocaleProvider } from "@vamos-ui/react";
+import { ImportWizard, type ImportField } from "@vamos-ui/react/business";
+import { validateTckn, validateTrIban } from "@vamos-ui/react/locale-data";
 
 // HR bulk employees: national ID and IBAN checked with the tr locale pack, dates and money in Turkish format.
 const fields: ImportField[] = [

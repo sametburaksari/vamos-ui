@@ -1,5 +1,5 @@
 import { FileText, Image as ImageIcon, Inbox, MessageSquare } from "lucide-react";
-import { ActivityTimeline, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-cms/ui";
+import { ActivityTimeline, Card, CardBody, CardHeader, type TimelineEntry } from "@vamos-ui/react";
 
 const ago = (minutes: number) => new Date(Date.now() - minutes * 60_000).toISOString();
 

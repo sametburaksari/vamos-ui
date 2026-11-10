@@ -1,4 +1,4 @@
-import { AttachmentList } from "@vamos-cms/ui";
+import { AttachmentList } from "@vamos-ui/react";
 
 export default function AttachmentListChips() {
   return (

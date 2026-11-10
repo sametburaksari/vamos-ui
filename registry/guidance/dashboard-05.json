@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "An e-commerce store dashboard: revenue with period switch, channels, orders, top products, checkout funnel."
+  ],
+  "avoidWhen": [
+    "B2B pipeline views — use dashboard-02."
+  ],
+  "related": [
+    "area-chart",
+    "donut-chart",
+    "funnel",
+    "sparkline"
+  ],
+  "a11y": [
+    "The 7/30/90-day switch is a labelled toggle group; charts announce range changes."
+  ]
+}

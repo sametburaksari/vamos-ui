@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Every image in panels and websites: no layout shift, focal point, placeholder blur.",
+    "Responsive images with framework Image via VamosProvider."
+  ],
+  "avoidWhen": [
+    "Avatars — use Avatar.",
+    "Decorative backgrounds better done with CSS."
+  ],
+  "related": [
+    "gallery",
+    "lightbox",
+    "avatar"
+  ],
+  "a11y": [
+    "alt is required; pass alt=\"\" only for decorative images.",
+    "Never put text in images."
+  ]
+}

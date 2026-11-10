@@ -18,6 +18,12 @@ cd "$WORK/src"
 echo "→ building $(git rev-parse --short HEAD) ($REF)"
 pnpm install --frozen-lockfile --prefer-offline >/dev/null
 node scripts/gen.mjs
+# Registry for `npx vamos-ui` and the MCP server → apps/www/public/r → https://ui.vamos.ist/r/
+if [ -f scripts/build-registry.mjs ]; then node scripts/build-registry.mjs; fi
+if [ -f packages/cli/package.json ]; then
+  ( cd packages/cli && pnpm build >/dev/null )
+  node --input-type=module -e "import { BRAND_JSON_SCHEMA } from './packages/cli/dist/brand.js'; import fs from 'node:fs'; fs.writeFileSync('apps/www/public/r/brand-schema.json', JSON.stringify(BRAND_JSON_SCHEMA, null, 2));"
+fi
 ( cd apps/www && STATIC_EXPORT=1 NEXT_PUBLIC_ADMIN_URL="https://ui.vamos.ist/blocks" pnpm exec next build )
 OUT="apps/www/out"
 test -f "$OUT/index.html" && test -d "$OUT/docs"
@@ -31,6 +37,10 @@ ErrorDocument 404 /404.html
   Header always set X-Frame-Options "SAMEORIGIN"
   <FilesMatch "\.(js|css|woff2|svg|png|jpg|webp)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.json$">
+    Header set Access-Control-Allow-Origin "*"
+    Header set Cache-Control "public, max-age=300"
   </FilesMatch>
   <FilesMatch "\.html$">
     Header set Cache-Control "public, max-age=300"

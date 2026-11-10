@@ -1,4 +1,4 @@
-import { PermissionCompare, type PermissionAction, type PermissionResource } from "@vamos-cms/ui/business";
+import { PermissionCompare, type PermissionAction, type PermissionResource } from "@vamos-ui/react/business";
 
 const resources: PermissionResource[] = [
   { id: "deals", label: "Deals" },

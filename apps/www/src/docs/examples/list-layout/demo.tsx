@@ -23,7 +23,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 type Stage = "Lead" | "Qualified" | "Proposal" | "Customer";
 const contacts: { id: string; name: string; company: string; stage: Stage; owner: string; value: string }[] = [

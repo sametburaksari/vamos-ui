@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "A \"Get started\" panel for onboarding: ordered setup steps with a progress ring, deep-link actions, estimates, optional and locked steps, skip with undo, a completion state and dismissal with a launcher pill to reopen it. Completion comes from the app.",
   source: ["business/setup-checklist.tsx"],
   basedOn: "Progress circle · disclosure pattern",
-  usage: `import { SetupChecklist, SetupChecklistLauncher } from "@vamos-cms/ui/business";
+  usage: `import { SetupChecklist, SetupChecklistLauncher } from "@vamos-ui/react/business";
 
 <SetupChecklist items={steps} onSkip={skip} dismissed={hidden} onDismissedChange={setHidden} onAllDone={celebrate} />
 {hidden ? <SetupChecklistLauncher items={steps} onOpen={() => setHidden(false)} floating /> : null}`,

@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Displaying and navigating hierarchies: page tree, categories, media folders, departments."
+  ],
+  "avoidWhen": [
+    "Picking a value in a form — use Tree select.",
+    "Org diagrams — use Hierarchy chart."
+  ],
+  "related": [
+    "tree-select",
+    "hierarchy-chart",
+    "sortable-list"
+  ],
+  "a11y": [
+    "A WAI-ARIA tree with level, set size and position; arrow keys expand and collapse."
+  ]
+}

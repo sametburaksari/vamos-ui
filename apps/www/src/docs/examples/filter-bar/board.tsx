@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 import {
   FilterBar,
   applyFilters,
@@ -10,7 +10,7 @@ import {
   encodeFilters,
   type FilterFieldDef,
   type FilterGroup,
-} from "@vamos-cms/ui/data-table";
+} from "@vamos-ui/react/data-table";
 import { makeContact, owners, stageOptions } from "../data-table/_data";
 
 const deals = Array.from({ length: 60 }, (_, i) => makeContact(i + 2000));

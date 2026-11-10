@@ -1,4 +1,4 @@
-import { Button, PageHeader } from "@vamos-cms/ui";
+import { Button, PageHeader } from "@vamos-ui/react";
 
 /** While the record loads, the h1 keeps its place with a skeleton line (aria-busy). */
 export default function PageHeaderLoading() {

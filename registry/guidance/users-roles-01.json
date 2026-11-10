@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Members and roles admin: member table, bulk suspend/remove, invite dialog, permission matrix."
+  ],
+  "avoidWhen": [
+    "A simple invite-only list — use Data Table + Dialog."
+  ],
+  "related": [
+    "data-table",
+    "permission-matrix",
+    "dialog",
+    "tag-input"
+  ],
+  "a11y": [
+    "Bulk destructive actions confirm and offer Undo; matrix cells name role and action."
+  ]
+}

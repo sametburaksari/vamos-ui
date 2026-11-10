@@ -1,4 +1,4 @@
-import { Funnel } from "@vamos-cms/ui/charts";
+import { Funnel } from "@vamos-ui/react/charts";
 
 const pipeline = [
   { key: "leads", label: "Leads", value: 1_240 },

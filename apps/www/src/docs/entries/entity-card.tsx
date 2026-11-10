@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "The identity of a record at a glance — a contact, a company, a product, an employee — with status, key facts, a stat row and quick actions. Four shapes: a grid card, a compact row for side panels, the header of a record page, and an inline chip that opens a hover card.",
   source: ["components/entity-card.tsx"],
   basedOn: "Card surface + Avatar + Description list + Radix Hover Card (chip)",
-  usage: `import { EntityCard } from "@vamos-cms/ui";
+  usage: `import { EntityCard } from "@vamos-ui/react";
 
 <EntityCard
   name="Jane Cooper"

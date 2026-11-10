@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description: "Multi-series trends and rates — conversion, win rate, turnover. Point markers (none / last / all), step curves and direct end labels that do not rely on colour.",
   source: ["charts/line-chart.tsx"],
   basedOn: "Recharts LineChart",
-  usage: `import { LineChart } from "@vamos-cms/ui/charts";
+  usage: `import { LineChart } from "@vamos-ui/react/charts";
 
 <LineChart title="Win rate" data={rows} x="month" config={{ maya: { label: "Maya", format: "percent" } }} endLabels />`,
   demo: ex("demo", "Demo", "line-chart/demo.tsx", LineChartDemo),

@@ -1,4 +1,4 @@
-import { Cta } from "@vamos-cms/ui/blocks";
+import { Cta } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Minimal: no background change, a very large centred title and one huge text link. No buttons.

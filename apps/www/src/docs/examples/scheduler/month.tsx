@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Scheduler, type SchedulerEvent } from "@vamos-cms/ui/scheduler";
+import { Scheduler, type SchedulerEvent } from "@vamos-ui/react/scheduler";
 
 const at = (day: string, time: string) => new Date(`${day}T${time}:00Z`).toISOString();
 

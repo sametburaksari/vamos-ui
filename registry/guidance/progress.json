@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Task progress and quota use: uploads, imports, leave balance, plan limits.",
+    "Indeterminate progress for unknown durations."
+  ],
+  "avoidWhen": [
+    "Spinners for short waits — use Spinner.",
+    "Attainment against a target with thresholds — use Gauge."
+  ],
+  "related": [
+    "spinner",
+    "gauge",
+    "skeleton",
+    "setup-checklist"
+  ],
+  "a11y": [
+    "role=progressbar with a label and value text (12 of 20 days used).",
+    "Quota warning tones are paired with text."
+  ]
+}

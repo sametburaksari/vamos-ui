@@ -32,7 +32,7 @@ const entry: DocEntry = {
   ],
   basedOn: "zod v4 (layer 2 only)",
   usage: `// Layer 1 — any React / Next.js site, plain props
-import { Section, Container, SectionHeader, BlockImage, createBlocks } from "@vamos-cms/ui/blocks";
+import { Section, Container, SectionHeader, BlockImage, createBlocks } from "@vamos-ui/react/blocks";
 
 <Section theme={{ mode: "dark" }} headingId="intro">
   <Container>
@@ -44,12 +44,12 @@ import { Section, Container, SectionHeader, BlockImage, createBlocks } from "@va
 export const { BlockImage, BlockLink, RichText, bind } = createBlocks({ Image: NextImage, Link: NextLink });
 
 // Layer 2 — define a block once for site, editor and AI tooling
-import { z, f, defineBlock, createRegistry } from "@vamos-cms/ui/blocks/schema";
+import { z, f, defineBlock, createRegistry } from "@vamos-ui/react/blocks/schema";
 const faqBlock = defineBlock({ type: "faq", version: 1, title: "FAQ", category: "content",
   schema: z.object({ title: f.heading(), items: f.list(f.group({ q: f.text(), a: f.rich() })) }), component: Faq });
 
 // Layer 3 — render stored JSON
-import { BlockRenderer } from "@vamos-cms/ui/render";
+import { BlockRenderer } from "@vamos-ui/react/render";
 <BlockRenderer doc={page} registry={createRegistry([faqBlock])} locale="tr" fallbackLocales={["en"]} />`,
   demo: ex("demo", "A page in plain JSX", "blocks-api/demo.tsx", BlocksApiDemo),
   examples: [
@@ -163,7 +163,7 @@ import { BlockRenderer } from "@vamos-cms/ui/render";
   ],
   notes: [
     "Formats are frozen in docs/plan/BLOCK-FORMAT.md (BlockNode, VamosDoc, RichDoc). Changing them requires a doc migration.",
-    "zod stays on the server: components import only types from @vamos-cms/ui/blocks/schema.",
+    "zod stays on the server: components import only types from @vamos-ui/react/blocks/schema.",
     "Sections are container-query contexts: blocks lay out by their own width (@2xl, @4xl, @6xl), so the same block works full width, in a column or in a builder iframe.",
     "The blocks title component is BlockHeading (the panel's Heading lives in Typography).",
   ],

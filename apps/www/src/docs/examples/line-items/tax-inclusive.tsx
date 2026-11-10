@@ -1,6 +1,6 @@
 "use client";
 
-import { LineItems } from "@vamos-cms/ui/business";
+import { LineItems } from "@vamos-ui/react/business";
 
 export default function LineItemsTaxInclusive() {
   // Retail prices already include VAT; the summary shows the net base per rate.

@@ -1,4 +1,4 @@
-import { Gauge } from "@vamos-cms/ui/charts";
+import { Gauge } from "@vamos-ui/react/charts";
 
 export default function GaugeTarget() {
   // A quota with a target marker; past max the arc stays full and a ring marks the overshoot.

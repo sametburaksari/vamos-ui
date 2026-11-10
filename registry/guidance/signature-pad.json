@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "Handwritten or typed signatures: delivery confirmations, consent forms, timesheet sign-off."
+  ],
+  "avoidWhen": [
+    "Legal e-signature flows that need certified providers.",
+    "Simple consent — use Checkbox."
+  ],
+  "related": [
+    "checkbox",
+    "multi-step-form"
+  ],
+  "a11y": [
+    "Offers a typed-signature alternative for keyboard and screen reader users.",
+    "Clear/undo buttons are labelled."
+  ]
+}

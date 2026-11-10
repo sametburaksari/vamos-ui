@@ -1,4 +1,4 @@
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 import { C, Callout, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
 
 export const metadata = { title: "CLI & registry" };
@@ -22,7 +22,7 @@ export default function CliPage() {
       <Table
         head={["", "npm package", "Copy (registry)"]}
         rows={[
-          ["Install", <C key="a">pnpm add @vamos-cms/ui</C>, "One component at a time"],
+          ["Install", <C key="a">pnpm add @vamos-ui/react</C>, "One component at a time"],
           ["Updates", "Bump the version", "Re-add, or diff with the vamos CLI (planned)"],
           ["Customise", "Props, tokens, className", "Edit the source freely"],
           ["Best for", "Teams that want a maintained kit", "Projects that need to diverge"],

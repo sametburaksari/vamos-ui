@@ -1,4 +1,4 @@
-import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Inset } from "@vamos-cms/ui";
+import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Inset } from "@vamos-ui/react";
 
 export default function CardDemo() {
   return (

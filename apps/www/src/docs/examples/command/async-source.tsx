@@ -1,7 +1,7 @@
 "use client";
 
 import { Building2, Contact } from "lucide-react";
-import { Button, CommandPalette, CommandProvider, useCommandPalette, type CommandSource } from "@vamos-cms/ui";
+import { Button, CommandPalette, CommandProvider, useCommandPalette, type CommandSource } from "@vamos-ui/react";
 
 const people = [
   { id: "c-1042", name: "Hannah Lindqvist", company: "Northwind Traders" },

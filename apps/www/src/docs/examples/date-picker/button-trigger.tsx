@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, DatePicker } from "@vamos-cms/ui";
+import { Button, DatePicker } from "@vamos-ui/react";
 import { SlidersHorizontal } from "lucide-react";
 
 export default function DatePickerButtonTrigger() {

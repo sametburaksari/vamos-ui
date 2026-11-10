@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, RecordPicker, arrayRecordSource } from "@vamos-cms/ui";
+import { Field, RecordPicker, arrayRecordSource } from "@vamos-ui/react";
 
 const first = ["Ayla", "Ben", "Chloé", "Deniz", "Elif", "Farah", "Gabriel", "Hana", "Ilker", "Jonas", "Kerem", "Lina", "Mateo", "Nora", "Omar", "Pınar"];
 const last = ["Aksoy", "Brooks", "Çelik", "Duarte", "Ekström", "Fischer", "Güneş", "Hartley", "Ivanova", "Jansen"];

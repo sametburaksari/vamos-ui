@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, SignaturePad, textToSvg } from "@vamos-cms/ui";
+import { Field, SignaturePad, textToSvg } from "@vamos-ui/react";
 
 const stored = {
   kind: "typed" as const,

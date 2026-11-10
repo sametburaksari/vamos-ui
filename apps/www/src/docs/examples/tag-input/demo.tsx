@@ -1,4 +1,4 @@
-import { Field, TagInput } from "@vamos-cms/ui";
+import { Field, TagInput } from "@vamos-ui/react";
 
 export default function TagInputDemo() {
   return (

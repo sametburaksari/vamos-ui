@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Plan × feature detail tables on a pricing page.",
+    "A two-column comparison of your product vs an alternative approach."
+  ],
+  "avoidWhen": [
+    "Plan summary cards — use Pricing table first; put the full matrix below.",
+    "App data — use Table or Data Table."
+  ],
+  "related": [
+    "pricing-table",
+    "page-pricing-01",
+    "table"
+  ],
+  "a11y": [
+    "A real table with caption and scoped headers; included/excluded marks have text alternatives.",
+    "On phones it scrolls horizontally in a labelled region, keeping the feature column sticky."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SortableList } from "@vamos-cms/ui/sortable";
+import { SortableList } from "@vamos-ui/react/sortable";
 
 const initial = [
   { id: "mine", label: "My open deals", count: 18 },

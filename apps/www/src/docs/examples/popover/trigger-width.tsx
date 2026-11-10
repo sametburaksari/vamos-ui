@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger, controlVariants, itemSlots, itemVariants } from "@vamos-cms/ui";
+import { Popover, PopoverContent, PopoverTrigger, controlVariants, itemSlots, itemVariants } from "@vamos-ui/react";
 
 const pipelines = [
   { id: "new-business", name: "New business", deals: 42 },

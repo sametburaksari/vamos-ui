@@ -1,4 +1,4 @@
-import { Badge } from "@vamos-cms/ui";
+import { Badge } from "@vamos-ui/react";
 import { DocPage, H2 } from "@/components/docs/prose";
 
 export const metadata = { title: "Changelog" };
@@ -13,6 +13,38 @@ interface Release {
 
 /** Newest first. Append new releases at the top. */
 const releases: Release[] = [
+  {
+    version: "0.2.0",
+    date: "2026-11-10",
+    unreleased: true,
+    changes: {
+      Added: [
+        "Full component inventory: all 143 planned items across 13 groups now have docs pages, live examples and props tables.",
+        "Foundations: Avatar & avatar group, Button Group & Toggle Group, Kbd, Separator, Skeleton, Spinner, Typography.",
+        "Forms & inputs: Select, Combobox, Checkbox, Radio Group, Switch, Slider, Input OTP, Tag input, Color picker, Slug input, Formatted inputs (currency, phone, IBAN, ID), Address field, Line items, File upload, Signature pad, Font picker.",
+        "Pickers: Date Picker, Date range picker, Time picker, Record picker, User picker, Status picker, Tree select.",
+        "Overlays & feedback: Dialog, Alert Dialog, Sheet / Drawer, Popover, Tooltip, Hover Card, Dropdown Menu, Context Menu, Command (⌘K), Toast, Alert, Progress, Empty state, Notification center.",
+        "Navigation: Sidebar, Top bar, Tabs, Breadcrumb, Pagination, Navigation Menu, Accordion, Stepper.",
+        "Page layouts: App shell, Page header, List layout, Record detail layout, Editor layout, Settings layout, Resizable, Scroll Area.",
+        "Data display: Stat / KPI, Table, Data Table, Filter bar, Saved views, Item, Entity card, Description list, Activity timeline, Comment thread & mentions, Attachment list, Task list, Tree view, Version history & diff, Audit log.",
+        "Charts: Chart frame, Area, Bar & Bar list, Line, Donut / Pie, Combo (bar + line), Funnel, Gauge & Progress ring, Sparkline, Heatmap.",
+        "Calendar & time: Calendar, Agenda / scheduler, Resource calendar, Gantt, Time tracker.",
+        "Editors & drag-and-drop: Kanban, Sortable list / tree, Hierarchy chart, Rich text / block editor, Image cropper, Permission matrix.",
+        "Flows & wizards: Multi-step form, Approval flow, Import wizard, Export, Setup checklist.",
+        "Media: Image, Carousel, Gallery grid, Lightbox, Media library, Media picker, Image field (select, crop, focal point), Video player, Link previews.",
+        "Site blocks: Navbar, Hero (5 variants), Feature grid, Logo strip, Stats band, Pricing table, Comparison table, Testimonials, Team, FAQ, Process / steps, CTA, Blog list, Article layout, Page intro, Rich text section, Media + text, Contact form, Map & opening hours, Menu / price list, Gallery section, Announcement bar, Cookie / consent banner, Contact dock, Footer, 404 — plus the Blocks API.",
+        "App shell blocks: Icon rail shell, Top navigation shell, Two-level sidebar shell.",
+        "Authentication blocks: Sign in with SSO, Sign up with password strength, Forgot & reset password, Magic link sent, Two-step verification, Workspace & app chooser.",
+        "Dashboard blocks: Sales, People, Projects & billing and Store dashboards.",
+        "List and detail blocks: Posts list, Contacts list, Employee directory, Deals pipeline, CRM contact, Employee profile, Invoice detail, Post editor.",
+        "Settings, form and onboarding blocks: Workspace settings, Language, formats & appearance, Users & roles, Leave request, Setup checklist, Welcome wizard.",
+        "Empty and error state blocks: No posts yet, Search with no results, Not found in the app, Server error, No permission, Scheduled maintenance.",
+        "Marketing and website blocks: Marketing sections, Pricing page, Contact page, and full Restaurant, Spa, Agency and SaaS websites.",
+        "Blocks browser with category filters and lazily loaded previews.",
+        "Component registry at /r/, the `vamos-ui` CLI and an MCP server for adding components and blocks to a project.",
+      ],
+    },
+  },
   {
     version: "0.1.0",
     date: "2026-11-10",

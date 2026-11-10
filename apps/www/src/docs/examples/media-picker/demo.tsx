@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button, Image } from "@vamos-cms/ui";
-import { MediaPicker, MediaProvider, type MediaAsset } from "@vamos-cms/ui/media";
+import { Button, Image } from "@vamos-ui/react";
+import { MediaPicker, MediaProvider, type MediaAsset } from "@vamos-ui/react/media";
 import { createDemoMedia } from "../media-library/sample-media";
 
 // Featured image for a blog post: images only, one file, a task-specific confirm label.

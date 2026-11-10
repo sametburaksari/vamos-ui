@@ -1,4 +1,4 @@
-import { Steps } from "@vamos-cms/ui/blocks";
+import { Steps } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Horizontal: a timeline on wide containers (numbers above the line, text below); the first

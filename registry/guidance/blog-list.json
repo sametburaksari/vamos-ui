@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Latest posts on a homepage, a blog index, or a category archive.",
+    "Any CMS feed mapped to PostSummary."
+  ],
+  "avoidWhen": [
+    "Admin post management — use Data Table or the list-01 block.",
+    "A single article — use Article layout."
+  ],
+  "related": [
+    "article-layout",
+    "pagination",
+    "site-agency-01"
+  ],
+  "a11y": [
+    "Each card has one link (the title) instead of nested links; dates use time elements.",
+    "Cover images need alt text or are marked decorative when the title says it all."
+  ]
+}

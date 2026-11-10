@@ -1,4 +1,4 @@
-import { ConsentGate, BlockImage } from "@vamos-cms/ui/blocks";
+import { ConsentGate, BlockImage } from "@vamos-ui/react/blocks";
 import { more, photos } from "../_site-2/data";
 
 // ConsentGate: a static preview with one button. The iframe (map, YouTube, Calendly) loads only

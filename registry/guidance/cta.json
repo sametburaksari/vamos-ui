@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The end-of-page call to action: Get a quote, Book a table, Start a trial.",
+    "Newsletter signup or a booking bar for appointments and reservations."
+  ],
+  "avoidWhen": [
+    "Several competing CTAs on one page — one primary per page.",
+    "In-app prompts — use Empty state or Alert."
+  ],
+  "related": [
+    "hero",
+    "contact-form",
+    "contact-dock",
+    "sections-01"
+  ],
+  "a11y": [
+    "The heading states the offer; the button text is specific (Book a table, not Submit).",
+    "Newsletter inputs have labels, not only placeholders."
+  ]
+}

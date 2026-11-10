@@ -22,7 +22,7 @@ import {
   StatGroup,
   Textarea,
   type TimelineEntry,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 import { TrafficChart } from "@/components/dashboard/traffic-chart";
 
 const kpis = [

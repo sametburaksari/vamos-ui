@@ -1,5 +1,5 @@
 import { RotateCw } from "lucide-react";
-import { Button, Stat, StatGroup } from "@vamos-cms/ui";
+import { Button, Stat, StatGroup } from "@vamos-ui/react";
 
 export default function StatStates() {
   return (

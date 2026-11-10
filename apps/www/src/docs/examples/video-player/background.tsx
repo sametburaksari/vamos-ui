@@ -1,5 +1,5 @@
-import { BackgroundVideo } from "@vamos-cms/ui/media";
-import { Button } from "@vamos-cms/ui";
+import { BackgroundVideo } from "@vamos-ui/react/media";
+import { Button } from "@vamos-ui/react";
 
 // Decorative, muted and looping, with a visible pause button. Reduced motion shows the poster only.
 export default function VideoPlayerBackground() {

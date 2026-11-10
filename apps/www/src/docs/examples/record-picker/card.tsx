@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Card, RecordPicker, arrayRecordSource } from "@vamos-cms/ui";
+import { Card, RecordPicker, arrayRecordSource } from "@vamos-ui/react";
 
 const contacts = [
   { id: "ct_31", name: "Selin Arslan", title: "Head of Operations", email: "selin@lumen.studio", photo: null },

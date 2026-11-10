@@ -1,4 +1,4 @@
-import { Sparkline, sparklineSummary } from "@vamos-cms/ui";
+import { Sparkline, sparklineSummary } from "@vamos-ui/react";
 
 const visits = [42, 48, 45, 61, 58, 66, 74, 70, 88, 84, 96];
 const results = [1, 1, -1, 1, 0, -1, 1, 1, 1, -1, 1, 1];

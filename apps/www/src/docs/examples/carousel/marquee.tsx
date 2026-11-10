@@ -1,4 +1,4 @@
-import { Marquee } from "@vamos-cms/ui";
+import { Marquee } from "@vamos-ui/react";
 
 const customers = ["Atlas Lojistik", "Lena Spa", "Kalamış Bistro", "Kargo Hızlı", "Moda Sahne", "Pera Dental", "Bosphorus Yacht Co.", "Nişantaşı Optik"];
 

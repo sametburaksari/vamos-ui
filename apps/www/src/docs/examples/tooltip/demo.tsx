@@ -1,5 +1,5 @@
 import { Bold, Italic, Link2, List, Quote } from "lucide-react";
-import { IconButton, Separator, TooltipProvider } from "@vamos-cms/ui";
+import { IconButton, Separator, TooltipProvider } from "@vamos-ui/react";
 
 export default function TooltipDemo() {
   return (

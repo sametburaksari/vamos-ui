@@ -181,7 +181,7 @@ export interface NumericProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 /**
  * Numbers that line up: tabular figures, no wrapping. Format the value first (`useFormat()` or
- * `createFormatter` from `@vamos-cms/ui/format`), then render it here.
+ * `createFormatter` from `@vamos-ui/react/format`), then render it here.
  *
  * ```tsx
  * <Numeric>{f.currency("1250.50")}</Numeric>

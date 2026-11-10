@@ -16,7 +16,7 @@ import {
   TabsList,
   TabsTrigger,
   type TimelineEntry,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 const now = "2026-11-10T10:00:00Z";
 const activity: TimelineEntry[] = [

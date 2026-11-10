@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Field, RegionSelect } from "@vamos-cms/ui";
-import { trAddress } from "@vamos-cms/ui/locale-data";
+import { Field, RegionSelect } from "@vamos-ui/react";
+import { trAddress } from "@vamos-ui/react/locale-data";
 
 export default function RegionSelectExample() {
   const [province, setProvince] = React.useState("Antalya");

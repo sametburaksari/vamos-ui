@@ -1,4 +1,4 @@
-import { ContactDock } from "@vamos-cms/ui/blocks";
+import { ContactDock } from "@vamos-ui/react/blocks";
 
 // Bar: 2–4 equal actions with icon + short label; every link carries data-track for analytics.
 export default function ContactDockBarRestaurant() {

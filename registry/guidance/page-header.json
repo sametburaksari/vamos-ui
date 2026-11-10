@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The title block of every app page: breadcrumb, h1, description, meta, actions, sub-tabs.",
+    "One primary action on the right."
+  ],
+  "avoidWhen": [
+    "Website pages — use Page intro or Hero.",
+    "Record pages — use the record header in Record detail layout."
+  ],
+  "related": [
+    "breadcrumb",
+    "tabs",
+    "list-layout",
+    "record-detail-layout"
+  ],
+  "a11y": [
+    "Holds the page's single h1.",
+    "Overflowed actions collapse into a labelled ⋯ menu."
+  ]
+}

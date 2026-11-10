@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A rich preview when hovering a name or link: author, CRM contact, @mention.",
+    "Extra, non-essential information for mouse users."
+  ],
+  "avoidWhen": [
+    "Essential information or actions — touch and keyboard users must also reach it.",
+    "Short labels — use Tooltip.",
+    "Interactive content — use Popover."
+  ],
+  "related": [
+    "tooltip",
+    "popover",
+    "entity-card",
+    "avatar"
+  ],
+  "a11y": [
+    "The trigger must still be a useful link on its own; content is supplementary.",
+    "Opens on focus too, but never traps focus."
+  ]
+}

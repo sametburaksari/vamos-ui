@@ -35,7 +35,7 @@ const entry: DocEntry = {
     "locale-data/core/iban.ts",
   ],
   basedOn: "Input · libphonenumber-js (min, lazy) · Intl.NumberFormat",
-  usage: `import { CurrencyInput, Field, IbanInput, NationalIdInput, PhoneInput } from "@vamos-cms/ui";
+  usage: `import { CurrencyInput, Field, IbanInput, NationalIdInput, PhoneInput } from "@vamos-ui/react";
 
 <Field label="Amount"><CurrencyInput currency="TRY" onValueChange={(v) => setAmount(v)} /></Field>  // "1250.50"
 <Field label="Mobile"><PhoneInput defaultCountry="TR" /></Field>                                   // "+905321234567"
@@ -101,7 +101,7 @@ const entry: DocEntry = {
   notes: [
     "Screen readers read the formatted value; the caret never jumps when separators appear or disappear, and Backspace on a separator deletes the digit before it.",
     "Numbers and IBANs stay left-to-right (dir=\"ltr\") on RTL pages.",
-    "Turkish rules come from @vamos-cms/ui/locale-data (tr pack). Other countries plug in through registerIdRule and IbanInput rules.",
+    "Turkish rules come from @vamos-ui/react/locale-data (tr pack). Other countries plug in through registerIdRule and IbanInput rules.",
   ],
   covers: ["Formatted inputs (currency · phone · IBAN · ID)"],
 };

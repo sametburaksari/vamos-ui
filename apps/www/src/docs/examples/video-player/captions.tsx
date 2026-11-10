@@ -1,4 +1,4 @@
-import { VideoPlayer } from "@vamos-cms/ui/media";
+import { VideoPlayer } from "@vamos-ui/react/media";
 
 // WebVTT files usually live next to the video. Inlined here so the example is self-contained.
 const vtt = (cues: [string, string, string][]) =>

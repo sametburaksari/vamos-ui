@@ -1,5 +1,5 @@
 import { Pencil } from "lucide-react";
-import { Badge, EntityCard, IconButton } from "@vamos-cms/ui";
+import { Badge, EntityCard, IconButton } from "@vamos-ui/react";
 
 // Sample photos (Unsplash). Leave `media` out and the card shows a product icon instead.
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=480&h=360&q=70&auto=format&fit=crop`;

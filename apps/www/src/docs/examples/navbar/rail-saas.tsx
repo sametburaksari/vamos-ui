@@ -1,4 +1,4 @@
-import { Navbar } from "@vamos-cms/ui/blocks";
+import { Navbar } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // SaaS: links in one framed pill (glassy in glass mode), "Sign in" ghost + "Try free" primary.

@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/scheduler: Agenda / scheduler, Resource calendar, Gantt, Time tracker.
+// Public API of @vamos-ui/react/scheduler: Agenda / scheduler, Resource calendar, Gantt, Time tracker.
 // The React-free engine (layout, scheduling, durations, time scale) is also at ./core.
 export {
   Scheduler,

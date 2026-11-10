@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A focused task that keeps context: new contact, insert link, invite members, leave request.",
+    "Short forms with a fixed header/footer and scrolling body."
+  ],
+  "avoidWhen": [
+    "Destructive confirmations — use Alert Dialog.",
+    "Quick edit or preview with the list still visible — use Sheet.",
+    "Long multi-section editing — use a full page."
+  ],
+  "related": [
+    "alert-dialog",
+    "sheet",
+    "popover",
+    "users-roles-01"
+  ],
+  "a11y": [
+    "Always render a DialogTitle (visually hidden if needed); focus is trapped and returned.",
+    "The close guard warns before discarding unsaved changes."
+  ]
+}

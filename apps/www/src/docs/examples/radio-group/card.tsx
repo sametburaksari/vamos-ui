@@ -1,5 +1,5 @@
 import { Building2, Rocket, Sparkles } from "lucide-react";
-import { Badge, Field, RadioGroup, RadioGroupItem } from "@vamos-cms/ui";
+import { Badge, Field, RadioGroup, RadioGroupItem } from "@vamos-ui/react";
 
 export default function RadioGroupCard() {
   return (

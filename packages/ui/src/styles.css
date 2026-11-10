@@ -1,9 +1,9 @@
 /*
- * @vamos-cms/ui — design tokens.
+ * @vamos-ui/react — design tokens.
  *
  * Import AFTER Tailwind in your app stylesheet:
  *   @import "tailwindcss";
- *   @import "@vamos-cms/ui/styles.css";
+ *   @import "@vamos-ui/react/styles.css";
  *
  * Five independent axes, set on <html> (or on any subtree):
  *   class="dark"                          → theme (light | dark)

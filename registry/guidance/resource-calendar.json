@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "People, rooms or equipment × days/hours: shifts, absences, bookings, allocations.",
+    "Template palettes and rule checks for staff planning."
+  ],
+  "avoidWhen": [
+    "One person's agenda — use Agenda / scheduler.",
+    "Project tasks with dependencies — use Gantt."
+  ],
+  "related": [
+    "scheduler",
+    "gantt",
+    "calendar",
+    "dashboard-03"
+  ],
+  "a11y": [
+    "A grid with row (resource) and column (time) headers; blocks are focusable with full details in labels.",
+    "Creating and moving blocks has a dialog-based keyboard path."
+  ]
+}

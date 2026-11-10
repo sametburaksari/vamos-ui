@@ -1,4 +1,4 @@
-import { VideoEmbed } from "@vamos-cms/ui/media";
+import { VideoEmbed } from "@vamos-ui/react/media";
 
 // No request to YouTube until the visitor clicks play; then a youtube-nocookie.com iframe loads.
 export default function VideoPlayerYoutubeLite() {

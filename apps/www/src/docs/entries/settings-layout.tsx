@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "A shared skeleton for settings pages: section nav with scroll-spy, titled sections of label | control rows, a sticky save bar that rises when there are unsaved changes, and a danger zone. Rows act like a Field, so kit controls are labelled and described without extra ids. Not bound to a form library — pass dirty from your form state.",
   source: ["components/settings-layout.tsx"],
   basedOn: "Field context · IntersectionObserver (scroll-spy) · container queries",
-  usage: `import { SettingsLayout, SettingsNav, SettingsSection, SettingsRow, SettingsSaveBar } from "@vamos-cms/ui";
+  usage: `import { SettingsLayout, SettingsNav, SettingsSection, SettingsRow, SettingsSaveBar } from "@vamos-ui/react";
 
 <SettingsLayout nav={<SettingsNav items={[{ id: "general", label: "General" }, { id: "danger", label: "Danger zone", tone: "danger" }]} />}>
   <SettingsSection id="general" title="General" description="Basic information about the site.">

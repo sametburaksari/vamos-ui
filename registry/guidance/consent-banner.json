@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Cookie consent for GDPR/ePrivacy/KVKK on any public site with analytics or ads.",
+    "Gating embeds (maps, video) until consent via ConsentGate."
+  ],
+  "avoidWhen": [
+    "Product announcements — use Announcement bar.",
+    "Admin apps without third-party tracking."
+  ],
+  "related": [
+    "map-hours",
+    "video-player",
+    "footer"
+  ],
+  "a11y": [
+    "A labelled region, not a modal: never blocks the page or steals focus.",
+    "Accept and Reject are equally prominent buttons; preferences are reachable again from the footer."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-cms/ui";
+import { Badge, Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-ui/react";
 import {
   BlockEditor,
   BlockEditorBubbleMenu,
@@ -11,8 +11,8 @@ import {
   BlockEditorSlashMenu,
   BlockInserter,
   BlockInspector,
-} from "@vamos-cms/ui/editor";
-import type { VamosDoc } from "@vamos-cms/ui/blocks/schema";
+} from "@vamos-ui/react/editor";
+import type { VamosDoc } from "@vamos-ui/react/blocks/schema";
 import { landingDraft, siteBlocks } from "./_blocks";
 
 const pages = [

@@ -1,0 +1,15 @@
+{
+  "name": "lib-layer",
+  "type": "lib",
+  "title": "Layer",
+  "description": "Portal layer depth for the glass budget.",
+  "docs": "https://ui.vamos.ist/docs",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "lib/layer.tsx",
+      "content": "export function Layer() { return null; }\n"
+    }
+  ]
+}

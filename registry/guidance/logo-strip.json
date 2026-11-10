@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Brands-we-work-with proof on agency and SaaS homepages.",
+    "A marquee of customer logos."
+  ],
+  "avoidWhen": [
+    "Partner directories with details — use a list or grid of cards.",
+    "Fewer than three logos."
+  ],
+  "related": [
+    "testimonials",
+    "stats-band",
+    "site-saas-01"
+  ],
+  "a11y": [
+    "Each logo has alt text with the company name; the strip has a heading or label.",
+    "The marquee pauses on hover/focus and under reduced motion."
+  ]
+}

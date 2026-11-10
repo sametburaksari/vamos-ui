@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Exporting a collection to CSV, XLSX or JSON with scope, columns and masking choices.",
+    "Large exports that run in the background with progress."
+  ],
+  "avoidWhen": [
+    "A one-click CSV of a tiny list — DataTableExport alone is enough.",
+    "Importing data — use Import wizard."
+  ],
+  "related": [
+    "import-wizard",
+    "data-table",
+    "dialog"
+  ],
+  "a11y": [
+    "Scope and format are radio groups with labels; progress is announced.",
+    "Masking personal data is explained in text, not just an icon."
+  ]
+}

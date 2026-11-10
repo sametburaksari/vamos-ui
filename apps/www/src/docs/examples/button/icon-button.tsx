@@ -1,5 +1,5 @@
 import { Eye, Search, Settings, Trash2 } from "lucide-react";
-import { IconButton } from "@vamos-cms/ui";
+import { IconButton } from "@vamos-ui/react";
 
 export default function IconButtonDemo() {
   return (

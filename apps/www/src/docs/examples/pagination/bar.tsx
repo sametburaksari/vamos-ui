@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PaginationBar } from "@vamos-cms/ui";
+import { PaginationBar } from "@vamos-ui/react";
 
 const TOTAL = 312;
 const names = ["Ayşe Demir", "Jonas Weber", "Priya Nair", "Lucas Martin", "Sofia Rossi", "Kenji Sato", "Emma Clarke", "Omar Haddad"];

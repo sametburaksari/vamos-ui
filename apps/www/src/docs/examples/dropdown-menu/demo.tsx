@@ -1,5 +1,5 @@
 import { ChevronDown, FileText, Image, LayoutTemplate, Newspaper } from "lucide-react";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@vamos-cms/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@vamos-ui/react";
 
 export default function DropdownMenuDemo() {
   return (

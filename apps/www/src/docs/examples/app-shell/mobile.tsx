@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell, AppShellProvider, PageHeader } from "@vamos-cms/ui";
+import { AppShell, AppShellProvider, PageHeader } from "@vamos-ui/react";
 import { crmApp, DemoPage, ShellFrame, sharedNav, siteApp, useMemoryRouter } from "./demo-kit";
 
 /**

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardBody, CardHeader, DescriptionList } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, DescriptionList } from "@vamos-ui/react";
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 

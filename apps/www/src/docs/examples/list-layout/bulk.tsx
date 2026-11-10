@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Search } from "lucide-react";
-import { Button, Checkbox, Input, ListBulkBar, ListContent, ListLayout, ListToolbar } from "@vamos-cms/ui";
+import { Button, Checkbox, Input, ListBulkBar, ListContent, ListLayout, ListToolbar } from "@vamos-ui/react";
 
 const employees = [
   { id: "e1", name: "Selin Öztürk", role: "Product designer", team: "Design" },

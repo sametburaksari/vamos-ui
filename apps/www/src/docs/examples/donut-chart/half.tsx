@@ -1,4 +1,4 @@
-import { DonutChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { DonutChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const contracts = [
   { type: "full", people: 168 },

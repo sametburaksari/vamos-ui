@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Moon, Sun, Layers, Square, Rows2, Rows3 } from "lucide-react";
-import { cn, IconButton } from "@vamos-cms/ui";
+import { cn, IconButton } from "@vamos-ui/react";
 
 type State = { dark: boolean; material: "glass" | "solid"; accent: string; density: "comfortable" | "compact"; font: string };
 const fontsList = [

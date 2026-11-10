@@ -1,5 +1,5 @@
 import { Copy, Eye, Pencil, Trash2 } from "lucide-react";
-import { Badge, IconButton, TooltipProvider } from "@vamos-cms/ui";
+import { Badge, IconButton, TooltipProvider } from "@vamos-ui/react";
 
 const posts = [
   { title: "Spring menu: five new small plates", author: "Leyla Aksoy", status: "Published", tone: "success" },

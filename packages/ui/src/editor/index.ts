@@ -1,5 +1,5 @@
-// Public API of @vamos-cms/ui/editor — the block / rich-text editor (Tiptap v3, admin only).
-// Websites render content with @vamos-cms/ui/render and never load this entry.
+// Public API of @vamos-ui/react/editor — the block / rich-text editor (Tiptap v3, admin only).
+// Websites render content with @vamos-ui/react/render and never load this entry.
 
 export {
   BlockEditor,

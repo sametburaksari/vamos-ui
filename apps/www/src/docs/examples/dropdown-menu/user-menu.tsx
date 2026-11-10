@@ -15,7 +15,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 export default function DropdownMenuUserMenu() {
   const [theme, setTheme] = React.useState("system");

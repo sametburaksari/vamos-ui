@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MediaLibrary } from "@vamos-cms/ui/media";
+import { MediaLibrary } from "@vamos-ui/react/media";
 import { createDemoMedia } from "./sample-media";
 
 // CMS /media screen: a folder sidebar (with "New folder"), browse mode — a click opens details.

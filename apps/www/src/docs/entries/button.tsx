@@ -16,7 +16,7 @@ const entry: DocEntry = {
   description: "Triggers an action. Eight variants, nine sizes, a loading state that keeps the layout stable, and the option to render as another element (asChild).",
   source: ["components/button.tsx", "components/spinner.tsx"],
   basedOn: "Radix Slot",
-  usage: `import { Button } from "@vamos-cms/ui";
+  usage: `import { Button } from "@vamos-ui/react";
 
 <Button variant="primary">Publish</Button>`,
   demo: ex("demo", "Demo", "button/demo.tsx", ButtonDemo),

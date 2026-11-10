@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Inset } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, Inset } from "@vamos-ui/react";
 
 const metrics = [
   { label: "Sessions", value: "18,204" },

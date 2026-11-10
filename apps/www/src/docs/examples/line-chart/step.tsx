@@ -1,4 +1,4 @@
-import { LineChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { LineChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const prices = [
   { date: "2026-01-01", team: 29, business: 79 },

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An in-app inbox behind a bell: mentions, approvals, assignments.",
+    "Filter tabs, day grouping and mark-as-read."
+  ],
+  "avoidWhen": [
+    "Immediate action feedback — use Toast.",
+    "Record history — use Activity timeline."
+  ],
+  "related": [
+    "toast",
+    "top-bar",
+    "activity-timeline",
+    "item"
+  ],
+  "a11y": [
+    "The bell button states the unread count in its label.",
+    "New notifications are announced politely, never steal focus."
+  ]
+}

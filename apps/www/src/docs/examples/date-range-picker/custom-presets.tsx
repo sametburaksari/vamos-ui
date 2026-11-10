@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DateRangePicker, type DateRangePreset, type IsoDateRange } from "@vamos-cms/ui";
+import { DateRangePicker, type DateRangePreset, type IsoDateRange } from "@vamos-ui/react";
 
 // Fiscal year starting in April (FY2026 = Apr 2026 – Mar 2027).
 const fiscalQuarters: DateRangePreset[] = [

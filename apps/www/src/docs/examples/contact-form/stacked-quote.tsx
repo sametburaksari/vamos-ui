@@ -1,4 +1,4 @@
-import { ContactForm } from "@vamos-cms/ui/blocks";
+import { ContactForm } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Stacked quote request: one 42rem column, subject and budget as native selects.

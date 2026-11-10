@@ -10,7 +10,7 @@ const entry: DocEntry = {
   description:
     "A floating messaging button and a mobile action bar (“Call · Directions · WhatsApp”) — the main conversion channel for local businesses in Turkey and many other markets. Plain links with data-track for the app's analytics, last in DOM order, 44px+ targets, safe-area padding; the page gets bottom padding so content isn't covered, the button moves above a visible consent bar, and the bar steps aside when the on-screen keyboard is open. Off-hours behaviour (label or hide) is a ~0.4 KB island using the business's opening hours.",
   source: ["blocks/site/contact-dock.tsx", "blocks/site/shared/dock-hours.tsx", "blocks/site/shared/brand-icons.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
-  usage: `import { ContactDock } from "@vamos-cms/ui/blocks";
+  usage: `import { ContactDock } from "@vamos-ui/react/blocks";
 
 // app/layout.tsx, after {children}
 <ContactDock

@@ -1,6 +1,6 @@
-import { Section, Container, SectionHeader, BlockHeading, RichText, type BlockComponentProps, type RichDoc } from "@vamos-cms/ui/blocks";
-import { z, f, defineBlock, createRegistry } from "@vamos-cms/ui/blocks/schema";
-import { renderDoc } from "@vamos-cms/ui/render";
+import { Section, Container, SectionHeader, BlockHeading, RichText, type BlockComponentProps, type RichDoc } from "@vamos-ui/react/blocks";
+import { z, f, defineBlock, createRegistry } from "@vamos-ui/react/blocks/schema";
+import { renderDoc } from "@vamos-ui/react/render";
 
 // 1. The component: plain props, server-rendered, themed by tokens.
 type TreatmentsProps = BlockComponentProps<{ title: string; items: { name: string; minutes: number; note: RichDoc }[] }>;

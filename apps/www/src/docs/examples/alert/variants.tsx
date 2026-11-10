@@ -1,4 +1,4 @@
-import { Alert } from "@vamos-cms/ui";
+import { Alert } from "@vamos-ui/react";
 
 export default function AlertVariants() {
   return (

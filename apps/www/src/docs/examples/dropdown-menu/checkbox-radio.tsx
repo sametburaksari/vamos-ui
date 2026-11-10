@@ -12,7 +12,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 
 const columns = ["Email", "Department", "Manager", "Start date", "Location"];
 

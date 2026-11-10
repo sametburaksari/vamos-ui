@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button, Card, CardBody, CardHeader } from "@vamos-cms/ui";
-import { AreaChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { Button, Card, CardBody, CardHeader } from "@vamos-ui/react";
+import { AreaChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const ranges = { "7D": 7, "30D": 30, "90D": 90 } as const;
 type Range = keyof typeof ranges;

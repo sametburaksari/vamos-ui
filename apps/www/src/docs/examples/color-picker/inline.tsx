@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ColorPicker, Field } from "@vamos-cms/ui";
+import { ColorPicker, Field } from "@vamos-ui/react";
 
 export default function ColorPickerInline() {
   const [accent, setAccent] = React.useState("#c6f432");

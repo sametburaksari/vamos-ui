@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Services, treatments or product modules on a website section.",
+    "A tabs variant to deep-dive features with media."
+  ],
+  "avoidWhen": [
+    "Admin dashboards — use Card and Stat.",
+    "Step-by-step processes — use Process / steps."
+  ],
+  "related": [
+    "hero",
+    "media-text",
+    "steps",
+    "sections-01"
+  ],
+  "a11y": [
+    "Each feature has a real heading in order under the section heading.",
+    "Icons are decorative (aria-hidden) when the heading names the feature."
+  ]
+}

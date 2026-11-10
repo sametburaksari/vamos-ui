@@ -1,5 +1,5 @@
 import { SlidersHorizontal } from "lucide-react";
-import { Badge, Button, Checkbox, Sheet, SheetBody, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "@vamos-cms/ui";
+import { Badge, Button, Checkbox, Sheet, SheetBody, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "@vamos-ui/react";
 
 const statuses = ["Paid", "Unpaid", "Overdue", "Refunded"];
 

@@ -15,7 +15,7 @@ import {
   toViewState,
   type DataTableColumn,
   type SavedView,
-} from "@vamos-cms/ui/data-table";
+} from "@vamos-ui/react/data-table";
 import { departmentOptions, employeeStatusOptions, makeEmployees, managers, type Employee } from "./_data";
 
 const employees = makeEmployees(48);

@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { ScrollArea, itemVariants, itemSlots } from "@vamos-cms/ui";
+import { ScrollArea, itemVariants, itemSlots } from "@vamos-ui/react";
 
 const timezones = ["Europe/Istanbul", "Europe/London", "Europe/Berlin", "Europe/Madrid", "America/New_York", "America/Chicago", "America/Los_Angeles", "America/Sao_Paulo", "Asia/Dubai", "Asia/Kolkata", "Asia/Singapore", "Asia/Tokyo", "Australia/Sydney"];
 

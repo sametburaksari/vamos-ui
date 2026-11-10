@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button, Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, Field, Textarea, Toaster, useFormat } from "@vamos-cms/ui";
-import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type KanbanMoveEvent, type Stage } from "@vamos-cms/ui/sortable";
+import { Button, Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, Field, Textarea, Toaster, useFormat } from "@vamos-ui/react";
+import { Kanban, KanbanCardMeta, KanbanCardTitle, applyKanbanMove, type KanbanMoveEvent, type Stage } from "@vamos-ui/react/sortable";
 
 interface Deal {
   id: string;

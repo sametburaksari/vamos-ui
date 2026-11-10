@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Concrete, sourced numbers on websites: ratings, projects, years.",
+    "A semantic dl of figures with units."
+  ],
+  "avoidWhen": [
+    "App KPIs — use Stat.",
+    "Vague or unsourced claims."
+  ],
+  "related": [
+    "stat",
+    "testimonials",
+    "logo-strip"
+  ],
+  "a11y": [
+    "A dl pairs each number with its label; sources are visible text."
+  ]
+}

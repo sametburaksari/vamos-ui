@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, KbdGroup, Separator } from "@vamos-cms/ui";
+import { Card, CardBody, CardHeader, KbdGroup, Separator } from "@vamos-ui/react";
 
 const groups = [
   {

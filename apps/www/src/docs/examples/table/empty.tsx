@@ -1,4 +1,4 @@
-import { Button, Card, Table, TableBody, TableEmpty, TableHead, TableHeader, TableRow } from "@vamos-cms/ui";
+import { Button, Card, Table, TableBody, TableEmpty, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 
 export default function TableEmptyExample() {
   return (

@@ -1,4 +1,4 @@
-import type { AuditEvent } from "@vamos-cms/ui";
+import type { AuditEvent } from "@vamos-ui/react";
 
 export const actionLabels: Record<string, string> = {
   "auth.login.succeeded": "Signed in",

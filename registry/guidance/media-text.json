@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "The common website body section: an image or video beside text.",
+    "Feature deep-dives, story, how we work."
+  ],
+  "avoidWhen": [
+    "Lists of many features — use Feature grid.",
+    "Long prose — use Rich text section."
+  ],
+  "related": [
+    "feature-grid",
+    "hero",
+    "gallery-section"
+  ],
+  "a11y": [
+    "The heading comes before the media in source order; media has alt text.",
+    "Video uses Video player with captions."
+  ]
+}

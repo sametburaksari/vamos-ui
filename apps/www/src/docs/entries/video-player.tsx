@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Consistent controls for self-hosted video (play, seek, time, volume, captions, speed, picture-in-picture, full screen) with full keyboard support; a privacy-friendly lite embed for YouTube and Vimeo; and a decorative background video with a pause button. HLS loads hls.js only when it is needed.",
   source: ["media/video-player.tsx"],
   basedOn: "Native <video> · hls.js (optional, lazy)",
-  usage: `import { VideoPlayer, VideoEmbed } from "@vamos-cms/ui/media";
+  usage: `import { VideoPlayer, VideoEmbed } from "@vamos-ui/react/media";
 
 <VideoPlayer src="/media/onboarding.mp4" poster="/media/onboarding.jpg" title="Onboarding: your first week" />
 <VideoEmbed provider="youtube" id="aqz-KE-bpKQ" title="Product tour" />`,

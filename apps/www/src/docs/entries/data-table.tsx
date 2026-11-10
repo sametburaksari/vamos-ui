@@ -17,7 +17,7 @@ const entry: DocEntry = {
     "The backbone of every list screen. Sorting (Shift for multi-sort), locale-aware search, column visibility, order, widths and pinning, row selection with a bulk bar that can select all matching rows across pages, pagination, server mode with URL state, inline editing with rollback, virtual rows, a container-width card layout and CSV export — on one serializable ListState shared with Filter bar and Saved views.",
   source: ["data-table/data-table.tsx", "data-table/types.ts", "data-table/filter-fns.ts", "data-table/url-state.ts", "data-table/csv.ts", "styles/data.css"],
   basedOn: "TanStack Table v9 + TanStack Virtual",
-  usage: `import { DataTable, type DataTableColumn } from "@vamos-cms/ui/data-table";
+  usage: `import { DataTable, type DataTableColumn } from "@vamos-ui/react/data-table";
 
 const columns: DataTableColumn<Contact>[] = [
   { id: "name", header: "Name", accessor: "name" },

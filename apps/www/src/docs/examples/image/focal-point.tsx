@@ -1,4 +1,4 @@
-import { Image } from "@vamos-cms/ui";
+import { Image } from "@vamos-ui/react";
 
 // The subject (the therapist's hands) sits at 72% / 58% of the photo. Every crop keeps it in frame.
 const photo = {

@@ -441,11 +441,13 @@ test.describe("wave 1 — data & charts", () => {
     const errors = await open(page, "sortable");
     const handle = demo(page).getByRole("button", { name: "Reorder Services" });
     await handle.focus();
-    // dnd-kit's keyboard sensor measures between steps; give each key a moment.
+    // dnd-kit's keyboard sensor measures between steps: wait for each announcement before the next
+    // key (fixed sleeps missed the pick-up under parallel load).
+    const live = (text: string) => page.locator("[aria-live]").filter({ hasText: text });
     await hold(page, "Space");
-    await page.waitForTimeout(150);
+    await expect(live("Picked up Services.")).toHaveCount(1);
     await hold(page, "ArrowDown");
-    await page.waitForTimeout(150);
+    await expect(live("Services moved to position 3 of 6.")).toHaveCount(1);
     await hold(page, "Space");
     await expect(page.locator("[aria-live]").filter({ hasText: "Services dropped at position 3 of 6." })).toHaveCount(1);
     const order = await demo(page).locator("li").allTextContents();

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Checkbox } from "@vamos-cms/ui";
+import { Checkbox } from "@vamos-ui/react";
 
 const invoices = [
   { id: "INV-2041", client: "Northwind Traders", total: "$4,820.00" },

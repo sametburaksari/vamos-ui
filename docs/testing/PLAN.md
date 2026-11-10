@@ -20,10 +20,10 @@ Owner: test planner (orchestrated). Applies to every agent that builds a compone
 Commands:
 
 ```bash
-cd ~/CascadeProjects/vamos-cms/packages/ui && npx vitest run src/components/<slug>     # one component
-cd ~/CascadeProjects/vamos-cms/packages/ui && npx vitest run                           # everything
-cd ~/CascadeProjects/vamos-cms/apps/www && npx playwright test                          # e2e (needs :3200)
-cd ~/CascadeProjects/vamos-cms/apps/www && npx playwright test -g "dark-glass"          # one theme cell
+cd ~/CascadeProjects/vamos-ui/packages/ui && npx vitest run src/components/<slug>     # one component
+cd ~/CascadeProjects/vamos-ui/packages/ui && npx vitest run                           # everything
+cd ~/CascadeProjects/vamos-ui/apps/www && npx playwright test                          # e2e (needs :3200)
+cd ~/CascadeProjects/vamos-ui/apps/www && npx playwright test -g "dark-glass"          # one theme cell
 ```
 
 ## 2. Helpers (use these, do not re-invent)
@@ -204,7 +204,7 @@ Every component test file must cover **all** of the base items plus its group's 
 - Schema: every block's `meta`/schema parses its own default props (§3).
 - Fonts: the selected Google Font loads at site level only (no per-section font), `font-display: swap`, no layout shift beyond CLS budget.
 
-### Fonts (`@vamos-cms/ui/fonts`, 50–60 Google Fonts, categorised)
+### Fonts (`@vamos-ui/react/fonts`, 50–60 Google Fonts, categorised)
 - Registry unit test: 50–60 entries, unique ids, each has `category` (e.g. sans, serif, display, mono, handwriting), `weights`, fallback stack, and a supported-subsets list that includes `latin-ext` (Turkish glyphs).
 - Font picker: grouped by category (`role="group"` + label), typeahead folded, preview text renders in the font, keyboard as Select/Combobox.
 - e2e: switching `data-font` on the docs site changes computed `font-family` on body; no console errors; Turkish sample "İıŞşĞğÇçÖöÜü" renders without fallback (check `document.fonts.check`).

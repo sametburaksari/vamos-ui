@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DatePicker, Field } from "@vamos-cms/ui";
+import { DatePicker, Field } from "@vamos-ui/react";
 
 export default function DatePickerDropdownCaption() {
   const [birthDate, setBirthDate] = React.useState<string | null>("1991-04-17");

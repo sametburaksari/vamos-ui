@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Moon, Sun, Layers, Square, Code2, Eye } from "lucide-react";
-import { cn, IconButton, ThemeScope } from "@vamos-cms/ui";
+import { cn, IconButton, ThemeScope } from "@vamos-ui/react";
 import { CodeFrame } from "./code-frame";
 
 type Theme = "inherit" | "light" | "dark";

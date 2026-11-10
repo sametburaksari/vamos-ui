@@ -1,5 +1,5 @@
-import { createFormatter } from "@vamos-cms/ui/format";
-import { Numeric, Text } from "@vamos-cms/ui";
+import { createFormatter } from "@vamos-ui/react/format";
+import { Numeric, Text } from "@vamos-ui/react";
 
 const rows = [
   { label: "Website redesign", amount: "12400.00", change: 0.18 },

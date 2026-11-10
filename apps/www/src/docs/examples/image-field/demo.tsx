@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Field } from "@vamos-cms/ui";
-import { ImageField, MediaProvider, type ImageFieldValue } from "@vamos-cms/ui/media";
+import { Field } from "@vamos-ui/react";
+import { ImageField, MediaProvider, type ImageFieldValue } from "@vamos-ui/react/media";
 import { createDemoMedia, demoAsset } from "../media-library/sample-media";
 
 // Featured image in a post editor sidebar: preview, Replace (click the image), Crop, Focal point,

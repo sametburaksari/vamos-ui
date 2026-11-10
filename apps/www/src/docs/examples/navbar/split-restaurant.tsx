@@ -1,4 +1,4 @@
-import { Navbar } from "@vamos-cms/ui/blocks";
+import { Navbar } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Restaurant / spa feel: the name dead centre, links on both sides, booking as a text link.

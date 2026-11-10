@@ -1,4 +1,4 @@
-import { Heatmap, type HeatmapCell } from "@vamos-cms/ui/charts";
+import { Heatmap, type HeatmapCell } from "@vamos-ui/react/charts";
 
 const states = ["office", "remote", "leave", "sick"] as const;
 

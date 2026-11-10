@@ -1,4 +1,4 @@
-import { Progress } from "@vamos-cms/ui";
+import { Progress } from "@vamos-ui/react";
 
 export default function ProgressDemo() {
   return (

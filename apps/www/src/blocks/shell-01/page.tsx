@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Construction } from "lucide-react";
-import { Card } from "@vamos-cms/ui";
+import { Card, DialogTitle, Sheet, SheetContent } from "@vamos-ui/react";
 import { AppSidebar } from "./components/app-sidebar";
 import { TopBar } from "./components/top-bar";
 import { appForPath, apps, sharedNav, type NavEntry } from "./components/nav";
@@ -18,17 +18,18 @@ function titleFor(path: string) {
   return "Dashboard";
 }
 
-/** Multi-app shell: one sidebar, many apps (Site, CRM, People, Work), shared bottom menu. */
+/** Multi-app shell: one sidebar, many apps (Site, CRM, People, Work), shared bottom menu. Below 768px the sidebar opens as a sheet. */
 export default function Shell01({ children, initialPath = "/crm/pipeline" }: { children?: React.ReactNode; initialPath?: string }) {
   const [path, setPath] = React.useState(initialPath);
   const [collapsed, setCollapsed] = React.useState(false);
+  const [mobileNav, setMobileNav] = React.useState(false);
   const app = appForPath(path);
   return (
     <div className="relative z-10 flex min-h-dvh">
-      <AppSidebar path={path} onNavigate={setPath} collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
+      <AppSidebar className="max-md:hidden" path={path} onNavigate={setPath} collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <TopBar title={`${app?.name ?? "Workspace"} / ${titleFor(path)}`} />
-        <main className="flex-1 px-6 py-7">
+        <TopBar title={`${app?.name ?? "Workspace"} / ${titleFor(path)}`} onMenu={() => setMobileNav(true)} />
+        <main className="min-w-0 flex-1 px-4 py-6 md:px-6 md:py-7">
           {children ?? (
             <Card className="grid place-items-center px-6 py-24 text-center">
               <Construction className="mb-3 size-6 text-fg-subtle" strokeWidth={1.6} />
@@ -37,6 +38,22 @@ export default function Shell01({ children, initialPath = "/crm/pipeline" }: { c
           )}
         </main>
       </div>
+      <Sheet open={mobileNav} onOpenChange={setMobileNav}>
+        <SheetContent side="start" size="sm" hideClose className="max-w-[86vw] border-0 p-0">
+          <DialogTitle className="sr-only">Navigation</DialogTitle>
+          <AppSidebar
+            mobile
+            className="static h-full w-full border-e-0"
+            path={path}
+            onNavigate={(href) => {
+              setPath(href);
+              setMobileNav(false);
+            }}
+            collapsed={false}
+            onToggle={() => setMobileNav(false)}
+          />
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

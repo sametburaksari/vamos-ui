@@ -1,5 +1,5 @@
 import { CalendarDays } from "lucide-react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@vamos-cms/ui";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@vamos-ui/react";
 
 export default function HoverCardDemo() {
   return (

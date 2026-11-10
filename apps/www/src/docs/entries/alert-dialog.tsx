@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Confirms an irreversible or high-stakes action. role=\"alertdialog\", the overlay never closes it, and a danger tone puts focus on Cancel so a stray Enter can't destroy anything. Comes with an imperative useConfirm() for one-line confirmations.",
   source: ["components/alert-dialog.tsx", "components/dialog.tsx"],
   basedOn: "Radix Alert Dialog",
-  usage: `import { useConfirm } from "@vamos-cms/ui";
+  usage: `import { useConfirm } from "@vamos-ui/react";
 
 const confirm = useConfirm();
 if (await confirm({ title: "Delete 3 posts?", tone: "danger", confirmLabel: "Delete" })) {

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LineItems, type LineDiscount } from "@vamos-cms/ui/business";
+import { LineItems, type LineDiscount } from "@vamos-ui/react/business";
 
 export default function LineItemsDiscounts() {
   // Row discounts toggle between % and an amount; the document discount is spread pro-rata over the lines.

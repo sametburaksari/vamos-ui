@@ -17,7 +17,7 @@ const entry: DocEntry = {
     "Text input, multi-line textarea, and Field, which wraps any control with a label, hint and error and wires the accessibility attributes through context. Fieldset groups related controls.",
   source: ["components/input.tsx", "lib/field-context.tsx", "lib/variants.ts"],
   basedOn: "Radix Label",
-  usage: `import { Field, Input } from "@vamos-cms/ui";
+  usage: `import { Field, Input } from "@vamos-ui/react";
 
 <Field label="Title" hint="Keep it under 60 characters.">
   <Input placeholder="Post title" />

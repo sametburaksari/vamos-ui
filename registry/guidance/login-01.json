@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A split sign-in page with a brand or quote panel for any product."
+  ],
+  "avoidWhen": [
+    "Products with SSO-first sign-in — use login-02."
+  ],
+  "related": [
+    "login-02",
+    "signup-01",
+    "forgot-password-01",
+    "input"
+  ],
+  "a11y": [
+    "Inputs use autocomplete=email/current-password; errors are announced."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Primary app navigation with sections, submenus, flyouts and a collapsible rail.",
+    "Used inside App shell; dark in both themes."
+  ],
+  "avoidWhen": [
+    "Websites — use Navbar or Navigation Menu.",
+    "In-page section navigation — use Tabs or the Settings nav."
+  ],
+  "related": [
+    "app-shell",
+    "top-bar",
+    "shell-01",
+    "shell-02",
+    "shell-04"
+  ],
+  "a11y": [
+    "A labelled nav; the active link has aria-current=page.",
+    "Rail mode keeps labels via tooltips and accessible names."
+  ]
+}

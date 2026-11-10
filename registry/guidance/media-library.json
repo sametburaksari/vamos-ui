@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Browsing, uploading, editing and deleting files through a storage adapter.",
+    "The Media section of a CMS with folders, filters and a details panel."
+  ],
+  "avoidWhen": [
+    "Picking files for one field — use Media picker.",
+    "A few record attachments — use Attachment list."
+  ],
+  "related": [
+    "media-picker",
+    "gallery",
+    "lightbox",
+    "file-upload"
+  ],
+  "a11y": [
+    "Grid items are selectable with keyboard; selection count is announced.",
+    "Upload queue progress is announced per file."
+  ]
+}

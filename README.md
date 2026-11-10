@@ -24,13 +24,13 @@ Most admin panels look the same, and most component kits stop at buttons and dia
 ## Quick start
 
 ```bash
-pnpm add @vamos-cms/ui
+pnpm add @vamos-ui/react
 ```
 
 ```css
 /* globals.css */
 @import "tailwindcss";
-@import "@vamos-cms/ui/styles.css";
+@import "@vamos-ui/react/styles.css";
 ```
 
 ```tsx
@@ -38,7 +38,7 @@ pnpm add @vamos-cms/ui
 ```
 
 ```tsx
-import { Button } from "@vamos-cms/ui";
+import { Button } from "@vamos-ui/react";
 
 <Button variant="primary">Publish</Button>
 ```
@@ -49,7 +49,7 @@ Full guide: [ui.vamos.ist/docs/installation](https://ui.vamos.ist/docs/installat
 
 | Path | What | License |
 |---|---|---|
-| `packages/ui` | The component kit (`@vamos-cms/ui`) | MIT |
+| `packages/ui` | The component kit (`@vamos-ui/react`) | MIT |
 | `apps/www` | Docs site, examples and blocks (ui.vamos.ist) | MIT |
 | `apps/admin` | Multi-app panel demo (Site/CMS, CRM, People, Work) | FSL-1.1-ALv2 |
 
@@ -59,9 +59,9 @@ See [LICENSE.md](LICENSE.md) and [TRADEMARKS.md](TRADEMARKS.md). "Vamos", "Vamos
 
 ```bash
 pnpm install
-pnpm --filter @vamos-cms/www dev     # docs on http://localhost:3200
-pnpm --filter @vamos-cms/admin dev   # panel demo on http://localhost:3100
-pnpm --filter @vamos-cms/ui test     # unit + a11y tests
+pnpm --filter @vamos-ui/www dev     # docs on http://localhost:3200
+pnpm --filter @vamos-ui/admin dev   # panel demo on http://localhost:3100
+pnpm --filter @vamos-ui/react test     # unit + a11y tests
 node scripts/gen.mjs                 # regenerate indexes after adding components or blocks
 ```
 

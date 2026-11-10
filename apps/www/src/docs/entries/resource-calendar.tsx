@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "People, rooms or equipment as rows and days or hours as columns, holding blocks: shifts, absences, bookings, allocations. It has a template palette, rule warnings (never hard blocks), a working calendar with holidays, a one-code-per-cell variant for attendance sheets, and a full keyboard grid. Every drag has a menu or key alternative.",
   source: ["scheduler/resource-calendar.tsx", "scheduler/core/time-scale.ts", "scheduler/shared.ts", "sortable/use-pointer-drag.ts", "styles/calendar.css"],
   basedOn: "Own grid: usePointerDrag, @tanstack/react-virtual, date-fns",
-  usage: `import { ResourceCalendar, minRestRule } from "@vamos-cms/ui/scheduler";
+  usage: `import { ResourceCalendar, minRestRule } from "@vamos-ui/react/scheduler";
 
 <ResourceCalendar
   resources={staff}                       // { id, title, avatarUrl?, group?, meta? }

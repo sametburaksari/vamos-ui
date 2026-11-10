@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "The generic row of a non-tabular list: leading visual, title and description, meta and actions. Recent posts, contacts in a side panel, notifications, search results. Hover-revealed actions stay reachable on focus and touch; with selectable the list becomes a keyboard listbox.",
   source: ["components/item.tsx", "lib/data-islands.tsx"],
   basedOn: "Radix Slot",
-  usage: `import { Item, ItemContent, ItemDescription, ItemList, ItemMeta, ItemTitle } from "@vamos-cms/ui";
+  usage: `import { Item, ItemContent, ItemDescription, ItemList, ItemMeta, ItemTitle } from "@vamos-ui/react";
 
 <ItemList>
   <Item>

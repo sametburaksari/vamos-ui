@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Badge, Card } from "@vamos-cms/ui";
+import { Badge, Card } from "@vamos-ui/react";
 
 const deals = [
   { company: "Moda Wellness", value: "$4,500", stage: "Proposal sent", tone: "info" },

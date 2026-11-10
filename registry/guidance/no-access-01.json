@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "Access denied inside the shell: explains required roles, lists admins, request access with a reason."
+  ],
+  "avoidWhen": [
+    "Signed-out users — redirect to sign-in instead."
+  ],
+  "related": [
+    "empty-state",
+    "users-roles-01",
+    "alert"
+  ],
+  "a11y": [
+    "The reason field is labelled; the request confirmation is announced."
+  ]
+}

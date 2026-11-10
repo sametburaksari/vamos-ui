@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "An HR employee profile with employment and pay details, leave balances and approvals."
+  ],
+  "avoidWhen": [
+    "CRM contacts — use detail-01."
+  ],
+  "related": [
+    "record-detail-layout",
+    "approval-flow",
+    "description-list",
+    "progress"
+  ],
+  "a11y": [
+    "Sensitive values (pay) can be masked and revealed with a labelled button."
+  ]
+}

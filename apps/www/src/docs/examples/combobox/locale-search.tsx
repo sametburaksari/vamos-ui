@@ -1,4 +1,4 @@
-import { Combobox, Field, LocaleProvider } from "@vamos-cms/ui";
+import { Combobox, Field, LocaleProvider } from "@vamos-ui/react";
 
 const provinces = [
   "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir",

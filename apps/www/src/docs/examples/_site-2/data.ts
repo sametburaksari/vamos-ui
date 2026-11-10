@@ -1,6 +1,6 @@
 // Docs-only sample content for the registry-2 site-block examples (fictional businesses, real
 // sector copy). Replace with your own data.
-import type { Branch, OpeningHours, PostSummary, ArticlePost, RichDoc } from "@vamos-cms/ui/blocks";
+import type { Branch, OpeningHours, PostSummary, ArticlePost, RichDoc } from "@vamos-ui/react/blocks";
 import { photos } from "../_site-1/assets";
 
 export { photos };

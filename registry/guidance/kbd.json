@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Showing keyboard shortcuts in menus, tooltips, help and command palettes."
+  ],
+  "avoidWhen": [
+    "Code snippets — use Code from Typography.",
+    "Decoration."
+  ],
+  "related": [
+    "tooltip",
+    "command",
+    "dropdown-menu"
+  ],
+  "a11y": [
+    "Key names are spoken (Command, Control) instead of symbols.",
+    "mod renders ⌘ on Apple and Ctrl elsewhere automatically."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AuditLog, filterAuditEvents, type AuditEvent, type AuditFilters } from "@vamos-cms/ui";
+import { AuditLog, filterAuditEvents, type AuditEvent, type AuditFilters } from "@vamos-ui/react";
 import { actionLabels, auditEvents } from "./data";
 
 // 2,000 generated events stand in for a paginated API.

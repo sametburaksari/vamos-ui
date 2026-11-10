@@ -1,4 +1,4 @@
-import { SelectContent, SelectGroup, SelectItem, SelectRoot, SelectSeparator, SelectTrigger, SelectValue } from "@vamos-cms/ui";
+import { SelectContent, SelectGroup, SelectItem, SelectRoot, SelectSeparator, SelectTrigger, SelectValue } from "@vamos-ui/react";
 
 export default function SelectComposed() {
   return (

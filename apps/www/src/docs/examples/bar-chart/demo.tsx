@@ -1,4 +1,4 @@
-import { BarChart, type ChartConfig } from "@vamos-cms/ui/charts";
+import { BarChart, type ChartConfig } from "@vamos-ui/react/charts";
 
 const signups = [
   { month: "2026-05-01", signups: 1284 },

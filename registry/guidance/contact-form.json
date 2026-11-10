@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Contact and quote requests on a website, sent to CRM, email or a webhook.",
+    "Forms that need server validation via useActionState with a tiny client island."
+  ],
+  "avoidWhen": [
+    "Complex multi-step applications — use Multi-step form.",
+    "In-app forms — compose Field + Input."
+  ],
+  "related": [
+    "input",
+    "cta",
+    "page-contact-01",
+    "consent-banner"
+  ],
+  "a11y": [
+    "Every field has a visible label; errors are linked via aria-describedby and summarised on submit.",
+    "The consent checkbox text links to the privacy notice."
+  ]
+}

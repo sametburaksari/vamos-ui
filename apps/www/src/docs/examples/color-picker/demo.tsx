@@ -1,4 +1,4 @@
-import { ColorPicker, Field } from "@vamos-cms/ui";
+import { ColorPicker, Field } from "@vamos-ui/react";
 
 export default function ColorPickerDemo() {
   return (

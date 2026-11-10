@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "Structured filters as chips above any collection — tables, boards, calendars, galleries. “+ Filter” walks field → condition + value in one popover; every chip segment edits in place. Operators follow the field type, dates can be relative, options can load from the server, and the value is a plain FilterGroup you can put in a URL or a saved view.",
   source: ["data-table/filter-bar.tsx", "data-table/types.ts", "data-table/filter-fns.ts"],
   basedOn: "Radix Popover + cmdk",
-  usage: `import { FilterBar, applyFilters, type FilterFieldDef, type FilterGroup } from "@vamos-cms/ui/data-table";
+  usage: `import { FilterBar, applyFilters, type FilterFieldDef, type FilterGroup } from "@vamos-ui/react/data-table";
 
 const fields: FilterFieldDef[] = [
   { field: "stage", label: "Stage", type: "enum", options: stageOptions, quick: true },

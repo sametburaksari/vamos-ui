@@ -1,4 +1,4 @@
-import { Testimonials } from "@vamos-cms/ui/blocks";
+import { Testimonials } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Carousel: scroll-snap track, arrow buttons beside the title, "2 / 5" counter, ←/→ on the track. No autoplay.

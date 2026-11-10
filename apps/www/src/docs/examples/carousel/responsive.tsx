@@ -1,4 +1,4 @@
-import { Carousel, CarouselSlide, CarouselViewport } from "@vamos-cms/ui";
+import { Carousel, CarouselSlide, CarouselViewport } from "@vamos-ui/react";
 
 // A KPI strip: one card per view on phones, four on desktop. Arrows sit outside with faded edges.
 const kpis = [

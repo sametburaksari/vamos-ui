@@ -69,7 +69,7 @@ export function avatarColor(seed: string): React.CSSProperties {
   const c = `var(--chart-${hueIndex(seed)})`;
   return {
     backgroundColor: `color-mix(in oklch, ${c} 20%, var(--surface-solid))`,
-    color: `color-mix(in oklch, ${c} 72%, var(--fg))`,
+    color: `color-mix(in oklch, ${c} 60%, var(--fg))`,
   };
 }
 

@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A restaurant, café or meyhane website: hero, story, menu with allergens, gallery, booking, hours."
+  ],
+  "avoidWhen": [
+    "Service businesses with treatments and therapists — use site-spa-01."
+  ],
+  "related": [
+    "menu-list",
+    "gallery-section",
+    "map-hours",
+    "contact-dock",
+    "cta"
+  ],
+  "a11y": [
+    "Allergen info is text; booking links name the channel (WhatsApp)."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CommentThread, type CommentData, type MentionItem } from "@vamos-cms/ui";
+import { CommentThread, type CommentData, type MentionItem } from "@vamos-ui/react";
 
 const me = { id: "u1", name: "Ayşe Kaya" };
 const team: MentionItem[] = [

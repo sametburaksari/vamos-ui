@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "The default multi-app admin shell: app switcher, sections, submenus, flyouts, collapsible rail.",
+    "Start here for any CMS/CRM/HR panel."
+  ],
+  "avoidWhen": [
+    "Apps with only a few top-level pages — use shell-03.",
+    "Icon-dense tools — use shell-02."
+  ],
+  "related": [
+    "app-shell",
+    "sidebar",
+    "top-bar",
+    "command"
+  ],
+  "a11y": [
+    "Skip link, one main landmark, aria-current on the active link."
+  ]
+}

@@ -11,7 +11,7 @@ const entry: DocEntry = {
   description:
     "Restaurant menus and spa or salon price lists — also a QR-menu page. Each category is a labelled section with a sticky jump bar of plain anchors, prices are tabular and formatted by Intl (the full currency name for screen readers), tags are words (never emoji), the 14 EU allergens are localized, unavailable items say “Not today” instead of a strikethrough and missing prices read “Market price”. Zero JavaScript.",
   source: ["blocks/site/menu-list.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
-  usage: `import { MenuList } from "@vamos-cms/ui/blocks";
+  usage: `import { MenuList } from "@vamos-ui/react/blocks";
 
 <MenuList
   title="Tonight at *Kıyı*"

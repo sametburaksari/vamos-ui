@@ -1,0 +1,39 @@
+{
+  "name": "dialog",
+  "type": "component",
+  "title": "Dialog",
+  "description": "Modal window for a focused task with focus trap and Escape to close.",
+  "group": "Overlays & feedback",
+  "tags": [
+    "overlay",
+    "modal"
+  ],
+  "docs": "https://ui.vamos.ist/docs/components/dialog",
+  "dependencies": [
+    "radix-ui@^1.4.3"
+  ],
+  "registryDependencies": [
+    "lib-utils",
+    "lib-layer",
+    "button"
+  ],
+  "files": [
+    {
+      "path": "components/dialog.tsx",
+      "content": "\"use client\";\nimport { Layer } from \"../lib/layer\";\nexport function Dialog() { return null; }\n"
+    }
+  ],
+  "usage": "import { Dialog, DialogContent } from \"@vamos-ui/react\";",
+  "guidance": {
+    "whenToUse": [
+      "A short focused task that blocks the page, like editing a record"
+    ],
+    "avoidWhen": [
+      "Long forms — use a page or Sheet"
+    ],
+    "related": [
+      "sheet",
+      "alert-dialog"
+    ]
+  }
+}

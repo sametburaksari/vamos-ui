@@ -16,7 +16,7 @@ const entry: DocEntry = {
     "Browse, search, filter, upload, edit and delete files through any storage adapter: grid or list, folders, an upload queue with progress and retry, a details panel with alt text, focal point and usage, bulk actions, and a virtualised grid for libraries with thousands of files. It is also the body of Media picker and works as a document archive in CRM and HR.",
   source: ["media/media-library.tsx", "media/use-upload-queue.ts", "media/rest-adapter.ts", "media/memory-adapter.ts", "media/media-utils.ts", "media/types.ts"],
   basedOn: "MediaAdapter contract · @tanstack/react-virtual · XHR uploads",
-  usage: `import { MediaLibrary, MediaProvider, createRestAdapter } from "@vamos-cms/ui/media";
+  usage: `import { MediaLibrary, MediaProvider, createRestAdapter } from "@vamos-ui/react/media";
 
 const media = createRestAdapter({ baseUrl: "/api", headers: () => ({ Authorization: \`Bearer \${token()}\` }) });
 

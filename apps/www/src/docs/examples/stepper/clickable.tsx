@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Stepper } from "@vamos-cms/ui";
+import { Button, Stepper } from "@vamos-ui/react";
 
 const steps = [
   { id: "company", title: "Company" },

@@ -1,4 +1,4 @@
-import { Gauge } from "@vamos-cms/ui/charts";
+import { Gauge } from "@vamos-ui/react/charts";
 
 const bands = [
   { at: 0, color: "danger", label: "Poor" },

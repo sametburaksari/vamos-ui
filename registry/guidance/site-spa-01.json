@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A spa, hammam, salon or clinic website: treatments with prices, visit steps, therapists, booking, hours."
+  ],
+  "avoidWhen": [
+    "Restaurants — use site-restaurant-01."
+  ],
+  "related": [
+    "menu-list",
+    "team",
+    "steps",
+    "map-hours",
+    "contact-dock"
+  ],
+  "a11y": [
+    "Treatment prices and durations are text; the booking bar fields are labelled."
+  ]
+}

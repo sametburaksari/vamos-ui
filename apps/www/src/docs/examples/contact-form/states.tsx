@@ -1,4 +1,4 @@
-import { ContactForm } from "@vamos-cms/ui/blocks";
+import { ContactForm } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // States, rendered from `initialState` (what your action returns): field errors with a linked

@@ -1,4 +1,4 @@
-import { Heatmap, type HeatmapCell } from "@vamos-cms/ui/charts";
+import { Heatmap, type HeatmapCell } from "@vamos-ui/react/charts";
 
 const departments = ["Engineering", "Sales", "Marketing", "Support", "Operations"];
 const months = ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Quotes, invoices and orders with product/service rows, discounts and tax rates.",
+    "Exact per-rate totals with decimal-string money."
+  ],
+  "avoidWhen": [
+    "Read-only small lists of numbers — use Table.",
+    "Generic repeatable form rows without money."
+  ],
+  "related": [
+    "formatted-input",
+    "detail-03",
+    "table"
+  ],
+  "a11y": [
+    "Each cell input is labelled by its column and row number.",
+    "Add/remove row buttons name the row; totals are announced on change."
+  ]
+}

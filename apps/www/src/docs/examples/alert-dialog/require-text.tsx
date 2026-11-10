@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, ConfirmProvider, useConfirm } from "@vamos-cms/ui";
+import { Button, ConfirmProvider, useConfirm } from "@vamos-ui/react";
 
 function DeleteSite() {
   const confirm = useConfirm();

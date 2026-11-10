@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { VersionHistory, type Version } from "@vamos-cms/ui";
+import { VersionHistory, type Version } from "@vamos-ui/react";
 
 const bodies: Record<string, string> = {
   v4: `# QR menus: the complete guide for restaurants

@@ -1,5 +1,5 @@
 {
-  "name": "@vamos-cms/www",
+  "name": "@vamos-ui/www",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "e2e": "playwright test"
   },
   "dependencies": {
-    "@vamos-cms/ui": "workspace:*",
+    "@vamos-ui/react": "workspace:*",
     "lucide-react": "^1.70.0",
     "next": "15.5.4",
     "react": "19.1.1",

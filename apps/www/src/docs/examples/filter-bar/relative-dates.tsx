@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useFormat } from "@vamos-cms/ui";
-import { FilterBar, resolveRelativeDate, type FilterFieldDef, type FilterGroup, type RelativeDate } from "@vamos-cms/ui/data-table";
+import { useFormat } from "@vamos-ui/react";
+import { FilterBar, resolveRelativeDate, type FilterFieldDef, type FilterGroup, type RelativeDate } from "@vamos-ui/react/data-table";
 
 const fields: FilterFieldDef[] = [
   { field: "startDate", label: "Start date", type: "date", quick: true },

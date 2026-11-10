@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Eye, Send } from "lucide-react";
-import { Button, CommandPalette, CommandProvider, toast, useCommandPalette, useRegisterCommands } from "@vamos-cms/ui";
+import { Button, CommandPalette, CommandProvider, toast, useCommandPalette, useRegisterCommands } from "@vamos-ui/react";
 
 /** A page registers its own commands; they disappear when it unmounts. */
 function PostEditor() {

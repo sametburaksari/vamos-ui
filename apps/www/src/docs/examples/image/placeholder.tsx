@@ -1,4 +1,4 @@
-import { Image } from "@vamos-cms/ui";
+import { Image } from "@vamos-ui/react";
 
 // A slow source makes the placeholders visible; in production they show for a few hundred ms.
 const photo = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0";

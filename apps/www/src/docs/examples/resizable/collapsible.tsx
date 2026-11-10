@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
-import { IconButton, ResizableGroup, ResizableHandle, ResizablePanel, useResizablePanelRef } from "@vamos-cms/ui";
+import { IconButton, ResizableGroup, ResizableHandle, ResizablePanel, useResizablePanelRef } from "@vamos-ui/react";
 
 const people = ["Elif Kaya — Engineering manager", "Mert Aydın — SRE", "Sofia Rossi — Designer", "Omar Haddad — Recruiter", "Emma Clarke — Payroll"];
 

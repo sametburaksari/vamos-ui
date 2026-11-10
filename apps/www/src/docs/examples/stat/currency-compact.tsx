@@ -1,5 +1,5 @@
 import { CircleDollarSign, Handshake } from "lucide-react";
-import { Stat, StatGroup } from "@vamos-cms/ui";
+import { Stat, StatGroup } from "@vamos-ui/react";
 
 export default function StatCurrencyCompact() {
   return (

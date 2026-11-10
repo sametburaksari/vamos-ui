@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/sortable — reordering + pointer-drag primitives.
+// Public API of @vamos-ui/react/sortable — reordering + pointer-drag primitives.
 // The drag engine (dnd-kit) is internal: no engine type is exported.
 export {
   Sortable,

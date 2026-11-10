@@ -1,4 +1,4 @@
-import { LogoStrip } from "@vamos-cms/ui/blocks";
+import { LogoStrip } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 import { clientLogos } from "../_site-1/assets";
 

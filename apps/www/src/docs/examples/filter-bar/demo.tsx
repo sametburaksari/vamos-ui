@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Building2, CalendarClock, CircleDollarSign, Flag, Tags, UserRound } from "lucide-react";
-import { FilterBar, applyFilters, type FilterFieldDef, type FilterGroup } from "@vamos-cms/ui/data-table";
+import { FilterBar, applyFilters, type FilterFieldDef, type FilterGroup } from "@vamos-ui/react/data-table";
 import { makeContact, owners, stageOptions } from "../data-table/_data";
 
 const deals = Array.from({ length: 400 }, (_, i) => makeContact(i));

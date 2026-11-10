@@ -1,4 +1,4 @@
-// React-free core of @vamos-cms/ui/locale-data: contracts, week info, holidays, working days, IBAN, decimals.
+// React-free core of @vamos-ui/react/locale-data: contracts, week info, holidays, working days, IBAN, decimals.
 export type {
   IsoDate,
   WeekInfo,

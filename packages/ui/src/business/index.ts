@@ -1,4 +1,4 @@
-// Public API of @vamos-cms/ui/business — line items, flows & wizards, permission matrix.
+// Public API of @vamos-ui/react/business — line items, flows & wizards, permission matrix.
 // Heavy parsers (papaparse, read-excel-file, write-excel-file) load lazily on first use.
 
 // Line items

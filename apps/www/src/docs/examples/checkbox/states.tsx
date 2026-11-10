@@ -1,4 +1,4 @@
-import { Checkbox } from "@vamos-cms/ui";
+import { Checkbox } from "@vamos-ui/react";
 
 export default function CheckboxStates() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, Badge, RecordHeader, RecordLayout, RecordPager } from "@vamos-cms/ui";
+import { Avatar, Badge, RecordHeader, RecordLayout, RecordPager } from "@vamos-ui/react";
 
 const employees = [
   { name: "Selin Öztürk", role: "Product designer · Design", since: "Mar 2023", manager: "Burak Şahin" },

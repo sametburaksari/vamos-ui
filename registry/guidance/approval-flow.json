@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Multi-stage approvals with sequential or parallel stages: leave, expense, purchase, contract sign-off.",
+    "Showing who decided what and acting on the current stage (approve, reject, delegate)."
+  ],
+  "avoidWhen": [
+    "A simple linear progress indicator with no approvers — use Stepper.",
+    "Past events without pending decisions — use Activity timeline."
+  ],
+  "related": [
+    "stepper",
+    "activity-timeline",
+    "user-picker",
+    "detail-02",
+    "form-01"
+  ],
+  "a11y": [
+    "Stages are an ordered list; the current stage is marked with aria-current=step.",
+    "Reject requires a comment field with a visible label; decisions are announced."
+  ]
+}

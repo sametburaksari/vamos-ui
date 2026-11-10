@@ -1,5 +1,5 @@
 import { Bold, Italic, Link2, List, ListOrdered, Quote } from "lucide-react";
-import { IconButton, Separator } from "@vamos-cms/ui";
+import { IconButton, Separator } from "@vamos-ui/react";
 
 export default function SeparatorToolbar() {
   // Between meaningful groups, decorative={false} announces the separator to screen readers.

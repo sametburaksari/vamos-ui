@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable, type DataTableColumn } from "@vamos-cms/ui/data-table";
+import { DataTable, type DataTableColumn } from "@vamos-ui/react/data-table";
 import { makeContact, owners, stageOptions, type Contact } from "./_data";
 
 const contacts = Array.from({ length: 40 }, (_, i) => makeContact(i));

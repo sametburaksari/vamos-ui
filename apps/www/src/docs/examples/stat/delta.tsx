@@ -1,4 +1,4 @@
-import { Delta } from "@vamos-cms/ui";
+import { Delta } from "@vamos-ui/react";
 
 export default function StatDelta() {
   return (

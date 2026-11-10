@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { toast } from "@vamos-cms/ui";
-import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-cms/ui/business";
+import { toast } from "@vamos-ui/react";
+import { PermissionMatrix, type PermissionAction, type PermissionResource, type PermissionValue } from "@vamos-ui/react/business";
 
 // CRM "Sales rep": sees own deals, the team's contacts. Scope cells: None / Own / Team / All.
 const resources: PermissionResource[] = [

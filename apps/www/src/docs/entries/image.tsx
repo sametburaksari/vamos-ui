@@ -16,7 +16,7 @@ const entry: DocEntry = {
     "One image primitive for panels and websites: no layout shift (width/height + aspect-ratio), focal point to object-position, a blur / colour / skeleton placeholder that cross-fades out, srcset from a CDN loader or the asset's variants. Framework-agnostic: a plain <img>, or your framework's image through VamosProvider.",
   source: ["components/image.tsx", "media/types.ts"],
   basedOn: "Native <img> (no dependencies)",
-  usage: `import { Image } from "@vamos-cms/ui";
+  usage: `import { Image } from "@vamos-ui/react";
 
 <Image src={asset} aspect="16/9" sizes="(min-width: 1024px) 50vw, 100vw" rounded="ui" />
 <Image src="/team/elif.jpg" alt="Elif Demir" width={800} height={800} aspect="1/1" rounded="full" />`,
@@ -68,7 +68,7 @@ const entry: DocEntry = {
     ] },
   ],
   notes: [
-    "The kit never imports next/image. Pass it to VamosProvider (or use createVamosNextProvider from @vamos-cms/ui/next).",
+    "The kit never imports next/image. Pass it to VamosProvider (or use createVamosNextProvider from @vamos-ui/react/next).",
     "Formats (AVIF/WebP) are the loader's job (format: \"auto\"); art-direction <picture> sources are planned.",
     "Glass mode never blurs over the image; only the frame is drawn above it.",
   ],

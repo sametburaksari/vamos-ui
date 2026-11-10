@@ -1,0 +1,17 @@
+{
+  "whenToUse": [
+    "A first-run welcome wizard: workspace, apps, invites, accent and type pairing with live preview."
+  ],
+  "avoidWhen": [
+    "Ongoing setup tasks after first run — use onboarding-01."
+  ],
+  "related": [
+    "stepper",
+    "multi-step-form",
+    "font-picker",
+    "settings-02"
+  ],
+  "a11y": [
+    "Focus moves to each step heading; skippable steps say so."
+  ]
+}

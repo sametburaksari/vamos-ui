@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, FileText, Globe, Users } from "lucide-react";
-import { Card, Item, ItemContent, ItemDescription, ItemLeading, ItemList, ItemMeta, ItemTitle } from "@vamos-cms/ui";
+import { Card, Item, ItemContent, ItemDescription, ItemLeading, ItemList, ItemMeta, ItemTitle } from "@vamos-ui/react";
 
 const results = [
   { icon: FileText, title: "Local SEO checklist for 2026", where: "Posts · Draft", href: "#link-rows" },

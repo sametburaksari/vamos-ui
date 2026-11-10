@@ -1,4 +1,4 @@
-import { FieldDiff } from "@vamos-cms/ui";
+import { FieldDiff } from "@vamos-ui/react";
 
 export default function VersionHistoryFieldDiff() {
   return (

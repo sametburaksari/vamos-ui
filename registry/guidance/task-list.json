@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Checkable tasks with assignee, due date, priority and subtasks: follow-ups, onboarding, checklists.",
+    "Optimistic toggles."
+  ],
+  "avoidWhen": [
+    "Project plans with dates and dependencies — use Gantt.",
+    "Setup steps with deep links — use Setup checklist."
+  ],
+  "related": [
+    "setup-checklist",
+    "kanban",
+    "gantt",
+    "detail-01"
+  ],
+  "a11y": [
+    "Each task's checkbox is labelled with the task title; due/overdue is in text."
+  ]
+}

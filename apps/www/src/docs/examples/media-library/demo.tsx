@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MediaLibrary, MediaProvider } from "@vamos-cms/ui/media";
+import { MediaLibrary, MediaProvider } from "@vamos-ui/react/media";
 import { createDemoMedia } from "./sample-media";
 
 // The full library on the in-memory adapter: search, filters, grid/list, drop to upload,

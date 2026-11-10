@@ -16,7 +16,7 @@ import {
   IconButton,
   KbdGroup,
   useHotkeys,
-} from "@vamos-cms/ui";
+} from "@vamos-ui/react";
 import { docSections, mainNav, site } from "@/lib/site";
 import { ThemeControls } from "./theme-controls";
 import { VamosLogo } from "./brand";

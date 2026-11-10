@@ -1,4 +1,4 @@
-import { ConsentBanner } from "@vamos-cms/ui/blocks";
+import { ConsentBanner } from "@vamos-ui/react/blocks";
 
 // Bar: two lines of text, "Reject all" and "Accept all" at equal size and weight, "Preferences".
 // `contained` + `forceShow` keep it inside this preview; on a site it is fixed to the bottom and

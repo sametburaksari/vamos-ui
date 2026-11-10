@@ -1,0 +1,16 @@
+{
+  "whenToUse": [
+    "Two-step verification after sign-in: authenticator or SMS code, resend, recovery code."
+  ],
+  "avoidWhen": [
+    "Email magic links — use magic-link-01."
+  ],
+  "related": [
+    "input-otp",
+    "login-02",
+    "magic-link-01"
+  ],
+  "a11y": [
+    "Uses autocomplete=one-time-code; wrong-code errors keep focus in the field."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "FAQs, policy pages and long help text where readers scan headings and open one or two answers.",
+    "Folding meta boxes in an editor side panel or a mobile menu.",
+    "Optional advanced settings that most users never need."
+  ],
+  "avoidWhen": [
+    "Content everyone must read — show it inline instead of hiding it.",
+    "Switching between peer views of the same context — use Tabs.",
+    "Marketing FAQs on a server-rendered site — use the zero-JS Faq site block."
+  ],
+  "related": [
+    "tabs",
+    "faq",
+    "editor-layout"
+  ],
+  "a11y": [
+    "Each trigger is a heading-level button with aria-expanded; keep trigger text short and descriptive.",
+    "Do not put interactive controls inside the trigger itself; use the header actions slot."
+  ]
+}

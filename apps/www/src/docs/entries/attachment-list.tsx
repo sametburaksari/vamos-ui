@@ -12,7 +12,7 @@ const entry: DocEntry = {
     "Files attached to a record — contracts on a deal, an employee's documents, a post's downloads. Mime icons tinted per file family, sizes in the current locale, upload progress, processing and error states, preview, download, remove with undo, and an add button or your own upload slot.",
   source: ["components/attachment-list.tsx", "styles/data.css"],
   basedOn: "Native list semantics + Intl.NumberFormat (bytes)",
-  usage: `import { AttachmentList } from "@vamos-cms/ui";
+  usage: `import { AttachmentList } from "@vamos-ui/react";
 
 <AttachmentList
   items={files}

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Small, static data: invoice lines, settings lists, chart data tables.",
+    "Server-compatible tables with density-aware rows."
+  ],
+  "avoidWhen": [
+    "Sorting, filtering, selection or large datasets — use Data Table.",
+    "Layout — never use tables for layout."
+  ],
+  "related": [
+    "data-table",
+    "description-list",
+    "line-items"
+  ],
+  "a11y": [
+    "Use TableCaption and header cells with scope.",
+    "Wrap wide tables in TableContainer so they scroll in a labelled region."
+  ]
+}

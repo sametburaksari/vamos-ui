@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, CurrencyInput, Field, IbanInput, NationalIdInput, PhoneInput } from "@vamos-cms/ui";
+import { Button, CurrencyInput, Field, IbanInput, NationalIdInput, PhoneInput } from "@vamos-ui/react";
 
 export default function FormattedForm() {
   const [submitted, setSubmitted] = React.useState<Record<string, string>>();

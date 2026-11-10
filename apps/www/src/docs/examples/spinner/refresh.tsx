@@ -1,5 +1,5 @@
 import { RefreshCw } from "lucide-react";
-import { Badge, Card, CardHeader, IconButton, Spinner } from "@vamos-cms/ui";
+import { Badge, Card, CardHeader, IconButton, Spinner } from "@vamos-ui/react";
 
 const invoices = [
   { id: "INV-2041", client: "Kadıköy Bistro", amount: "$1,280.00", status: "Paid" },

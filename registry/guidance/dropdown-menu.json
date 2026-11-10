@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Actions attached to a button: row ⋯ menu, New ▾, user menu, column visibility.",
+    "Checkbox and radio items for view options."
+  ],
+  "avoidWhen": [
+    "Choosing a form value — use Select or Combobox.",
+    "Site navigation — use Navigation Menu.",
+    "A single action — use a Button."
+  ],
+  "related": [
+    "context-menu",
+    "button-group",
+    "select",
+    "command"
+  ],
+  "a11y": [
+    "The trigger needs a label (Actions for Ada Lovelace); menu items follow the menu pattern.",
+    "Dangerous items use the danger tone and confirm."
+  ]
+}

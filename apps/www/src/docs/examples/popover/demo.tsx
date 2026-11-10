@@ -1,5 +1,5 @@
 import { Tag } from "lucide-react";
-import { Button, Field, Input, Popover, PopoverClose, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger } from "@vamos-cms/ui";
+import { Button, Field, Input, Popover, PopoverClose, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger } from "@vamos-ui/react";
 
 export default function PopoverDemo() {
   return (

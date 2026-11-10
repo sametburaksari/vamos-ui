@@ -11,7 +11,7 @@ const entry: DocEntry = {
     "Capture a handwritten or typed signature: delivery confirmations, consent forms, timesheet sign-off, customer approvals. Strokes are pressure-aware and smoothed, Undo and Clear are one click away, and Type is the keyboard path. Exports are SVG (and PNG on request) with dark ink in every theme, so they print correctly.",
   source: ["components/signature-pad.tsx", "components/tabs.tsx"],
   basedOn: "Pointer Events · perfect-freehand",
-  usage: `import { Field, SignaturePad } from "@vamos-cms/ui";
+  usage: `import { Field, SignaturePad } from "@vamos-ui/react";
 
 <Field label="Customer signature" required>
   <SignaturePad name="signature" exportPng onValueChange={(sig) => setSignature(sig)} />

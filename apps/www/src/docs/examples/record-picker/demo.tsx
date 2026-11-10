@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, RecordPicker, type RecordSource } from "@vamos-cms/ui";
+import { Field, RecordPicker, type RecordSource } from "@vamos-ui/react";
 
 interface Company {
   id: string;

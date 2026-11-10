@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Gantt, type GanttTask } from "@vamos-cms/ui/scheduler";
+import { Gantt, type GanttTask } from "@vamos-ui/react/scheduler";
 
 const tasks: GanttTask[] = [
   { id: "q1", title: "Hiring plan approved", start: "2026-01-15", end: "2026-01-15", type: "milestone", progress: 1 },

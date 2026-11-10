@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { TaskList, type TaskData } from "@vamos-cms/ui";
+import { TaskList, type TaskData } from "@vamos-ui/react";
 
 function update(items: TaskData[], id: string, fn: (t: TaskData) => TaskData): TaskData[] {
   return items.map((t) => (t.id === id ? fn(t) : { ...t, children: t.children ? update(t.children, id, fn) : undefined }));

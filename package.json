@@ -1,5 +1,5 @@
 {
-  "name": "vamos-cms",
+  "name": "vamos-ui-monorepo",
   "private": true,
   "packageManager": "pnpm@11.13.0",
   "engines": {

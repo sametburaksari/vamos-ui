@@ -14,7 +14,7 @@ const entry: DocEntry = {
     "A pannable, zoomable tidy-tree diagram of any hierarchy: org charts, partner networks, decision-maker maps, site structure, branch trees. Collapsible subtrees, search highlight, focus-to-node, drag-to-reparent with a Change parent dialog as the non-drag path, viewport culling for thousands of nodes, SVG and PNG export, and a list view over the same data.",
   source: ["components/hierarchy-chart.tsx", "components/tree-view.tsx"],
   basedOn: "d3-hierarchy (tidy tree layout) + own pan / zoom",
-  usage: `import { HierarchyChart, HierarchyPersonNode } from "@vamos-cms/ui";
+  usage: `import { HierarchyChart, HierarchyPersonNode } from "@vamos-ui/react";
 
 // Flat rows: { id, parentId } — parentId null for the root.
 <HierarchyChart

@@ -1,4 +1,4 @@
-import { DatePicker, Field } from "@vamos-cms/ui";
+import { DatePicker, Field } from "@vamos-ui/react";
 
 export default function DatePickerStates() {
   return (

@@ -1,4 +1,4 @@
-import { Breadcrumb } from "@vamos-cms/ui";
+import { Breadcrumb } from "@vamos-ui/react";
 
 const items = [
   { label: "Settings", href: "/settings" },

@@ -1,5 +1,5 @@
 import { MessageSquare } from "lucide-react";
-import { Badge, EntityCard, IconButton } from "@vamos-cms/ui";
+import { Badge, EntityCard, IconButton } from "@vamos-ui/react";
 
 export default function EntityCardPerson() {
   return (

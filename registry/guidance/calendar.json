@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A month, multi-month or year view with markers per day: holidays, absences, availability.",
+    "Inline date selection where the calendar is always visible (booking, leave planning)."
+  ],
+  "avoidWhen": [
+    "A date field inside a form — use Date Picker.",
+    "Timed events with durations — use Agenda / scheduler.",
+    "People × days allocation — use Resource calendar."
+  ],
+  "related": [
+    "date-picker",
+    "date-range-picker",
+    "scheduler",
+    "resource-calendar"
+  ],
+  "a11y": [
+    "Grid navigation with arrow keys, PageUp/PageDown for months; selected days are announced.",
+    "Day markers need text equivalents (aria-label: 3 people on leave)."
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Timesheet } from "@vamos-cms/ui/scheduler";
+import { Timesheet } from "@vamos-ui/react/scheduler";
 
 const rows = [
   { id: "mobile", label: "Mobile app", meta: "Northwind · billable" },

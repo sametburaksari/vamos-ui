@@ -1,4 +1,4 @@
-import { Stepper } from "@vamos-cms/ui";
+import { Stepper } from "@vamos-ui/react";
 
 const checkout = [{ title: "Cart" }, { title: "Shipping" }, { title: "Payment" }, { title: "Confirmation" }];
 

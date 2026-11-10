@@ -1,4 +1,4 @@
-import { AnnouncementBar } from "@vamos-cms/ui/blocks";
+import { AnnouncementBar } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Time-boxed: rendered only between `from` and `until` (exclusive). `now` pins the clock here;

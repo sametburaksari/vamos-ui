@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "An agency or studio website: statement hero, clients, case study, services, team, journal, contact."
+  ],
+  "avoidWhen": [
+    "Local businesses with bookings — use site-spa-01 or site-restaurant-01."
+  ],
+  "related": [
+    "hero",
+    "logo-strip",
+    "media-text",
+    "team",
+    "blog-list"
+  ],
+  "a11y": [
+    "One h1; heading order follows sections; EN/TR copy via localize."
+  ]
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Button, ConfirmProvider, SettingsLayout, SettingsRow, SettingsSection, toast, useConfirm } from "@vamos-cms/ui";
+import { Alert, Button, ConfirmProvider, SettingsLayout, SettingsRow, SettingsSection, toast, useConfirm } from "@vamos-ui/react";
 
 function DangerZone() {
   const confirm = useConfirm();

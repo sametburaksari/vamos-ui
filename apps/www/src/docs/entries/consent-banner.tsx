@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Cookie consent for GDPR / ePrivacy and Turkey's KVKK, wired to Google Consent Mode v2. Not a modal: a labelled region that never blocks the page or steals focus, with “Reject all” and “Accept all” at equal size and weight on the first layer. Preferences open in a Dialog with one Switch per category, none pre-checked. Choices live in a first-party vb_consent cookie (6 months, versioned); getConsent / onConsent let other code wait for a category, and ConsentGate keeps maps and videos behind a facade. Without JS nothing renders and no non-essential cookie is set. Default texts are neutral templates — review them with counsel.",
   source: ["blocks/site/consent-banner.tsx", "blocks/site/shared/consent-island.tsx", "blocks/site/shared/consent.ts", "blocks/site/shared/consent-gate.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
   basedOn: "Dialog + Switch",
-  usage: `import { ConsentBanner, consentDefaultsScript, onConsent } from "@vamos-cms/ui/blocks";
+  usage: `import { ConsentBanner, consentDefaultsScript, onConsent } from "@vamos-ui/react/blocks";
 
 // app/layout.tsx
 <head><script dangerouslySetInnerHTML={{ __html: consentDefaultsScript({ version: 2 }) }} /></head>

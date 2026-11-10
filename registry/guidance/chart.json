@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Custom charts that need the shared frame: token colours, legend, loading/empty/error states, text summary.",
+    "Configuring series via ChartConfig for any chart in the kit."
+  ],
+  "avoidWhen": [
+    "A single number — use Stat.",
+    "When a ready chart type (Area, Bar, Line, Donut) already fits."
+  ],
+  "related": [
+    "area-chart",
+    "bar-chart",
+    "line-chart",
+    "donut-chart",
+    "stat"
+  ],
+  "a11y": [
+    "Always provide a title; the generated summary is the text alternative.",
+    "Loading and error states are announced; legend toggles are buttons with pressed state."
+  ]
+}

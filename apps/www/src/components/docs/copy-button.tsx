@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Check, Copy } from "lucide-react";
-import { IconButton } from "@vamos-cms/ui";
+import { IconButton } from "@vamos-ui/react";
 
 export function CopyButton({ value, className }: { value: string; className?: string }) {
   const [done, setDone] = React.useState(false);

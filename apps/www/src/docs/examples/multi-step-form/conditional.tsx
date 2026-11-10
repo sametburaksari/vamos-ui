@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Field, Input, RadioGroup } from "@vamos-cms/ui";
-import { MultiStepForm, MultiStepFormFooter, MultiStepFormStep, MultiStepFormStepper, type StepDef } from "@vamos-cms/ui/business";
+import { Field, Input, RadioGroup } from "@vamos-ui/react";
+import { MultiStepForm, MultiStepFormFooter, MultiStepFormStep, MultiStepFormStepper, type StepDef } from "@vamos-ui/react/business";
 
 type Kind = "individual" | "company";
 

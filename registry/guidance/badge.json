@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Short status, count or tag labels: Draft, Overdue, 12, VIP.",
+    "Removable chips in custom filter or tag UIs."
+  ],
+  "avoidWhen": [
+    "Clickable actions — use Button.",
+    "Changing a record's status inline — use Status picker.",
+    "Long sentences — use Alert or text."
+  ],
+  "related": [
+    "status-picker",
+    "tag-input",
+    "filter-bar",
+    "avatar"
+  ],
+  "a11y": [
+    "Never convey meaning by colour alone; the text carries the status.",
+    "Count badges on icons need an accessible label (3 unread notifications)."
+  ]
+}

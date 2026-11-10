@@ -1,6 +1,6 @@
 "use client";
 
-import { RecordLayout, RecordPager } from "@vamos-cms/ui";
+import { RecordLayout, RecordPager } from "@vamos-ui/react";
 import { ContactAside, ContactHeader, ContactMain } from "./contact";
 
 // CRM contact: header with key facts and pager, tabs + activity in the main column, details aside.

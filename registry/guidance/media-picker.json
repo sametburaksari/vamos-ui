@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A dialog to pick one or more files for a field: featured image, gallery, logo, attachment.",
+    "Library, Upload and From URL tabs in one place."
+  ],
+  "avoidWhen": [
+    "Managing the whole library — use Media library.",
+    "A bare upload without a library — use File upload."
+  ],
+  "related": [
+    "media-library",
+    "image-field",
+    "file-upload"
+  ],
+  "a11y": [
+    "A labelled dialog; the confirm button states the count (Insert 3 images).",
+    "Tabs are keyboard navigable."
+  ]
+}

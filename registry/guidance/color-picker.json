@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Choosing a brand, label, campaign or chart series colour.",
+    "Offering a curated swatch palette with an optional custom value."
+  ],
+  "avoidWhen": [
+    "Theming the app itself — set data-accent or --accent-base instead of a free colour.",
+    "Status colours — use the semantic tones (success, warning, danger)."
+  ],
+  "related": [
+    "select",
+    "font-picker",
+    "settings-02"
+  ],
+  "a11y": [
+    "The saturation area and hue strip are keyboard sliders with value text.",
+    "Show the hex value as text and warn on poor contrast against the surface."
+  ]
+}

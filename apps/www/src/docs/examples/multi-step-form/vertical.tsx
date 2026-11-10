@@ -1,7 +1,7 @@
 "use client";
 
-import { Field, Input, Switch } from "@vamos-cms/ui";
-import { MultiStepForm, MultiStepFormFooter, MultiStepFormStep, MultiStepFormStepper } from "@vamos-cms/ui/business";
+import { Field, Input, Switch } from "@vamos-ui/react";
+import { MultiStepForm, MultiStepFormFooter, MultiStepFormStep, MultiStepFormStepper } from "@vamos-ui/react/business";
 
 export default function MultiStepFormVertical() {
   // Vertical: the stepper becomes a sticky side rail with descriptions; linear={false} lets people jump around.

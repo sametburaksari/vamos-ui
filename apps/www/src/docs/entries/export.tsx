@@ -13,7 +13,7 @@ const entry: DocEntry = {
     "Export a collection: scope (selected / current view / all), columns (searchable, reorderable, personal data maskable), format (CSV, XLSX, JSON) with locale CSV conventions, a reason for personal-data exports, and background jobs with a focusable download link. exportToBlob writes the file; XLSX loads write-excel-file only when chosen.",
   source: ["business/export.tsx", "business/export-core.ts", "data-table/csv.ts"],
   basedOn: "Dialog / Sheet · Radio Group · Checkbox · Sortable",
-  usage: `import { ExportDialog, exportToBlob } from "@vamos-cms/ui/business";
+  usage: `import { ExportDialog, exportToBlob } from "@vamos-ui/react/business";
 
 <ExportDialog
   resource="contacts"

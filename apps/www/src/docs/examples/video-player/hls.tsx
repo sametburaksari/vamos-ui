@@ -1,6 +1,6 @@
 "use client";
 
-import { VideoPlayer, type HlsConstructor } from "@vamos-cms/ui/media";
+import { VideoPlayer, type HlsConstructor } from "@vamos-ui/react/media";
 
 // In your app:  hls={() => import("hls.js")}  — the library loads only for HLS sources, only in
 // browsers without native HLS (Safari plays it directly). Here it comes from a CDN instead.

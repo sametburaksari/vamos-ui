@@ -1,4 +1,4 @@
-import { ActivityTimeline, Card, CardBody, CardHeader } from "@vamos-cms/ui";
+import { ActivityTimeline, Card, CardBody, CardHeader } from "@vamos-ui/react";
 
 export default function ActivityTimelineSteps() {
   return (

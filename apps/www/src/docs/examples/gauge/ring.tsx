@@ -1,4 +1,4 @@
-import { ProgressRing } from "@vamos-cms/ui/charts";
+import { ProgressRing } from "@vamos-ui/react/charts";
 
 export default function GaugeRing() {
   return (

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Discussion on a record: editorial notes, CRM deal notes, candidate feedback, tickets.",
+    "@mentions and #record references with one reply level."
+  ],
+  "avoidWhen": [
+    "System events — use Activity timeline.",
+    "Real-time chat between users."
+  ],
+  "related": [
+    "activity-timeline",
+    "user-picker",
+    "detail-01"
+  ],
+  "a11y": [
+    "The composer textarea has a label; mentions popover is keyboard navigable.",
+    "New comments are announced politely; edit/delete actions name the comment author."
+  ]
+}

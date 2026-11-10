@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Short labels for icon buttons, abbreviations and disabled actions.",
+    "Showing a keyboard shortcut."
+  ],
+  "avoidWhen": [
+    "Essential information — tooltips never show on touch.",
+    "Interactive content — use Popover.",
+    "Rich previews — use Hover Card."
+  ],
+  "related": [
+    "hover-card",
+    "popover",
+    "kbd",
+    "button"
+  ],
+  "a11y": [
+    "Opens on hover and focus; never the only label (icon buttons still need aria-label)."
+  ]
+}

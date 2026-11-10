@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ImageCropper, type CropRect } from "@vamos-cms/ui/media";
+import { ImageCropper, type CropRect } from "@vamos-ui/react/media";
 
 // The cropper never touches the file: it hands back a rect in source pixels.
 export default function ImageCropperDemo() {

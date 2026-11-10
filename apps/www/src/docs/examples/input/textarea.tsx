@@ -1,4 +1,4 @@
-import { Field, Textarea } from "@vamos-cms/ui";
+import { Field, Textarea } from "@vamos-ui/react";
 
 export default function TextareaDemo() {
   return (

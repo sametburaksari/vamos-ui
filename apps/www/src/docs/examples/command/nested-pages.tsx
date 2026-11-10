@@ -1,7 +1,7 @@
 "use client";
 
 import { Languages, Monitor, Moon, Palette, Sun } from "lucide-react";
-import { Button, CommandPalette, CommandProvider, toast, useCommandPalette, type CommandAction } from "@vamos-cms/ui";
+import { Button, CommandPalette, CommandProvider, toast, useCommandPalette, type CommandAction } from "@vamos-ui/react";
 
 const actions: CommandAction[] = [
   {

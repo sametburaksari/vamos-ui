@@ -1,4 +1,4 @@
-import { LineItems } from "@vamos-cms/ui/business";
+import { LineItems } from "@vamos-ui/react/business";
 
 export default function LineItemsReadOnly() {
   // Printable summary for an invoice preview or a PDF: no inputs, numbered rows.

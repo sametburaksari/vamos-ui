@@ -1,4 +1,4 @@
-import { Faq } from "@vamos-cms/ui/blocks";
+import { Faq } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Split: sticky title + "Can't find your question?" link, native <details name> accordion

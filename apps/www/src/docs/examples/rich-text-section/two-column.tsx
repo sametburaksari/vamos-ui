@@ -1,4 +1,4 @@
-import { RichTextSection } from "@vamos-cms/ui/blocks";
+import { RichTextSection } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Two columns: newspaper columns on wide containers only; a single column on phones.

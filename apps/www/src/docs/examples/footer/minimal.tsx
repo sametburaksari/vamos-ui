@@ -1,4 +1,4 @@
-import { Footer } from "@vamos-cms/ui/blocks";
+import { Footer } from "@vamos-ui/react/blocks";
 import { SiteFrame } from "../_site-1/frame";
 
 // Minimal: one row for landing pages — logo, a few links, socials, ©.

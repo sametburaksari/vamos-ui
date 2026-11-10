@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Field, PhoneInput } from "@vamos-cms/ui";
+import { Field, PhoneInput } from "@vamos-ui/react";
 
 export default function PhoneExample() {
   const [phone, setPhone] = React.useState<string | null>(null);

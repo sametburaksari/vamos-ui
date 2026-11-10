@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Moon, Sun, Layers, Square, Rows2, Rows3, ChevronDown } from "lucide-react";
-import { cn, IconButton, Button, Popover, PopoverTrigger, PopoverContent, PopoverHeader, Tabs, TabsList, TabsTrigger, TabsContent, Label } from "@vamos-cms/ui";
+import { cn, IconButton, Button, Popover, PopoverTrigger, PopoverContent, PopoverHeader, Tabs, TabsList, TabsTrigger, TabsContent, Label } from "@vamos-ui/react";
 import {
   FontPairingPicker,
   FontPicker,
@@ -16,7 +16,7 @@ import {
   serializeFontPairing,
   type FontPairing,
   type StoredFontPairing,
-} from "@vamos-cms/ui/fonts";
+} from "@vamos-ui/react/fonts";
 
 type State = {
   dark: boolean;

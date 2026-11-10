@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Switch } from "@vamos-cms/ui";
+import { Switch } from "@vamos-ui/react";
 
 // Pretend server: the second save fails so you can see the revert.
 let calls = 0;

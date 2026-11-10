@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-cms/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-ui/react";
 
 const activity = [
   { when: "Today, 09:42", what: "Call with Laura Callahan — renewal scope agreed" },

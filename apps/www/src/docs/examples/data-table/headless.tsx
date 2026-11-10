@@ -1,8 +1,8 @@
 "use client";
 
 import { Download } from "lucide-react";
-import { Badge, Button } from "@vamos-cms/ui";
-import { DataTable, DataTableContent, DataTableFooter, useDataTable, type DataTableColumn } from "@vamos-cms/ui/data-table";
+import { Badge, Button } from "@vamos-ui/react";
+import { DataTable, DataTableContent, DataTableFooter, useDataTable, type DataTableColumn } from "@vamos-ui/react/data-table";
 import { makeContact, stageOptions, type Contact } from "./_data";
 
 const contacts = Array.from({ length: 60 }, (_, i) => makeContact(i + 900));

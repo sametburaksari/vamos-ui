@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Search } from "lucide-react";
-import { HierarchyChart, HierarchyNodeCard, Input, Toggle } from "@vamos-cms/ui";
+import { HierarchyChart, HierarchyNodeCard, Input, Toggle } from "@vamos-ui/react";
 
 interface Page {
   id: string;

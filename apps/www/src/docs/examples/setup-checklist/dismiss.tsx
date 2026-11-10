@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SetupChecklist, SetupChecklistLauncher, type SetupItem } from "@vamos-cms/ui/business";
+import { SetupChecklist, SetupChecklistLauncher, type SetupItem } from "@vamos-ui/react/business";
 
 const items: SetupItem[] = [
   { id: "import", title: "Import contacts", status: "done" },

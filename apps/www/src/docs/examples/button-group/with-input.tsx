@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Button, ButtonGroup, ButtonGroupText, Input } from "@vamos-cms/ui";
+import { Button, ButtonGroup, ButtonGroupText, Input } from "@vamos-ui/react";
 
 export default function ButtonGroupWithInput() {
   return (

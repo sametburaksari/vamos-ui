@@ -1,5 +1,5 @@
 import { Download, Plus } from "lucide-react";
-import { Button, PageHeader } from "@vamos-cms/ui";
+import { Button, PageHeader } from "@vamos-ui/react";
 
 export default function PageHeaderDemo() {
   return (
