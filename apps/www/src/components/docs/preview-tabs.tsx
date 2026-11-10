@@ -51,7 +51,7 @@ export function PreviewTabs({ preview, html, raw, file, align = "center" }: { pr
         )}
       </div>
 
-      <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-${tab}`}>
+      <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-${tab}`} className="min-w-0">
         {tab === "preview" ? (
           <div
             className={cn(

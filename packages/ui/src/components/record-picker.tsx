@@ -1289,8 +1289,12 @@ function RecordPickerInner<R>(props: RecordPickerProps<R>, forwardedRef: React.F
               ref={triggerRef}
               type="button"
               {...triggerA11y}
+              // The visible value stays part of the accessible name (WCAG 2.5.3): an aria-label
+              // becomes a visually hidden prefix instead of replacing the text.
+              aria-label={undefined}
               className={cn("flex h-full min-w-0 flex-1 items-center gap-2 rounded-[inherit] ps-3 text-start outline-none disabled:cursor-not-allowed", showClear ? "pe-1" : "pe-3")}
             >
+              {props["aria-label"] && !control["aria-labelledby"] ? <span className="sr-only">{props["aria-label"]}, </span> : null}
               {current?.pending ? (
                 <>
                   <span className="sr-only">{t("resolving")}</span>

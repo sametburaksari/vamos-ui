@@ -363,7 +363,20 @@ function SelectInner<V extends string = string>(
             className={cn(showClear && (size === "sm" ? "pe-12" : "pe-14"), className, triggerClassName)}
             {...aria}
           >
-            <SelectValue placeholder={placeholder ?? t("placeholder")}>{selected && renderValue ? renderValue(selected) : undefined}</SelectValue>
+            <SelectValue placeholder={placeholder ?? t("placeholder")}>
+              {/* Render the selected label ourselves (items shorthand) so it is in the server HTML,
+                  instead of waiting for the hidden list to mount after hydration. */}
+              {selected ? (
+                renderValue ? (
+                  renderValue(selected)
+                ) : (
+                  <span className="flex min-w-0 items-center gap-2">
+                    {selected.icon ? <span aria-hidden className="flex items-center text-fg-muted">{selected.icon}</span> : null}
+                    <span className="truncate">{selected.label}</span>
+                  </span>
+                )
+              ) : undefined}
+            </SelectValue>
           </SelectTrigger>
           {showClear ? (
             <button

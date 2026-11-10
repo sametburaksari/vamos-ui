@@ -53,12 +53,13 @@ export interface AlertDialogContentProps extends React.ComponentPropsWithoutRef<
 
 /** Fixed 420px panel. Below 640px it anchors to the bottom and stacks the buttons, action on top. */
 export const AlertDialogContent = React.forwardRef<HTMLDivElement, AlertDialogContentProps>(function AlertDialogContent(
-  { tone = "default", dismissible = true, container, className, children, onEscapeKeyDown, onOpenAutoFocus, ...props },
+  { tone = "default", dismissible = true, container, className, children, onEscapeKeyDown, onOpenAutoFocus, onCloseAutoFocus, ...props },
   ref,
 ) {
   const scope = usePortalContainer();
   const depth = useLayerDepth() + 1;
   const actionRef = React.useRef<HTMLButtonElement | null>(null);
+  const returnTo = React.useRef<HTMLElement | null>(null);
   const [descriptions, setDescriptions] = React.useState(0);
   const parts = React.useMemo(
     () => ({
@@ -90,12 +91,24 @@ export const AlertDialogContent = React.forwardRef<HTMLDivElement, AlertDialogCo
             if (!dismissible) e.preventDefault();
           }}
           onOpenAutoFocus={(e) => {
+            // Fires before focus moves in: remember the opener. Radix returns focus only to an
+            // AlertDialog.Trigger, so a controlled confirm (useConfirm, ConfirmDialog) lost focus.
+            returnTo.current = document.activeElement as HTMLElement | null;
             onOpenAutoFocus?.(e);
             if (e.defaultPrevented) return;
             // Radix focuses Cancel. For a non-destructive confirm the action is the safe default.
             if (tone === "default" && actionRef.current) {
               e.preventDefault();
               actionRef.current.focus();
+            }
+          }}
+          onCloseAutoFocus={(e) => {
+            onCloseAutoFocus?.(e);
+            if (e.defaultPrevented) return;
+            const el = returnTo.current;
+            if (el && el.isConnected && el !== document.body) {
+              e.preventDefault();
+              el.focus();
             }
           }}
           {...props}
