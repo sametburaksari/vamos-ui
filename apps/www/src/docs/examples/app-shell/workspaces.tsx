@@ -6,7 +6,7 @@ import { crmApp, DemoPage, ShellFrame, siteApp, useMemoryRouter } from "./demo-k
 
 const workspaces = [
   { id: "northwind", name: "Northwind Traders" },
-  { id: "lena", name: "Lena Spa" },
+  { id: "lena", name: "Defne Spa" },
   { id: "tuzla", name: "Tuzla Play" },
 ];
 

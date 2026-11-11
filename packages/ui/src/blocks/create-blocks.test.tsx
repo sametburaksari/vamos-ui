@@ -13,7 +13,7 @@ describe("createBlocks", () => {
   it("binds adapters and labels into primitives and custom blocks", async () => {
     const blocks = createBlocks({ Link: RouterLink, labels: blockLabelsTr, locale: "tr-TR" });
     function Cta({ components, labels }: BlockBaseProps) {
-      return <blocks.BlockLink href="https://wa.me/902168072907" newTab components={components} labels={labels}>WhatsApp</blocks.BlockLink>;
+      return <blocks.BlockLink href="https://wa.me/902160000000" newTab components={components} labels={labels}>WhatsApp</blocks.BlockLink>;
     }
     const BoundCta = blocks.bind(Cta);
     const { container } = render(
@@ -39,8 +39,8 @@ describe("createBlocks", () => {
 
 describe("JsonLd", () => {
   it("escapes and merges into one @graph", () => {
-    const merged = mergeJsonLd([{ "@type": "Restaurant", "@id": "#org", name: "Kıyı" }, { "@id": "#org", telephone: "+902168072907" }, null]);
-    expect(merged).toEqual({ "@context": "https://schema.org", "@graph": [{ "@type": "Restaurant", "@id": "#org", name: "Kıyı", telephone: "+902168072907" }] });
+    const merged = mergeJsonLd([{ "@type": "Restaurant", "@id": "#org", name: "Kıyı" }, { "@id": "#org", telephone: "+902160000000" }, null]);
+    expect(merged).toEqual({ "@context": "https://schema.org", "@graph": [{ "@type": "Restaurant", "@id": "#org", name: "Kıyı", telephone: "+902160000000" }] });
     expect(serializeJsonLd({ x: "</script><script>" })).not.toContain("</script>");
     const { container } = render(<JsonLd data={{ "@type": "Restaurant", name: "Kıyı" }} />);
     expect(JSON.parse(container.querySelector("script")!.innerHTML)).toMatchObject({ "@context": "https://schema.org", name: "Kıyı" });

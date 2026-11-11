@@ -51,7 +51,7 @@ export interface NavbarProps extends Omit<BlockBaseProps, "variant" | "labels"> 
   items?: NavbarItem[];
   /** Up to two calls to action; one primary. */
   actions?: SiteCta[];
-  /** E.164 (`+902168072907`). Shown in national format, dialled as `tel:`. */
+  /** E.164 (`+902160000000`). Shown in national format, dialled as `tel:`. */
   phone?: string;
   locales?: NavbarLocale[];
   /** Stick to the top; the background fills in as the page scrolls (CSS scroll timeline). */
@@ -67,7 +67,7 @@ export interface NavbarProps extends Omit<BlockBaseProps, "variant" | "labels"> 
   labels?: SiteBlockLabels;
 }
 
-/** National format in the number's own locale, international elsewhere ("0216 807 29 07" for tr). */
+/** National format in the number's own locale, international elsewhere ("0216 000 00 00" for tr). */
 export function formatSitePhone(e164: string, locale = "en-US"): string {
   const p = parsePhoneNumberFromString(e164);
   if (!p) return e164;
@@ -190,7 +190,7 @@ export function Navbar({
         return (
           <li key={l.code} className="flex items-center gap-1">
             {i > 0 ? <span aria-hidden className="text-fg-subtle">/</span> : null}
-            <a href={l.href} hrefLang={l.code} lang={l.code} aria-current={current ? "true" : undefined} className={cn("rounded-[2px] px-0.5 transition-colors focus-ring", current ? "text-fg" : "text-fg-subtle hover:text-fg")}>
+            <a href={l.href} hrefLang={l.code} lang={l.code} aria-current={current ? "true" : undefined} className={cn("rounded-[2px] px-0.5 transition-colors focus-ring", current ? "text-fg" : "text-fg-muted hover:text-fg")}>
               {l.code}
             </a>
           </li>
@@ -335,7 +335,7 @@ export function Navbar({
               <dl className="grid gap-x-8 gap-y-4 border-t border-line pt-6 text-small sm:grid-cols-3">
                 {phone ? (
                   <div>
-                    <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-subtle">{t("phoneLabel")}</dt>
+                    <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{t("phoneLabel")}</dt>
                     <dd className="mt-1">
                       <a href={`tel:${phone}`} data-track="call" className="tabular text-fg underline decoration-line underline-offset-4 focus-ring">
                         {phoneText}
@@ -345,13 +345,13 @@ export function Navbar({
                 ) : null}
                 {panelMeta?.map((m, i) => (
                   <div key={i}>
-                    <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-subtle">{m.label}</dt>
+                    <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{m.label}</dt>
                     <dd className="mt-1 text-fg">{m.value}</dd>
                   </div>
                 ))}
                 {locales?.length ? (
                   <div>
-                    <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-subtle">{t("languages")}</dt>
+                    <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{t("languages")}</dt>
                     <dd className="mt-1 flex gap-3">
                       {locales.map((l) => (
                         <a key={l.code} href={l.href} hrefLang={l.code} lang={l.code} aria-current={(l.current ?? baseLanguage(l.code) === lang) ? "true" : undefined} className="font-mono uppercase text-fg-muted aria-[current]:text-fg focus-ring">

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../lib/cn";
 import { formatMessage } from "../../lib/message-format";
+import { formatTime } from "./shared/opening-hours";
 
 export type BookingField = "date" | "time" | "guests" | "service";
 export type BookingWeekday = "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat";
@@ -22,7 +23,7 @@ export interface CtaBookingStrings {
 
 export interface CtaBookingProps {
   provider: "whatsapp" | "url";
-  /** whatsapp: digits only (`902168072907`). url: the booking page that receives the fields as query params. */
+  /** whatsapp: digits only (`902160000000`). url: the booking page that receives the fields as query params. */
   target: string;
   fields: BookingField[];
   services?: string[];
@@ -96,7 +97,8 @@ export function CtaBooking({ provider, target, fields, services, times, maxGuest
     const [y, m, d] = date ? date.split("-").map(Number) : [];
     const dateText = date ? new Intl.DateTimeFormat(locale, { weekday: "short", day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(y!, m! - 1, d!))) : "—";
     const time = String(data.get("time") ?? "");
-    const timeText = time ? new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit", timeZone: "UTC" }).format(new Date(Date.UTC(2026, 0, 1, Number(time.slice(0, 2)), Number(time.slice(3, 5))))) : "—";
+    // Same clock as the time list and the opening hours (12- or 24-hour by locale).
+    const timeText = time ? formatTime(time, locale) : "—";
     const guests = Number(data.get("guests") ?? 2);
     const service = String(data.get("service") ?? "");
     const text = formatMessage(service ? strings.messageService : strings.message, { date: dateText, time: timeText, service, guests: formatMessage(strings.guestsCount, { count: guests }, locale) }, locale);
@@ -138,7 +140,7 @@ export function CtaBooking({ provider, target, fields, services, times, maxGuest
             <select id={`${uid}-time`} name="time" required defaultValue={timeList.includes("19:30") ? "19:30" : timeList[0]} className={cn(control, "tabular")}>
               {timeList.map((t) => (
                 <option key={t} value={t}>
-                  {t}
+                  {formatTime(t, locale)}
                 </option>
               ))}
             </select>

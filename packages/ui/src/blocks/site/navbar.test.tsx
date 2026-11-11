@@ -20,7 +20,7 @@ describe("Navbar", () => {
   it("bar: skip link first, labelled nav, current page, phone and one CTA", async () => {
     const { container } = render(
       <>
-        <Navbar wordmark="Kıyı" items={items} currentPath="/menu" phone="+902168072907" actions={[{ link: { href: "/book", label: "Book a table" }, style: "primary" }]} sticky />
+        <Navbar wordmark="Kıyı" items={items} currentPath="/menu" phone="+902160000000" actions={[{ link: { href: "/book", label: "Book a table" }, style: "primary" }]} sticky />
         <main id="content" />
       </>,
     );
@@ -28,7 +28,7 @@ describe("Navbar", () => {
     expect(links[0]).toHaveTextContent("Skip to content");
     const nav = screen.getByRole("navigation", { name: "Main" });
     expect(within(nav).getAllByRole("link", { name: "Menu" })[0]).toHaveAttribute("aria-current", "page");
-    expect(within(nav).getByRole("link", { name: /Call/ })).toHaveAttribute("href", "tel:+902168072907");
+    expect(within(nav).getByRole("link", { name: /Call/ })).toHaveAttribute("href", "tel:+902160000000");
     expect(within(nav).getByRole("link", { name: "Book a table" })).toHaveClass("vb-action-primary");
     expect(container.querySelector("header")).toHaveAttribute("data-sticky");
     expect(await axe(container)).toHaveNoViolations();
@@ -72,7 +72,7 @@ describe("Navbar", () => {
   it("locale switch and phone formats", () => {
     render(<Navbar wordmark="Kıyı" locale="tr" items={[]} locales={[{ code: "tr", href: "/" }, { code: "en", href: "/en" }]} />);
     expect(screen.getAllByRole("link", { name: "tr" })[0]).toHaveAttribute("aria-current", "true");
-    expect(formatSitePhone("+902168072907", "tr")).toBe("0216 807 29 07");
-    expect(formatSitePhone("+902168072907", "en-US")).toBe("+90 216 807 29 07");
+    expect(formatSitePhone("+902160000000", "tr")).toBe("0216 000 00 00");
+    expect(formatSitePhone("+902160000000", "en-US")).toBe("+90 216 000 00 00");
   });
 });

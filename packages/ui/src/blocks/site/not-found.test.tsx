@@ -19,14 +19,14 @@ describe("NotFound", () => {
 
   it("links: a GET search form, popular pages and a phone line", async () => {
     const user = userEvent.setup();
-    const { container } = render(<main><NotFound variant="links" links={links} search={{ action: "/search", param: "q" }} phone="+902168072907" /></main>);
+    const { container } = render(<main><NotFound variant="links" links={links} search={{ action: "/search", param: "q" }} phone="+902160000000" /></main>);
     const form = screen.getByRole("search");
     expect(form).toHaveAttribute("action", "/search");
     expect(form).toHaveAttribute("method", "get");
     await user.type(screen.getByRole("searchbox", { name: "Search the site" }), "rakı");
     expect(screen.getByRole("searchbox")).toHaveAttribute("name", "q");
     expect(screen.getByRole("navigation", { name: "Popular pages" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "+90 216 807 29 07" })).toHaveAttribute("href", "tel:+902168072907");
+    expect(screen.getByRole("link", { name: "+90 216 000 00 00" })).toHaveAttribute("href", "tel:+902160000000");
     expect(await axe(container)).toHaveNoViolations();
   });
 
@@ -36,9 +36,9 @@ describe("NotFound", () => {
     const { rerender } = render(<NotFound kind="500" reset={reset} />);
     await user.click(screen.getByRole("button", { name: "Try again" }));
     expect(reset).toHaveBeenCalledOnce();
-    rerender(<NotFound kind="maintenance" locale="tr-TR" labels={site2LabelsTr} phone="+902168072907" />);
+    rerender(<NotFound kind="maintenance" locale="tr-TR" labels={site2LabelsTr} phone="+902160000000" />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Birazdan döneceğiz.");
-    expect(screen.getByRole("link", { name: "+90 216 807 29 07" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "+90 216 000 00 00" })).toBeInTheDocument();
     expect(notFoundBlock.schema.safeParse(notFoundBlock.sample()).success).toBe(true);
   });
 });

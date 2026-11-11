@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import { LogoStrip } from "./logo-strip";
 
-const logos = ["Kıyı", "Hamam Moda", "Ledgerly", "Lena Clinic", "Studio Arda", "Pera Bakery"].map((name, i) => ({
+const logos = ["Kıyı", "Hamam Moda", "Ledgerly", "Defne Clinic", "Studio Arda", "Pera Bakery"].map((name, i) => ({
   name,
   image: { src: `/logos/${i}.svg`, width: 160, height: 40 },
   link: i === 0 ? { href: "/work/kiyi" } : undefined,

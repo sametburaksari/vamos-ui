@@ -15,7 +15,7 @@ describe("BlockLink", () => {
       <p>
         <BlockLink href="/reservations" components={{ Link: RouterLink }}>Book a table</BlockLink>{" "}
         <BlockLink href="https://maps.app.goo.gl/kiyi" components={{ Link: RouterLink }} newTab>Directions</BlockLink>{" "}
-        <BlockLink href="tel:+902168072907" components={{ Link: RouterLink }}>0216 807 29 07</BlockLink>
+        <BlockLink href="tel:+902160000000" components={{ Link: RouterLink }}>0216 000 00 00</BlockLink>
       </p>,
     );
     expect(screen.getByRole("link", { name: "Book a table" })).toHaveAttribute("data-router");
@@ -23,7 +23,7 @@ describe("BlockLink", () => {
     expect(ext).not.toHaveAttribute("data-router");
     expect(ext).toHaveAttribute("target", "_blank");
     expect(ext).toHaveAttribute("rel", "noopener noreferrer");
-    expect(screen.getByRole("link", { name: "0216 807 29 07" })).not.toHaveAttribute("data-router");
+    expect(screen.getByRole("link", { name: "0216 000 00 00" })).not.toHaveAttribute("data-router");
     expect(await axe(container)).toHaveNoViolations();
   });
 

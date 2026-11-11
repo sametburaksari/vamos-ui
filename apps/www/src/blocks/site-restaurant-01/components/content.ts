@@ -1,8 +1,11 @@
 // Sample content for a fictional meyhane on Bağdat Caddesi. Every human-readable field is a
 // `Localized` value ({ en, tr }) and is resolved with `pickLocale` before it reaches a block.
-import { blockLabelsTr, pickLocale, site1LabelsTr, site2LabelsTr, type Branch, type Localized, type MenuCategory, type OpeningHours } from "@vamos-ui/react/blocks";
+import { blockLabelsTr, formatTime, pickLocale, site1LabelsTr, site2LabelsTr, type Branch, type Localized, type MenuCategory, type OpeningHours } from "@vamos-ui/react/blocks";
 import type { SiteLocale } from "./locale-switch";
 import { streetMap } from "./street-map";
+
+/** English copy uses the same clock as the blocks (en-US: 12-hour), so one page never mixes "6 PM" and "18:00". */
+export const enTime = (hhmm: string) => formatTime(hhmm, "en-US");
 
 const unsplash = (id: string, w: number, h: number) => ({ src: `https://images.unsplash.com/photo-${id}?w=${w}&q=70&auto=format&fit=crop`, width: w, height: h });
 
@@ -62,7 +65,7 @@ export function branch(t: (v: Localized<string>) => string): Branch {
     hours: hoursFor(t),
     mapImage: photos.map,
     placeUrl: "https://maps.app.goo.gl/kiyimeyhane",
-    notes: t({ en: "Valet from 18:00. Caddebostan pier is a seven-minute walk.", tr: "18:00’den itibaren vale var. Caddebostan iskelesi yedi dakika yürüme mesafesinde." }),
+    notes: t({ en: `Valet from ${enTime("18:00")}. Caddebostan pier is a seven-minute walk.`, tr: "18:00’den itibaren vale var. Caddebostan iskelesi yedi dakika yürüme mesafesinde." }),
   };
 }
 
@@ -72,7 +75,7 @@ export function menu(t: (v: Localized<string>) => string): MenuCategory[] {
   return [
     {
       title: t({ en: "Cold meze", tr: "Soğuk mezeler" }),
-      note: t({ en: "Made every morning; served from 17:00.", tr: "Her sabah hazırlanır; 17:00’den itibaren servis edilir." }),
+      note: t({ en: `Made every morning; served from ${enTime("17:00")}.`, tr: "Her sabah hazırlanır; 17:00’den itibaren servis edilir." }),
       items: [
         { name: "Haydari", description: t({ en: "Strained yoghurt, dill, roasted garlic, Urfa pepper.", tr: "Süzme yoğurt, dereotu, közlenmiş sarımsak, isot." }), prices: [{ amount: TRY("180") }], tags: ["vegetarian"], allergens: ["milk"] },
         { name: "Fava", description: t({ en: "Broad-bean purée, red onion, Ayvalık olive oil.", tr: "Bakla püresi, kırmızı soğan, Ayvalık zeytinyağı." }), prices: [{ amount: TRY("170") }], tags: ["vegan"] },

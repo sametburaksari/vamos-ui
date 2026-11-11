@@ -6,7 +6,7 @@ export default function AddressReadOnly() {
       <AddressField
         readOnly
         legend="Registered office"
-        value={{ country: "TR", region1: "İstanbul", region2: "Maltepe", line1: "Cevizli Mah. Tugay Yolu Cad. No: 69", line2: "Piazza AVM Office Link, Kat 12", postalCode: "34846" }}
+        value={{ country: "TR", region1: "İstanbul", region2: "Kadıköy", line1: "Rasimpaşa Mah. Rıhtım Cad. No: 14", line2: "Liman Han, Kat 3", postalCode: "34716" }}
       />
       <AddressField readOnly legend="US billing entity" value={{ country: "US", region1: "CA", region2: "San Francisco", line1: "548 Market St, Suite 41820", postalCode: "94104" }} />
     </div>

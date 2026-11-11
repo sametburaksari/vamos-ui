@@ -138,14 +138,14 @@ export const kiyiPage: VamosDoc = {
           en: {
             type: "doc",
             content: [
-              { type: "paragraph", content: [{ text: "Piazza Office Link, Cevizli. Five minutes from " }, { text: "Cevizli metro", marks: [{ type: "bold" }] }, { text: ", valet from 6 pm." }] },
+              { type: "paragraph", content: [{ text: "Rıhtım Caddesi 14, Cevizli. Five minutes from " }, { text: "Cevizli metro", marks: [{ type: "bold" }] }, { text: ", valet from 6 pm." }] },
               { type: "paragraph", content: [{ text: "Groups of eight or more: " }, { text: "write to us", marks: [{ type: "link", href: "mailto:masa@kiyi.example" }] }, { text: " a day ahead." }] },
             ],
           },
           tr: {
             type: "doc",
             content: [
-              { type: "paragraph", content: [{ text: "Piazza Office Link, Cevizli. " }, { text: "Cevizli metrosuna", marks: [{ type: "bold" }] }, { text: " beş dakika, 18.00’den sonra vale." }] },
+              { type: "paragraph", content: [{ text: "Rıhtım Caddesi 14, Cevizli. " }, { text: "Cevizli metrosuna", marks: [{ type: "bold" }] }, { text: " beş dakika, 18.00’den sonra vale." }] },
               { type: "paragraph", content: [{ text: "Sekiz kişi ve üzeri gruplar bir gün önceden " }, { text: "bize yazsın", marks: [{ type: "link", href: "mailto:masa@kiyi.example" }] }, { text: "." }] },
             ],
           },

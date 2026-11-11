@@ -2,7 +2,7 @@ import { Avatar, Carousel, CarouselDots, CarouselSlide, CarouselViewport } from 
 
 const quotes = [
   { name: "Deniz Arslan", role: "Head of Ops, Atlas Lojistik", text: "We moved 40 dispatchers onto one panel in a week. Nobody asked for the old tool back.", photo: "photo-1500648767791-00dcc994a43e" },
-  { name: "Ayşe Korkmaz", role: "Founder, Lena Spa", text: "Bookings come in at night now, while we sleep. The calendar just fills up.", photo: "photo-1494790108377-be9c29b29330" },
+  { name: "Ayşe Korkmaz", role: "Founder, Defne Spa", text: "Bookings come in at night now, while we sleep. The calendar just fills up.", photo: "photo-1494790108377-be9c29b29330" },
   { name: "Mert Çelik", role: "CTO, Kargo Hızlı", text: "The block editor is the first CMS our marketing team didn't need a ticket for.", photo: "photo-1507003211169-0a1dd7228f2d" },
 ];
 

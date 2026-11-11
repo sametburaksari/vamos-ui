@@ -16,7 +16,7 @@ export default function RichTextSectionAsideHeading() {
           type: "doc",
           content: [
             { type: "heading", level: 2, content: [{ text: "Who we are" }] },
-            { type: "paragraph", content: [{ text: "Lena Clinic (Lena Sağlık Hizmetleri Ltd. Şti.), Bağdat Cd. 312, Suadiye, Istanbul, is the data controller for the personal data you share with us through this website." }] },
+            { type: "paragraph", content: [{ text: "Defne Clinic (Defne Sağlık Hizmetleri Ltd. Şti.), Bağdat Cd. 312, Suadiye, Istanbul, is the data controller for the personal data you share with us through this website." }] },
             { type: "heading", level: 2, content: [{ text: "What we collect" }] },
             {
               type: "list",

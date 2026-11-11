@@ -15,6 +15,7 @@ export const blockLabels = {
   invalidBlockHint: "{count, plural, one {# field was} other {# fields were}} replaced with defaults. Fix them in the editor.",
   newerBlock: "“{type}” was saved by a newer version (v{v})",
   emptyImage: "No image",
+  codeSample: "Code sample",
 };
 
 export type BlockLabels = typeof blockLabels;
@@ -32,6 +33,7 @@ export const blockLabelsTr: BlockLabels = {
   invalidBlockHint: "{count} alan varsayılan değerle değiştirildi. Düzenleyicide düzeltin.",
   newerBlock: "“{type}” daha yeni bir sürümle kaydedilmiş (v{v})",
   emptyImage: "Görsel yok",
+  codeSample: "Kod örneği",
 };
 
 /** Label lookup for server components: `labels` prop → English. */

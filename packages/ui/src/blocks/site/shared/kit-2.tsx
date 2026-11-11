@@ -63,7 +63,7 @@ export function SrOnly({ children }: { children: React.ReactNode }) {
 /** Digits of a phone number for `tel:` (keeps the leading +). */
 export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
 
-/** "+902168072907" → "+90 216 807 29 07" for TR numbers; other numbers are grouped loosely. */
+/** "+902160000000" → "+90 216 000 00 00" for TR numbers; other numbers are grouped loosely. */
 export function prettyPhone(e164: string): string {
   const d = e164.replace(/[^\d+]/g, "");
   const tr = /^\+90(\d{3})(\d{3})(\d{2})(\d{2})$/.exec(d);

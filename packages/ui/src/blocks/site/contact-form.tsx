@@ -17,7 +17,7 @@ export type ContactFormVariant = "split" | "stacked" | "minimal";
 
 export interface ContactInfo {
   address?: AddressValue | string;
-  /** E.164 ("+902168072907"); shown large and used as the fallback on server errors. */
+  /** E.164 ("+902160000000"); shown large and used as the fallback on server errors. */
   phone?: string;
   email?: string;
   /** Opening hours (summarised "Mon–Fri 09:00–18:00") or a free text line. */
@@ -71,7 +71,7 @@ const isRichDoc = (v: unknown): v is RichDoc => !!v && typeof v === "object" && 
  * ```tsx
  * <ContactForm variant="split" title="Tell us about the *project*" action={sendLead}
  *   fields={[{ name: "name", required: true }, { name: "email", required: true }, { name: "budget", options: ["< $5k", "$5–15k"] }, { name: "message", required: true }]}
- *   privacyLink={{ href: "/privacy" }} privacyCheckbox info={{ phone: "+902168072907", email: "hello@vamos.ist" }} />
+ *   privacyLink={{ href: "/privacy" }} privacyCheckbox info={{ phone: "+902160000000", email: "hello@vamos.ist" }} />
  * ```
  */
 export function ContactForm({

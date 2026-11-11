@@ -16,7 +16,7 @@ export default function CarouselControlled() {
   const [index, setIndex] = React.useState(0);
   return (
     <div className="grid w-full gap-3">
-      <Carousel label="Lena Spa rooms" index={index} onIndexChange={setIndex} controls="inside">
+      <Carousel label="Defne Spa rooms" index={index} onIndexChange={setIndex} controls="inside">
         <CarouselViewport className="rounded-ui-lg">
           {rooms.map((r) => (
             <CarouselSlide key={r.id}>

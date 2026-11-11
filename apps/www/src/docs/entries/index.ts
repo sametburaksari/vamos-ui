@@ -112,6 +112,7 @@ import docSetupChecklist from "./setup-checklist";
 import docSheet from "./sheet";
 import docSidebar from "./sidebar";
 import docSignaturePad from "./signature-pad";
+import docSiteShell from "./site-shell";
 import docSkeleton from "./skeleton";
 import docSlider from "./slider";
 import docSlugInput from "./slug-input";
@@ -256,6 +257,7 @@ export const entries: DocEntry[] = [
   docSheet,
   docSidebar,
   docSignaturePad,
+  docSiteShell,
   docSkeleton,
   docSlider,
   docSlugInput,

@@ -146,7 +146,7 @@ export function PricingPage({ locale }: { locale: SiteLocale }) {
               quote: t({ en: "We pay for two branches and nineteen people use it. Nobody has to share a login any more.", tr: "İki şube için ödüyoruz ve on dokuz kişi kullanıyor. Artık kimse şifre paylaşmak zorunda değil." }),
               author: "Ayşe Korkmaz",
               role: t({ en: "Clinic manager", tr: "Klinik müdürü" }),
-              company: "Lena Clinic",
+              company: "Defne Clinic",
               logo: customerLogos[2]!.image,
             },
           ]}

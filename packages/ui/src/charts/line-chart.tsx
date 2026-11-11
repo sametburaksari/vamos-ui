@@ -53,7 +53,7 @@ function LinePlot({ series: keys, curve, dots, reference, endLabels }: Pick<Line
         <ChartXAxis />
         <ChartYAxis keys={all.map((s) => s.key)} />
         <ChartTooltip indicator="line" />
-        {reference?.map((r, i) => <ChartReferenceLine key={i} y={r.y} label={r.label} color={r.color} />)}
+        {reference?.map((r, i) => <ChartReferenceLine key={i} y={r.y} label={r.label} color={r.color} labelPosition={r.labelPosition} />)}
         {all.map((s) => (
           <Line
             key={s.key}

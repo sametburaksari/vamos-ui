@@ -14,9 +14,9 @@ const entry: DocEntry = {
 
 // app/layout.tsx, after {children}
 <ContactDock
-  whatsapp="+902168072907"
+  whatsapp="+902160000000"
   message="Hi, I’d like to book a table."
-  phone="+902168072907"
+  phone="+902160000000"
   directionsHref="https://maps.app.goo.gl/…"
   bookingHref="/reservations"
 />`,

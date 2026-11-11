@@ -5,12 +5,12 @@ const vtt = (cues: [string, string, string][]) =>
   `data:text/vtt;charset=utf-8,${encodeURIComponent(`WEBVTT\n\n${cues.map(([a, b, t]) => `${a} --> ${b}\n${t}`).join("\n\n")}`)}`;
 
 const english = vtt([
-  ["00:00:01.000", "00:00:04.000", "Welcome to Lena Spa. This is your first-week guide."],
+  ["00:00:01.000", "00:00:04.000", "Welcome to Defne Spa. This is your first-week guide."],
   ["00:00:04.500", "00:00:08.000", "We'll start with the booking calendar and the front desk."],
   ["00:00:08.500", "00:00:12.000", "Then we'll walk through the treatment rooms."],
 ]);
 const turkish = vtt([
-  ["00:00:01.000", "00:00:04.000", "Lena Spa'ya hoş geldiniz. İlk hafta rehberiniz bu."],
+  ["00:00:01.000", "00:00:04.000", "Defne Spa'ya hoş geldiniz. İlk hafta rehberiniz bu."],
   ["00:00:04.500", "00:00:08.000", "Önce rezervasyon takvimi ve resepsiyonla başlıyoruz."],
   ["00:00:08.500", "00:00:12.000", "Sonra bakım odalarını birlikte geziyoruz."],
 ]);

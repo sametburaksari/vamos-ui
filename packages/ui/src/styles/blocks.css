@@ -50,8 +50,11 @@
   .vb-section[data-surface="accent"] {
     background-color: var(--accent);
     --fg: var(--accent-fg);
-    --fg-muted: color-mix(in oklch, var(--accent-fg) 72%, transparent);
-    --fg-subtle: color-mix(in oklch, var(--accent-fg) 56%, transparent);
+    /* Muted copy uses accent-fg at full strength: a generated accent only guarantees 4.5:1 for
+       accent-fg itself, so any mix (toward the fill or transparent) can fall below it — 72% gave
+       4.3:1 on a coral #FB7185 fill and 77% gave 4.2:1 on cobalt. Hierarchy comes from size. */
+    --fg-muted: var(--accent-fg);
+    --fg-subtle: var(--accent-fg);
     --line: color-mix(in oklch, var(--accent-fg) 16%, transparent);
     --accent-ink: var(--accent-fg);
     --display-em-color: var(--accent-fg);
@@ -173,6 +176,17 @@
   background-color: var(--accent-fg);
   color: var(--accent);
   box-shadow: none;
+}
+/* A secondary action on the accent fill stays an outline on the bare fill: the field tint
+   (accent-fg at 6%) moved a mid-tone accent such as #00875A below 4.5:1 for its own text. */
+.vb-section[data-surface="accent"] :is([data-slot="button"][data-variant="secondary"], .vb-action-secondary) {
+  background-color: transparent;
+  border-color: var(--accent-fg);
+  box-shadow: none;
+}
+.vb-section[data-surface="accent"] :is([data-slot="button"][data-variant="secondary"], .vb-action-secondary):hover {
+  background-color: var(--accent-fg);
+  color: var(--accent);
 }
 
 /* Scroll-driven entrance (D4): progressive, never above the fold, never with reduced motion. */
@@ -766,9 +780,23 @@
   .vb-dock-label { display: none; }
   .vb-dock:not([data-contained]) .vb-dock-fab {
     position: fixed;
-    inset-block-end: calc(var(--vb-dock-gap) + env(safe-area-inset-bottom, 0px));
+    /* --vb-dock-lift: height of a bar pinned to the bottom (set by the avoid island). */
+    inset-block-end: calc(var(--vb-dock-gap) + var(--vb-dock-lift, 0px) + env(safe-area-inset-bottom, 0px));
     inset-inline-end: var(--vb-dock-gap);
     z-index: calc(var(--z-toast, 60) - 1);
+    transition: opacity 180ms ease, inset-block-end 180ms ease, visibility 0s;
+  }
+  /* A CTA, booking form or hero card is under the fab: step aside until it has scrolled by. */
+  .vb-dock[data-avoiding]:not([data-contained]) .vb-dock-fab {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease, inset-block-end 180ms ease, visibility 0s 180ms;
+  }
+  /* Two bottom bars never stack: a pinned booking bar wins over the mobile action bar. */
+  .vb-dock[data-bar-avoiding]:not([data-contained]) .vb-dock-bar { visibility: hidden; }
+  @media (prefers-reduced-motion: reduce) {
+    .vb-dock:not([data-contained]) .vb-dock-fab { transition: none; }
   }
   .vb-dock[data-position="start"]:not([data-contained]) .vb-dock-fab { inset-inline-end: auto; inset-inline-start: var(--vb-dock-gap); }
   .vb-dock:not([data-contained]) .vb-dock-bar {
@@ -794,7 +822,7 @@
     @media (max-height: 26rem) { .vb-dock:not([data-contained]) .vb-dock-bar { display: none; } }
   }
   /* The consent bar sits at the very bottom: the fab moves above it. */
-  body:has(.vb-consent-bar:not([data-contained])) .vb-dock:not([data-contained]) .vb-dock-fab { inset-block-end: calc(8.5rem + env(safe-area-inset-bottom, 0px)); }
+  body:has(.vb-consent-bar:not([data-contained])) .vb-dock:not([data-contained]) .vb-dock-fab { inset-block-end: calc(8.5rem + var(--vb-dock-lift, 0px) + env(safe-area-inset-bottom, 0px)); }
   .vb-dock-note:has(> .vb-dock-offhours:empty) { display: none; }
 
   /* Footer wordmark: container-wide, clipped by the bottom edge */

@@ -14,7 +14,7 @@
     "cli"
   ],
   "bin": {
-    "vamos-ui": "./dist/index.js"
+    "vamos-ui": "dist/index.js"
   },
   "exports": {
     ".": "./dist/index.js",

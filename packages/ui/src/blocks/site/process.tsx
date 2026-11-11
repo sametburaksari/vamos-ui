@@ -10,6 +10,7 @@ export type StepsVariant = "vertical" | "horizontal" | "split";
 
 export interface StepsItem {
   title: React.ReactNode;
+  /** A string renders as a paragraph; any other node (a code panel, a list) renders in a plain `div`. */
   text?: React.ReactNode;
   /** "1–2 weeks", "45 min". */
   duration?: React.ReactNode;
@@ -50,12 +51,15 @@ export function Steps({ variant = "vertical", eyebrow, title, lead, steps, actio
       {s.title}
     </StepTag>
   );
-  const stepText = (s: StepsItem, i: number) =>
-    s.text ? (
-      <p className="max-w-[52ch] text-body text-fg-muted text-pretty" {...f(i, "text")}>
+  const stepText = (s: StepsItem, i: number) => {
+    if (!s.text) return null;
+    const Tag = typeof s.text === "string" || typeof s.text === "number" ? "p" : "div";
+    return (
+      <Tag className={cn("text-body text-fg-muted text-pretty", Tag === "p" ? "max-w-[52ch]" : "flex min-w-0 flex-col gap-3")} {...f(i, "text")}>
         {s.text}
-      </p>
-    ) : null;
+      </Tag>
+    );
+  };
   const duration = (s: StepsItem, i: number) =>
     s.duration ? (
       <span className="inline-flex w-fit items-center rounded-full border border-line px-2.5 py-0.5 font-mono text-[0.6875rem] tabular tracking-[0.04em] text-fg-muted" {...f(i, "duration")}>

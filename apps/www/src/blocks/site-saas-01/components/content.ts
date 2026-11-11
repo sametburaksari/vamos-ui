@@ -1,7 +1,11 @@
 // Sample content for "Relay", a fictional shared booking inbox for restaurants, spas and clinics.
 // Human-readable fields are `Localized` ({ en, tr }) and resolved with `pickLocale`.
 import { blockLabelsTr, pickLocale, site1LabelsTr, site2LabelsTr, type Localized, type LogoItem } from "@vamos-ui/react/blocks";
-import type { SiteLocale } from "./locale-switch";
+
+export type SiteLocale = "en" | "tr";
+
+/** Fictional numbers only. */
+export const PHONE = "+902160000000";
 
 const unsplash = (id: string, w: number, h: number) => ({ src: `https://images.unsplash.com/photo-${id}?w=${w}&q=70&auto=format&fit=crop`, width: w, height: h });
 
@@ -43,7 +47,7 @@ const FONTS = {
 const BRANDS: [string, keyof typeof FONTS][] = [
   ["Kıyı Meyhane", "serif"],
   ["HAMAM MODA", "condensed"],
-  ["Lena Clinic", "italic"],
+  ["Lindell Clinic", "italic"],
   ["PERA/BAKERY", "mono"],
   ["NOVA DENTAL", "condensed"],
   ["fırın&co", "sans"],

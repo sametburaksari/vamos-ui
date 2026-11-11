@@ -14,6 +14,25 @@ interface Release {
 /** Newest first. Append new releases at the top. */
 const releases: Release[] = [
   {
+    version: "0.3.0",
+    date: "2026-11-11",
+    unreleased: true,
+    changes: {
+      Added: [
+        "53 example websites built only from kit components and site blocks, each with a home page and one to five inner pages, English and Turkish, and its own accent, font, material and density. Open any of them at /view/<name> or add it with `npx vamos-ui add <name>`.",
+        "Most searched: online store, photography portfolio, editorial blog, mobile app, medical clinic, real estate agency, conference, online course, personal site and CV, law firm.",
+        "Software and tech: AI product, developer tool, changelog, status page, waitlist, help centre.",
+        "Community and culture: non-profit, podcast, musician, wedding.",
+        "Local and professional services: car service, veterinary clinic, preschool, driving school, removals, florist, photo studio, event venue, therapist, dietitian, physiotherapy, accounting firm.",
+        "Commerce, B2B and digital products: manufacturer, packaging wholesaler, construction company, careers site, template shop, coffee subscription box, makers' marketplace, writer's newsletter.",
+        "Institutions, education, sport and games: municipality services, university department, sports club, community forum, indie game.",
+        "Second design variants for store, portfolio, blog, mobile app, clinic, real estate, SaaS and agency.",
+        "SiteShell: one wrapper for a whole website — scoped brand accent (a preset or one colour, contrast-checked), material, density and font, EN / TR switch and inner pages switched with `?page=`.",
+        "End-to-end tests for every example site: a smoke pass over all of its pages at 1440 and 390 px plus one test of its signature interaction and the language switch.",
+      ],
+    },
+  },
+  {
     version: "0.2.0",
     date: "2026-11-10",
     unreleased: true,

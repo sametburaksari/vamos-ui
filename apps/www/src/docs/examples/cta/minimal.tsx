@@ -9,7 +9,7 @@ export default function CtaMinimal() {
         variant="minimal"
         title="Have a place people should *find*?"
         actions={[{ link: { href: "/contact", label: "Let’s talk about your project" }, style: "link" }]}
-        fineprint="We reply within one working day. Studio Arda, Office Link, Cevizli."
+        fineprint="We reply within one working day. Studio Arda, Rıhtım Caddesi 14, Cevizli."
       />
     </SiteFrame>
   );

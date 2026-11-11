@@ -1,8 +1,11 @@
 // Sample content for a fictional hammam and spa in Moda. Human-readable fields are `Localized`
 // ({ en, tr }) and resolved with `pickLocale` before they reach a block.
-import { blockLabelsTr, pickLocale, site1LabelsTr, site2LabelsTr, type Branch, type Localized, type MenuCategory, type OpeningHours } from "@vamos-ui/react/blocks";
+import { blockLabelsTr, formatTime, pickLocale, site1LabelsTr, site2LabelsTr, type Branch, type Localized, type MenuCategory, type OpeningHours } from "@vamos-ui/react/blocks";
 import type { SiteLocale } from "./locale-switch";
 import { streetMap } from "./street-map";
+
+/** English copy uses the same clock as the blocks (en-US: 12-hour), so one page never mixes "6 PM" and "18:00". */
+export const enTime = (hhmm: string) => formatTime(hhmm, "en-US");
 
 const unsplash = (id: string, w: number, h: number) => ({ src: `https://images.unsplash.com/photo-${id}?w=${w}&q=70&auto=format&fit=crop`, width: w, height: h });
 

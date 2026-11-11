@@ -81,6 +81,6 @@ describe("contact form contract", () => {
   });
 
   it("builds wa.me links from E.164 numbers", () => {
-    expect(waLink("+90 216 807 29 07", "Hi, a table for 4 at 20:00?")).toBe("https://wa.me/902168072907?text=Hi%2C%20a%20table%20for%204%20at%2020%3A00%3F");
+    expect(waLink("+90 216 000 00 00", "Hi, a table for 4 at 20:00?")).toBe("https://wa.me/902160000000?text=Hi%2C%20a%20table%20for%204%20at%2020%3A00%3F");
   });
 });

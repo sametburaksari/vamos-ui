@@ -170,14 +170,14 @@ export function ChartYAxis({ format, keys, stacked, tickFormatter, width: widthP
 }
 
 /** A labelled reference line (target, average). Colour is a token. */
-export function ChartReferenceLine({ color = "fg-subtle", label, ...props }: Omit<ReferenceLineProps, "label"> & { color?: ChartColor; label?: string }) {
+export function ChartReferenceLine({ color = "fg-subtle", label, labelPosition = "below", ...props }: Omit<ReferenceLineProps, "label"> & { color?: ChartColor; label?: string; labelPosition?: "above" | "below" }) {
   return (
     <ReferenceLine
       stroke={resolveChartColor(color)}
       strokeDasharray="4 4"
       strokeWidth={1}
       ifOverflow="extendDomain"
-      label={label ? { value: label, position: "insideTopRight", fill: resolveChartColor(color === "fg-subtle" ? "fg-muted" : color), fontSize: 11 } : undefined}
+      label={label ? { value: label, position: labelPosition === "above" ? "insideBottomRight" : "insideTopRight", fill: resolveChartColor(color === "fg-subtle" ? "fg-muted" : color), fontSize: 11 } : undefined}
       {...props}
     />
   );

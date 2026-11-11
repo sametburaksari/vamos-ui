@@ -28,7 +28,7 @@ const initial: Deal[] = [
   { id: "d-101", title: "Website relaunch", company: "Northwind Traders", stage: "qualified", value: "18500.00", owner: "Selin Kaya", closeDate: "2026-12-12" },
   { id: "d-102", title: "Loyalty app, phase 1", company: "Blue Harbor Coffee", stage: "qualified", value: "42000.00", owner: "Marco Silva", closeDate: "2027-01-20" },
   { id: "d-103", title: "POS rollout, 14 stores", company: "Urban Bakehouse", stage: "discovery", value: "63750.00", owner: "Selin Kaya", closeDate: "2026-12-30", hot: true },
-  { id: "d-104", title: "Booking engine", company: "Lena Spa & Wellness", stage: "discovery", value: "9800.00", owner: "Ada Okafor", closeDate: "2026-11-28" },
+  { id: "d-104", title: "Booking engine", company: "Defne Spa & Wellness", stage: "discovery", value: "9800.00", owner: "Ada Okafor", closeDate: "2026-11-28" },
   { id: "d-105", title: "Annual SEO retainer", company: "Kite Outdoor", stage: "proposal", value: "24000.00", owner: "Marco Silva", closeDate: "2026-12-05" },
   { id: "d-106", title: "Partner portal", company: "Fjord Logistics", stage: "proposal", value: "88000.00", owner: "Ada Okafor", closeDate: "2027-02-14", hot: true },
   { id: "d-107", title: "Menu QR + ordering", company: "Olive & Thyme", stage: "proposal", value: "6400.00", owner: "Selin Kaya", closeDate: "2026-11-21" },

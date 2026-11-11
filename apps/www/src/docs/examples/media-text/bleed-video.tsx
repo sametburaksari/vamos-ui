@@ -12,10 +12,10 @@ export default function MediaTextBleedVideo() {
         aspect="3:2"
         eyebrow="Case study · 2 min"
         title="A clinic site that answers the *phone*"
-        body="Lena Clinic took 70 calls a day asking for prices. We put the prices on the site — with VAT — and the calls dropped to twenty."
+        body="Defne Clinic took 70 calls a day asking for prices. We put the prices on the site — with VAT — and the calls dropped to twenty."
         cta={{ link: { href: "/work/lena-clinic", label: "Read the case study" }, style: "link" }}
         media={photos.team}
-        video={{ provider: "youtube", url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ", title: "Lena Clinic case study" }}
+        video={{ provider: "youtube", url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ", title: "Defne Clinic case study" }}
       />
     </SiteFrame>
   );

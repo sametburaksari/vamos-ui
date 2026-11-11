@@ -5,7 +5,7 @@ import { Button, CommandPalette, CommandProvider, useCommandPalette, type Comman
 
 const people = [
   { id: "c-1042", name: "Hannah Lindqvist", company: "Northwind Traders" },
-  { id: "c-1043", name: "Mert Aydın", company: "Lena Spa" },
+  { id: "c-1043", name: "Mert Aydın", company: "Defne Spa" },
   { id: "c-1044", name: "Ece Demir", company: "Tuzla Play" },
   { id: "c-1045", name: "Jonas Becker", company: "Acme GmbH" },
   { id: "c-1046", name: "Janelle Ortiz", company: "Brightline Studio" },

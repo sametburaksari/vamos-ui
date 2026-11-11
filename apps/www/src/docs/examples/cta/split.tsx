@@ -13,7 +13,7 @@ export default function CtaSplit() {
         title="Bring your *team* for lunch"
         lead="Weekday set lunch for six to twenty, in and out in fifty minutes. ₺1,350 per person, VAT included."
         actions={[{ link: { href: "/groups", label: "Plan a group lunch" }, style: "primary" }]}
-        contact={{ phone: "+902168072907" }}
+        contact={{ phone: "+902160000000" }}
         fineprint="Book by 11:00 for the same day."
         media={photos.mezeTable}
       />

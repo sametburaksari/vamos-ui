@@ -19,9 +19,9 @@ export default function NavbarMinimalOverlay() {
           { label: "Visit us", href: "/visit" },
         ]}
         actions={[{ link: { href: "/reservations", label: "Book a table" }, style: "primary" }]}
-        phone="+902168072907"
+        phone="+902160000000"
         panelMeta={[
-          { label: "Address", value: "Office Link, Cevizli, Maltepe" },
+          { label: "Address", value: "Rıhtım Caddesi 14, Cevizli, Maltepe" },
           { label: "Hours", value: "Tue–Sun, 18:00–00:30" },
         ]}
       />

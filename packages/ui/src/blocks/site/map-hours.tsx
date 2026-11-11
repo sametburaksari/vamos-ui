@@ -15,7 +15,9 @@ import { BrandIcon, BRAND_NAMES, type BrandName } from "./shared/brand-icons";
 
 export type MapHoursVariant = "map-split" | "info" | "branches";
 export type DirectionsProvider = "google" | "apple" | "yandex" | "waze";
-export type BusinessType = "LocalBusiness" | "Restaurant" | "DaySpa" | "BeautySalon" | "MedicalClinic" | "ProfessionalService";
+export type BusinessType = "LocalBusiness" | "Restaurant" | "DaySpa" | "BeautySalon" | "MedicalClinic" | "ProfessionalService" | "EventVenue";
+/** How the weekly hours show: every day (`week`), only days with hours or a note (`open-days`), or not at all (`none`). */
+export type HoursDisplay = "week" | "open-days" | "none";
 
 export interface Branch {
   name: string;
@@ -52,6 +54,11 @@ export interface MapHoursProps extends Omit<BlockBaseProps, "variant" | "labels"
   directions?: DirectionsProvider[];
   /** "Open now · closes at 22:00" island. Default true. */
   showOpenNow?: boolean;
+  /**
+   * Weekly hours: `week` (default) lists all seven days, `open-days` hides closed days (a venue
+   * open only on event weekends), `none` drops the hours table — JSON-LD still carries the hours.
+   */
+  hoursDisplay?: HoursDisplay;
   /** Fixed "now" (ISO) for previews and tests; marks today in the hours table. Default the render time. */
   now?: string;
   labels?: Site2BlockLabels;
@@ -117,7 +124,7 @@ export function localBusinessJsonLd(props: Pick<MapHoursProps, "branches" | "bus
  * client island computed in the business's time zone. Server component.
  *
  * ```tsx
- * <MapHours title="Find *us*" branches={[{ name: "Meyhane Cevizli", address, phone: "+902168072907", hours, mapImage }]} directions={["google", "apple", "yandex"]} />
+ * <MapHours title="Find *us*" branches={[{ name: "Meyhane Rasimpaşa", address, phone: "+902160000000", hours, mapImage }]} directions={["google", "apple", "yandex"]} />
  * ```
  */
 export function MapHours({
@@ -130,6 +137,7 @@ export function MapHours({
   mapProvider = "google",
   directions = ["google", "apple"],
   showOpenNow = true,
+  hoursDisplay = "week",
   now,
   id,
   anchor,
@@ -147,7 +155,7 @@ export function MapHours({
   let variant = variantProp;
   if (variant === "branches" && branches.length < 2) variant = "map-split";
   if (variant === "map-split" && (!first?.mapImage?.src || mapProvider === "none")) variant = "info";
-  const ctx: BranchCtx = { t, locale, components, labels, editMode, now, showOpenNow, directions, mapProvider, openNow: labelTemplates(labels, openNowLabelKeys) };
+  const ctx: BranchCtx = { t, locale, components, labels, editMode, now, showOpenNow, hoursDisplay, directions, mapProvider, openNow: labelTemplates(labels, openNowLabelKeys) };
   const header = title || eyebrow || lead ? <SectionHeader eyebrow={eyebrow} title={title} lead={lead} headingId={headingId} headingLevel={headingLevel} editMode={editMode} labels={labels} locale={locale} /> : null;
   if (!first) return null;
 
@@ -188,6 +196,7 @@ interface BranchCtx {
   editMode?: boolean;
   now?: string;
   showOpenNow: boolean;
+  hoursDisplay: HoursDisplay;
   directions: DirectionsProvider[];
   mapProvider: "google" | "osm" | "none";
   openNow: OpenNowLabels;
@@ -221,9 +230,14 @@ function MapFacade({ branch, ctx }: { branch: Branch; ctx: BranchCtx }) {
   );
 }
 
-/** Weekly hours as a table; today is bold with `aria-current="date"`, special days show their note. */
-export function HoursTable({ hours, caption, t, locale, now, className }: { hours: OpeningHours; caption: string; t: Site2Text; locale: string; now?: string; className?: string }) {
-  const rows = weekRows(hours, { locale, at: now ?? Date.now() });
+/**
+ * Weekly hours as a table; today is bold with `aria-current="date"`, special days show their note.
+ * `openDaysOnly` leaves out closed days that carry no note.
+ */
+export function HoursTable({ hours, caption, t, locale, now, openDaysOnly, className }: { hours: OpeningHours; caption: string; t: Site2Text; locale: string; now?: string; openDaysOnly?: boolean; className?: string }) {
+  const all = weekRows(hours, { locale, at: now ?? Date.now() });
+  const rows = openDaysOnly ? all.filter((r) => !r.closed || r.note) : all;
+  if (!rows.length) return null;
   return (
     <table className={cn("vb-hours w-full border-collapse text-small", className)}>
       <caption className="sr-only">{caption}</caption>
@@ -298,22 +312,27 @@ function BranchDetails({ branch, ctx, index }: { branch: Branch; ctx: BranchCtx;
           </a>
         ) : null}
       </div>
-      <div className="flex flex-col gap-3 border-t border-line pt-5">
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{ctx.t("openingHours")}</p>
-          {ctx.showOpenNow ? <OpenNow hours={branch.hours} labels={ctx.openNow} locale={ctx.locale} now={ctx.now} /> : null}
+      {ctx.hoursDisplay !== "none" || ctx.showOpenNow ? (
+        <div className="flex flex-col gap-3 border-t border-line pt-5">
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{ctx.t("openingHours")}</p>
+            {ctx.showOpenNow ? <OpenNow hours={branch.hours} labels={ctx.openNow} locale={ctx.locale} now={ctx.now} /> : null}
+          </div>
+          {ctx.hoursDisplay !== "none" ? (
+            <HoursTable hours={branch.hours} caption={ctx.t("openingHoursOf", { name: branch.name })} t={ctx.t} locale={ctx.locale} now={ctx.now} openDaysOnly={ctx.hoursDisplay === "open-days"} />
+          ) : null}
         </div>
-        <HoursTable hours={branch.hours} caption={ctx.t("openingHoursOf", { name: branch.name })} t={ctx.t} locale={ctx.locale} now={ctx.now} />
-      </div>
+      ) : null}
       <Directions branch={branch} ctx={ctx} />
     </div>
   );
 }
 
 function InfoColumns({ branch, ctx }: { branch: Branch; ctx: BranchCtx }) {
-  const summary = summarizeHours(branch.hours, ctx.locale);
+  const summary = summarizeHours(branch.hours, ctx.locale).filter((s) => ctx.hoursDisplay !== "open-days" || !s.closed);
+  const showHours = ctx.hoursDisplay !== "none" || ctx.showOpenNow;
   return (
-    <div className="grid gap-x-(--gutter) gap-y-10 border-t border-line pt-8 @2xl:grid-cols-3">
+    <div className={cn("grid gap-x-(--gutter) gap-y-10 border-t border-line pt-8", showHours ? "@2xl:grid-cols-3" : "@2xl:grid-cols-2")}>
       <div className="flex flex-col gap-3">
         <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{ctx.t("address")}</p>
         <AddressBlock branch={branch} ctx={ctx} large />
@@ -325,20 +344,24 @@ function InfoColumns({ branch, ctx }: { branch: Branch; ctx: BranchCtx }) {
           </a>
         ) : null}
       </div>
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{ctx.t("hours")}</p>
+      {showHours ? (
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{ctx.t("hours")}</p>
+          </div>
+          {ctx.hoursDisplay !== "none" ? (
+            <ul className="flex flex-col gap-1.5 text-lead">
+              {summary.map((s, i) => (
+                <li key={i} className="flex justify-between gap-6 tabular">
+                  <span className="text-fg-muted">{s.days}</span>
+                  <span className={s.closed ? "text-fg-subtle" : "text-fg"}>{s.closed ? ctx.t("closedDay") : s.text}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {ctx.showOpenNow ? <OpenNow hours={branch.hours} labels={ctx.openNow} locale={ctx.locale} now={ctx.now} className="mt-2" /> : null}
         </div>
-        <ul className="flex flex-col gap-1.5 text-lead">
-          {summary.map((s, i) => (
-            <li key={i} className="flex justify-between gap-6 tabular">
-              <span className="text-fg-muted">{s.days}</span>
-              <span className={s.closed ? "text-fg-subtle" : "text-fg"}>{s.closed ? ctx.t("closedDay") : s.text}</span>
-            </li>
-          ))}
-        </ul>
-        {ctx.showOpenNow ? <OpenNow hours={branch.hours} labels={ctx.openNow} locale={ctx.locale} now={ctx.now} className="mt-2" /> : null}
-      </div>
+      ) : null}
       <div className="flex flex-col gap-3">
         <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{ctx.t("contactDetails")}</p>
         {branch.phone ? (
@@ -392,7 +415,9 @@ function BranchPicker({ branches, ctx, name }: { branches: Branch[]; ctx: Branch
                 <Directions branch={b} ctx={ctx} />
               </div>
             </div>
-            <HoursTable hours={b.hours} caption={ctx.t("openingHoursOf", { name: b.name })} t={ctx.t} locale={ctx.locale} now={ctx.now} />
+            {ctx.hoursDisplay !== "none" ? (
+              <HoursTable hours={b.hours} caption={ctx.t("openingHoursOf", { name: b.name })} t={ctx.t} locale={ctx.locale} now={ctx.now} openDaysOnly={ctx.hoursDisplay === "open-days"} />
+            ) : null}
           </div>
         ))}
       </div>

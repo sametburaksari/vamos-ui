@@ -135,7 +135,7 @@ export function AgencySite({ locale }: { locale: SiteLocale }) {
           title={t({ en: "In their *words*", tr: "Kendi *sözleriyle*" })}
           items={[
             { quote: t({ en: "They spent a whole Saturday at the restaurant before drawing anything. The site reads like us.", tr: "Bir şey çizmeden önce bütün bir cumartesiyi restoranda geçirdiler. Site tam bizim gibi." }), author: "Deniz Arslan", role: t({ en: "Co-owner", tr: "Ortak" }), company: "Kıyı Meyhane", avatar: portraits.can },
-            { quote: t({ en: "Our ads finally report bookings instead of clicks. We cut the budget by a third and got more appointments.", tr: "Reklamlarımız sonunda tıklama değil randevu raporluyor. Bütçeyi üçte bir azalttık, daha fazla randevu aldık." }), author: "Ayşe Korkmaz", role: t({ en: "Clinic manager", tr: "Klinik müdürü" }), company: "Lena Clinic", avatar: portraits.ayse },
+            { quote: t({ en: "Our ads finally report bookings instead of clicks. We cut the budget by a third and got more appointments.", tr: "Reklamlarımız sonunda tıklama değil randevu raporluyor. Bütçeyi üçte bir azalttık, daha fazla randevu aldık." }), author: "Ayşe Korkmaz", role: t({ en: "Clinic manager", tr: "Klinik müdürü" }), company: "Defne Clinic", avatar: portraits.ayse },
             { quote: t({ en: "Six weeks, exactly as promised. The Turkish and English pages are equally good, which never happens.", tr: "Söz verildiği gibi tam altı hafta. Türkçe ve İngilizce sayfalar eşit derecede iyi; bu hiç olmaz." }), author: "Mert Kaya", role: t({ en: "Founder", tr: "Kurucu" }), company: "Hamam Moda" },
           ]}
         />

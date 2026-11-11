@@ -6,9 +6,9 @@ import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 
 const data: LinkPreviewData = {
   url: "https://lenaspa.com.tr/treatments/hammam-ritual",
-  title: "Traditional Hammam Ritual in Kadıköy — Lena Spa",
+  title: "Traditional Hammam Ritual in Kadıköy — Defne Spa",
   description: "A 75-minute hammam ritual with foam massage, clay mask and a herbal tea in our quiet lounge. Book online, pay at the spa.",
-  siteName: "Lena Spa",
+  siteName: "Defne Spa",
   publishedAt: "2026-11-08",
   image: { id: "og1", kind: "image", mime: "image/jpeg", filename: "hammam-og.jpg", size: 210_000, url: "https://cdn.example.com/hammam-og.jpg", width: 1200, height: 630, alt: "", createdAt: "2026-11-01T00:00:00Z" },
 };
@@ -18,7 +18,7 @@ describe("serp measurement", () => {
     expect(countGraphemes("Café 👩‍💻")).toBe(6);
   });
   it("keeps short titles and cuts long ones at a word with an ellipsis", () => {
-    expect(measureSerp("Lena Spa", "title").truncated).toBe(false);
+    expect(measureSerp("Defne Spa", "title").truncated).toBe(false);
     const long = measureSerp("Traditional hammam, massage and facial treatments in Kadıköy, Moda and Bostancı for couples and groups", "title");
     expect(long.truncated).toBe(true);
     expect(long.display.endsWith(" …")).toBe(true);
@@ -30,7 +30,7 @@ describe("SearchPreview", () => {
   it("renders the result as readable text with the keyword bolded and passes axe", async () => {
     renderWithProviders(<SearchPreview data={data} highlight="hammam ritual" />);
     const fig = screen.getByRole("figure", { name: "Search result preview" });
-    expect(fig).toHaveTextContent("Lena Spa");
+    expect(fig).toHaveTextContent("Defne Spa");
     expect(fig).toHaveTextContent("lenaspa.com.tr › treatments › hammam-ritual");
     expect(fig).toHaveTextContent("Nov 8, 2026 —");
     expect(fig.querySelector("b")).toHaveTextContent("hammam ritual");
@@ -50,7 +50,7 @@ describe("SocialCardPreview", () => {
     const fig = screen.getByRole("figure", { name: /link preview/ });
     // X large cards show only the domain; Slack shows the site name.
     if (platform !== "x") expect(fig).toHaveTextContent(data.title);
-    expect(fig.textContent?.toLowerCase()).toContain(platform === "slack" ? "lena spa" : "lenaspa.com.tr");
+    expect(fig.textContent?.toLowerCase()).toContain(platform === "slack" ? "defne spa" : "lenaspa.com.tr");
     await expectNoA11yViolations();
   });
 
@@ -65,9 +65,9 @@ describe("SocialCardPreview", () => {
 
 describe("LengthMeter", () => {
   it("states the length in words, not only colour", () => {
-    renderWithProviders(<LengthMeter value="Hammam Ritual — Lena Spa" field="title" label="SEO title" />);
+    renderWithProviders(<LengthMeter value="Hammam Ritual — Defne Spa" field="title" label="SEO title" />);
     const meter = screen.getByRole("meter", { name: "SEO title" });
-    expect(meter.getAttribute("aria-valuetext")).toMatch(/^24 of 60 characters, \d+ of 600 px: too short$/);
+    expect(meter.getAttribute("aria-valuetext")).toMatch(/^25 of 60 characters, \d+ of 600 px: too short$/);
   });
   it("flags long and empty values", () => {
     const { rerender } = renderWithProviders(<LengthMeter value={"x".repeat(80)} max={60} label="Title" />);

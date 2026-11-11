@@ -15,7 +15,7 @@ const policy: RichDoc = {
     },
     { type: "blockquote", cite: "Selin A., front desk", content: [{ type: "paragraph", content: [{ text: "Running late? Call us — we would rather shorten the massage than lose the slot." }] }] },
     { type: "hr" },
-    { type: "paragraph", content: [{ text: "Questions: " }, { text: "+90 216 807 29 07", marks: [{ type: "link", href: "tel:+902168072907" }] }] },
+    { type: "paragraph", content: [{ text: "Questions: " }, { text: "+90 216 000 00 00", marks: [{ type: "link", href: "tel:+902160000000" }] }] },
   ],
 };
 

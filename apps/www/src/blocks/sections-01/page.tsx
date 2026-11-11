@@ -141,7 +141,7 @@ export default function Sections01() {
             { link: { href: "/signup", label: "Try free for 14 days" }, style: "primary" },
             { link: { href: "/demo", label: "Book a demo" }, style: "secondary" },
           ]}
-          contact={{ phone: "+902168072907", whatsapp: "+902168072907" }}
+          contact={{ phone: "+902160000000", whatsapp: "+902160000000" }}
           fineprint="No card needed. Cancel any time."
         />
 

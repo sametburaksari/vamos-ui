@@ -39,7 +39,7 @@ const seed: AppNotification[] = [
   },
   {
     id: "n-1039",
-    title: "Deal “Lena Spa — annual retainer” moved to Negotiation",
+    title: "Deal “Defne Spa — annual retainer” moved to Negotiation",
     createdAt: minutesAgo(60 * 26),
     readAt: minutesAgo(60 * 25),
     tone: "info",

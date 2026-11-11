@@ -248,7 +248,7 @@ export function LeaveRequest() {
                     rows={4}
                     value={draft.handover}
                     onChange={(e) => set("handover", e.target.value)}
-                    placeholder="Harbor & Pine proposal goes out Monday — Kerem has the deck. Lena Spa ads report is scheduled."
+                    placeholder="Harbor & Pine proposal goes out Monday — Kerem has the deck. Defne Spa ads report is scheduled."
                   />
                 </Field>
                 {type?.documentAfter != null ? (

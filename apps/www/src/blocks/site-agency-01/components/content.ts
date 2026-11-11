@@ -53,7 +53,7 @@ const COND = "font-family='Arial Narrow, Arial, sans-serif' font-size='22' font-
 const ITAL = "font-family='Georgia, serif' font-size='26' font-style='italic'";
 
 const BRANDS: [string, string][] = [
-  ["Kıyı Meyhane", SERIF], ["HAMAM MODA", COND], ["ledgerly", SANS], ["Lena Clinic", ITAL], ["PERA/BAKERY", MONO],
+  ["Kıyı Meyhane", SERIF], ["HAMAM MODA", COND], ["ledgerly", SANS], ["Defne Clinic", ITAL], ["PERA/BAKERY", MONO],
   ["NOVA DENTAL", COND], ["fırın&co", SANS], ["Aster Hotels", ITAL], ["ODA·22", MONO], ["Studio Arda", SERIF],
 ];
 

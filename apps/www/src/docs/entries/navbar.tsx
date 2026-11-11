@@ -18,7 +18,7 @@ const entry: DocEntry = {
 <Navbar
   wordmark="Kıyı"
   items={[{ label: "Menu", href: "/menu" }, { label: "Private dining", href: "/private-dining", children: [...] }]}
-  phone="+902168072907"            // E.164; shown as 0216 807 29 07 for tr, tel: link
+  phone="+902160000000"            // E.164; shown as 0216 000 00 00 for tr, tel: link
   actions={[{ link: { href: "/reservations", label: "Book a table" }, style: "primary" }]}
   currentPath={pathname}            // aria-current="page"
   sticky
@@ -53,7 +53,7 @@ const entry: DocEntry = {
     },
     {
       name: "formatSitePhone(e164, locale)",
-      props: [{ name: "returns", type: "string", description: "“0216 807 29 07” for a TR number in tr, “+90 216 807 29 07” elsewhere." }],
+      props: [{ name: "returns", type: "string", description: "“0216 000 00 00” for a TR number in tr, “+90 216 000 00 00” elsewhere." }],
     },
   ],
   notes: ["The navbar lays out by its own width (container queries): links appear from 56rem, the phone from 72rem — so it behaves the same in a builder iframe and on a phone."],

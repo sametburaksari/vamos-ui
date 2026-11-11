@@ -50,7 +50,7 @@ export const initialDeals: Deal[] = [
   { id: "d-102", title: "Loyalty app, phase 1", company: "Blue Harbor Coffee", stage: "lead", value: "42000.00", owner: marco, closeDate: "2027-01-20" },
   { id: "d-103", title: "Booking widget", company: "Kaya Pilates", stage: "lead", value: "", owner: can, closeDate: "2027-01-08", nextStep: "Size the scope" },
   { id: "d-104", title: "POS rollout, 14 stores", company: "Urban Bakehouse", stage: "qualified", value: "63750.00", owner: selin, closeDate: "2026-12-30", priority: "hot", nextStep: "Site visit Mon" },
-  { id: "d-105", title: "Booking engine", company: "Lena Spa & Wellness", stage: "qualified", value: "9800.00", owner: ada, closeDate: "2026-11-28" },
+  { id: "d-105", title: "Booking engine", company: "Defne Spa & Wellness", stage: "qualified", value: "9800.00", owner: ada, closeDate: "2026-11-28" },
   { id: "d-106", title: "Patient portal", company: "Meridian Clinics", stage: "qualified", value: "54000.00", owner: marco, closeDate: "2027-02-02" },
   { id: "d-107", title: "Annual SEO retainer", company: "Kite Outdoor", stage: "proposal", value: "24000.00", owner: marco, closeDate: "2026-12-05", nextStep: "Proposal sent Nov 6" },
   { id: "d-108", title: "Partner portal", company: "Fjord Logistics", stage: "proposal", value: "88000.00", owner: ada, closeDate: "2027-02-14", priority: "hot" },

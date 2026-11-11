@@ -17,7 +17,7 @@ export default function ArticleMinimal() {
             type: "doc",
             content: [
               { type: "paragraph", content: [{ text: "The whole team takes the Eid holiday off this year. The kitchen closes after service on " }, { text: "Tuesday 31 March", marks: [{ type: "bold" }] }, { text: " and we’re back on Thursday 2 April from 12:00." }] },
-              { type: "paragraph", content: [{ text: "Deposits for bookings in those days are refunded automatically. Questions? " }, { text: "Message us on WhatsApp", marks: [{ type: "link", href: "https://wa.me/902168072907" }] }, { text: "." }] },
+              { type: "paragraph", content: [{ text: "Deposits for bookings in those days are refunded automatically. Questions? " }, { text: "Message us on WhatsApp", marks: [{ type: "link", href: "https://wa.me/902160000000" }] }, { text: "." }] },
             ],
           },
         }}

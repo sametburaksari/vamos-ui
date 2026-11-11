@@ -1,6 +1,6 @@
 import { Marquee } from "@vamos-ui/react";
 
-const customers = ["Atlas Lojistik", "Lena Spa", "Kalamış Bistro", "Kargo Hızlı", "Moda Sahne", "Pera Dental", "Bosphorus Yacht Co.", "Nişantaşı Optik"];
+const customers = ["Atlas Lojistik", "Defne Spa", "Kalamış Bistro", "Kargo Hızlı", "Moda Sahne", "Pera Dental", "Bosphorus Yacht Co.", "Nişantaşı Optik"];
 
 export default function CarouselMarquee() {
   return (

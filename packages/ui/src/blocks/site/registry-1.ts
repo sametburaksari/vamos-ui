@@ -145,7 +145,7 @@ export const navbarBlock = defineBlock({
         { label: "Wine", href: "/wine" },
         { label: "Visit", href: "/visit" },
       ],
-      phone: "+902168072907",
+      phone: "+902160000000",
       actions: [book],
       sticky: true,
     },
@@ -189,7 +189,7 @@ export const navbarBlock = defineBlock({
         ],
         actions: [{ link: { href: "/contact", label: "Start a project" }, style: "primary" }],
         panelMeta: [
-          { label: "Studio", value: "Office Link, Cevizli, Istanbul" },
+          { label: "Studio", value: "Rıhtım Caddesi 14, Cevizli, Istanbul" },
           { label: "Hours", value: "Mon–Fri, 9:30–18:30" },
         ],
       };
@@ -201,7 +201,7 @@ export const navbarBlock = defineBlock({
         { label: "Wine", href: "/wine" },
         { label: "Visit", href: "/visit" },
       ],
-      phone: "+902168072907",
+      phone: "+902160000000",
       actions: [book],
       sticky: true,
     };
@@ -430,7 +430,7 @@ export const logoStripBlock = defineBlock({
   preview: {
     props: {
       caption: "Running the sites of 120+ businesses since 2014",
-      logos: ["Kıyı", "Hamam Moda", "Ledgerly", "Lena Clinic"].map((name) => ({
+      logos: ["Kıyı", "Hamam Moda", "Ledgerly", "Defne Clinic"].map((name) => ({
         name,
         image: { src: `https://ui.vamos.ist/logos/${name.toLowerCase().replace(/[^a-z]+/g, "-")}.svg`, width: 160, height: 40, alt: name },
       })),
@@ -711,7 +711,7 @@ export const ctaBlock = defineBlock({
       title: "Book the *long table*",
       lead: "Up to fourteen guests, a set menu of nine plates and the wine pairing Ece picks on the day.",
       actions: [book, { link: { href: "/private-dining", label: "Private dining" }, style: "secondary" }],
-      contact: { phone: "+902168072907", whatsapp: "+905321234567" },
+      contact: { phone: "+902160000000", whatsapp: "+905321234567" },
     },
   },
   examples: (variant): z.input<typeof ctaSchema> => {
@@ -738,7 +738,7 @@ export const ctaBlock = defineBlock({
           title: "Book the *long table*",
           lead: "Up to fourteen guests, a set menu of nine plates and the wine pairing Ece picks on the day.",
           actions: [book, { link: { href: "/private-dining", label: "Private dining" }, style: "secondary" }],
-          contact: { phone: "+902168072907", whatsapp: "+905321234567" },
+          contact: { phone: "+902160000000", whatsapp: "+905321234567" },
         };
     }
   },

@@ -34,7 +34,7 @@ export default function SidebarSurface() {
       <div className="h-[460px] overflow-hidden rounded-ui-lg border border-line">
         <Sidebar variant="surface" collapsible={false}>
           <SidebarHeader>
-            <AppSwitcher apps={[{ id: "portal", name: "Lena Spa", description: "Client portal", href: "/portal", icon: <span className="text-[13px] font-semibold">LS</span> }]} />
+            <AppSwitcher apps={[{ id: "portal", name: "Defne Spa", description: "Client portal", href: "/portal", icon: <span className="text-[13px] font-semibold">LS</span> }]} />
           </SidebarHeader>
           <SidebarContent aria-label="Portal">
             <SidebarNav items={portal} />

@@ -13,7 +13,7 @@ const props: FooterProps = {
     { title: "Products", links: [{ href: "/vtag", label: "vTag" }, { href: "/vrest", label: "vRest" }] },
     { title: "Help", links: [{ href: "/contact", label: "Contact" }, { href: "/faq", label: "FAQ" }] },
   ],
-  contact: { phone: "+902168072907", email: "hello@vamos.ist", address: { line: "Piazza AVM, Office Link", district: "Cevizli", city: "Maltepe", country: "TR" } },
+  contact: { phone: "+902160000000", email: "hello@vamos.ist", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", country: "TR" } },
   social: [{ network: "instagram", href: "https://instagram.com/vamos.ist" }, { network: "linkedin", href: "https://linkedin.com/company/vamos-ist" }],
   legalLinks: [{ href: "/privacy", label: "Privacy" }, { href: "/kvkk", label: "KVKK notice" }],
   company: { legalName: "Vamos Dijital Ajans Ltd. Şti.", registry: [{ label: "Tax office", value: "Kozyatağı" }, { label: "Tax no.", value: "923 145 6780" }, { label: "MERSİS", value: "0923 1456 7800 0015" }] },

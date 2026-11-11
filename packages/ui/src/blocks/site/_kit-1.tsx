@@ -166,7 +166,7 @@ export function CtaList({ actions, components, labels, locale, size = "lg", forc
   if (!actions?.length) return null;
   let primarySeen = false;
   return (
-    <div className={cn("flex flex-wrap items-center gap-x-6 gap-y-3", className)}>
+    <div data-dock-avoid="items" className={cn("flex flex-wrap items-center gap-x-6 gap-y-3", className)}>
       {actions.slice(0, max).map((a, i) => {
         let style: CtaStyle = forceStyle ?? a.style ?? "secondary";
         if (style === "primary") {

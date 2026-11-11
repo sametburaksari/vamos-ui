@@ -5,8 +5,8 @@ import { Testimonials, type TestimonialItem } from "./testimonials";
 import { testimonialsBlock } from "./registry-2";
 
 const items: TestimonialItem[] = [
-  { quote: "Table requests through the site doubled before the summer season started.", author: "Deniz Arslan", role: "Owner", company: "Meyhane Cevizli", rating: 5, source: "google", date: "2026-09-14" },
-  { quote: "The hammam booking finally works on phones. Guests stopped calling to ask.", author: "Burcu Erdoğan", role: "Manager", company: "Lena Spa" },
+  { quote: "Table requests through the site doubled before the summer season started.", author: "Deniz Arslan", role: "Owner", company: "Meyhane Rasimpaşa", rating: 5, source: "google", date: "2026-09-14" },
+  { quote: "The hammam booking finally works on phones. Guests stopped calling to ask.", author: "Melis Aydın", role: "Manager", company: "Defne Spa" },
   { quote: "Clear prices, a calm site, and we can edit the menu ourselves.", author: "Kerem Yıldız", rating: 4, date: "2026-10-02" },
 ];
 
@@ -26,6 +26,11 @@ describe("Testimonials", () => {
     expect(screen.getByRole("img", { name: "5 out of 5" })).toBeInTheDocument();
     expect(screen.getByText("Google")).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("reviews: a first-party summary shows without a platform name", () => {
+    render(<Testimonials variant="reviews" title="From the order notes" items={items} summary={{ rating: 4.9, count: 312, source: "direct" }} />);
+    expect(screen.getByText(/Rated 4\.9 out of 5 — 312 reviews/)).toBeInTheDocument();
   });
 
   it("reviews: summary with source and count", async () => {

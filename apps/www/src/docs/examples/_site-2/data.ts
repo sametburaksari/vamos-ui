@@ -70,7 +70,7 @@ export const clinicHours: OpeningHours = {
 export const meyhane: Branch = {
   name: "Kıyı Meyhane",
   address: { line: "Bağdat Caddesi 412", district: "Caddebostan", city: "Kadıköy", region: "İstanbul", postalCode: "34728", country: "TR", geo: { lat: 40.9656, lng: 29.0647 } },
-  phone: "+902168072907",
+  phone: "+902160000000",
   email: "masa@kiyimeyhane.com",
   hours: meyhaneHours,
   mapImage: more.map,
@@ -78,9 +78,9 @@ export const meyhane: Branch = {
 };
 
 export const clinicBranches: Branch[] = [
-  { name: "Lena Clinic Nişantaşı", address: { line: "Abdi İpekçi Caddesi 21, Kat 3", district: "Nişantaşı", city: "Şişli", region: "İstanbul", postalCode: "34367", country: "TR", geo: { lat: 41.0523, lng: 28.9946 } }, phone: "+902122304455", hours: clinicHours, mapImage: more.map, notes: "Entrance next to the pharmacy; lift to the third floor." },
-  { name: "Lena Clinic Moda", address: { line: "Moda Caddesi 88", district: "Moda", city: "Kadıköy", region: "İstanbul", postalCode: "34710", country: "TR", geo: { lat: 40.9842, lng: 29.0264 } }, phone: "+902163380011", hours: clinicHours, mapImage: more.map },
-  { name: "Lena Clinic Ataşehir", address: { line: "Barbaros Mahallesi, Ardıç Sokak 5", district: "Ataşehir", city: "Ataşehir", region: "İstanbul", postalCode: "34746", country: "TR", geo: { lat: 40.9923, lng: 29.1244 } }, phone: "+902165557788", hours: { ...clinicHours, weekly: { ...clinicHours.weekly, sat: [] } }, mapImage: more.map, notes: "Free parking under the building, level −1." },
+  { name: "Defne Clinic Nişantaşı", address: { line: "Abdi İpekçi Caddesi 21, Kat 3", district: "Nişantaşı", city: "Şişli", region: "İstanbul", postalCode: "34367", country: "TR", geo: { lat: 41.0523, lng: 28.9946 } }, phone: "+902122304455", hours: clinicHours, mapImage: more.map, notes: "Entrance next to the pharmacy; lift to the third floor." },
+  { name: "Defne Clinic Moda", address: { line: "Moda Caddesi 88", district: "Moda", city: "Kadıköy", region: "İstanbul", postalCode: "34710", country: "TR", geo: { lat: 40.9842, lng: 29.0264 } }, phone: "+902163380011", hours: clinicHours, mapImage: more.map },
+  { name: "Defne Clinic Ataşehir", address: { line: "Barbaros Mahallesi, Ardıç Sokak 5", district: "Ataşehir", city: "Ataşehir", region: "İstanbul", postalCode: "34746", country: "TR", geo: { lat: 40.9923, lng: 29.1244 } }, phone: "+902165557788", hours: { ...clinicHours, weekly: { ...clinicHours.weekly, sat: [] } }, mapImage: more.map, notes: "Free parking under the building, level −1." },
 ];
 
 export const posts: PostSummary[] = [

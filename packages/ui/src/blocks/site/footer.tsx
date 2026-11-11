@@ -83,7 +83,7 @@ export function Footer({
   const copyright = t("copyright", { year: y, name: company?.legalName ?? brand.name });
 
   const legalLine = (
-    <div className="flex flex-col gap-3 text-small text-fg-subtle @4xl:flex-row @4xl:items-center @4xl:justify-between @4xl:gap-8">
+    <div className="flex flex-col gap-3 text-small text-fg-muted @4xl:flex-row @4xl:items-center @4xl:justify-between @4xl:gap-8">
       <p>{copyright}</p>
       <nav aria-label={t("legal")}>
         <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -101,7 +101,7 @@ export function Footer({
           ) : null}
           {credit ? (
             <li>
-              <BlockLink href={credit.href} newTab={credit.newTab} components={components} labels={labels} locale={locale} className="rounded-[2px] text-fg-subtle underline-offset-[0.25em] hover:text-fg hover:underline focus-ring">
+              <BlockLink href={credit.href} newTab={credit.newTab} components={components} labels={labels} locale={locale} className="rounded-[2px] text-fg-muted underline-offset-[0.25em] hover:text-fg hover:underline focus-ring">
                 {t("madeBy", { name: typeof credit.label === "string" ? credit.label : "" })}
               </BlockLink>
             </li>
@@ -111,11 +111,12 @@ export function Footer({
     </div>
   );
 
-  const companyLine = company ? (
+  // The legal name already sits in the © line; the company row only earns its place with registry data.
+  const companyLine = company?.registry?.length ? (
     <div className="flex flex-col gap-1.5 @4xl:flex-row @4xl:items-baseline @4xl:gap-6" {...fieldAttr(editMode, "company")}>
       <p className="text-small text-fg-muted">{company.legalName}</p>
       {company.registry?.length ? (
-        <dl className="flex flex-wrap gap-x-6 gap-y-1 font-mono text-eyebrow uppercase tracking-[0.06em] text-fg-subtle">
+        <dl className="flex flex-wrap gap-x-6 gap-y-1 font-mono text-eyebrow uppercase tracking-[0.06em] text-fg-muted">
           {company.registry.map((r, i) => (
             <div key={i} className="flex gap-2">
               <dt>{r.label}</dt>
@@ -145,7 +146,7 @@ export function Footer({
           ) : null}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <SocialList social={social} ctx={ctx} />
-            <p className="text-small text-fg-subtle">{copyright}</p>
+            <p className="text-small text-fg-muted">{copyright}</p>
           </div>
         </Container>
       </Section>
@@ -225,7 +226,14 @@ export function Footer({
             {legalLine}
           </div>
         </Container>
-        <p aria-hidden className="vb-wordmark select-none whitespace-nowrap px-(--gutter) font-display text-display-2xl leading-[0.78] text-fg">
+        <p
+          aria-hidden
+          className="vb-wordmark select-none whitespace-nowrap px-(--gutter) font-display text-display-2xl leading-[0.78] text-fg"
+          // Fill the width: a short name at the fixed display size reads as an accidental crop. The
+          // size never goes above what fits, so a long name is not cut at the side; wide display
+          // faces (Syne 800 and the like) set `--vb-wordmark-em` (average glyph width, default 0.58em).
+          style={typeof brand.name === "string" ? { fontSize: `min(calc((100cqi - 2 * var(--gutter, 1.5rem)) / (${Math.max(4, [...brand.name].length)} * var(--vb-wordmark-em, 0.58))), 22rem)` } : undefined}
+        >
           {brand.name}
         </p>
       </Section>

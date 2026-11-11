@@ -131,18 +131,21 @@ interface QuoteCtx {
 }
 
 /** Monochrome stars with a text alternative ("4.8 out of 5"). */
-export function RatingStars({ rating, label, className }: { rating: number; label: string; className?: string }) {
+const RATING_STAR_SIZE = { sm: "size-3", md: "size-3.5", lg: "size-5" } as const;
+
+export function RatingStars({ rating, label, size = "md", className }: { rating: number; label: string; size?: keyof typeof RATING_STAR_SIZE; className?: string }) {
   const r = Math.max(0, Math.min(5, rating));
+  const s = RATING_STAR_SIZE[size];
   return (
     <span role="img" aria-label={label} className={cn("inline-flex items-center gap-0.5 text-fg", className)}>
       {[0, 1, 2, 3, 4].map((i) => {
         const fill = Math.max(0, Math.min(1, r - i));
         return (
-          <span key={i} aria-hidden className="relative inline-flex size-3.5">
-            <Star strokeWidth={1.5} className="absolute inset-0 size-3.5 text-fg-subtle" />
+          <span key={i} aria-hidden className={cn("relative inline-flex", s)}>
+            <Star strokeWidth={1.5} className={cn("absolute inset-0 text-fg-subtle", s)} />
             {fill > 0 ? (
               <span className="absolute inset-y-0 start-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
-                <Star strokeWidth={1.5} className="size-3.5 fill-current" />
+                <Star strokeWidth={1.5} className={cn("fill-current", s)} />
               </span>
             ) : null}
           </span>
@@ -245,14 +248,17 @@ function ReviewsLayout({ header, items, summary, ctx }: { header: React.ReactNod
     <div className="grid gap-x-(--gutter) gap-y-12 @4xl:grid-cols-12">
       <div className="flex flex-col gap-8 @4xl:sticky @4xl:top-[calc(var(--topbar-h,0px)+2rem)] @4xl:col-span-4 @4xl:self-start">
         {header}
-        {summary && sourceName ? (
+        {summary ? (
           <div className="flex flex-col gap-3 border-t border-line pt-6">
             <p className="flex items-baseline gap-3">
               <span className="font-display text-display-l tabular text-fg">{nf.number(summary.rating, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</span>
               <RatingStars rating={summary.rating} label={ctx.t("ratingOutOf", { rating: nf.number(summary.rating, { maximumFractionDigits: 1 }) })} />
             </p>
             <p className="text-small text-fg-muted">
-              {ctx.t("ratingSummary", { rating: nf.number(summary.rating, { maximumFractionDigits: 1 }), source: sourceName })} — {ctx.t("reviewCount", { count: summary.count })}
+              {sourceName
+                ? ctx.t("ratingSummary", { rating: nf.number(summary.rating, { maximumFractionDigits: 1 }), source: sourceName })
+                : ctx.t("ratingSummaryDirect", { rating: nf.number(summary.rating, { maximumFractionDigits: 1 }) })}{" "}
+              — {ctx.t("reviewCount", { count: summary.count })}
             </p>
             {summary.link ? (
               <BlockLink href={summary.link.href} newTab={summary.link.newTab ?? true} appearance="link" components={ctx.components} labels={ctx.labels} locale={ctx.locale} className="self-start text-small">

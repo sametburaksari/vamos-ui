@@ -18,7 +18,7 @@ export default function ContactFormStates() {
         />
       </SiteFrame>
       <SiteFrame>
-        <ContactForm variant="stacked" title="Server error" info={{ phone: "+902168072907" }} showInfo={false} initialState={{ status: "error", values: { name: "Ayşe Demir", email: "ayse@kidwell.com.tr", message: "Two clinics." } }} />
+        <ContactForm variant="stacked" title="Server error" info={{ phone: "+902160000000" }} showInfo={false} initialState={{ status: "error", values: { name: "Ayşe Demir", email: "ayse@kidwell.com.tr", message: "Two clinics." } }} />
       </SiteFrame>
       <SiteFrame>
         <ContactForm variant="stacked" title="Sent" initialState={{ status: "success" }} successMessage="Thanks Ayşe — we’ll call you back today before 18:00." />

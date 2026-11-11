@@ -12,7 +12,7 @@ export default function NotFoundError500() {
         <NotFound kind="500" reset={() => window.location.reload()} />
       </SiteFrame>
       <SiteFrame>
-        <NotFound kind="maintenance" phone="+902168072907" theme={{ mode: "dark" }} />
+        <NotFound kind="maintenance" phone="+902160000000" theme={{ mode: "dark" }} />
       </SiteFrame>
     </div>
   );

@@ -52,8 +52,8 @@ describe("DescriptionList", () => {
     await user.click(screen.getByRole("button", { name: /Edit Phone/ }));
     const input = screen.getByRole("textbox", { name: "Phone" });
     await user.clear(input);
-    await user.type(input, "+90 216 807 29 07{Enter}");
-    expect(onEdit).toHaveBeenCalledWith("phone", "+90 216 807 29 07");
+    await user.type(input, "+90 216 000 00 00{Enter}");
+    expect(onEdit).toHaveBeenCalledWith("phone", "+90 216 000 00 00");
     await waitFor(() => expect(screen.getByRole("button", { name: /Edit Phone/ })).toHaveFocus());
 
     await user.click(screen.getByRole("button", { name: /Edit Phone/ }));

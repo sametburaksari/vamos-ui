@@ -57,7 +57,7 @@ export interface CtaProps extends Omit<BlockBaseProps, "variant" | "labels"> {
   actions?: SiteCta[];
   /** split: the photo. */
   media?: SiteImage;
-  /** band/split: mono contact line ("0216 807 29 07 · WhatsApp"). */
+  /** band/split: mono contact line ("0216 000 00 00 · WhatsApp"). */
   contact?: { phone?: string; whatsapp?: string; whatsappText?: string };
   newsletter?: {
     /** Form action: a URL or a server action. */
@@ -81,7 +81,7 @@ export interface CtaProps extends Omit<BlockBaseProps, "variant" | "labels"> {
  * newsletter is a plain form (works without JS), booking a small island, embeds a facade.
  *
  * ```tsx
- * <Cta title="Book the *long table*" actions={[{ link: { href: "/book", label: "Book a table" }, style: "primary" }]} contact={{ phone: "+902168072907" }} />
+ * <Cta title="Book the *long table*" actions={[{ link: { href: "/book", label: "Book a table" }, style: "primary" }]} contact={{ phone: "+902160000000" }} />
  * ```
  */
 export function Cta(props: CtaProps) {

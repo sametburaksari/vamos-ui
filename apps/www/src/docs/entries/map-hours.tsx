@@ -18,7 +18,7 @@ const hours = { timeZone: "Europe/Istanbul", weekly: { fri: [{ open: "17:00", cl
   special: [{ date: "2027-01-01", closed: true, note: "New Year’s Day" }] };
 
 <MapHours title="Find *us*" businessType="Restaurant" directions={["google", "apple", "yandex"]}
-  branches={[{ name: "Kıyı Meyhane", address, phone: "+902168072907", hours, mapImage }]} />
+  branches={[{ name: "Kıyı Meyhane", address, phone: "+902160000000", hours, mapImage }]} />
 
 isOpenAt(hours, new Date());               // past midnight + special days, in Europe/Istanbul
 hoursStatus(hours).closesAt;               // "01:00"`,

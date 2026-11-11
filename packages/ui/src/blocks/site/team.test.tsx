@@ -29,10 +29,10 @@ describe("Team", () => {
   });
 
   it("a single member falls back to feature with a signature name", async () => {
-    const { container } = render(<main><Team title="Founded by a *therapist*" members={[{ ...members[0]!, bio: "Twelve years in Bali and Istanbul.\n\nOpened Lena Spa in 2019." }]} /></main>);
+    const { container } = render(<main><Team title="Founded by a *therapist*" members={[{ ...members[0]!, bio: "Twelve years in Bali and Istanbul.\n\nOpened Defne Spa in 2019." }]} /></main>);
     expect(container.querySelector("section")).toHaveAttribute("data-variant", "feature");
     expect(container.querySelector(".vb-signature")).toHaveTextContent("Elif Aydın");
-    expect(screen.getByText("Opened Lena Spa in 2019.")).toBeInTheDocument();
+    expect(screen.getByText("Opened Defne Spa in 2019.")).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
     expect(teamBlock.schema.safeParse(teamBlock.sample()).success).toBe(true);
   });

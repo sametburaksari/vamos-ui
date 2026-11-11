@@ -19,7 +19,7 @@ const entry: DocEntry = {
 <Cta
   title="Book the *long table*"
   actions={[{ link: { href: "/reservations", label: "Book a table" }, style: "primary" }]}
-  contact={{ phone: "+902168072907", whatsapp: "+905321234567" }}
+  contact={{ phone: "+902160000000", whatsapp: "+905321234567" }}
 />
 
 <Cta variant="newsletter" title="The Thursday wine list" newsletter={{ action: subscribe /* server action */, status, message }} />

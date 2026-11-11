@@ -195,19 +195,60 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   invalid?: boolean;
+  /** Character counter under the box (`120 / 400` with `maxLength`). Announced politely only near the limit. */
+  showCount?: boolean;
+  /** Built-in string overrides (`input` namespace: `count`, `remaining`). */
+  labels?: Partial<InputLabels>;
 }
 
-/** Multi-line text. Grows with its content (`field-sizing: content`) and reads Field context. */
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea({ className, rows = 4, invalid, ...rest }, ref) {
+/**
+ * Multi-line text. Grows with its content (`field-sizing: content`) and reads Field context.
+ *
+ * ```tsx
+ * <Field label="Anything we should know first?"><Textarea maxLength={400} showCount /></Field>
+ * ```
+ */
+export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea({ className, rows = 4, invalid, showCount, labels, ...rest }, ref) {
   const props = useFieldControl({ ...rest, "aria-invalid": invalid ? true : rest["aria-invalid"] });
-  return (
+  const t = useLabels("input", inputLabels, labels);
+  const countId = React.useId();
+  const controlled = props.value !== undefined;
+  const [uncontrolledLength, setLength] = React.useState(() => String(props.defaultValue ?? "").length);
+  const length = controlled ? String(props.value ?? "").length : uncontrolledLength;
+  const max = props.maxLength !== undefined && props.maxLength >= 0 ? props.maxLength : undefined;
+  const remaining = max !== undefined ? max - length : undefined;
+
+  const area = (
     <textarea
       ref={ref}
       rows={rows}
       data-slot="textarea"
       className={cn(fieldBase, "field-sizing-content min-h-20 px-3 py-2.5 leading-relaxed read-only:border-dashed read-only:bg-transparent", className)}
       {...props}
+      aria-describedby={showCount ? mergeIds(props["aria-describedby"], countId) : props["aria-describedby"]}
+      onChange={(e) => {
+        if (!controlled) setLength(e.currentTarget.value.length);
+        props.onChange?.(e);
+      }}
     />
+  );
+  if (!showCount) return area;
+  return (
+    <div data-slot="textarea-root" className="flex w-full flex-col gap-1">
+      {area}
+      <span
+        className={cn(
+          "self-end font-mono text-[11px] tabular text-fg-muted",
+          remaining !== undefined && remaining <= 0 && "text-danger",
+          remaining !== undefined && remaining > 0 && remaining <= 20 && "text-warning",
+        )}
+      >
+        <span aria-hidden>{max !== undefined ? t("count", { count: length, max }) : length}</span>
+        <span id={countId} className="sr-only" aria-live="polite">
+          {remaining !== undefined && remaining <= 20 ? t("remaining", { count: Math.max(remaining, 0) }) : ""}
+        </span>
+      </span>
+    </div>
   );
 });
 
@@ -382,7 +423,7 @@ export function Field({
         data-slot="field"
         data-invalid={hasError ? "" : undefined}
         data-disabled={disabled ? "" : undefined}
-        className={cn("group/field grid min-w-0 gap-1.5", className)}
+        className={cn("group/field grid min-w-0 content-start gap-1.5", className)}
       >
         {body}
       </div>

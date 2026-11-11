@@ -54,7 +54,7 @@ const people: Array<[string, string, string, string]> = [
   ["Burak Şahin", "Founder", "Urban Bakehouse", "Istanbul"],
   ["Grace Liu", "Procurement Lead", "Pacific Rim Foods", "Vancouver"],
   ["Lukas Novák", "CTO", "Vltava Systems", "Prague"],
-  ["Isabela Costa", "Guest Experience Lead", "Lena Spa & Wellness", "Lisbon"],
+  ["Isabela Costa", "Guest Experience Lead", "Defne Spa & Wellness", "Lisbon"],
   ["Ahmed Karimi", "Finance Director", "Saffron Hotels", "Doha"],
   ["Emily Carter", "Office Manager", "Studio Parallel", "London"],
   ["Thabo Nkosi", "Head of Sales", "Highveld Outfitters", "Johannesburg"],

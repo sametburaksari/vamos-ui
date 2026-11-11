@@ -14,8 +14,8 @@ const fields: ContactFieldConfig[] = [
 
 describe("ContactForm", () => {
   it("split: contact details and an accessible form with autocomplete tokens", async () => {
-    const { container } = render(<main><ContactForm title="Tell us about the *project*" fields={fields} info={{ phone: "+902168072907", email: "hello@vamos.ist", address: { line: "Piazza AVM, Office Link", district: "Cevizli", city: "Maltepe", country: "TR" } }} privacyLink={{ href: "/privacy" }} privacyCheckbox /></main>);
-    expect(screen.getByRole("link", { name: "+90 216 807 29 07" })).toHaveAttribute("href", "tel:+902168072907");
+    const { container } = render(<main><ContactForm title="Tell us about the *project*" fields={fields} info={{ phone: "+902160000000", email: "hello@vamos.ist", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", country: "TR" } }} privacyLink={{ href: "/privacy" }} privacyCheckbox /></main>);
+    expect(screen.getByRole("link", { name: "+90 216 000 00 00" })).toHaveAttribute("href", "tel:+902160000000");
     expect(screen.getByRole("textbox", { name: /Full name/ })).toHaveAttribute("autocomplete", "name");
     expect(screen.getByRole("textbox", { name: /Email/ })).toHaveAttribute("type", "email");
     expect(screen.getByRole("combobox", { name: /Budget/ })).toBeInTheDocument();
@@ -59,9 +59,9 @@ describe("ContactForm", () => {
   });
 
   it("server error shows the fallback phone; honeypot is hidden from people", async () => {
-    const { container } = render(<ContactForm info={{ phone: "+902168072907" }} showInfo={false} initialState={{ status: "error", message: "Webhook timed out" }} />);
+    const { container } = render(<ContactForm info={{ phone: "+902160000000" }} showInfo={false} initialState={{ status: "error", message: "Webhook timed out" }} />);
     expect(screen.getByRole("alert")).toHaveTextContent("We couldn’t send your message.");
-    expect(screen.getByRole("link", { name: "+90 216 807 29 07" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "+90 216 000 00 00" })).toBeInTheDocument();
     const hp = container.querySelector('input[name="website"]')!;
     expect(hp.closest("[aria-hidden]")).toBeTruthy();
     expect(hp).toHaveAttribute("tabindex", "-1");

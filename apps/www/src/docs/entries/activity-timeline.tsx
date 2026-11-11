@@ -64,6 +64,7 @@ import { Inbox } from "lucide-react";
       { name: "TimelineItem", type: "status, highlight", description: "One <li>; highlight briefly tints a new item (not under reduced motion)." },
       { name: "TimelineIndicator", type: "icon | avatar | status, tone", description: "Opaque dot on the connector." },
       { name: "TimelineContent / TimelineTitle / TimelineBody / TimelineActions", type: "HTMLAttributes", description: "Text column parts." },
+      { name: "TimelineBody variant", type: '"card" | "plain"', default: '"card"', description: "card: note on an inset surface. plain: unstyled text for typographic layouts." },
       { name: "TimelineTime", type: "value, now, mode", description: "<time> with relative text and the full date as title." },
       { name: "TimelineNewItems / TimelineSkeleton", type: "count / count", description: "Live pill and loading rows." },
       { name: "RelativeTime", type: "value, now, display, styleType", description: "Standalone relative <time> (SSR shows absolute, client upgrades)." },

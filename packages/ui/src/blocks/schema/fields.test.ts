@@ -36,7 +36,7 @@ describe("f.* field builders", () => {
   it("link / cta: unsafe hrefs rejected", () => {
     expect(f.link().safeParse({ href: "/menu", label: "Menu" }).success).toBe(true);
     expect(f.link().safeParse({ href: " javascript:alert(1)", label: "x" }).success).toBe(false);
-    expect(f.cta().safeParse({ link: { href: "tel:+902168072907", label: "Call" }, style: "primary" }).success).toBe(true);
+    expect(f.cta().safeParse({ link: { href: "tel:+902160000000", label: "Call" }, style: "primary" }).success).toBe(true);
   });
 
   it("rich: restricts nodes and marks", () => {
@@ -53,8 +53,8 @@ describe("f.* field builders", () => {
   it("money is a decimal string; phone is E.164; date is YYYY-MM-DD", () => {
     expect(f.money().safeParse({ amount: "1250.00", currency: "TRY" }).success).toBe(true);
     expect(f.money().safeParse({ amount: 1250, currency: "TRY" }).success).toBe(false);
-    expect(f.phone().safeParse("+902168072907").success).toBe(true);
-    expect(f.phone().safeParse("0216 807 29 07").success).toBe(false);
+    expect(f.phone().safeParse("+902160000000").success).toBe(true);
+    expect(f.phone().safeParse("0216 000 00 00").success).toBe(false);
     expect(f.date().safeParse("2026-11-14").success).toBe(true);
     expect(f.date().safeParse("2026-11-14T00:00:00Z").success).toBe(false);
   });
@@ -100,11 +100,11 @@ describe("emphasis", () => {
 
 describe("safety", () => {
   it("sanitizes hrefs", () => {
-    for (const ok of ["/menu", "#faq", "?q=1", "https://vamos.ist", "//cdn.example/x", "mailto:hello@vamos.ist", "tel:+902168072907", "menu/today"]) expect(sanitizeHref(ok)).toBe(ok);
+    for (const ok of ["/menu", "#faq", "?q=1", "https://vamos.ist", "//cdn.example/x", "mailto:hello@vamos.ist", "tel:+902160000000", "menu/today"]) expect(sanitizeHref(ok)).toBe(ok);
     for (const bad of ["javascript:alert(1)", " JaVaScRiPt:alert(1)", "java\tscript:alert(1)", "data:text/html,<b>", "vbscript:x", "ftp://x", "", null, 42]) expect(sanitizeHref(bad)).toBeNull();
   });
   it("detects kinds and emoji", () => {
-    expect(linkKindOf("https://wa.me/902168072907")).toBe("whatsapp");
+    expect(linkKindOf("https://wa.me/902160000000")).toBe("whatsapp");
     expect(linkKindOf("/files/menu.pdf")).toBe("file");
     expect(hasEmoji("Fresh 🌿")).toBe(true);
     expect(hasEmoji("© 2026")).toBe(false);

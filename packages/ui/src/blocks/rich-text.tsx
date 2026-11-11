@@ -108,7 +108,8 @@ export function renderRichBlocks(blocks: readonly RichBlock[], opts: RichTextRen
         );
       case "code":
         return (
-          <pre key={key} data-language={b.language}>
+          // Focusable + named so a long line that scrolls sideways is reachable by keyboard.
+          <pre key={key} data-language={b.language} tabIndex={0} role="region" aria-label={b.language ? `${blockText(opts.labels, opts.locale)("codeSample")} (${b.language})` : blockText(opts.labels, opts.locale)("codeSample")}>
             <code>{b.text}</code>
           </pre>
         );

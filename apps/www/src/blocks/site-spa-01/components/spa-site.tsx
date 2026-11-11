@@ -1,5 +1,5 @@
 import { AnnouncementBar, ContactDock, Cta, Faq, FeatureGrid, Footer, GallerySection, Hero, MapHours, MenuList, Navbar, Steps, Team, Testimonials } from "@vamos-ui/react/blocks";
-import { branch, copyFor, hours, PHONE, photos, portraits, treatments, WHATSAPP } from "./content";
+import { branch, copyFor, enTime, hours, PHONE, photos, portraits, treatments, WHATSAPP } from "./content";
 import type { SiteLocale } from "./locale-switch";
 
 /** One language version of the spa site. Server component: every block is plain props. */
@@ -54,7 +54,7 @@ export function SpaSite({ locale }: { locale: SiteLocale }) {
           meta={[
             { label: t({ en: "Restored", tr: "Restorasyon" }), value: "2019" },
             { label: t({ en: "Therapists", tr: "Terapist" }), value: "11" },
-            { label: t({ en: "Open daily", tr: "Her gün açık" }), value: t({ en: "from 09:00", tr: "09:00’dan itibaren" }) },
+            { label: t({ en: "Open daily", tr: "Her gün açık" }), value: t({ en: `from ${enTime("09:00")}`, tr: "09:00’dan itibaren" }) },
           ]}
         />
 
@@ -68,7 +68,7 @@ export function SpaSite({ locale }: { locale: SiteLocale }) {
             { title: t({ en: "One guest per therapist", tr: "Her terapiste bir misafir" }), text: t({ en: "No back-to-back bookings: every treatment has fifteen minutes of buffer before the next.", tr: "Arka arkaya randevu yok: her bakımdan sonra on beş dakika boşluk bırakılır." }) },
             { title: t({ en: "Marble heated from below", tr: "Alttan ısıtılan mermer" }), text: t({ en: "The göbektaşı is kept at 42 °C from opening to close, as it was in 1871.", tr: "Göbektaşı, 1871’de olduğu gibi açılıştan kapanışa 42 °C’de tutulur." }) },
             { title: t({ en: "Products from Ayvalık", tr: "Ayvalık’tan ürünler" }), text: t({ en: "Olive-oil soap and laurel oils from a family workshop, sold at the desk.", tr: "Bir aile atölyesinden zeytinyağlı sabun ve defne yağları, resepsiyonda satılır." }) },
-            { title: t({ en: "Women’s mornings", tr: "Kadınlara özel sabahlar" }), text: t({ en: "Tuesdays 10:00–14:00 the whole building is staffed and booked by women only.", tr: "Salı 10:00–14:00 arası tüm bina yalnızca kadın personel ve misafirlerle çalışır." }) },
+            { title: t({ en: "Women’s mornings", tr: "Kadınlara özel sabahlar" }), text: t({ en: `Tuesdays ${enTime("10:00")}–${enTime("14:00")} the whole building is staffed and booked by women only.`, tr: "Salı 10:00–14:00 arası tüm bina yalnızca kadın personel ve misafirlerle çalışır." }) },
           ]}
         />
 
@@ -146,7 +146,7 @@ export function SpaSite({ locale }: { locale: SiteLocale }) {
           anchor="book"
           variant="booking"
           theme={{ surface: "surface-2", rhythm: "tight" }}
-          eyebrow={t({ en: "Every day from 09:00", tr: "Her gün 09:00’dan itibaren" })}
+          eyebrow={t({ en: `Every day from ${enTime("09:00")}`, tr: "Her gün 09:00’dan itibaren" })}
           title={t({ en: "Find a time", tr: "Bir saat seçin" })}
           booking={{
             provider: "url",

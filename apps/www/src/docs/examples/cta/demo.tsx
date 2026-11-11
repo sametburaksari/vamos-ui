@@ -13,7 +13,7 @@ export default function CtaDemo() {
           { link: { href: "/reservations", label: "Book a table" }, style: "primary" },
           { link: { href: "/private-dining", label: "Private dining" }, style: "secondary" },
         ]}
-        contact={{ phone: "+902168072907", whatsapp: "+905321234567", whatsappText: "Hi, a question about the long table:" }}
+        contact={{ phone: "+902160000000", whatsapp: "+905321234567", whatsappText: "Hi, a question about the long table:" }}
         locale="tr-TR"
       />
     </SiteFrame>

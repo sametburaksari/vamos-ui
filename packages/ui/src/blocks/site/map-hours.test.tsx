@@ -18,9 +18,9 @@ const hours = {
   },
 };
 const branch: Branch = {
-  name: "Meyhane Cevizli",
-  address: { line: "Piazza AVM, Office Link", district: "Cevizli", city: "Maltepe", region: "İstanbul", postalCode: "34846", country: "TR", geo: { lat: 40.9112, lng: 29.1556 } },
-  phone: "+902168072907",
+  name: "Meyhane Rasimpaşa",
+  address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", region: "İstanbul", postalCode: "34716", country: "TR", geo: { lat: 40.9112, lng: 29.1556 } },
+  phone: "+902160000000",
   hours,
   mapImage: { src: "/maps/cevizli.png", alt: "", width: 1200, height: 900 },
   notes: "Parking on level −2 of Piazza, three hours free.",
@@ -33,9 +33,20 @@ describe("MapHours", () => {
     document.cookie = `${CONSENT_COOKIE}=; max-age=0; path=/`;
   });
 
+  it("hoursDisplay: open-days hides closed days, none drops the table", () => {
+    const { unmount } = render(<MapHours branches={[branch]} now={NOW} hoursDisplay="open-days" />);
+    const rows = within(screen.getByRole("table", { name: "Opening hours, Meyhane Rasimpaşa" })).getAllByRole("row");
+    expect(rows).toHaveLength(6);
+    expect(screen.queryByText("Monday")).toBeNull();
+    unmount();
+    render(<MapHours branches={[branch]} now={NOW} hoursDisplay="none" showOpenNow={false} businessType="EventVenue" />);
+    expect(screen.queryByRole("table")).toBeNull();
+    expect(localBusinessJsonLd({ branches: [branch], businessType: "EventVenue" })[0]?.["@type"]).toBe("EventVenue");
+  });
+
   it("map-split: hours table with today marked, open-now status, directions", async () => {
     const { container } = render(<main><MapHours title="Find *us*" branches={[branch]} now={NOW} directions={["google", "apple", "yandex"]} /></main>);
-    const table = screen.getByRole("table", { name: "Opening hours, Meyhane Cevizli" });
+    const table = screen.getByRole("table", { name: "Opening hours, Meyhane Rasimpaşa" });
     const today = within(table).getByRole("row", { current: "date" });
     expect(today).toHaveTextContent("Tuesday");
     expect(today).toHaveTextContent("12 PM–11 PM");
@@ -53,7 +64,7 @@ describe("MapHours", () => {
     await user.click(screen.getByRole("checkbox", { name: "Always load maps" }));
     await user.click(screen.getByRole("button", { name: "Load map" }));
     const frame = container.querySelector("iframe")!;
-    expect(frame).toHaveAttribute("title", "Map of Meyhane Cevizli");
+    expect(frame).toHaveAttribute("title", "Map of Meyhane Rasimpaşa");
     expect(frame.getAttribute("src")).toContain("output=embed");
     expect(document.cookie).toContain(CONSENT_COOKIE);
   });
@@ -70,7 +81,7 @@ describe("MapHours", () => {
     const { container } = render(<main><MapHours variant="info" title="Adres" locale="tr-TR" labels={site2LabelsTr} branches={[branch]} now={NOW} /></main>);
     expect(screen.getByText("Pzt")).toBeInTheDocument();
     expect(screen.getByText("Kapalı")).toBeInTheDocument();
-    expect(screen.getByText("Cevizli/Maltepe", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText("Rasimpaşa/Kadıköy", { exact: false })).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
   });
 
@@ -89,7 +100,7 @@ describe("MapHours", () => {
 
   it("JSON-LD, direction URLs and registry preview", () => {
     const [ld] = localBusinessJsonLd({ branches: [branch], businessType: "Restaurant" });
-    expect(ld).toMatchObject({ "@type": "Restaurant", telephone: "+902168072907", geo: { latitude: 40.9112 } });
+    expect(ld).toMatchObject({ "@type": "Restaurant", telephone: "+902160000000", geo: { latitude: 40.9112 } });
     expect((ld!.openingHoursSpecification as unknown[]).length).toBe(6);
     expect(directionsUrl("google", branch)).toBe("https://www.google.com/maps/dir/?api=1&destination=40.9112%2C29.1556");
     expect(locationBlock.schema.safeParse(locationBlock.sample()).success).toBe(true);

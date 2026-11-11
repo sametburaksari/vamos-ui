@@ -9,7 +9,7 @@ import type { PreferencesForm } from "./data";
 const deals = [
   { name: "Harbor & Pine", stage: "Proposal", tone: "info", value: "₺184,000" },
   { name: "Karaköy Bistro", stage: "Won", tone: "success", value: "₺62,500" },
-  { name: "Lena Spa", stage: "Negotiation", tone: "warning", value: "₺96,000" },
+  { name: "Defne Spa", stage: "Negotiation", tone: "warning", value: "₺96,000" },
 ] as const;
 
 /**

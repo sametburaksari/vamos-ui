@@ -14,7 +14,7 @@ export default function NavbarDemo() {
           { label: "About", href: "/about" },
           { label: "Journal", href: "/journal" },
         ]}
-        phone="+902168072907"
+        phone="+902160000000"
         locale="tr-TR"
         actions={[{ link: { href: "/contact", label: "Get a quote" }, style: "primary" }]}
       />

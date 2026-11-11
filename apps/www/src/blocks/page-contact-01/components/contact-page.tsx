@@ -14,7 +14,7 @@ export function ContactPage({ locale }: { locale: SiteLocale }) {
         {...common}
         variant="bar"
         sticky
-        wordmark="Lena Clinic"
+        wordmark="Defne Clinic"
         homeHref="/"
         currentPath="/contact"
         items={[
@@ -103,7 +103,7 @@ export function ContactPage({ locale }: { locale: SiteLocale }) {
       <Footer
         {...common}
         theme={{ mode: "dark" }}
-        brand={{ name: "Lena Clinic", href: "/" }}
+        brand={{ name: "Defne Clinic", href: "/" }}
         about={t({ en: "Dermatology and aesthetic medicine in Nişantaşı, Moda and Ataşehir.", tr: "Nişantaşı, Moda ve Ataşehir’de dermatoloji ve estetik tıp." })}
         columns={[
           { title: t({ en: "Treatments", tr: "Tedaviler" }), links: [{ href: "/treatments/laser", label: t({ en: "Laser", tr: "Lazer" }) }, { href: "/treatments/facials", label: t({ en: "Facials", tr: "Yüz bakımı" }) }, { href: "/treatments/post-op", label: t({ en: "Post-op care", tr: "Ameliyat sonrası" }) }] },
@@ -112,7 +112,7 @@ export function ContactPage({ locale }: { locale: SiteLocale }) {
         contact={{ phone: PHONE, email: EMAIL, address: locations[0]!.address }}
         social={[{ network: "instagram", href: "https://instagram.com/lenaclinic" }, { network: "youtube", href: "https://youtube.com/@lenaclinic" }]}
         legalLinks={[{ href: "/kvkk", label: t({ en: "KVKK notice", tr: "KVKK aydınlatma metni" }) }, { href: "/patient-rights", label: t({ en: "Patient rights", tr: "Hasta hakları" }) }]}
-        company={{ legalName: "Lena Sağlık Hizmetleri A.Ş.", registry: [{ label: "MERSİS", value: "0598 1234 5670 0015" }, { label: t({ en: "Tax office", tr: "Vergi dairesi" }), value: "Şişli · 5981 234 567" }] }}
+        company={{ legalName: "Defne Sağlık Hizmetleri A.Ş.", registry: [{ label: "MERSİS", value: "0598 1234 5670 0015" }, { label: t({ en: "Tax office", tr: "Vergi dairesi" }), value: "Şişli · 5981 234 567" }] }}
         year={2026}
       />
 

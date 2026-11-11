@@ -9,7 +9,7 @@ export default function InputStates() {
       <Field label="Plan" disabled>
         <Input defaultValue="Growth (annual)" />
       </Field>
-      <Field label="Phone" error="Enter a number with country code, e.g. +90 216 807 29 07.">
+      <Field label="Phone" error="Enter a number with country code, e.g. +90 216 000 00 00.">
         <Input type="tel" defaultValue="216 807" />
       </Field>
     </div>

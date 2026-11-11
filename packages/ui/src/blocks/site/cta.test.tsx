@@ -11,7 +11,7 @@ describe("Cta", () => {
         <Cta
           title="Book the *long table*"
           actions={[{ link: { href: "/book", label: "Book a table" }, style: "primary" }, { link: { href: "/private", label: "Private dining" }, style: "primary" }]}
-          contact={{ phone: "+902168072907", whatsapp: "+905321234567" }}
+          contact={{ phone: "+902160000000", whatsapp: "+905321234567" }}
         />
       </main>,
     );

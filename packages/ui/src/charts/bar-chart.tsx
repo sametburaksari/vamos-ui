@@ -90,7 +90,7 @@ function BarPlot({ series: keys, layout, stack, radius = 4, highlight, valueLabe
         )}
         <ChartTooltip cursor={{ fill: "var(--hover)" }} showTotal={stacked && !percent} showShare={percent} />
         {min < 0 ? (horizontal ? <ReferenceLine x={0} stroke="var(--fg-subtle)" strokeWidth={1} /> : <ReferenceLine y={0} stroke="var(--fg-subtle)" strokeWidth={1} />) : null}
-        {reference?.map((ref, i) => (horizontal ? <ChartReferenceLine key={i} x={ref.y} label={ref.label} color={ref.color} /> : <ChartReferenceLine key={i} y={ref.y} label={ref.label} color={ref.color} />))}
+        {reference?.map((ref, i) => (horizontal ? <ChartReferenceLine key={i} x={ref.y} label={ref.label} color={ref.color} /> : <ChartReferenceLine key={i} y={ref.y} label={ref.label} color={ref.color} labelPosition={ref.labelPosition} />))}
         {all.map((s) => (
           <Bar
             key={s.key}

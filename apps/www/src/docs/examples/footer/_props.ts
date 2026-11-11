@@ -8,7 +8,7 @@ export const studioFooter: FooterProps = {
     { title: "Products", links: [{ href: "/vtag", label: "vTag" }, { href: "/vrest", label: "vRest" }, { href: "/vmob", label: "vMob" }] },
     { title: "Help", links: [{ href: "/contact", label: "Contact" }, { href: "/faq", label: "FAQ" }, { href: "https://status.vamos.ist", label: "Status", newTab: true }] },
   ],
-  contact: { phone: "+902168072907", email: "hello@vamos.ist", address: { line: "Piazza AVM, Office Link", district: "Cevizli", city: "Maltepe", postalCode: "34846", country: "TR" } },
+  contact: { phone: "+902160000000", email: "hello@vamos.ist", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", postalCode: "34716", country: "TR" } },
   social: [
     { network: "instagram", href: "https://instagram.com/vamos.ist" },
     { network: "linkedin", href: "https://linkedin.com/company/vamos-ist" },

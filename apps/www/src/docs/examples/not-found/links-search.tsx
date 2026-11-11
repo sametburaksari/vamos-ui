@@ -8,7 +8,7 @@ export default function NotFoundLinksSearch() {
       <NotFound
         variant="links"
         search={{ action: "/search", param: "q" }}
-        phone="+902168072907"
+        phone="+902160000000"
         links={[
           { href: "/menu", label: "Tonight’s menu" },
           { href: "/reservations", label: "Book a table" },

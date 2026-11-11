@@ -8,7 +8,7 @@ export default function NavbarMega() {
     <SiteFrame>
       <Navbar
         skipLink={false}
-        wordmark="Lena Clinic"
+        wordmark="Defne Clinic"
         currentPath="/treatments/laser"
         items={[
           {

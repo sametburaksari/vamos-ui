@@ -152,6 +152,9 @@ export const ToggleGroup = React.forwardRef<React.ElementRef<typeof ToggleGroupP
     block ? "flex w-full [&>*]:flex-1" : "inline-flex w-fit max-w-full",
     orientation === "vertical" && "flex-col",
     variant === "segmented" && trackClass(orientation),
+    // A segmented track wider than its column (long labels on a phone) scrolls inside itself
+    // instead of pushing the page sideways; its padding keeps the items' focus ring visible.
+    variant === "segmented" && orientation === "horizontal" && !block && "scrollbar-none overflow-x-auto overscroll-x-contain",
     variant === "ghost" && "gap-0.5",
     variant === "outline" &&
       (orientation === "vertical"

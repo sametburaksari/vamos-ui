@@ -4,7 +4,7 @@ import { Badge, Card, CardHeader, IconButton, Spinner } from "@vamos-ui/react";
 const invoices = [
   { id: "INV-2041", client: "Kadıköy Bistro", amount: "$1,280.00", status: "Paid" },
   { id: "INV-2042", client: "Moda Wellness", amount: "$640.00", status: "Due" },
-  { id: "INV-2043", client: "Piazza Office Link", amount: "$2,150.00", status: "Due" },
+  { id: "INV-2043", client: "Rıhtım Caddesi 14", amount: "$2,150.00", status: "Due" },
 ];
 
 export default function SpinnerRefresh() {

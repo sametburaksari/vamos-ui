@@ -7,6 +7,7 @@ import { site2Text, type Site2BlockLabels, type Site2Text } from "./shared/label
 import { telHref } from "./shared/kit-2";
 import { BrandIcon, BRAND_NAMES, waLink } from "./shared/brand-icons";
 import { DockHours } from "./shared/dock-hours";
+import { DockAvoid } from "./shared/dock-avoid";
 
 export type ContactDockVariant = "fab" | "bar" | "both";
 export type DockAction = "call" | "whatsapp" | "directions" | "booking" | "email";
@@ -87,7 +88,7 @@ function messagingHref(p: ContactDockProps): string | undefined {
  * Server component; off-hours behaviour is a ~0.4 KB island.
  *
  * ```tsx
- * <ContactDock variant="both" whatsapp="+902168072907" message="Hi, I’d like to book a table." phone="+902168072907" directionsHref="https://maps.app.goo.gl/…" />
+ * <ContactDock variant="both" whatsapp="+902160000000" message="Hi, I’d like to book a table." phone="+902160000000" directionsHref="https://maps.app.goo.gl/…" />
  * ```
  */
 export function ContactDock(props: ContactDockProps) {
@@ -150,6 +151,7 @@ export function ContactDock(props: ContactDockProps) {
           </ul>
         </nav>
       ) : null}
+      {!contained && (showFab || showBar) ? <DockAvoid /> : null}
     </div>
   );
 }

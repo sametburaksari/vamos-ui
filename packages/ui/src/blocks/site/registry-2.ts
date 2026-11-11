@@ -185,7 +185,7 @@ export const testimonialsBlock = defineBlock({
   }),
   preview: {
     props: {
-      items: [{ quote: "They rebuilt our booking flow in three weeks. Table requests through the site doubled before the summer season even started.", author: "Deniz Arslan", role: "Owner", company: "Meyhane Cevizli" }],
+      items: [{ quote: "They rebuilt our booking flow in three weeks. Table requests through the site doubled before the summer season even started.", author: "Deniz Arslan", role: "Owner", company: "Meyhane Rasimpaşa" }],
     },
   },
   jsonLd: (p) =>
@@ -340,7 +340,7 @@ export const contactFormBlock = defineBlock({
       eyebrow: "Contact",
       title: "Tell us about the *project*",
       fields: [{ name: "name", required: true }, { name: "email", required: true }, { name: "budget", options: ["Under $5k", "$5k–15k", "$15k+"] }, { name: "message", required: true }],
-      info: { phone: "+902168072907", email: "hello@vamos.ist" },
+      info: { phone: "+902160000000", email: "hello@vamos.ist" },
       privacyCheckbox: true,
       marketingConsent: false,
       showInfo: true,
@@ -384,16 +384,17 @@ export const locationBlock = defineBlock({
       f.group({ name: f.text({ max: 60 }), address: f.address(), phone: f.phone().optional(), email: z.email().optional(), hours: f.hours(), mapImage: f.image({ aspect: "4:3" }).optional(), placeUrl: z.url().optional(), notes: f.text({ max: 140 }).optional() }),
       { min: 1, max: 12 },
     ),
-    businessType: f.select(["LocalBusiness", "Restaurant", "DaySpa", "BeautySalon", "MedicalClinic", "ProfessionalService"]).default("LocalBusiness"),
+    businessType: f.select(["LocalBusiness", "Restaurant", "DaySpa", "BeautySalon", "MedicalClinic", "ProfessionalService", "EventVenue"]).default("LocalBusiness"),
     mapProvider: f.select(["google", "osm", "none"]).default("google"),
     directions: z.array(z.enum(["google", "apple", "yandex", "waze"])).default(["google", "apple"]),
     showOpenNow: f.toggle().default(true),
+    hoursDisplay: f.select(["week", "open-days", "none"]).default("week"),
   }),
   preview: {
     props: {
       title: "Find *us*",
       businessType: "Restaurant",
-      branches: [{ name: "Meyhane Cevizli", address: { line: "Piazza AVM, Office Link", district: "Cevizli", city: "Maltepe", region: "İstanbul", postalCode: "34846", country: "TR", geo: { lat: 40.9112, lng: 29.1556 } }, phone: "+902168072907", hours: ISTANBUL_HOURS }],
+      branches: [{ name: "Meyhane Rasimpaşa", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", region: "İstanbul", postalCode: "34716", country: "TR", geo: { lat: 40.9112, lng: 29.1556 } }, phone: "+902160000000", hours: ISTANBUL_HOURS }],
     },
   },
   jsonLd: (p) => localBusinessJsonLd(p),
@@ -530,7 +531,7 @@ export const contactDockBlock = defineBlock({
     hours: f.hours().optional(),
     offHours: f.select(["show", "label", "hide"]).default("show"),
   }),
-  preview: { props: { whatsapp: "+902168072907", phone: "+902168072907", message: "Hi, I’d like to book a table.", directionsHref: "https://maps.app.goo.gl/meyhane" } },
+  preview: { props: { whatsapp: "+902160000000", phone: "+902160000000", message: "Hi, I’d like to book a table.", directionsHref: "https://maps.app.goo.gl/meyhane" } },
   component: asBlock(ContactDock),
 });
 

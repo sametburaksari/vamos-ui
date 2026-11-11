@@ -199,9 +199,21 @@ export function TimelineTitle({ className, ...props }: React.HTMLAttributes<HTML
   return <div data-slot="timeline-title" className={cn("text-pretty [&_b]:font-medium [&_b]:text-fg [&_strong]:font-medium [&_strong]:text-fg", className)} {...props} />;
 }
 
+export interface TimelineBodyProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** `"card"` (default) sets the note on an inset surface; `"plain"` is unstyled text for typographic layouts (CVs, changelogs). */
+  variant?: "card" | "plain";
+}
+
 /** Note or quoted comment under the title. */
-export function TimelineBody({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div data-slot="timeline-body" className={cn("surface-2 mt-2 rounded-ui-sm px-3 py-2 text-[13px] leading-relaxed text-fg", className)} {...props} />;
+export function TimelineBody({ className, variant = "card", ...props }: TimelineBodyProps) {
+  return (
+    <div
+      data-slot="timeline-body"
+      data-variant={variant}
+      className={cn(variant === "card" ? "surface-2 mt-2 rounded-ui-sm px-3 py-2 text-[13px] leading-relaxed text-fg" : "mt-1 leading-relaxed text-fg", className)}
+      {...props}
+    />
+  );
 }
 
 export interface TimelineTimeProps {

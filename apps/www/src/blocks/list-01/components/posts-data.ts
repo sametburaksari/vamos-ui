@@ -50,7 +50,7 @@ const titles: Array<[string, string, string[]]> = [
   ["Local SEO checklist for 2026", "local-seo", ["Checklist"]],
   ["NFC business cards vs. paper: the real cost", "guides", ["NFC", "Print"]],
   ["What we learned rebuilding our booking engine", "product", ["Engineering"]],
-  ["Case study: Lena Spa doubled direct bookings", "case-studies", ["Spa", "Bookings"]],
+  ["Case study: Defne Spa doubled direct bookings", "case-studies", ["Spa", "Bookings"]],
   ["Writing menu descriptions that sell", "hospitality", ["Copywriting", "Menus"]],
   ["Release notes: November", "product", ["Release"]],
   ["Answering negative reviews without losing customers", "local-seo", ["Reviews"]],

@@ -88,7 +88,7 @@ export interface SerpMeasure {
  * ```ts
  * Pass `{ estimate: true }` for a canvas-free, deterministic result (server rendering, first paint).
  *
- * measureSerp("Spa packages in Kadıköy — Lena Spa", "title"); // { px: 334, truncated: false, … }
+ * measureSerp("Spa packages in Kadıköy — Defne Spa", "title"); // { px: 334, truncated: false, … }
  * ```
  */
 export function measureSerp(text: string, field: SerpField, device: SerpDevice = "desktop", locale?: string, options: { estimate?: boolean } = {}): SerpMeasure {

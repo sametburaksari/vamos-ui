@@ -8,7 +8,7 @@ export default function StatsBandLedger() {
       <StatsBand
         variant="ledger"
         eyebrow="Annual report"
-        title="Lena Clinic, *2026*"
+        title="Defne Clinic, *2026*"
         lead="Two physicians, four nurses, one address in Suadiye."
         items={[
           { value: 3812, label: "Consultations", source: "Clinic records, Jan–Oct 2026" },

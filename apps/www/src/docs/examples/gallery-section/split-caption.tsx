@@ -9,7 +9,7 @@ export default function GallerySplitCaption() {
       <GallerySection
         variant="split-caption"
         eyebrow="Case study"
-        title="Lena Clinic, *three* branches"
+        title="Defne Clinic, *three* branches"
         lead="A booking site for a dermatology clinic: one calendar per doctor, deposits through iyzico, Turkish and English."
         lightbox={false}
         images={[

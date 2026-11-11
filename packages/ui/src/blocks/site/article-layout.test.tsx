@@ -13,7 +13,7 @@ const post: ArticlePost = {
   updatedAt: "2026-11-03",
   category: { href: "/journal/kitchen", label: "Kitchen" },
   breadcrumb: [{ href: "/", label: "Home" }, { href: "/journal", label: "Journal" }],
-  author: { name: "Deniz Arslan", role: "Chef-owner", bio: "Cooks at Meyhane Cevizli since 2014." },
+  author: { name: "Deniz Arslan", role: "Chef-owner", bio: "Cooks at Meyhane Rasimpaşa since 2014." },
   tags: [{ href: "/tags/fish", label: "Fish" }],
   body: { type: "doc", content: [p("We decide the evening’s menu at six in the morning."), h2("Six o’clock at Kumkapı"), p("The boats come in."), h2("What makes the cut"), p("Bonito in autumn."), h2("Çiroz ve lakerda"), p("Cured fish keeps the winter menu honest.")] },
 };

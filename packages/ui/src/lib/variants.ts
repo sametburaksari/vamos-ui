@@ -26,7 +26,11 @@ export const controlVariants = cva(
     "aria-invalid:focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--danger)_18%,transparent)]",
     "has-[[aria-invalid=true]:focus-visible]:shadow-[0_0_0_3px_color-mix(in_srgb,var(--danger)_18%,transparent)]",
     // disabled
-    "disabled:cursor-not-allowed disabled:opacity-50 has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50",
+    // Only a disabled field or trigger dims the wrapper; a disabled helper button inside (a stepper at
+    // its limit, a clear button) must not make the whole control look disabled.
+    "disabled:cursor-not-allowed disabled:opacity-50",
+    "has-[input:disabled,select:disabled,textarea:disabled,[aria-haspopup]:disabled,[role=combobox]:disabled]:cursor-not-allowed",
+    "has-[input:disabled,select:disabled,textarea:disabled,[aria-haspopup]:disabled,[role=combobox]:disabled]:opacity-50",
     "aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
     // read-only
     "data-readonly:border-dashed data-readonly:bg-transparent data-readonly:shadow-none",

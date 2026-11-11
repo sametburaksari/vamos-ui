@@ -20,7 +20,7 @@ export default function CtaBookingWhatsapp() {
           closedDays: ["mon"],
           timeZone: "Europe/Istanbul",
         }}
-        fineprint="Groups of eleven or more: call 0216 807 29 07."
+        fineprint="Groups of eleven or more: call 0216 000 00 00."
       />
     </SiteFrame>
   );

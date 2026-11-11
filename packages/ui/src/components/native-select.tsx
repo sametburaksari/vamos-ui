@@ -105,7 +105,9 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProp
         )}
       >
         {placeholder !== undefined ? (
-          <option value="" disabled>
+          // Hidden, not disabled: a disabled selected option is painted as GrayText (fails 4.5:1);
+          // an empty value still fails `required`, and the list no longer offers it as a choice.
+          <option value="" hidden>
             {placeholder}
           </option>
         ) : null}

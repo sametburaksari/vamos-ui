@@ -14,7 +14,7 @@ const entry: DocEntry = {
 
 // app/not-found.tsx
 export default function NotFoundPage() {
-  return <NotFound variant="links" links={popular} search={{ action: "/search" }} phone="+902168072907" />;
+  return <NotFound variant="links" links={popular} search={{ action: "/search" }} phone="+902160000000" />;
 }
 
 // app/error.tsx ("use client")

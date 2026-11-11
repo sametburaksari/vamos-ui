@@ -258,7 +258,7 @@ function money(opts: FieldOptions = {}) {
 }
 
 function phone(opts: FieldOptions = {}) {
-  return withMeta(z.string().regex(/^\+[1-9]\d{6,14}$/, { message: "Use E.164, e.g. +902168072907." }), { field: "phone", ...opts });
+  return withMeta(z.string().regex(/^\+[1-9]\d{6,14}$/, { message: "Use E.164, e.g. +902160000000." }), { field: "phone", ...opts });
 }
 
 function address(opts: FieldOptions = {}) {

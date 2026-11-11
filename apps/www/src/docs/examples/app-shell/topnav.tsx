@@ -6,7 +6,7 @@ import { DemoPage, ShellFrame, useMemoryRouter } from "./demo-kit";
 
 const portal: AppDefinition = {
   id: "portal",
-  name: "Lena Spa",
+  name: "Defne Spa",
   description: "Client portal",
   href: "/portal",
   accent: "ember",
