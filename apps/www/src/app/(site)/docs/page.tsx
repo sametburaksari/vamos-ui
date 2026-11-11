@@ -45,7 +45,7 @@ export default function IntroductionPage() {
       <div className="flex flex-wrap gap-2">
         <Badge tone="success" size="md" dot>{ready} ready</Badge>
         <Badge tone="info" size="md">{next} next</Badge>
-        <Badge size="md">{all.length} planned in total</Badge>
+        <Badge size="md">{all.length} in total</Badge>
       </div>
       <Table
         head={["Group", "Components", "Ready"]}
@@ -63,7 +63,7 @@ export default function IntroductionPage() {
           ["Scope", "Primitives, business components (data table, pickers, calendars, kanban, line items, flows) and site blocks"],
           ["Blocks", "Whole screens for panels, sign-in, settings and websites — built only from the kit"],
           ["Locale", "Locale provider, Intl formatting and locale packs (tax, IDs, holidays)"],
-          ["Maturity", "Early (v0.1) — check the changelog"],
+          ["Maturity", "Early (v0.2) — APIs can change until v1; see the changelog"],
         ]}
       />
     </DocPage>
