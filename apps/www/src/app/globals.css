@@ -41,3 +41,7 @@
   background-image: radial-gradient(color-mix(in srgb, var(--fg) 9%, transparent) 1px, transparent 1px);
   background-size: 16px 16px;
 }
+
+/* Brand mark: lime only where it has contrast (dark scenes); ink on light scenes. */
+:root { --brand-mark: #111111; }
+.dark { --brand-mark: #d4f520; }
