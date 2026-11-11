@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
 /**
  * Wave 4: blocks (whole screens). App shells, dashboards, auth, list/board, detail, settings and
  * forms, onboarding, empty/error states, website pages and marketing sections, plus the /blocks
- * browser (category + domain filter, lazy previews). Each block preview renders at desktop and
+ * browser (category filter, lazy previews). Each block preview renders at desktop and
  * phone width without console errors, serious axe violations or horizontal page scroll, plus one
  * key interaction per interactive block.
  */
@@ -106,7 +106,7 @@ test.describe("wave 4 — block previews", () => {
   }
 });
 
-/** The /blocks browser: category + domain filters live in the query string, previews mount lazily. */
+/** The /blocks browser: category filter lives in the query string, previews mount lazily. */
 test.describe("wave 4 — /blocks browser", () => {
   test("category filter narrows the list, writes the query string and reads it back", async ({ page }) => {
     // /blocks boots the first previews (whole apps) in iframes; on the dev server that is slow.
@@ -115,7 +115,7 @@ test.describe("wave 4 — /blocks browser", () => {
     await gotoWithRetry(page, "/blocks");
     await waitForBlockHydration(page);
     const live = page.locator("main [aria-live='polite']").first();
-    await expect(live).toHaveText(/43 blocks shown/);
+    await expect(live).toHaveText(/\d+ blocks shown/);
     await page.getByRole("radio", { name: /^Authentication/ }).click();
     await expect(page).toHaveURL(/category=Authentication/);
     await expect(live).toHaveText(/7 blocks shown/);

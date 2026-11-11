@@ -100,7 +100,7 @@ function SiteCard({ block, onSelect, heading: Heading }: { block: BrowserBlock; 
 }
 
 /**
- * "Website pages" on /blocks: a thumbnail grid of whole sites. Selecting a card shows its full
+ * /websites: a thumbnail grid of whole sites. Selecting a card shows its full
  * preview and code above the grid (`?block=<name>`, shareable); "All sites" goes back.
  */
 export function SiteGrid({ blocks, selected, onSelect, cardHeading = "h2" }: { blocks: BrowserBlock[]; selected: string | null; onSelect: (name: string | null) => void; cardHeading?: "h2" | "h3" }) {
