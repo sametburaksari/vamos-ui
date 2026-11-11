@@ -299,7 +299,8 @@ describe("buildRegistry (this repository)", () => {
     assert.ok(entries.length >= 85, `expected 85+ docs entries, found ${entries.length}`);
     assert.ok(blocks.length >= 40, `expected 40+ blocks, found ${blocks.length}`);
     assert.equal(result.items.filter((i) => i.type === "component").length, entries.length);
-    assert.equal(result.items.filter((i) => i.type === "block").length, blocks.length);
+    // + "blocks-shared": the fixtures in apps/www/src/blocks/_shared, published as a block-type item.
+    assert.equal(result.items.filter((i) => i.type === "block" && i.name !== "blocks-shared").length, blocks.length);
   });
 
   test("every written item validates against r/schema.json", () => {
