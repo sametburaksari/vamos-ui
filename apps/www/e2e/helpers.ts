@@ -85,12 +85,16 @@ export async function componentPages(page: Page): Promise<string[]> {
 
 /** All block preview routes (/view/<name>), read from the /blocks index. */
 export async function blockPages(page: Page): Promise<string[]> {
-  await page.goto("/blocks");
-  // Previews mount lazily (only the first iframes exist on load), so read the "open in new tab"
-  // links every block card carries as well as any mounted iframe.
-  const srcs = await page
-    .locator("main iframe[src^='/view/'], main a[href^='/view/']")
-    .evaluateAll((els) => els.map((e) => e.getAttribute("src") ?? e.getAttribute("href")!));
+  // App blocks live on /blocks, example sites on /websites.
+  const srcs: string[] = [];
+  for (const index of ["/blocks", "/websites"]) {
+    await page.goto(index);
+    // Previews mount lazily (only the first iframes exist on load), so read the "open in new tab"
+    // links every block card carries as well as any mounted iframe.
+    srcs.push(...(await page
+      .locator("main iframe[src^='/view/'], main a[href^='/view/']")
+      .evaluateAll((els) => els.map((e) => e.getAttribute("src") ?? e.getAttribute("href")!))));
+  }
   return [...new Set(srcs)];
 }
 

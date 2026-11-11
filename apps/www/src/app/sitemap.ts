@@ -16,6 +16,7 @@ const pages = [
   ["/docs/changelog/", 0.6, "weekly"],
   ["/docs/license/", 0.3, "yearly"],
   ["/blocks/", 0.9, "weekly"],
+  ["/websites/", 0.9, "weekly"],
   ["/charts/", 0.7, "monthly"],
   ["/directory/", 0.6, "weekly"],
 ] as const;

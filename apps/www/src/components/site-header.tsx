@@ -51,7 +51,7 @@ function loadIndex(): Promise<SearchIndex> {
     components: [...entries]
       .sort((a, b) => a.title.localeCompare(b.title))
       .map((e) => ({ id: `c:${e.slug}`, title: e.title, subtitle: e.group, href: `/docs/components/${e.slug}`, keywords: [...e.covers, e.group, e.basedOn ?? ""] })),
-    blocks: blocks.map((b) => ({ id: `b:${b.name}`, title: b.title, subtitle: b.category, href: `/blocks#${b.name}`, keywords: [b.name, b.category, ...(b.tags ?? [])] })),
+    blocks: blocks.map((b) => ({ id: `b:${b.name}`, title: b.title, subtitle: b.category, href: b.category === "Website pages" ? `/websites?block=${b.name}` : `/blocks#${b.name}`, keywords: [b.name, b.category, ...(b.tags ?? [])] })),
   }));
   return indexPromise;
 }
