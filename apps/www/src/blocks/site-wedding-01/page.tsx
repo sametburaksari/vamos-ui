@@ -2,6 +2,7 @@ import { LocaleProvider } from "@vamos-ui/react";
 import { SiteShell, SiteShellLocale } from "@vamos-ui/react/blocks";
 import { tr } from "@vamos-ui/react/locale/tr";
 import { WeddingSite, weddingPages } from "./components/wedding-site";
+import { weddingMotion } from "./components/motion";
 import { WeddingType } from "./components/wedding-type";
 
 /**
@@ -12,6 +13,11 @@ import { WeddingType } from "./components/wedding-type";
  * decline per guest, a plus-one when the invitation allows it, a main course and dietary needs
  * per guest with clash hints — with a stationery reply card filling in beside it.
  * Script-free serif, sage on ivory, solid, comfortable. EN / TR.
+ *
+ * Motion (full, unhurried): the arched photograph opens and its hairline arch slides into place,
+ * the invitation card is set line by line, the olive sprig draws itself, the story years and the
+ * weekend arrive one after another, and on the RSVP page each answer is inked on to the reply
+ * card. Buttons press, arrows nudge.
  */
 export default function SiteWedding01() {
   return (
@@ -19,9 +25,11 @@ export default function SiteWedding01() {
       accent="#6B8E6B"
       material="solid"
       density="comfortable"
+      motion="full"
       pages={weddingPages}
       className="min-h-dvh bg-scene [--scene:color-mix(in_oklch,var(--surface)_95%,var(--warning))]"
     >
+      <style>{weddingMotion}</style>
       <WeddingType>
         <SiteShellLocale code="en">
           <LocaleProvider locale="en-GB">

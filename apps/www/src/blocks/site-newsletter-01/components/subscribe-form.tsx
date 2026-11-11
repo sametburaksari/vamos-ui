@@ -3,17 +3,18 @@
 import * as React from "react";
 import { Button, Field, Input, RadioGroup, RadioGroupItem, cn } from "@vamos-ui/react";
 import { MailCheck } from "lucide-react";
+import { CountUp } from "@vamos-ui/react/motion";
 import { useDesk, type Cadence } from "./desk-provider";
 import { copyFor, READERS, type SiteLocale } from "./content";
 
 /** "14,207 readers" — counts this visitor once they subscribe. */
 export function ReaderCount({ locale, className }: { locale: SiteLocale; className?: string }) {
-  const { t, f } = copyFor(locale);
+  const { t, intl } = copyFor(locale);
   const { subscription } = useDesk();
   const n = READERS + (subscription ? 1 : 0);
   return (
     <span className={className} data-testid="reader-count">
-      <span className="tabular">{f.number(n)}</span> {t({ en: "readers", tr: "okur" })}
+      <CountUp value={n} locale={intl} className="tabular" /> {t({ en: "readers", tr: "okur" })}
     </span>
   );
 }
@@ -59,7 +60,7 @@ export function SubscribeForm({ locale, tone = "masthead", idPrefix }: { locale:
 
   if (subscription) {
     return (
-      <div ref={statusRef} tabIndex={-1} role="status" data-testid="subscribed" className={cn("flex items-start gap-4 rounded-ui border border-fg/70 p-5 focus-ring", tone === "card" ? "bg-surface" : "bg-surface-2")}>
+      <div ref={statusRef} tabIndex={-1} role="status" data-testid="subscribed" className={cn("vm-enter flex items-start gap-4 rounded-ui border border-fg/70 p-5 focus-ring", tone === "card" ? "bg-surface" : "bg-surface-2")}>
         <MailCheck aria-hidden className="mt-0.5 size-6 shrink-0 text-accent-ink" />
         <div className="min-w-0">
           <p className="font-display text-[1.35rem] leading-tight text-fg">{t({ en: "One more step: check your inbox.", tr: "Bir adım kaldı: gelen kutunuza bakın." })}</p>
@@ -80,7 +81,7 @@ export function SubscribeForm({ locale, tone = "masthead", idPrefix }: { locale:
       <Field id={emailId} label={t({ en: "Your email", tr: "E-postanız" })} error={error ?? undefined} hint={typo ? undefined : t({ en: "No tracking pixels. Unsubscribe in one click.", tr: "İzleme pikseli yok. Tek tıkla abonelikten çıkın." })}>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Input ref={inputRef} id={emailId} type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" size="lg" value={email} onChange={(e) => setEmail(e.target.value)} className="min-w-0 flex-1" />
-          <Button type="submit" variant="primary" size="lg" loading={sending} loadingText={t({ en: "Sending…", tr: "Gönderiliyor…" })}>
+          <Button type="submit" variant="primary" size="lg" className="vm-press" loading={sending} loadingText={t({ en: "Sending…", tr: "Gönderiliyor…" })}>
             {t({ en: "Subscribe — it’s free", tr: "Abone ol — ücretsiz" })}
           </Button>
         </div>

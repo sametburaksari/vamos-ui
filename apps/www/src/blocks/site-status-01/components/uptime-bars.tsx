@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn, TooltipContent, TooltipRoot, TooltipTrigger } from "@vamos-ui/react";
 import { copyFor, healthLabel, healthTone, historyFor, uptimeOf, type DayCell, type SiteLocale, type StatusComponent } from "./content";
 import { useStatus } from "./status-provider";
+import { CountUp, Reveal } from "@vamos-ui/react/motion";
 
 /**
  * The signature: 90 daily bars per component. Hover or focus a day for a tooltip with its date,
@@ -11,7 +12,7 @@ import { useStatus } from "./status-provider";
  * on a day with an incident opens it.
  */
 export function UptimeBars({ component, locale }: { component: StatusComponent; locale: SiteLocale }) {
-  const { t, f, day } = copyFor(locale);
+  const { t, f, day, intl } = copyFor(locale);
   const { open } = useStatus();
   const cells = React.useMemo(() => historyFor(component), [component]);
   const total = uptimeOf(cells);
@@ -61,10 +62,12 @@ export function UptimeBars({ component, locale }: { component: StatusComponent; 
   };
 
   const cell = active !== null ? cells[active] : undefined;
+  // Fixed decimals while counting, so the figure never changes width.
+  const totalDigits = Math.min(3, (String(total).split(".")[1] ?? "").length);
   const id = `st-up-${component.id}`;
 
   return (
-    <div className="min-w-0">
+    <Reveal effect="fade" duration={700} className="st-up min-w-0">
       <TooltipRoot open={cell !== undefined} onOpenChange={() => {}}>
         <TooltipTrigger asChild>
           <div
@@ -96,8 +99,9 @@ export function UptimeBars({ component, locale }: { component: StatusComponent; 
                   const first = c.incidents[0];
                   if (first) open(first.id);
                 }}
+                style={{ "--st-i": i } as React.CSSProperties}
                 className={cn(
-                  "min-w-0 flex-1 rounded-[2px] outline-none transition-[transform,opacity] duration-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-surface",
+                  "st-bar min-w-0 flex-1 rounded-[2px] outline-none transition-[transform,opacity] duration-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-surface",
                   c.health === "none" ? "bg-track" : healthTone[c.health].fill,
                   c.health === "operational" && "opacity-80",
                   c.incidents.length ? "cursor-pointer" : "cursor-default",
@@ -128,10 +132,14 @@ export function UptimeBars({ component, locale }: { component: StatusComponent; 
       <div id={`${id}-sum`} className="mt-1.5 flex items-center justify-between gap-3 text-[11px] text-fg-subtle">
         <span>{t({ en: "90 days ago", tr: "90 gün önce" })}</span>
         <span aria-hidden className="h-px flex-1 bg-line" />
-        <span className="text-fg-muted tabular">{t({ en: `${f.number(total, { maximumFractionDigits: 3 })}% uptime`, tr: `%${f.number(total, { maximumFractionDigits: 3 })} erişilebilirlik` })}</span>
+        <span className="text-fg-muted tabular">
+          {locale === "tr" ? "%" : null}
+          <CountUp value={total} from={99} duration={900} locale={intl} format={{ minimumFractionDigits: totalDigits, maximumFractionDigits: totalDigits }} />
+          {locale === "tr" ? " erişilebilirlik" : "% uptime"}
+        </span>
         <span aria-hidden className="h-px flex-1 bg-line" />
         <span>{t({ en: "Today", tr: "Bugün" })}</span>
       </div>
-    </div>
+    </Reveal>
   );
 }

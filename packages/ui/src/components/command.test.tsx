@@ -48,6 +48,21 @@ describe("Command (inline)", () => {
     expect(options[0]).toHaveTextContent("İstanbul");
   });
 
+  it("shows an array of plain keys as a sequence and an array with modifiers as one combination", () => {
+    renderWithProviders(
+      <Command>
+        <CommandList>
+          <CommandItem value="Overview" shortcut={["g", "o"]}>Overview</CommandItem>
+          <CommandItem value="Search" shortcut={["mod", "k"]}>Search</CommandItem>
+        </CommandList>
+      </Command>,
+    );
+    const [seq, combo] = screen.getAllByRole("option").map((o) => o.querySelector("[data-slot='kbd-group']")!);
+    expect([...seq!.querySelectorAll("[data-slot='kbd']")].map((k) => k.textContent)).toEqual(["G", "O"]);
+    expect(combo!.querySelectorAll("[data-slot='kbd']")).toHaveLength(2);
+    expect(combo!.textContent).toMatch(/K$/);
+  });
+
   it("shows the empty state", async () => {
     const { user } = renderWithProviders(<Inline />);
     await user.type(screen.getByRole("combobox"), "zzz");

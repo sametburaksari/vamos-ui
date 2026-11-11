@@ -1,3 +1,4 @@
+import { CountUp } from "@vamos-ui/react/motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@vamos-ui/react";
 import { plans, type Copy } from "./content";
 import { PhoneFrame, PlanOverviewScreen } from "./phone";
@@ -18,7 +19,7 @@ export function PlanTabs({ c }: { c: Copy }) {
       </div>
       {plans.map((p) => (
         <TabsContent key={p.id} value={p.id} className="focus-ring rounded-ui">
-          <div className="grid items-center gap-12 md:grid-cols-[minmax(0,1fr)_auto] lg:gap-20">
+          <div className="vm-enter grid items-center gap-12 md:grid-cols-[minmax(0,1fr)_auto] lg:gap-20">
             <div>
               <p className="m-0 font-mono text-xs tracking-[0.1em] text-fg-subtle uppercase">
                 {f.number(p.weeks)} {t({ en: "weeks", tr: "hafta" })} · {t(p.perWeek)}
@@ -27,14 +28,14 @@ export function PlanTabs({ c }: { c: Copy }) {
               <p className="mt-5 max-w-[48ch] text-lead text-fg-muted">{t(p.blurb)}</p>
               <dl className="mt-10 grid max-w-xl grid-cols-3 border-t border-line">
                 {[
-                  [t({ en: "Length", tr: "Süre" }), `${f.number(p.weeks)}`, t({ en: "weeks", tr: "hafta" })],
-                  [t({ en: "Peak week", tr: "Zirve hafta" }), `${f.number(p.peak)}`, "km"],
-                  [t({ en: "Phases", tr: "Evre" }), `${f.number(p.phases.length)}`, ""],
+                  [t({ en: "Length", tr: "Süre" }), p.weeks, t({ en: "weeks", tr: "hafta" })],
+                  [t({ en: "Peak week", tr: "Zirve hafta" }), p.peak, "km"],
+                  [t({ en: "Phases", tr: "Evre" }), p.phases.length, ""],
                 ].map(([k, v, u]) => (
                   <div key={k} className="border-e border-line pt-4 pe-4 last:border-e-0 [&:not(:first-child)]:ps-4">
                     <dt className="font-mono text-[11px] tracking-[0.08em] text-fg-subtle uppercase">{k}</dt>
                     <dd className="m-0 mt-2 font-display text-4xl font-bold tracking-[-0.04em] text-fg tabular">
-                      {v}
+                      <CountUp value={Number(v)} locale={c.intl} duration={900} />
                       {u ? <span className="ms-1 font-mono text-xs font-normal tracking-normal text-fg-muted">{u}</span> : null}
                     </dd>
                   </div>

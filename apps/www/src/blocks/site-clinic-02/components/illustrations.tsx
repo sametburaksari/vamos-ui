@@ -33,8 +33,7 @@ function Cloud({ x, y, s = 1 }: { x: number; y: number; s?: number }) {
 function Kite({ x, y, s = 1, fill = ink.kite, tail = true, sway = false }: { x: number; y: number; s?: number; fill?: string; tail?: boolean; sway?: boolean }) {
   return (
     <g transform={`translate(${x} ${y}) scale(${s})`}>
-      <g>
-        {sway ? <animateTransform attributeName="transform" type="rotate" values="-5 0 40;5 0 40;-5 0 40" dur="5s" repeatCount="indefinite" /> : null}
+      <g className={sway ? "pk-kite" : undefined}>
         <path d="M0 0 L30 38 L0 92 L-30 38 Z" fill={fill} {...S} />
         <path d="M0 0 V92 M-30 38 H30" fill="none" {...S} strokeWidth={2} />
         {tail ? (

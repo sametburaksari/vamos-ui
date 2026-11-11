@@ -1,7 +1,7 @@
 {
   "name": "@vamos-ui/react",
   "version": "0.2.0",
-  "description": "Themeable component kit for admin panels and websites \u2014 theme \u00d7 material \u00d7 accent \u00d7 density \u00d7 font.",
+  "description": "Themeable component kit for admin panels and websites — theme × material × accent × density × font.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -21,6 +21,7 @@
     "./render": "./src/render/index.ts",
     "./blocks": "./src/blocks/index.ts",
     "./blocks/schema": "./src/blocks/schema/index.ts",
+    "./motion": "./src/motion/index.ts",
     "./form": "./src/form/index.ts",
     "./next": "./src/next/index.ts",
     "./locale-data": "./src/locale-data/index.ts",

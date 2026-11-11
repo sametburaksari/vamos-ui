@@ -3,6 +3,7 @@
 import * as React from "react";
 import { addIsoDays, Badge, buttonVariants, cn, Image, todayIso, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 import { Container, PageIntro, Section, SectionHeader, sitePageHref } from "@vamos-ui/react/blocks";
+import { CountUp, Stagger } from "@vamos-ui/react/motion";
 import { ArrowRight, CalendarCheck, Phone } from "lucide-react";
 import { assignedClinician, BookLink, useBooking, type Booking } from "./booking-provider";
 import { clinicians, copyFor, displayName, fill, PHONE, photos, serviceById, services, slotsFor, tl, type Clinician } from "./content";
@@ -74,16 +75,16 @@ export function ClinicHero() {
       <Container>
         <div className="grid items-center gap-12 @4xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] @4xl:gap-20">
           <div className="flex flex-col gap-7">
-            <p className="flex items-center gap-2 text-small font-medium text-accent-ink">
-              <span aria-hidden className="size-1.5 rounded-full bg-accent" />
+            <p className="vm-enter flex items-center gap-2 text-small font-medium text-accent-ink">
+              <span aria-hidden className="nl-breath size-1.5 rounded-full bg-accent" />
               {t(c.eyebrow)}
             </p>
-            <h1 id="nl-hero-title" className="font-display text-display-xl text-balance text-fg">
+            <h1 id="nl-hero-title" className="vm-enter [--vm-i:1] font-display text-display-xl text-balance text-fg">
               {em(t(c.title))}
             </h1>
-            <p className="max-w-[46ch] text-lead text-fg-muted">{t(c.lead)}</p>
-            <div className="flex flex-wrap items-center gap-3">
-              <BookLink className={buttonVariants({ variant: "primary", size: "lg" })}>
+            <p className="vm-enter [--vm-i:2] max-w-[46ch] text-lead text-fg-muted">{t(c.lead)}</p>
+            <div className="vm-enter [--vm-i:3] flex flex-wrap items-center gap-3">
+              <BookLink className={cn(buttonVariants({ variant: "primary", size: "lg" }), "vm-press")}>
                 <CalendarCheck aria-hidden />
                 {t(c.book)}
               </BookLink>
@@ -92,22 +93,23 @@ export function ClinicHero() {
                 {t(c.call)}
               </a>
             </div>
-            <dl className="mt-6 grid gap-6 border-t border-line pt-6 @md:grid-cols-3">
+            <dl className="vm-enter [--vm-i:4] mt-6 grid gap-6 border-t border-line pt-6 @md:grid-cols-3">
               {[
-                [c.hoursLabel, c.hours],
-                [c.wait, c.waitValue],
-                [c.patients, { en: "2,140", tr: "2.140" }],
+                [c.hoursLabel, t(c.hours)],
+                [c.wait, t(c.waitValue)],
+                [c.patients, <CountUp key="p" value={2140} locale={intl} duration={1600} />],
               ].map(([k, v]) => (
-                <div key={k!.en} className="flex flex-col gap-1">
-                  <dt className="text-xs text-fg-muted">{t(k!)}</dt>
-                  <dd className="text-small font-medium text-fg">{t(v!)}</dd>
+                <div key={(k as { en: string }).en} className="flex flex-col gap-1">
+                  <dt className="text-xs text-fg-muted">{t(k as { en: string; tr: string })}</dt>
+                  <dd className="text-small font-medium text-fg">{v as React.ReactNode}</dd>
                 </div>
               ))}
             </dl>
           </div>
-          <div className="relative">
+          <div className="vm-enter vm-enter-media [--vm-i:1] relative">
+            <style>{clinicMotion}</style>
             <Image src={photos.reception.src} width={photos.reception.width} height={photos.reception.height} alt={t(photos.reception.alt)} aspect="4/5" rounded="ui-lg" priority sizes="(min-width: 1024px) 45vw, 100vw" className="@4xl:ms-8" />
-            <div className="surface absolute inset-x-4 bottom-4 flex flex-col gap-3 rounded-ui-lg p-5 shadow-sm @md:inset-x-auto @md:end-6 @md:w-80 @4xl:-start-2 @4xl:end-auto">
+            <div className="nl-slot surface absolute inset-x-4 bottom-4 flex flex-col gap-3 rounded-ui-lg p-5 shadow-sm @md:inset-x-auto @md:end-6 @md:w-80 @4xl:-start-2 @4xl:end-auto">
               <p className="text-xs text-fg-muted">{t(c.next)}</p>
               <p className="min-h-[1.8rem] font-display text-[1.5rem] leading-tight text-fg">
                 {next?.day ? `${new Intl.DateTimeFormat(intl, { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(`${next.day}T12:00:00Z`))}, ${next.time}` : "—"}
@@ -135,6 +137,7 @@ export function ServicesList() {
     <Section anchor="services" theme={{ surface: "surface-2" }} headingId="nl-services-h">
       <Container>
         <SectionHeader eyebrow={t(c.servicesEyebrow)} title={t(c.servicesTitle)} lead={t(c.servicesLead)} align="split" headingId="nl-services-h" className="mb-12" />
+        <Stagger asChild effect="fade" step={70} duration={900}>
         <ul className="border-t border-line">
           {services.map((s) => (
             <li key={s.id} className="grid gap-x-8 gap-y-2 border-b border-line py-6 @3xl:grid-cols-[minmax(0,15rem)_minmax(0,1fr)_6rem_7rem_auto] @3xl:items-baseline">
@@ -149,10 +152,25 @@ export function ServicesList() {
             </li>
           ))}
         </ul>
+        </Stagger>
       </Container>
     </Section>
   );
 }
+
+/**
+ * Northline moves the way a good waiting room feels: slowly, softly, nothing jumps. The one
+ * flourish is the "next free appointment" card, which settles onto the photo after the page
+ * has arrived, and its dot breathes (a live indicator, the only looping motion on the site).
+ */
+const clinicMotion = `
+@keyframes nl-settle { from { opacity: 0; transform: translate3d(0, 10px, 0); filter: blur(6px); } }
+@keyframes nl-breath { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent) 45%, transparent); } 60% { box-shadow: 0 0 0 7px color-mix(in oklch, var(--accent) 0%, transparent); } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .nl-slot:where(:not([data-motion="off"] *)) { animation: nl-settle 1100ms var(--ease-out-quint) 700ms backwards; }
+  .nl-breath:where(:not([data-motion="off"] *)) { animation: nl-breath 2800ms var(--ease-in-out) infinite; }
+}
+`;
 
 function ClinicianCard({ person }: { person: Clinician }) {
   const { locale, t } = useBooking();
@@ -183,7 +201,7 @@ function ClinicianCard({ person }: { person: Clinician }) {
           <dt className="text-fg-muted">{t(c.speaks)}</dt>
           <dd className="text-fg">{t(person.languages)}</dd>
         </dl>
-        <BookLink preset={{ clinician: person.id }} className={cn(buttonVariants({ variant: "secondary" }), "mt-auto self-start")}>
+        <BookLink preset={{ clinician: person.id }} className={cn(buttonVariants({ variant: "secondary" }), "vm-press vm-nudge mt-auto self-start")}>
           {fill(t(c.bookWith), { name: person.title ? person.name.split(" ").slice(-1)[0]! : person.name.split(" ")[0]! })}
           <ArrowRight aria-hidden className="rtl:rotate-180" />
         </BookLink>
@@ -209,13 +227,16 @@ export function DoctorsPage() {
             <ToggleGroupItem value="children">{t(c.children)}</ToggleGroupItem>
             <ToggleGroupItem value="nursing">{t(c.nursing)}</ToggleGroupItem>
           </ToggleGroup>
-          <ul className="grid gap-x-12 gap-y-16 @5xl:grid-cols-2" aria-live="polite">
-            {list.map((p) => (
-              <li key={p.id}>
-                <ClinicianCard person={p} />
-              </li>
-            ))}
-          </ul>
+          {/* Keyed by the filter: a new selection fades in as a fresh set. */}
+          <Stagger asChild key={filter} effect="fade" step={90} duration={900}>
+            <ul className="grid gap-x-12 gap-y-16 @5xl:grid-cols-2" aria-live="polite">
+              {list.map((p) => (
+                <li key={p.id}>
+                  <ClinicianCard person={p} />
+                </li>
+              ))}
+            </ul>
+          </Stagger>
         </Container>
       </Section>
     </>

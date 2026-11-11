@@ -9,6 +9,7 @@ import { copyFor, fill, listings } from "./content";
 import { defaultFilters, useEstate } from "./estate-provider";
 import { ListingCard } from "./listing-card";
 import { SearchFilters } from "./search-filters";
+import { Stagger } from "@vamos-ui/react/motion";
 
 type View = "split" | "list" | "map";
 type Sort = "new" | "price-asc" | "price-desc" | "size";
@@ -133,13 +134,16 @@ export function ListingsPage() {
           ) : (
             <div className={cn("grid gap-8", view === "split" && "@5xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]")}>
               <div>
-                <ul className={cn("grid gap-5", view === "split" ? "@2xl:grid-cols-2 @5xl:grid-cols-1" : "@2xl:grid-cols-2 @5xl:grid-cols-3")}>
-                  {sorted.map((l, i) => (
-                    <li key={l.id}>
-                      <ListingCard listing={l} layout={view === "split" ? "row" : "stack"} priority={i < 2} />
-                    </li>
-                  ))}
-                </ul>
+                {/* Keyed by view and results: a new filter or sort lays the cards out again, quickly. */}
+                <Stagger asChild key={`${view}:${sorted.map((l) => l.id).join()}`} effect="fade" step={45} duration={480}>
+                  <ul className={cn("grid gap-5", view === "split" ? "@2xl:grid-cols-2 @5xl:grid-cols-1" : "@2xl:grid-cols-2 @5xl:grid-cols-3")}>
+                    {sorted.map((l, i) => (
+                      <li key={l.id}>
+                        <ListingCard listing={l} layout={view === "split" ? "row" : "stack"} priority={i < 2} />
+                      </li>
+                    ))}
+                  </ul>
+                </Stagger>
                 {empty}
               </div>
               {view === "split" ? (

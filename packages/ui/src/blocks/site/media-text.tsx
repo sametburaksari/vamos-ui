@@ -9,6 +9,7 @@ import type { BlockBaseProps } from "../types";
 import type { RichDoc } from "../schema/rich-doc";
 import { EmbedFacade } from "./embed-facade";
 import { CtaList, siteText, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
+import { Reveal } from "../../motion/reveal";
 
 export type MediaTextVariant = "side" | "overlap" | "bleed";
 
@@ -161,7 +162,7 @@ export function MediaText({
 
   return (
     <Section theme={theme} anchor={anchor} headingId={headingId} blockId={base} blockType="media-text" editMode={editMode} className={cn("vb-media-text", variant === "overlap" && "vb-media-overlap", className)} data-variant={variant} data-side={mediaSide}>
-      <div className="vb-reveal">{content}</div>
+      <Reveal disabled={editMode}>{content}</Reveal>
     </Section>
   );
 }

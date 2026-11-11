@@ -67,7 +67,9 @@ export function ProjectsPage({ locale }: { locale: SiteLocale }) {
           {list.length ? (
             <div className="grid gap-x-8 gap-y-12 @3xl:grid-cols-2">
               {list.map((p) => (
-                <ProjectCard key={p.slug} p={p} locale={locale} headingLevel={2} />
+                <div key={p.slug} className="vm-enter flex [&>article]:flex-1">
+                  <ProjectCard p={p} locale={locale} headingLevel={2} />
+                </div>
               ))}
             </div>
           ) : (

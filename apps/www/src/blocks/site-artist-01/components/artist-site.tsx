@@ -2,6 +2,7 @@ import { Badge, Button } from "@vamos-ui/react";
 import { BlockHeading, BlockImage, Container, Faq, Footer, Navbar, PageIntro, Section, SectionHeader, SiteShellPage, sitePageHref } from "@vamos-ui/react/blocks";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { band, copyFor, EMAIL, merch, photos, releases, shows, type Copy, type SiteLocale } from "./content";
+import { Reveal, Stagger, Ticker, Tilt } from "@vamos-ui/react/motion";
 import { CoverArt } from "./cover-art";
 import { MailingList } from "./mailing-list";
 import { ReleaseBrowser } from "./release-browser";
@@ -14,7 +15,8 @@ const music = sitePageHref("releases");
 
 /**
  * One language version of the Mira Sol site: navbar and footer around three pages (home, tour,
- * releases). Server component; the SiteShell in page.tsx picks page and language.
+ * releases). Server component; the SiteShell in
+ * page.tsx picks page and language, the interactive parts are client islands.
  */
 export function ArtistSite({ locale }: { locale: SiteLocale }) {
   const c = copyFor(locale);
@@ -45,6 +47,7 @@ export function ArtistSite({ locale }: { locale: SiteLocale }) {
       <main id="content">
         <SiteShellPage id="home" title={t({ en: "Mira Sol — Salt Hour, out 5 February. On tour 2027.", tr: "Mira Sol — Salt Hour 5 Şubat’ta çıkıyor. 2027 turnesi." })}>
           <Hero c={c} />
+          <CityTicker c={c} />
           <NewRelease c={c} />
 
           <Section anchor="tour" headingId="ms-tour-title">
@@ -181,12 +184,12 @@ function Hero({ c }: { c: Copy }) {
       <Container size="full">
         <div className="flex min-h-[min(88svh,56rem)] flex-col justify-between gap-10 pt-4">
           <div className="flex flex-wrap items-start justify-between gap-6">
-            <p className="m-0 max-w-[30ch] font-mono text-xs leading-relaxed tracking-[0.12em] uppercase">
+            <p className="vm-enter m-0 max-w-[30ch] font-mono text-xs leading-relaxed tracking-[0.12em] uppercase">
               {t({ en: "New album", tr: "Yeni albüm" })} <span className="text-accent-ink">salt hour</span>
               <br />
               {f.date(album.date, { day: "numeric", month: "long", year: "numeric" })}
             </p>
-            <a href={music} className="group surface flex w-full max-w-xs items-center gap-4 rounded-ui p-3 focus-ring sm:w-auto">
+            <a href={music} className="vm-enter vm-lift vm-press [--vm-i:3] group surface flex w-full max-w-xs items-center gap-4 rounded-ui p-3 focus-ring sm:w-auto">
               <span className="@container block w-16 shrink-0">
                 <CoverArt release={album} />
               </span>
@@ -198,16 +201,16 @@ function Hero({ c }: { c: Copy }) {
             </a>
           </div>
           <div>
-            <BlockHeading level={1} className="text-[clamp(4.5rem,23vw,24rem)] leading-[0.78] lowercase" text="mira *sol*" />
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-current/30 pt-4">
+            <BlockHeading level={1} className="vm-enter vm-enter-title [--vm-i:1] text-[clamp(4.5rem,23vw,24rem)] leading-[0.78] lowercase" text="mira *sol*" />
+            <div className="vm-enter [--vm-i:2] mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-current/30 pt-4">
               <p className="m-0 text-lead">
                 {t({ en: "Next:", tr: "Sıradaki:" })} <strong>{t(next.city)}</strong>, {next.venue} — {f.date(next.date, { day: "numeric", month: "long" })}
               </p>
               <div className="flex flex-wrap gap-2">
-                <Button asChild variant="primary" size="lg">
+                <Button asChild variant="primary" size="lg" className="vm-press">
                   <a href={tour}>{t({ en: "Tour dates", tr: "Turne tarihleri" })}</a>
                 </Button>
-                <Button asChild variant="secondary" size="lg">
+                <Button asChild variant="secondary" size="lg" className="vm-press">
                   <a href={home("videos")}>{t({ en: "Watch “Lodos”", tr: "“Lodos”u izle" })}</a>
                 </Button>
               </div>
@@ -219,6 +222,43 @@ function Hero({ c }: { c: Copy }) {
   );
 }
 
+/** Every city on the tour, running under the hero like a festival poster. */
+function CityTicker({ c }: { c: Copy }) {
+  const { t } = c;
+  const cities = [...new Set(shows.map((s) => t(s.city)))];
+  return (
+    <div className="border-y-2 border-fg bg-scene py-4">
+      <Ticker as="ul" duration={34} gap="1.5rem" aria-label={t({ en: "Tour cities", tr: "Turne şehirleri" })} pauseLabel={t({ en: "Pause animation", tr: "Animasyonu durdur" })}>
+        {cities.map((city) => (
+          <li key={city} className="flex items-center gap-6 font-display text-[clamp(2rem,6vw,4.5rem)] leading-none lowercase">
+            {city}
+            <span aria-hidden className="size-3 rounded-full bg-accent" />
+          </li>
+        ))}
+      </Ticker>
+      <style>{recordMotion}</style>
+    </div>
+  );
+}
+
+/**
+ * The record: a grooved disc behind the sleeve. Its resting state peeks out to the end side;
+ * with motion it starts tucked in and slides out (with a quarter turn) when the section reveals.
+ */
+const recordMotion = `
+.ms-disc {
+  background:
+    radial-gradient(circle, var(--accent) 0 14%, var(--fg) 14.5% 16%, transparent 16.5%),
+    repeating-radial-gradient(circle, color-mix(in oklch, var(--fg) 88%, var(--scene)) 0 1px, var(--fg) 1px 3px);
+  transform: translate3d(20%, 0, 0);
+}
+[dir="rtl"] .ms-disc { transform: translate3d(-20%, 0, 0); }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .ms-record:where(:not([data-motion="off"] *)) .ms-disc { transition: transform 1100ms var(--ease-out-expo) 260ms; }
+  .ms-record[data-reveal-state="pending"]:where(:not([data-motion="off"] *)) .ms-disc { transform: translate3d(0, 0, 0) rotate(-90deg); }
+}
+`;
+
 function NewRelease({ c }: { c: Copy }) {
   const { t, f } = c;
   const album = releases[0]!;
@@ -226,9 +266,13 @@ function NewRelease({ c }: { c: Copy }) {
     <Section anchor="release" headingId="ms-release-home">
       <Container>
         <div className="grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-center lg:gap-16">
-          <div className="@container">
-            <CoverArt release={album} size="lg" />
-          </div>
+          {/* Signature: the record slides half out of its sleeve as the section comes in. */}
+          <Reveal effect="fade" className="ms-record relative w-[82%]">
+            <div aria-hidden className="ms-disc absolute inset-[3%] rounded-full" />
+            <div className="@container relative">
+              <CoverArt release={album} size="lg" />
+            </div>
+          </Reveal>
           <div>
             <Badge tone="accent" shape="square" size="md">
               {t({ en: "Out", tr: "Çıkış" })} {f.date(album.date, { day: "numeric", month: "long" })}
@@ -237,6 +281,7 @@ function NewRelease({ c }: { c: Copy }) {
               salt <em>hour</em>
             </h2>
             <p className="m-0 mt-4 max-w-[48ch] text-lead text-fg-muted">{t(album.note)}</p>
+            <Stagger asChild effect="fade" step={40} delay={200}>
             <ol className="m-0 mt-6 grid list-none grid-cols-1 gap-x-8 p-0 font-mono text-sm sm:grid-cols-2">
               {album.tracks.map((tr, i) => (
                 <li key={tr.title} className="flex justify-between gap-4 border-b border-line py-2">
@@ -247,8 +292,9 @@ function NewRelease({ c }: { c: Copy }) {
                 </li>
               ))}
             </ol>
+            </Stagger>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild variant="primary" size="lg">
+              <Button asChild variant="primary" size="lg" className="vm-press">
                 <a href="https://shop.mirasol.example.com/salt-hour" target="_blank" rel="noopener noreferrer">
                   {t({ en: "Pre-order the LP", tr: "LP’yi ön sipariş ver" })}
                   <span className="sr-only">{t({ en: " (opens in a new tab)", tr: " (yeni sekmede açılır)" })}</span>
@@ -278,9 +324,11 @@ function Merch({ c }: { c: Copy }) {
           title={t({ en: "Take some *home*", tr: "Eve bir şey *götürün*" })}
           lead={t({ en: "Printed in Izmir, sold at every show and online. Tour tees in limited runs.", tr: "İzmir’de basıldı; her konserde ve internette satışta. Turne tişörtleri sınırlı sayıda." })}
         />
+        <Stagger asChild step={90}>
         <ul className="m-0 mt-10 grid list-none gap-6 p-0 sm:grid-cols-3">
           {merch.map((m) => (
             <li key={t(m.name)}>
+              <Tilt asChild max={5} glare>
               <a href="https://shop.mirasol.example.com" className="group block focus-ring">
                 <BlockImage src={m.photo.src} width={m.photo.width} height={m.photo.height} alt={t(m.photo.alt)} aspect="4:5" sizes="(min-width: 640px) 30vw, 100vw" imgClassName="transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none" className="overflow-hidden" />
                 <span className="mt-3 flex items-baseline justify-between gap-4">
@@ -289,9 +337,11 @@ function Merch({ c }: { c: Copy }) {
                 </span>
                 <span className="block text-small text-fg-muted">{t(m.note)}</span>
               </a>
+              </Tilt>
             </li>
           ))}
         </ul>
+        </Stagger>
       </Container>
     </Section>
   );

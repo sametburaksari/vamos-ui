@@ -5,6 +5,8 @@ import { SectionHeader } from "../section-header";
 import { RichText } from "../rich-text";
 import type { BlockBaseProps } from "../types";
 import type { RichDoc } from "../schema/rich-doc";
+import { CountUp } from "../../motion/count-up";
+import { Reveal, Stagger } from "../../motion/reveal";
 import { siteText, useBlockIds, type SiteBlockLabels } from "./_kit-1";
 
 export type StatsBandVariant = "inline" | "with-text" | "ledger";
@@ -45,7 +47,9 @@ function formatValue(v: number | string, locale: string): string {
 
 /**
  * Concrete, sourced numbers ("4.8 on Google · 1,240 reviews"). Semantic `dl`, Intl formatting,
- * units spelled out for screen readers, no count-up animation. Server component.
+ * units spelled out for screen readers. Numeric figures count up once when they scroll into view
+ * (motion kit CountUp: width reserved, final value for screen readers, still under reduced
+ * motion / `motion="off"`); the items reveal in sequence. Server component.
  *
  * ```tsx
  * <StatsBand items={[{ value: 4.8, label: "Google rating", source: "1,240 reviews, Nov 2026" }]} />
@@ -59,7 +63,7 @@ export function StatsBand({ variant = "inline", eyebrow, title, lead, body, item
     const spoken = s.unitLabel ?? (s.unit === "%" ? t("percent") : s.unit);
     return (
       <span className={cn("font-display tabular text-fg", size)}>
-        {formatValue(s.value, locale)}
+        {typeof s.value === "number" && !editMode ? <CountUp value={s.value} locale={locale} /> : formatValue(s.value, locale)}
         {s.unit ? (
           <>
             <sup aria-hidden className="vb-stat-unit ms-[0.08em] align-super font-sans text-[0.38em] font-medium tracking-normal text-fg-muted">
@@ -81,7 +85,9 @@ export function StatsBand({ variant = "inline", eyebrow, title, lead, body, item
 
   const header =
     title || eyebrow || (lead && variant !== "with-text") ? (
-      <SectionHeader eyebrow={eyebrow} title={title} lead={variant === "with-text" ? undefined : lead} headingLevel={headingLevel} headingId={headingId} editMode={editMode} labels={labels} locale={locale} />
+      <Reveal disabled={editMode}>
+        <SectionHeader eyebrow={eyebrow} title={title} lead={variant === "with-text" ? undefined : lead} headingLevel={headingLevel} headingId={headingId} editMode={editMode} labels={labels} locale={locale} />
+      </Reveal>
     ) : null;
 
   let content: React.ReactNode;
@@ -89,16 +95,18 @@ export function StatsBand({ variant = "inline", eyebrow, title, lead, body, item
     content = (
       <div className="grid gap-x-(--gutter) gap-y-10 @4xl:grid-cols-12">
         {header ? <div className="@4xl:col-span-4">{header}</div> : null}
-        <dl className={cn("flex flex-col border-t border-line", header ? "@4xl:col-span-7 @4xl:col-start-6" : "@4xl:col-span-12")}>
-          {items.map((s, i) => (
-            <div key={i} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-4 gap-y-1 border-b border-line py-5" data-field={editMode ? `props.items.${i}` : undefined}>
-              <dt className="text-body text-fg">{s.label}</dt>
-              <span aria-hidden className="vb-leader self-end" />
-              <dd className="text-end">{figure(s, "text-display-m")}</dd>
-              {source(s, "col-span-3")}
-            </div>
-          ))}
-        </dl>
+        <Stagger asChild effect="fade" disabled={editMode}>
+          <dl className={cn("flex flex-col border-t border-line", header ? "@4xl:col-span-7 @4xl:col-start-6" : "@4xl:col-span-12")}>
+            {items.map((s, i) => (
+              <div key={i} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-4 gap-y-1 border-b border-line py-5" data-field={editMode ? `props.items.${i}` : undefined}>
+                <dt className="text-body text-fg">{s.label}</dt>
+                <span aria-hidden className="vb-leader self-end" />
+                <dd className="text-end">{figure(s, "text-display-m")}</dd>
+                {source(s, "col-span-3")}
+              </div>
+            ))}
+          </dl>
+        </Stagger>
       </div>
     );
   } else if (variant === "with-text") {
@@ -109,37 +117,41 @@ export function StatsBand({ variant = "inline", eyebrow, title, lead, body, item
           {lead ? <p className="vb-lead text-lead text-fg-muted">{lead}</p> : null}
           {body ? <RichText doc={body} components={components} labels={labels} locale={locale} headingOffset={1} editMode={editMode} field="props.body" /> : null}
         </div>
-        <dl className="grid grid-cols-2 border-s border-t border-line @4xl:col-span-6 @4xl:col-start-7">
-          {items.slice(0, 4).map((s, i) => (
-            <div key={i} className="flex flex-col gap-2 border-e border-b border-line p-[clamp(1rem,3cqi,2rem)]" data-field={editMode ? `props.items.${i}` : undefined}>
-              <dt className="order-2 text-small text-fg-muted text-pretty">{s.label}</dt>
-              <dd className="order-1">{figure(s, "text-display-l")}</dd>
-              {source(s, "order-3 mt-auto pt-3")}
-            </div>
-          ))}
-        </dl>
+        <Stagger asChild disabled={editMode}>
+          <dl className="grid grid-cols-2 border-s border-t border-line @4xl:col-span-6 @4xl:col-start-7">
+            {items.slice(0, 4).map((s, i) => (
+              <div key={i} className="flex flex-col gap-2 border-e border-b border-line p-[clamp(1rem,3cqi,2rem)]" data-field={editMode ? `props.items.${i}` : undefined}>
+                <dt className="order-2 text-small text-fg-muted text-pretty">{s.label}</dt>
+                <dd className="order-1">{figure(s, "text-display-l")}</dd>
+                {source(s, "order-3 mt-auto pt-3")}
+              </div>
+            ))}
+          </dl>
+        </Stagger>
       </div>
     );
   } else {
     content = (
       <div className="flex flex-col gap-12">
         {header}
-        <dl className={cn("grid grid-cols-2 gap-y-10", items.length >= 3 && "@4xl:grid-cols-3", items.length >= 4 && "@4xl:grid-cols-4", items.length >= 5 && "@6xl:grid-cols-5")}>
-          {items.map((s, i) => (
-            <div key={i} className="vb-stat-inline flex flex-col gap-2 border-line ps-[clamp(0.75rem,2.5cqi,2rem)]" data-field={editMode ? `props.items.${i}` : undefined}>
-              <dt className="order-2 max-w-[24ch] text-small text-fg-muted text-pretty">{s.label}</dt>
-              <dd className="order-1">{figure(s, "text-display-l")}</dd>
-              {source(s, "order-3")}
-            </div>
-          ))}
-        </dl>
+        <Stagger asChild disabled={editMode}>
+          <dl className={cn("grid grid-cols-2 gap-y-10", items.length >= 3 && "@4xl:grid-cols-3", items.length >= 4 && "@4xl:grid-cols-4", items.length >= 5 && "@6xl:grid-cols-5")}>
+            {items.map((s, i) => (
+              <div key={i} className="vb-stat-inline flex flex-col gap-2 border-line ps-[clamp(0.75rem,2.5cqi,2rem)]" data-field={editMode ? `props.items.${i}` : undefined}>
+                <dt className="order-2 max-w-[24ch] text-small text-fg-muted text-pretty">{s.label}</dt>
+                <dd className="order-1">{figure(s, "text-display-l")}</dd>
+                {source(s, "order-3")}
+              </div>
+            ))}
+          </dl>
+        </Stagger>
       </div>
     );
   }
 
   return (
     <Section theme={theme} anchor={anchor} headingId={title ? headingId : undefined} blockId={base} blockType="stats" editMode={editMode} className={cn("vb-stats", className)} data-variant={variant}>
-      <Container className="vb-reveal">{content}</Container>
+      <Container>{content}</Container>
     </Section>
   );
 }

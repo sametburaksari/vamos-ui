@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { PageTransition, startPageTransition } from "@vamos-ui/react/motion";
 
 export type SiteLocale = "en" | "tr";
 
@@ -27,7 +28,7 @@ export function LocaleSwitch({ en, tr }: { en: React.ReactNode; tr: React.ReactN
       if (!href?.startsWith("?lang=")) return;
       e.preventDefault();
       window.history.pushState(null, "", href);
-      setLocale(readLocale());
+      startPageTransition(() => setLocale(readLocale()), { scope: document.querySelector<HTMLElement>(".ag-site") });
       // The mobile menu is a native popover: close it after switching.
       document.querySelectorAll<HTMLElement>("[popover]").forEach((p) => {
         try { p.hidePopover(); } catch { /* not open */ }
@@ -42,8 +43,8 @@ export function LocaleSwitch({ en, tr }: { en: React.ReactNode; tr: React.ReactN
   }, []);
 
   return (
-    <div lang={locale} className="contents">
+    <PageTransition pageKey={locale} lang={locale}>
       {locale === "tr" ? tr : en}
-    </div>
+    </PageTransition>
   );
 }

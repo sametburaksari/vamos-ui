@@ -8,6 +8,7 @@ import { articlesIn, categories, categoryById, copyFor, type SiteLocale } from "
 import { CategoryIcon } from "./category-icon";
 import { ArticleLink, CategoryLink } from "./help-links";
 import { useHelp } from "./help-provider";
+import { Stagger } from "@vamos-ui/react/motion";
 
 /** One category: intro, the other categories as a side list, and its articles with a filter. */
 export function CategoryPage({ locale }: { locale: SiteLocale }) {
@@ -79,6 +80,7 @@ export function CategoryPage({ locale }: { locale: SiteLocale }) {
               <p className="m-0 mt-4 text-sm text-fg-muted" aria-live="polite">
                 {t({ en: `${shown.length} of ${list.length} articles`, tr: `${list.length} makaleden ${shown.length} tanesi` })}
               </p>
+              <Stagger asChild key={list.map((a) => a.id).join()} effect="fade" step={40} duration={420}>
               <ol className="m-0 mt-3 list-none p-0">
                 {shown.map((a) => (
                   <li key={a.id} className="border-t border-line last:border-b">
@@ -93,6 +95,7 @@ export function CategoryPage({ locale }: { locale: SiteLocale }) {
                   </li>
                 ))}
               </ol>
+              </Stagger>
               {!shown.length ? <p className="m-0 mt-6 text-fg-muted">{t({ en: "Nothing here matches — try the search at the top of the help centre.", tr: "Burada eşleşen yok — yardım merkezinin üstündeki aramayı deneyin." })}</p> : null}
             </div>
         </div>

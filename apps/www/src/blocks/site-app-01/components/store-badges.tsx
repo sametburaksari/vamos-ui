@@ -24,7 +24,7 @@ export function StoreBadges({ c, className, size = "md" }: { c: Copy; className?
           <a
             href={href}
             className={cn(
-              "inline-flex items-center gap-3 rounded-ui border border-line bg-fg text-scene transition-opacity hover:opacity-90 focus-ring",
+              "vm-press vm-lift inline-flex items-center gap-3 rounded-ui border border-line bg-fg text-scene focus-ring",
               size === "lg" ? "h-16 px-6" : "h-13 px-4",
             )}
           >

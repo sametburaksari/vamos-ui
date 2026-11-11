@@ -21,8 +21,8 @@ export function copyFor(locale: SiteLocale) {
   };
 }
 
-export const PHONE = "+902163470912";
-export const WHATSAPP = "+905324470912";
+export const PHONE = "+902160000000";
+export const WHATSAPP = "+905000000000";
 
 export const photos = {
   stones: { ...unsplash("1544161515-4ab6ce6db874", 1400, 1750), alt: { en: "A therapist laying warm stones beside a massage table", tr: "Masaj masasının yanında sıcak taşları yerleştiren terapist" } },
@@ -57,7 +57,7 @@ export function branch(t: (v: Localized<string>) => string): Branch {
     name: "Hamam Moda",
     address: { line: "Moda Caddesi 88", district: "Moda", city: "Kadıköy", region: "İstanbul", postalCode: "34710", country: "TR", geo: { lat: 40.9842, lng: 29.0264 } },
     phone: PHONE,
-    email: "rezervasyon@hamammoda.com",
+    email: "rezervasyon@example.com",
     hours,
     mapImage: photos.map,
     notes: t({ en: "Five minutes from Kadıköy pier on the Moda tram. Separate women’s hours on Tuesday mornings.", tr: "Kadıköy iskelesinden Moda tramvayıyla beş dakika. Salı sabahları yalnızca kadınlara açıktır." }),

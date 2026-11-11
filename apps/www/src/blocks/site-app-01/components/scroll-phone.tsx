@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@vamos-ui/react";
+import { Reveal, Stagger } from "@vamos-ui/react/motion";
 import { PhoneFrame } from "./phone";
 
 export interface ScrollPhoneChapter {
@@ -112,10 +113,15 @@ export function ScrollPhone({ chapters, navLabel, screenLabel }: { chapters: Scr
               </span>
               <span className="text-fg-muted">{c.kicker}</span>
             </div>
-            <h3 id={`tr-ch-${c.id}`} className="mt-5 max-w-[16ch] font-display text-display-m text-fg">
-              {c.title}
-            </h3>
-            <p className="mt-5 max-w-[46ch] text-lead text-fg-muted">{c.text}</p>
+            <Reveal effect="clip" asChild>
+              <h3 id={`tr-ch-${c.id}`} className="mt-5 max-w-[16ch] font-display text-display-m text-fg">
+                {c.title}
+              </h3>
+            </Reveal>
+            <Reveal delay={90} asChild>
+              <p className="mt-5 max-w-[46ch] text-lead text-fg-muted">{c.text}</p>
+            </Reveal>
+            <Stagger asChild delay={160} step={70}>
             <ul className="m-0 mt-8 grid max-w-[46ch] list-none gap-0 p-0">
               {c.points.map((p) => (
                 <li key={p} className="flex gap-3 border-t border-line py-3 text-small text-fg">
@@ -124,6 +130,7 @@ export function ScrollPhone({ chapters, navLabel, screenLabel }: { chapters: Scr
                 </li>
               ))}
             </ul>
+            </Stagger>
             <div className="mt-10 flex justify-center lg:hidden" aria-hidden>
               <PhoneFrame size="sm">
                 <div className="flex flex-1 flex-col">{c.screen}</div>

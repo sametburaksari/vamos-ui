@@ -3,6 +3,7 @@
 import * as React from "react";
 import { addIsoDays, Alert, Button, Calendar, CalendarSlots, Checkbox, Field, Image, Input, PhoneInput, RadioGroup, Select, Stepper, Textarea, todayIso } from "@vamos-ui/react";
 import { Container, PageIntro, Section, sitePageHref } from "@vamos-ui/react/blocks";
+import { PageTransition } from "@vamos-ui/react/motion";
 import { CalendarPlus, Check, Clock, UserRound } from "lucide-react";
 import { assignedClinician, staffFor, useBooking } from "./booking-provider";
 import { clinicianById, copyFor, displayName, fill, serviceById, services, slotsFor, tl, type Clinician, type ServiceId } from "./content";
@@ -164,7 +165,7 @@ export function AppointmentPage() {
             <div ref={panelRef} className="min-w-0">
               {done && service && booking.day && booking.time ? (
                 <div className="flex flex-col items-start gap-6" role="status">
-                  <span className="grid size-12 place-items-center rounded-full bg-accent text-accent-fg">
+                  <span className="vm-enter grid size-12 place-items-center rounded-full bg-accent text-accent-fg">
                     <Check aria-hidden className="size-6" />
                   </span>
                   <h2 tabIndex={-1} className="font-display text-display-m text-fg outline-none">
@@ -194,7 +195,7 @@ export function AppointmentPage() {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col gap-6">
+                <PageTransition pageKey={String(step)} className="flex flex-col gap-6">
                   <h2 tabIndex={-1} className="font-display text-h3 font-semibold text-fg outline-none">
                     <span className="me-3 font-mono text-small font-normal text-fg-muted">{step + 1}/5</span>
                     {t(stepTitle)}
@@ -323,7 +324,7 @@ export function AppointmentPage() {
                       </Button>
                     )}
                   </div>
-                </div>
+                </PageTransition>
               )}
             </div>
 

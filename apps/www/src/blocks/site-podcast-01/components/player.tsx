@@ -107,9 +107,9 @@ export function EpisodePlayer({ locale, mode = "hero" }: { locale: SiteLocale; m
         </ol>
 
         {/* Waveform (decorative) + scrubber */}
-        <div aria-hidden className="mt-3 flex h-14 items-center gap-[2px]">
+        <div aria-hidden className="lt-wave mt-3 flex h-14 items-center gap-[2px]">
           {Array.from({ length: BARS }, (_, i) => (
-            <span key={i} className={cn("block flex-1 rounded-full", i / BARS < played ? "bg-accent" : "bg-fg-subtle opacity-40")} style={{ height: `${bar(i)}%` }} />
+            <span key={i} className={cn("block flex-1 rounded-full", i / BARS < played ? "bg-accent" : "bg-fg-subtle opacity-40")} style={{ height: `${bar(i)}%`, "--lt-i": i } as React.CSSProperties} />
           ))}
         </div>
         <Slider
@@ -129,7 +129,7 @@ export function EpisodePlayer({ locale, mode = "hero" }: { locale: SiteLocale; m
           <IconButton label={t({ en: "Back 15 seconds", tr: "15 saniye geri" })} variant="ghost" onClick={() => seek(time - 15)}>
             <RotateCcw />
           </IconButton>
-          <Button variant="primary" size="lg" className="size-14 rounded-full p-0" onClick={() => setPlaying((p) => !p)} aria-label={playing ? t({ en: "Pause", tr: "Duraklat" }) : t({ en: "Play", tr: "Oynat" })} data-testid="play">
+          <Button variant="primary" size="lg" className="vm-press size-14 rounded-full p-0" onClick={() => setPlaying((p) => !p)} aria-label={playing ? t({ en: "Pause", tr: "Duraklat" }) : t({ en: "Play", tr: "Oynat" })} data-testid="play">
             {playing ? <Pause className="size-6" /> : <Play className="size-6 translate-x-px" />}
           </Button>
           <IconButton label={t({ en: "Forward 30 seconds", tr: "30 saniye ileri" })} variant="ghost" onClick={() => seek(time + 30)}>

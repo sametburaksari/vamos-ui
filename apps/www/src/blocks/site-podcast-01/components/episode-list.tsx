@@ -68,7 +68,7 @@ export function EpisodeList({ locale }: { locale: SiteLocale }) {
       ) : (
         <Accordion type="single" collapsible className="mt-2" headingLevel={3}>
           {shown.map((e) => (
-            <AccordionItem key={e.no} value={String(e.no)}>
+            <AccordionItem key={e.no} value={String(e.no)} className="vm-enter">
               <AccordionTrigger className="py-4">
                 <span className="grid w-full grid-cols-[2.75rem_minmax(0,1fr)] items-baseline gap-3 text-start sm:grid-cols-[3.5rem_minmax(0,1fr)_auto]">
                   <span className="font-mono text-sm text-accent-ink tabular-nums">{String(e.no).padStart(3, "0")}</span>

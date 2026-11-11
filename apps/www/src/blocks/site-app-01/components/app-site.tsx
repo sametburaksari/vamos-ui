@@ -1,3 +1,4 @@
+import { CountUp, Reveal } from "@vamos-ui/react/motion";
 import { BlockHeading, Container, Cta, Footer, Navbar, Section, SectionHeader, SiteShellPage, StatsBand, Testimonials, sitePageHref } from "@vamos-ui/react/blocks";
 import { chapters, copyFor, EMAIL, PHONE, reviews, type SiteLocale } from "./content";
 import { DownloadPage } from "./download-page";
@@ -17,7 +18,7 @@ const download = sitePageHref("download");
  */
 export function AppSite({ locale }: { locale: SiteLocale }) {
   const c = copyFor(locale);
-  const { t, f, intl, labels } = c;
+  const { t, intl, labels } = c;
   const common = { locale: intl, labels };
 
   const screens = { live: <LiveScreen c={c} />, plan: <PlanScreen c={c} />, coach: <CoachScreen c={c} />, recover: <RecoverScreen c={c} /> };
@@ -55,25 +56,25 @@ export function AppSite({ locale }: { locale: SiteLocale }) {
             <Container size="wide">
               <div className="grid items-center gap-14 pt-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-8">
                 <div>
-                  <p className="m-0 inline-flex items-center gap-3 font-mono text-xs tracking-[0.1em] text-fg-muted uppercase">
+                  <p className="vm-enter m-0 inline-flex items-center gap-3 font-mono text-xs tracking-[0.1em] text-fg-muted uppercase">
                     <span aria-hidden className="size-2 rounded-full bg-accent" />
                     {t({ en: "Running coach · iPhone & Android", tr: "Koşu koçu · iPhone ve Android" })}
                   </p>
-                  <BlockHeading level={1} size="display-2xl" className="mt-6 max-w-[11ch]" text={t({ en: "Run the pace you *planned.*", tr: "Planladığın *tempoda* koş." })} />
-                  <p className="mt-8 max-w-[44ch] text-lead text-fg-muted">
+                  <BlockHeading level={1} size="display-2xl" className="vm-enter vm-enter-title mt-6 max-w-[11ch] [--vm-i:1]" text={t({ en: "Run the pace you *planned.*", tr: "Planladığın *tempoda* koş." })} />
+                  <p className="vm-enter mt-8 max-w-[44ch] text-lead text-fg-muted [--vm-i:2]">
                     {t({
                       en: "Tempo Run builds your week around your calendar, talks you through every rep and tells you honestly when today should be easy.",
                       tr: "Tempo Run haftanızı takviminize göre kurar, her tekrarda size eşlik eder ve bugünün kolay geçmesi gerektiğinde bunu dürüstçe söyler.",
                     })}
                   </p>
-                  <StoreBadges c={c} className="mt-10" />
-                  <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-5 border-t border-line pt-6">
+                  <StoreBadges c={c} className="vm-enter mt-10 [--vm-i:3]" />
+                  <dl className="vm-enter mt-12 flex flex-wrap gap-x-10 gap-y-5 border-t border-line pt-6 [--vm-i:4]">
                     {[
-                      [t({ en: "App rating", tr: "Uygulama puanı" }), f.number(4.8, { minimumFractionDigits: 1 }), t({ en: "38,400 ratings", tr: "38.400 değerlendirme" })],
-                      [t({ en: "Runners", tr: "Koşucu" }), f.compact(310000), t({ en: "active in October", tr: "Ekim’de aktif" })],
+                      [t({ en: "App rating", tr: "Uygulama puanı" }), <CountUp key="r" value={4.8} locale={c.intl} format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }} />, t({ en: "38,400 ratings", tr: "38.400 değerlendirme" })],
+                      [t({ en: "Runners", tr: "Koşucu" }), <CountUp key="n" value={310000} locale={c.intl} format={{ notation: "compact", maximumFractionDigits: 0 }} />, t({ en: "active in October", tr: "Ekim’de aktif" })],
                       [t({ en: "Free plan", tr: "Ücretsiz paket" }), t({ en: "Forever", tr: "Süresiz" }), t({ en: "no ads", tr: "reklamsız" })],
                     ].map(([k, v, s]) => (
-                      <div key={k}>
+                      <div key={String(k)}>
                         <dt className="font-mono text-[11px] tracking-[0.08em] text-fg-subtle uppercase">{k}</dt>
                         <dd className="m-0 mt-1.5 font-display text-3xl font-bold tracking-[-0.04em] text-fg tabular">{v}</dd>
                         <dd className="m-0 font-mono text-[11px] text-fg-muted">{s}</dd>
@@ -82,13 +83,13 @@ export function AppSite({ locale }: { locale: SiteLocale }) {
                   </dl>
                 </div>
 
-                <div className="relative mx-auto flex h-[37rem] w-full max-w-[30rem] items-center justify-center sm:h-[40rem]">
+                <div className="vm-enter relative mx-auto flex h-[37rem] w-full max-w-[30rem] items-center justify-center sm:h-[40rem] [--vm-i:2]">
                   <svg viewBox="0 0 400 640" className="absolute inset-0 size-full" aria-hidden preserveAspectRatio="xMidYMid meet">
                     <rect x="20" y="20" width="360" height="600" rx="180" fill="none" stroke="var(--line)" strokeWidth="1.5" />
                     <rect x="52" y="52" width="296" height="536" rx="148" fill="none" stroke="var(--line)" strokeWidth="1.5" />
                     <rect x="84" y="84" width="232" height="472" rx="116" fill="none" stroke="var(--line)" strokeWidth="1.5" strokeDasharray="2 8" />
-                    <path d="M 380 200 A 180 180 0 0 0 200 20" fill="none" stroke="var(--accent)" strokeWidth="4" strokeLinecap="round" />
-                    <circle cx="380" cy="200" r="7" fill="var(--accent)" />
+                    <path className="tr-lap" pathLength={1} d="M 380 200 A 180 180 0 0 0 200 20" fill="none" stroke="var(--accent)" strokeWidth="4" strokeLinecap="round" />
+                    <circle className="tr-pacer" cx="380" cy="200" r="7" fill="var(--accent)" />
                   </svg>
                   <div role="img" aria-label={t({ en: "The live run screen and the morning readiness screen of Tempo Run", tr: "Tempo Run’ın canlı koşu ve sabah hazırlık ekranları" })} className="relative flex items-center">
                     <div aria-hidden className="flex items-center">
@@ -147,9 +148,9 @@ export function AppSite({ locale }: { locale: SiteLocale }) {
                 title={t({ en: "From your first 5K to *42.2*", tr: "İlk 5K’dan *42,2*’ye" })}
                 lead={t({ en: "Pick a distance — the phone shows the plan’s shape: how volume builds, where it steps back, when it tapers.", tr: "Bir mesafe seçin — telefon planın şeklini gösterir: hacim nasıl artar, nerede geri çekilir, ne zaman azalır." })}
               />
-              <div className="mt-12">
+              <Reveal className="mt-12">
                 <PlanTabs c={c} />
-              </div>
+              </Reveal>
             </Container>
           </Section>
 

@@ -1,0 +1,389 @@
+/* ------------------------------------------------------------------ */
+/* Motion kit (@vamos-ui/react/motion)                                 */
+/*                                                                     */
+/* Levels: data-motion="full | subtle | off" on any ancestor (SiteShell */
+/* sets it); "off" on <html> beats every scope. No attribute = subtle.  */
+/* Every hidden or moving state below sits behind                       */
+/*   @media screen and (prefers-reduced-motion: no-preference)          */
+/* and the ON guard :where(:not([data-motion="off"], [data-motion="off"] *))
+/* so reduced motion, motion-off and print always get the final state.  */
+/* Transform / opacity / filter / clip-path only: no layout shift.     */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --motion-fast: 140ms;
+  --motion-base: 240ms;
+  --motion-slow: 420ms;
+  --motion-reveal: 680ms;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  /* A damped spring: ~4% overshoot, settles by 70%. */
+  --ease-spring: linear(0, 0.034 1.6%, 0.135 3.4%, 0.474 8.5%, 0.73 13%, 0.896 17.8%, 0.988 22.9%, 1.033 28.6%, 1.045 34.2%, 1.039 40.4%, 1.014 52.8%, 0.999 68.4%, 1);
+  --motion-distance: 14px;
+  --motion-blur: 6px;
+  --motion-stagger: 60ms;
+  /* Density factor: compact moves shorter and quicker, spacious a touch slower. */
+  --motion-k: 1;
+}
+[data-motion="subtle"] {
+  --motion-reveal: 680ms;
+  --motion-distance: 14px;
+  --motion-blur: 6px;
+  --motion-stagger: 60ms;
+}
+[data-motion="full"] {
+  --motion-reveal: 960ms;
+  --motion-distance: 32px;
+  --motion-blur: 12px;
+  --motion-stagger: 90ms;
+}
+[data-density="compact"] { --motion-k: 0.8; }
+[data-density="comfortable"] { --motion-k: 1; }
+[data-density="spacious"] { --motion-k: 1.12; }
+
+@keyframes vm-fade-in { from { opacity: 0; } }
+@keyframes vm-fade-out { to { opacity: 0; } }
+@keyframes vm-enter { from { opacity: 0; transform: translate3d(0, calc(var(--motion-distance) * var(--motion-k)), 0); } }
+@keyframes vm-enter-title {
+  from { opacity: 0; transform: translate3d(0, 0.3em, 0); clip-path: inset(0 -0.2em 100% -0.2em); }
+  to { clip-path: inset(-0.2em -0.2em -0.3em -0.2em); }
+}
+@keyframes vm-enter-media { from { opacity: 0; clip-path: inset(10% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes vm-enter-zoom { from { transform: scale(1.06); } }
+@keyframes vm-page-in { from { opacity: 0; transform: translate3d(0, 10px, 0); } }
+@keyframes vm-vt-in { from { opacity: 0; transform: translate3d(0, 10px, 0); } }
+@keyframes vm-marquee { to { transform: translate3d(calc(-50% * var(--dir, 1)), 0, 0); } }
+@keyframes vm-parallax {
+  from { transform: translate3d(0, var(--vm-parallax-shift), 0); }
+  to { transform: translate3d(0, calc(var(--vm-parallax-shift) * -1), 0); }
+}
+@keyframes vm-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ------------------------------------------------------- Reveal states */
+/* useReveal flips data-reveal-state: pending → in → done.               */
+
+[data-reveal] { --_from: translate3d(0, calc(var(--motion-distance) * var(--motion-k)), 0); }
+[data-reveal="fade"] { --_from: none; }
+[data-reveal="scale"] { --_from: scale(0.94); }
+[data-reveal="blur"] { --_from: translate3d(0, calc(var(--motion-distance) * 0.5 * var(--motion-k)), 0); }
+[data-reveal="clip"] { --_from: translate3d(0, calc(var(--motion-distance) * 0.6 * var(--motion-k)), 0); }
+
+/* Stagger: --vm-i per child, capped at 12 so long lists never drag. */
+[data-reveal-stagger] > :nth-child(2) { --vm-i: 1; }
+[data-reveal-stagger] > :nth-child(3) { --vm-i: 2; }
+[data-reveal-stagger] > :nth-child(4) { --vm-i: 3; }
+[data-reveal-stagger] > :nth-child(5) { --vm-i: 4; }
+[data-reveal-stagger] > :nth-child(6) { --vm-i: 5; }
+[data-reveal-stagger] > :nth-child(7) { --vm-i: 6; }
+[data-reveal-stagger] > :nth-child(8) { --vm-i: 7; }
+[data-reveal-stagger] > :nth-child(9) { --vm-i: 8; }
+[data-reveal-stagger] > :nth-child(10) { --vm-i: 9; }
+[data-reveal-stagger] > :nth-child(11) { --vm-i: 10; }
+[data-reveal-stagger] > :nth-child(12) { --vm-i: 11; }
+[data-reveal-stagger] > :nth-child(n + 13) { --vm-i: 12; }
+
+/* Text reveal structure (also without motion: plain inline text). */
+.vm-tr-mask { display: inline-block; vertical-align: top; }
+.vm-tr-unit { display: inline-block; }
+[data-text-reveal="line"] .vm-tr-mask { display: block; }
+[data-reveal="text"] .vm-tr-mask { overflow: clip; overflow-clip-margin: 0.1em; padding-block-end: 0.12em; margin-block-end: -0.12em; }
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* Hidden (pending) */
+  [data-reveal][data-reveal-state="pending"]:not([data-reveal-stagger], [data-text-reveal]):where(:not([data-motion="off"], [data-motion="off"] *)),
+  [data-reveal-stagger][data-reveal-state="pending"]:where(:not([data-motion="off"], [data-motion="off"] *)) > * {
+    opacity: 0;
+    transform: var(--_from);
+  }
+  [data-reveal="blur"][data-reveal-state="pending"]:not([data-reveal-stagger], [data-text-reveal]):where(:not([data-motion="off"], [data-motion="off"] *)),
+  [data-reveal="blur"][data-reveal-stagger][data-reveal-state="pending"]:where(:not([data-motion="off"], [data-motion="off"] *)) > * {
+    filter: blur(var(--motion-blur));
+  }
+  [data-reveal="clip"][data-reveal-state="pending"]:not([data-reveal-stagger], [data-text-reveal]):where(:not([data-motion="off"], [data-motion="off"] *)),
+  [data-reveal="clip"][data-reveal-stagger][data-reveal-state="pending"]:where(:not([data-motion="off"], [data-motion="off"] *)) > * {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  /* Revealing (in) */
+  [data-reveal][data-reveal-state="in"]:not([data-reveal-stagger], [data-text-reveal]):where(:not([data-motion="off"], [data-motion="off"] *)),
+  [data-reveal-stagger][data-reveal-state="in"]:where(:not([data-motion="off"], [data-motion="off"] *)) > * {
+    --_d: calc(var(--vm-duration, var(--motion-reveal)) * var(--motion-k));
+    transition-property: opacity, transform, filter, clip-path;
+    transition-duration: calc(var(--_d) * 0.6), var(--_d), var(--_d), var(--_d);
+    transition-timing-function: linear, var(--ease-out-quint), var(--ease-out-quint), var(--ease-out-expo);
+    transition-delay: var(--vm-delay, 0ms);
+  }
+  [data-reveal-stagger][data-reveal-state="in"]:where(:not([data-motion="off"], [data-motion="off"] *)) > * {
+    transition-delay: calc(var(--vm-delay, 0ms) + var(--vm-i, 0) * var(--vm-step, var(--motion-stagger)) * var(--motion-k));
+  }
+
+  /* TextReveal: units hide inside their masks; the heading box never moves. */
+  [data-text-reveal][data-reveal-state="pending"]:where(:not([data-motion="off"], [data-motion="off"] *)) .vm-tr-unit { transform: translate3d(0, 108%, 0); }
+  [data-text-reveal][data-reveal="fade"][data-reveal-state="pending"]:where(:not([data-motion="off"], [data-motion="off"] *)) .vm-tr-unit { transform: none; opacity: 0; }
+  [data-text-reveal][data-reveal="blur"][data-reveal-state="pending"]:where(:not([data-motion="off"], [data-motion="off"] *)) .vm-tr-unit { transform: translate3d(0, 0.2em, 0); opacity: 0; filter: blur(var(--motion-blur)); }
+  [data-text-reveal]:is([data-reveal-state="in"], [data-reveal-state="done"]):where(:not([data-motion="off"], [data-motion="off"] *)) .vm-tr-unit {
+    transition:
+      transform calc(var(--vm-duration, var(--motion-reveal)) * var(--motion-k)) var(--ease-out-quint),
+      opacity calc(var(--vm-duration, var(--motion-reveal)) * 0.6 * var(--motion-k)) linear,
+      filter calc(var(--vm-duration, var(--motion-reveal)) * var(--motion-k)) var(--ease-out-quint);
+    transition-delay: calc(var(--vm-delay, 0ms) + var(--vm-i, 0) * var(--vm-step, 45ms) * var(--motion-k));
+  }
+
+  /* ------------------------------------------------ Enter (CSS only) */
+  /* Plays from the first paint — no JavaScript involved — so hero copy */
+  /* is never held back by hydration. Opt in with .vm-enter + --vm-i.  */
+  .vm-enter:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    animation: vm-enter calc(var(--motion-reveal) * var(--motion-k)) var(--ease-out-quint) backwards;
+    animation-delay: calc(60ms + var(--vm-i, 0) * var(--motion-stagger) * 1.3 * var(--motion-k));
+  }
+  [data-motion="full"] .vm-enter-title:where(:not([data-motion="off"] *)) { animation-name: vm-enter-title; }
+  .vm-enter-media:where(:not([data-motion="off"], [data-motion="off"] *)) { animation-name: vm-enter-media; animation-timing-function: var(--ease-out-expo); }
+  [data-motion="full"] .vm-enter-media:where(:not([data-motion="off"] *)) :is(img, video) {
+    animation: vm-enter-zoom calc(var(--motion-reveal) * 1.8 * var(--motion-k)) var(--ease-out-quint) backwards;
+  }
+
+  /* --------------------------------------------------- Page switches */
+  .vm-page[data-page-enter]:where(:not([data-motion="off"], [data-motion="off"] *)),
+  [data-site-page][data-page-enter]:where(:not([data-motion="off"] *)) > * {
+    animation: vm-page-in calc(var(--motion-slow) * var(--motion-k)) var(--ease-out-quint) backwards;
+  }
+
+  /* ---------------------------------------------------- Ticker / marquee */
+  .vm-marquee:where(:not([data-motion="off"], [data-motion="off"] *)) .vm-marquee-track {
+    animation: vm-marquee var(--vm-marquee-duration, 40s) linear infinite;
+  }
+  .vm-marquee[data-direction="end"] .vm-marquee-track { animation-direction: reverse; }
+  .vm-marquee-track:hover,
+  .vm-marquee-track:focus-within,
+  .vm-marquee:has(.vm-marquee-pause:checked) .vm-marquee-track { animation-play-state: paused; }
+
+  /* --------------------------------------------------------- Parallax */
+  @supports (animation-timeline: view()) {
+    .vm-parallax { view-timeline: --vm-parallax block; }
+    .vm-parallax:where(:not([data-motion="off"], [data-motion="off"] *)) > .vm-parallax-layer {
+      animation: vm-parallax linear both;
+      animation-timeline: --vm-parallax;
+    }
+  }
+  .vm-parallax[data-js]:where(:not([data-motion="off"], [data-motion="off"] *)) > .vm-parallax-layer {
+    transform: translate3d(0, calc((0.5 - var(--vm-progress, 0.5)) * 2 * var(--vm-parallax-shift)), 0);
+  }
+
+  /* ---------------------------------------------- Pointer: tilt, magnetic */
+  .vm-tilt:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    transition: transform var(--motion-slow) var(--ease-out-quint);
+  }
+  .vm-tilt[data-pointer]:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    transform: perspective(60rem) rotateX(var(--vm-tilt-x, 0deg)) rotateY(var(--vm-tilt-y, 0deg));
+    transition-duration: 120ms;
+  }
+  .vm-magnetic:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    transition: translate calc(var(--motion-slow) * 1.4) var(--ease-spring);
+  }
+  .vm-magnetic[data-pointer]:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    translate: var(--vm-mag-x, 0px) var(--vm-mag-y, 0px);
+    transition: translate 140ms var(--ease-out-quint);
+  }
+
+  /* --------------------------------------------- Micro-interactions */
+  .vm-press:where(:not([data-motion="off"], [data-motion="off"] *)) { transition: scale var(--motion-fast) var(--ease-out-quint); }
+  .vm-press:where(:not([data-motion="off"], [data-motion="off"] *)):active:not(:disabled, [aria-disabled="true"]) { scale: 0.97; }
+  @media (hover: hover) and (pointer: fine) {
+    .vm-lift:where(:not([data-motion="off"], [data-motion="off"] *)) {
+      transition: translate var(--motion-base) var(--ease-out-quint), box-shadow var(--motion-base) var(--ease-out-quint);
+    }
+    .vm-lift:where(:not([data-motion="off"], [data-motion="off"] *)):hover { translate: 0 -2px; box-shadow: var(--popover-shadow); }
+    .vm-nudge:where(:not([data-motion="off"], [data-motion="off"] *)) > svg:last-child { transition: translate var(--motion-base) var(--ease-out-quint); }
+    .vm-nudge:where(:not([data-motion="off"], [data-motion="off"] *)):hover > svg:last-child { translate: calc(3px * var(--dir, 1)) 0; }
+  }
+  .vm-underline:where(:not([data-motion="off"], [data-motion="off"] *)) { transition: background-size var(--motion-slow) var(--ease-out-quint); }
+
+  /* -------------------------------------------- Skeleton → content */
+  .vm-swap-skeleton[data-leaving]:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    animation: vm-fade-out calc(var(--motion-slow) * var(--motion-k)) var(--ease-out-quint) forwards;
+  }
+  .vm-swap-content[data-entering]:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    animation: vm-fade-in calc(var(--motion-slow) * var(--motion-k)) var(--ease-out-quint) backwards;
+  }
+
+  /* ------------------------------------------- Expand / accordion height */
+  .vm-expand:where(:not([data-motion="off"], [data-motion="off"] *)) {
+    transition: grid-template-rows calc(var(--motion-slow) * var(--motion-k)) var(--ease-out-quint);
+  }
+  @supports selector(::details-content) {
+    details.vm-details:where(:not([data-motion="off"], [data-motion="off"] *))::details-content {
+      transition:
+        block-size calc(var(--motion-slow) * var(--motion-k)) var(--ease-out-quint),
+        content-visibility calc(var(--motion-slow) * var(--motion-k)) allow-discrete;
+    }
+  }
+
+  /* -------------------------------------------- Sticky header shrink */
+  .vm-shrink:where(:not([data-motion="off"], [data-motion="off"] *))::before { transition: transform var(--motion-base) var(--ease-out-quint), border-color var(--motion-base) ease; }
+  .vm-shrink:where(:not([data-motion="off"], [data-motion="off"] *)) > * { transition: translate var(--motion-base) var(--ease-out-quint); }
+}
+
+/* -------------------------------------------------- View transitions */
+/* startPageTransition names the switching element "vm-page" for the    */
+/* length of the transition; the rest of the page does not cross-fade. */
+::view-transition-group(vm-page) { animation-duration: 0s; }
+::view-transition-old(vm-page) { animation: vm-fade-out 140ms var(--ease-in-out) both; }
+::view-transition-new(vm-page) { animation: vm-vt-in 340ms var(--ease-out-quint) 60ms both; }
+html[data-vm-transition]::view-transition-old(root),
+html[data-vm-transition]::view-transition-new(root) { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(vm-page),
+  ::view-transition-new(vm-page) { animation: none; }
+}
+
+/* -------------------------------------------------------- CountUp */
+.vm-count { display: inline-grid; font-variant-numeric: tabular-nums; }
+.vm-count::before { content: attr(data-ghost); grid-area: 1 / 1; visibility: hidden; }
+.vm-count > :not(.sr-only) { grid-area: 1 / 1; }
+
+/* --------------------------------------------------- Ticker / marquee */
+.vm-marquee { --vm-marquee-gap: clamp(2.5rem, 6cqi, 4.5rem); position: relative; }
+.vm-marquee-viewport { overflow: hidden; }
+.vm-marquee[data-fade] .vm-marquee-viewport {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.vm-marquee-track { display: flex; width: max-content; }
+.vm-marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--vm-marquee-gap);
+  margin: 0;
+  padding: 0;
+  padding-inline-end: var(--vm-marquee-gap);
+  list-style: none;
+}
+.vm-marquee-toggle {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--fg-muted);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity var(--motion-fast) ease, color var(--motion-fast) ease;
+}
+.vm-marquee-toggle:hover,
+.vm-marquee-toggle:has(:focus-visible) { opacity: 1; color: var(--fg); }
+.vm-marquee-toggle:has(:focus-visible) { outline: 2px solid var(--ring); outline-offset: 2px; }
+.vm-marquee-toggle svg { width: 0.75rem; height: 0.75rem; fill: currentColor; }
+.vm-marquee-icon-play,
+.vm-marquee:has(.vm-marquee-pause:checked) .vm-marquee-icon-pause { display: none; }
+.vm-marquee:has(.vm-marquee-pause:checked) .vm-marquee-icon-play { display: block; }
+
+/* ------------------------------------------------- Parallax frame */
+.vm-parallax[data-clip] { position: relative; overflow: clip; }
+.vm-parallax[data-clip] > .vm-parallax-layer { position: absolute; inset: calc(var(--vm-parallax-shift) * -1) 0; }
+.vm-parallax[data-clip] > .vm-parallax-layer > :is(img, video, picture) { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ------------------------------------------------- Scroll progress */
+.vm-scroll-progress { height: 2px; overflow: hidden; pointer-events: none; }
+.vm-scroll-progress[data-fixed] { position: fixed; inset-inline: 0; inset-block-start: 0; z-index: var(--z-sticky, 20); }
+.vm-scroll-progress-bar { height: 100%; background: var(--accent); transform-origin: left center; transform: scaleX(var(--vm-progress, 0)); }
+[dir="rtl"] .vm-scroll-progress-bar { transform-origin: right center; }
+@supports (animation-timeline: scroll()) {
+  .vm-scroll-progress:not([data-js]) .vm-scroll-progress-bar { animation: vm-grow-x linear both; animation-timeline: scroll(root block); }
+}
+
+/* ----------------------------------------------------- Tilt glare */
+.vm-tilt[data-glare] { position: relative; }
+.vm-tilt[data-glare]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--vm-glare-x, 50%) var(--vm-glare-y, 50%), color-mix(in oklch, var(--fg) 7%, transparent), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--motion-base) ease;
+}
+.vm-tilt[data-glare][data-pointer]::after { opacity: 1; }
+.vm-magnetic { display: inline-block; }
+
+/* --------------------------------------------- Micro-interactions */
+/* A quiet resting underline (links stay recognisable without colour), drawn over in full on hover. */
+.vm-underline {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(color-mix(in oklch, currentColor 28%, transparent), color-mix(in oklch, currentColor 28%, transparent));
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  background-size: 0% 1px, 100% 1px;
+}
+[dir="rtl"] .vm-underline { background-position: 100% 100%, 100% 100%; }
+.vm-underline:hover,
+.vm-underline:focus-visible,
+.vm-underline[aria-current="page"] { background-size: 100% 1px, 100% 1px; }
+
+/* ------------------------------------------------ Skeleton swap */
+.vm-swap { display: grid; }
+.vm-swap > * { grid-area: 1 / 1; min-width: 0; }
+.vm-swap-skeleton[data-leaving] { pointer-events: none; }
+
+/* ------------------------------------------ Expand / accordion height */
+.vm-expand { display: grid; grid-template-rows: 0fr; }
+.vm-expand > * { min-height: 0; overflow: hidden; }
+.vm-expand:is([data-state="open"], [data-open]) { grid-template-rows: 1fr; }
+@supports selector(::details-content) {
+  details.vm-details { interpolate-size: allow-keywords; }
+  details.vm-details::details-content { block-size: 0; overflow: clip; }
+  details.vm-details[open]::details-content { block-size: auto; }
+}
+
+/* ---------------------------------------- Sticky header shrink */
+/* The bar's background is a pseudo-element that slides up; the content */
+/* moves up half as much. Transforms only, the header box keeps its size. */
+.vm-shrink { --vm-shrink-by: 0.625rem; isolation: isolate; }
+.vm-shrink::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--vm-shrink-by) * -2) 0 0;
+  z-index: -1;
+  background: var(--vm-shrink-bg, var(--scene));
+  border-block-end: 1px solid transparent;
+}
+.vm-shrink[data-scrolled]::before { transform: translate3d(0, calc(var(--vm-shrink-by) * -2), 0); border-block-end-color: var(--line); }
+.vm-shrink[data-scrolled] > * { translate: 0 calc(var(--vm-shrink-by) * -1); }
+
+/* ----------------------------------------------- Motion off / reduced */
+/* data-motion="off" also stills the kit's other built-in motion.       */
+[data-motion="off"] :is(.vb-reveal, .vb-marquee-track, .vui-marquee-track, .vb-feature-panel, .vb-form-success, .vb-sticky-frame),
+html[data-motion="off"] :is(.ui-fade, .ui-pop, .ui-dialog, .ui-sheet-end, .ui-sheet-start, .ui-sheet-bottom, .ui-sheet-top, .ui-collapse, .ui-rise) {
+  animation: none !important;
+}
+[data-motion="off"] .vb-arrow { transition: none !important; }
+[data-motion="off"] .vb-faq-marker::before,
+[data-motion="off"] .vb-faq-marker::after,
+[data-motion="off"] .vb-faq-item::details-content { transition: none !important; }
+[data-motion="off"] .vb-marquee-track > [data-dup],
+[data-motion="off"] .vui-marquee-track[aria-hidden] { display: none; }
+[data-motion="off"] .vb-marquee { -webkit-mask-image: none; mask-image: none; }
+[data-motion="off"] .vb-marquee-track { width: auto; flex-wrap: wrap; justify-content: center; row-gap: 1.5rem; padding-inline: var(--gutter); }
+
+/* Static ticker: one wrapped, centred row, no copy, no pause control. */
+.vm-marquee:is([data-motion="off"], [data-motion="off"] *) :is(.vm-marquee-toggle, [data-marquee-copy]) { display: none; }
+.vm-marquee:is([data-motion="off"], [data-motion="off"] *) .vm-marquee-viewport { -webkit-mask-image: none; mask-image: none; }
+.vm-marquee:is([data-motion="off"], [data-motion="off"] *) .vm-marquee-track { width: auto; }
+.vm-marquee:is([data-motion="off"], [data-motion="off"] *) .vm-marquee-group { flex: 1; flex-wrap: wrap; justify-content: center; row-gap: 1.5rem; padding-inline: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .vm-marquee :is(.vm-marquee-toggle, [data-marquee-copy]) { display: none; }
+  .vm-marquee .vm-marquee-viewport { -webkit-mask-image: none; mask-image: none; }
+  .vm-marquee .vm-marquee-track { width: auto; }
+  .vm-marquee .vm-marquee-group { flex: 1; flex-wrap: wrap; justify-content: center; row-gap: 1.5rem; padding-inline: 0; }
+  .vm-shrink::before,
+  .vm-shrink > * { transition: none; }
+}

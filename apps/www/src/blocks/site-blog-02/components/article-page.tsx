@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Alert, Avatar, Table, TableBody, TableCaption, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 import { Container, sitePageHref } from "@vamos-ui/react/blocks";
+import { ScrollProgress } from "@vamos-ui/react/motion";
 import { CodeFile, CodeLangSwitch, CodeSample } from "./code-sample";
 import { ARCHIVE_HREF, article, articleToc, authors, benchmark, codeLabelsFor, copyFor, featured, POST_HREF, posts, subscribeLabelsFor, tagHref, type SiteLocale } from "./content";
 import { SubscribeForm } from "./subscribe-form";
@@ -22,6 +23,8 @@ export function ArticlePage({ locale }: { locale: SiteLocale }) {
 
   return (
     <article aria-labelledby="cp-article-title" className="@container pb-[calc(var(--section-y,6rem)*0.75)]">
+      {/* Reading progress: the site's one scroll-linked effect. */}
+      <ScrollProgress />
       <Container className="flex flex-col gap-6 pt-10 @4xl:pt-16">
         <nav aria-label={t({ en: "Breadcrumb", tr: "Konum" })} className="font-mono text-eyebrow text-fg-subtle">
           <ol className="flex flex-wrap items-center gap-1.5">

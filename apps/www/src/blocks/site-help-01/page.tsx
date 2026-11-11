@@ -14,7 +14,7 @@ import { HelpSite } from "./components/help-site";
  */
 export default function SiteHelp01() {
   return (
-    <SiteShell accent="ocean" material="solid" density="comfortable" pages={["home", "category", "article"]} className="min-h-dvh bg-scene">
+    <SiteShell accent="ocean" motion="subtle" material="solid" density="comfortable" pages={["home", "category", "article"]} className="min-h-dvh bg-scene">
       <FontProvider pairing="civic">
         <HelpProvider>
           <SiteShellLocale code="en">

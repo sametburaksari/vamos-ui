@@ -40,9 +40,23 @@ const SEGMENTS: [number, number, number, number, number][] = [
   [120, 334, 118, 408, 20], // shin R
 ];
 
+/**
+ * Motion Lab is a sports clinic and moves like one: full level, confident. Signature: the
+ * mannequin turns on its axis when you switch front/back, and the hotspots pop on afterwards,
+ * one by one. The selected hotspot keeps its ping (a live indicator).
+ */
+const labMotion = `
+@keyframes ml-turn { from { transform: perspective(40rem) rotateY(80deg); opacity: 0.2; } }
+@keyframes ml-spot { from { transform: scale(0); } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .ml-turn:where(:not([data-motion="off"] *)) { transform-origin: 50% 50%; animation: ml-turn 520ms var(--ease-out-quint); }
+  .ml-spot:where(:not([data-motion="off"] *)) > span:first-child { animation: ml-spot 360ms var(--ease-spring) backwards; animation-delay: calc(var(--ml-wait, 0ms) + var(--vm-i, 0) * 45ms); }
+}
+`;
+
 function Mannequin({ view }: { view: View }) {
   return (
-    <svg aria-hidden viewBox="0 0 200 440" className="absolute inset-0 size-full">
+    <svg aria-hidden viewBox="0 0 200 440" className="ml-turn absolute inset-0 size-full">
       {/* One group with group opacity: overlapping capsules merge into a single flat silhouette. */}
       <g strokeLinecap="round" stroke="var(--fg)" fill="var(--fg)" opacity="0.2">
         <circle cx="100" cy="36" r="23" stroke="none" />
@@ -66,6 +80,11 @@ function Mannequin({ view }: { view: View }) {
 export function BodyFigure({ className }: { className?: string }) {
   const { t, area, setArea, view, setView } = useArea();
   const c = mapCopy;
+  // Hotspots wait for the figure on first paint; after a front/back turn they follow quickly.
+  const first = React.useRef(true);
+  React.useEffect(() => {
+    first.current = false;
+  }, []);
   return (
     <div className={cn("flex flex-col items-center gap-4", className)}>
       <ToggleGroup type="single" variant="outline" size="sm" aria-label={t(c.view)} value={view} onValueChange={(v) => v && setView(v as View)}>
@@ -83,23 +102,24 @@ export function BodyFigure({ className }: { className?: string }) {
         <span aria-hidden className="absolute -top-5 start-0 font-mono text-[10px] text-fg-subtle uppercase">
           {view === "front" ? "ML · A" : "ML · P"}
         </span>
-        <Mannequin view={view} />
-        {AREAS.map((id) => {
+        <style>{labMotion}</style>
+        <Mannequin key={view} view={view} />
+        {AREAS.map((id, i) => {
           const pos = areas[id].spot[view];
           if (!pos) return null;
           const on = id === area;
           return (
             <button
-              key={id}
+              key={`${view}-${id}`}
               type="button"
               tabIndex={-1}
               aria-hidden
               data-area={id}
               onClick={() => setArea(id)}
               title={t(areas[id].label)}
-              style={{ left: `${pos[0]}%`, top: `${pos[1]}%` }}
+              style={{ left: `${pos[0]}%`, top: `${pos[1]}%`, "--vm-i": i, "--ml-wait": first.current ? "900ms" : "220ms" } as React.CSSProperties}
               className={cn(
-                "group absolute grid size-9 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full",
+                "ml-spot group absolute grid size-9 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full",
               )}
             >
               <span

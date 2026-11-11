@@ -11,7 +11,7 @@ import { QuoteProvider } from "./components/quote-provider";
  */
 export default function SiteMovers01() {
   return (
-    <SiteShell accent="#2563EB" font="corporate" material="glass" density="comfortable" pages={["home", "quote", "faq"]} className="min-h-dvh bg-scene">
+    <SiteShell accent="#2563EB" motion="subtle" font="corporate" material="glass" density="comfortable" pages={["home", "quote", "faq"]} className="min-h-dvh bg-scene">
       <QuoteProvider>
         <SiteShellLocale code="en">
           <MoversSite locale="en" />

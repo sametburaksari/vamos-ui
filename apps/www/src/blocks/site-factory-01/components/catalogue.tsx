@@ -4,7 +4,7 @@ import * as React from "react";
 import { Badge, Button, RadioGroup, Table, TableBody, TableCaption, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 import { Container, Section, sitePageHref } from "@vamos-ui/react/blocks";
 import { Download, FileText, Check } from "lucide-react";
-import { Drawing } from "./drawing";
+import { Drawing, plotMotion } from "./drawing";
 import { copyFor, datasheetCsv, families, fill, products, specValue, unitLabel, type FamilyId, type Product, type SiteLocale } from "./content";
 
 const c = {
@@ -124,7 +124,8 @@ export function Catalogue({ locale }: { locale: SiteLocale }) {
               </div>
               <div className="relative rounded-ui border border-line bg-surface p-3">
                 <div aria-hidden className="pointer-events-none absolute inset-0 rounded-ui bg-[linear-gradient(var(--line)_1px,transparent_1px),linear-gradient(90deg,var(--line)_1px,transparent_1px)] bg-[size:20px_20px] opacity-50" />
-                <Drawing kind={product.drawing} label={fill(t(c.figure), { name: t(product.name), size: String(row.size) })} dims={dims()} className="relative h-auto w-full" />
+                <style>{plotMotion}</style>
+                <Drawing key={`${product.id}-${row.size}`} kind={product.drawing} label={fill(t(c.figure), { name: t(product.name), size: String(row.size) })} dims={dims()} className="os-plot relative h-auto w-full [--os-k:0.4]" />
               </div>
             </div>
 

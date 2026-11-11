@@ -10,6 +10,7 @@ import type { CtaStyle, MoneyValue } from "../schema/types";
 import type { RichDoc } from "../schema/rich-doc";
 import { site2Text, type Site2BlockLabels, type Site2Text } from "./shared/labels-2";
 import { fieldAttr, formatMoney, formatMoneyLong, useBlockIds2, type SiteLink2 } from "./shared/kit-2";
+import { Reveal, Stagger } from "../../motion/reveal";
 
 export type PricingVariant = "columns" | "rows" | "single";
 export type PricingBilling = "monthly" | "yearly" | "both" | "once";
@@ -106,19 +107,25 @@ export function PricingTable({
         ) : null}
 
         {single ? (
-          <SinglePlan plan={plans[0]!} ctx={ctx} />
+          <Reveal disabled={editMode}>
+            <SinglePlan plan={plans[0]!} ctx={ctx} />
+          </Reveal>
         ) : variant === "rows" ? (
-          <ol className="flex flex-col border-b border-line">
-            {plans.map((plan, i) => (
-              <PlanRow key={i} plan={plan} index={i} ctx={ctx} primary={i === primaryIndex} />
-            ))}
-          </ol>
+          <Stagger asChild effect="fade" disabled={editMode}>
+            <ol className="flex flex-col border-b border-line">
+              {plans.map((plan, i) => (
+                <PlanRow key={i} plan={plan} index={i} ctx={ctx} primary={i === primaryIndex} />
+              ))}
+            </ol>
+          </Stagger>
         ) : (
-          <ul className="vb-plan-grid grid" data-cols={Math.min(plans.length, 4)}>
-            {plans.map((plan, i) => (
-              <PlanColumn key={i} plan={plan} index={i} ctx={ctx} primary={i === primaryIndex} />
-            ))}
-          </ul>
+          <Stagger asChild disabled={editMode}>
+            <ul className="vb-plan-grid grid" data-cols={Math.min(plans.length, 4)}>
+              {plans.map((plan, i) => (
+                <PlanColumn key={i} plan={plan} index={i} ctx={ctx} primary={i === primaryIndex} />
+              ))}
+            </ul>
+          </Stagger>
         )}
 
         {taxNote || footnote ? (

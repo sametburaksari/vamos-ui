@@ -4,6 +4,7 @@ import * as React from "react";
 import { addIsoDays, Badge, Button, cn, DatePicker, Field, Input, isoDiffDays, todayIso } from "@vamos-ui/react";
 import { Container, Section, SectionHeader } from "@vamos-ui/react/blocks";
 import { ArrowRight, Check, Syringe } from "lucide-react";
+import { Reveal } from "@vamos-ui/react/motion";
 import { addMonthsIso, fill, ink, longDate, stops, type Stop } from "./content";
 import { KiteMark } from "./illustrations";
 import { useVisit } from "./visit-provider";
@@ -163,9 +164,9 @@ export function CheckupPath() {
           </div>
         </div>
 
-        <div className="mt-12 rounded-[calc(var(--radius)*2.4)] border border-line p-3 @2xl:p-6" style={{ background: ink.mint }}>
+        <Reveal effect="fade" duration={1400} className="pk-board mt-12 rounded-[calc(var(--radius)*2.4)] border border-line p-3 @2xl:p-6" style={{ background: ink.mint }}>
           <div ref={boardRef} className="relative" style={{ height: rows * ROW }}>
-            <svg viewBox={`0 0 ${cols * 100} ${rows * ROW}`} preserveAspectRatio="none" className="absolute inset-0 size-full overflow-visible" aria-hidden focusable="false">
+            <svg viewBox={`0 0 ${cols * 100} ${rows * ROW}`} preserveAspectRatio="none" className="pk-road absolute inset-0 size-full overflow-visible" aria-hidden focusable="false">
               <path d={roadPath(stops.length, cols)} fill="none" stroke={ink.line} strokeWidth={34} strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
               <path d={roadPath(stops.length, cols)} fill="none" stroke={ink.sand} strokeWidth={28} strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
               <path d={roadPath(stops.length, cols)} fill="none" stroke={ink.line} strokeWidth={2} strokeDasharray="3 10" strokeLinecap="round" vectorEffect="non-scaling-stroke" opacity={0.5} />
@@ -177,7 +178,7 @@ export function CheckupPath() {
                 const isShown = s.id === shown.id;
                 const isHere = s.id === current?.id;
                 return (
-                  <li key={s.id} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${(p.x / (cols * 100)) * 100}%`, top: p.y }}>
+                  <li key={s.id} className="pk-stop absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${(p.x / (cols * 100)) * 100}%`, top: p.y, "--pk-i": i } as React.CSSProperties}>
                     {isHere ? (
                       <span aria-hidden className="pointer-events-none absolute -top-11 left-1/2 flex -translate-x-1/2 items-end gap-1">
                         <KiteMark className="h-9 w-7 -rotate-12" />
@@ -207,7 +208,7 @@ export function CheckupPath() {
               })}
             </ol>
           </div>
-        </div>
+        </Reveal>
 
         <div aria-live="polite" className="mt-6 grid gap-6 rounded-ui-lg border border-line bg-surface p-6 @3xl:grid-cols-[auto_minmax(0,1fr)_auto] @3xl:items-center @3xl:p-8">
           <div aria-hidden className="grid size-20 place-items-center rounded-full border-[3px] border-fg font-display text-h3 font-bold" style={{ background: ink.sand }}>

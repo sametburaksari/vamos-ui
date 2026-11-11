@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { PageTransition } from "@vamos-ui/react/motion";
 import { addIsoDays, Alert, Button, Calendar, Checkbox, Field, Input, NativeSelect, PhoneInput, RadioGroup, Slider, Stepper, Switch, Textarea, todayIso } from "@vamos-ui/react";
 import { ArrowLeft, ArrowRight, Check, Sparkles, Truck, Package } from "lucide-react";
 import { useQuote } from "./quote-provider";
@@ -144,6 +145,7 @@ export function QuoteCalculator() {
         ) : (
           <div className="flex flex-col gap-8">
             <Stepper aria-label={t(c.steps)} value={step} onValueChange={go} navigable="completed" responsive size="sm" steps={[c.sService, c.sHome, c.sExtras, c.sDate, c.sYou].map((s, i) => ({ id: String(i), title: t(s) }))} />
+            <PageTransition pageKey={String(step)} className="flex flex-col gap-8">
             <h2 tabIndex={-1} className="font-display text-display-m text-fg outline-none">
               {t([c.qService, c.qHome, c.qExtras, c.qDate, c.qYou][step]!)}
             </h2>
@@ -261,6 +263,7 @@ export function QuoteCalculator() {
                 <Checkbox name="video" defaultChecked label={t(c.video)} className="@2xl:col-span-2" />
               </form>
             ) : null}
+            </PageTransition>
 
             <MobileEstimate />
 
@@ -316,9 +319,11 @@ export function EstimatePanel() {
           {t(c.estimate)} · {t(sizeName(input.size))}
         </h2>
         <p className="font-display text-[2rem] leading-tight tabular text-fg" aria-live="polite" data-testid="tf-range">
-          {tl(result.low, locale)}
-          <span className="text-fg-subtle"> – </span>
-          {tl(result.high, locale)}
+          <span key={`${result.low}-${result.high}`} className="tf-settle">
+            {tl(result.low, locale)}
+            <span className="text-fg-subtle"> – </span>
+            {tl(result.high, locale)}
+          </span>
         </p>
         <p className="text-xs text-fg-muted">{t(c.range)}</p>
       </div>
