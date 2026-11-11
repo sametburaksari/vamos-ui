@@ -70,7 +70,7 @@ export function AgentsCard({ active }: { active: Ticket[] }) {
       <CardHeader
         titleAs="h2"
         title={c("On the rota", "Vardiyada")}
-        description={unassigned ? c(`${unassigned} open tickets have no owner`, `${unassigned} açık talebin sahibi yok`) : c("Every open ticket has an owner", "Her açık talebin bir sahibi var")}
+        description={unassigned ? c(unassigned === 1 ? "1 open ticket has no owner" : `${unassigned} open tickets have no owner`, `${unassigned} açık talebin sahibi yok`) : c("Every open ticket has an owner", "Her açık talebin bir sahibi var")}
       />
       <ul className="space-y-3 px-(--card-p) pb-(--card-p)">
         {agents.map((a) => {

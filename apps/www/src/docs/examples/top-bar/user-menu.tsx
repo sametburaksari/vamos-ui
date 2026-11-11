@@ -20,9 +20,9 @@ export default function TopBarUserMenu() {
   return (
     <div className="flex items-center gap-6">
       <UserMenu name="Ada Lovelace" email="ada@northwind.io" items={items} />
-      <UserMenu name="Jonas Becker" email="jonas@acme.de" items={items} showName>
+      <UserMenu name="Jonas Becker" email="jonas@northpoint.de" items={items} showName>
         <div className="px-2 pb-1.5">
-          <Badge tone="accent">Owner · Acme GmbH</Badge>
+          <Badge tone="accent">Owner · Northpoint GmbH</Badge>
         </div>
       </UserMenu>
     </div>

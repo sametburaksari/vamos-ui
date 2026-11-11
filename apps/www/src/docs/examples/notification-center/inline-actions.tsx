@@ -10,7 +10,7 @@ const inbox = createMemoryNotificationAdapter(
     {
       id: "n-2001",
       title: "Expense claim from Jonas Becker",
-      body: "Client dinner, Acme GmbH · €184.50",
+      body: "Client dinner, Northpoint GmbH · €184.50",
       createdAt: new Date(Date.now() - 3 * 36e5).toISOString(),
       actor: { name: "Jonas Becker" },
       app: "People",

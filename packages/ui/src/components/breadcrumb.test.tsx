@@ -36,7 +36,7 @@ describe("Breadcrumb", () => {
   });
 
   it("offers a sibling menu", async () => {
-    render(<Breadcrumb items={[{ label: "Companies", href: "/companies", menu: [{ label: "Contacts", href: "/contacts" }] }, { label: "Acme" }]} />);
+    render(<Breadcrumb items={[{ label: "Companies", href: "/companies", menu: [{ label: "Contacts", href: "/contacts" }] }, { label: "Northpoint" }]} />);
     await userEvent.click(screen.getByRole("button", { name: "Pages next to Companies" }));
     expect(await screen.findByRole("menuitem", { name: "Contacts" })).toBeInTheDocument();
   });

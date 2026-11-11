@@ -9,10 +9,10 @@ function DeleteSite() {
       variant="danger"
       onClick={() =>
         confirm({
-          title: "Delete the acme-blog site?",
+          title: "Delete the northpoint-blog site?",
           description: "All 284 posts, media and redirects are deleted. Domains are released after 30 days.",
           tone: "danger",
-          requireText: "acme-blog",
+          requireText: "northpoint-blog",
           confirmLabel: "Delete site",
         })
       }

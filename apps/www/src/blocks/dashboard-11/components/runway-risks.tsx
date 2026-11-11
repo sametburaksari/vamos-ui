@@ -119,7 +119,7 @@ export function RiskRegister({ risks, onResolve, onOpen }: { risks: Risk[]; onRe
                   </div>
                   <Button size="xs" variant="ghost" onClick={() => onResolve(r)}>
                     <Check aria-hidden />
-                    {c("Resolve", "Kapat")}
+                    <span className="max-sm:sr-only">{c("Resolve", "Kapat")}</span>
                     <span className="sr-only">: {t(r.title)}</span>
                   </Button>
                 </li>

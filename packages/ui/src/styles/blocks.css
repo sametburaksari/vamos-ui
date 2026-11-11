@@ -259,7 +259,7 @@
   }
   [data-density="compact"] .vb-navbar,
   .vb-navbar[data-density="compact"] { --vb-nav-h: 3.75rem; }
-  [data-material="glass"] .vb-navbar { --vb-nav-fill: color-mix(in oklch, var(--scene) 72%, transparent); }
+  [data-material="glass"] .vb-navbar { --vb-nav-fill: color-mix(in oklch, var(--scene) 90%, transparent); }
   .vb-navbar[data-variant="rail"],
   .vb-navbar[data-variant="minimal"] { border-block-end-color: transparent; }
   .vb-navbar-row { min-height: var(--vb-nav-h); }
@@ -540,8 +540,8 @@
   }
   .vb-navbar[data-sticky]:not([data-overlay]) { background-color: var(--scene); }
   [data-material="glass"] .vb-navbar[data-sticky] {
-    -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
-    backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
+    -webkit-backdrop-filter: blur(max(var(--blur, 0px), 14px)) saturate(160%);
+    backdrop-filter: blur(max(var(--blur, 0px), 14px)) saturate(160%);
   }
 }
 @supports not (animation-timeline: scroll()) {

@@ -107,7 +107,7 @@ export function DispatchConsole() {
         />
 
         <section className="grid min-w-0 content-start gap-(--gap)" aria-label={c("Map and totals", "Harita ve toplamlar")}>
-          <StatGroup columns={4} variant="plain" className="ui-rise">
+          <StatGroup columns={4} variant="plain" className="ui-rise [&>div]:grid-cols-2 [&>div]:@4xl:grid-cols-4">
             <Stat variant="plain" size="sm" label={c("Open jobs", "Açık iş")} value={active.length} />
             <Stat variant="plain" size="sm" label={c("Unassigned", "Atanmamış")} value={unassigned} intent="lower-is-better" />
             <Stat variant="plain" size="sm" label={c("Running late", "Gecikmede")} value={late} />

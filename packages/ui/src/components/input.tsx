@@ -70,7 +70,7 @@ const setNativeValue = (el: HTMLInputElement | HTMLTextAreaElement, value: strin
  *   <Input maxLength={60} showCount />
  * </Field>
  * <Input leading={<Search />} placeholder="Search contacts" clearable />
- * <Input addonStart="https://" addonEnd=".vamos.ist" defaultValue="acme" />
+ * <Input addonStart="https://" addonEnd=".vamos.ist" defaultValue="northpoint" />
  * ```
  */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(rawProps, forwardedRef) {

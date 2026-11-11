@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardBody, CardHeader, cn } from "@vamos-ui/react";
+import { Card, CardBody, CardHeader, cn, useBreakpoint } from "@vamos-ui/react";
 import { ComboChart, type ChartConfig } from "@vamos-ui/react/charts";
 import { CountUp } from "@vamos-ui/react/motion";
 import { useBlockFormat } from "../../_shared/format";
@@ -96,6 +96,10 @@ export function MrrBridge({ index }: { index: number }) {
 export function MovementsChart({ index, onSelect }: { index: number; onSelect: (i: number) => void }) {
   const { c } = useBlockFormat();
   const rows = months.map((m) => ({ month: m.month, gained: m.newMrr + m.expansion, lost: m.contraction + m.churned, mrr: m.mrr }));
+  // Two value axes leave a phone about 170px of plot: 24 bars turn into hairlines, so show half a year.
+  const narrow = useBreakpoint("sm") === false;
+  const shown = narrow ? rows.slice(-6) : rows;
+  const offset = rows.length - shown.length;
   const usdCompact = { currency: "USD", compact: true } as const;
   const config: ChartConfig = {
     gained: { label: c("Gained (new + expansion)", "Kazanılan (yeni + genişleme)"), color: "chart-1", format: usdCompact, axis: "start" },
@@ -107,12 +111,12 @@ export function MovementsChart({ index, onSelect }: { index: number; onSelect: (
       <CardHeader
         titleAs="h2"
         title={c("MRR movements", "MRR hareketleri")}
-        description={c("Last 12 months · select a month to see its bridge", "Son 12 ay · köprüsünü görmek için bir ay seçin")}
+        description={narrow ? c("Last 6 months · select a month to see its bridge", "Son 6 ay · köprüsünü görmek için bir ay seçin") : c("Last 12 months · select a month to see its bridge", "Son 12 ay · köprüsünü görmek için bir ay seçin")}
       />
       <CardBody className="pt-1">
         <ComboChart
           title={c("MRR gained and lost per month, with total MRR, last 12 months", "Son 12 ay aylık MRR kazanç, kayıp ve toplam MRR")}
-          data={rows}
+          data={shown}
           x="month"
           xFormat={{ date: { month: "short" } }}
           config={config}
@@ -124,7 +128,7 @@ export function MovementsChart({ index, onSelect }: { index: number; onSelect: (
           height="md"
           legend="bottom"
           tableToggle
-          onPointClick={(row) => onSelect(rows.indexOf(row))}
+          onPointClick={(row) => onSelect(offset + shown.indexOf(row as (typeof shown)[number]))}
           summary={c(
             `MRR grew from ${Math.round(rows[0]!.mrr / 1000)}k to ${Math.round(rows[rows.length - 1]!.mrr / 1000)}k USD. Selected: ${rows[index]!.month}.`,
             `MRR ${Math.round(rows[0]!.mrr / 1000)} binden ${Math.round(rows[rows.length - 1]!.mrr / 1000)} bin USD'ye çıktı. Seçili: ${rows[index]!.month}.`,

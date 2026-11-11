@@ -662,6 +662,10 @@ test.describe("sites — signature interaction + EN/TR", () => {
     const errors = await openSite(page, "site-preschool-01");
     const tabs = page.locator("[role=tablist]:visible").first().getByRole("tab");
     await expect(tabs).toHaveCount(11);
+    // The day's blocks grow from zero height when the timeline scrolls into view (motion="full"),
+    // so bring it on screen first: a zero-height tab is not clickable and never scrolls itself in.
+    await page.locator("#day").scrollIntoViewIfNeeded();
+    await expect(page.locator(".lo-day")).toHaveAttribute("data-reveal-state", /in|done/);
     await tabs.nth(3).click();
     await expect(tabs.nth(3)).toHaveAttribute("aria-selected", "true");
     await expect(page.getByRole("tabpanel").getByRole("heading", { name: "Project time (in English)" })).toBeVisible();

@@ -1,0 +1,27 @@
+{
+  "whenToUse": [
+    "Something arrives or changes: a page switch, a list that loads, a KPI that updates, content that replaces its skeleton.",
+    "Website sections below the fold (Reveal, Stagger) and number bands (CountUp), with one SiteShell motion level for the whole site.",
+    "Admin screens: a fade or a 6–8 px rise on a list or KPI row, SkeletonSwap for loaded data, CountUp on the one figure that matters.",
+    "One expressive moment per screen, such as a word-by-word hero heading on a portfolio site at the full level."
+  ],
+  "avoidWhen": [
+    "Settled UI that does not change: tables, forms, toolbars, navigation and settings pages stay still.",
+    "Anything above the fold on first load: the hero enters with CSS on first paint, never with a scroll reveal.",
+    "Parallax, Tilt, Magnetic or TextReveal inside an admin app.",
+    "Animating width, height, top or margin, or writing your own keyframes: use the kit primitives (opacity and transform only)."
+  ],
+  "related": [
+    "site-shell",
+    "skeleton",
+    "stats-band",
+    "logo-strip",
+    "hero"
+  ],
+  "a11y": [
+    "prefers-reduced-motion and data-motion=\"off\" render every primitive in its final state.",
+    "Moving content (Ticker, marquee) has a pause control and stops on hover and focus.",
+    "CountUp renders and announces the final value; TextReveal is read as one string.",
+    "Content already on screen at load is never hidden again, so there is no flash and no layout shift."
+  ]
+}

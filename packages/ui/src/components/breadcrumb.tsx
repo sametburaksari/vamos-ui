@@ -31,7 +31,7 @@ export interface BreadcrumbItemData {
   label: React.ReactNode;
   href?: string;
   icon?: React.ReactNode;
-  /** Jump to siblings ("Companies › Acme ▾" → other companies). */
+  /** Jump to siblings ("Companies › Northpoint ▾" → other companies). */
   menu?: BreadcrumbMenuLink[];
 }
 
@@ -55,7 +55,7 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
  * `aria-current="page"` on the last item). Links go through the app's router `Link`.
  *
  * ```tsx
- * <Breadcrumb items={[{ label: "Companies", href: "/companies" }, { label: "Acme", href: "/companies/acme" }, { label: "Contacts" }]} />
+ * <Breadcrumb items={[{ label: "Companies", href: "/companies" }, { label: "Northpoint", href: "/companies/northpoint" }, { label: "Contacts" }]} />
  * ```
  *
  * Compound: `<Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href/></BreadcrumbItem><BreadcrumbSeparator/>…<BreadcrumbPage/></BreadcrumbList></Breadcrumb>`.
