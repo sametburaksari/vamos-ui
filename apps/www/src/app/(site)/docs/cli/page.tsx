@@ -22,14 +22,14 @@ export default function CliPage() {
       <Table
         head={["", "npm package", "Copy (registry)"]}
         rows={[
-          ["Install", <C key="a">pnpm add @vamos-ui/react</C>, "One component at a time"],
-          ["Updates", "Bump the version", "Re-add, or diff with the vamos CLI (planned)"],
+          ["Install", <span key="a"><C>pnpm add @vamos-ui/react</C> (npm release coming)</span>, <C key="b">npx vamos-ui add button</C>],
+          ["Updates", "Bump the version", <span key="u"><C>npx vamos-ui diff</C> and <C>upgrade</C>, keeping your edits</span>],
           ["Customise", "Props, tokens, className", "Edit the source freely"],
           ["Best for", "Teams that want a maintained kit", "Projects that need to diverge"],
         ]}
       />
 
-      <H2 id="registry">Registry <Badge tone="outline" className="ms-2 align-middle">Coming with v0.2</Badge></H2>
+      <H2 id="registry">Registry</H2>
       <P>Every component and block is published as a registry item at <C>https://ui.vamos.ist/r/&lt;name&gt;.json</C>. The CLI reads it:</P>
       <Code lang="bash" code="npx vamos-ui add button" />
       <P>The item brings its dependencies and the shared token stylesheet the first time.</P>
@@ -46,12 +46,17 @@ export default function CliPage() {
   "meta": { "vamos": { "version": "0.1.0", "axes": ["theme", "material", "accent", "density", "font"] } }
 }`} />
 
-      <H2 id="vamos-cli">The vamos CLI <Badge tone="outline" className="ms-2 align-middle">Planned</Badge></H2>
-      <P>A small CLI on top of the same registry:</P>
+      <H2 id="vamos-cli">The vamos CLI <Badge tone="success" className="ms-2 align-middle">v0.2</Badge></H2>
+      <P>A small CLI on top of the same registry, published on npm as <C>vamos-ui</C>:</P>
       <Code lang="bash" code={`npx vamos-ui init            # pick axis presets, write globals.css and the layout boot script
 npx vamos-ui add data-table  # copy a component and its dependencies
 npx vamos-ui diff button     # show what changed upstream since you copied it
-npx vamos-ui upgrade button  # three-way merge upstream changes into your edited copy`} />
+npx vamos-ui upgrade button  # three-way merge upstream changes into your edited copy
+npx vamos-ui search calendar # find components and blocks
+npx vamos-ui theme           # pick the five theme axes
+npx vamos-ui verify src      # lint for design-rule and accessibility issues
+npx vamos-ui brand import https://example.com  # turn a site into a brand profile
+npx vamos-ui init --agent    # add the agent rules and skill (also: npx @vamos-ui/mcp)`} />
       <Callout title="Why diff matters">
         Copied components usually stop receiving fixes. <C>vamos-ui diff</C> and <C>vamos-ui upgrade</C> record the version you
         copied, so accessibility and bug fixes can still reach your edited code.
