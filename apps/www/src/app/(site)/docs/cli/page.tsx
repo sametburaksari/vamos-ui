@@ -22,7 +22,7 @@ export default function CliPage() {
       <Table
         head={["", "npm package", "Copy (registry)"]}
         rows={[
-          ["Install", <span key="a"><C>pnpm add @vamos-ui/react</C> (npm release coming)</span>, <C key="b">npx vamos-ui add button</C>],
+          ["Install", <C key="a">pnpm add @vamos-ui/react</C>, <C key="b">npx vamos-ui add button</C>],
           ["Updates", "Bump the version", <span key="u"><C>npx vamos-ui diff</C> and <C>upgrade</C>, keeping your edits</span>],
           ["Customise", "Props, tokens, className", "Edit the source freely"],
           ["Best for", "Teams that want a maintained kit", "Projects that need to diverge"],
