@@ -44,7 +44,7 @@ export function PositionCard({ products }: { products: Product[] }) {
 
   const kpis = [
     { key: "value", label: c("Stock at cost", "Maliyetle stok"), node: <CountUp value={Math.round(value)} format={{ style: "currency", currency: "TRY", currencyDisplay: "narrowSymbol", notation: "compact", maximumFractionDigits: 1 }} />, hint: c(`${f.number(units)} units on hand`, `Elde ${f.number(units)} adet`) },
-    { key: "low", label: c("At or below reorder point", "Sipariş noktasında"), node: <CountUp value={low} />, hint: c("active SKUs", "aktif ürün"), cls: low ? "text-warning" : "" },
+    { key: "low", label: c("Due for reorder", "Sipariş zamanı gelen"), node: <CountUp value={low} />, hint: c("SKUs at or below reorder point", "sipariş noktasında veya altında"), cls: low ? "text-warning" : "" },
     { key: "out", label: c("Out of stock", "Stokta yok"), node: <CountUp value={out} />, hint: c("losing sales today", "bugün satış kaybettiriyor"), cls: out ? "text-danger" : "" },
     { key: "cover", label: c("Median cover", "Ortanca stok süresi"), node: <><CountUp value={Math.round(median)} /><span className="ms-1 font-sans text-sm text-fg-subtle">{c("days", "gün")}</span></>, hint: c("at the 30-day sales rate", "30 günlük satış hızıyla") },
   ];

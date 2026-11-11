@@ -69,7 +69,19 @@ const overflowX = (page: Page) => page.evaluate(() => document.documentElement.s
  */
 const BLOCKS_2 = ["dashboard-10", "dashboard-11", "dashboard-12", "dashboard-13", "dashboard-14", "dashboard-15", "dashboard-16", "empty-03"];
 
-for (const [title, blocks] of [["admin blocks 1 — previews", BLOCKS], ["admin blocks 2 — previews", BLOCKS_2]] as const)
+/**
+ * Admin blocks, batch 3: lists and details (activity feed, tree list, tasks in three views,
+ * customer 360, order detail with refunds, employee file, product information editor).
+ */
+const BLOCKS_3 = ["list-11", "list-12", "list-13", "detail-04", "detail-05", "detail-06", "detail-07"];
+
+/**
+ * Admin blocks, batch 4: settings (plan & billing, API keys & webhooks, notification preferences,
+ * integrations, security & sessions) and the campaign wizard form.
+ */
+const BLOCKS_4 = ["settings-03", "settings-04", "settings-05", "settings-06", "settings-07", "form-02"];
+
+for (const [title, blocks] of [["admin blocks 1 — previews", BLOCKS], ["admin blocks 2 — previews", BLOCKS_2], ["admin blocks 3 — previews", BLOCKS_3], ["admin blocks 4 — previews", BLOCKS_4]] as const)
 test.describe(title, () => {
   for (const name of blocks) {
     test(`${name}: 1440 and 390 render with a landmark, no console errors, no serious axe, no sideways scroll`, async ({ page }) => {
@@ -514,6 +526,450 @@ test.describe("admin blocks 2 — dashboards", () => {
     await page.getByRole("button", { name: "Remove sample data" }).click();
     await page.getByRole("alertdialog").getByRole("button", { name: "Remove", exact: true }).click();
     await expect(page.getByText(/Choose how you want to begin/)).toBeVisible();
+    expectClean(errors);
+  });
+});
+
+test.describe("admin blocks 3 — lists and details", () => {
+  test.describe.configure({ timeout: 120_000 });
+
+  test("list-11: live events wait behind the pill, Pause stops the stream, scrolling loads older events", async ({ page }) => {
+    const errors = await open(page, "list-11");
+    const main = page.getByRole("main");
+    const items = main.locator("li");
+    const before = await items.count();
+    const pill = page.getByRole("button", { name: /^\d+ new events?$/ });
+    await expect(pill).toBeVisible({ timeout: 20_000 });
+    await pill.click();
+    await expect(pill).toHaveCount(0);
+    expect(await items.count()).toBeGreaterThan(before);
+    await page.getByRole("button", { name: "Pause stream" }).click();
+    await expect(page.getByRole("button", { name: "Resume stream" })).toBeVisible();
+    await expect(page.getByText("Paused", { exact: true }).first()).toBeVisible();
+    const shown = await items.count();
+    await page.getByRole("button", { name: "Load older events" }).scrollIntoViewIfNeeded();
+    await expect.poll(() => items.count(), { timeout: 15_000 }).toBeGreaterThan(shown);
+    expectClean(errors);
+  });
+
+  test("list-12: a row selects with aria-selected, Alt+ArrowUp moves it with undo, then the Departments tree shows", async ({ page }) => {
+    const errors = await open(page, "list-12");
+    const tree = page.getByRole("tree", { name: "Catalogue categories" });
+    const rows = tree.getByRole("treeitem");
+    const kitchen = rows.filter({ hasText: /^Kitchen/ }).first();
+    await kitchen.click();
+    await expect(kitchen).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("heading", { name: /Kitchen/ }).first()).toBeVisible();
+    const order = async () => (await rows.allInnerTexts()).map((x) => x.split("\n")[0]!.trim());
+    const was = await order();
+    await kitchen.focus();
+    await page.keyboard.press("Alt+ArrowUp");
+    await expect.poll(order).not.toEqual(was);
+    await toast(page, /Kitchen/).getByRole("button", { name: "Undo" }).click();
+    await expect.poll(order).toEqual(was);
+    await page.getByRole("radio", { name: "Departments" }).click();
+    await expect(page.getByRole("tree", { name: "Departments" })).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("list-13: completing a task offers undo, and the board and calendar views show the same set", async ({ page }) => {
+    const errors = await open(page, "list-13");
+    const main = page.getByRole("main");
+    const complete = main.getByRole("checkbox", { name: /^Complete / }).first();
+    const name = ((await complete.getAttribute("aria-label")) ?? "").replace(/^Complete /, "");
+    await complete.click();
+    await expect(toast(page, "Completed")).toBeVisible();
+    // A done task moves into the collapsed Done group.
+    await expect(main.getByRole("checkbox", { name: `Complete ${name}` })).toHaveCount(0);
+    await toast(page, "Completed").getByRole("button", { name: "Undo" }).click();
+    await expect(main.getByRole("checkbox", { name: `Complete ${name}` })).toBeAttached();
+    await page.getByRole("radio", { name: "Board" }).click();
+    await expect(page.getByRole("region", { name: "Tasks by status" }).or(page.getByLabel("Tasks by status")).first()).toBeVisible();
+    await page.getByRole("radio", { name: "Calendar" }).click();
+    await expect(main.getByText(name).first()).toBeAttached();
+    // The first radio named "List" is the view switch (the calendar has its own Month/List toggle).
+    await page.getByRole("radio", { name: "List" }).first().click();
+    await main.getByRole("button", { name }).first().click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("detail-04: a deal stage change offers undo, and a note saves into the history", async ({ page }) => {
+    const errors = await open(page, "detail-04");
+    const stage = page.getByRole("combobox", { name: /^Stage of / }).first();
+    await stage.click();
+    await page.getByRole("option", { name: "Negotiation" }).click();
+    await expect(toast(page, "Moved to Negotiation")).toBeVisible();
+    const note = "Asked for the Q1 volume forecast before the renewal call.";
+    await page.getByRole("textbox", { name: "Add a note" }).fill(note);
+    await page.getByRole("button", { name: "Add note" }).click();
+    await expect(toast(page, "Note saved")).toBeVisible();
+    await expect(page.getByText(note).first()).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("detail-05: a one-unit refund goes processing to succeeded and the order becomes partially refunded", async ({ page }) => {
+    const errors = await open(page, "detail-05");
+    await page.getByRole("button", { name: "Refund", exact: true }).click();
+    const dialog = page.getByRole("dialog");
+    await dialog.getByRole("button", { name: /^One more / }).first().click();
+    await dialog.getByRole("button", { name: /^Refund / }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(toast(page, "refunded")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("Partially refunded").first()).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("detail-06: a leave request is sent for approval, and a pending request withdraws with undo", async ({ page }) => {
+    const errors = await open(page, "detail-06");
+    await page.getByRole("tab", { name: /^Time off/ }).click();
+    const withdraw = page.getByRole("button", { name: "Withdraw request" });
+    const was = await withdraw.count();
+    await page.getByRole("button", { name: "Request leave" }).first().click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByText(/working days? ·/)).toBeVisible();
+    await dialog.getByRole("button", { name: "Send request" }).click();
+    await expect(toast(page, "Request sent")).toBeVisible();
+    await expect(withdraw).toHaveCount(was + 1);
+    const n = was + 1;
+    await withdraw.first().click();
+    await expect(withdraw).toHaveCount(n - 1);
+    await toast(page, "Request withdrawn").getByRole("button", { name: "Undo" }).click();
+    await expect(withdraw).toHaveCount(n);
+    expectClean(errors);
+  });
+
+  test("detail-07: a Turkish meta description completes a check, and Save shows the saved state", async ({ page }) => {
+    const errors = await open(page, "detail-07");
+    const ring = page.getByRole("img", { name: /checks complete$/ }).or(page.getByLabel(/checks complete$/)).first();
+    const before = (await ring.getAttribute("aria-label")) ?? "";
+    await page.getByRole("radio", { name: "Türkçe" }).click();
+    await page.getByRole("textbox", { name: "Meta description" }).fill("Taş yıkamalı keten nevresim, üç ölçü. Nefes alır, ilk günden yumuşak. 1.500 TL üzeri ücretsiz kargo.");
+    await expect.poll(() => ring.getAttribute("aria-label")).not.toBe(before);
+    await page.getByRole("button", { name: "Save", exact: true }).click();
+    await expect(toast(page, "Product saved")).toBeVisible({ timeout: 10_000 });
+    expectClean(errors);
+  });
+});
+
+test.describe("admin blocks 4 — settings and forms", () => {
+  test.describe.configure({ timeout: 120_000 });
+
+  test("settings-03: a plan change confirms, then invoices select for ZIP and one opens its line items", async ({ page }) => {
+    const errors = await open(page, "settings-03");
+    await page.getByRole("button", { name: "Change plan" }).click();
+    const dialog = page.getByRole("dialog");
+    await dialog.getByRole("radio", { name: /Business/ }).click();
+    await expect(dialog.getByText("Due today, before VAT")).toBeVisible();
+    await dialog.getByRole("button", { name: "Confirm change" }).click();
+    await expect(page.getByText("You're on Business now").first()).toBeVisible({ timeout: 5_000 });
+    await page.getByRole("checkbox", { name: "Select all invoices" }).click();
+    await expect(page.getByRole("button", { name: "Download as ZIP" })).toBeVisible();
+    await page.getByRole("button", { name: /October 2026/ }).click();
+    await expect(page.getByRole("dialog").getByText("Extra orders")).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("settings-04: a new key shows its secret once, and a failed delivery resends to a 401", async ({ page }) => {
+    const errors = await open(page, "settings-04");
+    await page.getByRole("button", { name: "Create key" }).first().click();
+    let dialog = page.getByRole("dialog");
+    await dialog.getByLabel("Name").fill("Courier labels");
+    await dialog.getByRole("checkbox", { name: "Stock levels: Write" }).click();
+    await dialog.getByRole("button", { name: "Create key" }).click();
+    dialog = page.getByRole("dialog");
+    await expect(dialog.getByText(/vk_live_/).first()).toBeVisible();
+    const done = dialog.getByRole("button", { name: "Done" });
+    await expect(done).toBeDisabled();
+    await dialog.getByRole("checkbox", { name: /stored the secret/ }).click();
+    await done.click();
+    await expect(page.getByText("Courier labels", { exact: true }).first()).toBeVisible();
+    await page.getByRole("tab", { name: /Failed/ }).click();
+    await page.getByRole("button", { name: /stock\.low/ }).first().click();
+    await expect(page.getByRole("dialog").getByText("invalid_signature").first()).toBeVisible();
+    await page.getByRole("dialog").getByRole("button", { name: "Resend" }).click();
+    await expect(page.getByText(/answered 401/).first()).toBeVisible({ timeout: 5_000 });
+    expectClean(errors);
+  });
+
+  test("settings-05: a matrix cell counts as a change, SMS unlocks after the code, and Save confirms", async ({ page }) => {
+    const errors = await open(page, "settings-05");
+    await page.getByRole("button", { name: /^New order/ }).click();
+    await page.getByRole("checkbox", { name: "New order: Email" }).click();
+    await expect(page.getByText(/1 unsaved change/).first()).toBeVisible();
+    await page.getByRole("button", { name: "Verify" }).first().click();
+    await page.getByRole("dialog").getByRole("textbox").fill("482913");
+    await expect(page.getByText("Phone verified").first()).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByRole("checkbox", { name: "SLA about to breach: SMS" })).toBeEnabled();
+    await page.getByRole("button", { name: "Save changes" }).click();
+    await expect(page.getByText("Notification preferences saved").first()).toBeVisible({ timeout: 5_000 });
+    expectClean(errors);
+  });
+
+  test("settings-06: a bad key is refused, a good one connects; the sheet saves; a search can come up empty", async ({ page }) => {
+    const errors = await open(page, "settings-06");
+    await page.getByRole("button", { name: "Connect Postwren" }).click();
+    const dialog = page.getByRole("dialog");
+    await dialog.getByRole("button", { name: /Authorize/ }).click();
+    await expect(dialog.getByText(/Enter a valid API key/)).toBeVisible();
+    await dialog.getByRole("textbox").fill("sk_live_ab12cd34ef");
+    await dialog.getByRole("button", { name: /Authorize/ }).click();
+    await expect(dialog).toHaveCount(0, { timeout: 5_000 });
+    await expect(page.getByRole("button", { name: "Configure Postwren" }).first()).toBeVisible();
+    await page.getByRole("button", { name: "Configure Bazaarline" }).first().click();
+    const sheet = page.getByRole("dialog");
+    await sheet.getByRole("switch", { name: "Customer questions" }).click();
+    await sheet.getByRole("button", { name: "Save changes" }).click();
+    await expect(sheet).toHaveCount(0, { timeout: 5_000 });
+    await page.getByRole("searchbox", { name: "Search integrations" }).fill("zzz");
+    await expect(page.getByText(/Nothing matches/).first()).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("settings-07: sign out a device, validate the allow list, block an IP, enrol an authenticator", async ({ page }) => {
+    const errors = await open(page, "settings-07");
+    await page.getByRole("button", { name: "Sign out of Unknown device" }).click();
+    await expect(page.getByRole("button", { name: "Sign out of Unknown device" })).toHaveCount(0);
+    const addr = page.getByRole("textbox", { name: "Address or range" });
+    await addr.fill("300.1.1.1");
+    await page.getByRole("button", { name: "Add", exact: true }).click();
+    await expect(page.getByText(/Use an IPv4 address/).first()).toBeVisible();
+    await addr.fill("192.0.2.0/28");
+    await page.getByRole("button", { name: "Add", exact: true }).click();
+    await expect(page.getByText("192.0.2.0/28", { exact: true }).first()).toBeVisible();
+    await page.getByRole("button", { name: "Block IP" }).first().click();
+    await expect(page.getByRole("button", { name: /Unblock 192\.0\.2\.77/ })).toBeVisible();
+    await page.getByRole("button", { name: "Move to a new phone" }).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.locator("svg").first()).toBeVisible();
+    await page.keyboard.type("481920");
+    await expect(dialog).toHaveCount(0, { timeout: 5_000 });
+    expectClean(errors);
+  });
+
+  test("form-02: an empty segment is refused, then the four steps lead to a scheduled campaign", async ({ page }) => {
+    const errors = await open(page, "form-02");
+    const next = page.getByRole("button", { name: /^Continue to/ });
+    await next.click();
+    await expect(page.getByText("Choose who gets this campaign.").first()).toBeVisible();
+    await page.getByRole("radio", { name: /Regulars/ }).click();
+    await next.click();
+    await expect(page.getByRole("heading", { name: "Write the message" })).toBeVisible();
+    await page.getByRole("radio", { name: /SMS/ }).click();
+    await expect(page.getByText(/segment/).first()).toBeVisible();
+    await page.getByRole("radio", { name: /Email/ }).click();
+    await next.click();
+    await expect(page.getByRole("heading", { name: "Decide when it goes" })).toBeVisible();
+    await next.click();
+    await expect(page.getByRole("heading", { name: "Check and launch" })).toBeVisible();
+    await page.getByRole("button", { name: "Schedule campaign" }).click();
+    await page.getByRole("alertdialog").getByRole("button", { name: "Schedule" }).click();
+    await expect(page.getByRole("heading", { name: "Campaign scheduled" })).toBeVisible({ timeout: 5_000 });
+    expectClean(errors);
+  });
+});
+
+/**
+ * Admin blocks, batch 5 (lists): grouped orders, saved views, booking agenda, media library.
+ * Smoke at 1440 and 390, then one main interaction each.
+ */
+const BLOCKS_LISTS = ["list-04", "list-05", "list-06", "list-07"];
+
+test.describe("admin blocks 5 — list previews", () => {
+  for (const name of BLOCKS_LISTS) {
+    test(`${name}: 1440 and 390 render with a landmark, no console errors, no serious axe, no sideways scroll`, async ({ page }) => {
+      test.setTimeout(150_000);
+      for (const [width, height] of [[1440, 900], [390, 844]] as const) {
+        await page.setViewportSize({ width, height });
+        const errors = await openBlock(page, name);
+        expect((await page.locator("body").innerText()).trim().length, `${name} is empty at ${width}`).toBeGreaterThan(40);
+        await expect(page.getByRole("main").first(), `${name} has a landmark at ${width}`).toBeAttached();
+        expect(await seriousA11y(page), `${name} axe at ${width}`).toEqual([]);
+        expect(await overflowX(page), `${name} overflows at ${width}`).toBeLessThanOrEqual(1);
+        expectClean(errors);
+      }
+    });
+  }
+});
+
+test.describe("admin blocks 5 — lists", () => {
+  test.describe.configure({ timeout: 120_000 });
+
+  test("list-04: a customer group collapses and expands, an order opens its lines, grouping by status regroups", async ({ page }) => {
+    const errors = await open(page, "list-04");
+    const table = page.getByRole("table", { name: /Orders grouped by customer/ });
+    const group = table.getByRole("button", { name: /^Aslı Korkmaz/ });
+    await expect(group).toHaveAttribute("aria-expanded", "true");
+    const lines = table.getByRole("button", { name: /^Items in order #KL-/ });
+    const shown = await lines.count();
+    expect(shown).toBeGreaterThan(0);
+    await group.click();
+    await expect(group).toHaveAttribute("aria-expanded", "false");
+    await expect.poll(() => lines.count()).toBeLessThan(shown);
+    await group.click();
+    const first = lines.first();
+    await expect(first).toHaveAttribute("aria-expanded", "true");
+    await expect(table.getByRole("list", { name: /^Lines of #KL-/ }).first()).toBeVisible();
+    await page.getByRole("button", { name: "Expand all groups" }).click();
+    await expect(page.getByRole("button", { name: "Collapse all groups" })).toBeVisible();
+    await page.getByRole("combobox", { name: "Group by" }).click();
+    await page.getByRole("option", { name: "Group: Status" }).click();
+    await expect(page.getByRole("table", { name: /Orders grouped by status/ }).getByRole("button", { name: /^Delivered/ })).toBeVisible();
+    await expect(page.getByText("Grand total")).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("list-05: a view from the rail applies with its count, a filter change offers save, and the share dialog copies a link", async ({ page }) => {
+    const errors = await open(page, "list-05");
+    const rail = page.getByRole("navigation", { name: "Saved views" });
+    await rail.getByRole("button", { name: /^Hot leads/ }).click();
+    await expect(rail.getByRole("button", { name: /^Hot leads/ })).toHaveAttribute("aria-current", "true");
+    const list = page.getByRole("region", { name: "Contact list" });
+    await expect(list.getByRole("heading", { name: /Hot leads/ })).toBeVisible();
+    await list.getByRole("searchbox").fill("example");
+    await expect(rail.getByText("Unsaved changes")).toBeVisible({ timeout: 5_000 });
+    await rail.getByRole("button", { name: "Discard changes" }).click();
+    await expect(rail.getByText("Unsaved changes")).toHaveCount(0);
+    await list.getByRole("button", { name: "Share" }).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("textbox").first()).toHaveValue(/sv=hot/);
+    await dialog.getByRole("button", { name: "Copy link" }).click();
+    await expect(toast(page, "Link copied")).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("list-06: check-in shows in the agenda with undo, and a new booking refuses an overlapping slot", async ({ page }) => {
+    const errors = await open(page, "list-06");
+    const today = page.getByRole("region", { name: /^Today/ });
+    await expect(today).toBeVisible();
+    await today.getByRole("button", { name: "Check in Quarterly business review" }).click();
+    await expect(toast(page, "checked in")).toBeVisible();
+    await expect(today.getByRole("button", { name: "Check in Quarterly business review" })).toHaveCount(0);
+    await toast(page, "checked in").getByRole("button", { name: "Undo" }).click();
+    await expect(today.getByRole("button", { name: "Check in Quarterly business review" })).toBeVisible();
+    await page.getByRole("button", { name: "New booking" }).click();
+    const dialog = page.getByRole("dialog");
+    await dialog.getByRole("textbox", { name: /What is it for/ }).fill("Client workshop");
+    // Default slot: Studio 3, tomorrow 10:00 for an hour — overlaps the bookkeeping clinic.
+    await dialog.getByRole("button", { name: "Book room" }).click();
+    await expect(dialog.getByText(/is booked 10:00–10:45/)).toBeVisible();
+    await dialog.getByRole("radio", { name: "30 min" }).click();
+    await dialog.getByRole("combobox", { name: "Starts" }).click();
+    await page.getByRole("option", { name: "12:00" }).click();
+    await dialog.getByRole("button", { name: "Book room" }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(toast(page, "Booked Studio 3")).toBeVisible();
+    await expect(page.getByRole("region", { name: /^Tomorrow/ }).getByRole("button", { name: "Client workshop", exact: true })).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("list-07: sample files go through the upload queue, then a file opens in the details panel", async ({ page }) => {
+    const errors = await open(page, "list-07");
+    const library = page.getByLabel("Media library");
+    await expect(library.getByRole("gridcell").first()).toBeVisible({ timeout: 15_000 });
+    const before = await library.getByRole("gridcell").count();
+    await page.getByRole("button", { name: "Add sample files" }).click();
+    await expect(library.getByText("Uploads").first()).toBeVisible();
+    await expect(library.getByRole("gridcell", { name: /glaze-test-tiles\.png/ })).toBeVisible({ timeout: 20_000 });
+    await expect.poll(() => library.getByRole("gridcell").count(), { timeout: 20_000 }).toBeGreaterThan(before);
+    await library.getByRole("navigation", { name: /Folder/ }).getByRole("button", { name: /Press kit/ }).click();
+    await expect(library.getByRole("gridcell", { name: /brand-guidelines-v3\.pdf/ })).toBeVisible();
+    await library.getByRole("gridcell", { name: /brand-guidelines-v3\.pdf/ }).dblclick();
+    await expect(page.getByRole("complementary", { name: "File details" })).toBeVisible();
+    expectClean(errors);
+  });
+});
+
+/**
+ * Admin blocks, batch 5 (onboarding): launch checklist with inline tasks, contact import, product tour.
+ * Smoke at 1440 and 390, then one main interaction each.
+ */
+const BLOCKS_ONBOARDING = ["onboarding-03", "onboarding-04", "onboarding-05"];
+
+test.describe("admin blocks 5 — onboarding previews", () => {
+  for (const name of BLOCKS_ONBOARDING) {
+    test(`${name}: 1440 and 390 render with a landmark, no console errors, no serious axe, no sideways scroll`, async ({ page }) => {
+      test.setTimeout(150_000);
+      for (const [width, height] of [[1440, 900], [390, 844]] as const) {
+        await page.setViewportSize({ width, height });
+        const errors = await openBlock(page, name);
+        expect((await page.locator("body").innerText()).trim().length, `${name} is empty at ${width}`).toBeGreaterThan(40);
+        await expect(page.getByRole("main").first(), `${name} has a landmark at ${width}`).toBeAttached();
+        expect(await seriousA11y(page), `${name} axe at ${width}`).toEqual([]);
+        expect(await overflowX(page), `${name} overflows at ${width}`).toBeLessThanOrEqual(1);
+        expectClean(errors);
+      }
+    });
+  }
+});
+
+test.describe("admin blocks 5 — onboarding", () => {
+  test.describe.configure({ timeout: 120_000 });
+
+  test("onboarding-03: a bad postcode is refused, the address saves inline, the rail jumps to a task and an optional one is skipped", async ({ page }) => {
+    const errors = await open(page, "onboarding-03");
+    const rail = page.getByRole("region", { name: "Launch progress" });
+    await expect(rail.getByText("1/8")).toBeVisible();
+    await page.getByRole("textbox", { name: /Street address/ }).fill("Moda Cd. No: 18, Depo 2");
+    await page.getByRole("textbox", { name: /Postcode/ }).fill("347");
+    await page.getByRole("button", { name: "Save address" }).click();
+    await expect(page.getByText("Postcodes have 5 digits.")).toBeVisible();
+    await page.getByRole("textbox", { name: /Postcode/ }).fill("34710");
+    await page.getByRole("button", { name: "Save address" }).click();
+    await expect(toast(page, "Shipping origin — saved")).toBeVisible();
+    await expect(rail.getByText("2/8")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Save tax settings" })).toBeVisible();
+    await rail.getByRole("button", { name: /Invite your team, not started, optional/ }).click();
+    await page.getByRole("button", { name: "Skip for now" }).click();
+    await expect(rail.getByRole("button", { name: /Invite your team, skipped/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Go live/ }).first()).toBeDisabled();
+    expectClean(errors);
+  });
+
+  test("onboarding-04: the sample export maps, a bad email is fixed in the review table, and the import reports", async ({ page }) => {
+    const errors = await open(page, "onboarding-04");
+    const next = page.getByRole("button", { name: "Next", exact: true });
+    await next.click();
+    await expect(page.getByText("Choose a file, or use the sample export.").first()).toBeVisible();
+    await page.getByRole("button", { name: "Use the sample export" }).click();
+    await expect(page.getByText("14 rows · 9 columns")).toBeVisible();
+    await next.click();
+    await expect(page.getByText("8 of 9 columns mapped")).toBeVisible();
+    await expect(page.getByRole("combobox", { name: /Column “E-posta” maps to/ })).toContainText("Email");
+    await next.click();
+    await expect(page.getByText("14 rows · 4 errors · 1 warnings")).toBeVisible();
+    const cell = page.getByRole("textbox", { name: "Email, row 4" });
+    await cell.fill("mert.erden@orchardoak.example.com");
+    await cell.press("Tab");
+    await expect(page.getByText("14 rows · 3 errors · 1 warnings")).toBeVisible();
+    await next.click();
+    await page.getByRole("radio", { name: /Keep mine/ }).click();
+    await page.getByRole("button", { name: "Import 11 contacts" }).click();
+    await expect(page.getByRole("heading", { name: "Import finished" })).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText(/9 new contacts · 0 updated · 3 skipped for errors/)).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("onboarding-05: the basics tour runs with the keyboard and is marked finished; an order is packed", async ({ page }) => {
+    const errors = await open(page, "onboarding-05");
+    await page.getByRole("button", { name: "Take the tour" }).click();
+    const card = page.getByRole("dialog");
+    await expect(card).toContainText("Step 1 of 7");
+    await page.keyboard.press("ArrowRight");
+    await expect(card).toContainText("Search runs everything");
+    await expect(page.locator("[data-slot=tour-spotlight]")).toBeVisible();
+    for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowRight");
+    await expect(card).toContainText("Step 7 of 7");
+    await card.getByRole("button", { name: "Finish" }).click();
+    await expect(card).toHaveCount(0);
+    await expect(toast(page, "“The basics” finished")).toBeVisible();
+    await expect(page.getByText("1 of 2 finished")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Replay: The basics" })).toBeVisible();
+    const packButtons = page.getByRole("button", { name: /^Mark #KL-\d+ packed/ });
+    await expect(packButtons).toHaveCount(3);
+    await packButtons.first().click();
+    await expect(packButtons).toHaveCount(2);
+    await expect(page.getByRole("tab", { name: /Packed/ })).toContainText("1");
     expectClean(errors);
   });
 });

@@ -10,7 +10,7 @@ export interface Contact {
 export const contacts: Contact[] = [
   { id: "c1", name: "Ayşe Kaya", email: "ayse.kaya@northwind.io", company: "Northwind Traders", role: "Head of Sales", stage: "Customer" },
   { id: "c2", name: "Daniel Okafor", email: "daniel@brightpath.co", company: "Brightpath Clinics", role: "Operations Manager", stage: "Qualified" },
-  { id: "c3", name: "Lena Fischer", email: "lena.fischer@kaltwasser.de", company: "Kaltwasser GmbH", role: "Procurement", stage: "Lead" },
+  { id: "c3", name: "Mara Fischer", email: "mara.fischer@kaltwasser.de", company: "Kaltwasser GmbH", role: "Procurement", stage: "Lead" },
   { id: "c4", name: "Marco Bianchi", email: "m.bianchi@osteria-luce.it", company: "Osteria Luce", role: "Owner", stage: "Customer" },
   { id: "c5", name: "Priya Raman", email: "priya@ledgerline.app", company: "Ledgerline", role: "CFO", stage: "Qualified" },
   { id: "c6", name: "Tom Hendricks", email: "tom@harborpine.com", company: "Harbor & Pine Dental", role: "Practice Manager", stage: "Customer" },

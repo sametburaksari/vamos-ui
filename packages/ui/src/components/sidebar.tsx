@@ -195,7 +195,7 @@ export const SidebarGroup = React.forwardRef<HTMLDivElement, SidebarGroupProps>(
             <span aria-hidden className="mx-4 my-2 h-px bg-nav-line" />
           </>
         ) : (
-          <span id={id} className="px-4.5 pt-4 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/50">
+          <span id={id} className="px-4.5 pt-4 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/70">
             {label}
           </span>
         )
@@ -625,7 +625,7 @@ function SidebarFlyoutItem({
               }
             }}
           >
-            {collapsed ? <p className="px-2.5 pt-1 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/60">{label}</p> : null}
+            {collapsed ? <p className="px-2.5 pt-1 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/70">{label}</p> : null}
             <SubContext.Provider value={{ placement: "flyout", depth: 1, close: () => close(false) }}>
               <ul className="grid gap-px">{sub}</ul>
             </SubContext.Provider>
@@ -673,7 +673,7 @@ export function SidebarSubItem({ id, label, href, badge, disabled, external, act
       {current && flyout ? <Check aria-hidden className="size-3.5 shrink-0 text-accent" /> : null}
       <span className="min-w-0 flex-1 truncate">{label}</span>
       {badgeText ? <span className="sr-only">, {badgeText}</span> : null}
-      {typeof disabled === "string" ? <span className="shrink-0 text-[10.5px] text-nav-fg/60">{disabled}</span> : <SidebarBadgeView spec={badge} rail={false} />}
+      {typeof disabled === "string" ? <span className="shrink-0 text-[10.5px] text-nav-fg/70">{disabled}</span> : <SidebarBadgeView spec={badge} rail={false} />}
       {(external ?? (href ? isAbsoluteHref(href) : false)) ? <ExternalMark /> : null}
     </>
   );
@@ -681,7 +681,7 @@ export function SidebarSubItem({ id, label, href, badge, disabled, external, act
   if (hasChildren && flyout) {
     return (
       <li data-slot="sidebar-sub-item" className="mt-1 first:mt-0">
-        <p className="px-2.5 pt-1.5 pb-1 text-[11px] font-medium tracking-[0.06em] text-nav-fg/55">{label}</p>
+        <p className="px-2.5 pt-1.5 pb-1 text-[11px] font-medium tracking-[0.06em] text-nav-fg/70">{label}</p>
         <ul className="grid gap-px">
           <SubContext.Provider value={{ placement, depth: depth + 1, close }}>{children}</SubContext.Provider>
         </ul>
@@ -911,7 +911,7 @@ export function AppSwitcher({ apps, activeApp, onSelect, subtitle, workspaces, a
       </span>
       <span className={cn("min-w-0 flex-1 leading-tight", collapsed && "sr-only")}>
         <span className="block truncate text-[13.5px] font-semibold text-nav-fg-strong">{app.name}</span>
-        <span className="block truncate text-[11.5px] text-nav-fg/60">{subtitle ?? (workspace ? workspace.name : app.description)}</span>
+        <span className="block truncate text-[11.5px] text-nav-fg/75">{subtitle ?? (workspace ? workspace.name : app.description)}</span>
       </span>
     </>
   );
@@ -945,7 +945,7 @@ export function AppSwitcher({ apps, activeApp, onSelect, subtitle, workspaces, a
           >
             {workspaces && workspaces.length > 1 ? (
               <div role="group" aria-label={t("workspaces")} className="mb-1 border-b border-nav-line pb-1.5">
-                <p className="px-2.5 pt-1 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/55">{t("workspaces")}</p>
+                <p className="px-2.5 pt-1 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/70">{t("workspaces")}</p>
                 {workspaces.map((w) => (
                   <button
                     key={w.id}
@@ -966,7 +966,7 @@ export function AppSwitcher({ apps, activeApp, onSelect, subtitle, workspaces, a
                 ))}
               </div>
             ) : null}
-            <p className="px-2.5 pt-1 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/55">{t("apps")}</p>
+            <p className="px-2.5 pt-1 pb-1.5 text-[11px] font-medium tracking-[0.06em] text-nav-fg/70">{t("apps")}</p>
             <ul className="grid gap-px">
               {apps.map((a) => {
                 const isActive = a.id === app.id;
@@ -977,7 +977,7 @@ export function AppSwitcher({ apps, activeApp, onSelect, subtitle, workspaces, a
                     </span>
                     <span className="min-w-0 flex-1 leading-tight">
                       <span className="block text-[13px] font-medium text-nav-fg-strong">{a.name}</span>
-                      {a.description ? <span className="block truncate text-[11.5px] text-nav-fg/55">{a.description}</span> : null}
+                      {a.description ? <span className="block truncate text-[11.5px] text-nav-fg/70">{a.description}</span> : null}
                     </span>
                     {isActive ? <Check aria-hidden className="size-4 shrink-0 text-accent" /> : null}
                   </>

@@ -252,9 +252,9 @@ describe("extractBrandFromHtml", () => {
   it("falls back to one unconfirmed header logo when none names the brand", () => {
     const html = `<html><body><header><img class="site-logo" src="/img/header-mark.svg" alt="Home"></header>
       <img class="client-logo" src="/c/nike.svg" alt="Nike"></body></html>`;
-    const r = extractBrandFromHtml(html, [], "https://acme.example/");
+    const r = extractBrandFromHtml(html, [], "https://northpoint.example/");
     const logos = (r.brand.assets ?? []).filter((a) => a.use.startsWith("Logo"));
-    expect(logos.map((a) => a.path)).toEqual(["https://acme.example/img/header-mark.svg"]);
+    expect(logos.map((a) => a.path)).toEqual(["https://northpoint.example/img/header-mark.svg"]);
     expect(logos[0]!.use).toMatch(/not confirmed/);
   });
 

@@ -104,7 +104,7 @@ export function ReorderQueue({ products, onOrder, onCreate }: ReorderQueueProps)
                           ? c("Out of stock", "Stokta yok")
                           : c(`${p.stock} left · ${f.number(cover ?? 0, { maximumFractionDigits: 0 })} days`, `${p.stock} adet · ${f.number(cover ?? 0, { maximumFractionDigits: 0 })} gün`)}
                       </span>
-                      <span>· {s.name} · {c(`${s.leadDays}-day lead`, `${s.leadDays} gün tedarik`)}</span>
+                      <span className="max-sm:basis-full"><span aria-hidden className="max-sm:hidden">· </span>{s.name} · {c(`${s.leadDays}-day lead`, `${s.leadDays} gün tedarik`)}</span>
                     </p>
                   </div>
                   <div className="col-span-3 flex items-center justify-end gap-2 sm:col-span-1">

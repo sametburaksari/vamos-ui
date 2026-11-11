@@ -116,3 +116,4 @@ export { FieldContext, useFieldContext, useFieldControl, FieldContextReset, focu
 
 // Client islands for server-compatible components
 export { ChipRemoveButton, LocalizedText, LocaleCount, type ChipRemoveButtonProps } from "./islands";
+export { CopyValueButton, type CopyValueButtonProps } from "./data-islands";

@@ -32,7 +32,7 @@ export function CrewList({ jobs, selectedId, onSelect, className }: { jobs: Job[
                   onClick={() => onSelect(x.id)}
                   className={cn("grid w-full grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-2 px-4 py-3 text-start hover:bg-hover focus-ring focus-visible:-outline-offset-2", sel && "bg-selected")}
                 >
-                  <Avatar name={x.name} size="sm" status={state === "free" ? "online" : "busy"} />
+                  <Avatar name={x.name} size="sm" status={state === "free" ? "online" : undefined} />
                   <span className="min-w-0">
                     <span className="flex items-center justify-between gap-2">
                       <span className="truncate text-[13.5px] font-medium text-fg">{x.name}</span>

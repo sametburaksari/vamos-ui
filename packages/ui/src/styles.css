@@ -119,7 +119,7 @@
   --nav-popover-border: rgba(255, 255, 255, 0.09);
 
 
-  --success: #0f8a5f;
+  --success: #0b7d55;
   --warning: #c26a00;
   --danger: #d0303c;
   /* solid danger fill behind white text (destructive buttons); stays >= 4.5:1 in both themes */

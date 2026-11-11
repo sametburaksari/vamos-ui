@@ -41,6 +41,15 @@ Follow these on every screen you build or edit. \`verify_code\` checks the mecha
 - Icons from \`lucide-react\`, 16px in dense UI, \`text-fg-muted\` unless they carry meaning.
 - Restraint: one heading font, one accent, consistent radii, aligned edges.
 
+## 6b. Motion
+- Motion comes from the kit: overlay classes (\`ui-*\`) and \`@vamos-ui/react/motion\` (\`Reveal\`, \`Stagger\`, \`CountUp\`, \`Ticker\`, \`TextReveal\`, \`Parallax\`, \`Tilt\`, \`Magnetic\`, \`PageTransition\`, \`SkeletonSwap\`, \`useScrollShrink\`, \`vm-press\` / \`vm-lift\` / \`vm-underline\` / \`vm-nudge\`). No motion libraries, no hand-written keyframes or \`transition: all\`.
+- Motion explains, it does not decorate: animate what changes or arrives (a page, a list, a number, loaded content) and leave settled UI still. One expressive moment per screen.
+- Admin screens: \`fade\` or a 6–8 px \`rise\` at most (\`Stagger\` on a list or KPI row, \`SkeletonSwap\` for loaded data, \`CountUp\` on the one KPI that matters). No parallax, tilt, magnetic buttons or text reveals in an app; tables and forms never animate on scroll.
+- Websites: set the level once on \`SiteShell\` (\`motion="subtle"\` default, \`"full"\` only when motion is part of the brand, \`"off"\` for sober sites). Never above-the-fold scroll reveals; the hero enters with CSS on first paint.
+- Opacity and transform only, never width, height, top or margin, so layout never shifts (CLS 0). Never hide server-rendered content that is already in view.
+- Keep entrances under a second and exits shorter than entrances; durations come from the level and density tokens, not literals.
+- Reduced motion and \`data-motion="off"\` show the final state everywhere; a \`CountUp\` value is the real number for screen readers.
+
 ## 7. Realistic content
 - Real-looking names, companies, amounts, dates and statuses ("Ayşe Demir — Invoice INV-2041 — ₺18,450.00 — Overdue 3 days"), never "Lorem ipsum", "Item 1", "John Doe", "Test".
 - Show the hard states: empty (with one clear next action), loading (\`Skeleton\` matching the final layout), error (what happened + how to fix), long text (truncate with title/tooltip), many items (pagination/virtualisation).
@@ -54,7 +63,7 @@ Follow these on every screen you build or edit. \`verify_code\` checks the mecha
 - Visible focus: kit components use the \`focus-ring\` utility; use it on custom interactive elements.
 - Form inputs have visible labels (\`Field\`/\`Label\`), errors are announced (\`aria-invalid\` + \`aria-describedby\`, the kit wires this).
 - Colour is never the only signal: pair status colours with text or an icon.
-- Respect \`prefers-reduced-motion\`; use the kit motion classes (\`ui-pop\`, \`ui-fade\`, \`ui-dialog\`, \`ui-sheet-*\`, \`ui-collapse\`).
+- Respect \`prefers-reduced-motion\`: use the kit overlay motion classes (\`ui-pop\`, \`ui-fade\`, \`ui-dialog\`, \`ui-sheet-*\`, \`ui-collapse\`) and the motion subpath, which render the final state under reduced motion. Moving content (a ticker, autoplay) always has a pause control.
 - RTL-safe: logical properties (\`ps-*\`, \`pe-*\`, \`ms-*\`, \`me-*\`, \`start-*\`, \`end-*\`, \`text-start\`).
 
 ## 9. Framework notes

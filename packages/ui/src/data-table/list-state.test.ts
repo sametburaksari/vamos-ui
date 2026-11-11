@@ -17,7 +17,7 @@ const fields: FilterFieldDef[] = [
 const deals = [
   { name: "Northwind renewal", stage: "won", value: "12500.00", closeDate: "2026-11-03", owner: { id: "u1", name: "Ada Park" }, active: true },
   { name: "İstanbul Kahve rollout", stage: "proposal", value: "4800", closeDate: "2026-11-10", owner: { id: "u2", name: "Selin Kaya" }, active: true },
-  { name: "Globex pilot", stage: "lead", value: "900", closeDate: "2026-09-14", owner: { id: "u1", name: "Ada Park" }, active: false },
+  { name: "Corvane pilot", stage: "lead", value: "900", closeDate: "2026-09-14", owner: { id: "u1", name: "Ada Park" }, active: false },
 ];
 
 describe("types", () => {

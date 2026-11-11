@@ -149,6 +149,10 @@ export interface SortableTreeProps<N extends SortableTreeNode> {
   moveMenu?: boolean;
   /** Shown when `nodes` is empty. */
   empty?: React.ReactNode;
+  /** Id of the selected row (`aria-selected`). Only used together with `onSelect`. */
+  selected?: string | null;
+  /** Click or Enter on a row selects it (Space still picks it up for a keyboard move). */
+  onSelect?: (node: N) => void;
   labels?: Partial<SortableTreeLabels>;
   "aria-label"?: string;
   "aria-labelledby"?: string;
@@ -245,6 +249,8 @@ export function SortableTree<N extends SortableTreeNode>(props: SortableTreeProp
     renderActions,
     moveMenu = true,
     empty,
+    selected,
+    onSelect,
     labels,
     className,
     ...aria
@@ -476,6 +482,11 @@ export function SortableTree<N extends SortableTreeNode>(props: SortableTreeProp
       else if (op && op.ok !== true) announce(t("invalid", { item: labelOf(f.id), reason: op.ok }));
       return;
     }
+    if (e.key === "Enter" && onSelect && !e.altKey && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      onSelect(f.node);
+      return;
+    }
     if ((e.shiftKey && e.key === "F10") || e.key === "ContextMenu") {
       e.preventDefault();
       setMenuId(f.id);
@@ -573,6 +584,8 @@ export function SortableTree<N extends SortableTreeNode>(props: SortableTreeProp
                 tabbable={tabId === f.id}
                 onFocus={() => setFocusedId(f.id)}
                 onKeyDown={onRowKeyDown}
+                selected={onSelect ? selected === f.id : undefined}
+                onSelect={onSelect ? () => onSelect(f.node) : undefined}
                 rowRef={(el) => {
                   if (el) rowRefs.current.set(f.id, el);
                   else rowRefs.current.delete(f.id);
@@ -684,6 +697,8 @@ interface TreeRowProps<N extends SortableTreeNode> {
   tabbable: boolean;
   onFocus: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLElement>, f: FlatTreeItem<N>, dnd?: React.KeyboardEventHandler<HTMLElement>) => void;
+  selected?: boolean;
+  onSelect?: () => void;
   rowRef: (el: HTMLElement | null) => void;
   disabled: boolean;
   invalid: boolean;
@@ -723,6 +738,7 @@ function TreeRow<N extends SortableTreeNode>(p: TreeRowProps<N>) {
       aria-expanded={hasKids ? expanded : undefined}
       aria-labelledby={labelId}
       aria-disabled={disabled || undefined}
+      aria-selected={p.selected}
       tabIndex={tabbable ? 0 : -1}
       aria-keyshortcuts="Alt+ArrowUp Alt+ArrowDown Alt+ArrowLeft Alt+ArrowRight Shift+F10"
       {...(attrs as React.HTMLAttributes<HTMLDivElement>)}
@@ -731,7 +747,17 @@ function TreeRow<N extends SortableTreeNode>(p: TreeRowProps<N>) {
       onFocus={(e) => {
         if (e.target === e.currentTarget) p.onFocus();
       }}
+      onClick={
+        p.onSelect
+          ? (e) => {
+              // The expand toggle, row actions and the Move menu keep their own click.
+              if ((e.target as HTMLElement).closest('button, a, input, [data-slot="sortable-tree-toggle"]')) return;
+              p.onSelect?.();
+            }
+          : undefined
+      }
       data-slot="sortable-tree-item"
+      data-selected={p.selected ? "" : undefined}
       data-depth={depth}
       data-dragging={s.isDragging ? "" : undefined}
       data-invalid={invalid ? "" : undefined}

@@ -135,6 +135,24 @@ describe("SortableTree", () => {
     await waitFor(() => expect(rows()[0]).toBe("1:Home"));
   });
 
+  it("selects a row on click and Enter with aria-selected, without moving it", async () => {
+    function Selectable() {
+      const [sel, setSel] = React.useState<string | null>("home");
+      return <SortableTree aria-label="Main menu" nodes={MENU} onMove={() => {}} selected={sel} onSelect={(n) => setSel(n.id)} />;
+    }
+    const { user } = renderWithProviders(<Selectable />);
+    expect(row("Home")).toHaveAttribute("aria-selected", "true");
+    expect(row("About us")).toHaveAttribute("aria-selected", "false");
+    await user.click(row("About us"));
+    expect(row("About us")).toHaveAttribute("aria-selected", "true");
+    expect(row("Home")).toHaveAttribute("aria-selected", "false");
+    act(() => row("Contact").focus());
+    await user.keyboard("{Enter}");
+    expect(row("Contact")).toHaveAttribute("aria-selected", "true");
+    expect(rows()).toEqual(["1:Home", "1:Services", "2:Brand design", "2:Web development", "3:Online shops", "1:About us", "1:Contact"]);
+    await expectNoA11yViolations(tree());
+  });
+
   it("hides the Move menu for fixed items and shows the empty slot", () => {
     const { rerender } = renderWithProviders(<Menu locked={["home"]} />);
     expect(screen.queryByRole("button", { name: "Move Home" })).toBeNull();

@@ -208,7 +208,7 @@ export interface RecordLayoutProps extends React.HTMLAttributes<HTMLDivElement> 
  *
  * ```tsx
  * <RecordLayout>
- *   <RecordHeader media={<Avatar name="Jane Doe" size="xl" />} title="Jane Doe" subtitle="Head of Ops · Acme"
+ *   <RecordHeader media={<Avatar name="Jane Doe" size="xl" />} title="Jane Doe" subtitle="Head of Ops · Northpoint"
  *     status={<Badge tone="success">Customer</Badge>} facts={[{ label: "Owner", value: "Meltem Aydın" }]}
  *     pager={<RecordPager index={3} total={128} prevHref="/contacts/41" nextHref="/contacts/43" />} />
  *   <RecordMain>{tabs}</RecordMain>
@@ -328,7 +328,7 @@ export interface RecordHeaderProps extends Omit<React.HTMLAttributes<HTMLElement
   media?: React.ReactNode;
   /** The page's `<h1>`. */
   title: React.ReactNode;
-  /** "Head of Operations · Acme Corp". */
+  /** "Head of Operations · Northpoint Ltd". */
   subtitle?: React.ReactNode;
   /** Status badge next to the title. */
   status?: React.ReactNode;

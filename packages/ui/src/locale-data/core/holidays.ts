@@ -18,7 +18,7 @@ const regionMatch = (h: Holiday, region?: string) => !h.region || (region !== un
  *
  * ```ts
  * const company = createHolidayProvider({
- *   id: "acme",
+ *   id: "northpoint",
  *   holidays: [{ date: "2026-12-24", name: "Company day off", kind: "bank" }],
  * });
  * ```

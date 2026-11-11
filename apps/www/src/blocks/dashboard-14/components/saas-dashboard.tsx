@@ -24,7 +24,7 @@ export function SaasDashboard() {
     <div className="mx-auto max-w-[1320px]">
       <PageHeader
         size="lg"
-        eyebrow={c("Subscriptions · amounts in USD", "Abonelikler · tutarlar USD")}
+        eyebrow={c("Subscriptions · totals in USD", "Abonelikler · toplamlar USD")}
         title={c("SaaS metrics", "SaaS metrikleri")}
         description={c("Recurring revenue, where it moved and which customers will move it next.", "Tekrarlayan gelir, nereye hareket etti ve onu sıradaki hangi müşteriler değiştirecek.")}
         meta={index === last ? <Badge tone="warning" dot>{c("Month in progress", "Ay sürüyor")}</Badge> : <Badge tone="success" dot>{c("Closed", "Kapandı")}</Badge>}

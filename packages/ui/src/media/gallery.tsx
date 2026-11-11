@@ -177,7 +177,8 @@ export function Gallery<T extends MediaItem = MediaItem>({
             onReorder={(next) => onReorder?.(next.map((s) => s.id))}
             disabled={!onReorder}
             handle
-            minItemWidth="10rem"
+            // Honour `columns` while editing too: a fixed 10rem minimum fell back to one column on phones.
+            minItemWidth={`calc((100% - ${(Math.max(1, cols) - 1) * gapPx}px) / ${Math.max(1, cols)} - 0.5px)`}
             className="gap-(--gallery-gap)"
             itemClassName="overflow-hidden"
             renderActions={

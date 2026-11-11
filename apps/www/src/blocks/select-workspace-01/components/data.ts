@@ -43,7 +43,7 @@ export const workspaces: Workspace[] = [
 export const invitations: Invitation[] = [
   {
     id: "inv_harbor",
-    invitedBy: "Lena Ortiz",
+    invitedBy: "Nora Ortiz",
     workspace: { id: "ws_harbor", name: "Harbor & Pine Studio", domain: "harborpine.northpoint.app", role: "Editor", members: 14, plan: "Team", lastOpened: hoursAgo(0), apps: ["site", "work"] },
   },
 ];

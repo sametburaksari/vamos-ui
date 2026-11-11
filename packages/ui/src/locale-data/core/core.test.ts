@@ -86,8 +86,8 @@ describe("getWeekInfo", () => {
 });
 
 describe("holiday providers", () => {
-  const acme = createHolidayProvider({
-    id: "acme",
+  const northpoint = createHolidayProvider({
+    id: "northpoint",
     holidays: [
       { date: "2026-12-24", name: "Company day off", kind: "bank" },
       { date: "2026-12-31", name: "New Year's Eve", kind: "public", partial: { from: "13:00" } },
@@ -98,21 +98,21 @@ describe("holiday providers", () => {
   });
 
   it("returns holidays in range and filters regions", () => {
-    expect(acme.get({ start: "2026-12-01", end: "2026-12-31" }).map((h) => h.date)).toEqual(["2026-12-08", "2026-12-24", "2026-12-31"]);
-    expect(acme.get({ start: "2026-12-01", end: "2026-12-31" }, { region: "TR-34" })).toHaveLength(4);
-    expect(acme.get({ start: "2026-12-31", end: "2026-12-01" })).toEqual([]);
+    expect(northpoint.get({ start: "2026-12-01", end: "2026-12-31" }).map((h) => h.date)).toEqual(["2026-12-08", "2026-12-24", "2026-12-31"]);
+    expect(northpoint.get({ start: "2026-12-01", end: "2026-12-31" }, { region: "TR-34" })).toHaveLength(4);
+    expect(northpoint.get({ start: "2026-12-31", end: "2026-12-01" })).toEqual([]);
   });
 
   it("combines providers with intersected coverage", () => {
     const other = createHolidayProvider({ id: "b", holidays: [{ date: "2026-12-25", name: "X", kind: "public" }], coverage: { from: "2025-01-01", to: "2026-06-30" } });
-    const both = combineHolidayProviders(acme, other);
-    expect(both.id).toBe("acme+b");
+    const both = combineHolidayProviders(northpoint, other);
+    expect(both.id).toBe("northpoint+b");
     expect(both.coverage).toEqual({ from: "2026-01-01", to: "2026-06-30" });
     expect(both.get({ start: "2026-12-20", end: "2026-12-26" }).map((h) => h.date)).toEqual(["2026-12-24", "2026-12-25"]);
   });
 
   it("treats observances as working days and partial days by mode", () => {
-    const cal: WorkCalendar = { locale: "en-GB", holidays: acme };
+    const cal: WorkCalendar = { locale: "en-GB", holidays: northpoint };
     expect(isWorkingDay("2026-12-08", cal)).toBe(true);
     expect(isWorkingDay("2026-12-24", cal)).toBe(false);
     expect(workingValue("2026-12-31", cal)).toBe(1);

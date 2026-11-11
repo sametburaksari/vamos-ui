@@ -18,6 +18,7 @@ This project builds its interface with Vamos UI (https://ui.vamos.ist). `vamos.j
 - **Kit over hand-rolled markup.** Dialog, Sheet, AlertDialog, Popover, DropdownMenu, Tooltip, Command; `Field` + Input/Select/Combobox/DatePicker; DataTable for real tables; charts from the charts subpath. Pick by option count: ≤ 5 RadioGroup, 6–10 Select, > 10 Combobox, records RecordPicker/UserPicker.
 - **Not AI-looking.** No purple gradients, glow blobs, gradient text, emoji icons, sparkles, card walls or centred-everything app screens. Icons from lucide-react.
 - **Data values.** Dates as `YYYY-MM-DD` strings (never `toISOString()`), money as decimal strings, formatting through `Intl` / `useFormat()`.
+- **Motion from the kit.** `@vamos-ui/react/motion` (`Reveal`, `Stagger`, `CountUp`, `SkeletonSwap`…) and the `ui-*` overlay classes; no motion libraries or hand-written keyframes. Animate what arrives or changes, one expressive moment per screen; admin screens fade or rise a few px at most (no parallax, tilt or text reveals); sites set one `SiteShell motion` level. Opacity and transform only.
 - **Accessibility.** `aria-label` on icon-only buttons, `alt` on images, buttons/links for clicks (no clickable divs), no positive `tabIndex`, visible focus (`focus-ring`), labelled fields with announced errors, colour never the only signal, one h1 per page, logical properties (`ps-`, `me-`, `start-`) for RTL, reduced motion respected.
 - **Next.js.** Files under `app/` that use hooks or handlers need `"use client"`; server components never pass functions into client parts.
 

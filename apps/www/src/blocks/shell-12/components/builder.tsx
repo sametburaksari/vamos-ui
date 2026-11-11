@@ -49,11 +49,10 @@ export function PageBuilder() {
   const selected = sections.find((s) => s.id === selectedId) ?? null;
 
   const commit = (next: Section[], key: string | null = null) => {
-    setH((cur) => {
-      const merge = key !== null && key === mergeKey.current;
-      return { past: merge ? cur.past : [...cur.past, cur.present].slice(-50), present: next, future: [] };
-    });
+    // Decide before queueing: React may run the updater later, after mergeKey has moved on.
+    const merge = key !== null && key === mergeKey.current;
     mergeKey.current = key;
+    setH((cur) => ({ past: merge ? cur.past : [...cur.past, cur.present].slice(-50), present: next, future: [] }));
     setPublished(false);
     setSave((s) => ({ ...s, state: "dirty" }));
     window.clearTimeout(saveTimer.current);

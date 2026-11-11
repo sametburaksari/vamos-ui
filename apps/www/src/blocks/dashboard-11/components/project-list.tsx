@@ -52,7 +52,7 @@ export function ProjectList({ projects, health, done, onOpen }: ProjectListProps
                       <span className="min-w-0">
                         <span className="block truncate text-[13px] font-medium text-fg">{t(p.name)}</span>
                         <span className="flex items-center gap-1.5 text-xs text-fg-subtle">
-                          <span className="font-mono">{p.code}</span>
+                          <span className="shrink-0 font-mono whitespace-nowrap">{p.code}</span>
                           <span aria-hidden>·</span>
                           <span className="truncate">{clientOf(p)?.name}</span>
                         </span>

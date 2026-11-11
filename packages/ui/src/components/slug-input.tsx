@@ -273,7 +273,7 @@ export const SlugInput = React.forwardRef<HTMLInputElement, SlugInputProps>(func
         placeholder={placeholder ?? (source !== undefined && !source ? t("empty") : undefined)}
         aria-label={ariaLabel ?? (field ? undefined : t("slug"))}
         aria-describedby={mergeIds(describedByProp, message ? messageId : undefined)}
-        addonStart={prefix ? <span className="max-w-[16rem] truncate font-mono text-[12px] text-fg-subtle" title={prefix}>{prefix}</span> : undefined}
+        addonStart={prefix ? <span className="max-w-[16rem] truncate font-mono text-[12px] text-fg-subtle max-sm:max-w-[9rem]" title={prefix}>{prefix}</span> : undefined}
         inputClassName="font-mono text-[13px]"
         data-slot="slug-input-control"
         trailing={

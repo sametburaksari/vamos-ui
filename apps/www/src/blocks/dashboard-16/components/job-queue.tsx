@@ -122,7 +122,7 @@ export function JobQueue({ jobs, selectedId, onSelect, onAssign, onNotify, onUna
       <Tabs value={lane} onValueChange={(v) => setLane(v as Lane)} className="flex min-h-0 flex-1 flex-col">
         <div className="flex items-center justify-between gap-2 px-4 pt-4">
           <h2 id="queue-title" className="text-[15px] font-medium text-fg">{c("Jobs", "İşler")}</h2>
-          <span className="text-xs text-fg-subtle">{c(`${jobs.length} today`, `Bugün ${jobs.length}`)}</span>
+          <span className="text-xs text-fg-subtle">{c(`${jobs.length} on the board`, `Panoda ${jobs.length}`)}</span>
         </div>
         <div className="px-4 pt-2">
           <TabsList aria-label={c("Job lanes", "İş kulvarları")} variant="underline">

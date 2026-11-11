@@ -13,7 +13,7 @@ const nextDay = (d: string) => new Date(Date.parse(`${d}T12:00:00Z`) + 86_400_00
 
 const people = [
   { id: "k", title: "Kerem Polat", meta: "Warehouse" },
-  { id: "l", title: "Lena Fischer", meta: "Warehouse" },
+  { id: "l", title: "Mara Fischer", meta: "Warehouse" },
   { id: "m", title: "Murat Çelik", meta: "Dispatch" },
 ];
 

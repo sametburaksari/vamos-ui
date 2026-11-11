@@ -47,6 +47,7 @@ const entry: DocEntry = {
       { name: "renderActions", type: "(node) => ReactNode", description: "Trailing buttons before the Move menu." },
       { name: "moveMenu", type: "boolean", default: "true", description: "Move menu on every row (opened with Shift+F10 from the keyboard)." },
       { name: "empty", type: "ReactNode", description: "Shown when nodes is empty." },
+      { name: "selected / onSelect", type: "string | null / (node) => void", description: "Selectable rows: click or Enter selects (aria-selected), Space still picks a row up for a keyboard move. The toggle, row actions and the Move menu keep their own click." },
       { name: "labels", type: "Partial<SortableTreeLabels>", description: "Built-in strings. Dictionary namespace: sortableTree." },
       { name: "aria-label / aria-labelledby", type: "string", description: "Name of the tree." },
     ] },
