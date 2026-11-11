@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A couple's wedding website with story, programme, travel and per-guest RSVP.",
+    "Private celebrations that need meal choices, plus-ones and dietary needs."
+  ],
+  "avoidWhen": [
+    "Venues hiring their rooms — use site-venue-01.",
+    "Public ticketed events — use site-event-01."
+  ],
+  "related": [
+    "site-venue-01",
+    "site-event-01",
+    "site-studio-01"
+  ],
+  "a11y": [
+    "The live reply card is a role=\"status\" region; motion respects prefers-reduced-motion.",
+    "Group each guest's RSVP fields in a fieldset with the guest name as legend."
+  ]
+}

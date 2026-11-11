@@ -44,7 +44,7 @@ export { BlogList, BlogListSkeleton, type BlogListProps, type BlogListVariant, t
 export { ArticleLayout, shareUrl, type ArticleLayoutProps, type ArticleVariant, type ArticlePost, type ArticleAuthor, type ShareTarget } from "./site/article-layout";
 export { ContactForm, type ContactFormProps, type ContactFormVariant, type ContactInfo } from "./site/contact-form";
 export { MapHours, HoursTable, directionsUrl, mapEmbedUrl, localBusinessJsonLd, type MapHoursProps, type MapHoursVariant, type Branch, type DirectionsProvider, type BusinessType, type HoursDisplay } from "./site/map-hours";
-export { MenuList, menuJsonLd, ALLERGENS, type MenuListProps, type MenuVariant, type MenuCategory, type MenuItem, type MenuPrice, type MenuTag, type Allergen } from "./site/menu-list";
+export { MenuList, menuJsonLd, ALLERGENS, MENU_TAGS, type MenuListProps, type MenuVariant, type MenuCategory, type MenuItem, type MenuPrice, type MenuTag, type Allergen } from "./site/menu-list";
 export { GallerySection, type GallerySectionProps, type GalleryVariant, type GalleryImage, type GallerySpan } from "./site/gallery-section";
 export { ConsentBanner, ConsentDefaults, type ConsentBannerProps, type ConsentVariant } from "./site/consent-banner";
 export { ContactDock, type ContactDockProps, type ContactDockVariant, type DockAction, type MessagingProvider } from "./site/contact-dock";
@@ -52,7 +52,7 @@ export { EmbedFacade, type EmbedFacadeProps } from "./site/embed-facade";
 export { Footer, type FooterProps, type FooterVariant } from "./site/footer";
 export { NotFound, type NotFoundProps, type NotFoundVariant, type NotFoundKind } from "./site/not-found";
 // Shared modules: opening hours, consent, form contract, brand marks, labels
-export { isOpenAt, hoursStatus, hoursOn, weekRows, summarizeHours, orderedWeek, weekStartOf, weekdayName, formatTime, formatRange, zonedMoment, openingHoursJsonLd, describeStatus, type OpenStatus, type OpenState, type WeekRow, type DayHours, type ZonedMoment, type Weekday, type TimeRange } from "./site/shared/opening-hours";
+export { isOpenAt, hoursStatus, hoursOn, weekRows, summarizeHours, orderedWeek, weekStartOf, weekdayName, formatTime, formatRange, zonedMoment, openingHoursJsonLd, describeStatus, timeVars, type OpenStatus, type OpenState, type WeekRow, type DayHours, type ZonedMoment, type Weekday, type TimeRange } from "./site/shared/opening-hours";
 export { OpenNow, type OpenNowProps } from "./site/shared/open-now";
 export { ConsentGate, type ConsentGateProps } from "./site/shared/consent-gate";
 export { ConsentSettingsButton } from "./site/shared/consent-island";

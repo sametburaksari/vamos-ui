@@ -31,9 +31,9 @@ type State = {
 
 const accents = [
   { id: "lime", color: "oklch(0.89 0.21 122)" },
-  { id: "ocean", color: "oklch(0.64 0.17 245)" },
+  { id: "ocean", color: "oklch(0.55 0.17 245)" },
   { id: "ember", color: "oklch(0.7 0.19 45)" },
-  { id: "rose", color: "oklch(0.66 0.21 10)" },
+  { id: "rose", color: "oklch(0.58 0.21 10)" },
   { id: "graphite", color: "oklch(0.3 0.01 120)" },
 ];
 

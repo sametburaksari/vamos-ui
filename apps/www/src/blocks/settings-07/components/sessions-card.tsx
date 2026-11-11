@@ -129,7 +129,7 @@ export function SessionsCard({ sessions, onSessionsChange, blocked, onBlock }: P
         />
         <CardBody className="p-0!">
           <TableContainer className="border-0">
-            <Table density="compact" bordered="rows">
+            <Table density="compact" bordered="rows" aria-label={c("Sign-in history", "Giriş geçmişi")}>
               <TableHeader>
                 <TableRow>
                   <TableHead>{c("When", "Zaman")}</TableHead>

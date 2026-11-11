@@ -6,7 +6,7 @@ import { refreshIndexes, type IndexResult } from "./indexes";
 import { ownedFiles, recordItem, sha256, type Lockfile } from "./lockfile";
 import { collectDependencies } from "./resolve";
 import { targetPath, transformFile } from "./transform";
-import type { RegistryItem, VamosConfig } from "./types";
+import { itemKey, type RegistryItem, type VamosConfig } from "./types";
 
 export type FileAction = "create" | "update" | "identical" | "conflict";
 
@@ -44,7 +44,8 @@ export async function planInstall(
     for (const file of item.files ?? []) {
       const rel = targetPath(item, file, config);
       if (claimed.has(rel)) continue; // first item wins when two ship the same file
-      claimed.set(rel, item.name);
+      const key = itemKey(item);
+      claimed.set(rel, key);
       const content = transformFile(file.content, config);
       const abs = path.join(root, rel);
       let action: FileAction = "create";
@@ -53,11 +54,14 @@ export async function planInstall(
         const currentHash = sha256(current);
         if (currentHash === sha256(content)) action = "identical";
         else {
-          const recorded = Object.values(lock.items).find((it) => rel in it.files)?.files[rel];
-          action = opts.overwrite || recorded === currentHash ? "update" : "conflict";
+          const owner = Object.entries(lock.items).find(([, it]) => rel in it.files);
+          const recorded = owner?.[1].files[rel];
+          // A third-party item never silently replaces a file another item installed.
+          const foreign = !!item.source && !!owner && owner[0] !== key;
+          action = opts.overwrite || (recorded === currentHash && !foreign) ? "update" : "conflict";
         }
       }
-      files.push({ item: item.name, path: rel, content, action });
+      files.push({ item: key, path: rel, content, action });
     }
   }
   return { files, items, dependencies: collectDependencies(items) };
@@ -91,13 +95,14 @@ export async function applyPlan(
   }
 
   for (const item of plan.items) {
-    const prev = lock.items[item.name]?.files ?? {};
+    const key = itemKey(item);
+    const prev = lock.items[key]?.files ?? {};
     const files: Record<string, string> = {};
-    for (const f of plan.files.filter((x) => x.item === item.name)) {
+    for (const f of plan.files.filter((x) => x.item === key)) {
       // A kept conflicting file keeps its previous hash, so diff/upgrade still see it as edited.
       files[f.path] = f.action === "conflict" && prev[f.path] ? prev[f.path]! : sha256(f.content);
     }
-    recordItem(lock, item.name, { version, type: item.type, files });
+    recordItem(lock, key, { version, type: item.type, files, source: item.source?.url });
   }
 
   const indexes = await refreshIndexes(root, config.uiDir, { barrels, owned: ownedFiles(lock) });

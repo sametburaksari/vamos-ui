@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A contractor, builder or developer site with projects, progress, services, safety and tender enquiries.",
+    "Firms that want per-project pages with a draggable progress timeline."
+  ],
+  "avoidWhen": [
+    "A manufacturing plant — use site-factory-01.",
+    "A residential sales agency — use site-estate-01."
+  ],
+  "related": [
+    "gantt",
+    "filter-bar",
+    "stats-band",
+    "contact-form"
+  ],
+  "a11y": [
+    "Timeline and filter changes are announced through aria-live; hazard and progress motion stop under prefers-reduced-motion.",
+    "Make sure the dragged timeline month is also reachable with arrow keys or the visible month labels."
+  ]
+}

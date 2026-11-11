@@ -9,6 +9,8 @@ import { CliError, type RegistryIndex, type VamosConfig } from "../core/types";
 import { p, pc, type Context } from "../ui";
 import { installItems } from "./shared";
 import { htmlSnippet } from "./theme";
+import { applyPreset, parsePresetFlag } from "./preset";
+import { describePreset, encodePreset } from "../preset";
 
 /** Base items installed by init: "styles" plus the lib items tagged "base". */
 export function baseItems(index: RegistryIndex): string[] {
@@ -24,6 +26,8 @@ export function baseItems(index: RegistryIndex): string[] {
 export async function init(ctx: Context, args: ParsedArgs): Promise<number> {
   const root = findProjectRoot(ctx.cwd);
   const project = detectProject(root);
+  const presetCode = str(args.flags, "preset");
+  const preset = presetCode ? parsePresetFlag(presetCode) : null;
   p.intro(pc.bold("Vamos UI"));
 
   const framework = project.framework === "next" ? `Next.js${project.appRouter ? " (App Router)" : ""}` : project.framework === "vite" ? "Vite" : "no known framework";
@@ -90,12 +94,18 @@ export async function init(ctx: Context, args: ParsedArgs): Promise<number> {
     await installItems(ctx, session, base, { overwrite: bool(args.flags, "overwrite"), dryRun: bool(args.flags, "dry-run"), install: bool(args.flags, "install", true) });
   }
 
+  if (preset) {
+    const res = await applyPreset(root, config, preset, { dryRun: bool(args.flags, "dry-run") });
+    config = { ...config, theme: res.theme };
+    p.log.step(`Preset ${pc.bold(encodePreset(preset))}: ${describePreset(preset)}${res.brand ? pc.dim(` (wrote ${res.brand.file} and ${res.brand.cssFile})`) : ""}${bool(args.flags, "dry-run") ? pc.dim(" (dry run)") : ""}`);
+  }
+
   if (bool(args.flags, "agent") && bool(args.flags, "dry-run")) {
     p.log.info(pc.dim("Would write AGENTS.md / CLAUDE.md rules and .claude/skills/vamos-ui (dry run)."));
   } else if (bool(args.flags, "agent")) {
     const res = await writeAgentFiles(root, config, registry);
     p.log.step(`Agent rules: ${res.written.join(", ")}${res.skillSource === "builtin" ? pc.dim(" (built-in skill)") : ""}`);
-    p.log.info(`Optional MCP server: ${pc.cyan("claude mcp add vamos-ui -- npx -y @vamos-ui/mcp")}`);
+    p.log.info(`Optional MCP server: ${pc.cyan("npx vamos-ui mcp add")} ${pc.dim("(Claude Code, Cursor, VS Code, Windsurf, Codex, Gemini CLI)")}`);
   }
 
   p.note(htmlSnippet(project.framework, config.theme ?? {}, project.srcDir && project.appRouter && !existsSync(path.join(root, "app"))), "Theme: set the axes on <html>");

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A brand or design studio that wants loud type, client colours and a case-study index.",
+    "Agencies that take project briefs online and want a live-totalling enquiry form."
+  ],
+  "avoidWhen": [
+    "A quieter consultancy-style agency site — use site-agency-01.",
+    "A single-person portfolio — use site-portfolio-01."
+  ],
+  "related": [
+    "gallery-section",
+    "stats-band",
+    "contact-form",
+    "cta"
+  ],
+  "a11y": [
+    "The brief total is announced via aria-live and a status region; colour floods are disabled under motion-reduce.",
+    "Check text contrast against each client brand colour you add."
+  ]
+}

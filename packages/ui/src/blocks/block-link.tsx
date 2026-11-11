@@ -38,7 +38,7 @@ export const BlockLink = React.forwardRef<HTMLAnchorElement, BlockLinkProps>(fun
 ) {
   const safe = sanitizeHref(href);
   const classes = cn(
-    appearance === "link" ? "inline-flex items-center gap-1.5 font-medium text-fg underline decoration-line underline-offset-[0.3em] transition-colors hover:decoration-current focus-ring rounded-[2px]" : null,
+    appearance === "link" ? "inline-flex min-h-6 pointer-coarse:min-h-11 items-center gap-1.5 font-medium text-fg underline decoration-line underline-offset-[0.3em] transition-colors hover:decoration-current focus-ring rounded-[2px]" : null,
     appearance && appearance !== "link" ? cn(buttonVariants({ variant: appearance, size }), appearance === "primary" && "vb-action-primary", appearance === "secondary" && "vb-action-secondary") : null,
     className,
   );

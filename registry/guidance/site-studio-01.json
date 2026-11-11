@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A photo or video studio selling preset packages, room hire and deposits.",
+    "Creative businesses that quote through a package builder and calendar booking."
+  ],
+  "avoidWhen": [
+    "Portfolios without booking — use site-portfolio-01.",
+    "Event spaces hired by capacity — use site-venue-01."
+  ],
+  "related": [
+    "site-portfolio-01",
+    "site-venue-01",
+    "site-wedding-01"
+  ],
+  "a11y": [
+    "The live quote is a role=\"status\" aria-live region; motion respects prefers-reduced-motion.",
+    "Make sure calendar days and start times are buttons with full date labels."
+  ]
+}

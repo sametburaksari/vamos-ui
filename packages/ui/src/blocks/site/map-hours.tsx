@@ -12,6 +12,8 @@ import { OpenNow } from "./shared/open-now";
 import { ConsentGate } from "./shared/consent-gate";
 import { openNowLabelKeys, type OpenNowLabels } from "./shared/island-keys";
 import { BrandIcon, BRAND_NAMES, type BrandName } from "./shared/brand-icons";
+import { columnSizes } from "./shared/image-sizes";
+import { TAP } from "./shared/tap";
 
 export type MapHoursVariant = "map-split" | "info" | "branches";
 export type DirectionsProvider = "google" | "apple" | "yandex" | "waze";
@@ -26,7 +28,7 @@ export interface Branch {
   phone?: string;
   email?: string;
   hours: OpeningHours;
-  /** Static map picture for the facade (greyscale, an accent pin on top). */
+  /** Static map picture for the facade (greyscale, an accent pin on top). `sizes`: `(min-width: 56rem) min(59vw, 45rem), 100vw`. */
   mapImage?: SiteImage2;
   /** Google Business Profile / place link. */
   placeUrl?: string;
@@ -52,7 +54,7 @@ export interface MapHoursProps extends Omit<BlockBaseProps, "variant" | "labels"
   mapProvider?: "google" | "osm" | "none";
   /** Direction links. Default google · apple (Yandex is common in Turkey, Waze elsewhere). */
   directions?: DirectionsProvider[];
-  /** "Open now · closes at 22:00" island. Default true. */
+  /** "Open · until 10 PM" island ("Closing soon · open until 10 PM", "Closed · opens tomorrow at 12 PM"). Default true. */
   showOpenNow?: boolean;
   /**
    * Weekly hours: `week` (default) lists all seven days, `open-days` hides closed days (a venue
@@ -206,7 +208,7 @@ function MapFacade({ branch, ctx }: { branch: Branch; ctx: BranchCtx }) {
   const src = ctx.mapProvider !== "none" ? mapEmbedUrl(branch, ctx.mapProvider) : undefined;
   const preview = branch.mapImage?.src ? (
     <>
-      <BlockImage {...branch.mapImage} decorative aspect="4:3" sizes="(min-width: 56rem) 58vw, 100vw" className="size-full" imgClassName="vb-map-img" components={ctx.components} />
+      <BlockImage {...branch.mapImage} decorative aspect="4:3" sizes={columnSizes(7 / 12)} className="size-full" imgClassName="vb-map-img" components={ctx.components} />
       <span aria-hidden className="vb-map-pin absolute start-1/2 top-1/2 -translate-x-1/2 -translate-y-full text-accent rtl:translate-x-1/2">
         <svg viewBox="0 0 32 40" className="h-10 w-8 drop-shadow-sm">
           <path d="M16 0C7.16 0 0 7.16 0 16c0 11.2 14.4 23.2 15.04 23.72a1.5 1.5 0 0 0 1.92 0C17.6 39.2 32 27.2 32 16 32 7.16 24.84 0 16 0Z" fill="currentColor" />
@@ -338,7 +340,7 @@ function InfoColumns({ branch, ctx }: { branch: Branch; ctx: BranchCtx }) {
         <AddressBlock branch={branch} ctx={ctx} large />
         {branch.notes ? <p className="text-small text-fg-muted">{branch.notes}</p> : null}
         {ctx.directions[0] ? (
-          <a href={directionsUrl(ctx.directions[0], branch)} target="_blank" rel="noopener noreferrer" className="mt-1 self-start text-small font-medium text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]" data-track={`directions:${ctx.directions[0]}`}>
+          <a href={directionsUrl(ctx.directions[0], branch)} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex min-h-6 items-center self-start pointer-coarse:min-h-11 text-small font-medium text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]" data-track={`directions:${ctx.directions[0]}`}>
             {ctx.t("directionsVia", { provider: BRAND_NAMES[DIRECTION_BRAND[ctx.directions[0]]] })}
             <span className="sr-only"> {ctx.t("opensInNewTab")}</span>
           </a>
@@ -365,12 +367,12 @@ function InfoColumns({ branch, ctx }: { branch: Branch; ctx: BranchCtx }) {
       <div className="flex flex-col gap-3">
         <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{ctx.t("contactDetails")}</p>
         {branch.phone ? (
-          <a href={telHref(branch.phone)} className="self-start text-lead font-medium tabular text-fg hover:text-accent-ink focus-ring rounded-[2px]" data-track="call">
+          <a href={telHref(branch.phone)} className={cn(TAP, "self-start text-lead font-medium tabular text-fg hover:text-accent-ink focus-ring rounded-[2px]")} data-track="call">
             {prettyPhone(branch.phone)}
           </a>
         ) : null}
         {branch.email ? (
-          <a href={`mailto:${branch.email}`} className="self-start text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]" data-track="email">
+          <a href={`mailto:${branch.email}`} className={cn(TAP, "self-start text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]")} data-track="email">
             {branch.email}
           </a>
         ) : null}

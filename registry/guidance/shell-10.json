@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Developer consoles with minimal chrome where navigation and actions live in a command palette.",
+    "Live request logs, API keys and webhooks pages."
+  ],
+  "avoidWhen": [
+    "Users who are not keyboard-centric — use shell-01.",
+    "Only managing keys inside settings — use settings-04."
+  ],
+  "related": [
+    "command",
+    "settings-04",
+    "kbd",
+    "shell-01"
+  ],
+  "a11y": [
+    "The live log announces through aria-live and dialogs are labelled; keep visible entry points for ⌘K so navigation is discoverable."
+  ]
+}

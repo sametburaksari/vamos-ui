@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Stand-ins for missing images that follow the theme and accent.",
+    "Demo blocks and empty media slots that should not ship stock photos."
+  ],
+  "avoidWhen": [
+    "Real content images — use image.",
+    "Loading state while data arrives — use skeleton."
+  ],
+  "related": [
+    "image",
+    "skeleton",
+    "empty-state"
+  ],
+  "a11y": [
+    "It renders as role=\"img\" with an aria-label; pass a meaningful caption or mark it decorative where the art adds nothing."
+  ]
+}

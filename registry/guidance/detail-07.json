@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A PIM product editor: bilingual copy, gallery with alt-text checks, variants and channel prices.",
+    "Merchandisers checking completeness before publishing to sales channels."
+  ],
+  "avoidWhen": [
+    "Editing prices and stock for many products at once — use list-10.",
+    "A shopper-facing product page — use product-01."
+  ],
+  "related": [
+    "product-01",
+    "list-10",
+    "media-library",
+    "sortable-list"
+  ],
+  "a11y": [
+    "Gallery reordering has keyboard handling; image buttons carry aria-labels.",
+    "Treat the alt-text check as a requirement — every product image needs meaningful alt text."
+  ]
+}

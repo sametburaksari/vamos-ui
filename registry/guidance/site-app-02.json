@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A finance, savings or banking app landing that needs a calm, trustworthy tone, a goal planner and a security page.",
+    "Apps with monthly / yearly plans and a comparison table."
+  ],
+  "avoidWhen": [
+    "A playful consumer app — use site-app-01.",
+    "A B2B SaaS dashboard product — use site-saas-02."
+  ],
+  "related": [
+    "pricing-table",
+    "comparison-table",
+    "line-chart",
+    "faq"
+  ],
+  "a11y": [
+    "The savings projection is announced through an aria-live region.",
+    "Give the projection chart a text summary of the final amount for screen-reader users."
+  ]
+}

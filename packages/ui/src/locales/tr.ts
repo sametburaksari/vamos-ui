@@ -720,6 +720,7 @@ export const tr = {
     thumbs: "Slayt küçük resimleri",
     empty: "Henüz gösterilecek bir şey yok",
     loading: "Slaytlar yükleniyor",
+    marqueePause: "Kaydırmayı duraklat",
   },
   savedViews: {
     label: "Görünümler",

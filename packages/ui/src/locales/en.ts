@@ -719,6 +719,7 @@ export const en = {
     thumbs: "Slide thumbnails",
     empty: "Nothing to show yet",
     loading: "Loading slides",
+    marqueePause: "Pause scrolling",
   },
   savedViews: {
     label: "Views",

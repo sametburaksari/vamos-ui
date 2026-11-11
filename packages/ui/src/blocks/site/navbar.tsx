@@ -9,6 +9,7 @@ import { SkipLink } from "../section";
 import type { BlockBaseProps } from "../types";
 import { NavbarSubmenu } from "./navbar-submenu";
 import { CtaList, useBlockIds, siteText, type SiteBlockLabels, type SiteCta, type SiteImage, type SiteMeta } from "./_kit-1";
+import { TAP } from "./shared/tap";
 
 export type NavbarVariant = "bar" | "split" | "minimal" | "rail";
 
@@ -41,6 +42,7 @@ export interface NavbarProps extends Omit<BlockBaseProps, "variant" | "labels"> 
    * rail: links inside one framed pill in the middle, "Sign in" + "Try free" at the end.
    */
   variant?: NavbarVariant;
+  /** Logo image (`sizes="12rem"`; the mark is 1.75rem tall). */
   logo?: SiteImage;
   /** Shown instead of `logo` inside dark sections / dark mode. */
   logoDark?: SiteImage;
@@ -118,11 +120,11 @@ export function Navbar({
   const linkProps = { components, labels, locale };
 
   const brand = (
-    <BlockLink href={homeHref} {...linkProps} className="vb-nav-brand flex shrink-0 items-center gap-3 rounded-[2px] focus-ring">
+    <BlockLink href={homeHref} {...linkProps} className="vb-nav-brand flex min-h-6 shrink-0 items-center gap-3 pointer-coarse:min-h-11 rounded-[2px] focus-ring">
       {logo ? (
         <>
-          <BlockImage {...logo} decorative={!!wordmark || logo.decorative} alt={wordmark ? undefined : logo.alt} priority className={cn("vb-nav-logo", logoDark && "vb-logo-light")} components={components} />
-          {logoDark ? <BlockImage {...logoDark} decorative priority className="vb-nav-logo vb-logo-dark" components={components} /> : null}
+          <BlockImage {...logo} decorative={!!wordmark || logo.decorative} alt={wordmark ? undefined : logo.alt} priority sizes="12rem" className={cn("vb-nav-logo", logoDark && "vb-logo-light")} components={components} />
+          {logoDark ? <BlockImage {...logoDark} decorative priority sizes="12rem" className="vb-nav-logo vb-logo-dark" components={components} /> : null}
         </>
       ) : null}
       {wordmark || !logo ? (
@@ -177,7 +179,7 @@ export function Navbar({
   );
 
   const phoneLink = phone ? (
-    <a href={`tel:${phone}`} aria-label={t("callUs", { phone: phoneText })} data-track="call" className="vb-nav-phone hidden items-center gap-2 rounded-[2px] font-mono text-small tabular text-fg-muted transition-colors hover:text-fg focus-ring @6xl:inline-flex">
+    <a href={`tel:${phone}`} aria-label={t("callUs", { phone: phoneText })} data-track="call" className="vb-nav-phone hidden min-h-6 items-center gap-2 rounded-[2px] font-mono text-small tabular text-fg-muted transition-colors hover:text-fg focus-ring @6xl:inline-flex">
       <Phone aria-hidden strokeWidth={1.5} className="size-3.5" />
       {phoneText}
     </a>
@@ -190,7 +192,7 @@ export function Navbar({
         return (
           <li key={l.code} className="flex items-center gap-1">
             {i > 0 ? <span aria-hidden className="text-fg-subtle">/</span> : null}
-            <a href={l.href} hrefLang={l.code} lang={l.code} aria-current={current ? "true" : undefined} className={cn("rounded-[2px] px-0.5 transition-colors focus-ring", current ? "text-fg" : "text-fg-muted hover:text-fg")}>
+            <a href={l.href} hrefLang={l.code} lang={l.code} aria-current={current ? "true" : undefined} className={cn("inline-flex min-h-6 min-w-6 items-center justify-center rounded-[2px] px-0.5 transition-colors focus-ring", current ? "text-fg" : "text-fg-muted hover:text-fg")}>
               {l.code}
             </a>
           </li>
@@ -206,7 +208,7 @@ export function Navbar({
       aria-haspopup="dialog"
       aria-controls={panelId}
       className={cn(
-        "vb-nav-trigger inline-flex h-10 items-center gap-2 rounded-ui px-2 text-sm font-medium text-fg transition-colors hover:bg-hover focus-ring",
+        "vb-nav-trigger inline-flex h-10 min-w-10 items-center justify-center gap-2 rounded-ui px-2 text-sm font-medium text-fg transition-colors hover:bg-hover focus-ring pointer-coarse:h-11 pointer-coarse:min-w-11",
         !always && "@4xl:hidden",
       )}
     >
@@ -309,7 +311,7 @@ export function Navbar({
               type="button"
               popoverTarget={panelId}
               popoverTargetAction="hide"
-              className="inline-flex h-10 items-center gap-2 rounded-ui px-2 text-fg transition-colors hover:bg-hover focus-ring"
+              className="inline-flex h-10 min-w-10 items-center justify-center gap-2 rounded-ui px-2 text-fg transition-colors hover:bg-hover focus-ring pointer-coarse:h-11 pointer-coarse:min-w-11"
             >
               <span className={variant === "minimal" ? "font-mono text-eyebrow uppercase tracking-[0.08em]" : "sr-only"}>{t("closeMenu")}</span>
               <X aria-hidden strokeWidth={1.5} className="size-5" />
@@ -320,9 +322,9 @@ export function Navbar({
               <li key={i} className="border-b border-line">
                 {renderLink(it, i, cn("vb-nav-panel-link block py-3 text-fg", panelLinkSize))}
                 {it.children?.length ? (
-                  <ul className="flex flex-wrap gap-x-6 gap-y-2 pb-4">
+                  <ul className="flex flex-wrap gap-x-6 gap-y-2 pb-4 pointer-coarse:gap-y-0">
                     {it.children.map((c, j) => (
-                      <li key={j}>{renderLink(c, j, "text-small text-fg-muted hover:text-fg")}</li>
+                      <li key={j}>{renderLink(c, j, cn(TAP, "text-small text-fg-muted hover:text-fg"))}</li>
                     ))}
                   </ul>
                 ) : null}
@@ -337,7 +339,7 @@ export function Navbar({
                   <div>
                     <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{t("phoneLabel")}</dt>
                     <dd className="mt-1">
-                      <a href={`tel:${phone}`} data-track="call" className="tabular text-fg underline decoration-line underline-offset-4 focus-ring">
+                      <a href={`tel:${phone}`} data-track="call" className={cn(TAP, "tabular text-fg underline decoration-line underline-offset-4 focus-ring")}>
                         {phoneText}
                       </a>
                     </dd>
@@ -352,9 +354,9 @@ export function Navbar({
                 {locales?.length ? (
                   <div>
                     <dt className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{t("languages")}</dt>
-                    <dd className="mt-1 flex gap-3">
+                    <dd className="mt-1 flex gap-3 pointer-coarse:gap-1">
                       {locales.map((l) => (
-                        <a key={l.code} href={l.href} hrefLang={l.code} lang={l.code} aria-current={(l.current ?? baseLanguage(l.code) === lang) ? "true" : undefined} className="font-mono uppercase text-fg-muted aria-[current]:text-fg focus-ring">
+                        <a key={l.code} href={l.href} hrefLang={l.code} lang={l.code} aria-current={(l.current ?? baseLanguage(l.code) === lang) ? "true" : undefined} className={cn(TAP, "min-w-6 justify-center font-mono uppercase text-fg-muted aria-[current]:text-fg focus-ring pointer-coarse:min-w-11")}>
                           {l.code}
                         </a>
                       ))}

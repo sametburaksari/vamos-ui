@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A customer contract record: term and notice deadline, clauses, counterparty redlines and signers.",
+    "Accepting or rejecting proposed wording and managing auto-renewal safely."
+  ],
+  "avoidWhen": [
+    "Drafting a priced proposal — use detail-08.",
+    "A generic version list for any record — use version-history."
+  ],
+  "related": [
+    "detail-08",
+    "version-history",
+    "signer-status",
+    "comment-thread"
+  ],
+  "a11y": [
+    "The clause outline is a nav with aria-current; legal flags use role=\"alert\".",
+    "Word diffs must not rely on colour only — keep insert/delete marks readable as text."
+  ]
+}

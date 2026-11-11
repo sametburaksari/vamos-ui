@@ -10,6 +10,12 @@
   <a href="https://ui.vamos.ist">ui.vamos.ist</a> · <a href="https://ui.vamos.ist/docs">Docs</a> · <a href="https://ui.vamos.ist/blocks">Blocks</a> · <a href="https://ui.vamos.ist/docs/changelog">Changelog</a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/sametburaksari/vamos-ui/actions/workflows/ci.yml"><img src="https://github.com/sametburaksari/vamos-ui/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status" /></a>
+  <a href="https://www.npmjs.com/package/@vamos-ui/react"><img src="https://img.shields.io/npm/v/@vamos-ui/react?label=%40vamos-ui%2Freact" alt="npm version of @vamos-ui/react" /></a>
+  <a href="LICENSE-MIT"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT" /></a>
+</p>
+
 > **Early preview (v0.2).** Components are being built in the open. APIs will change until v1.
 
 ## Why
@@ -67,3 +73,5 @@ node scripts/gen.mjs                 # regenerate indexes after adding component
 ```
 
 Contributions are welcome — read [CONTRIBUTING.md](CONTRIBUTING.md) (DCO sign-off required).
+
+Security issues: see [SECURITY.md](SECURITY.md) — please report privately, not in a public issue.

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A storefront product page with gallery, variant pickers, price and add to cart.",
+    "Products that need stock per variant, delivery estimates, size guide and reviews."
+  ],
+  "avoidWhen": [
+    "Browsing many products — use site-store-01.",
+    "The cart itself — use cart-01."
+  ],
+  "related": [
+    "cart-01",
+    "gallery",
+    "lightbox",
+    "tabs"
+  ],
+  "a11y": [
+    "Variant buttons use aria-pressed in labelled groups, gallery images have alt text and add-to-cart feedback uses role=\"status\"."
+  ]
+}

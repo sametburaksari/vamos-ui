@@ -16,6 +16,7 @@ import { BrandIcon, type BrandName } from "./shared/brand-icons";
 import { CopyLinkButton } from "./shared/copy-link";
 import { shareLabelKeys } from "./shared/island-keys";
 import { BlogList, type PostSummary } from "./blog-list";
+import { headingLines } from "./shared/heading-lines";
 
 export type ArticleVariant = "classic" | "wide-cover" | "minimal";
 export type ShareTarget = "copy" | "whatsapp" | "x" | "linkedin" | "email";
@@ -33,6 +34,7 @@ export interface ArticlePost {
   /** Standfirst under the title. */
   dek?: React.ReactNode;
   body: RichDoc;
+  /** Cover. `sizes`: wide `100vw`, contained `(min-width: 76rem) 76rem, 100vw`. Above the fold: `priority`. */
   cover?: SiteImage2;
   coverCaption?: React.ReactNode;
   author?: ArticleAuthor;
@@ -141,7 +143,7 @@ export function ArticleLayout({
           </BlockLink>
         </p>
       ) : null}
-      <BlockHeading id={headingId} level={headingLevel} size={variant === "minimal" ? "display-xl" : "display-l"} text={post.title} editMode={editMode} field="props.post.title" labels={labels} locale={locale} className="max-w-[22ch]" />
+      <BlockHeading id={headingId} level={headingLevel} size={variant === "minimal" ? "display-xl" : "display-l"} text={headingLines(post.title)} editMode={editMode} field="props.post.title" labels={labels} locale={locale} className="max-w-[22ch]" />
       {post.dek ? <p className="max-w-[58ch] text-lead text-fg-muted text-pretty">{post.dek}</p> : null}
       <Byline post={post} minutes={minutes} ctx={ctx} showDate={variant !== "minimal"} />
     </header>

@@ -6,6 +6,7 @@ import { BlockImage } from "../block-image";
 import type { BlockBaseProps } from "../types";
 import { CtaList, indexLabel, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
 import { Reveal } from "../../motion/reveal";
+import { columnSizes } from "./shared/image-sizes";
 
 export type StepsVariant = "vertical" | "horizontal" | "split";
 
@@ -15,6 +16,7 @@ export interface StepsItem {
   text?: React.ReactNode;
   /** "1–2 weeks", "45 min". */
   duration?: React.ReactNode;
+  /** 3:2 step photo, max 28rem wide. `sizes`: `(min-width: 56rem) min(34vw, 26rem), min(100vw, 28rem)`. */
   media?: SiteImage;
 }
 
@@ -67,7 +69,7 @@ export function Steps({ variant = "vertical", eyebrow, title, lead, steps, actio
         {s.duration}
       </span>
     ) : null;
-  const media = (s: StepsItem) => (s.media ? <BlockImage {...s.media} aspect="3:2" sizes="(min-width: 56rem) 30vw, 100vw" className="mt-2 max-w-md rounded-ui" components={components} labels={labels} /> : null);
+  const media = (s: StepsItem) => (s.media ? <BlockImage {...s.media} aspect="3:2" sizes={columnSizes(4 / 12, { narrow: "min(100vw, 28rem)" })} className="mt-2 max-w-md rounded-ui" components={components} labels={labels} /> : null);
 
   const header = title || eyebrow || lead ? <SectionHeader eyebrow={eyebrow} title={title} lead={lead} align={variant === "horizontal" && lead ? "split" : "start"} headingLevel={headingLevel} headingId={headingId} editMode={editMode} labels={labels} locale={locale} /> : null;
   const actionsEl = actions?.length ? <CtaList actions={actions} components={components} labels={labels} locale={locale} editMode={editMode} /> : null;

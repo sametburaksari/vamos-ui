@@ -11,12 +11,36 @@ import { site2Text, type Site2BlockLabels, type Site2Key, type Site2Text } from 
 import { fieldAttr, formatMoney, formatMoneyLong, textOf, useBlockIds2, type SiteImage2 } from "./shared/kit-2";
 
 export type MenuVariant = "classic" | "photo" | "service-list";
-export type MenuTag = "vegetarian" | "vegan" | "gluten-free" | "spicy" | "new" | "chef-pick";
+/** Dietary and house tags, rendered as words (never emoji). */
+export const MENU_TAGS = ["vegetarian", "vegan", "gluten-free", "dairy-free", "nut-free", "halal", "spicy", "new", "chef-pick", "to-share", "seasonal"] as const;
+export type MenuTag = (typeof MENU_TAGS)[number];
 /** The 14 EU / Codex allergens. */
 export const ALLERGENS = ["gluten", "crustaceans", "eggs", "fish", "peanuts", "soybeans", "milk", "nuts", "celery", "mustard", "sesame", "sulphites", "lupin", "molluscs"] as const;
 export type Allergen = (typeof ALLERGENS)[number];
 
-const TAG_KEY: Record<MenuTag, Site2Key> = { vegetarian: "tagVegetarian", vegan: "tagVegan", "gluten-free": "tagGlutenFree", spicy: "tagSpicy", new: "tagNew", "chef-pick": "tagChefPick" };
+const TAG_KEY: Record<MenuTag, Site2Key> = {
+  vegetarian: "tagVegetarian",
+  vegan: "tagVegan",
+  "gluten-free": "tagGlutenFree",
+  "dairy-free": "tagDairyFree",
+  "nut-free": "tagNutFree",
+  halal: "tagHalal",
+  spicy: "tagSpicy",
+  new: "tagNew",
+  "chef-pick": "tagChefPick",
+  "to-share": "tagToShare",
+  seasonal: "tagSeasonal",
+};
+const DIET: Partial<Record<MenuTag, string>> = {
+  vegan: "https://schema.org/VeganDiet",
+  vegetarian: "https://schema.org/VegetarianDiet",
+  "gluten-free": "https://schema.org/GlutenFreeDiet",
+  "dairy-free": "https://schema.org/LowLactoseDiet",
+  halal: "https://schema.org/HalalDiet",
+};
+
+type HeadingTag = "h2" | "h3" | "h4" | "h5" | "h6";
+const hTag = (level: number): HeadingTag => `h${Math.min(6, Math.max(2, level))}` as HeadingTag;
 
 export interface MenuPrice {
   /** "Small", "Bottle", "50 min". */
@@ -34,7 +58,7 @@ export interface MenuItem {
   duration?: React.ReactNode;
   tags?: MenuTag[];
   allergens?: Allergen[];
-  /** Square photo (`photo` variant). */
+  /** Square photo (`photo` variant), 72px (`sizes="72px"`). */
   image?: SiteImage2;
   /** "Not today" — shown as a label, never a strikethrough. */
   unavailable?: boolean;
@@ -73,7 +97,9 @@ export interface MenuListProps extends Omit<BlockBaseProps, "variant" | "labels"
 }
 
 /**
- * Restaurant menus and spa/salon price lists — also a QR-menu page. Category jump bar with plain
+ * Restaurant menus and spa/salon price lists — also a whole menu page, so a site never has to
+ * link out to a third-party QR menu: pass `headingLevel={1}` and the title becomes the page `h1`,
+ * categories `h2`, dishes `h3`. Category jump bar with plain
  * anchors, money through `Intl` (full currency name for screen readers), tags as words (never
  * emoji), the 14 allergens localized. Server component, 0 JS.
  *
@@ -106,7 +132,10 @@ export function MenuList({
   const categories = all.filter((c) => c.items.length > 0 || editMode);
   const nav = showNav ?? categories.length > 2;
   const catId = (c: MenuCategory, i: number) => c.anchor ?? (`${slugify(textOf(c.title), { locale }) || "section"}-${i}` as string);
-  const ctx: ItemCtx = { t, locale, components, labels, editMode, variant, bookHref, showAllergens };
+  // Outline follows the block title: h2 title → h3 categories → h4 dishes; h1 page title → h2 → h3.
+  const catLevel = title ? headingLevel + 1 : headingLevel;
+  const CatH = hTag(catLevel);
+  const ctx: ItemCtx = { t, locale, components, labels, editMode, variant, bookHref, showAllergens, ItemH: hTag(catLevel + 1) };
 
   return (
     <Section theme={theme} anchor={anchor} headingId={title ? headingId : undefined} blockId={id} blockType="menu" editMode={editMode} className={cn("vb-menu", className)} data-variant={variant}>
@@ -133,9 +162,9 @@ export function MenuList({
             return (
               <section key={ci} id={hid} aria-labelledby={`${hid}-h`} className="vb-menu-cat flex flex-col gap-6">
                 <div className="flex flex-col gap-2 border-t-[3px] border-double border-line pt-5 @2xl:flex-row @2xl:items-baseline @2xl:justify-between @2xl:gap-8">
-                  <h3 id={`${hid}-h`} className="font-display text-display-m text-fg" {...fieldAttr(editMode, `categories.${ci}.title`)}>
+                  <CatH id={`${hid}-h`} className="font-display text-display-m text-fg" {...fieldAttr(editMode, `categories.${ci}.title`)}>
                     {c.title}
-                  </h3>
+                  </CatH>
                   {c.note ? <p className="max-w-[44ch] text-small text-fg-muted @2xl:text-end">{c.note}</p> : null}
                 </div>
                 {variant === "service-list" ? (
@@ -175,6 +204,7 @@ interface ItemCtx {
   variant: MenuVariant;
   bookHref?: string;
   showAllergens: boolean;
+  ItemH: HeadingTag;
 }
 
 function Price({ price, ctx, className }: { price: MenuPrice; ctx: ItemCtx; className?: string }) {
@@ -240,7 +270,7 @@ function DishItem({ item, ctx }: { item: MenuItem; ctx: ItemCtx }) {
       ) : null}
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
         <div className="flex items-baseline gap-3">
-          <h4 className="text-body font-medium text-fg">{item.name}</h4>
+          <ctx.ItemH className="text-body font-medium text-fg">{item.name}</ctx.ItemH>
           {!photo ? <span aria-hidden className="vb-leader min-w-6 flex-1 translate-y-[-0.3em] border-b border-dotted border-fg-subtle" /> : <span className="flex-1" />}
           <Prices item={item} ctx={ctx} />
         </div>
@@ -258,7 +288,7 @@ function ServiceRow({ item, ctx }: { item: MenuItem; ctx: ItemCtx }) {
   return (
     <li data-unavailable={item.unavailable ? "" : undefined} className="grid gap-x-(--gutter) gap-y-2 border-b border-line py-5 first:border-t @2xl:grid-cols-12 @2xl:items-baseline">
       <div className="flex flex-col gap-1.5 @2xl:col-span-6">
-        <h4 className="text-body font-medium text-fg">{item.name}</h4>
+        <ctx.ItemH className="text-body font-medium text-fg">{item.name}</ctx.ItemH>
         {item.description ? <p className="text-small text-fg-muted text-pretty">{item.description}</p> : null}
         <Tags item={item} ctx={ctx} />
       </div>
@@ -268,7 +298,7 @@ function ServiceRow({ item, ctx }: { item: MenuItem; ctx: ItemCtx }) {
       </div>
       <div className="@2xl:col-span-1 @2xl:text-end">
         {href && !item.unavailable ? (
-          <BlockLink href={href} components={ctx.components} labels={ctx.labels} locale={ctx.locale} aria-label={name ? ctx.t("bookService", { service: name }) : undefined} className="text-small font-medium text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]" data-track="book">
+          <BlockLink href={href} components={ctx.components} labels={ctx.labels} locale={ctx.locale} aria-label={name ? ctx.t("bookService", { service: name }) : undefined} className="inline-flex min-h-6 items-center text-small font-medium text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px] pointer-coarse:min-h-11" data-track="book">
             {ctx.t("book")}
           </BlockLink>
         ) : null}
@@ -290,7 +320,7 @@ export function menuJsonLd(props: Pick<MenuListProps, "categories"> & { name?: s
         name: textOf(i.name),
         description: textOf(i.description) || undefined,
         offers: i.prices.filter((p) => p.amount).map((p) => ({ "@type": "Offer", price: p.amount!.amount, priceCurrency: p.amount!.currency, name: textOf(p.label) || undefined })),
-        suitableForDiet: (i.tags ?? []).flatMap((tag) => (tag === "vegan" ? ["https://schema.org/VeganDiet"] : tag === "vegetarian" ? ["https://schema.org/VegetarianDiet"] : tag === "gluten-free" ? ["https://schema.org/GlutenFreeDiet"] : [])),
+        suitableForDiet: (i.tags ?? []).flatMap((tag) => (DIET[tag] ? [DIET[tag]!] : [])),
       })),
     })),
   };

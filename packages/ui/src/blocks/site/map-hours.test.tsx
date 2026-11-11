@@ -52,7 +52,7 @@ describe("MapHours", () => {
     expect(today).toHaveTextContent("12 PM–11 PM");
     expect(within(table).getAllByText("Closed")).toHaveLength(1);
     expect(await screen.findByText("Closing soon")).toBeInTheDocument();
-    expect(screen.getByText(/closes at 11 PM/)).toBeInTheDocument();
+    expect(screen.getByText(/open until 11 PM/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Yandex Maps/ })).toHaveAttribute("href", "https://yandex.com/maps/?rtext=~40.9112%2C29.1556");
     expect(await axe(container)).toHaveNoViolations();
   });

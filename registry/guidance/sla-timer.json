@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "A live countdown to a service-level deadline such as first response or delivery window.",
+    "Ticket and order lists that must show at-risk and breached states."
+  ],
+  "avoidWhen": [
+    "A neutral elapsed timer for work logging — use time-tracker.",
+    "Static due dates — use a formatted date in description-list."
+  ],
+  "related": [
+    "shell-11",
+    "time-tracker",
+    "badge"
+  ],
+  "a11y": [
+    "Uses role=\"timer\" with a full-sentence aria-label for screen readers; state is shown in text as well as colour."
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "vamos-ui",
+  "version": "1.0.0",
+  "description": "Read-only MCP tools for the Vamos UI React component kit: search 150 components and 153 blocks, plan screens, get usage and source, check UI code against the kit rules and turn a brand colour into a contrast-checked accent.",
+  "author": {
+    "name": "Vamos",
+    "url": "https://ui.vamos.ist"
+  },
+  "homepage": "https://ui.vamos.ist/docs/mcp/",
+  "repository": "https://github.com/sametburaksari/vamos-ui",
+  "license": "MIT",
+  "keywords": ["react", "ui components", "design system", "tailwind css", "admin panel", "dashboard", "accessibility"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Vamos UI",
+        "shortDescription": "React components and blocks",
+        "longDescription": "Vamos UI is an open-source (MIT) React component kit for admin panels and websites, themed by five switchable axes: light/dark, material, accent, density and font. This plugin connects ChatGPT to the kit's public registry so it can build and review UI with the kit's real components instead of guessing.\n\nWhat it can do:\n- Search 150 components and 153 blocks (complete screens: dashboards, lists, detail pages, settings, sign-in screens and 59 website pages), in English or Turkish.\n- Plan a screen from a description: the block to start from, alternatives, extra components with reasons and the install command.\n- Return a component's usage, props, examples and when-to-use guidance, or the full source of a block.\n- Explain the theme axes, semantic classes and design tokens, and the kit's design rules.\n- Check a React/TSX file against the kit rules (raw colours, hard-coded fonts, missing alt text, click handlers on non-interactive elements, hand-rolled overlays) and report each issue with a fix.\n- Turn a brand colour into the kit's four accent variables and check WCAG contrast; draft a brand profile from page HTML you paste.\n- Give the exact npx vamos-ui add command for the items you choose.\n\nWho it is for: developers and designers who build React interfaces with Vamos UI, or are evaluating it.\n\nLimitations: every tool is read-only. The plugin cannot see your files, does not fetch URLs, and does not install, run or deploy code; it returns documentation, source, plans, commands and lint results for you to use. The code checker covers mechanical rules only and is not a full accessibility or security review. No account or sign-in is needed. Docs: https://ui.vamos.ist/docs/mcp/",
+        "developerName": "Vamos",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Search components and blocks",
+          "Plan screens from a description",
+          "Get component usage and props",
+          "Get block source code",
+          "Explain theming and design tokens",
+          "Check UI code against the kit rules",
+          "Create contrast-checked brand accents",
+          "Draft a brand profile from page HTML",
+          "Give install commands"
+        ],
+        "websiteURL": "https://ui.vamos.ist/docs/mcp/",
+        "supportURL": "https://github.com/sametburaksari/vamos-ui/issues",
+        "privacyPolicyURL": "https://ui.vamos.ist/privacy/",
+        "termsOfServiceURL": "https://ui.vamos.ist/terms/",
+        "defaultPrompt": [
+          "Plan a store admin dashboard with KPI cards, a revenue chart and the latest orders using Vamos UI.",
+          "Which Vamos UI component should I use to pick a date range? Show me how to use it.",
+          "Our brand colour is #E4572E. Make it a Vamos UI accent and check the contrast."
+        ],
+        "brandColor": "#4A6600",
+        "brandColorDark": "#D4F520",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Plan a new screen from a description and start from the matching block.",
+              "prompt": "Using Vamos UI, plan a store admin dashboard with KPI cards, a revenue chart and the latest orders.",
+              "tools_triggered": "plan_screen, get_block",
+              "expected_behavior": "plan_screen returns a plan that starts from the block dashboard-05 (Store dashboard), lists alternatives and extra components with reasons, and gives the command npx vamos-ui add dashboard-05 plus chart components. get_block(dashboard-05) returns its source and the kit components it uses. The answer summarises the plan and links https://ui.vamos.ist/blocks#dashboard-05."
+            },
+            {
+              "description": "Find the right component for a need and show its real API.",
+              "prompt": "Which Vamos UI component should I use to let users pick a date range for a report filter? Show me how to use it.",
+              "tools_triggered": "search, get_item",
+              "expected_behavior": "search returns date-range-picker as the first result (date-picker and time-picker follow). get_item(date-range-picker) returns the description (presets column, two months side by side, min/max length, values as YYYY-MM-DD strings), a usage snippet, props, the install command npx vamos-ui add date-range-picker and the docs link https://ui.vamos.ist/docs/components/date-range-picker."
+            },
+            {
+              "description": "Check pasted React code against the kit rules and report fixes.",
+              "prompt": "Check this component against the Vamos UI rules and tell me what to fix:\n\nexport function Card() {\n  return (\n    <div className=\"bg-blue-500 text-white p-4\" onClick={() => alert(1)}>\n      <img src=\"/hero.png\" />\n    </div>\n  );\n}",
+              "tools_triggered": "verify_code",
+              "expected_behavior": "verify_code (filename e.g. card.tsx) reports 3 errors and 1 warning: the palette class bg-blue-500 (raw-color), onClick on a div without role and tabIndex (click-events-interactive), the img without alt (img-alt), and text-white as a warning. Each comes with a fix (semantic token classes such as bg-accent / text-fg, use a button, add alt). The answer proposes corrected code."
+            },
+            {
+              "description": "Turn a brand colour into a contrast-checked accent.",
+              "prompt": "Our brand colour is #E4572E. Turn it into a Vamos UI accent and check that text on it is readable.",
+              "tools_triggered": "propose_accent",
+              "expected_behavior": "propose_accent returns a CSS block with --accent-base, --accent-fg, --accent-ink-light and --accent-ink-dark in OKLCH and a contrast table: about 5.11:1 for button text on the accent, 4.56:1 for accent text on light surfaces and 5.98:1 on dark surfaces, all passing 4.5:1. It advises putting the colour in vamos.brand.json rather than pasting values into components."
+            },
+            {
+              "description": "Return the exact install command for chosen items.",
+              "prompt": "Give me the command to add the Vamos UI data table and the login-02 sign-in block to my project.",
+              "tools_triggered": "install_command",
+              "expected_behavior": "install_command validates the names and returns npx vamos-ui add data-table login-02, notes that registry and npm dependencies resolve automatically, and that npx vamos-ui init is needed first in a new project. The plugin does not run the command itself."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unrelated request. The plugin only covers the Vamos UI kit; no Vamos UI tool should be called.",
+              "prompt": "What will the weather be like in Istanbul tomorrow?"
+            },
+            {
+              "description": "Real-world action that sounds related to the kit's restaurant website templates. The tools cannot make bookings; the assistant should not call them and should say it cannot book a table.",
+              "prompt": "Book a table for two at a seafood restaurant in Kadıköy tonight at 8 pm."
+            },
+            {
+              "description": "Destructive or deployment request. All tools are read-only and cannot access files or servers; the assistant should not call them and should explain that it cannot delete files or deploy.",
+              "prompt": "Delete the components folder in my project and deploy my site to production."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments. The kit is free and open source."
+      },
+      "publication": {
+        "release_notes": "Initial release: 12 read-only tools for searching the Vamos UI registry, planning screens, reading component and block source, theming, code checks, brand accents and install commands."
+      }
+    }
+  }
+}

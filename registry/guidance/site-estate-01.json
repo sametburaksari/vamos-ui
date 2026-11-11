@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A real-estate agency for city apartments with search, listings with a list / map split, neighbourhood guides and a mortgage calculator.",
+    "Agencies that take valuation requests online."
+  ],
+  "avoidWhen": [
+    "Luxury or off-market homes — use site-estate-02.",
+    "A contractor or developer — use site-construction-01."
+  ],
+  "related": [
+    "pin-map",
+    "filter-bar",
+    "lightbox",
+    "contact-form"
+  ],
+  "a11y": [
+    "Search results and the calculator are announced via aria-live; motion respects prefers-reduced-motion.",
+    "Replace empty alt text with descriptions of each real listing photo."
+  ]
+}

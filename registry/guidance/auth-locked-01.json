@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "The screen after too many failed passwords, with a countdown and recent failed attempts.",
+    "An unlock flow via emailed code that ends with setting a new password."
+  ],
+  "avoidWhen": [
+    "Routine password recovery without a lockout — use forgot-password-01.",
+    "Account blocked by permissions rather than attempts — use no-access-01."
+  ],
+  "related": [
+    "forgot-password-01",
+    "otp-01",
+    "login-01"
+  ],
+  "a11y": [
+    "The countdown uses role=\"timer\" and status changes are announced via aria-live.",
+    "Explain the wait in text, not only with the draining bar."
+  ]
+}

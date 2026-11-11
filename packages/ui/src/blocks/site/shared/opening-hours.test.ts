@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { describeStatus, formatTime, hoursStatus, isOpenAt, orderedWeek, summarizeHours, weekRows, weekStartOf, openingHoursJsonLd, type OpeningHours } from "./opening-hours";
-import { site2Labels } from "./labels-2";
+import { describeStatus, timeVars, formatTime, hoursStatus, isOpenAt, orderedWeek, summarizeHours, weekRows, weekStartOf, openingHoursJsonLd, type OpeningHours } from "./opening-hours";
+import { site2Labels, site2LabelsTr } from "./labels-2";
 
 // A meyhane in Istanbul (UTC+3, no DST): late on weekends, closed Mondays, a holiday closure.
 const hours: OpeningHours = {
@@ -56,7 +56,8 @@ describe("OpeningHours", () => {
     const allDay: OpeningHours = { timeZone: "UTC", weekly: { mon: [{ open: "00:00", close: "24:00" }], tue: [{ open: "00:00", close: "24:00" }] } };
     const s = hoursStatus(allDay, new Date("2026-11-09T10:00:00Z"));
     expect(s).toMatchObject({ state: "open", allDay: true });
-    expect(describeStatus(s, site2Labels).tail).toBe("Open 24 hours");
+    expect(describeStatus(s, site2Labels)).toEqual({ head: "Open", tail: "24 hours" });
+    expect(describeStatus(s, site2LabelsTr, "tr-TR")).toEqual({ head: "Açık", tail: "24 saat" });
   });
 
   it("formats with Intl: week start, 12/24 h, weekday names", () => {
@@ -83,9 +84,40 @@ describe("OpeningHours", () => {
     expect(ld.some((x) => x.validFrom === "2026-11-11" && x.opens === "00:00" && x.closes === "00:00")).toBe(true);
   });
 
-  it("describes the status in words", () => {
-    const tr = { ...site2Labels, closesAt: "{time}’de kapanıyor", openNow: "Şu an açık" };
-    expect(describeStatus(hoursStatus(hours, at("2026-11-10T13:00:00")), tr, "tr-TR")).toEqual({ head: "Şu an açık", tail: "23:00’de kapanıyor" });
-    expect(describeStatus(hoursStatus(hours, at("2026-11-16T10:00:00")), site2Labels, "en-US")).toEqual({ head: "Closed", tail: "opens Tue at 12 PM" });
+  it("describes every state once, without repeating itself (EN)", () => {
+    const d = (local: string) => describeStatus(hoursStatus(hours, at(local)), site2Labels, "en-US");
+    const line = (x: { head: string; tail?: string }) => [x.head, x.tail].filter(Boolean).join(" · ");
+    expect(line(d("2026-11-10T13:00:00"))).toBe("Open · until 11 PM");
+    expect(line(d("2026-11-10T22:15:00"))).toBe("Closing soon · open until 11 PM");
+    expect(line(d("2026-11-14T01:30:00"))).toBe("Closing soon · open until 2 AM");
+    expect(line(d("2026-11-12T16:00:00"))).toBe("Closed · opens at 6 PM");
+    expect(line(d("2026-11-16T10:00:00"))).toBe("Closed · opens tomorrow at 12 PM");
+    expect(line(d("2026-11-11T13:00:00"))).toBe("Closed today · Staff day · opens tomorrow at 12 PM");
+    // Sunday after closing: Monday is closed, so the next opening is two days out.
+    expect(line(d("2026-11-15T23:00:00"))).toBe("Closed · opens Tue at 12 PM");
+    for (const local of ["2026-11-10T13:00:00", "2026-11-10T22:15:00", "2026-11-16T10:00:00"]) {
+      expect(line(d(local))).not.toMatch(/clos\w*.*clos/i);
+    }
+  });
+
+  it("describes every state naturally in Turkish, with the right case suffix", () => {
+    const d = (local: string) => describeStatus(hoursStatus(hours, at(local)), site2LabelsTr, "tr-TR");
+    const line = (x: { head: string; tail?: string }) => [x.head, x.tail].filter(Boolean).join(" · ");
+    expect(line(d("2026-11-10T13:00:00"))).toBe("Açık · 23:00’e kadar");
+    expect(line(d("2026-11-10T22:15:00"))).toBe("Birazdan kapanıyor · 23:00’e kadar açık");
+    expect(line(d("2026-11-14T01:30:00"))).toBe("Birazdan kapanıyor · 02:00’ye kadar açık");
+    expect(line(d("2026-11-12T16:00:00"))).toBe("Kapalı · bugün 18:00’de açılıyor");
+    expect(line(d("2026-11-16T10:00:00"))).toBe("Kapalı · yarın 12:00’de açılıyor");
+    expect(line(d("2026-11-15T23:00:00"))).toBe("Kapalı · Sal 12:00’de açılıyor");
+  });
+
+  it("picks the Turkish suffix from the last spoken word", () => {
+    const to = (t: string) => timeVars(t, "tr-TR").timeTo;
+    const atT = (t: string) => timeVars(t, "tr-TR").timeAt;
+    expect([to("01:00"), to("02:00"), to("06:00"), to("09:00"), to("10:00"), to("20:00"), to("22:30"), to("00:00"), to("15:45")]).toEqual([
+      "01:00’e", "02:00’ye", "06:00’ya", "09:00’a", "10:00’a", "20:00’ye", "22:30’a", "00:00’a", "15:45’e",
+    ]);
+    expect([atT("03:00"), atT("12:00"), atT("16:00"), atT("19:40"), atT("18:00")]).toEqual(["03:00’te", "12:00’de", "16:00’da", "19:40’ta", "18:00’de"]);
+    expect(timeVars("01:00", "en-US")).toEqual({ time: "1 AM", timeTo: "1 AM", timeAt: "1 AM" });
   });
 });

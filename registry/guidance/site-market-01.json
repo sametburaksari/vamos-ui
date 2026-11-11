@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A multi-seller marketplace for independent makers where buyers search, filter and compare sellers.",
+    "Platforms where seller reputation (ratings, top-maker badges) drives the purchase."
+  ],
+  "avoidWhen": [
+    "A single brand selling its own products — use site-store-01.",
+    "Trade buyers ordering in bulk with tiered prices — use site-wholesale-01."
+  ],
+  "related": [
+    "site-store-01",
+    "site-wholesale-01",
+    "site-store-02"
+  ],
+  "a11y": [
+    "Result counts are announced through aria-live and filter toggles expose aria-pressed.",
+    "Make sure the phone filter sheet returns focus to its trigger when closed."
+  ]
+}

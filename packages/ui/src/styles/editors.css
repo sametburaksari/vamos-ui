@@ -589,7 +589,8 @@
 .vui-cblock-unknown p { margin: 0; }
 
 /* Images */
-.vui-image { margin-block: 1.5rem; }
+/* Editor image node only: the kit <Image> shares the class name. */
+.ProseMirror .vui-image { margin-block: 1.5rem; }
 .vui-image-frame { position: relative; border-radius: var(--radius-ui-sm); }
 .vui-image-frame img { display: block; max-width: 100%; height: auto; border-radius: inherit; }
 .vui-image[data-selected] .vui-image-frame { outline: 1.5px solid var(--ring); outline-offset: 4px; }

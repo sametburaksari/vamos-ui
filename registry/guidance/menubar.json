@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A desktop-app style File, Edit, View bar for editors and back-office tools.",
+    "Menus with submenus, checkbox and radio items and keyboard shortcuts."
+  ],
+  "avoidWhen": [
+    "A single overflow menu on a button — use dropdown-menu.",
+    "Website navigation with links — use navigation-menu."
+  ],
+  "related": [
+    "dropdown-menu",
+    "context-menu",
+    "navigation-menu",
+    "kbd"
+  ],
+  "a11y": [
+    "One tab stop with arrow keys between menus; give the bar an aria-label naming what it controls."
+  ]
+}

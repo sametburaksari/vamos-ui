@@ -10,9 +10,10 @@ export default function LocalizationPage() {
     <DocPage
       eyebrow="Docs"
       title="Localization"
-      description="English is the default. Built-in strings and all formatting come from a locale you can swap — Turkish is the first extra locale."
+      description="English is the default. Built-in strings ship in English, Turkish, German, French, Spanish and Arabic; formatting comes from the active locale. Country data packs are Turkey-first."
       toc={[
         { id: "provider", title: "LocaleProvider" },
+        { id: "languages", title: "Built-in languages" },
         { id: "overrides", title: "Partial overrides" },
         { id: "formatting", title: "Formatting" },
         { id: "packs", title: "Locale packs" },
@@ -54,6 +55,29 @@ function Footer({ page, total, amount }: { page: number; total: number; amount: 
         namespaces of each shipped component; it grows with each component.
       </P>
 
+      <H2 id="languages">Built-in languages</H2>
+      <P>
+        Every built-in string has a translation in these dictionaries. Any key a dictionary lacks falls back to English, and
+        the site-block dictionaries (<C>blockLabels*</C>, <C>site2Labels*</C>) are passed to <C>createBlocks({"{ labels }"})</C>{" "}
+        or a block&apos;s <C>labels</C> prop.
+      </P>
+      <Table
+        head={["Language", "Component strings", "Site-block strings", "Notes"]}
+        rows={[
+          ["English", <C key="en">@vamos-ui/react/locale/en</C>, <C key="en2">blockLabels, site2Labels</C>, "Default and source of truth"],
+          ["Turkish", <C key="tr">@vamos-ui/react/locale/tr</C>, <C key="tr2">blockLabelsTr, site2LabelsTr</C>, "Plus the Turkish data pack below"],
+          ["German", <C key="de">@vamos-ui/react/locale/de</C>, <C key="de2">blockLabelsDe, site2LabelsDe</C>, "Formal Sie"],
+          ["French", <C key="fr">@vamos-ui/react/locale/fr</C>, <C key="fr2">blockLabelsFr, site2LabelsFr</C>, "Guillemets with narrow no-break spaces"],
+          ["Spanish", <C key="es">@vamos-ui/react/locale/es</C>, <C key="es2">blockLabelsEs, site2LabelsEs</C>, "Neutral Spanish"],
+          ["Arabic", <C key="ar">@vamos-ui/react/locale/ar</C>, <C key="ar2">blockLabelsAr, site2LabelsAr</C>, <>Right-to-left: also set <C>dir=&quot;rtl&quot;</C></>],
+        ]}
+      />
+      <P>
+        These cover the kit&apos;s own interface text only. Your content, and the sample copy inside the demo blocks, stay
+        in whatever language you write them. Legal-flavoured site texts (consent, cookie notices) are neutral templates —
+        review them with counsel.
+      </P>
+
       <H2 id="overrides">Partial overrides</H2>
       <P>
         Rename one string without writing a full locale: any prop that shows built-in text (<C>closeLabel</C>,{" "}
@@ -90,7 +114,7 @@ formatTrIban("TR330006100519786457841326"); // "TR33 0006 1005 1978 6457 8413 26
           ["Turkish-aware search and slugs (İ/ı, ş, ğ)", "Combobox, pickers, slug input", <Badge key="6" tone="success">Ready</Badge>],
         ]}
       />
-      <P>Other countries can add a pack with the same shape (<C>LocaleDataPack</C>): week start, holidays, ID and IBAN rules, phone format, money, tax scheme and address data.</P>
+      <P>Locale data packs are Turkey-first: only the Turkish pack exists today. German, French, Spanish and Arabic translate the interface strings, but there is no built-in ID, IBAN, tax, holiday or address data for those countries yet. Other countries can add a pack with the same shape (<C>LocaleDataPack</C>): week start, holidays, ID and IBAN rules, phone format, money, tax scheme and address data.</P>
 
       <H2 id="rtl">Right-to-left</H2>
       <P>

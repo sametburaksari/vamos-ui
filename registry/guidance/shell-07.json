@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "An e-commerce admin with store sections in the top bar and sub-tabs with live counts.",
+    "Products that need a sales-channel switcher and no sidebar."
+  ],
+  "avoidWhen": [
+    "Many modules needing a side tree — use shell-06.",
+    "Phone-first field apps — use shell-09."
+  ],
+  "related": [
+    "top-bar",
+    "tabs",
+    "shell-06",
+    "breadcrumb"
+  ],
+  "a11y": [
+    "Landmarks (nav, main) and aria-current mark location; live counts update through an aria-live region."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A company careers site with culture, benefits, hiring process, a filterable job board and job posts with an apply form.",
+    "Employers that need CV upload, right-to-work and consent fields."
+  ],
+  "avoidWhen": [
+    "A university department or staff directory — use site-department-01.",
+    "A public institution site — use site-public-01."
+  ],
+  "related": [
+    "filter-bar",
+    "file-upload",
+    "steps",
+    "team"
+  ],
+  "a11y": [
+    "The job board is role=\"search\" and result counts are announced via a status region; the apply form validates with visible messages.",
+    "Keep the consent checkbox label explicit about what data is stored."
+  ]
+}

@@ -124,7 +124,7 @@ export function BlockImage({
   );
 
   const frame = (
-    <span data-ratio={ratio ? "" : undefined} className={cn("vb-image", !ratio && "h-auto", caption ? undefined : className)} style={frameStyle} {...(caption ? null : fieldAttr)}>
+    <span data-ratio={ratio ? "" : undefined} className={cn("vb-image", caption ? undefined : className)} style={frameStyle} {...(caption ? null : fieldAttr)}>
       {img}
     </span>
   );

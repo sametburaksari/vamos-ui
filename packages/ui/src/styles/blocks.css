@@ -11,6 +11,11 @@
   --scrim: linear-gradient(to top, rgb(6 8 4 / 0.8), rgb(6 8 4 / 0.58) 55%, rgb(6 8 4 / 0.5));
   --vb-rhythm: 1;
 }
+/* Rhythm overrides sit next to the default, outside @layer: an unlayered declaration always beats a
+   layered one, so inside `@layer components` these never applied. */
+.vb-section[data-rhythm="tight"] { --vb-rhythm: 0.55; }
+.vb-section[data-rhythm="loose"] { --vb-rhythm: 1.35; }
+.vb-section[data-rhythm="none"] { --vb-rhythm: 0; }
 /* Emphasis in sans presets reads as accent ink (italic stays the serif's job). */
 [data-font="grotesk"],
 [data-font="corporate"],
@@ -27,9 +32,6 @@
     color: var(--fg);
     scroll-margin-top: calc(var(--topbar-h) + 1rem);
   }
-  .vb-section[data-rhythm="tight"] { --vb-rhythm: 0.55; }
-  .vb-section[data-rhythm="loose"] { --vb-rhythm: 1.35; }
-  .vb-section[data-rhythm="none"] { --vb-rhythm: 0; }
 
   .vb-section[data-surface="scene"] { background-color: var(--scene); }
   /* Surface tokens are translucent under glass: lay them over the section's own scene colour so a
@@ -99,15 +101,18 @@
   }
 
   /* Container widths */
+  /* Full width up to the measure. An explicit width (not `auto`) matters: inside a flex column the
+     auto inline margins switch off stretching, and the container shrank to its content (a grid of
+     lazy images collapsed to almost nothing). */
   .vb-container {
-    box-sizing: content-box;
-    width: auto;
-    max-width: var(--container);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: calc(var(--container) + 2 * var(--gutter));
     margin-inline: auto;
     padding-inline: var(--gutter);
   }
-  .vb-container[data-size="wide"] { max-width: var(--container-wide); }
-  .vb-container[data-size="prose"] { max-width: var(--prose); }
+  .vb-container[data-size="wide"] { max-width: calc(var(--container-wide) + 2 * var(--gutter)); }
+  .vb-container[data-size="prose"] { max-width: calc(var(--prose) + 2 * var(--gutter)); }
   .vb-container[data-size="full"] { max-width: none; }
 
   /* Headings */
@@ -126,6 +131,9 @@
     background-size: cover;
     background-position: var(--vb-focal, 50% 50%);
   }
+  /* No ratio: the frame follows the image. Was a Tailwind h-auto class, which (utilities layer)
+     silently beat component sizes such as .vb-nav-logo's 1.75rem height. */
+  .vb-image:where(:not([data-ratio])) { height: auto; }
   .vb-image > img,
   .vb-image > picture > img {
     display: block;
@@ -163,11 +171,12 @@
   /* Edit-mode placeholders for unknown / invalid blocks. */
   .vb-notice {
     --tone: var(--danger);
+    --tone-ink: var(--danger-ink);
     border: 1px dashed color-mix(in srgb, var(--tone) 55%, transparent);
     background: color-mix(in srgb, var(--tone) 7%, var(--scene));
     color: var(--fg);
   }
-  .vb-notice[data-tone="warning"] { --tone: var(--warning); }
+  .vb-notice[data-tone="warning"] { --tone: var(--warning); --tone-ink: var(--warning-ink); }
 }
 
 /* The primary action can't be accent-on-accent: it inverts. Unlayered on purpose, so it wins

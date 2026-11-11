@@ -5,7 +5,7 @@ import { Area, Bar, ComposedChart, Line } from "recharts";
 import { useLocale } from "../lib/locale";
 import { Chart, useChart, type ChartProps } from "./chart-shell";
 import { ChartFrame, ChartGrid, ChartTooltip, ChartXAxis, ChartYAxis, useValueAxisWidth } from "./chart";
-import { alignZeroDomains, extent, patternDash, seriesColor, type FormatSpec } from "./utils";
+import { alignedAxes, extent, patternDash, seriesColor, type FormatSpec } from "./utils";
 
 export interface ComboChartProps<T extends object> extends Omit<ChartProps<T>, "children"> {
   /** Keys drawn as bars (default axis: start). */
@@ -35,7 +35,7 @@ export interface ComboChartProps<T extends object> extends Omit<ChartProps<T>, "
  */
 export function ComboChart<T extends object>({ bars, lines, areas = [], endAxisFormat, endAxis = true, stackBars, startAxisLabel, endAxisLabel, ...props }: ComboChartProps<T>) {
   return (
-    <Chart skeleton="bar" {...props}>
+    <Chart skeleton="bar" barKeys={bars} {...props}>
       <ComboPlot bars={bars} lines={lines} areas={areas} endAxisFormat={endAxisFormat} endAxis={endAxis} stackBars={stackBars} startAxisLabel={startAxisLabel} endAxisLabel={endAxisLabel} />
     </Chart>
   );
@@ -52,15 +52,13 @@ function ComboPlot({ bars, lines, areas = [], endAxisFormat, endAxis, stackBars,
   const endFormat = endAxisFormat ?? chart.config[endKeys[0] ?? ""]?.format;
   const startFormat = chart.config[startKeys[0] ?? ""]?.format ?? chart.yFormat;
 
-  const [startDomain, endDomain] = React.useMemo(() => {
+  const { domains: [startDomain, endDomain], ticks: [startTicks, endTicks] } = React.useMemo(() => {
     const a = extent(chart.data, startKeys, startStacked);
     const b = extent(chart.data, endKeys);
-    return alignZeroDomains(a, b);
+    return alignedAxes(a, b);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chart.data, startKeys.join(), endKeys.join(), startStacked]);
 
-  // Non-negative data: four equal steps on both axes, so the grid lines serve both scales.
-  const ticksOf = (d: [number, number]) => (d[0] === 0 ? [0, 1, 2, 3, 4].map((i) => Number(((d[1] * i) / 4).toPrecision(12))) : undefined);
   const startWidth = useValueAxisWidth(startKeys, { stacked: startStacked, format: startFormat });
   const endWidth = useValueAxisWidth(endKeys, { format: endFormat });
   const left = rtl ? "end" : "start";
@@ -78,7 +76,7 @@ function ComboPlot({ bars, lines, areas = [], endAxisFormat, endAxis, stackBars,
           yAxisId="start"
           orientation={left === "start" ? "left" : "right"}
           domain={startDomain}
-          ticks={ticksOf(startDomain)}
+          ticks={startTicks}
           width={startWidth + (startAxisLabel ? 16 : 0)}
           tickFormatter={(v: unknown) => chart.formatTick(v, startFormat)}
           label={titleProps(startAxisLabel, left === "start" ? "left" : "right")}
@@ -88,7 +86,7 @@ function ComboPlot({ bars, lines, areas = [], endAxisFormat, endAxis, stackBars,
           yAxisId="end"
           orientation={left === "start" ? "right" : "left"}
           domain={endDomain}
-          ticks={ticksOf(endDomain)}
+          ticks={endTicks}
           hide={!endAxis || endKeys.length === 0}
           width={endWidth + (endAxisLabel ? 16 : 0)}
           tickFormatter={(v: unknown) => chart.formatTick(v, endFormat)}

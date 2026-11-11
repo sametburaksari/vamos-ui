@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A subscription box (coffee, tea, snacks) priced by size and frequency with a plan builder.",
+    "Recurring-delivery brands that also sell gift subscriptions."
+  ],
+  "avoidWhen": [
+    "One-off product shops — use site-store-01.",
+    "Software subscriptions — use site-saas-01."
+  ],
+  "related": [
+    "site-store-01",
+    "site-store-02",
+    "site-saas-01"
+  ],
+  "a11y": [
+    "Prices from the builder and the gift card preview update through role=\"status\" live regions.",
+    "Label grind and roast choices as grouped radio inputs."
+  ]
+}

@@ -28,6 +28,14 @@ describe("Hero", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
+  it("title line breaks keep a real space in textContent", () => {
+    render(<main><Hero variant="statement" title={"Ateşte közde,\n*muhabbet* sofrada."} /></main>);
+    const h1 = screen.getByRole("heading", { level: 1, name: "Ateşte közde, muhabbet sofrada." });
+    expect(h1.textContent).toBe("Ateşte közde, muhabbet sofrada.");
+    expect(h1.querySelectorAll(".vb-heading-line")).toHaveLength(2);
+    expect(h1.querySelector("em")).toHaveTextContent("muhabbet");
+  });
+
   it("split-media: portrait bleeds off the end edge with a caption", async () => {
     const { container } = render(<main><Hero variant="split-media" title="Two hours, *nowhere* to be." media={{ ...photo, alt: "Warm stones by the massage table" }} caption="Treatment room 3" /></main>);
     expect(container.querySelector("figure.vb-bleed-end figcaption")).toHaveTextContent("Treatment room 3");

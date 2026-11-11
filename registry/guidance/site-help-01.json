@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A product help centre with instant search, topic cards, popular articles, contact channels and article feedback.",
+    "Support teams that want results under the search field as you type."
+  ],
+  "avoidWhen": [
+    "A discussion forum — use site-community-01.",
+    "Developer docs and API reference — use site-devtool-01."
+  ],
+  "related": [
+    "command",
+    "article-layout",
+    "faq",
+    "contact-dock"
+  ],
+  "a11y": [
+    "Search results support arrow keys and are announced via aria-live; motion respects prefers-reduced-motion.",
+    "Keep article headings in order so readers can jump by heading."
+  ]
+}

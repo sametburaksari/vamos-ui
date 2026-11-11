@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A football or sports club site with next match, league table, filterable fixtures, membership tiers and stands.",
+    "Member-owned clubs selling memberships and match tickets."
+  ],
+  "avoidWhen": [
+    "A one-off conference or event — use site-event-01.",
+    "An online community forum — use site-community-01."
+  ],
+  "related": [
+    "table",
+    "filter-bar",
+    "pricing-table",
+    "faq"
+  ],
+  "a11y": [
+    "Fixture filter results are announced via aria-live; the form guide is a labelled list.",
+    "Pair win / draw / loss colours with letters so the form guide does not rely on colour."
+  ]
+}

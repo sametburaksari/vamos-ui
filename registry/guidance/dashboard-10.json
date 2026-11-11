@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Support service-level monitoring: breaches, due-next clocks and a live breach-watch list.",
+    "Team leads who bulk assign, escalate and send first replies with macros."
+  ],
+  "avoidWhen": [
+    "Working one ticket end to end — use detail-09.",
+    "A plain countdown on a record — use sla-timer."
+  ],
+  "related": [
+    "detail-09",
+    "sla-timer",
+    "heatmap",
+    "gauge"
+  ],
+  "a11y": [
+    "Live counts use aria-live regions; the deadline horizon is role=\"img\" with a label.",
+    "Queue filters are aria-pressed toggles; avoid announcing every timer tick to assistive tech."
+  ]
+}

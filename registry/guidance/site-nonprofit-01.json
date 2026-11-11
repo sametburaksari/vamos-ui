@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A charity, foundation or community project that takes one-off and monthly donations.",
+    "Organisations that want to show what each gift buys and publish a transparency report."
+  ],
+  "avoidWhen": [
+    "Associations organised around membership and events — use site-club-01.",
+    "Government or municipal offices — use site-public-01."
+  ],
+  "related": [
+    "site-community-01",
+    "site-club-01",
+    "site-public-01"
+  ],
+  "a11y": [
+    "The gift builder total updates in an aria-live region.",
+    "Give the decorative shelf drawing an empty alt or aria-hidden and keep the itemised amounts as text."
+  ]
+}

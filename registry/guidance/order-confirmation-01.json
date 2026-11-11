@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "The thank-you page after checkout with order number, timeline and next steps.",
+    "Offering guest buyers an account and repeating the order summary with VAT."
+  ],
+  "avoidWhen": [
+    "Paying for the order — use checkout-01.",
+    "An admin view of an order — use detail-01."
+  ],
+  "related": [
+    "checkout-01",
+    "cart-01",
+    "activity-timeline"
+  ],
+  "a11y": [
+    "Sections are labelled with aria-labelledby and copy feedback uses role=\"status\".",
+    "Keep one h1 that states the order was placed."
+  ]
+}

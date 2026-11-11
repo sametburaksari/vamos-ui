@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A split-screen sign-in that tells the product story beside the form.",
+    "Products offering Google/Microsoft SSO and an email-first password flow."
+  ],
+  "avoidWhen": [
+    "A minimal sign-in — use login-01.",
+    "Enterprise SSO domain discovery — use auth-sso-01."
+  ],
+  "related": [
+    "login-01",
+    "login-02",
+    "auth-sso-01",
+    "forgot-password-01"
+  ],
+  "a11y": [
+    "Story chapters are a tablist/tab/tabpanel with arrow-key handling.",
+    "Email uses autocomplete=\"username\" and the password step autocomplete=\"current-password\"."
+  ]
+}

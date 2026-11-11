@@ -9,6 +9,7 @@ import type { SocialNetwork } from "../schema/types";
 import { site2Text, type Site2BlockLabels, type Site2Text } from "./shared/labels-2";
 import { fieldAttr, textOf, useBlockIds2, type SiteImage2 } from "./shared/kit-2";
 import { BRAND_NAMES } from "./shared/brand-icons";
+import { columnSizes } from "./shared/image-sizes";
 
 export type TeamVariant = "portrait" | "list" | "feature";
 
@@ -19,7 +20,7 @@ export interface TeamMember {
   role: React.ReactNode;
   /** Specialty line in `list` ("Deep tissue · Sports massage"). */
   specialty?: React.ReactNode;
-  /** 4:5 portrait. No photo = an empty inset area, never initials. */
+  /** 4:5 portrait. No photo = an empty inset area, never initials. `sizes`: grid `min(25vw, 19rem)` / 50vw · rows 56px · feature `min(42vw, 32rem)` / 100vw · compact 160px. */
   photo?: SiteImage2;
   bio?: React.ReactNode;
   /** Up to 3 profile links, rendered as short text links ("LinkedIn"). */
@@ -108,7 +109,7 @@ function ProfileLinks({ member, ctx, className }: { member: TeamMember; ctx: Mem
   if (!member.links?.length) return null;
   const name = textOf(member.name);
   return (
-    <span className={cn("flex flex-wrap gap-x-3 gap-y-1", className)}>
+    <span className={cn("flex flex-wrap gap-x-3 gap-y-1 pointer-coarse:gap-y-0", className)}>
       {member.links.slice(0, 3).map((l, i) => (
         <BlockLink
           key={i}
@@ -118,7 +119,7 @@ function ProfileLinks({ member, ctx, className }: { member: TeamMember; ctx: Mem
           labels={ctx.labels}
           locale={ctx.locale}
           aria-label={name ? ctx.t("profileOf", { name, network: BRAND_NAMES[l.network] }) : undefined}
-          className="relative z-10 text-small text-fg-muted underline decoration-line underline-offset-[0.25em] transition-colors hover:text-fg hover:decoration-current focus-ring rounded-[2px]"
+          className="relative z-10 inline-flex min-h-6 items-center pointer-coarse:min-h-11 text-small text-fg-muted underline decoration-line underline-offset-[0.25em] transition-colors hover:text-fg hover:decoration-current focus-ring rounded-[2px]"
         >
           {BRAND_NAMES[l.network]}
         </BlockLink>
@@ -135,7 +136,7 @@ function Portrait({ photo, ctx, className, sizes }: { photo?: SiteImage2; ctx: M
 function PortraitMember({ member, index, ctx }: { member: TeamMember; index: number; ctx: MemberCtx }) {
   return (
     <li className="flex flex-col gap-4">
-      <Portrait photo={member.photo} ctx={ctx} sizes="(min-width: 56rem) 25vw, 50vw" />
+      <Portrait photo={member.photo} ctx={ctx} sizes={columnSizes(1 / 4, { narrow: "50vw" })} />
       <div className="flex flex-col gap-1.5">
         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
           <h3 className="text-h3 font-semibold tracking-[-0.012em] text-fg" {...fieldAttr(ctx.editMode, `members.${index}.name`)}>
@@ -179,7 +180,7 @@ function FeatureMember({ member, header, ctx }: { member: TeamMember; header: Re
   return (
     <div className="grid gap-x-(--gutter) gap-y-10 @4xl:grid-cols-12 @4xl:items-start">
       <div className="@4xl:col-span-5">
-        <Portrait photo={member.photo} ctx={ctx} sizes="(min-width: 56rem) 40vw, 100vw" />
+        <Portrait photo={member.photo} ctx={ctx} sizes={columnSizes(5 / 12)} />
       </div>
       <div className="flex flex-col gap-8 @4xl:col-span-6 @4xl:col-start-7 @4xl:pt-6">
         {header}

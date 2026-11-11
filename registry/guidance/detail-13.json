@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Comparing up to four candidates or options for one decision in aligned columns.",
+    "Showing only differences, marking the best value per row and deltas against a baseline."
+  ],
+  "avoidWhen": [
+    "Public plan or feature comparisons — use comparison-table.",
+    "Viewing one record alone — use record-detail-layout."
+  ],
+  "related": [
+    "comparison-table",
+    "record-detail-layout",
+    "entity-card",
+    "badge"
+  ],
+  "a11y": [
+    "Built as an ARIA table with row and column headers; the differences toggle is aria-pressed.",
+    "Moving to offer confirms first and announces the result via aria-live."
+  ]
+}

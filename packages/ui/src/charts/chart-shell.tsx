@@ -91,6 +91,8 @@ export interface ChartContextValue {
   onPointClick?: (row: Row, seriesKey: string) => void;
   height: number | undefined;
   idPrefix: string;
+  /** Series drawn as bars: no stroke pattern, so their legend and tooltip swatch is a solid square. */
+  isBar: (key: string) => boolean;
 }
 
 const ChartContext = React.createContext<ChartContextValue | null>(null);
@@ -141,6 +143,11 @@ export interface ChartProps<T extends object = Row> extends Omit<React.HTMLAttri
   labels?: Partial<ChartLabels>;
   /** Replace the generated data table. */
   table?: ChartTableSpec;
+  /**
+   * Series drawn as bars. Bars carry no stroke pattern, so their legend and tooltip swatch is a
+   * solid square even when the other series get dashed/dotted lines. Bar and Combo charts set it.
+   */
+  barKeys?: string[];
   /** Content beside (or under) the plot — e.g. the Donut legend list. */
   aside?: React.ReactNode;
   asidePosition?: "side" | "bottom";
@@ -192,6 +199,7 @@ export function Chart<T extends object>(props: ChartProps<T>) {
     asidePosition = "side",
     skeleton = "area",
     toolbar,
+    barKeys,
     className,
     style,
     children,
@@ -228,6 +236,9 @@ export function Chart<T extends object>(props: ChartProps<T>) {
   const [showTable, setShowTable] = React.useState(false);
 
   const seriesFormat = React.useCallback((key: string) => config[key]?.format, [config]);
+  const barKeySet = barKeys?.join("\u0000") ?? "";
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const isBar = React.useCallback((key: string) => (barKeys ?? []).includes(key), [barKeySet]);
   const ctx = React.useMemo<ChartContextValue>(
     () => ({
       config,
@@ -249,8 +260,9 @@ export function Chart<T extends object>(props: ChartProps<T>) {
       onPointClick: onPointClick as ChartContextValue["onPointClick"],
       height: height === "auto" ? undefined : typeof height === "string" ? CHART_HEIGHTS[height] : height,
       idPrefix,
+      isBar,
     }),
-    [config, series, visibleSeries, hiddenSet, toggleSeries, data, x, xFormat, yFormat, f, t, animate, reduced, tooltipIndicator, onPointClick, height, idPrefix, seriesFormat],
+    [config, series, visibleSeries, hiddenSet, toggleSeries, data, x, xFormat, yFormat, f, t, animate, reduced, tooltipIndicator, onPointClick, height, idPrefix, seriesFormat, isBar],
   );
 
   const vars = React.useMemo(() => {
@@ -375,13 +387,13 @@ export interface ChartLegendContentProps extends React.HTMLAttributes<HTMLDivEle
   keys?: string[];
   /** Click toggles visibility. Default `true`. */
   interactive?: boolean;
-  /** Swatch shape. Default: a line for line/area patterns, a dot otherwise. */
-  swatch?: "dot" | "line";
+  /** Swatch shape. Default: a solid square for bar series, a line for line/area patterns, a dot otherwise. */
+  swatch?: "dot" | "line" | "square";
 }
 
 /** The legend: one toggle per series (`aria-pressed`). At least one series always stays visible. */
 export function ChartLegendContent({ keys, interactive = true, swatch, className, ...props }: ChartLegendContentProps) {
-  const { series, isHidden, toggleSeries, visibleSeries, t } = useChart();
+  const { series, isHidden, toggleSeries, visibleSeries, t, isBar } = useChart();
   const items = keys ? series.filter((s) => keys.includes(s.key)) : series;
   return (
     <div role="group" aria-label={t("legend")} data-slot="chart-legend" className={cn("flex flex-wrap items-center gap-x-1 gap-y-1", className)} {...props}>
@@ -391,7 +403,7 @@ export function ChartLegendContent({ keys, interactive = true, swatch, className
         const Icon = s.icon;
         const content = (
           <>
-            {Icon ? <Icon className="size-3.5" /> : <LegendSwatch color={seriesColor(s.key)} pattern={s.pattern} shape={swatch ?? (s.pattern !== "solid" ? "line" : "dot")} />}
+            {Icon ? <Icon className="size-3.5" /> : <LegendSwatch color={seriesColor(s.key)} pattern={s.pattern} shape={swatch ?? (isBar(s.key) ? "square" : s.pattern !== "solid" ? "line" : "dot")} />}
             <span className={cn(hidden && "line-through decoration-fg-subtle")}>{s.label}</span>
           </>
         );
@@ -422,7 +434,8 @@ export function ChartLegendContent({ keys, interactive = true, swatch, className
   );
 }
 
-function LegendSwatch({ color, pattern, shape }: { color: string; pattern: ResolvedSeries["pattern"]; shape: "dot" | "line" }) {
+function LegendSwatch({ color, pattern, shape }: { color: string; pattern: ResolvedSeries["pattern"]; shape: "dot" | "line" | "square" }) {
+  if (shape === "square") return <span aria-hidden data-swatch="square" className="size-2.5 shrink-0 rounded-[2px]" style={{ background: color }} />;
   if (shape === "line")
     return (
       <svg width="14" height="8" viewBox="0 0 14 8" aria-hidden className="shrink-0">

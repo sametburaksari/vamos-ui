@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A website media library with folders, multi-select grid, uploads and alt-text details.",
+    "Content teams auditing missing alt text, unused files and storage."
+  ],
+  "avoidWhen": [
+    "Picking one asset inside a form — use media-picker.",
+    "Just the library component without the page — use media-library."
+  ],
+  "related": [
+    "media-library",
+    "media-picker",
+    "file-upload",
+    "image-field"
+  ],
+  "a11y": [
+    "Storage usage is role=\"meter\" with aria-valuetext; the unused filter is aria-pressed.",
+    "Grid selection supports Shift and keyboard; announce the selected count to screen readers."
+  ]
+}

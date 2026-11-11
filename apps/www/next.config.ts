@@ -5,6 +5,9 @@ const isExport = process.env.STATIC_EXPORT === "1";
 
 const config: NextConfig = {
   transpilePackages: ["@vamos-ui/react"],
+  // The kit root is a barrel of ~150 client modules; without this every admin preview that
+  // imports one Card from "@vamos-ui/react" ships all of them.
+  experimental: { optimizePackageImports: ["@vamos-ui/react"] },
   // 143 docs pages with heavy examples: the 60s default fails on a busy build machine.
   staticPageGenerationTimeout: 300,
   ...(isExport ? { output: "export" as const, trailingSlash: true, images: { unoptimized: true } } : {}),

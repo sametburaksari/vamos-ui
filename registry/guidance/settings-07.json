@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Account security with a posture score: authenticator, passkeys, backup codes and devices.",
+    "Sign-in history with Block IP and an IP allow list."
+  ],
+  "avoidWhen": [
+    "Only enrolling an authenticator — use auth-2fa-setup-01.",
+    "Organisation-wide audit trail — use audit-log."
+  ],
+  "related": [
+    "auth-2fa-setup-01",
+    "auth-passkey-01",
+    "backup-codes",
+    "audit-log"
+  ],
+  "a11y": [
+    "Enrolment and sign-out flows run in labelled dialogs; give icon buttons names including the device.",
+    "Announce the posture score change after each fix."
+  ]
+}

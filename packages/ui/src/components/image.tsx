@@ -10,6 +10,7 @@ import { useComposedRefs } from "../lib/compose-refs";
 import { useIsomorphicLayoutEffect } from "../lib/use-controllable-state";
 import type { CropRect, ImageLoader, MediaAdapter, MediaAsset } from "../media/types";
 import { Spinner } from "./spinner";
+import { PlaceholderArt, type PlaceholderArtPattern } from "./placeholder-art";
 
 /* ------------------------------------------------------------------ */
 /* Helpers (pure)                                                       */
@@ -134,7 +135,7 @@ export const imageVariants = cva("vui-image relative isolate block max-w-full ov
 const imageLabels = { processing: "Processing", error: "Image could not be loaded" };
 export type ImageLabels = typeof imageLabels;
 
-export type ImagePlaceholder = "blur" | "color" | "skeleton" | "none";
+export type ImagePlaceholder = "blur" | "color" | "skeleton" | "art" | "none";
 
 export interface ImageBaseProps
   extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | "placeholder" | "width" | "height" | "alt">,
@@ -154,8 +155,20 @@ export interface ImageBaseProps
   quality?: number;
   /** Above the fold: eager loading + `fetchpriority="high"`. */
   priority?: boolean;
-  /** While loading. Default: `blur` with a blur source, `color` with a dominant colour, else `skeleton`. */
+  /**
+   * While loading. Default: `blur` with a blur source, `color` with a dominant colour, else `skeleton`.
+   * `art` shows a seeded token pattern (PlaceholderArt) while loading and on error. Without a `src`
+   * the image always renders as art.
+   */
   placeholder?: ImagePlaceholder;
+  /** Seed for the art placeholder. Default: `alt`, then the URL. Same seed → same pattern. */
+  seed?: string;
+  /** Force the art pattern. Default `"auto"` (from the seed). */
+  placeholderPattern?: PlaceholderArtPattern | "auto";
+  /** Glyph in the art placeholder. `false` hides it. */
+  placeholderIcon?: React.ReactNode | false;
+  /** Print `alt` (or this node) as a small caption on the art placeholder. */
+  placeholderCaption?: boolean | React.ReactNode;
   /** Tiny blurred preview (LQIP data URL or a small URL). Defaults to `asset.placeholder`. */
   blurDataURL?: string;
   /** Placeholder colour. Defaults to `asset.dominantColor`. */
@@ -175,7 +188,8 @@ export interface ImageBaseProps
  * `src` is a URL (then `alt` is required; `""` marks the image decorative) or a `MediaAsset`
  * (supplies alt, size, focal point, placeholder and variants; `alt` overrides per use).
  */
-export type ImageProps = ImageBaseProps & ({ src: string | MediaAsset; alt: string } | { src: MediaAsset; alt?: string });
+export type ImageProps = ImageBaseProps &
+  ({ src: string | MediaAsset; alt: string } | { src: MediaAsset; alt?: string } | { src?: null | ""; alt: string });
 
 const FILENAME_ALT = /(^(img|dsc|pxl|screenshot)[-_ ]?\d+)|\.(jpe?g|png|gif|webp|avif|heic|svg|tiff?)$/i;
 
@@ -205,6 +219,10 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Ima
     priority,
     placeholder: placeholderProp,
     blurDataURL,
+    seed,
+    placeholderPattern,
+    placeholderIcon,
+    placeholderCaption,
     color: colorProp,
     loader,
     fallback,
@@ -225,6 +243,7 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Ima
 ) {
   const t = useLabels("image", imageLabels, labels);
   const Bridge = useImage();
+  const empty = !source || (typeof source === "string" && !source.trim());
   const asset = isAsset(source) ? source : undefined;
   const alt = altProp ?? asset?.alt ?? "";
   const width = widthProp ?? asset?.width;
@@ -233,9 +252,10 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Ima
   const blur = blurDataURL ?? asset?.placeholder;
   const color = colorProp ?? asset?.dominantColor;
   const processing = processingProp ?? asset?.status === "processing";
-  const placeholder: ImagePlaceholder = placeholderProp ?? (blur ? "blur" : color ? "color" : "skeleton");
-  const ratio = aspectRatioOf(aspect, width, height);
-  const sources = useImageSources(source, { sizes, widths, loader, quality, focal, crop });
+  const placeholder: ImagePlaceholder = empty ? "art" : placeholderProp ?? (blur ? "blur" : color ? "color" : "skeleton");
+  // An empty image has no intrinsic size: fall back to 4:3 so it never collapses.
+  const ratio = aspectRatioOf(aspect, width, height) ?? (empty ? 4 / 3 : undefined);
+  const sources = useImageSources(source || "", { sizes, widths, loader, quality, focal, crop });
 
   const [state, setState] = React.useState<"loading" | "loaded" | "error">("loading");
   const imgRef = React.useRef<HTMLImageElement>(null);
@@ -252,6 +272,32 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Ima
 
   if (process.env.NODE_ENV !== "production" && alt && FILENAME_ALT.test(alt.trim())) {
     console.warn(`Image: alt text "${alt}" looks like a file name. Describe the image instead, or pass alt="" if it is decorative.`);
+  }
+
+  const art = (decorative: boolean) => (
+    <PlaceholderArt
+      data-slot="image-art"
+      seed={seed ?? (alt || (typeof source === "string" ? source : asset?.id) || "")}
+      pattern={placeholderPattern}
+      icon={placeholderIcon}
+      caption={placeholderCaption === true ? alt || undefined : placeholderCaption}
+      label={decorative ? undefined : alt || undefined}
+      className="absolute inset-0"
+    />
+  );
+
+  if (empty) {
+    return (
+      <span
+        data-slot="image"
+        data-state="empty"
+        data-placeholder="art"
+        className={cn(imageVariants({ rounded, frame }), "bg-transparent", className)}
+        style={{ aspectRatio: String(ratio), ...style }}
+      >
+        {art(false)}
+      </span>
+    );
   }
 
   const objectPosition = focalToObjectPosition(focal);
@@ -327,8 +373,13 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Ima
         <img aria-hidden alt="" src={blur} data-slot="image-blur" className="vui-image-blur pointer-events-none absolute inset-0 size-full object-cover" style={imgStyle} />
       ) : null}
       {placeholder === "skeleton" && state === "loading" ? <span aria-hidden data-slot="image-skeleton" className="ui-shimmer absolute inset-0" /> : null}
+      {placeholder === "art" && state === "loading" ? art(true) : null}
       {state === "error" ? (
-        fallback ? (
+        placeholder === "art" && !fallback ? (
+          <span data-slot="image-fallback" title={t("error")} className={cn(positioned ? "absolute inset-0" : "relative block min-h-24")}>
+            {art(false)}
+          </span>
+        ) : fallback ? (
           <span data-slot="image-fallback" className={cn(positioned ? "absolute inset-0" : "block min-h-24", "flex items-center justify-center")}>
             {fallback}
           </span>

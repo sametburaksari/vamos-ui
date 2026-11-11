@@ -6,6 +6,7 @@ import { BlockImage } from "../block-image";
 import { BlockLink } from "../block-link";
 import type { BlockBaseProps } from "../types";
 import { field, siteText, useBlockIds, type SiteBlockLabels, type SiteImage, type SiteMeta } from "./_kit-1";
+import { headingLines } from "./shared/heading-lines";
 
 export type PageIntroVariant = "simple" | "with-media" | "ruled";
 
@@ -28,6 +29,7 @@ export interface PageIntroProps extends Omit<BlockBaseProps, "variant" | "labels
   /** The page `h1` (inner pages). One `*emphasis*`. */
   title: React.ReactNode;
   lead?: React.ReactNode;
+  /** 21:9 band under the intro. `sizes`: `min(100vw, 90rem)`. */
   media?: SiteImage;
   /** ruled: facts on the end side ("Service area" · "Asian side"), up to 3. */
   meta?: SiteMeta[];
@@ -94,7 +96,7 @@ export function PageIntro({ variant = "simple", breadcrumb, eyebrow, title, lead
     </p>
   ) : null;
 
-  const heading = <BlockHeading id={headingId} level={headingLevel} size="display-l" text={title} editMode={editMode} field="props.title" labels={labels} locale={locale} className="max-w-[20ch]" />;
+  const heading = <BlockHeading id={headingId} level={headingLevel} size="display-l" text={headingLines(title)} editMode={editMode} field="props.title" labels={labels} locale={locale} className="max-w-[20ch]" />;
   const leadEl = lead ? (
     <p className="vb-lead max-w-[52ch] text-lead text-fg-muted" {...field(editMode, "lead")}>
       {lead}

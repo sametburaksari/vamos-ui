@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A partner/reseller record: tier ladder, deal registrations, MDF funds and certifications.",
+    "Partner managers approving or rejecting registrations and fund claims in bulk."
+  ],
+  "avoidWhen": [
+    "A direct customer account — use detail-04.",
+    "A generic approval chain — use approval-flow."
+  ],
+  "related": [
+    "detail-04",
+    "approval-flow",
+    "progress",
+    "data-table"
+  ],
+  "a11y": [
+    "Regions are labelled; reject requires a note linked by aria-describedby.",
+    "The MDF allocation bar is role=\"img\" — keep remaining budget as text."
+  ]
+}

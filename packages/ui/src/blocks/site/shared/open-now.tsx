@@ -22,7 +22,7 @@ export interface OpenNowProps {
 }
 
 /**
- * "Open now · closes at 22:00" — computed in the business's time zone on the client, refreshed
+ * "Open · until 10 PM" / "Closed · opens tomorrow at 12 PM" — computed in the business's time zone on the client, refreshed
  * every minute. Renders nothing on the server and without JS: a cached page never shows a stale
  * status. ~1 KB.
  */

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A physiotherapy, osteopathy or sports-rehab clinic where visitors start from the body area that hurts.",
+    "Clinics selling treatments and packs with a slot-based booking page."
+  ],
+  "avoidWhen": [
+    "General medical practices with departments and doctors — use site-clinic-01.",
+    "Talk-therapy practices that need discreet contact — use site-therapy-01."
+  ],
+  "related": [
+    "site-clinic-01",
+    "site-clinic-02",
+    "site-dietitian-01",
+    "site-therapy-01"
+  ],
+  "a11y": [
+    "Area chips expose aria-pressed and the swapped content is announced via aria-live; motion respects prefers-reduced-motion.",
+    "The mannequin hotspots duplicate the chips — keep the chips as the primary keyboard path."
+  ]
+}

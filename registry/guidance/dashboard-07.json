@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An HR home: headcount trend, department split, eNPS and comment themes.",
+    "Approving leave from a who's-out calendar and tracking open roles on a hiring board."
+  ],
+  "avoidWhen": [
+    "One employee's record — use detail-06.",
+    "Planning shifts or rooms over time — use resource-calendar."
+  ],
+  "related": [
+    "detail-06",
+    "area-chart",
+    "donut-chart",
+    "resource-calendar"
+  ],
+  "a11y": [
+    "The who's-out calendar is an ARIA table with row and column headers.",
+    "Declining leave requires a reason field linked with aria-describedby; keep that label visible."
+  ]
+}

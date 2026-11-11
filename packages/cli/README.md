@@ -3,7 +3,8 @@
 The command line for [Vamos UI](https://ui.vamos.ist): add components, blocks and themes to your project as source you own, keep them up to date, and lint your UI against the design rules.
 
 ```sh
-npx vamos-ui init
+npx vamos-ui create my-app            # new Next.js or Vite app with the kit
+npx vamos-ui init                     # or add it to an existing app
 npx vamos-ui add button dialog data-table
 ```
 
@@ -19,14 +20,18 @@ Every file the CLI writes is recorded with its sha256 in `<uiDir>/.vamos-lock.js
 
 | Command | What it does |
 | --- | --- |
-| `init` | Detects Next.js / Vite / Tailwind v4 and your package manager, writes `vamos.json`, installs the styles and the base library, and prints the `<html>` attributes. `--agent` also writes Vamos UI rules into `AGENTS.md` and `CLAUDE.md` and installs the agent skill in `.claude/skills/vamos-ui`. |
-| `add <names...>` | Resolves dependencies, shows each file it will create or update, installs npm packages with your package manager, and writes the files. Files you edited are kept unless you pass `--overwrite`. |
+| `create <dir>` | Writes a minimal Next.js App Router (`--template next`, default) or Vite + React (`--template vite`) app with Tailwind CSS v4, installs it with the package manager you ran it with, runs `init` (with `--preset`, if given) and adds a starter screen (`button`, `card`, `badge`). `--no-install` writes files only; the folder must be new or empty. |
+| `init` | Detects Next.js / Vite / Tailwind v4 and your package manager, writes `vamos.json`, installs the styles and the base library, and prints the `<html>` attributes. `--agent` also writes Vamos UI rules into `AGENTS.md` and `CLAUDE.md` and installs the agent skill in `.claude/skills/vamos-ui`. `--preset <code>` applies a preset code. |
+| `add <items...>` | An item is a registry name, a URL to an item JSON, `github:owner/repo[/path][#ref]/item` or `@ns/item` (see [Open registry](#open-registry)). Resolves dependencies, shows each file it will create or update, installs npm packages with your package manager, and writes the files. Files you edited are kept unless you pass `--overwrite`. |
 | `list` | Lists the registry. Filters: `--type component\|block\|lib\|style`, `--group`, `--category`, `--tag`. |
 | `search <query>` | Ranked search over names, titles, descriptions and tags (Turkish-insensitive). |
 | `view <name>` | Usage, props, guidance, dependencies and files. `--files` prints the source, `--json` gives the raw item. |
 | `diff [names...]` | Unified diff of your installed copy against the registry. `--summary` lists files only, `--check` exits 1 when anything differs (for CI). |
 | `upgrade [names...]` | Files you never touched are replaced. For files you edited that also changed upstream, it shows the diff and asks (non-interactive runs keep your version unless you pass `--overwrite`). Installs new dependencies. |
-| `theme` | Picks the five axes (`--theme`, `--material`, `--accent`, `--density`, `--font`), saves them in `vamos.json` and prints the `<html>` attributes. |
+| `theme` | Picks the five axes (`--theme`, `--material`, `--accent`, `--density`, `--font`, or `--preset <code>`), saves them in `vamos.json` and prints the `<html>` attributes. |
+| `preset [code]` | Prints the project's shareable preset code, or explains a code. See [Preset codes](#preset-codes). |
+| `registry build [dir]` | Builds a third-party registry (`<item>.json` + `index.json`) from `components/`, `lib/` and `blocks/<name>/`, with an optional `registry.json`. `--out` (default `<dir>/r`), `--homepage`, `--name`, `--dry-run`, `--strict`. |
+| `mcp add` | Writes the MCP server config for `--client claude\|cursor\|vscode\|windsurf\|codex\|gemini` (detected when left out; Claude Code as fallback). Idempotent; `--print` shows the config without writing. |
 | `verify [paths...]` | Lints for design-rule and accessibility issues and exits 1 on errors. By default it checks `src/`, `app/`, `components/`, `pages/` and `lib/`, and skips the kit folder. `--json`, `--quiet`. |
 | `brand init` | Creates `vamos.brand.json` step by step: name, accent (with a live palette and contrast preview), fonts from the kit catalog (searchable, or a curated pairing), theme defaults and voice. Without a terminal, pass `--name`, `--accent`, `--display`, `--body`, `--mono`, `--radius`, `--tone`. |
 | `brand import <url\|path>` | Proposes a brand from a website (page + up to 8 same-site or CDN stylesheets), a folder of brand files (SVG/PNG logos, CSS, Markdown/text/PDF guidelines) or a single logo, with the evidence for every value. `--yes` accepts, `--no-download` keeps remote logo URLs instead of saving them to `brand/`. |
@@ -51,6 +56,34 @@ Common flags: `-y/--yes` (no prompts), `--dry-run`, `--no-install`, `--json`, `-
 ```
 
 The registry location is resolved in this order: `--registry`, then `VAMOS_REGISTRY`, then `vamos.json`, then the default. A value that is not an `http(s)` URL is treated as a local directory, such as `apps/www/public/r` in the monorepo.
+
+## Open registry
+
+`add`, `view`, `diff` and `upgrade` take items from anywhere:
+
+| Spec | Fetched from |
+| --- | --- |
+| `button` | the project registry (`registry` in `vamos.json`) |
+| `https://acme.dev/r/stat-card.json` | that URL (https; http only for localhost) |
+| `github:acme/ui/stat-card` | `raw.githubusercontent.com/acme/ui/HEAD/r/stat-card.json` |
+| `github:acme/ui/public/r#v1.2.0/stat-card` | `raw.githubusercontent.com/acme/ui/v1.2.0/public/r/stat-card.json` |
+| `@acme/stat-card` | `"registries": { "@acme": "https://acme.dev/r/{name}.json" }` in `vamos.json` |
+| `./r/stat-card.json` | a local item file |
+
+Third-party items are validated against the registry item schema (`registryDependencies` may also use `./sibling`, `@ns/item`, `github:` and URLs; npm specs must be plain ranges). The CLI shows the source host before writing, never executes anything from an item, installs npm packages that only third-party items need with `--ignore-scripts`, and never lets a third-party item replace a file another item installed. Lock entries are keyed by the spec (`@acme/stat-card`) and record the source URL. Guide for publishers: https://ui.vamos.ist/docs/publish-a-registry
+
+## Preset codes
+
+A preset code holds the theme axes in a short string: `v1` + one letter per axis (theme `l|d`, material `s|g`, accent `l|o|e|r|g` or `x` + 6 hex digits, density `c|k`, font `s|e|g|c`, then optionally radius `s|r`). `v1dgokg` is dark, glass, ocean, compact, grotesk; `v1lsx4f46e5ce` is a custom `#4f46e5` accent. A custom accent or radius is applied through `vamos.brand.json` and `brand.css`.
+
+```ts
+import { encodePreset, decodePreset, presetAttributes } from "vamos-ui/preset";
+
+encodePreset({ theme: "dark", material: "glass", accent: "ocean", density: "compact", font: "grotesk" }); // "v1dgokg"
+decodePreset("v1lsx4f46e5ces"); // { theme: "light", …, accent: "#4f46e5", radius: "sharp" }
+```
+
+Pure, no dependencies; throws `PresetError` with the position that is wrong.
 
 ## Theming
 
@@ -143,11 +176,11 @@ const issues: VerifyIssue[] = verifySource(code, "src/app/page.tsx");
 ## Development
 
 ```sh
-pnpm --filter vamos-ui build      # tsup → dist/index.js (bin) + dist/verify.js + dist/brand.js (+ .d.ts)
+pnpm --filter vamos-ui build      # tsup → dist/index.js (bin) + dist/verify.js + dist/brand.js + dist/preset.js (+ .d.ts)
 pnpm --filter vamos-ui test       # vitest
 pnpm --filter vamos-ui typecheck
 ```
 
-The integration tests run `init` and `add` against a fixture registry in a temp folder. If `apps/www/public/r/index.json` exists, they also run against the built registry.
+The integration tests run `init`, `add` and `create` against a fixture registry in a temp folder; `create` templates live in `templates/`. If `apps/www/public/r/index.json` exists, they also run against the built registry.
 
 License: MIT

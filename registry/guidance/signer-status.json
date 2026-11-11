@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Showing e-signature progress for quotes, contracts and offer letters: who signs, order and status.",
+    "A reminder action next to a segmented summary of signing progress."
+  ],
+  "avoidWhen": [
+    "Collecting a signature — use signature-pad.",
+    "A general multi-step approval chain — use approval-flow."
+  ],
+  "related": [
+    "signature-pad",
+    "approval-flow",
+    "activity-timeline"
+  ],
+  "a11y": [
+    "Signers are an ordered list in a labelled section with role=\"status\" for updates; status is given in text, not colour alone."
+  ]
+}

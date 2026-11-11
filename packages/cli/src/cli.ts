@@ -2,7 +2,11 @@ import path from "node:path";
 import { bool, parseArgs, str } from "./args";
 import { add, list, search, view } from "./commands/browse";
 import { brand } from "./commands/brand";
+import { create } from "./commands/create";
 import { init } from "./commands/init";
+import { mcp } from "./commands/mcp";
+import { preset } from "./commands/preset";
+import { registry } from "./commands/registry";
 import { diff, upgrade } from "./commands/sync";
 import { theme } from "./commands/theme";
 import { update } from "./commands/update";
@@ -10,7 +14,7 @@ import { verify } from "./commands/verify";
 import { CliError } from "./core/types";
 import { out, p, pc, type Context } from "./ui";
 
-export const VERSION = "0.2.0";
+export const VERSION = "0.3.0";
 
 const HELP = `${pc.bold("vamos-ui")} ${pc.dim(VERSION)}  Add Vamos UI components, blocks and themes to your project.
 
@@ -18,19 +22,26 @@ ${pc.bold("Usage")}
   npx vamos-ui <command> [options]
 
 ${pc.bold("Commands")}
-  init                 Set up vamos.json, styles and the base library
-  add <names...>       Add components or blocks (dependencies included)
+  create <dir>         Start a new app: --template next|vite, --preset <code>, --no-install
+  init                 Set up vamos.json, styles and the base library   --preset <code>
+  add <items...>       Add components or blocks (dependencies included). An item is a name,
+                       a URL to an item JSON, github:owner/repo[/path][#ref]/item, or @ns/item
+                       (namespaces are mapped in vamos.json "registries")
   list                 List registry items         --type, --group, --category, --tag
   search <query>       Search by name, title, description and tags
   view <name>          Show usage, props, guidance and files   --files
   diff [names...]      Compare installed files with the registry   --summary, --check
   upgrade [names...]   Update installed items, keeping your local edits
   theme                Pick the 5 theme axes and print the <html> attributes
-                       --dark, --material, --accent, --density, --font
+                       --dark, --material, --accent, --density, --font, --preset <code>
+  preset [code]        Print this project's shareable preset code, or explain a code
   verify [paths...]    Lint for design-rule and accessibility issues   --quiet
   brand <init|import|apply|check>
                        Define the brand (accent, fonts, theme, voice, assets) and apply it
   update [paths...]    Bring code in line with the brand and the rules   --fix, --dry-run
+  registry build [dir] Build your own registry from a folder of components   --out, --homepage
+  mcp add              Connect an AI client to the MCP server
+                       --client claude|cursor|vscode|windsurf|codex|gemini, --print
 
 ${pc.bold("Options")}
   -y, --yes            Skip prompts and accept defaults
@@ -57,6 +68,10 @@ const COMMANDS: Record<string, (ctx: Context, args: ReturnType<typeof parseArgs>
   upgrade,
   update,
   theme,
+  preset,
+  create,
+  mcp,
+  registry,
   brand,
   verify,
   lint: verify,
@@ -76,7 +91,7 @@ export async function run(argv: string[], opts: RunOptions = {}): Promise<number
     out(VERSION);
     return 0;
   }
-  const ownHelp = args.command === "brand" || args.command === "update";
+  const ownHelp = ["brand", "update", "create", "mcp", "registry"].includes(args.command ?? "");
   if (!args.command || (bool(args.flags, "help") && !ownHelp) || args.command === "help") {
     out(HELP);
     return args.command || bool(args.flags, "help") ? 0 : 1;

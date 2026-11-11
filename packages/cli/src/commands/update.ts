@@ -13,9 +13,9 @@ import { projectFiles } from "./verify";
 /** Base colour of each kit accent preset, used to map palette families when there is no brand. */
 const PRESET_ACCENTS: Record<string, string> = {
   lime: "oklch(0.89 0.21 122)",
-  ocean: "oklch(0.64 0.17 245)",
+  ocean: "oklch(0.55 0.17 245)",
   ember: "oklch(0.7 0.19 45)",
-  rose: "oklch(0.66 0.21 10)",
+  rose: "oklch(0.58 0.21 10)",
 };
 
 export interface UpdateFileResult {

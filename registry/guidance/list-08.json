@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Stores, pickup points and warehouses as a numbered list and map sharing one selection.",
+    "Operators closing a location for today or adding a new one."
+  ],
+  "avoidWhen": [
+    "A single location's map and opening hours on a site — use map-hours.",
+    "Live dispatch of jobs and vehicles — use dashboard-16."
+  ],
+  "related": [
+    "pin-map",
+    "map-hours",
+    "dashboard-16",
+    "filter-bar"
+  ],
+  "a11y": [
+    "List rows handle keyboard selection; filters are aria-pressed toggles.",
+    "Never require the map — everything is reachable from the list."
+  ]
+}

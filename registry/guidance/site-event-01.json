@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A conference, summit or festival site with speakers, venue, sponsors, a multi-day schedule and tickets.",
+    "Events that let attendees build their own agenda."
+  ],
+  "avoidWhen": [
+    "A wedding — use site-wedding-01.",
+    "A recurring sports fixture list — use site-club-01."
+  ],
+  "related": [
+    "tabs",
+    "team",
+    "logo-strip",
+    "pricing-table"
+  ],
+  "a11y": [
+    "Agenda changes are announced via aria-live; shape-masked art is role=\"img\".",
+    "Make sure the countdown is not the only place the date appears."
+  ]
+}

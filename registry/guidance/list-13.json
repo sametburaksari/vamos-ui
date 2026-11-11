@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "One task set shown as a due-date list, a status board and a month calendar.",
+    "Teams that complete, move and reschedule tasks with shared filters."
+  ],
+  "avoidWhen": [
+    "Only a board — use kanban.",
+    "Project timelines with dependencies — use gantt."
+  ],
+  "related": [
+    "kanban",
+    "task-list",
+    "calendar",
+    "sheet"
+  ],
+  "a11y": [
+    "Board moves work by keyboard as well as drag; changes are announced via role=\"status\".",
+    "The view switcher should keep focus on the chosen view after switching."
+  ]
+}

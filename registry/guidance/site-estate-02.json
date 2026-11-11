@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A private office or luxury agency for exceptional homes with full-bleed film, a collection and floor-plan room views.",
+    "Agencies offering off-market registers and private-viewing requests."
+  ],
+  "avoidWhen": [
+    "Everyday apartment listings with a map — use site-estate-01.",
+    "A wedding or event venue — use site-venue-01."
+  ],
+  "related": [
+    "lightbox",
+    "gallery",
+    "filter-bar",
+    "contact-form"
+  ],
+  "a11y": [
+    "Crossfades stop under prefers-reduced-motion; the lightbox and floor plan support the keyboard and announce changes via aria-live.",
+    "Write real alt text for every room photograph; the placeholders use empty alt."
+  ]
+}

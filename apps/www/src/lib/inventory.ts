@@ -37,7 +37,7 @@ export const inventory: InvGroup[] = [
   ] },
   { group: "Navigation", items: [
     r("Sidebar (multi-level)", undefined, true), r("Top bar"), n("Tabs"), n("Breadcrumb"), n("Pagination"),
-    p("Navigation Menu"), p("Accordion"), p("Stepper", true),
+    p("Navigation Menu"), n("Menubar"), p("Accordion"), n("Collapsible"), p("Stepper", true),
   ] },
   { group: "Page layouts", items: [
     p("App shell", true), r("Page header"), p("List layout", true), p("Record detail layout", true),
@@ -67,7 +67,7 @@ export const inventory: InvGroup[] = [
     p("Setup checklist", true),
   ] },
   { group: "Media", items: [
-    n("Image (aspect · blur placeholder)", true), n("Carousel"), p("Gallery grid", true), p("Lightbox", true),
+    n("Image (aspect · blur placeholder)", true), n("Aspect Ratio"), n("Placeholder art", true), n("Carousel"), p("Gallery grid", true), p("Lightbox", true),
     p("Media library", true), p("Media picker", true), p("Image field (select · crop · focal point)", true),
     p("Video player", true), p("Link previews (search · social card)", true),
   ] },

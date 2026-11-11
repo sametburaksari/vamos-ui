@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Release notes or a changelog for an API or SaaS product, with type filters and email / RSS subscribe.",
+    "Teams that want each release as its own linkable article."
+  ],
+  "avoidWhen": [
+    "Live uptime and incidents — use site-status-01.",
+    "A full developer product site — use site-devtool-01."
+  ],
+  "related": [
+    "activity-timeline",
+    "filter-bar",
+    "badge",
+    "blog-list"
+  ],
+  "a11y": [
+    "Filter results and subscribe confirmations are announced through status regions.",
+    "Use real dates in each release heading so the list reads well out of context."
+  ]
+}

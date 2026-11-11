@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A band, musician or performer site with a new release, tour dates, videos, merch and a mailing list.",
+    "Acts that need on-sale / sold-out ticket states and presale sign-ups."
+  ],
+  "avoidWhen": [
+    "A visual artist or photographer — use site-portfolio-02.",
+    "A podcast — use site-podcast-01."
+  ],
+  "related": [
+    "video-player",
+    "gallery-section",
+    "contact-form",
+    "footer"
+  ],
+  "a11y": [
+    "Videos are click-to-load; waitlist and mailing-list results use status regions, and motion respects prefers-reduced-motion.",
+    "Replace the placeholder hero alt text with a description of your real photo."
+  ]
+}

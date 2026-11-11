@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "The frame of a whole website block with its own theme, EN/TR switch and inner pages.",
+    "Server-rendered multi-page sites switched in place with query links."
+  ],
+  "avoidWhen": [
+    "An admin application frame — use app-shell.",
+    "A single landing section — use hero."
+  ],
+  "related": [
+    "navbar",
+    "footer",
+    "app-shell",
+    "site-saas-01"
+  ],
+  "a11y": [
+    "On page change it scrolls to top, moves focus to the page h1 and marks matching links aria-current=\"page\"."
+  ]
+}

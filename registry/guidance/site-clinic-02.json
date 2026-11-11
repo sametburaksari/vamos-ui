@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A paediatric or family clinic that wants a friendly, illustrated tone and a check-up schedule by birth date.",
+    "Practices that speak to parents and children, with a picture story and read-aloud."
+  ],
+  "avoidWhen": [
+    "An adult or general practice — use site-clinic-01.",
+    "A preschool or nursery — use site-preschool-01."
+  ],
+  "related": [
+    "multi-step-form",
+    "team",
+    "map-hours",
+    "faq"
+  ],
+  "a11y": [
+    "Check-up results and booking summary use aria-live; errors use role=\"alert\"; page turns support the keyboard and respect prefers-reduced-motion.",
+    "Keep read-aloud optional and never autoplay it."
+  ]
+}

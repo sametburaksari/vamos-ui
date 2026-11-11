@@ -7,9 +7,10 @@ import { refreshIndexes } from "../core/indexes";
 import { ownedFiles, readLock, sha256, writeLock, type Lockfile } from "../core/lockfile";
 import { loadBarrels } from "../core/registry";
 import { targetPath, transformFile } from "../core/transform";
-import { CliError, type RegistryItem } from "../core/types";
+import { CliError, itemKey, type RegistryItem } from "../core/types";
 import { colorDiff, out, p, pc, plural, printJson, unwrap, type Context } from "../ui";
-import { installItems, openSession, type Session } from "./shared";
+import { fetchSpec, installItems, openSession, sourceOptions, type Session } from "./shared";
+import { canonicalSpec } from "../core/sources";
 
 export type FileStatus =
   | "up-to-date" // local == registry
@@ -40,14 +41,14 @@ export function classify(local: string | null, remote: string, recorded: string 
 }
 
 async function compareItem(session: Session, lock: Lockfile, item: RegistryItem): Promise<FileComparison[]> {
-  const recorded = lock.items[item.name]?.files ?? {};
+  const recorded = lock.items[itemKey(item)]?.files ?? {};
   const rows: FileComparison[] = [];
   for (const file of item.files) {
     const rel = targetPath(item, file, session.config);
     const abs = path.join(session.root, rel);
     const local = existsSync(abs) ? await readFile(abs, "utf8") : null;
     const remote = transformFile(file.content, session.config);
-    rows.push({ item: item.name, path: rel, status: classify(local, remote, recorded[rel]), local, remote });
+    rows.push({ item: itemKey(item), path: rel, status: classify(local, remote, recorded[rel]), local, remote });
   }
   return rows;
 }
@@ -66,12 +67,12 @@ const STATUS_LABEL: Record<FileStatus, string> = {
 };
 
 async function installedItems(ctx: Context, session: Session, lock: Lockfile, names: string[]): Promise<RegistryItem[]> {
-  const targets = names.length ? names : Object.keys(lock.items);
+  const targets = names.length ? names.map((n) => canonicalSpec(n, sourceOptions(session))) : Object.keys(lock.items);
   for (const n of targets) {
     if (!lock.items[n]) throw new CliError(`"${n}" is not installed.`, `Install it with \`vamos-ui add ${n}\`.`);
   }
   if (!targets.length) throw new CliError("Nothing is installed yet.", "Run `vamos-ui add <name>` first.");
-  return Promise.all(targets.map((n) => session.registry.item(n)));
+  return Promise.all(targets.map((n) => fetchSpec(session, n)));
 }
 
 export async function diff(ctx: Context, args: ParsedArgs): Promise<number> {
@@ -107,7 +108,7 @@ export async function upgrade(ctx: Context, args: ParsedArgs): Promise<number> {
   const session = await openSession(ctx, { config: "required" });
   const lock = await readLock(session.root, session.config.uiDir, session.registry.location);
   const items = await installedItems(ctx, session, lock, args.positionals);
-  const index = await session.registry.index();
+  const index = items.every((i) => i.source) ? ((await session.registry.index().catch(() => null)) ?? { version: "0.0.0" }) : await session.registry.index();
   const force = bool(args.flags, "overwrite") || bool(args.flags, "force");
   const dryRun = bool(args.flags, "dry-run");
   if (!ctx.json) p.intro(pc.bold("vamos-ui upgrade"));
@@ -115,7 +116,8 @@ export async function upgrade(ctx: Context, args: ParsedArgs): Promise<number> {
   const counts = { replaced: 0, kept: 0, current: 0, restored: 0 };
   for (const item of items) {
     const rows = await compareItem(session, lock, item);
-    const prev = lock.items[item.name]?.files ?? {};
+    const key = itemKey(item);
+    const prev = lock.items[key]?.files ?? {};
     const files: Record<string, string> = {};
     for (const r of rows) {
       let write = false;
@@ -144,9 +146,9 @@ export async function upgrade(ctx: Context, args: ParsedArgs): Promise<number> {
       if (write) p.log.step(`${dryRun ? "would update" : "updated"} ${r.path}`);
     }
     for (const gone of Object.keys(prev).filter((f) => !(f in files))) {
-      p.log.warn(`${gone} is no longer part of ${item.name}; left in place.`);
+      p.log.warn(`${gone} is no longer part of ${key}; left in place.`);
     }
-    if (!dryRun) lock.items[item.name] = { ...lock.items[item.name]!, version: index.version, files };
+    if (!dryRun) lock.items[key] = { ...lock.items[key]!, version: item.source ? lock.items[key]!.version : index.version, files };
   }
   if (!dryRun) {
     await writeLock(session.root, session.config.uiDir, lock);
@@ -154,7 +156,7 @@ export async function upgrade(ctx: Context, args: ParsedArgs): Promise<number> {
   }
 
   // Items may have gained dependencies since they were installed.
-  const missingDeps = [...new Set(items.flatMap((i) => i.registryDependencies))].filter((d) => !lock.items[d]);
+  const missingDeps = [...new Set(items.flatMap((i) => i.registryDependencies).map((d) => canonicalSpec(d, sourceOptions(session))))].filter((d) => !lock.items[d]);
   if (missingDeps.length) {
     p.log.info(`New dependencies: ${missingDeps.join(", ")}`);
     await installItems(ctx, session, missingDeps, { overwrite: false, dryRun, install: bool(args.flags, "install", true) });

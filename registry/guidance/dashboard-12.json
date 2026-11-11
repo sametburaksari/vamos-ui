@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Paid marketing performance: spend, CPA, revenue and ROAS against the previous period.",
+    "Comparing attribution models and pausing or re-budgeting campaigns with pacing in view."
+  ],
+  "avoidWhen": [
+    "An e-commerce sales overview — use dashboard-05.",
+    "Building or scheduling a single campaign — use form-02."
+  ],
+  "related": [
+    "form-02",
+    "bar-chart",
+    "combo-chart",
+    "data-table"
+  ],
+  "a11y": [
+    "The campaign table is a native table; the attribution chart is role=\"img\" with a label.",
+    "Validate the budget edit inline and connect the error text to its input."
+  ]
+}

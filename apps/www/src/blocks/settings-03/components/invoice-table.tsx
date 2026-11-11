@@ -77,7 +77,7 @@ export function InvoiceTable() {
         </div>
       ) : null}
       <TableContainer className="border-t border-line">
-        <Table>
+        <Table aria-label={c("Invoices", "Faturalar")}>
           <TableHeader>
             <TableRow>
               <TableHead className="w-10">

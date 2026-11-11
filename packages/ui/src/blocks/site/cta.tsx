@@ -13,6 +13,8 @@ import { EmbedFacade } from "./embed-facade";
 import { formatSitePhone } from "./navbar";
 import { ArrowEnd, CtaList, field, siteTemplate, siteText, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
 import { Reveal } from "../../motion/reveal";
+import { headingLines } from "./shared/heading-lines";
+import { columnSizes, SITE_SIZES } from "./shared/image-sizes";
 
 export type CtaVariant = "band" | "split" | "minimal" | "newsletter" | "booking";
 
@@ -38,7 +40,7 @@ export interface CtaBookingConfig {
   timeZone?: string;
   /** "Hi, I'd like a table for {guests} on {date} at {time}." */
   messageTemplate?: string;
-  /** embed: preview image shown before the calendar loads. */
+  /** embed: preview image shown before the calendar loads. `sizes`: `min(100vw, 76rem)`. */
   preview?: SiteImage;
 }
 
@@ -56,7 +58,7 @@ export interface CtaProps extends Omit<BlockBaseProps, "variant" | "labels"> {
   lead?: React.ReactNode;
   /** ≤ 2; one primary. In `minimal` only the first is used, as a large text link. */
   actions?: SiteCta[];
-  /** split: the photo. */
+  /** split: the photo. `sizes`: `(min-width: 56rem) min(42vw, 32rem), 100vw`. */
   media?: SiteImage;
   /** band/split: mono contact line ("0216 000 00 00 · WhatsApp"). */
   contact?: { phone?: string; whatsapp?: string; whatsappText?: string };
@@ -113,7 +115,7 @@ export function Cta(props: CtaProps) {
 type Inner = CtaProps & { headingId: string };
 
 function Heading({ p, size = "display-l", className }: { p: Inner; size?: "display-l" | "display-m" | "h3"; className?: string }) {
-  return <BlockHeading id={p.headingId} level={p.headingLevel ?? 2} size={size} text={p.title} editMode={p.editMode} field="props.title" labels={p.labels} locale={p.locale} className={className} />;
+  return <BlockHeading id={p.headingId} level={p.headingLevel ?? 2} size={size} text={headingLines(p.title)} editMode={p.editMode} field="props.title" labels={p.labels} locale={p.locale} className={className} />;
 }
 
 function Eyebrow({ p, className }: { p: Inner; className?: string }) {
@@ -147,7 +149,7 @@ function ContactLine({ p, className }: { p: Inner; className?: string }) {
   const c = p.contact;
   if (!c?.phone && !c?.whatsapp) return null;
   const t = siteText(p.labels, p.locale);
-  const linkCls = "rounded-[2px] underline decoration-current/30 underline-offset-4 transition-[text-decoration-color] hover:decoration-current focus-ring";
+  const linkCls = "inline-flex min-h-6 items-center pointer-coarse:min-h-11 rounded-[2px] underline decoration-current/30 underline-offset-4 transition-[text-decoration-color] hover:decoration-current focus-ring";
   return (
     <p className={cn("flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-small tabular text-fg-muted", className)} {...field(p.editMode, "contact")}>
       {c.phone ? (
@@ -205,7 +207,7 @@ function Split(p: Inner) {
       </div>
       {p.media ? (
         <div className="@4xl:col-span-5 @4xl:col-start-8">
-          <BlockImage {...p.media} aspect="4:5" sizes="(min-width: 56rem) 40vw, 100vw" className="h-full rounded-ui" components={p.components} labels={p.labels} editMode={p.editMode} field="props.media" />
+          <BlockImage {...p.media} aspect="4:5" sizes={columnSizes(5 / 12)} className="h-full rounded-ui" components={p.components} labels={p.labels} editMode={p.editMode} field="props.media" />
         </div>
       ) : null}
     </Container>
@@ -316,7 +318,7 @@ function Booking(p: Inner) {
     control = (
       <div className="relative aspect-[16/10] overflow-hidden rounded-ui border border-line @4xl:aspect-[21/9]">
         <EmbedFacade kind="iframe" src={b.url} title={typeof p.title === "string" ? p.title.replace(/\*/g, "") : t("openCalendar")} buttonLabel={t("openCalendar")}>
-          {b.preview ? <BlockImage {...b.preview} decorative aspect="21:9" className="absolute inset-0 h-full opacity-60" components={p.components} /> : null}
+          {b.preview ? <BlockImage {...b.preview} decorative aspect="21:9" sizes={SITE_SIZES.container} className="absolute inset-0 h-full opacity-60" components={p.components} /> : null}
           <span className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color-mix(in_oklch,var(--scene)_55%,transparent)] text-center">
             <span className="inline-flex h-12 items-center gap-2.5 rounded-ui bg-fg px-6 text-[15px] font-semibold text-scene">
               <CalendarDays aria-hidden strokeWidth={1.5} className="size-[18px]" />

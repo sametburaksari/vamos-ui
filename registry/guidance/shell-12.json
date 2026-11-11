@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "CMS editor chrome: layers outline, responsive live canvas and inspector.",
+    "Page builders needing undo/redo, autosave status and publish."
+  ],
+  "avoidWhen": [
+    "Long-form document editing — use editor-01.",
+    "Settings-only screens — use settings-layout."
+  ],
+  "related": [
+    "editor-layout",
+    "editor-01",
+    "block-editor",
+    "sortable-list"
+  ],
+  "a11y": [
+    "Panels are labelled with aria-labelledby; layer reorder offers up/down buttons as a keyboard alternative to dragging."
+  ]
+}

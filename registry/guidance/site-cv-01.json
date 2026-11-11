@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A one-page personal site and printable CV for an engineer, designer or freelancer.",
+    "People who want a print-perfect A4 CV from the same content."
+  ],
+  "avoidWhen": [
+    "A visual work portfolio — use site-portfolio-01.",
+    "A studio or team site — use site-studio-01."
+  ],
+  "related": [
+    "activity-timeline",
+    "description-list",
+    "badge",
+    "footer"
+  ],
+  "a11y": [
+    "Section navigation marks the current item with aria-current; motion respects prefers-reduced-motion.",
+    "Check the printed CV still reads in a logical order without colour."
+  ]
+}

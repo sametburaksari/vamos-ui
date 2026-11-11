@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A business law firm site with practice areas, approach, partners with bar admissions, insights and office hours.",
+    "Firms that want one page per practice area and a team page."
+  ],
+  "avoidWhen": [
+    "An accounting practice — use site-accounting-01.",
+    "A creative agency — use site-agency-01."
+  ],
+  "related": [
+    "team",
+    "steps",
+    "blog-list",
+    "map-hours"
+  ],
+  "a11y": [
+    "Practice-area preview motion respects prefers-reduced-motion.",
+    "Replace empty partner photo alt text with each partner's name."
+  ]
+}

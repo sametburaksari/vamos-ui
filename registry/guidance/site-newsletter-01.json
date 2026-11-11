@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A writer's or editor's newsletter that needs a subscribe form, a searchable archive and single-issue pages.",
+    "Solo publications where the latest letter and reader replies sell the subscription."
+  ],
+  "avoidWhen": [
+    "Multi-author publications with categories and feeds — use site-blog-01.",
+    "Audio-first shows — use site-podcast-01."
+  ],
+  "related": [
+    "site-blog-01",
+    "site-blog-02",
+    "site-podcast-01"
+  ],
+  "a11y": [
+    "The subscribe state is announced through a role=\"status\" live region; motion respects prefers-reduced-motion.",
+    "Keep the typo hint linked to the email field so it is read with the input."
+  ]
+}

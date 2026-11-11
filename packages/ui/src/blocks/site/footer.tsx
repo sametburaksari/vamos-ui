@@ -12,6 +12,7 @@ import { ConsentSettingsButton } from "./shared/consent-island";
 import { ContactFormIsland } from "./shared/contact-form-island";
 import { contactIslandLabelKeys } from "./shared/island-keys";
 import type { SiteFormAction } from "./shared/site-form";
+import { TAP } from "./shared/tap";
 
 export type FooterVariant = "columns" | "wordmark" | "minimal";
 
@@ -22,7 +23,7 @@ export interface FooterProps extends Omit<BlockBaseProps, "variant" | "labels" |
    * container width at the very bottom. minimal: a single row for landing pages.
    */
   variant?: FooterVariant;
-  brand: { name: string; logo?: React.ReactNode | SiteImage2; href?: string };
+  brand: { name: string; /** An image logo renders 2rem tall (`sizes="12rem"`). */ logo?: React.ReactNode | SiteImage2; href?: string };
   /** ≤ 200 characters. */
   about?: React.ReactNode;
   columns?: { title: React.ReactNode; links: SiteLink2[] }[];
@@ -86,22 +87,22 @@ export function Footer({
     <div className="flex flex-col gap-3 text-small text-fg-muted @4xl:flex-row @4xl:items-center @4xl:justify-between @4xl:gap-8">
       <p>{copyright}</p>
       <nav aria-label={t("legal")}>
-        <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 pointer-coarse:gap-y-0">
           {legalLinks.map((l, i) => (
             <li key={i}>
-              <BlockLink href={l.href} newTab={l.newTab} components={components} labels={labels} locale={locale} className="rounded-[2px] text-fg-muted underline-offset-[0.25em] transition-colors hover:text-fg hover:underline focus-ring">
+              <BlockLink href={l.href} newTab={l.newTab} components={components} labels={labels} locale={locale} className={cn(TAP, "rounded-[2px] text-fg-muted underline-offset-[0.25em] transition-colors hover:text-fg hover:underline focus-ring")}>
                 {l.label}
               </BlockLink>
             </li>
           ))}
           {cookieSettings ? (
             <li>
-              <ConsentSettingsButton className="text-fg-muted transition-colors hover:text-fg">{t("cookieSettings")}</ConsentSettingsButton>
+              <ConsentSettingsButton className={cn(TAP, "text-fg-muted transition-colors hover:text-fg")}>{t("cookieSettings")}</ConsentSettingsButton>
             </li>
           ) : null}
           {credit ? (
             <li>
-              <BlockLink href={credit.href} newTab={credit.newTab} components={components} labels={labels} locale={locale} className="rounded-[2px] text-fg-muted underline-offset-[0.25em] hover:text-fg hover:underline focus-ring">
+              <BlockLink href={credit.href} newTab={credit.newTab} components={components} labels={labels} locale={locale} className={cn(TAP, "rounded-[2px] text-fg-muted underline-offset-[0.25em] hover:text-fg hover:underline focus-ring")}>
                 {t("madeBy", { name: typeof credit.label === "string" ? credit.label : "" })}
               </BlockLink>
             </li>
@@ -158,7 +159,7 @@ export function Footer({
       <p id={`${base}-col-${i}`} className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">
         {c.title}
       </p>
-      <ul className="flex flex-col gap-2.5">
+      <ul className="flex flex-col gap-2.5 pointer-coarse:gap-0">
         {c.links.slice(0, 8).map((l, j) => (
           <li key={j}>
             <FooterLink link={l} ctx={ctx} />
@@ -180,12 +181,12 @@ export function Footer({
         </address>
       ) : null}
       {contact.phone ? (
-        <a href={telHref(contact.phone)} className="self-start text-fg tabular underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]" data-track="call">
+        <a href={telHref(contact.phone)} className={cn(TAP, "self-start text-fg tabular underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]")} data-track="call">
           {prettyPhone(contact.phone)}
         </a>
       ) : null}
       {contact.email ? (
-        <a href={`mailto:${contact.email}`} className="self-start text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]" data-track="email">
+        <a href={`mailto:${contact.email}`} className={cn(TAP, "self-start text-fg underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]")} data-track="email">
           {contact.email}
         </a>
       ) : null}
@@ -276,13 +277,13 @@ interface Ctx {
 
 function BrandMark({ brand, ctx }: { brand: FooterProps["brand"]; ctx: Ctx }) {
   const mark = isImage(brand.logo) ? (
-    <BlockImage {...brand.logo} alt={brand.logo.alt ?? brand.name} fit="contain" className="h-8 w-auto bg-transparent" components={ctx.components} />
+    <BlockImage {...brand.logo} alt={brand.logo.alt ?? brand.name} fit="contain" sizes="12rem" className="h-8 w-auto bg-transparent" components={ctx.components} />
   ) : (
     (brand.logo ?? <span className="font-display text-display-m leading-none text-fg">{brand.name}</span>)
   );
   if (!brand.href) return <div className="self-start">{mark}</div>;
   return (
-    <BlockLink href={brand.href} components={ctx.components} labels={ctx.labels} locale={ctx.locale} aria-label={brand.name} className="self-start rounded-[2px] focus-ring">
+    <BlockLink href={brand.href} components={ctx.components} labels={ctx.labels} locale={ctx.locale} aria-label={brand.name} className="inline-flex min-h-6 items-center self-start rounded-[2px] focus-ring pointer-coarse:min-h-11">
       {mark}
     </BlockLink>
   );
@@ -290,7 +291,7 @@ function BrandMark({ brand, ctx }: { brand: FooterProps["brand"]; ctx: Ctx }) {
 
 function FooterLink({ link, ctx }: { link: SiteLink2; ctx: Ctx }) {
   return (
-    <BlockLink href={link.href} newTab={link.newTab} components={ctx.components} labels={ctx.labels} locale={ctx.locale} className="rounded-[2px] text-small text-fg underline-offset-[0.25em] transition-colors hover:text-accent-ink hover:underline focus-ring">
+    <BlockLink href={link.href} newTab={link.newTab} components={ctx.components} labels={ctx.labels} locale={ctx.locale} className={cn(TAP, "rounded-[2px] text-small text-fg underline-offset-[0.25em] transition-colors hover:text-accent-ink hover:underline focus-ring")}>
       {link.label}
     </BlockLink>
   );
@@ -299,7 +300,7 @@ function FooterLink({ link, ctx }: { link: SiteLink2; ctx: Ctx }) {
 function SocialList({ social, ctx }: { social: FooterProps["social"]; ctx: Ctx }) {
   if (!social?.length) return null;
   return (
-    <ul className="flex flex-wrap items-center gap-1" aria-label={ctx.t("social")}>
+    <ul className="flex flex-wrap items-center gap-1 pointer-coarse:-ms-1" aria-label={ctx.t("social")}>
       {social.slice(0, 6).map((s, i) => (
         <li key={i}>
           <a
@@ -307,7 +308,7 @@ function SocialList({ social, ctx }: { social: FooterProps["social"]; ctx: Ctx }
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${BRAND_NAMES[s.network]} ${ctx.t("opensInNewTab")}`}
-            className="inline-flex size-10 items-center justify-center rounded-ui-sm text-fg-muted transition-colors hover:bg-hover hover:text-fg focus-ring"
+            className="inline-flex size-10 items-center justify-center rounded-ui-sm text-fg-muted transition-colors hover:bg-hover hover:text-fg focus-ring pointer-coarse:size-11"
             data-track={`social:${s.network}`}
           >
             <BrandIcon name={s.network} className="size-[18px]" />

@@ -10,6 +10,7 @@ import docAppShell from "./app-shell";
 import docApprovalFlow from "./approval-flow";
 import docAreaChart from "./area-chart";
 import docArticleLayout from "./article-layout";
+import docAspectRatio from "./aspect-ratio";
 import docAttachmentList from "./attachment-list";
 import docAuditLog from "./audit-log";
 import docAvatar from "./avatar";
@@ -27,6 +28,7 @@ import docCard from "./card";
 import docCarousel from "./carousel";
 import docChart from "./chart";
 import docCheckbox from "./checkbox";
+import docCollapsible from "./collapsible";
 import docColorPicker from "./color-picker";
 import docComboChart from "./combo-chart";
 import docCombobox from "./combobox";
@@ -85,6 +87,7 @@ import docMediaLibrary from "./media-library";
 import docMediaPicker from "./media-picker";
 import docMediaText from "./media-text";
 import docMenuList from "./menu-list";
+import docMenubar from "./menubar";
 import docMotion from "./motion";
 import docMultiStepForm from "./multi-step-form";
 import docNavbar from "./navbar";
@@ -96,6 +99,7 @@ import docPageIntro from "./page-intro";
 import docPagination from "./pagination";
 import docPermissionMatrix from "./permission-matrix";
 import docPinMap from "./pin-map";
+import docPlaceholderArt from "./placeholder-art";
 import docPopover from "./popover";
 import docPricingTable from "./pricing-table";
 import docProgress from "./progress";
@@ -162,6 +166,7 @@ export const entries: DocEntry[] = [
   docApprovalFlow,
   docAreaChart,
   docArticleLayout,
+  docAspectRatio,
   docAttachmentList,
   docAuditLog,
   docAvatar,
@@ -179,6 +184,7 @@ export const entries: DocEntry[] = [
   docCarousel,
   docChart,
   docCheckbox,
+  docCollapsible,
   docColorPicker,
   docComboChart,
   docCombobox,
@@ -237,6 +243,7 @@ export const entries: DocEntry[] = [
   docMediaPicker,
   docMediaText,
   docMenuList,
+  docMenubar,
   docMotion,
   docMultiStepForm,
   docNavbar,
@@ -248,6 +255,7 @@ export const entries: DocEntry[] = [
   docPagination,
   docPermissionMatrix,
   docPinMap,
+  docPlaceholderArt,
   docPopover,
   docPricingTable,
   docProgress,

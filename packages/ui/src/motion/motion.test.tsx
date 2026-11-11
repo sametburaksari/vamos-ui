@@ -193,6 +193,17 @@ describe("TextReveal", () => {
     expect(container.querySelectorAll(".vm-tr-unit")).toHaveLength(2);
     expect(container.querySelector(".sr-only")).toHaveTextContent("Open late. Closed Mondays.");
   });
+
+  it("keeps a real space between lines and words in textContent (search engines, reader mode)", () => {
+    const { container } = render(<TextReveal as="h1" by="line">{"Ateşte közde,\nmuhabbet sofrada."}</TextReveal>);
+    const h1 = container.querySelector("h1")!;
+    const visual = container.querySelector(".vm-text-reveal-visual")!;
+    expect(visual.textContent).toBe("Ateşte közde, muhabbet sofrada.");
+    expect(h1.textContent).not.toMatch(/,muhabbet|\.Ateşte/);
+    expect(h1.textContent!.replace(/\s+/g, " ").trim()).toBe("Ateşte közde, muhabbet sofrada. Ateşte közde, muhabbet sofrada.");
+    const words = render(<TextReveal as="h2">{"Közde, muhabbet."}</TextReveal>).container.querySelector(".vm-text-reveal-visual")!;
+    expect(words.textContent).toBe("Közde, muhabbet.");
+  });
 });
 
 describe("PageTransition", () => {

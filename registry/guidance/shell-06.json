@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Dense back-office sidebar with collapsible module sections and a / filter to jump to any screen.",
+    "ERP or inventory apps with many screens and attention counts."
+  ],
+  "avoidWhen": [
+    "Few top-level sections — use shell-01.",
+    "Admin without a sidebar — use shell-07."
+  ],
+  "related": [
+    "shell-05",
+    "shell-07",
+    "sidebar",
+    "app-shell"
+  ],
+  "a11y": [
+    "The current screen is aria-current; make section toggles buttons with clear names and keep counts in text."
+  ]
+}

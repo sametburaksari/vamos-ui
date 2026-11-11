@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An online course or bootcamp with a lesson map, cohort calendar, pricing, curriculum and an enrol form.",
+    "Part-time programmes where pace (weeks per lesson) changes the schedule."
+  ],
+  "avoidWhen": [
+    "A university department — use site-department-01.",
+    "A one-off event or conference — use site-event-01."
+  ],
+  "related": [
+    "pricing-table",
+    "faq",
+    "team",
+    "contact-form"
+  ],
+  "a11y": [
+    "The lesson map announces the selected week through aria-live and respects motion-reduce.",
+    "Keep the enrol form validation messages next to their fields."
+  ]
+}

@@ -6,6 +6,12 @@ It runs over stdio and reads the public registry at `https://ui.vamos.ist/r` (ca
 
 ## Setup
 
+One command writes the config for the client you use (detected, or `--client claude|cursor|vscode|windsurf|codex|gemini`); running it again changes nothing:
+
+```sh
+npx vamos-ui mcp add
+```
+
 ### Claude Code
 
 ```sh

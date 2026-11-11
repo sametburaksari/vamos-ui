@@ -76,6 +76,8 @@ const entry: DocEntry = {
       { name: "pauseOnHover", type: "boolean", default: "true", description: "Pause while hovered or focused." },
       { name: "fade", type: "boolean", default: "true", description: "Fade the edges." },
       { name: "gap", type: '"sm" | "md" | "lg"', default: '"lg"', description: "Space between items." },
+      { name: "controls", type: "boolean", default: "true", description: "Pause control (a native checkbox) for moving content longer than five seconds (WCAG 2.2.2)." },
+      { name: "pauseLabel", type: "string", default: '"Pause scrolling"', description: "Accessible name of the pause control." },
     ] },
   ],
   notes: [

@@ -8,6 +8,7 @@ export const blockCategories = [
   "List pages",
   "Detail pages",
   "Settings & forms",
+  "Commerce",
   "Onboarding",
   "Empty & error states",
   "Website pages",

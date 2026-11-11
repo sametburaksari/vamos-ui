@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Finance cash flow: cash on hand, burn and runway with scenario projections.",
+    "Chasing receivables and scheduling payables from one invoices-due table."
+  ],
+  "avoidWhen": [
+    "Subscription revenue metrics — use dashboard-14.",
+    "Editing a single invoice or quote — use detail-08."
+  ],
+  "related": [
+    "dashboard-14",
+    "line-chart",
+    "bar-chart",
+    "data-table"
+  ],
+  "a11y": [
+    "Invoices due use a real table; keep column headers and the section heading (aria-labelledby).",
+    "Give the projection chart a text summary of runway for non-visual readers."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Enrolling an authenticator app: scan a QR code or type the setup key, verify a code, save backup codes.",
+    "The first-time two-factor setup step inside account security settings."
+  ],
+  "avoidWhen": [
+    "Entering a code at sign-in for an already-enrolled account — use otp-01.",
+    "Managing all security factors and devices in one place — use settings-07."
+  ],
+  "related": [
+    "qr-code",
+    "backup-codes",
+    "input-otp",
+    "settings-07"
+  ],
+  "a11y": [
+    "Each step region is labelled with aria-labelledby and the setup-key reveal uses aria-expanded with aria-controls.",
+    "Decorative icons are aria-hidden; keep the setup key selectable for users who cannot scan."
+  ]
+}

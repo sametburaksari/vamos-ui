@@ -26,7 +26,9 @@ export interface TextRevealProps extends Omit<React.HTMLAttributes<HTMLElement>,
 /**
  * A heading that reveals word by word (or line by line) as it scrolls into view. Assistive
  * tech gets one plain string: the split copy is `aria-hidden`, the real text is a visually
- * hidden twin. Transform and opacity only; reduced motion shows it at once.
+ * hidden twin. Every unit — word or line — is separated by a real space, so `textContent`
+ * (search engines, copy-paste, reader mode) reads "közde, muhabbet", never "közde,muhabbet".
+ * Transform and opacity only; reduced motion shows it at once.
  *
  * ```tsx
  * <TextReveal as="h2">Small rooms, slow mornings, nothing to scroll.</TextReveal>
@@ -39,7 +41,7 @@ export const TextReveal = React.forwardRef<HTMLElement, TextRevealProps>(functio
   const inner = React.useRef<HTMLElement | null>(null);
   const initial = useReveal(inner, { once, rootMargin, threshold, disabled, onReveal });
   const text = String(children);
-  const units = by === "line" ? text.split("\n") : text.split(/\s+/).filter(Boolean);
+  const units = by === "line" ? text.split("\n").map((l) => l.trim()).filter(Boolean) : text.split(/\s+/).filter(Boolean);
   const gap = step ?? (by === "line" ? 110 : 45);
   const Comp = Tag as React.ElementType;
   return (
@@ -56,7 +58,7 @@ export const TextReveal = React.forwardRef<HTMLElement, TextRevealProps>(functio
       style={{ "--vm-step": `${gap}ms`, ...(delay ? { "--vm-delay": `${delay}ms` } : null), ...style } as React.CSSProperties}
       {...props}
     >
-      <span className="sr-only">{by === "line" ? units.join(" ") : text}</span>
+      <span className="sr-only">{units.join(" ")}</span>{" "}
       <span aria-hidden="true" className="vm-text-reveal-visual">
         {units.map((u, i) => (
           <React.Fragment key={i}>
@@ -65,7 +67,8 @@ export const TextReveal = React.forwardRef<HTMLElement, TextRevealProps>(functio
                 {u}
               </span>
             </span>
-            {by === "word" && i < units.length - 1 ? " " : null}
+            {/* Lines are blocks, so this space never shows — it keeps the words apart in textContent. */}
+            {i < units.length - 1 ? " " : null}
           </React.Fragment>
         ))}
       </span>

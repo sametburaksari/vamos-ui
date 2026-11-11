@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A pre-launch page collecting emails with a countdown and referral position.",
+    "Products not yet live that want proof points and a share link."
+  ],
+  "avoidWhen": [
+    "Launched SaaS with pricing — use site-saas-01.",
+    "Retail drops with stock — use site-store-02."
+  ],
+  "related": [
+    "site-saas-01",
+    "site-app-01",
+    "site-store-02"
+  ],
+  "a11y": [
+    "The countdown honours reduced motion (useReducedMotion) and the signed-up state is announced via aria-live.",
+    "Ensure the validation error is tied to the email input."
+  ]
+}

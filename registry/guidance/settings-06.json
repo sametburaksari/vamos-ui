@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Connected integrations with sync health and a searchable directory to add more.",
+    "Configuring sync, viewing logs and disconnecting with undo."
+  ],
+  "avoidWhen": [
+    "API keys and webhooks — use settings-04.",
+    "General account settings — use settings-01."
+  ],
+  "related": [
+    "settings-04",
+    "settings-01",
+    "sheet",
+    "entity-card"
+  ],
+  "a11y": [
+    "Configuration runs in titled sheets and dialogs and filter toggles expose aria-pressed.",
+    "State failing integrations in text, not just with colour."
+  ]
+}

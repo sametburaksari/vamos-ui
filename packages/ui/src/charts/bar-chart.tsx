@@ -33,7 +33,7 @@ export interface BarChartProps<T extends object> extends Omit<ChartProps<T>, "ch
  */
 export function BarChart<T extends object>({ series, layout = "vertical", stack = "none", radius = 4, highlight, valueLabels, barSize = "auto", reference, ...props }: BarChartProps<T>) {
   return (
-    <Chart skeleton={layout === "horizontal" ? "bar-horizontal" : "bar"} {...props}>
+    <Chart skeleton={layout === "horizontal" ? "bar-horizontal" : "bar"} barKeys={series ?? Object.keys(props.config)} {...props}>
       <BarPlot series={series} layout={layout} stack={stack} radius={radius} highlight={highlight as BarPlotProps["highlight"]} valueLabels={valueLabels} barSize={barSize} reference={reference} />
     </Chart>
   );

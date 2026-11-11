@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A booking agenda by day: meeting rooms, visitors and extras with a now line.",
+    "Front desks checking in, confirming or cancelling bookings with undo."
+  ],
+  "avoidWhen": [
+    "A time-grid of resources side by side — use resource-calendar.",
+    "Generic appointment scheduling — use scheduler."
+  ],
+  "related": [
+    "resource-calendar",
+    "scheduler",
+    "calendar",
+    "sheet"
+  ],
+  "a11y": [
+    "Each day is a labelled section; booking changes are reported in a role=\"status\" live region.",
+    "Rooms are colour-coded — keep room names as text on every booking."
+  ]
+}

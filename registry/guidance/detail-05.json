@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "One web order: fulfilment steps, line items with VAT, payment ledger and carrier label.",
+    "Issuing partial refunds per unit with the ledger updated straight away."
+  ],
+  "avoidWhen": [
+    "Building a quote or proposal — use detail-08.",
+    "Order queues across many orders — use dashboard-08."
+  ],
+  "related": [
+    "dashboard-08",
+    "line-items",
+    "stepper",
+    "order-confirmation-01"
+  ],
+  "a11y": [
+    "Line items are a table; refund totals update in an aria-live region.",
+    "Unit pickers in the refund dialog are grouped (role=\"group\") with labels per line."
+  ]
+}

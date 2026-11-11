@@ -14,8 +14,8 @@ export interface Resolution {
  * dependencies-first (depth-first post-order, stable with respect to the order
  * dependencies are listed). Cycles are broken and reported instead of failing.
  */
-export async function resolveItems(names: string[], fetchItem: (name: string) => Promise<RegistryItem>): Promise<Resolution> {
-  const requested = [...new Set(names)];
+export async function resolveItems(names: string[], fetchItem: (name: string) => Promise<RegistryItem>, canonical: (name: string) => string = (n) => n): Promise<Resolution> {
+  const requested = [...new Set(names.map(canonical))];
   const loaded = new Map<string, Promise<RegistryItem>>();
   const load = (name: string) => {
     let p = loaded.get(name);
@@ -32,7 +32,7 @@ export async function resolveItems(names: string[], fetchItem: (name: string) =>
   while (frontier.length) {
     frontier.forEach((n) => seen.add(n));
     const items = await Promise.all(frontier.map(load));
-    frontier = [...new Set(items.flatMap((i) => i.registryDependencies ?? []))].filter((n) => !seen.has(n));
+    frontier = [...new Set(items.flatMap((i) => (i.registryDependencies ?? []).map(canonical)))].filter((n) => !seen.has(n));
   }
 
   const order: RegistryItem[] = [];
@@ -47,7 +47,7 @@ export async function resolveItems(names: string[], fetchItem: (name: string) =>
     }
     state.set(name, "visiting");
     const item = await load(name);
-    for (const dep of item.registryDependencies ?? []) await visit(dep, [...trail, name]);
+    for (const dep of item.registryDependencies ?? []) await visit(canonical(dep), [...trail, name]);
     state.set(name, "done");
     order.push(item);
   };

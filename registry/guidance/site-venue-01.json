@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "An event venue hiring rooms by layout and head count, with viewings and enquiries.",
+    "Wedding, conference or party spaces that show capacities on a site plan."
+  ],
+  "avoidWhen": [
+    "A single wedding's own site — use site-wedding-01.",
+    "Ticketed events or conferences — use site-event-01."
+  ],
+  "related": [
+    "site-event-01",
+    "site-wedding-01",
+    "site-studio-01"
+  ],
+  "a11y": [
+    "Matching rooms and the hire estimate are announced through aria-live; motion respects prefers-reduced-motion.",
+    "List fitting rooms as text so the site plan is not the only source."
+  ]
+}

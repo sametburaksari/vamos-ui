@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A dietitian or nutrition practice with a goal-based programme picker, comparison table, dietitians and booking.",
+    "Practices selling multi-week programmes in clinic or online."
+  ],
+  "avoidWhen": [
+    "A medical clinic — use site-clinic-01.",
+    "Physiotherapy — use site-physio-01."
+  ],
+  "related": [
+    "comparison-table",
+    "time-picker",
+    "team",
+    "faq"
+  ],
+  "a11y": [
+    "The programme picker announces length and price through aria-live; motion respects prefers-reduced-motion.",
+    "Label each free time slot with its full date and time."
+  ]
+}

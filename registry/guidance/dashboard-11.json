@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An agency delivery portfolio: budget burn against work done for every project.",
+    "Updating project health, milestones and risks from a side sheet without leaving the overview."
+  ],
+  "avoidWhen": [
+    "One project in depth — use detail-10.",
+    "Task-level scheduling with dependencies — use gantt."
+  ],
+  "related": [
+    "detail-10",
+    "gantt",
+    "progress",
+    "sheet"
+  ],
+  "a11y": [
+    "Burn map and runway are role=\"img\" with labels; sections are named by their headings.",
+    "Do not convey health by colour alone; keep the text status beside each dot."
+  ]
+}

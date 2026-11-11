@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A small-batch shop selling its own products with variants, cart drawer and checkout.",
+    "Craft brands that pair a catalogue with a maker story and newsletter."
+  ],
+  "avoidWhen": [
+    "Timed drops and limited runs — use site-store-02.",
+    "Many independent sellers — use site-market-01."
+  ],
+  "related": [
+    "site-store-02",
+    "site-market-01",
+    "site-subbox-01"
+  ],
+  "a11y": [
+    "Glaze swatches are a keyboard-operable radiogroup; cart updates announce through role=\"status\".",
+    "Trap focus in the cart drawer and return it to the cart button on close."
+  ]
+}

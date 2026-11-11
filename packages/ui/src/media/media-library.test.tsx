@@ -30,6 +30,15 @@ describe("MediaLibrary", () => {
     await expectNoA11yViolations();
   });
 
+  it("names a video tile with its visible duration and status (label in name)", async () => {
+    const video = { ...mediaSeed[0]!, id: "v1", kind: "video" as const, mime: "video/mp4", filename: "launch-film.mp4", url: "https://cdn.example.com/launch-film.mp4", duration: 94, alt: "Launch film", status: "failed" as const };
+    renderWithProviders(<MediaLibrary adapter={adapter({ seed: [video, ...mediaSeed] })} />);
+    await tiles();
+    const tile = screen.getByRole("gridcell", { name: /^launch-film\.mp4, 1m 34s, Failed$/ });
+    expect(within(tile).getByText("1m 34s")).toHaveAttribute("aria-hidden");
+    await expectNoA11yViolations(document.body, { "label-content-name-mismatch": { enabled: true } });
+  });
+
   it("moves focus with arrows, selects with Space and Shift+arrow, selects all with Ctrl+A", async () => {
     const onSelectedChange = vi.fn();
     const { user } = renderWithProviders(<MediaLibrary adapter={adapter()} detailsPanel={false} onSelectedChange={onSelectedChange} />);

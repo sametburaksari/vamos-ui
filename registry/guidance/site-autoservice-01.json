@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An independent garage, car wash or detailing shop with a price list by car size and online booking.",
+    "Service businesses where the ready-by time and price must update as the customer picks jobs."
+  ],
+  "avoidWhen": [
+    "A driving school — use site-driving-01.",
+    "A clinic-style appointment booking — use site-clinic-01."
+  ],
+  "related": [
+    "multi-step-form",
+    "pricing-table",
+    "map-hours",
+    "contact-dock"
+  ],
+  "a11y": [
+    "The ready-by time and price are announced through aria-live; motion respects prefers-reduced-motion.",
+    "The three-step booking uses grouped fields — keep each step's labels visible."
+  ]
+}
