@@ -2,8 +2,8 @@ import { cn } from "@vamos-ui/react";
 
 /*
  * Official "vamos UI" logo, traced from the master artwork.
- * The mark is always brand lime; the wordmark follows the text colour, so it
- * reads dark on light scenes and white on dark ones.
+ * Dark scenes: lime mark + white wordmark. Light scenes: ink mark + ink
+ * wordmark (lime has no contrast on light). Colours: --brand-mark in globals.css.
  * Files for other uses: /brand/*.svg|png. "Vamos UI" and the logo are
  * trademarks of Vamos — see TRADEMARKS.md.
  */
@@ -14,24 +14,24 @@ const WORDMARK =
 const FLIP = "translate(0 2900) scale(0.1 -0.1)";
 export const BRAND_LIME = "#D4F520";
 
-/** The mark alone (lime by default; pass mono to use currentColor). */
+/** The mark alone; follows the theme (pass mono to use currentColor). */
 export function VamosMark({ className, title, mono }: { className?: string; title?: string; mono?: boolean }) {
   return (
     <svg viewBox="1320 924 1128 1060" className={className} role={title ? "img" : undefined} aria-hidden={title ? undefined : true}>
       {title && <title>{title}</title>}
       <g transform={FLIP}>
-        <path fill={mono ? "currentColor" : BRAND_LIME} d={MARK} />
+        <path fill={mono ? "currentColor" : "var(--brand-mark, #111111)"} d={MARK} />
       </g>
     </svg>
   );
 }
 
-/** Full "vamos UI" lockup: lime mark + wordmark in the current text colour. */
+/** Full "vamos UI" lockup; follows the theme. */
 export function VamosLogo({ className, title = "vamos UI" }: { className?: string; title?: string }) {
   return (
     <svg viewBox="1320 924 6072 1060" className={cn("h-[22px] w-auto text-fg", className)} role="img" aria-label={title}>
       <g transform={FLIP}>
-        <path fill={BRAND_LIME} d={MARK} />
+        <path fill="var(--brand-mark, #111111)" d={MARK} />
         <path fill="currentColor" d={WORDMARK} />
       </g>
     </svg>
