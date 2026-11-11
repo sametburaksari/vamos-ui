@@ -1,7 +1,8 @@
 import { Badge } from "@vamos-ui/react";
 import { DocPage, H2 } from "@/components/docs/prose";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Changelog" };
+export const metadata = pageMeta({ title: "Changelog", description: "Release notes for the Vamos UI component kit, blocks, CLI and MCP server.", path: "/docs/changelog/" });
 
 type Kind = "Added" | "Changed" | "Fixed" | "Removed";
 interface Release {

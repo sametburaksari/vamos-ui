@@ -11,8 +11,9 @@ import HeatmapCalendar from "@/docs/examples/heatmap/calendar";
 import HeatmapMatrixHours from "@/docs/examples/heatmap/matrix-hours";
 import ChartStates from "@/docs/examples/chart/states";
 import { ComponentPreview } from "@/components/docs/component-preview";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Charts" };
+export const metadata = pageMeta({ title: "Charts", description: "Area, bar, line, pie, radar, funnel, sparkline and KPI charts for dashboards — themeable, accessible and ready to copy.", path: "/charts/" });
 
 const charts = [
   { id: "area", slug: "area-chart", title: "Area — traffic", description: "Two series, gradient fill, a dashed comparison line and a “View as table” switch.", file: "charts/area.tsx", Component: AreaChartDemo },

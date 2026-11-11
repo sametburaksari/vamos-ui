@@ -1,6 +1,7 @@
 import { C, Callout, Code, DocPage, H2, P, Step, Steps } from "@/components/docs/prose";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Installation" };
+export const metadata = pageMeta({ title: "Installation", description: "Install Vamos UI in a Next.js or Vite project with Tailwind CSS v4: the npm package or the vamos-ui CLI, styles and the theme boot script.", path: "/docs/installation/" });
 
 const fontsCode = `// app/layout.tsx
 import { Onest, Instrument_Serif, JetBrains_Mono } from "next/font/google";

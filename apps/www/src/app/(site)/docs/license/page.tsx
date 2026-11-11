@@ -1,7 +1,8 @@
 import { Badge } from "@vamos-ui/react";
 import { A, C, DocPage, H2, P, Table, UL } from "@/components/docs/prose";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "License" };
+export const metadata = pageMeta({ title: "License", description: "Vamos UI is MIT licensed. What you can do with the kit, and how the Vamos UI name and logo may be used.", path: "/docs/license/" });
 
 const yes = <Badge tone="success">Yes</Badge>;
 const no = <Badge tone="danger">No</Badge>;
