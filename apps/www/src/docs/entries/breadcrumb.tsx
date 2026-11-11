@@ -18,7 +18,7 @@ const entry: DocEntry = {
 
 <Breadcrumb items={[
   { label: "Companies", href: "/companies" },
-  { label: "Acme", href: "/companies/acme" },
+  { label: "Northpoint", href: "/companies/northpoint" },
   { label: "Contacts" },
 ]} />`,
   demo: ex("demo", "Demo", "breadcrumb/demo.tsx", BreadcrumbDemo),

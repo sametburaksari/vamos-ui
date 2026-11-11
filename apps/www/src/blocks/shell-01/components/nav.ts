@@ -2,7 +2,7 @@ import {
   LayoutDashboard, FileText, Files, Image, MessageSquare, Inbox, Menu, Paintbrush,
   Globe, Handshake, Users, Briefcase, Settings, Blocks, ShieldCheck,
   KanbanSquare, Contact, Building2, CalendarClock, ReceiptText,
-  CalendarDays, Clock, Network, UserRound, FolderKanban, ListChecks, Timer, HeartHandshake, Receipt,
+  CalendarDays, Clock, Network, FolderTree, UserRound, FolderKanban, ListChecks, Timer, HeartHandshake, Receipt,
   type LucideIcon,
 } from "lucide-react";
 
@@ -43,6 +43,7 @@ export const apps: AppDef[] = [
       ] },
       { label: "Pages", href: "/site/pages", icon: Files, children: [{ label: "All pages", href: "/site/pages" }, { label: "Add new", href: "/site/pages/new" }] },
       { label: "Media", href: "/site/media", icon: Image, children: [{ label: "Library", href: "/site/media" }, { label: "Upload", href: "/site/media/upload" }] },
+      { label: "Catalogue", href: "/site/catalogue", icon: FolderTree, children: [{ label: "Categories", href: "/site/catalogue/categories" }] },
       { section: "Engagement" },
       { label: "Comments", href: "/site/comments", icon: MessageSquare, badge: "4" },
       { label: "Forms", href: "/site/forms", icon: Inbox, badge: "12" },

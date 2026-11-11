@@ -107,7 +107,8 @@ const customerRows: Array<[string, string]> = [
 export const customers: Customer[] = customerRows.map(([name, city], i) => ({
   id: `cu-${i + 1}`,
   name,
-  email: `${name.split(" ")[0]!.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i")}.${i + 1}@example.com`,
+  // first.last@example.com, the way people actually type their address at checkout.
+  email: `${name.toLowerCase().replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z ]/g, "").trim().split(/\s+/).join(".")}@example.com`,
   city,
   lifetimeOrders: (i * 7) % 11,
 }));

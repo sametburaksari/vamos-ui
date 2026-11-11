@@ -89,7 +89,7 @@ export function FirstRun({ onTemplate, onImport, onSample }: FirstRunProps) {
                   {x.phases.map((p, j) => (
                     <span key={j} className="min-w-0" style={{ flex: p.weeks }}>
                       <span className={cn("block h-1.5 rounded-full", on ? (j === 0 ? "bg-accent" : "bg-accent/45") : "bg-track")} />
-                      <span className="mt-1 block truncate text-[10.5px] text-fg-muted">{p.weeks >= 2 || x.phases.length <= 3 ? t(p.name) : "\u00a0"}</span>
+                      <span className="mt-1 block truncate text-[10.5px] text-fg-muted">{p.weeks / total >= 0.2 || x.phases.length <= 3 ? t(p.name) : "\u00a0"}</span>
                     </span>
                   ))}
                 </span>
@@ -103,7 +103,7 @@ export function FirstRun({ onTemplate, onImport, onSample }: FirstRunProps) {
         </div>
 
         <form
-          className="grid gap-4 border-t border-line px-5 py-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:items-end md:px-7"
+          className="grid gap-4 border-t border-line px-5 py-5 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] md:px-7"
           onSubmit={(e) => {
             e.preventDefault();
             const err = { name: name.trim() ? undefined : c("Give the project a name.", "Projeye bir ad verin."), client: client ? undefined : c("Choose a client.", "Bir müşteri seçin.") };
@@ -114,7 +114,7 @@ export function FirstRun({ onTemplate, onImport, onSample }: FirstRunProps) {
           noValidate
         >
           <Field label={c("Project name", "Proje adı")} required error={error.name}>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={c(`e.g. ${t(tp.name)} for Kuzey`, `ör. Kuzey için ${t(tp.name).toLowerCase()}`)} />
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={c(`e.g. Kuzey ${t(tp.name).toLowerCase()}`, `ör. Kuzey ${t(tp.name).toLowerCase()}`)} />
           </Field>
           <Field label={c("Client", "Müşteri")} required error={error.client}>
             <Select
@@ -124,7 +124,7 @@ export function FirstRun({ onTemplate, onImport, onSample }: FirstRunProps) {
               items={companies.filter((x) => x.lifecycle !== "churned").map((x) => ({ value: x.id, label: x.name }))}
             />
           </Field>
-          <Button type="submit" variant="primary" className="md:mb-px">
+          <Button type="submit" variant="primary" className="md:col-span-2 md:justify-self-end lg:col-span-1 lg:mb-px">
             {c(`Create from “${t(tp.name)}”`, `“${t(tp.name)}” ile oluştur`)}
             <ArrowRight aria-hidden className="rtl:rotate-180" />
           </Button>

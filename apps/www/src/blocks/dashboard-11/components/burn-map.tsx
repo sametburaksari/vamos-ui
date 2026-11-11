@@ -77,7 +77,7 @@ export function BurnMap({ projects, health, onOpen }: { projects: Project[]; hea
               </ul>
             </div>
             <span />
-            <div aria-hidden className="mt-1.5 flex justify-between text-[11px] text-fg-subtle tabular">
+            <div aria-hidden className="mt-3 flex justify-between text-[11px] text-fg-subtle tabular">
               <span>0%</span>
               <span>{c("Work done", "Tamamlanan iş")}</span>
               <span>100%</span>

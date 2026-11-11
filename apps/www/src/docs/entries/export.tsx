@@ -38,7 +38,7 @@ const entry: DocEntry = {
       { name: "columns", type: "ExportColumn[]", description: "{ id, label, personalData?, maskByDefault?, defaultSelected?, accessor?, type? }." },
       { name: "onExport", type: "(r: ExportRequest) => Promise<{ blob; filename? } | { jobId }>", description: "r = { scope, columns (ordered), masked, format, reason?, csv, filename }. A blob downloads at once; a jobId starts polling." },
       { name: "pollJob", type: "(jobId) => Promise<{ status; progress?; url?; error? }>", description: "Polled every 1.5 s until done or failed (retry)." },
-      { name: "listState", type: "ListState", description: "Describes the current view (\"2 filters · search “acme”\")." },
+      { name: "listState", type: "ListState", description: "Describes the current view (\"2 filters · search “northpoint”\")." },
       { name: "selectedCount / filteredCount / totalCount", type: "number", description: "Row counts per scope; selected is disabled at 0." },
       { name: "resource", type: "string", default: '"records"', description: "Plural noun for the title and file name." },
       { name: "formats", type: '("csv" | "xlsx" | "json")[]', default: '["csv", "xlsx"]', description: "Offered formats, first is the default." },

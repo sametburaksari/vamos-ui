@@ -4,7 +4,7 @@ import { Avatar, Combobox, Field } from "@vamos-ui/react";
 
 const contacts = [
   { value: "c1", label: "Maria Santos", email: "maria@northwind.com", company: "Northwind" },
-  { value: "c2", label: "James Whitfield", email: "j.whitfield@acme.io", company: "Acme" },
+  { value: "c2", label: "James Whitfield", email: "j.whitfield@northpoint.io", company: "Northpoint" },
   { value: "c3", label: "Aylin Korkmaz", email: "aylin@deniz.com.tr", company: "Deniz Lojistik" },
   { value: "c4", label: "Tom Becker", email: "tom@brightlabs.de", company: "Bright Labs" },
   { value: "c5", label: "Nadia Rahman", email: "nadia.rahman@helio.co", company: "Helio" },

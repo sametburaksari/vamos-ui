@@ -11,6 +11,9 @@ import { LiveFeed } from "./live-feed";
 import { advance, countryNames, europeBounds, initialState, totalNow, type LiveState } from "./live-data";
 
 const TICK = 4000;
+/** The shared Europe frame with some air around it: bubbles are sized in px, so on a phone the
+ *  London and Dubai bubbles otherwise sit on the map's top and bottom edges. */
+const mapBounds = { north: europeBounds.north + 4, south: europeBounds.south - 3, west: europeBounds.west - 4, east: europeBounds.east + 3 };
 const whole: Intl.NumberFormatOptions = { maximumFractionDigits: 0 };
 
 /** Realtime web analytics: who is on the site now, where from, on which pages, and what they just did. */
@@ -92,7 +95,8 @@ export function RealtimeDashboard() {
               {c("Updated", "Güncellendi")} <time dateTime={new Date(state.clock).toISOString()}>{f.time(new Date(state.clock), { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Istanbul" })}</time>
             </p>
           </div>
-          <div className="min-w-0">
+          {/* The last time tick ("10:24 AM") is centred on the plot's end; let it spill into the gutter instead of clipping. */}
+          <div className="min-w-0 [&_.recharts-surface]:overflow-visible">
             <p className="mb-1 text-xs text-fg-subtle">{c("Visitors per minute", "Dakika başına ziyaretçi")}</p>
             <AreaChart
               title={c("Visitors per minute, last 30 minutes", "Son 30 dakika, dakika başına ziyaretçi")}
@@ -138,7 +142,7 @@ export function RealtimeDashboard() {
             }
           />
           <CardBody className="pt-1">
-            <PinMap aria-label={c("Visitors right now by city", "Şehre göre anlık ziyaretçiler")} pins={pins} variant="bubble" bounds={europeBounds} aspectRatio={16 / 9} selectedId={city} onSelectedIdChange={setCity} />
+            <PinMap aria-label={c("Visitors right now by city", "Şehre göre anlık ziyaretçiler")} pins={pins} variant="bubble" bounds={mapBounds} aspectRatio={16 / 9} selectedId={city} onSelectedIdChange={setCity} />
             <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-fg-muted" aria-label={c("Visitors by country", "Ülkeye göre ziyaretçiler")}>
               {Object.entries(
                 state.cities.reduce<Record<string, number>>((acc, x) => ({ ...acc, [x.country]: (acc[x.country] ?? 0) + x.visitors }), {}),

@@ -32,8 +32,9 @@ export function PerformanceCard({ range, picked, onPicked }: { range: Range; pic
   const data = range === "90" ? Array.from({ length: Math.ceil(rows.length / 7) }, (_, i) => bucket(rows.slice(i * 7, i * 7 + 7))) : rows.map((r) => bucket([r]));
 
   const config: ChartConfig = Object.fromEntries([
-    ...only.map((ch) => [ch, { label: t(campaignChannelLabels[ch]), color: channelColor[ch], format: tryExact, axis: "start" }]),
-    ["cpa", { label: c("Blended CPA", "Karma edinme maliyeti"), color: "fg-muted", format: tryExact, axis: "end" }],
+    ...only.map((ch) => [ch, { label: t(campaignChannelLabels[ch]), color: channelColor[ch], format: tryExact, axis: "start", pattern: "solid" }]),
+    // Bars are told apart by colour and stack order; only the CPA line needs a stroke pattern.
+    ["cpa", { label: c("Blended CPA", "Karma edinme maliyeti"), color: "fg-muted", format: tryExact, axis: "end", pattern: "dotted" }],
   ]);
 
   return (

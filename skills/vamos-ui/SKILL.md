@@ -5,7 +5,7 @@ description: Build interfaces with Vamos UI, the token-based design layer and Re
 
 # Vamos UI
 
-Vamos UI is a framework-neutral design layer: CSS tokens, five theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 142 components) and 43 blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
+Vamos UI is a framework-neutral design layer: CSS tokens, five theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 150 components) and 146 blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
 
 Whole screens come from blocks. Components come from the kit. Colours, spacing, radius, type and z-index come from tokens. You choose content, structure and states.
 
@@ -15,7 +15,7 @@ Follow these steps for every screen you build or change.
 
 ### 1. Check the project setup
 - If `vamos.json` exists at the project root, read it: `uiDir`, `blocksDir`, `css`, `importAlias` tell you where the kit lives and how to import it. Import from `importAlias` (for example `@/components/vamos`), not from `@vamos-ui/react`.
-- If the project depends on `@vamos-ui/react` (package mode), import from `@vamos-ui/react` and its subpaths (`/charts`, `/data-table`, `/blocks`, `/media`, `/editor`, `/business`, `/sortable`, `/scheduler`, `/fonts`, `/format`).
+- If the project depends on `@vamos-ui/react` (package mode), import from `@vamos-ui/react` and its subpaths (`/charts`, `/data-table`, `/blocks`, `/media`, `/editor`, `/business`, `/sortable`, `/scheduler`, `/fonts`, `/format`, `/motion`).
 - If neither, run `npx vamos-ui init` (add `--agent` to also write these rules into AGENTS.md / CLAUDE.md). It detects Next.js, Vite and Tailwind v4, writes `vamos.json`, copies the styles and base libs, and adds `@import ".../styles.css";` to the CSS entry after `@import "tailwindcss";`.
 - If `vamos.brand.json` exists, the project has a brand profile: read it (MCP `get_brand`) and follow **vamos-apply-design-system** on top of this workflow. Its accent is `data-accent="brand"`, its voice governs all copy and its logos come from `assets`.
 - Make sure the root element carries the axes, e.g. `<html lang="en" class="dark" data-material="solid" data-accent="lime" data-density="comfortable" data-font="editorial">`. `npx vamos-ui theme` sets them in vamos.json and prints the attributes.
@@ -61,7 +61,8 @@ The full rules are in [references/rules.md](references/rules.md) (the same text 
 5. **Kit over hand-rolled markup.** Dialog, Sheet, Popover, DropdownMenu, Tooltip, Command, Field + controls, DataTable, charts. Never a hand-made `fixed inset-0` modal or absolutely positioned menu.
 6. **Not AI-looking.** No purple gradients, glow blobs, gradient text, emoji icons, sparkles, card walls, centred-everything app screens or Inter. Lists, tables, dividers and whitespace carry structure.
 7. **Realistic content and states.** Real names and numbers; empty, loading, error and overflow states; `Intl` formatting; `YYYY-MM-DD` dates, decimal-string money.
-8. **Accessibility.** Labels on icon-only buttons, `alt` on images, buttons and links for clicks, no positive `tabIndex`, visible focus (`focus-ring`), Field-wired labels and errors, colour never the only signal, reduced motion, logical properties for RTL.
+8. **Motion from the kit, sparingly.** `@vamos-ui/react/motion` and the `ui-*` classes only; animate what arrives or changes, one expressive moment per screen. Admin: fade or a small rise, no parallax or tilt. Sites: one `SiteShell motion` level. Opacity and transform only; final state under reduced motion.
+9. **Accessibility.** Labels on icon-only buttons, `alt` on images, buttons and links for clicks, no positive `tabIndex`, visible focus (`focus-ring`), Field-wired labels and errors, colour never the only signal, reduced motion, logical properties for RTL.
 
 ## Theming and brand accents
 

@@ -173,7 +173,7 @@ describe("Input", () => {
   it("renders addons, read-only and invalid states without violations", async () => {
     const { container } = render(
       <>
-        <Input aria-label="Subdomain" addonStart="https://" addonEnd=".vamos.ist" defaultValue="acme" />
+        <Input aria-label="Subdomain" addonStart="https://" addonEnd=".vamos.ist" defaultValue="northpoint" />
         <Input aria-label="Customer ID" readOnly defaultValue="CUS-20431" clearable />
         <Input aria-label="Phone" invalid />
       </>,

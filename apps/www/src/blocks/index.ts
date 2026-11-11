@@ -52,6 +52,26 @@ import metaDetail02 from "./detail-02/meta";
 import pageDetail02 from "./detail-02/page";
 import metaDetail03 from "./detail-03/meta";
 import pageDetail03 from "./detail-03/page";
+import metaDetail04 from "./detail-04/meta";
+import pageDetail04 from "./detail-04/page";
+import metaDetail05 from "./detail-05/meta";
+import pageDetail05 from "./detail-05/page";
+import metaDetail06 from "./detail-06/meta";
+import pageDetail06 from "./detail-06/page";
+import metaDetail07 from "./detail-07/meta";
+import pageDetail07 from "./detail-07/page";
+import metaDetail08 from "./detail-08/meta";
+import pageDetail08 from "./detail-08/page";
+import metaDetail09 from "./detail-09/meta";
+import pageDetail09 from "./detail-09/page";
+import metaDetail10 from "./detail-10/meta";
+import pageDetail10 from "./detail-10/page";
+import metaDetail11 from "./detail-11/meta";
+import pageDetail11 from "./detail-11/page";
+import metaDetail12 from "./detail-12/meta";
+import pageDetail12 from "./detail-12/page";
+import metaDetail13 from "./detail-13/meta";
+import pageDetail13 from "./detail-13/page";
 import metaEditor01 from "./editor-01/meta";
 import pageEditor01 from "./editor-01/page";
 import metaEmpty01 from "./empty-01/meta";
@@ -68,18 +88,34 @@ import metaForgotPassword01 from "./forgot-password-01/meta";
 import pageForgotPassword01 from "./forgot-password-01/page";
 import metaForm01 from "./form-01/meta";
 import pageForm01 from "./form-01/page";
+import metaForm02 from "./form-02/meta";
+import pageForm02 from "./form-02/page";
 import metaList01 from "./list-01/meta";
 import pageList01 from "./list-01/page";
 import metaList02 from "./list-02/meta";
 import pageList02 from "./list-02/page";
 import metaList03 from "./list-03/meta";
 import pageList03 from "./list-03/page";
+import metaList04 from "./list-04/meta";
+import pageList04 from "./list-04/page";
+import metaList05 from "./list-05/meta";
+import pageList05 from "./list-05/page";
+import metaList06 from "./list-06/meta";
+import pageList06 from "./list-06/page";
+import metaList07 from "./list-07/meta";
+import pageList07 from "./list-07/page";
 import metaList08 from "./list-08/meta";
 import pageList08 from "./list-08/page";
 import metaList09 from "./list-09/meta";
 import pageList09 from "./list-09/page";
 import metaList10 from "./list-10/meta";
 import pageList10 from "./list-10/page";
+import metaList11 from "./list-11/meta";
+import pageList11 from "./list-11/page";
+import metaList12 from "./list-12/meta";
+import pageList12 from "./list-12/page";
+import metaList13 from "./list-13/meta";
+import pageList13 from "./list-13/page";
 import metaLogin01 from "./login-01/meta";
 import pageLogin01 from "./login-01/page";
 import metaLogin02 from "./login-02/meta";
@@ -96,6 +132,12 @@ import metaOnboarding01 from "./onboarding-01/meta";
 import pageOnboarding01 from "./onboarding-01/page";
 import metaOnboarding02 from "./onboarding-02/meta";
 import pageOnboarding02 from "./onboarding-02/page";
+import metaOnboarding03 from "./onboarding-03/meta";
+import pageOnboarding03 from "./onboarding-03/page";
+import metaOnboarding04 from "./onboarding-04/meta";
+import pageOnboarding04 from "./onboarding-04/page";
+import metaOnboarding05 from "./onboarding-05/meta";
+import pageOnboarding05 from "./onboarding-05/page";
 import metaOtp01 from "./otp-01/meta";
 import pageOtp01 from "./otp-01/page";
 import metaPageContact01 from "./page-contact-01/meta";
@@ -110,6 +152,16 @@ import metaSettings01 from "./settings-01/meta";
 import pageSettings01 from "./settings-01/page";
 import metaSettings02 from "./settings-02/meta";
 import pageSettings02 from "./settings-02/page";
+import metaSettings03 from "./settings-03/meta";
+import pageSettings03 from "./settings-03/page";
+import metaSettings04 from "./settings-04/meta";
+import pageSettings04 from "./settings-04/page";
+import metaSettings05 from "./settings-05/meta";
+import pageSettings05 from "./settings-05/page";
+import metaSettings06 from "./settings-06/meta";
+import pageSettings06 from "./settings-06/page";
+import metaSettings07 from "./settings-07/meta";
+import pageSettings07 from "./settings-07/page";
 import metaShell01 from "./shell-01/meta";
 import pageShell01 from "./shell-01/page";
 import metaShell02 from "./shell-02/meta";
@@ -280,6 +332,16 @@ export const blocks: BlockEntry[] = [
   { ...metaDetail01, name: "detail-01", Component: pageDetail01 },
   { ...metaDetail02, name: "detail-02", Component: pageDetail02 },
   { ...metaDetail03, name: "detail-03", Component: pageDetail03 },
+  { ...metaDetail04, name: "detail-04", Component: pageDetail04 },
+  { ...metaDetail05, name: "detail-05", Component: pageDetail05 },
+  { ...metaDetail06, name: "detail-06", Component: pageDetail06 },
+  { ...metaDetail07, name: "detail-07", Component: pageDetail07 },
+  { ...metaDetail08, name: "detail-08", Component: pageDetail08 },
+  { ...metaDetail09, name: "detail-09", Component: pageDetail09 },
+  { ...metaDetail10, name: "detail-10", Component: pageDetail10 },
+  { ...metaDetail11, name: "detail-11", Component: pageDetail11 },
+  { ...metaDetail12, name: "detail-12", Component: pageDetail12 },
+  { ...metaDetail13, name: "detail-13", Component: pageDetail13 },
   { ...metaEditor01, name: "editor-01", Component: pageEditor01 },
   { ...metaEmpty01, name: "empty-01", Component: pageEmpty01 },
   { ...metaEmpty02, name: "empty-02", Component: pageEmpty02 },
@@ -288,12 +350,20 @@ export const blocks: BlockEntry[] = [
   { ...metaError50001, name: "error-500-01", Component: pageError50001 },
   { ...metaForgotPassword01, name: "forgot-password-01", Component: pageForgotPassword01 },
   { ...metaForm01, name: "form-01", Component: pageForm01 },
+  { ...metaForm02, name: "form-02", Component: pageForm02 },
   { ...metaList01, name: "list-01", Component: pageList01 },
   { ...metaList02, name: "list-02", Component: pageList02 },
   { ...metaList03, name: "list-03", Component: pageList03 },
+  { ...metaList04, name: "list-04", Component: pageList04 },
+  { ...metaList05, name: "list-05", Component: pageList05 },
+  { ...metaList06, name: "list-06", Component: pageList06 },
+  { ...metaList07, name: "list-07", Component: pageList07 },
   { ...metaList08, name: "list-08", Component: pageList08 },
   { ...metaList09, name: "list-09", Component: pageList09 },
   { ...metaList10, name: "list-10", Component: pageList10 },
+  { ...metaList11, name: "list-11", Component: pageList11 },
+  { ...metaList12, name: "list-12", Component: pageList12 },
+  { ...metaList13, name: "list-13", Component: pageList13 },
   { ...metaLogin01, name: "login-01", Component: pageLogin01 },
   { ...metaLogin02, name: "login-02", Component: pageLogin02 },
   { ...metaLogin03, name: "login-03", Component: pageLogin03 },
@@ -302,6 +372,9 @@ export const blocks: BlockEntry[] = [
   { ...metaNoAccess01, name: "no-access-01", Component: pageNoAccess01 },
   { ...metaOnboarding01, name: "onboarding-01", Component: pageOnboarding01 },
   { ...metaOnboarding02, name: "onboarding-02", Component: pageOnboarding02 },
+  { ...metaOnboarding03, name: "onboarding-03", Component: pageOnboarding03 },
+  { ...metaOnboarding04, name: "onboarding-04", Component: pageOnboarding04 },
+  { ...metaOnboarding05, name: "onboarding-05", Component: pageOnboarding05 },
   { ...metaOtp01, name: "otp-01", Component: pageOtp01 },
   { ...metaPageContact01, name: "page-contact-01", Component: pagePageContact01 },
   { ...metaPagePricing01, name: "page-pricing-01", Component: pagePagePricing01 },
@@ -309,6 +382,11 @@ export const blocks: BlockEntry[] = [
   { ...metaSelectWorkspace01, name: "select-workspace-01", Component: pageSelectWorkspace01 },
   { ...metaSettings01, name: "settings-01", Component: pageSettings01 },
   { ...metaSettings02, name: "settings-02", Component: pageSettings02 },
+  { ...metaSettings03, name: "settings-03", Component: pageSettings03 },
+  { ...metaSettings04, name: "settings-04", Component: pageSettings04 },
+  { ...metaSettings05, name: "settings-05", Component: pageSettings05 },
+  { ...metaSettings06, name: "settings-06", Component: pageSettings06 },
+  { ...metaSettings07, name: "settings-07", Component: pageSettings07 },
   { ...metaShell01, name: "shell-01", Component: pageShell01 },
   { ...metaShell02, name: "shell-02", Component: pageShell02 },
   { ...metaShell03, name: "shell-03", Component: pageShell03 },

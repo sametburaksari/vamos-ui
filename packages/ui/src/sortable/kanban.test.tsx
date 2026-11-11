@@ -20,8 +20,8 @@ const STAGES: Stage[] = [
 
 const DEALS: Deal[] = [
   { id: "d1", title: "Northwind renewal", stage: "lead", value: "12000.00", owner: "ana" },
-  { id: "d2", title: "Acme onboarding", stage: "lead", value: "8500.00", owner: "ben" },
-  { id: "d3", title: "Globex expansion", stage: "proposal", value: "42000.00", owner: "ana" },
+  { id: "d2", title: "Northpoint onboarding", stage: "lead", value: "8500.00", owner: "ben" },
+  { id: "d3", title: "Corvane expansion", stage: "proposal", value: "42000.00", owner: "ana" },
 ];
 
 const opts = { getId: (d: Deal) => d.id, getStageKey: (d: Deal) => d.stage, update: (d: Deal, stage: string) => ({ ...d, stage }) };
@@ -82,12 +82,12 @@ describe("Kanban", () => {
   it("moves a card with the card menu, announces it and keeps focus on the card", async () => {
     const onMove = vi.fn();
     const { user } = renderWithProviders(<Board onMove={onMove} />);
-    await user.click(screen.getByRole("button", { name: "Actions for Acme onboarding" }));
+    await user.click(screen.getByRole("button", { name: "Actions for Northpoint onboarding" }));
     await user.click(await screen.findByRole("menuitem", { name: "Won" }));
     expect(onMove).toHaveBeenCalledWith({ id: "d2", from: "lead", to: "won", index: 0, fromIndex: 1 });
-    expect(cardsIn(/^Won/)).toEqual(["Acme onboarding"]);
-    await waitFor(() => expect(document.querySelector('[data-slot="kanban-status"]')).toHaveTextContent("Acme onboarding moved to Won, position 1 of 1."));
-    await waitFor(() => expect(document.activeElement).toHaveAttribute("aria-label", "Acme onboarding"));
+    expect(cardsIn(/^Won/)).toEqual(["Northpoint onboarding"]);
+    await waitFor(() => expect(document.querySelector('[data-slot="kanban-status"]')).toHaveTextContent("Northpoint onboarding moved to Won, position 1 of 1."));
+    await waitFor(() => expect(document.activeElement).toHaveAttribute("aria-label", "Northpoint onboarding"));
   });
 
   it("moves with Alt + arrow shortcuts", async () => {
@@ -95,32 +95,32 @@ describe("Kanban", () => {
     const card = screen.getByRole("article", { name: "Northwind renewal" });
     act(() => card.focus());
     await user.keyboard("{Alt>}{ArrowDown}{/Alt}");
-    expect(cardsIn(/^Lead/)).toEqual(["Acme onboarding", "Northwind renewal"]);
+    expect(cardsIn(/^Lead/)).toEqual(["Northpoint onboarding", "Northwind renewal"]);
     await user.keyboard("{Alt>}{ArrowRight}{/Alt}");
-    expect(cardsIn(/^Proposal/)).toEqual(["Globex expansion", "Northwind renewal"]);
+    expect(cardsIn(/^Proposal/)).toEqual(["Corvane expansion", "Northwind renewal"]);
     expect(within(column(/^Proposal/)).getByText("Over the work-in-progress limit of 1")).toBeInTheDocument();
   });
 
   it("mirrors Alt + arrows in RTL", async () => {
     const { user } = renderWithProviders(<Board />, { dir: "rtl", locale: "ar-EG" });
-    act(() => screen.getByRole("article", { name: "Acme onboarding" }).focus());
+    act(() => screen.getByRole("article", { name: "Northpoint onboarding" }).focus());
     await user.keyboard("{Alt>}{ArrowLeft}{/Alt}");
-    expect(cardsIn(/^Proposal/)).toContain("Acme onboarding");
+    expect(cardsIn(/^Proposal/)).toContain("Northpoint onboarding");
   });
 
   it("disables blocked moves with the reason", async () => {
     const canMove = (e: KanbanMoveEvent) => (e.to === "won" ? "Add a signed contract before marking as Won" : true);
     const onMove = vi.fn();
     const { user } = renderWithProviders(<Board canMove={canMove} onMove={onMove} />);
-    await user.click(screen.getByRole("button", { name: "Actions for Globex expansion" }));
+    await user.click(screen.getByRole("button", { name: "Actions for Corvane expansion" }));
     const won = await screen.findByRole("menuitem", { name: /Won/ });
     expect(won).toHaveAttribute("data-disabled");
     expect(won).toHaveTextContent("Add a signed contract before marking as Won");
     await user.keyboard("{Escape}");
-    act(() => screen.getByRole("article", { name: "Globex expansion" }).focus());
+    act(() => screen.getByRole("article", { name: "Corvane expansion" }).focus());
     await user.keyboard("{Alt>}{ArrowRight}{/Alt}");
     expect(onMove).not.toHaveBeenCalled();
-    await waitFor(() => expect(document.querySelector('[data-slot="kanban-status"]')).toHaveTextContent("Can't move Globex expansion to Won"));
+    await waitFor(() => expect(document.querySelector('[data-slot="kanban-status"]')).toHaveTextContent("Can't move Corvane expansion to Won"));
   });
 
   it("keeps an async move optimistic and rolls it back on failure", async () => {
@@ -140,8 +140,8 @@ describe("Kanban", () => {
     const { user } = renderWithProviders(<Board onQuickAdd={onQuickAdd} />);
     const lead = column(/^Lead/);
     await user.click(within(lead).getAllByRole("button", { name: "Add card to Lead" }).at(-1)!);
-    await user.type(within(lead).getByRole("textbox", { name: "Card title" }), "Initech pilot{Enter}");
-    expect(onQuickAdd).toHaveBeenCalledWith("lead", "Initech pilot");
+    await user.type(within(lead).getByRole("textbox", { name: "Card title" }), "Halden pilot{Enter}");
+    expect(onQuickAdd).toHaveBeenCalledWith("lead", "Halden pilot");
     await user.keyboard("{Escape}");
     expect(within(lead).queryByRole("textbox")).toBeNull();
   });
@@ -162,7 +162,7 @@ describe("Kanban", () => {
     const { user } = renderWithProviders(<Board lanes onMove={onMove} />);
     expect(screen.getByRole("group", { name: "Lead, Ana Ruiz, 1 item" })).toBeInTheDocument();
     expect(screen.getByRole("group", { name: "Proposal, Ben Okafor, no items" })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Actions for Acme onboarding" }));
+    await user.click(screen.getByRole("button", { name: "Actions for Northpoint onboarding" }));
     await user.click(await screen.findByRole("menuitem", { name: "Proposal" }));
     expect(onMove).toHaveBeenCalledWith(expect.objectContaining({ id: "d2", to: "proposal", lane: "ben", fromLane: "ben" }));
     await expectNoA11yViolations();

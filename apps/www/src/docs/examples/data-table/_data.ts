@@ -67,7 +67,7 @@ const day = (base: string, offset: number) => {
 
 const FIRST = ["Jane", "Kemal", "Priya", "Lucas", "Amara", "Elif", "Noah", "Sofia", "Mateo", "Hana", "Omar", "Chloé", "Daniel", "Zeynep", "Arjun", "Maya", "Leo", "Ines", "Tomás", "Aylin", "Grace", "Ravi", "Freya", "Hugo", "Mei", "Yusuf", "Clara", "Ethan", "Nadia", "Jonas"];
 const LAST = ["Cooper", "Aydın", "Raman", "Moreau", "Okafor", "Şahin", "Becker", "Rossi", "García", "Kimura", "Haddad", "Laurent", "Novak", "Çelik", "Mehta", "Lindqvist", "Fischer", "Costa", "Silva", "Yıldız", "Whitfield", "Iyer", "Andersen", "Dubois", "Chen", "Demir", "Weber", "Brooks", "Petrov", "Berg"];
-const COMPANIES = ["Northwind Traders", "Globex", "Initech", "Umbrella Health", "Soylent Foods", "Hooli", "Vandelay Imports", "Stark Logistics", "Wayne Analytics", "Acme Robotics", "Pied Piper", "Massive Dynamic", "Tyrell Bio", "Cyberdyne Systems", "Gringotts Capital", "Oscorp Labs", "Wonka Confectionery", "İstanbul Kahve Co.", "Anadolu Lojistik", "Ege Tekstil"];
+const COMPANIES = ["Northwind Traders", "Corvane Health", "Halden Works", "Brightmoor Foods", "Lumora Labs", "Tessel Imports", "Ridgeway Logistics", "Quarry Analytics", "Orchard Systems", "Kestrel Robotics", "Fernhill Media", "Basalt Dynamics", "Selvane Bio", "Coldharbor Systems", "Marrow Capital", "Ostrava Labs", "Pemberly Confectionery", "İstanbul Kahve Co.", "Anadolu Lojistik", "Ege Tekstil"];
 const COUNTRIES = ["United States", "United Kingdom", "Germany", "Türkiye", "France", "Netherlands", "Spain", "Canada", "Japan", "India"];
 const TAGS = ["Enterprise", "Inbound", "Partner", "Renewal", "Event", "Referral", "Trial"];
 const LOCATIONS = ["Istanbul", "London", "Berlin", "Remote — EU", "New York", "Lisbon", "Remote — US"];
