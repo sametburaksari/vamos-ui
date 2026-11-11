@@ -178,7 +178,13 @@ function PriceBlock({ plan, ctx, size = "m" }: { plan: PricingPlan; ctx: PlanCtx
       </p>
     ) : null;
   }
-  const one = (money: MoneyValue, suffix: string, period?: "monthly" | "yearly") => (
+  const one = (money: MoneyValue, suffix: string, period?: "monthly" | "yearly") =>
+    Number(money.amount) === 0 ? (
+      // A zero price reads as "Free", without a period suffix.
+      <p key={period ?? "once"} data-period={billing === "both" ? period : undefined} data-price="free" className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <span className={numberClass}>{t("priceFree")}</span>
+      </p>
+    ) : (
     <p key={period ?? "once"} data-period={billing === "both" ? period : undefined} className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
       {plan.price!.from ? <span className="text-small text-fg-muted">{t("priceFrom")}</span> : null}
       <span className={numberClass} aria-hidden>
@@ -192,7 +198,7 @@ function PriceBlock({ plan, ctx, size = "m" }: { plan: PricingPlan; ctx: PlanCtx
         {suffix}
       </span>
     </p>
-  );
+    );
   const p = plan.price;
   if (billing === "once" || (!p.monthly && !p.yearly)) return p.once ? one(p.once, t("oneOff")) : null;
   if (billing === "yearly") return p.yearly ? one(p.yearly, t("perYear"), "yearly") : p.monthly ? one(p.monthly, t("perMonth"), "monthly") : null;

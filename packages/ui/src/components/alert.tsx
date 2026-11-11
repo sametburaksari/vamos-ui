@@ -126,9 +126,9 @@ function AlertDismiss({ onDismiss, label }: { onDismiss: () => void; label?: str
   );
 }
 
-/** Title line, in the tone colour. */
+/** Title line, in the tone colour (mixed toward --fg so it keeps 4.5:1 on tinted / glass scenes). */
 export function AlertTitle({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p data-slot="alert-title" className={cn("leading-[1.4] font-semibold text-(--alert-tone) [[data-tone=neutral]_&]:text-fg", className)} {...props} />;
+  return <p data-slot="alert-title" className={cn("leading-[1.4] font-semibold text-[color-mix(in_srgb,var(--alert-tone)_62%,var(--fg))] [[data-tone=neutral]_&]:text-fg", className)} {...props} />;
 }
 
 /** Body text — stays in `--fg` for contrast. */

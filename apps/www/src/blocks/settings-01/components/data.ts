@@ -30,7 +30,7 @@ export const savedWorkspace: WorkspaceForm = {
   supportEmail: "hello@northwind.studio",
   phone: "+90 216 000 00 00",
   website: "https://northwind.studio",
-  address: "Kule Ofis, Atlas Çarşı, Rasimpaşa Mah.\nMaltepe, Istanbul 34844",
+  address: "Rıhtım Caddesi 14, Rasimpaşa Mah.\nKadıköy, Istanbul 34716",
   landingApp: "crm",
   fiscalStart: "01",
   weekStart: "monday",

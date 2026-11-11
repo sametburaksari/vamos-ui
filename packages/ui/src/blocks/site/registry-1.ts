@@ -189,7 +189,7 @@ export const navbarBlock = defineBlock({
         ],
         actions: [{ link: { href: "/contact", label: "Start a project" }, style: "primary" }],
         panelMeta: [
-          { label: "Studio", value: "Kule Ofis, Rasimpaşa, Istanbul" },
+          { label: "Studio", value: "Rıhtım Caddesi 14, Rasimpaşa, Istanbul" },
           { label: "Hours", value: "Mon–Fri, 9:30–18:30" },
         ],
       };
@@ -430,7 +430,7 @@ export const logoStripBlock = defineBlock({
   preview: {
     props: {
       caption: "Running the sites of 120+ businesses since 2014",
-      logos: ["Kıyı", "Hamam Moda", "Ledgerly", "Defne Klinik"].map((name) => ({
+      logos: ["Kıyı", "Hamam Moda", "Ledgerly", "Defne Clinic"].map((name) => ({
         name,
         image: { src: `https://ui.vamos.ist/logos/${name.toLowerCase().replace(/[^a-z]+/g, "-")}.svg`, width: 160, height: 40, alt: name },
       })),

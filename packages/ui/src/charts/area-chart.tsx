@@ -10,6 +10,8 @@ export interface ChartReference {
   y: number;
   label?: string;
   color?: ChartColor;
+  /** Which side of the line the label sits on. Default `"below"`; use `"above"` to keep it clear of data under the line (control limits). */
+  labelPosition?: "above" | "below";
 }
 
 export interface AreaChartProps<T extends object> extends Omit<ChartProps<T>, "children"> {
@@ -74,7 +76,7 @@ function AreaPlot({ series: keys, stack, curve, fill, reference, compare, hideYA
           tickFormatter={percent ? (v: number) => chart.f.percent(v, { maximumFractionDigits: 0 }) : undefined}
         />
         <ChartTooltip showTotal={stacked && !percent} showShare={percent} indicator={fill === "none" ? "line" : undefined} />
-        {reference?.map((r, i) => <ChartReferenceLine key={i} y={r.y} label={r.label} color={r.color} />)}
+        {reference?.map((r, i) => <ChartReferenceLine key={i} y={r.y} label={r.label} color={r.color} labelPosition={r.labelPosition} />)}
         {all.map((s) => {
           const isCompare = s.key === compare?.key;
           const fillValue = isCompare || fill === "none" ? "transparent" : fill === "solid" ? `color-mix(in oklch, ${seriesColor(s.key)} 22%, transparent)` : `url(#${chart.idPrefix}-${s.index})`;

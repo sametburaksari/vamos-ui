@@ -21,7 +21,7 @@ export default function NavbarMinimalOverlay() {
         actions={[{ link: { href: "/reservations", label: "Book a table" }, style: "primary" }]}
         phone="+902160000000"
         panelMeta={[
-          { label: "Address", value: "Kule Ofis, Rasimpaşa, Maltepe" },
+          { label: "Address", value: "Rıhtım Caddesi 14, Rasimpaşa, Maltepe" },
           { label: "Hours", value: "Tue–Sun, 18:00–00:30" },
         ]}
       />

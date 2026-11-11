@@ -14,7 +14,7 @@ const fields: ContactFieldConfig[] = [
 
 describe("ContactForm", () => {
   it("split: contact details and an accessible form with autocomplete tokens", async () => {
-    const { container } = render(<main><ContactForm title="Tell us about the *project*" fields={fields} info={{ phone: "+902160000000", email: "hello@vamos.ist", address: { line: "Atlas Çarşı, Kule Ofis", district: "Rasimpaşa", city: "Maltepe", country: "TR" } }} privacyLink={{ href: "/privacy" }} privacyCheckbox /></main>);
+    const { container } = render(<main><ContactForm title="Tell us about the *project*" fields={fields} info={{ phone: "+902160000000", email: "hello@vamos.ist", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", country: "TR" } }} privacyLink={{ href: "/privacy" }} privacyCheckbox /></main>);
     expect(screen.getByRole("link", { name: "+90 216 000 00 00" })).toHaveAttribute("href", "tel:+902160000000");
     expect(screen.getByRole("textbox", { name: /Full name/ })).toHaveAttribute("autocomplete", "name");
     expect(screen.getByRole("textbox", { name: /Email/ })).toHaveAttribute("type", "email");
