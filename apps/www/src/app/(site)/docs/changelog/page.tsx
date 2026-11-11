@@ -17,7 +17,6 @@ const releases: Release[] = [
   {
     version: "0.3.0",
     date: "2026-11-11",
-    unreleased: true,
     changes: {
       Added: [
         "53 example websites built only from kit components and site blocks, each with a home page and one to five inner pages, English and Turkish, and its own accent, font, material and density. Open any of them at /view/<name> or add it with `npx vamos-ui add <name>`.",
