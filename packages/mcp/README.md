@@ -72,6 +72,49 @@ args = ["-y", "@vamos-ui/mcp"]
 
 Or: `codex mcp add vamos-ui -- npx -y @vamos-ui/mcp`.
 
+### Windsurf
+
+`~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{ "mcpServers": { "vamos-ui": { "command": "npx", "args": ["-y", "@vamos-ui/mcp"] } } }
+```
+
+### Gemini CLI
+
+`~/.gemini/settings.json` (or `.gemini/settings.json` in the project):
+
+```json
+{ "mcpServers": { "vamos-ui": { "command": "npx", "args": ["-y", "@vamos-ui/mcp"] } } }
+```
+
+### Zed
+
+`settings.json`:
+
+```json
+{ "context_servers": { "vamos-ui": { "command": { "path": "npx", "args": ["-y", "@vamos-ui/mcp"] } } } }
+```
+
+### JetBrains AI Assistant, Cline, Continue, other clients
+
+Any client that starts a local MCP server: command `npx`, arguments `-y @vamos-ui/mcp`.
+
+### Hosted server (ChatGPT, claude.ai, Claude mobile, any remote-MCP client)
+
+No install: add the remote MCP server **`https://mcp.vamos.ist/mcp`** (Streamable HTTP, no sign-in).
+
+- **claude.ai / Claude Desktop / mobile:** Settings → Connectors → Add custom connector → paste the URL.
+- **ChatGPT:** Settings → Apps & Connectors → Advanced → Developer mode → Create → paste the URL.
+- **Claude Code:** `claude mcp add --transport http vamos-ui https://mcp.vamos.ist/mcp`
+- **Cursor / VS Code:** `{ "mcpServers": { "vamos-ui": { "url": "https://mcp.vamos.ist/mcp" } } }` (VS Code: `"servers"` with `"type": "http"`).
+
+The hosted server cannot see your files, so the project tools (`get_brand`, `apply_design_system`, `update_design`, `verify_design` with `projectDir`) and URL import are local-only. Everything else — rules, theming, search, items, blocks, screen plans, code checks, accents — works the same. Run your own with `npx -y @vamos-ui/mcp --http --port 3333`.
+
+### Which models?
+
+MCP is model-independent: the tools work with whatever model your client runs — Claude, GPT, Gemini, Llama, Mistral or a local model — as long as the client supports MCP tools.
+
 ### Another registry
 
 Point the server at a mirror or a local build with `--registry` or `VAMOS_REGISTRY` (URL or directory):

@@ -19,7 +19,7 @@ import {
 } from "./tools.js";
 
 export const SERVER_NAME = "vamos-ui";
-export const SERVER_VERSION = "0.2.0";
+export const SERVER_VERSION = "0.2.1";
 
 const INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
@@ -48,12 +48,22 @@ async function run(fn: () => Promise<string | CallToolResult> | string): Promise
 
 export interface CreateServerOptions extends RegistryOptions {
   registry?: Registry;
+  /**
+   * Hosted (HTTP) mode: the server runs on someone else's machine, so tools that read or write
+   * a local project (projectDir) or fetch arbitrary URLs are left out or refuse those inputs.
+   */
+  remote?: boolean;
 }
+
+const REMOTE_NOTE =
+  "This is the hosted Vamos UI MCP server, which cannot see your files. For project tools (get_brand, apply_design_system, update_design, verify_design with projectDir) and URL import, run it locally: npx -y @vamos-ui/mcp";
 
 export function createServer(options: CreateServerOptions = {}): { server: McpServer; registry: Registry } {
   const registry = options.registry ?? new Registry(options);
   const server = new McpServer({ name: SERVER_NAME, version: SERVER_VERSION }, { instructions: INSTRUCTIONS });
   const readOnly = { readOnlyHint: true, openWorldHint: false } as const;
+  const remote = options.remote === true;
+  const local = <T,>(fn: () => T): T | undefined => (remote ? undefined : fn());
 
   // --- tools ------------------------------------------------------------------
 
@@ -208,6 +218,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     .min(1)
     .describe("Absolute path to the project root (the folder with vamos.json / vamos.brand.json).");
 
+  local(() =>
   server.registerTool(
     "get_brand",
     {
@@ -218,6 +229,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       annotations: readOnly,
     },
     (args) => run(async () => answer(await getBrand(args))),
+  )
   );
 
   server.registerTool(
@@ -235,7 +247,11 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       },
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
-    (args) => run(async () => answer(await importDesignSystem(args))),
+    (args) =>
+      run(async () => {
+        if (remote && (args.url || args.base_url)) return { content: [{ type: "text", text: `${REMOTE_NOTE}\nHere, pass the page source as html instead of url.` }], isError: true };
+        return answer(await importDesignSystem(args));
+      }),
   );
 
   server.registerTool(
@@ -253,6 +269,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     (args) => run(async () => answer(await proposeAccent(args))),
   );
 
+  local(() =>
   server.registerTool(
     "apply_design_system",
     {
@@ -270,6 +287,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     },
     (args) => run(async () => answer(await applyDesignSystem(args))),
+  )
   );
 
   server.registerTool(
@@ -286,9 +304,14 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       },
       annotations: { readOnlyHint: true, openWorldHint: false, idempotentHint: true },
     },
-    (args) => run(async () => answer(await verifyDesign(args))),
+    (args) =>
+      run(async () => {
+        if (remote && args.projectDir) return { content: [{ type: "text", text: `${REMOTE_NOTE}\nHere, pass one file as code (+ filename).` }], isError: true };
+        return answer(await verifyDesign(args));
+      }),
   );
 
+  local(() =>
   server.registerTool(
     "update_design",
     {
@@ -302,6 +325,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       annotations: readOnly,
     },
     (args) => run(async () => answer(await updateDesign(args))),
+  )
   );
 
   // --- resources --------------------------------------------------------------
