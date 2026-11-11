@@ -1,8 +1,9 @@
 <p align="center">
-  <img src="apps/www/src/app/icon.svg" width="56" height="56" alt="" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="apps/www/public/brand/vamos-ui-logo-dark.svg" />
+    <img src="apps/www/public/brand/vamos-ui-logo-light.svg" height="56" alt="vamos UI" />
+  </picture>
 </p>
-
-<h1 align="center">vamos UI</h1>
 
 <p align="center">
   One component kit for every admin panel — CMS, CRM, HR, partner portals — and the websites around them.<br />
