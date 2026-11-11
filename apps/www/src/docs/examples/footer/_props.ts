@@ -8,7 +8,7 @@ export const studioFooter: FooterProps = {
     { title: "Products", links: [{ href: "/tapcard", label: "Tapcard" }, { href: "/tablekit", label: "Tablekit" }, { href: "/appkit", label: "Appkit" }] },
     { title: "Help", links: [{ href: "/contact", label: "Contact" }, { href: "/faq", label: "FAQ" }, { href: "https://status.vamos.ist", label: "Status", newTab: true }] },
   ],
-  contact: { phone: "+902160000000", email: "hello@vamos.ist", address: { line: "Atlas Çarşı, Kule Ofis", district: "Rasimpaşa", city: "Maltepe", postalCode: "34844", country: "TR" } },
+  contact: { phone: "+902160000000", email: "hello@vamos.ist", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", postalCode: "34716", country: "TR" } },
   social: [
     { network: "instagram", href: "https://instagram.com/vamos.ist" },
     { network: "linkedin", href: "https://linkedin.com/company/vamos-ist" },

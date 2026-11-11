@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import { axe } from "vitest-axe";
 import { ContactDock } from "./contact-dock";
 import { contactDockBlock } from "./registry-2";
@@ -41,5 +41,58 @@ describe("ContactDock", () => {
     const { container } = render(<ContactDock variant="bar" phone="+902160000000" contained />);
     expect(container.querySelector("nav")).toBeNull();
     expect(contactDockBlock.schema.safeParse(contactDockBlock.sample()).success).toBe(true);
+  });
+
+  describe("never covers a CTA", () => {
+    const rect = (top: number, left: number, height: number, width: number) => ({ top, left, bottom: top + height, right: left + width, height, width, x: left, y: top, toJSON: () => ({}) }) as DOMRect;
+    const frame = () => act(async () => {
+      await new Promise((r) => setTimeout(r, 30));
+    });
+
+    it("hides the fab while a booking form is under it, keeps it otherwise", async () => {
+      Object.defineProperty(window, "innerHeight", { value: 800, configurable: true });
+      render(
+        <>
+          <form className="vb-booking" data-testid="booking" />
+          <ContactDock variant="fab" whatsapp="+902160000000" />
+        </>,
+      );
+      const dock = document.querySelector<HTMLElement>("[data-contact-dock]")!;
+      const fab = dock.querySelector<HTMLElement>(".vb-dock-fab")!;
+      const booking = screen.getByTestId("booking");
+      vi.spyOn(fab, "getBoundingClientRect").mockReturnValue(rect(732, 1300, 52, 52));
+      const spy = vi.spyOn(booking, "getBoundingClientRect").mockReturnValue(rect(600, 900, 300, 500));
+      window.dispatchEvent(new Event("scroll"));
+      await frame();
+      expect(dock).toHaveAttribute("data-avoiding");
+
+      spy.mockReturnValue(rect(100, 900, 300, 500));
+      window.dispatchEvent(new Event("scroll"));
+      await frame();
+      expect(dock).not.toHaveAttribute("data-avoiding");
+    });
+
+    it("lifts above a bar pinned to the bottom; CTA rows test their links only", async () => {
+      Object.defineProperty(window, "innerHeight", { value: 800, configurable: true });
+      render(
+        <>
+          <div data-dock-avoid="" data-testid="bar" style={{ position: "fixed" }} />
+          <div data-dock-avoid="items" data-testid="row">
+            <a href="/book">Book</a>
+          </div>
+          <ContactDock variant="fab" whatsapp="+902160000000" />
+        </>,
+      );
+      const dock = document.querySelector<HTMLElement>("[data-contact-dock]")!;
+      vi.spyOn(dock.querySelector<HTMLElement>(".vb-dock-fab")!, "getBoundingClientRect").mockReturnValue(rect(732, 1300, 52, 52));
+      vi.spyOn(screen.getByTestId("bar"), "getBoundingClientRect").mockReturnValue(rect(728, 0, 72, 1400));
+      // The row spans the fab's corner, its only link does not.
+      vi.spyOn(screen.getByTestId("row"), "getBoundingClientRect").mockReturnValue(rect(700, 0, 60, 1400));
+      vi.spyOn(screen.getByRole("link", { name: "Book" }), "getBoundingClientRect").mockReturnValue(rect(710, 40, 44, 120));
+      window.dispatchEvent(new Event("scroll"));
+      await frame();
+      expect(dock.style.getPropertyValue("--vb-dock-lift")).toBe("72px");
+      expect(dock).not.toHaveAttribute("data-avoiding");
+    });
   });
 });

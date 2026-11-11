@@ -76,14 +76,120 @@ import metaShell04 from "./shell-04/meta";
 import pageShell04 from "./shell-04/page";
 import metaSignup01 from "./signup-01/meta";
 import pageSignup01 from "./signup-01/page";
+import metaSiteAccounting01 from "./site-accounting-01/meta";
+import pageSiteAccounting01 from "./site-accounting-01/page";
 import metaSiteAgency01 from "./site-agency-01/meta";
 import pageSiteAgency01 from "./site-agency-01/page";
+import metaSiteAgency02 from "./site-agency-02/meta";
+import pageSiteAgency02 from "./site-agency-02/page";
+import metaSiteAi01 from "./site-ai-01/meta";
+import pageSiteAi01 from "./site-ai-01/page";
+import metaSiteApp01 from "./site-app-01/meta";
+import pageSiteApp01 from "./site-app-01/page";
+import metaSiteApp02 from "./site-app-02/meta";
+import pageSiteApp02 from "./site-app-02/page";
+import metaSiteArtist01 from "./site-artist-01/meta";
+import pageSiteArtist01 from "./site-artist-01/page";
+import metaSiteAutoservice01 from "./site-autoservice-01/meta";
+import pageSiteAutoservice01 from "./site-autoservice-01/page";
+import metaSiteBlog01 from "./site-blog-01/meta";
+import pageSiteBlog01 from "./site-blog-01/page";
+import metaSiteBlog02 from "./site-blog-02/meta";
+import pageSiteBlog02 from "./site-blog-02/page";
+import metaSiteCareers01 from "./site-careers-01/meta";
+import pageSiteCareers01 from "./site-careers-01/page";
+import metaSiteChangelog01 from "./site-changelog-01/meta";
+import pageSiteChangelog01 from "./site-changelog-01/page";
+import metaSiteClinic01 from "./site-clinic-01/meta";
+import pageSiteClinic01 from "./site-clinic-01/page";
+import metaSiteClinic02 from "./site-clinic-02/meta";
+import pageSiteClinic02 from "./site-clinic-02/page";
+import metaSiteClub01 from "./site-club-01/meta";
+import pageSiteClub01 from "./site-club-01/page";
+import metaSiteCommunity01 from "./site-community-01/meta";
+import pageSiteCommunity01 from "./site-community-01/page";
+import metaSiteConstruction01 from "./site-construction-01/meta";
+import pageSiteConstruction01 from "./site-construction-01/page";
+import metaSiteCourse01 from "./site-course-01/meta";
+import pageSiteCourse01 from "./site-course-01/page";
+import metaSiteCv01 from "./site-cv-01/meta";
+import pageSiteCv01 from "./site-cv-01/page";
+import metaSiteDepartment01 from "./site-department-01/meta";
+import pageSiteDepartment01 from "./site-department-01/page";
+import metaSiteDevtool01 from "./site-devtool-01/meta";
+import pageSiteDevtool01 from "./site-devtool-01/page";
+import metaSiteDietitian01 from "./site-dietitian-01/meta";
+import pageSiteDietitian01 from "./site-dietitian-01/page";
+import metaSiteDigital01 from "./site-digital-01/meta";
+import pageSiteDigital01 from "./site-digital-01/page";
+import metaSiteDriving01 from "./site-driving-01/meta";
+import pageSiteDriving01 from "./site-driving-01/page";
+import metaSiteEstate01 from "./site-estate-01/meta";
+import pageSiteEstate01 from "./site-estate-01/page";
+import metaSiteEstate02 from "./site-estate-02/meta";
+import pageSiteEstate02 from "./site-estate-02/page";
+import metaSiteEvent01 from "./site-event-01/meta";
+import pageSiteEvent01 from "./site-event-01/page";
+import metaSiteFactory01 from "./site-factory-01/meta";
+import pageSiteFactory01 from "./site-factory-01/page";
+import metaSiteFlorist01 from "./site-florist-01/meta";
+import pageSiteFlorist01 from "./site-florist-01/page";
+import metaSiteGame01 from "./site-game-01/meta";
+import pageSiteGame01 from "./site-game-01/page";
+import metaSiteHelp01 from "./site-help-01/meta";
+import pageSiteHelp01 from "./site-help-01/page";
+import metaSiteLaw01 from "./site-law-01/meta";
+import pageSiteLaw01 from "./site-law-01/page";
+import metaSiteMarket01 from "./site-market-01/meta";
+import pageSiteMarket01 from "./site-market-01/page";
+import metaSiteMovers01 from "./site-movers-01/meta";
+import pageSiteMovers01 from "./site-movers-01/page";
+import metaSiteNewsletter01 from "./site-newsletter-01/meta";
+import pageSiteNewsletter01 from "./site-newsletter-01/page";
+import metaSiteNonprofit01 from "./site-nonprofit-01/meta";
+import pageSiteNonprofit01 from "./site-nonprofit-01/page";
+import metaSitePhysio01 from "./site-physio-01/meta";
+import pageSitePhysio01 from "./site-physio-01/page";
+import metaSitePodcast01 from "./site-podcast-01/meta";
+import pageSitePodcast01 from "./site-podcast-01/page";
+import metaSitePortfolio01 from "./site-portfolio-01/meta";
+import pageSitePortfolio01 from "./site-portfolio-01/page";
+import metaSitePortfolio02 from "./site-portfolio-02/meta";
+import pageSitePortfolio02 from "./site-portfolio-02/page";
+import metaSitePreschool01 from "./site-preschool-01/meta";
+import pageSitePreschool01 from "./site-preschool-01/page";
+import metaSitePublic01 from "./site-public-01/meta";
+import pageSitePublic01 from "./site-public-01/page";
 import metaSiteRestaurant01 from "./site-restaurant-01/meta";
 import pageSiteRestaurant01 from "./site-restaurant-01/page";
 import metaSiteSaas01 from "./site-saas-01/meta";
 import pageSiteSaas01 from "./site-saas-01/page";
+import metaSiteSaas02 from "./site-saas-02/meta";
+import pageSiteSaas02 from "./site-saas-02/page";
 import metaSiteSpa01 from "./site-spa-01/meta";
 import pageSiteSpa01 from "./site-spa-01/page";
+import metaSiteStatus01 from "./site-status-01/meta";
+import pageSiteStatus01 from "./site-status-01/page";
+import metaSiteStore01 from "./site-store-01/meta";
+import pageSiteStore01 from "./site-store-01/page";
+import metaSiteStore02 from "./site-store-02/meta";
+import pageSiteStore02 from "./site-store-02/page";
+import metaSiteStudio01 from "./site-studio-01/meta";
+import pageSiteStudio01 from "./site-studio-01/page";
+import metaSiteSubbox01 from "./site-subbox-01/meta";
+import pageSiteSubbox01 from "./site-subbox-01/page";
+import metaSiteTherapy01 from "./site-therapy-01/meta";
+import pageSiteTherapy01 from "./site-therapy-01/page";
+import metaSiteVenue01 from "./site-venue-01/meta";
+import pageSiteVenue01 from "./site-venue-01/page";
+import metaSiteVet01 from "./site-vet-01/meta";
+import pageSiteVet01 from "./site-vet-01/page";
+import metaSiteWaitlist01 from "./site-waitlist-01/meta";
+import pageSiteWaitlist01 from "./site-waitlist-01/page";
+import metaSiteWedding01 from "./site-wedding-01/meta";
+import pageSiteWedding01 from "./site-wedding-01/page";
+import metaSiteWholesale01 from "./site-wholesale-01/meta";
+import pageSiteWholesale01 from "./site-wholesale-01/page";
 import metaUsersRoles01 from "./users-roles-01/meta";
 import pageUsersRoles01 from "./users-roles-01/page";
 
@@ -126,10 +232,63 @@ export const blocks: BlockEntry[] = [
   { ...metaShell03, name: "shell-03", Component: pageShell03 },
   { ...metaShell04, name: "shell-04", Component: pageShell04 },
   { ...metaSignup01, name: "signup-01", Component: pageSignup01 },
+  { ...metaSiteAccounting01, name: "site-accounting-01", Component: pageSiteAccounting01 },
   { ...metaSiteAgency01, name: "site-agency-01", Component: pageSiteAgency01 },
+  { ...metaSiteAgency02, name: "site-agency-02", Component: pageSiteAgency02 },
+  { ...metaSiteAi01, name: "site-ai-01", Component: pageSiteAi01 },
+  { ...metaSiteApp01, name: "site-app-01", Component: pageSiteApp01 },
+  { ...metaSiteApp02, name: "site-app-02", Component: pageSiteApp02 },
+  { ...metaSiteArtist01, name: "site-artist-01", Component: pageSiteArtist01 },
+  { ...metaSiteAutoservice01, name: "site-autoservice-01", Component: pageSiteAutoservice01 },
+  { ...metaSiteBlog01, name: "site-blog-01", Component: pageSiteBlog01 },
+  { ...metaSiteBlog02, name: "site-blog-02", Component: pageSiteBlog02 },
+  { ...metaSiteCareers01, name: "site-careers-01", Component: pageSiteCareers01 },
+  { ...metaSiteChangelog01, name: "site-changelog-01", Component: pageSiteChangelog01 },
+  { ...metaSiteClinic01, name: "site-clinic-01", Component: pageSiteClinic01 },
+  { ...metaSiteClinic02, name: "site-clinic-02", Component: pageSiteClinic02 },
+  { ...metaSiteClub01, name: "site-club-01", Component: pageSiteClub01 },
+  { ...metaSiteCommunity01, name: "site-community-01", Component: pageSiteCommunity01 },
+  { ...metaSiteConstruction01, name: "site-construction-01", Component: pageSiteConstruction01 },
+  { ...metaSiteCourse01, name: "site-course-01", Component: pageSiteCourse01 },
+  { ...metaSiteCv01, name: "site-cv-01", Component: pageSiteCv01 },
+  { ...metaSiteDepartment01, name: "site-department-01", Component: pageSiteDepartment01 },
+  { ...metaSiteDevtool01, name: "site-devtool-01", Component: pageSiteDevtool01 },
+  { ...metaSiteDietitian01, name: "site-dietitian-01", Component: pageSiteDietitian01 },
+  { ...metaSiteDigital01, name: "site-digital-01", Component: pageSiteDigital01 },
+  { ...metaSiteDriving01, name: "site-driving-01", Component: pageSiteDriving01 },
+  { ...metaSiteEstate01, name: "site-estate-01", Component: pageSiteEstate01 },
+  { ...metaSiteEstate02, name: "site-estate-02", Component: pageSiteEstate02 },
+  { ...metaSiteEvent01, name: "site-event-01", Component: pageSiteEvent01 },
+  { ...metaSiteFactory01, name: "site-factory-01", Component: pageSiteFactory01 },
+  { ...metaSiteFlorist01, name: "site-florist-01", Component: pageSiteFlorist01 },
+  { ...metaSiteGame01, name: "site-game-01", Component: pageSiteGame01 },
+  { ...metaSiteHelp01, name: "site-help-01", Component: pageSiteHelp01 },
+  { ...metaSiteLaw01, name: "site-law-01", Component: pageSiteLaw01 },
+  { ...metaSiteMarket01, name: "site-market-01", Component: pageSiteMarket01 },
+  { ...metaSiteMovers01, name: "site-movers-01", Component: pageSiteMovers01 },
+  { ...metaSiteNewsletter01, name: "site-newsletter-01", Component: pageSiteNewsletter01 },
+  { ...metaSiteNonprofit01, name: "site-nonprofit-01", Component: pageSiteNonprofit01 },
+  { ...metaSitePhysio01, name: "site-physio-01", Component: pageSitePhysio01 },
+  { ...metaSitePodcast01, name: "site-podcast-01", Component: pageSitePodcast01 },
+  { ...metaSitePortfolio01, name: "site-portfolio-01", Component: pageSitePortfolio01 },
+  { ...metaSitePortfolio02, name: "site-portfolio-02", Component: pageSitePortfolio02 },
+  { ...metaSitePreschool01, name: "site-preschool-01", Component: pageSitePreschool01 },
+  { ...metaSitePublic01, name: "site-public-01", Component: pageSitePublic01 },
   { ...metaSiteRestaurant01, name: "site-restaurant-01", Component: pageSiteRestaurant01 },
   { ...metaSiteSaas01, name: "site-saas-01", Component: pageSiteSaas01 },
+  { ...metaSiteSaas02, name: "site-saas-02", Component: pageSiteSaas02 },
   { ...metaSiteSpa01, name: "site-spa-01", Component: pageSiteSpa01 },
+  { ...metaSiteStatus01, name: "site-status-01", Component: pageSiteStatus01 },
+  { ...metaSiteStore01, name: "site-store-01", Component: pageSiteStore01 },
+  { ...metaSiteStore02, name: "site-store-02", Component: pageSiteStore02 },
+  { ...metaSiteStudio01, name: "site-studio-01", Component: pageSiteStudio01 },
+  { ...metaSiteSubbox01, name: "site-subbox-01", Component: pageSiteSubbox01 },
+  { ...metaSiteTherapy01, name: "site-therapy-01", Component: pageSiteTherapy01 },
+  { ...metaSiteVenue01, name: "site-venue-01", Component: pageSiteVenue01 },
+  { ...metaSiteVet01, name: "site-vet-01", Component: pageSiteVet01 },
+  { ...metaSiteWaitlist01, name: "site-waitlist-01", Component: pageSiteWaitlist01 },
+  { ...metaSiteWedding01, name: "site-wedding-01", Component: pageSiteWedding01 },
+  { ...metaSiteWholesale01, name: "site-wholesale-01", Component: pageSiteWholesale01 },
   { ...metaUsersRoles01, name: "users-roles-01", Component: pageUsersRoles01 },
 ].sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.name.localeCompare(b.name));
 

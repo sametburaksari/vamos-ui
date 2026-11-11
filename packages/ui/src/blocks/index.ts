@@ -43,11 +43,12 @@ export { Team, type TeamProps, type TeamVariant, type TeamMember } from "./site/
 export { BlogList, BlogListSkeleton, type BlogListProps, type BlogListVariant, type PostSummary, type BlogPagination } from "./site/blog-list";
 export { ArticleLayout, shareUrl, type ArticleLayoutProps, type ArticleVariant, type ArticlePost, type ArticleAuthor, type ShareTarget } from "./site/article-layout";
 export { ContactForm, type ContactFormProps, type ContactFormVariant, type ContactInfo } from "./site/contact-form";
-export { MapHours, HoursTable, directionsUrl, mapEmbedUrl, localBusinessJsonLd, type MapHoursProps, type MapHoursVariant, type Branch, type DirectionsProvider, type BusinessType } from "./site/map-hours";
+export { MapHours, HoursTable, directionsUrl, mapEmbedUrl, localBusinessJsonLd, type MapHoursProps, type MapHoursVariant, type Branch, type DirectionsProvider, type BusinessType, type HoursDisplay } from "./site/map-hours";
 export { MenuList, menuJsonLd, ALLERGENS, type MenuListProps, type MenuVariant, type MenuCategory, type MenuItem, type MenuPrice, type MenuTag, type Allergen } from "./site/menu-list";
 export { GallerySection, type GallerySectionProps, type GalleryVariant, type GalleryImage, type GallerySpan } from "./site/gallery-section";
 export { ConsentBanner, ConsentDefaults, type ConsentBannerProps, type ConsentVariant } from "./site/consent-banner";
 export { ContactDock, type ContactDockProps, type ContactDockVariant, type DockAction, type MessagingProvider } from "./site/contact-dock";
+export { EmbedFacade, type EmbedFacadeProps } from "./site/embed-facade";
 export { Footer, type FooterProps, type FooterVariant } from "./site/footer";
 export { NotFound, type NotFoundProps, type NotFoundVariant, type NotFoundKind } from "./site/not-found";
 // Shared modules: opening hours, consent, form contract, brand marks, labels
@@ -59,3 +60,8 @@ export { getConsent, onConsent, readConsent, writeConsent, parseConsent, openCon
 export { validateContactForm, isSpam, contactFieldLabel, HONEYPOT_FIELD, type ContactFieldConfig, type ContactFieldName, type SiteFormState, type SiteFormAction, type ContactValidation } from "./site/shared/site-form";
 export { BrandIcon, BRAND_NAMES, type BrandName, type BrandIconProps } from "./site/shared/brand-icons";
 export { site2Labels, site2LabelsTr, type Site2Labels, type Site2BlockLabels } from "./site/shared/labels-2";
+
+// Site shell: locale switch, inner pages and a scoped accent for whole-site blocks
+export { SiteShell, SiteShellPage, SiteShellLocale, SiteShellLink, useSiteShell, type SiteShellProps, type SiteShellPageProps, type SiteShellLocaleProps, type SiteShellLinkProps, type SiteShellContextValue } from "./site/site-shell";
+export { siteAccent, siteAccentCss, siteAccentKey, isBuiltInAccent, BUILT_IN_SITE_ACCENTS, SITE_TEXT_CONTRAST, type SiteAccentPalette, type SiteAccentOptions } from "./site/shared/site-accent";
+export { sitePageHref, siteLocaleHref, parseSiteHref, readSiteLocation, writeSiteLocation, type SiteRouting, type SiteLocation, type SiteRouteParams } from "./site/shared/site-routing";

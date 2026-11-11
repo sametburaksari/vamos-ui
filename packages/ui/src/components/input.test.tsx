@@ -185,3 +185,27 @@ describe("Input", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("Textarea showCount", () => {
+  it("counts typed characters, links the live region and stays axe-clean", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Field label="Anything we should know first?">
+        <Textarea maxLength={30} showCount />
+      </Field>,
+    );
+    const box = screen.getByRole("textbox", { name: "Anything we should know first?" });
+    expect(container.textContent).toContain("0 / 30");
+    await user.type(box, "Evenings only");
+    expect(container.textContent).toContain("13 / 30");
+    const live = container.querySelector("[aria-live=polite]")!;
+    expect(box.getAttribute("aria-describedby")).toContain(live.id);
+    expect(live.textContent).toMatch(/17/);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("renders a bare textarea without showCount", () => {
+    const { container } = render(<Textarea aria-label="Notes" />);
+    expect(container.firstElementChild?.tagName).toBe("TEXTAREA");
+  });
+});

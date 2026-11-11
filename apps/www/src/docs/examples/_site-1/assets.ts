@@ -39,7 +39,7 @@ const BRANDS: [string, Mark][] = [
   ["Kıyı Meyhane", "serif"],
   ["HAMAM MODA", "condensed"],
   ["ledgerly", "sans"],
-  ["Defne Klinik", "italic"],
+  ["Defne Clinic", "italic"],
   ["PERA/BAKERY", "mono"],
   ["Studio Arda", "serif"],
   ["NOVA DENTAL", "condensed"],

@@ -4,7 +4,7 @@ import { axe } from "vitest-axe";
 import { Inbox, MessageSquare } from "lucide-react";
 import { LocaleProvider } from "../lib/locale";
 import { tr } from "../locales/tr";
-import { ActivityTimeline, Timeline, TimelineContent, TimelineIndicator, TimelineItem, TimelineTime, TimelineTitle } from "./activity-timeline";
+import { ActivityTimeline, Timeline, TimelineBody, TimelineContent, TimelineIndicator, TimelineItem, TimelineTime, TimelineTitle } from "./activity-timeline";
 
 const NOW = "2026-11-10T12:00:00Z";
 
@@ -105,5 +105,18 @@ describe("ActivityTimeline", () => {
     );
     expect(screen.getByRole("list", { name: "Deal history" })).toBeInTheDocument();
     expect(screen.getByText("2 hours ago")).toBeInTheDocument();
+  });
+
+  it("TimelineBody: card by default, plain for typographic layouts", () => {
+    render(
+      <>
+        <TimelineBody>Card note</TimelineBody>
+        <TimelineBody variant="plain">Plain note</TimelineBody>
+      </>,
+    );
+    expect(screen.getByText("Card note")).toHaveAttribute("data-variant", "card");
+    expect(screen.getByText("Card note").className).toContain("surface-2");
+    expect(screen.getByText("Plain note")).toHaveAttribute("data-variant", "plain");
+    expect(screen.getByText("Plain note").className).not.toContain("surface-2");
   });
 });

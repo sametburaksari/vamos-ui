@@ -131,7 +131,7 @@ export function InvoiceDetail() {
 
         <RecordSection title="Payments" padding="none" action={<Button size="sm" onClick={() => toast.success("Payment form opened")}>Record payment</Button>}>
           <TableContainer aria-label={`Payments for ${invoice.number}`}>
-            <Table>
+            <Table aria-label={`Payments for ${invoice.number}`}>
               <TableHeader>
                 <TableRow>
                   <TableHead>Date</TableHead>

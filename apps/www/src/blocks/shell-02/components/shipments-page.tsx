@@ -65,7 +65,7 @@ export function ShipmentsPage({ path }: { path: string }) {
         <Card className="min-w-0 overflow-hidden">
           <CardHeader titleAs="h2" title={exceptionsOnly ? "Needs attention" : "Active shipments"} description={`${rows.length} of 248 · sorted by ETA`} action={<Button variant="ghost" size="sm">View all <ArrowRight aria-hidden className="rtl:-scale-x-100" /></Button>} divider />
           <TableContainer aria-label="Active shipments">
-            <Table>
+            <Table aria-label={exceptionsOnly ? "Shipments that need attention" : "Active shipments"}>
               <TableHeader>
                 <TableRow>
                   <TableHead>Shipment</TableHead>

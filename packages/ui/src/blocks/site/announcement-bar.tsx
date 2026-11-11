@@ -114,7 +114,7 @@ export function AnnouncementBar({
       <div className={cn("vb-container flex min-h-9 items-center gap-3 py-1.5", centered && "justify-center text-center")}>
         <p className={cn("flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-0.5", centered ? "justify-center" : "flex-1")}>
           {centered ? (
-            <span className="font-mono text-eyebrow uppercase tracking-[0.08em] opacity-70" {...field(editMode, "label")}>
+            <span className="font-mono text-eyebrow uppercase tracking-[0.08em] after:ms-3 after:inline-block after:h-[0.7em] after:w-px after:bg-current after:align-[-0.05em] after:opacity-40 after:content-['']" {...field(editMode, "label")}>
               {label ?? t("notice")}
             </span>
           ) : null}

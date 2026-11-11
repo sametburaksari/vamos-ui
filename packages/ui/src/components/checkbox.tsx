@@ -192,7 +192,7 @@ export const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimiti
         {label}
       </span>
       {description ? (
-        <span id={descId} className={cn("text-fg-subtle text-pretty", size === "sm" ? "text-[11.5px]" : "text-xs", "leading-[1.45]")}>
+        <span id={descId} className={cn("text-fg-muted text-pretty", size === "sm" ? "text-[11.5px]" : "text-xs", "leading-[1.45]")}>
           {description}
         </span>
       ) : null}
@@ -210,7 +210,7 @@ export const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimiti
           "group/cb relative flex cursor-pointer items-start gap-3 rounded-ui border border-field-border bg-field p-3.5 transition-[background-color,border-color,box-shadow] duration-150",
           "hover:border-field-border-hover glass:border-field-border-hover",
           "has-[:focus-visible]:border-ring has-[:focus-visible]:shadow-[0_0_0_3px_var(--accent-soft)]",
-          "data-[state=checked]:border-accent-ink data-[state=checked]:bg-accent-soft data-[state=checked]:shadow-[inset_0_0_0_1px_var(--accent-ink)]",
+          "data-[state=checked]:border-accent-ink data-[state=checked]:bg-[color-mix(in_oklch,var(--accent-base)_11%,transparent)] data-[state=checked]:shadow-[inset_0_0_0_1px_var(--accent-ink)]",
           "has-[[aria-invalid=true]]:border-danger",
           "data-disabled:cursor-not-allowed data-disabled:opacity-50",
           className,

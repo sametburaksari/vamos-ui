@@ -7,6 +7,7 @@ import { site2Text, type Site2BlockLabels, type Site2Text } from "./shared/label
 import { telHref } from "./shared/kit-2";
 import { BrandIcon, BRAND_NAMES, waLink } from "./shared/brand-icons";
 import { DockHours } from "./shared/dock-hours";
+import { DockAvoid } from "./shared/dock-avoid";
 
 export type ContactDockVariant = "fab" | "bar" | "both";
 export type DockAction = "call" | "whatsapp" | "directions" | "booking" | "email";
@@ -150,6 +151,7 @@ export function ContactDock(props: ContactDockProps) {
           </ul>
         </nav>
       ) : null}
+      {!contained && (showFab || showBar) ? <DockAvoid /> : null}
     </div>
   );
 }

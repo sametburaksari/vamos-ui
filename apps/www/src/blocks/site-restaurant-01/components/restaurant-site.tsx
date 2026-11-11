@@ -1,5 +1,5 @@
 import { ContactDock, Cta, Faq, Footer, GallerySection, Hero, MapHours, MediaText, MenuList, Navbar, Testimonials } from "@vamos-ui/react/blocks";
-import { branch, copyFor, hoursFor, menu, PHONE, photos, WHATSAPP } from "./content";
+import { branch, copyFor, enTime, hoursFor, menu, PHONE, photos, WHATSAPP } from "./content";
 import type { SiteLocale } from "./locale-switch";
 
 /** One language version of the restaurant site. Server component: every block is plain props. */
@@ -31,7 +31,7 @@ export function RestaurantSite({ locale }: { locale: SiteLocale }) {
         actions={[{ link: { href: "#book", label: t({ en: "Book a table", tr: "Masa ayırt" }) }, style: "primary" }]}
         panelMeta={[
           { label: t({ en: "Address", tr: "Adres" }), value: "Bağdat Caddesi 412, Caddebostan" },
-          { label: t({ en: "Tonight", tr: "Bu akşam" }), value: "17:00 – 23:30" },
+          { label: t({ en: "Tonight", tr: "Bu akşam" }), value: t({ en: `${enTime("17:00")} – ${enTime("23:30")}`, tr: "17:00 – 23:30" }) },
         ]}
       />
 
@@ -48,7 +48,7 @@ export function RestaurantSite({ locale }: { locale: SiteLocale }) {
           media={img(photos.diningRoom)}
           aside={{
             title: t({ en: "Open today", tr: "Bugün açığız" }),
-            body: t({ en: "17:00 – 23:30 · kitchen until 22:45", tr: "17:00 – 23:30 · mutfak 22:45’e kadar" }),
+            body: t({ en: `${enTime("17:00")} – ${enTime("23:30")} · kitchen until ${enTime("22:45")}`, tr: "17:00 – 23:30 · mutfak 22:45’e kadar" }),
             cta: { link: { href: "#book", label: t({ en: "Book a table", tr: "Masa ayırt" }) }, style: "primary" },
           }}
         />
@@ -149,10 +149,10 @@ export function RestaurantSite({ locale }: { locale: SiteLocale }) {
           eyebrow={t({ en: "Before you come", tr: "Gelmeden önce" })}
           title={t({ en: "Good to *know*", tr: "Bilmekte *fayda var*" })}
           items={[
-            { q: t({ en: "Do you take walk-ins?", tr: "Rezervasyonsuz geliyor muyuz?" }), a: t({ en: "Yes, at the bar and on the terrace. The dining room is usually fully booked on Fridays and Saturdays after 19:30.", tr: "Evet, bar ve terasta. Cuma ve cumartesi 19:30’dan sonra salon genellikle doludur." }) },
+            { q: t({ en: "Do you take walk-ins?", tr: "Rezervasyonsuz geliyor muyuz?" }), a: t({ en: `Yes, at the bar and on the terrace. The dining room is usually fully booked on Fridays and Saturdays after ${enTime("19:30")}.`, tr: "Evet, bar ve terasta. Cuma ve cumartesi 19:30’dan sonra salon genellikle doludur." }) },
             { q: t({ en: "Is there a vegetarian menu?", tr: "Vejetaryen menü var mı?" }), a: t({ en: "Most of the cold meze are vegetarian and five are vegan. Tell us when you book and the kitchen will put a tray together.", tr: "Soğuk mezelerin çoğu vejetaryen, beşi vegan. Rezervasyonda belirtin, mutfak bir tepsi hazırlasın." }) },
             { q: t({ en: "Can we book the upstairs room?", tr: "Üst kattaki odayı ayırtabilir miyiz?" }), a: t({ en: "The private room seats up to twelve with a set menu from ₺2,400 per person. Write to masa@kiyimeyhane.com with your date.", tr: "Özel oda fiks menüyle on iki kişiye kadar, kişi başı ₺2.400’den başlar. Tarihinizle masa@kiyimeyhane.com adresine yazın." }) },
-            { q: t({ en: "Where do we park?", tr: "Nereye park ederiz?" }), a: t({ en: "Valet parking is free from 18:00. Street parking on Bağdat Caddesi is limited after seven.", tr: "18:00’den itibaren vale ücretsizdir. Bağdat Caddesi’nde yedi’den sonra park yeri azdır." }) },
+            { q: t({ en: "Where do we park?", tr: "Nereye park ederiz?" }), a: t({ en: `Valet parking is free from ${enTime("18:00")}. Street parking on Bağdat Caddesi is limited after seven.`, tr: "18:00’den itibaren vale ücretsizdir. Bağdat Caddesi’nde yedi’den sonra park yeri azdır." }) },
           ]}
           deepLink={false}
         />

@@ -12,7 +12,8 @@ const jetbrains = JetBrains_Mono({ subsets: ["latin", "latin-ext"], variable: "-
 const hanken = Hanken_Grotesk({ subsets: ["latin", "latin-ext"], variable: "--ff-hanken", preload: false });
 const bricolage = Bricolage_Grotesque({ subsets: ["latin", "latin-ext"], variable: "--ff-bricolage" });
 const geistMono = Geist_Mono({ subsets: ["latin", "latin-ext"], variable: "--ff-geist-mono", preload: false });
-const plex = IBM_Plex_Sans({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "600", "700"], variable: "--ff-plex", preload: false });
+// Variable (wght 100–700): Google serves static Plex instances as `/l/font?kit=…&skey=…` URLs, which Turbopack 15.5 cannot resolve.
+const plex = IBM_Plex_Sans({ subsets: ["latin", "latin-ext"], variable: "--ff-plex", preload: false });
 const plexMono = IBM_Plex_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "500"], variable: "--ff-plex-mono", preload: false });
 const fonts = [onest, instrument, jetbrains, hanken, bricolage, geistMono, plex, plexMono];
 

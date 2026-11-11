@@ -62,7 +62,6 @@ export function ConsentGate({
   const [remember, setRemember] = React.useState(false);
   const frameRef = React.useRef<HTMLIFrameElement>(null);
   const focusOnLoad = React.useRef(false);
-  const rememberId = React.useId();
 
   React.useEffect(() => {
     if (loaded) return;
@@ -118,9 +117,11 @@ export function ConsentGate({
             {notice || rememberLabel ? (
               <div className="vb-gate-note flex max-w-[44ch] flex-col gap-1.5 rounded-ui-sm px-2 py-1 text-xs text-fg-muted">
                 {notice ? <p>{notice}</p> : null}
+                {/* The input sits inside its label (implicit association): no generated id, so nothing
+                    can drift between the server HTML and hydration. */}
                 {rememberLabel ? (
-                  <label htmlFor={rememberId} className="inline-flex cursor-pointer items-center gap-2 text-fg">
-                    <input id={rememberId} type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="vb-check size-3.5" />
+                  <label className="inline-flex cursor-pointer items-center gap-2 text-fg">
+                    <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="vb-check size-3.5" />
                     {rememberLabel}
                   </label>
                 ) : null}

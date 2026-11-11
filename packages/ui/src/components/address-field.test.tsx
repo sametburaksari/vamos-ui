@@ -56,7 +56,7 @@ describe("AddressField", () => {
   });
 
   it("read-only renders a formatted address", () => {
-    render(<AddressField legend="Head office" readOnly value={{ country: "TR", region1: "İstanbul", region2: "Maltepe", line1: "Rasimpaşa Mah. Rıhtım Cad. No: 69", postalCode: "34844" }} />);
+    render(<AddressField legend="Head office" readOnly value={{ country: "TR", region1: "İstanbul", region2: "Maltepe", line1: "Rasimpaşa Mah. Rıhtım Cad. No: 14", postalCode: "34844" }} />);
     expect(screen.getByText("34844 Maltepe/İstanbul")).toBeInTheDocument();
   });
 });

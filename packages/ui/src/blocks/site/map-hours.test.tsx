@@ -19,7 +19,7 @@ const hours = {
 };
 const branch: Branch = {
   name: "Meyhane Rasimpaşa",
-  address: { line: "Atlas Çarşı, Kule Ofis", district: "Rasimpaşa", city: "Maltepe", region: "İstanbul", postalCode: "34844", country: "TR", geo: { lat: 40.9112, lng: 29.1556 } },
+  address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", region: "İstanbul", postalCode: "34716", country: "TR", geo: { lat: 40.9112, lng: 29.1556 } },
   phone: "+902160000000",
   hours,
   mapImage: { src: "/maps/cevizli.png", alt: "", width: 1200, height: 900 },
@@ -31,6 +31,17 @@ const NOW = "2026-11-10T22:15:00+03:00";
 describe("MapHours", () => {
   afterEach(() => {
     document.cookie = `${CONSENT_COOKIE}=; max-age=0; path=/`;
+  });
+
+  it("hoursDisplay: open-days hides closed days, none drops the table", () => {
+    const { unmount } = render(<MapHours branches={[branch]} now={NOW} hoursDisplay="open-days" />);
+    const rows = within(screen.getByRole("table", { name: "Opening hours, Meyhane Rasimpaşa" })).getAllByRole("row");
+    expect(rows).toHaveLength(6);
+    expect(screen.queryByText("Monday")).toBeNull();
+    unmount();
+    render(<MapHours branches={[branch]} now={NOW} hoursDisplay="none" showOpenNow={false} businessType="EventVenue" />);
+    expect(screen.queryByRole("table")).toBeNull();
+    expect(localBusinessJsonLd({ branches: [branch], businessType: "EventVenue" })[0]?.["@type"]).toBe("EventVenue");
   });
 
   it("map-split: hours table with today marked, open-now status, directions", async () => {
@@ -70,7 +81,7 @@ describe("MapHours", () => {
     const { container } = render(<main><MapHours variant="info" title="Adres" locale="tr-TR" labels={site2LabelsTr} branches={[branch]} now={NOW} /></main>);
     expect(screen.getByText("Pzt")).toBeInTheDocument();
     expect(screen.getByText("Kapalı")).toBeInTheDocument();
-    expect(screen.getByText("Rasimpaşa/Maltepe", { exact: false })).toBeInTheDocument();
+    expect(screen.getByText("Rasimpaşa/Kadıköy", { exact: false })).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
   });
 

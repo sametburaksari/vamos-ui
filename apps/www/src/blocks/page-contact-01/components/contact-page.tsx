@@ -14,7 +14,7 @@ export function ContactPage({ locale }: { locale: SiteLocale }) {
         {...common}
         variant="bar"
         sticky
-        wordmark="Defne Klinik"
+        wordmark="Defne Clinic"
         homeHref="/"
         currentPath="/contact"
         items={[
@@ -103,7 +103,7 @@ export function ContactPage({ locale }: { locale: SiteLocale }) {
       <Footer
         {...common}
         theme={{ mode: "dark" }}
-        brand={{ name: "Defne Klinik", href: "/" }}
+        brand={{ name: "Defne Clinic", href: "/" }}
         about={t({ en: "Dermatology and aesthetic medicine in Nişantaşı, Moda and Ataşehir.", tr: "Nişantaşı, Moda ve Ataşehir’de dermatoloji ve estetik tıp." })}
         columns={[
           { title: t({ en: "Treatments", tr: "Tedaviler" }), links: [{ href: "/treatments/laser", label: t({ en: "Laser", tr: "Lazer" }) }, { href: "/treatments/facials", label: t({ en: "Facials", tr: "Yüz bakımı" }) }, { href: "/treatments/post-op", label: t({ en: "Post-op care", tr: "Ameliyat sonrası" }) }] },

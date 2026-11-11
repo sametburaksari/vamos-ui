@@ -258,7 +258,7 @@ function Byline({ post, minutes, ctx, showDate }: { post: ArticlePost; minutes: 
             <time dateTime={isoDay(updated)}>{ctx.t("updated", { date: formatDate2(isoDay(updated), ctx.locale, "medium") })}</time>
           </>
         ) : null}
-        <span aria-hidden>·</span>
+        {showDate || updated ? <span aria-hidden>·</span> : null}
         <span>{ctx.t("minRead", { count: minutes })}</span>
       </span>
     </div>

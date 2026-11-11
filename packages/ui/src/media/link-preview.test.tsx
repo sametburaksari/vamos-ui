@@ -50,7 +50,7 @@ describe("SocialCardPreview", () => {
     const fig = screen.getByRole("figure", { name: /link preview/ });
     // X large cards show only the domain; Slack shows the site name.
     if (platform !== "x") expect(fig).toHaveTextContent(data.title);
-    expect(fig.textContent?.toLowerCase()).toContain(platform === "slack" ? "lena spa" : "lenaspa.com.tr");
+    expect(fig.textContent?.toLowerCase()).toContain(platform === "slack" ? "defne spa" : "lenaspa.com.tr");
     await expectNoA11yViolations();
   });
 
@@ -67,7 +67,7 @@ describe("LengthMeter", () => {
   it("states the length in words, not only colour", () => {
     renderWithProviders(<LengthMeter value="Hammam Ritual — Defne Spa" field="title" label="SEO title" />);
     const meter = screen.getByRole("meter", { name: "SEO title" });
-    expect(meter.getAttribute("aria-valuetext")).toMatch(/^24 of 60 characters, \d+ of 600 px: too short$/);
+    expect(meter.getAttribute("aria-valuetext")).toMatch(/^25 of 60 characters, \d+ of 600 px: too short$/);
   });
   it("flags long and empty values", () => {
     const { rerender } = renderWithProviders(<LengthMeter value={"x".repeat(80)} max={60} label="Title" />);

@@ -179,6 +179,10 @@
     overflow-x: auto;
     hyphens: none;
   }
+  .prose-ui :where(pre[tabindex]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
   .prose-ui :where(kbd) {
     font-family: var(--font-code), ui-monospace, monospace;
     font-size: 0.8em;

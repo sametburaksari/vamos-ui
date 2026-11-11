@@ -32,6 +32,11 @@ export interface PageIntroProps extends Omit<BlockBaseProps, "variant" | "labels
   /** ruled: facts on the end side ("Service area" · "Asian side"), up to 3. */
   meta?: SiteMeta[];
   labels?: SiteBlockLabels;
+  /**
+   * Explicit id for the `h1` (e.g. to move focus back to it after an in-page route change).
+   * Default: `<id>-title`, or an auto id.
+   */
+  headingId?: string;
 }
 
 /** `BreadcrumbList` JSON-LD for the crumbs (absolute URLs need `origin`). */
@@ -51,9 +56,10 @@ export function breadcrumbJsonLd(crumbs: { label: string; href?: string }[], ori
  * <PageIntro breadcrumb={[{ label: "Home", href: "/" }, { label: "Treatments" }]} title="Treatments, *by the hour*" />
  * ```
  */
-export function PageIntro({ variant = "simple", breadcrumb, eyebrow, title, lead, media, meta, id, theme, anchor, className, headingLevel = 1, labels, locale, components, editMode }: PageIntroProps) {
+export function PageIntro({ variant = "simple", breadcrumb, eyebrow, title, lead, media, meta, id, theme, anchor, className, headingLevel = 1, labels, locale, components, editMode, headingId: headingIdProp }: PageIntroProps) {
   const t = siteText(labels, locale);
-  const { base, headingId } = useBlockIds(id, "intro");
+  const { base, headingId: autoHeadingId } = useBlockIds(id, "intro");
+  const headingId = headingIdProp ?? autoHeadingId;
   const linkProps = { components, labels, locale };
 
   const crumbs = breadcrumb?.length ? (

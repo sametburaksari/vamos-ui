@@ -85,7 +85,7 @@
   --scene: #eef0ea;
   --fg: #12150f;
   --fg-muted: #5a6053;
-  --fg-subtle: #8a9083;
+  --fg-subtle: #696f61;
 
   --surface: #ffffff;
   --surface-2: #f6f7f3;
@@ -145,15 +145,19 @@
   --overlay-blur: 0px;
   /* Badge / alert tint strength (glass bumps it so tints survive the scene). */
   --tone-mix: 13%;
+  /* Share of the hue in tone-soft text; the rest is --fg. Light mode darkens the status hues so
+     11–12px badge text keeps >= 4.5:1 on its own tint (warning on the light page bg was 2.9:1). */
+  --tone-ink-mix: 65%;
 }
 
 .dark {
+  --tone-ink-mix: 100%;
   color-scheme: dark;
 
   --scene: #0c0e0a;
   --fg: #f1f3ec;
   --fg-muted: #a7ad9c;
-  --fg-subtle: #767c6d;
+  --fg-subtle: #868c7d;
 
   --surface: #15180f;
   --surface-2: #1b1e15;
@@ -285,6 +289,46 @@
   --popover-nested: rgba(29, 33, 23, 0.97);
   --bar: rgba(14, 17, 11, 0.5);
   --bar-border: rgba(255, 255, 255, 0.07);
+}
+
+/* A solid subtree inside a glass page (a website or section that asks for `material="solid"`)
+   gets the solid values back; otherwise it would inherit the page's translucent ones. */
+[data-material="glass"] [data-material="solid"],
+[data-material="glass"] [data-material="solid"] .light {
+  --blur: 0px;
+  --surface: #ffffff;
+  --surface-2: #f6f7f3;
+  --surface-border: rgba(18, 21, 15, 0.09);
+  --surface-shadow: 0 1px 2px rgba(18, 21, 15, 0.05), 0 8px 24px -16px rgba(18, 21, 15, 0.18);
+  --field: #ffffff;
+  --popover: #ffffff;
+  --nav: #14170f;
+  --nav-sub: rgba(0, 0, 0, 0.22);
+  --skeleton: rgba(18, 21, 15, 0.07);
+  --popover-nested: #ffffff;
+  --bar: rgba(238, 240, 234, 0.92);
+  --bar-border: rgba(18, 21, 15, 0.08);
+  --overlay-blur: 0px;
+  --tone-mix: 13%;
+}
+.dark[data-material="glass"] [data-material="solid"],
+[data-material="glass"] .dark[data-material="solid"],
+[data-material="glass"] [data-material="solid"] .dark {
+  --blur: 0px;
+  --surface: #15180f;
+  --surface-2: #1b1e15;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px -18px rgba(0, 0, 0, 0.7);
+  --field: rgba(255, 255, 255, 0.04);
+  --popover: #1a1d14;
+  --nav: #0f110c;
+  --nav-sub: rgba(255, 255, 255, 0.025);
+  --skeleton: rgba(255, 255, 255, 0.07);
+  --popover-nested: #1d2117;
+  --bar: rgba(12, 14, 10, 0.9);
+  --bar-border: rgba(255, 255, 255, 0.06);
+  --overlay-blur: 0px;
+  --tone-mix: 13%;
 }
 
 /* ------------------------------------------------------------------ */
@@ -610,7 +654,7 @@ html {
 @utility tone-info { --tone: var(--info); }
 @utility tone-soft {
   background-color: color-mix(in srgb, var(--tone, var(--fg-muted)) var(--tone-mix, 13%), transparent);
-  color: var(--tone, var(--fg-muted));
+  color: color-mix(in srgb, var(--tone, var(--fg-muted)) var(--tone-ink-mix, 100%), var(--fg));
 }
 @utility focus-ring {
   &:focus-visible {
