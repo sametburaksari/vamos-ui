@@ -12,7 +12,7 @@ Bu klasör, Vamos UI MCP sunucusunu Claude Connectors Directory ve ChatGPT eklen
 ## Before you submit (blocking)
 
 1. **Deploy the docs site** (`scripts/deploy-www.sh`). On 2026-11-12 these return 404 on production: `https://ui.vamos.ist/privacy/`, `https://ui.vamos.ist/terms/`, `https://ui.vamos.ist/docs/mcp/` (and `/docs/security/`, linked from them). Both directories check that the URLs open.
-2. **Log retention = 30 days.** The privacy policy promises that access and process logs are deleted after 30 days. Check the cPanel/WHM settings for the `vamosist` account (Apache domlogs, "Archive logs" / "Remove the previous month's archived logs") and the pm2 log of the MCP process (pm2-logrotate `retain`), and make them match — or change the number in `apps/www/src/app/(site)/privacy/page.tsx` to what is really configured.
+2. **Log retention:** verified on the server 2026-11-12 — cPanel archives access logs monthly and deletes the archive at the end of the following month (max ~60 days); the policy says so. MCP process log holds no request content.
 3. **Demo video** — record it (shot list at the end), upload it unlisted (YouTube unlisted, Loom, or a file on vamos.ist), then build the ZIP with the URL:
    `DEMO_VIDEO_URL=https://… node packages/mcp/directory/openai/build-zip.mjs --check-urls`
    (`--check-urls` also confirms that the four listing URLs answer 200 and that every tool in the test cases exists on the live server.)
@@ -88,7 +88,7 @@ All 12 tools are read-only. The hosted server has no sign-in, cannot see your fi
 | Whose API/backend does the server call? | Only our own: the public static registry at `https://ui.vamos.ist/r/` (same operator, same server). No third-party APIs. |
 | What user data does the server receive? | The tool name and arguments Claude sends: search terms, item/block names, a screen description, a colour, a code snippet or page HTML the user asked it to check. No account data. |
 | Is user data stored? | No. Arguments are processed in memory and discarded after the response. The app does not log arguments or results. |
-| Logs | Apache access logs (IP — usually Anthropic's egress IP —, time, path, status, size, user agent; no request bodies), kept 30 days, for operation and security. |
+| Logs | Apache access logs (IP — usually Anthropic's egress IP —, time, path, status, size, user agent; no request bodies), kept up to about 60 days (monthly archive, deleted at the end of the following month), for operation and security. |
 | Shared with third parties / sold / used for training? | No. Only the hosting provider stores the server data on our behalf. |
 | Authentication / user accounts | None. |
 | Does the server write, delete or send anything? | No. All tools are read-only (`readOnlyHint: true`); none modifies data anywhere. |
