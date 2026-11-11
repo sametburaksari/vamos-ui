@@ -1,8 +1,9 @@
 import { fontCategories, fontPairings, googleFonts } from "@vamos-ui/react/fonts";
 import { A, C, Callout, Code, DocPage, H2, H3, P, Table } from "@/components/docs/prose";
 import { FontCatalog, PairingGallery } from "./specimens";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Fonts" };
+export const metadata = pageMeta({ title: "Fonts", description: "Font presets and pairings for Vamos UI: editorial, grotesk, corporate and system, plus a Google Fonts picker that sets the type tokens.", path: "/docs/fonts/" });
 
 const count = (id: string) => googleFonts.filter((f) => f.category === id).length;
 

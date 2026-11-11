@@ -1,8 +1,9 @@
 import { Badge } from "@vamos-ui/react";
 import { A, C, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
 import { LocaleSamples } from "@/components/docs/locale-samples";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Localization" };
+export const metadata = pageMeta({ title: "Localization", description: "English by default, with a locale provider, Intl formatting and locale packs. The Turkish pack covers TCKN/VKN, IBAN, KDV, holidays and addresses.", path: "/docs/localization/" });
 
 export default function LocalizationPage() {
   return (

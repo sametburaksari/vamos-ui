@@ -1,7 +1,8 @@
 import { Badge } from "@vamos-ui/react";
 import { A, C, Callout, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "CLI & registry" };
+export const metadata = pageMeta({ title: "CLI & registry", description: "Copy components and blocks into your project with npx vamos-ui, keep them up to date with diff and upgrade, and connect AI agents through the MCP server.", path: "/docs/cli/" });
 
 export default function CliPage() {
   return (

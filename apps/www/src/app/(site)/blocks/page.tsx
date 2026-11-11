@@ -1,7 +1,8 @@
 import { blockCategories, blocks } from "@/blocks/registry";
 import { BlocksBrowser } from "@/components/blocks/blocks-browser";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Blocks" };
+export const metadata = pageMeta({ title: "Blocks", description: "Whole screens built only from kit components: app shells, dashboards, sign-in, lists, detail pages, settings and 57 complete example websites. Copy any of them with one command.", path: "/blocks/" });
 
 export default function BlocksPage() {
   // Source code is not inlined: each viewer loads /blocks/code/<name>.json when its Code tab opens.

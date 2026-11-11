@@ -3,6 +3,7 @@ import { Onest, Instrument_Serif, JetBrains_Mono, Hanken_Grotesk, Bricolage_Grot
 import { fontBootScript } from "@vamos-ui/react/fonts";
 import { TooltipProvider } from "@vamos-ui/react";
 import "./globals.css";
+import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 // The four font presets. Only the default (editorial) is preloaded;
 // the browser fetches the others when a preset is selected.
@@ -17,7 +18,39 @@ const plex = IBM_Plex_Sans({ subsets: ["latin", "latin-ext"], variable: "--ff-pl
 const plexMono = IBM_Plex_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "500"], variable: "--ff-plex-mono", preload: false });
 const fonts = [onest, instrument, jetbrains, hanken, bricolage, geistMono, plex, plexMono];
 
-export const metadata: Metadata = { title: { default: "Vamos UI", template: "%s · Vamos UI" }, description: "One component kit for every admin panel and website." };
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: { default: "Vamos UI — React component kit for admin panels and websites", template: "%s · Vamos UI" },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: ["React components", "admin panel", "dashboard", "Tailwind CSS", "design system", "component library", "CMS", "CRM", "Next.js", "MCP"],
+  authors: [{ name: "Vamos", url: "https://vamos.ist" }],
+  creator: "Vamos",
+  publisher: "Vamos",
+  alternates: { canonical: "/" },
+  openGraph: { type: "website", siteName: SITE_NAME, url: "/", title: "Vamos UI — React component kit for admin panels and websites", description: SITE_DESCRIPTION, images: [OG_IMAGE], locale: "en_US" },
+  twitter: { card: "summary_large_image", title: "Vamos UI — React component kit for admin panels and websites", description: SITE_DESCRIPTION, images: [OG_IMAGE.url] },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Organization", "@id": "https://vamos.ist/#org", name: "Vamos", url: "https://vamos.ist", logo: `${SITE_URL}/brand/vamos-ui-icon-512.png` },
+    { "@type": "WebSite", "@id": `${SITE_URL}/#site`, name: SITE_NAME, url: SITE_URL, description: SITE_DESCRIPTION, publisher: { "@id": "https://vamos.ist/#org" }, inLanguage: "en" },
+    {
+      "@type": "SoftwareSourceCode",
+      name: SITE_NAME,
+      description: SITE_DESCRIPTION,
+      url: SITE_URL,
+      codeRepository: "https://github.com/sametburaksari/vamos-ui",
+      programmingLanguage: ["TypeScript", "React"],
+      runtimePlatform: "Node.js",
+      license: "https://opensource.org/licenses/MIT",
+      author: { "@id": "https://vamos.ist/#org" },
+    },
+  ],
+};
 
 // Apply the theme axes before first paint (no flash). A saved non-preset font pairing
 // ("fontPairing" in vamos-theme) also gets its tokens and a render-blocking Google Fonts link.
@@ -28,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-material="glass" data-accent="lime" data-font="editorial" suppressHydrationWarning className={fonts.map((f) => f.variable).join(" ")}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: boot }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="min-h-dvh font-sans text-[14px]">
         <TooltipProvider>{children}</TooltipProvider>
