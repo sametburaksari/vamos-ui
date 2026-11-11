@@ -7,6 +7,7 @@ import { highlight, readUiSource } from "@/lib/highlight";
 import { ComponentPreview } from "@/components/docs/component-preview";
 import { InstallTabs } from "@/components/docs/install-tabs";
 import { CodeFrame } from "@/components/docs/code-frame";
+import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return docs.map((d) => ({ slug: d.slug }));
@@ -14,7 +15,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const d = docsBySlug[(await params).slug];
-  return { title: d ? `${d.title} · Vamos UI` : "Component" };
+  if (!d) return { title: "Component" };
+  return pageMeta({ title: d.title, description: d.description, path: `/docs/components/${d.slug}/` });
 }
 
 function H2({ id, children }: { id: string; children: React.ReactNode }) {

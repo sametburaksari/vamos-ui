@@ -1,8 +1,9 @@
 import { Badge } from "@vamos-ui/react";
 import { A, C, DocPage, H2, P, Table, UL } from "@/components/docs/prose";
 import { inventory } from "@/lib/catalog";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Introduction" };
+export const metadata = pageMeta({ title: "Introduction", description: "What Vamos UI is: one React component kit for every admin panel and website, with five theme axes, business components, blocks, a CLI and an MCP server.", path: "/docs/" });
 
 export default function IntroductionPage() {
   const all = inventory.flatMap((g) => g.items);

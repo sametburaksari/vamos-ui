@@ -1,6 +1,7 @@
 import { DirectoryList } from "@/components/directory-list";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Directory" };
+export const metadata = pageMeta({ title: "Directory", description: "A directory of every Vamos UI component, block and chart in one searchable list.", path: "/directory/" });
 
 const checklist = [
   "Styling reads Vamos UI semantic tokens only — no hard-coded colours, no dark: variants.",

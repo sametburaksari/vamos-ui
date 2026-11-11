@@ -1,7 +1,8 @@
 import { AxisDemo } from "@/components/docs/axis-demo";
 import { C, Callout, Code, DocPage, H2, H3, P, Table } from "@/components/docs/prose";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Theming" };
+export const metadata = pageMeta({ title: "Theming", description: "Five independent theme axes — light/dark, glass/solid material, accent, density and font — set with HTML attributes on any subtree.", path: "/docs/theming/" });
 
 const tokens: [string, string][] = [
   ["scene", "Page background behind every surface"],

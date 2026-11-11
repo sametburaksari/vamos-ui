@@ -2,8 +2,9 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Badge, cn } from "@vamos-ui/react";
 import { inventory, recipes } from "@/lib/catalog";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = { title: "Components · Vamos UI" };
+export const metadata = pageMeta({ title: "Components", description: "Every Vamos UI component — primitives, forms, data tables, calendars, charts, editors and business components — with live previews, code and props.", path: "/docs/components/" });
 
 export default function ComponentsIndex() {
   const all = inventory.flatMap((g) => g.items);
