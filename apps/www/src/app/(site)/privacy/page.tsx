@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <DocPage
         eyebrow="Legal · Last updated 12 November 2026"
         title="Privacy policy"
-        description="Vamos UI has no accounts, no cookies, no analytics and no advertising. The only personal data we handle is what any web server sees: your IP address and the request, kept for 30 days."
+        description="Vamos UI has no accounts, no cookies, no analytics and no advertising. The only personal data we handle is what any web server sees: your IP address and the request, kept for up to 60 days."
         toc={[
           { id: "who", title: "Who we are" },
           { id: "summary", title: "Summary" },
@@ -50,9 +50,9 @@ export default function PrivacyPage() {
         <Table
           head={["", "What we receive", "Kept"]}
           rows={[
-            ["Docs site and registry", "Standard web server log entries (IP address, time, URL, status, browser user agent, referrer).", "30 days"],
-            ["Hosted MCP server", "The tool calls your AI client sends (tool name and arguments) to compute an answer, plus a web server log entry per request. Arguments are not stored.", "Logs 30 days; arguments not kept"],
-            ["CLI and local MCP server", "Nothing. They run on your computer and send us no telemetry. Fetching the registry produces a normal server log entry.", "30 days (log entry)"],
+            ["Docs site and registry", "Standard web server log entries (IP address, time, URL, status, browser user agent, referrer).", "Up to 60 days"],
+            ["Hosted MCP server", "The tool calls your AI client sends (tool name and arguments) to compute an answer, plus a web server log entry per request. Arguments are not stored.", "Logs up to 60 days; arguments not kept"],
+            ["CLI and local MCP server", "Nothing. They run on your computer and send us no telemetry. Fetching the registry produces a normal server log entry.", "Up to 60 days (log entry)"],
           ]}
         />
         <P>We do not sell personal data, do not use it for advertising or profiling, and do not use it to train AI models.</P>
@@ -150,7 +150,7 @@ export default function PrivacyPage() {
 
         <H2 id="retention">Retention</H2>
         <P>
-          Access logs and process logs are deleted after <strong className="text-fg">30 days</strong>. Logs connected to a
+          Access logs are archived by the hosting control panel once a month and the archive is deleted at the end of the following month, so an entry is kept for <strong className="text-fg">at most about 60 days</strong>. The MCP server writes no request content to its process log. Logs connected to a
           security incident may be kept longer, only as long as needed to investigate it. MCP tool arguments and results are not
           retained at all.
         </P>
@@ -194,8 +194,8 @@ export default function PrivacyPage() {
           IP adresinizi görür. CLI ve yerel MCP sunucusu bilgisayarınızda çalışır, telemetri göndermez. Barındırılan MCP sunucusu (
           <C>mcp.vamos.ist</C>) yapay zekâ istemcinizin gönderdiği araç adını ve argümanlarını yalnızca yanıtı hesaplamak için
           bellekte işler, saklamaz. Web sunucusu her istek için IP adresi, zaman, adres, durum kodu ve tarayıcı bilgisini kaydeder;
-          bu kayıtlar güvenlik ve işletim amacıyla (KVKK m. 5/2-f, meşru menfaat) tutulur ve <strong className="text-fg">30 gün</strong>{" "}
-          sonra silinir. Veriler satılmaz; yalnızca barındırma sağlayıcısı (bizim adımıza) ve yasal zorunlulukta yetkili makamlar
+          bu kayıtlar güvenlik ve işletim amacıyla (KVKK m. 5/2-f, meşru menfaat) tutulur; aylık arşivlenir ve arşiv bir sonraki ayın sonunda silinir, yani kayıtlar <strong className="text-fg">en fazla yaklaşık 60 gün</strong>{" "}
+          saklanır. Veriler satılmaz; yalnızca barındırma sağlayıcısı (bizim adımıza) ve yasal zorunlulukta yetkili makamlar
           erişebilir. KVKK m. 11 kapsamındaki haklarınız için <A href={ISSUES}>GitHub issues</A> üzerinden kişisel veri paylaşmadan
           başvurun; size özel bir iletişim yolu bildiririz. İngilizce metin esastır.
         </P>
