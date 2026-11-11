@@ -19,6 +19,9 @@ import { ModuleTree, isRelative, isTestFile, listFiles, packageName } from "./mo
 import { validateSchema } from "./json-schema.mjs";
 import { AXES, axesDocument, configSchema, indexSchema, itemSchema } from "./schema.mjs";
 
+const SHARED_DIR = "_shared";
+const SHARED_ITEM = "blocks-shared";
+
 export const REGISTRY_NAME = "vamos-ui";
 export const REGISTRY_VERSION = "0.2.0";
 export const HOMEPAGE = "https://ui.vamos.ist";
@@ -300,7 +303,14 @@ export function buildRegistry(options) {
   }
   /** @type {Map<string, { files: string[], blockDeps: Set<string>, kitRefs: Set<string>, npm: Set<string> }>} */
   const blockGraphs = new Map();
-  for (const b of blockMetas) {
+  // apps/www/src/blocks/_shared: fixtures and helpers several blocks import. Published once as the
+  // lib item "blocks-shared" (files under blocks/_shared/), which those blocks depend on.
+  const sharedDir = path.join(blocksDir, SHARED_DIR);
+  const sharedFiles = fs.existsSync(sharedDir)
+    ? fs.readdirSync(sharedDir).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f)).sort().map((f) => `${SHARED_DIR}/${f}`)
+    : [];
+  const sharedMeta = sharedFiles.length ? { name: SHARED_DIR, files: sharedFiles } : null;
+  for (const b of sharedMeta ? [...blockMetas, sharedMeta] : blockMetas) {
     /** @type {string[]} */
     const files = [];
     const blockDeps = new Set();
@@ -311,7 +321,8 @@ export function buildRegistry(options) {
     const visit = (/** @type {string} */ f) => {
       const folder = f.split("/")[0];
       if (folder !== b.name) {
-        if (blockNames.has(folder)) blockDeps.add(folder);
+        if (folder === SHARED_DIR) blockDeps.add(SHARED_ITEM);
+        else if (blockNames.has(folder)) blockDeps.add(folder);
         else error(`block ${b.name}: "${f}" is outside any block folder and cannot be published`);
         return;
       }
@@ -323,7 +334,9 @@ export function buildRegistry(options) {
       if (!blockTree.has(f)) error(`blocks/${b.name}/meta.ts: listed file "${f}" does not exist`);
       else visit(f);
     }
-    if (blockTree.has(`${b.name}/page.tsx`)) visit(`${b.name}/page.tsx`);
+    if (b.name === SHARED_DIR) {
+      // no page: a lib of shared files
+    } else if (blockTree.has(`${b.name}/page.tsx`)) visit(`${b.name}/page.tsx`);
     else error(`block ${b.name}: page.tsx is missing`);
     while (queue.length) {
       const f = /** @type {string} */ (queue.shift());
@@ -630,6 +643,31 @@ export function buildRegistry(options) {
         files: g.files.map((f) => ({ path: `blocks/${f}`, content: blockTree.get(f).code })),
         usage: `import Page from "@/components/blocks/${b.name}/${rel}";\n\nexport default function Route() {\n  return <Page />;\n}`,
         guidance: guidance.get(b.name),
+      }),
+    );
+  }
+
+  if (sharedMeta) {
+    const g = /** @type {NonNullable<ReturnType<typeof blockGraphs.get>>} */ (blockGraphs.get(SHARED_DIR));
+    const deps = new Set([STYLES]);
+    for (const t of g.kitRefs) {
+      const o = owner.get(t);
+      if (o) deps.add(o);
+      else error(`${SHARED_ITEM}: kit file "${t}" has no registry item`);
+    }
+    items.push(
+      compact({
+        name: SHARED_ITEM,
+        // "block" so its files install next to the blocks (components/blocks/_shared) and resolve as block paths.
+        type: /** @type {const} */ ("block"),
+        title: "Shared block data",
+        category: "Shared",
+        tags: ["internal"],
+        docs: docsUrl("/blocks"),
+        description: "Fictional fixtures (people, companies, products, orders, tickets…) and formatting helpers shared by the admin blocks.",
+        dependencies: npmDeps(g.npm, SHARED_ITEM),
+        registryDependencies: [...deps].sort(),
+        files: g.files.map((f) => ({ path: `blocks/${f}`, content: blockTree.get(f).code })),
       }),
     );
   }
