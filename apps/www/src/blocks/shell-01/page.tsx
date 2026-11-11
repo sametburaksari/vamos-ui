@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Construction } from "lucide-react";
-import { Card, DialogTitle, Sheet, SheetContent } from "@vamos-ui/react";
+import { DialogTitle, Sheet, SheetContent } from "@vamos-ui/react";
 import { AppSidebar } from "./components/app-sidebar";
+import { SamplePage } from "./components/sample-page";
 import { TopBar } from "./components/top-bar";
 import { appForPath, apps, sharedNav, type NavEntry } from "./components/nav";
 
@@ -30,12 +30,7 @@ export default function Shell01({ children, initialPath = "/crm/pipeline" }: { c
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar title={`${app?.name ?? "Workspace"} / ${titleFor(path)}`} onMenu={() => setMobileNav(true)} />
         <main className="min-w-0 flex-1 px-4 py-6 md:px-6 md:py-7">
-          {children ?? (
-            <Card className="grid place-items-center px-6 py-24 text-center">
-              <Construction className="mb-3 size-6 text-fg-subtle" strokeWidth={1.6} />
-              <p className="text-fg-muted">Your page goes here. Try the app switcher at the top of the sidebar.</p>
-            </Card>
-          )}
+          {children ?? <SamplePage appId={app?.id} />}
         </main>
       </div>
       <Sheet open={mobileNav} onOpenChange={setMobileNav}>

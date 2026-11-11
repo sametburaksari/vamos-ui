@@ -17,6 +17,6 @@ export async function generateMetadata({ params }: { params: Promise<{ name: str
 export default async function ViewBlock({ params }: { params: Promise<{ name: string }> }) {
   const b = blocksByName[(await params).name];
   if (!b) notFound();
-  const { Component } = b;
+  const { default: Component } = await b.load();
   return <Component />;
 }

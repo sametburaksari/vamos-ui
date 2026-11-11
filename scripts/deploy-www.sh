@@ -46,6 +46,9 @@ ErrorDocument 404 /404.html
     Header set Cache-Control "public, max-age=300"
   </FilesMatch>
 </IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml application/xml
+</IfModule>
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{HTTPS} off

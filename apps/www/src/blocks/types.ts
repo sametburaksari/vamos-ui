@@ -30,5 +30,6 @@ export interface BlockMeta {
 
 export interface BlockEntry extends BlockMeta {
   name: string;
-  Component: ComponentType;
+  /** Loads the block's page module on demand (one chunk per block). */
+  load: () => Promise<{ default: ComponentType }>;
 }
