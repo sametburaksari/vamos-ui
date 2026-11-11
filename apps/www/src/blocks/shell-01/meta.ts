@@ -6,7 +6,7 @@ const meta: BlockMeta = {
   category: "App shells",
   order: 10,
   tags: ["any"],
-  files: ["shell-01/page.tsx", "shell-01/components/app-sidebar.tsx", "shell-01/components/nav.ts", "shell-01/components/top-bar.tsx"],
+  files: ["shell-01/page.tsx", "shell-01/components/app-sidebar.tsx", "shell-01/components/nav.ts", "shell-01/components/top-bar.tsx", "shell-01/components/sample-page.tsx"],
 };
 
 export default meta;
