@@ -16,7 +16,7 @@ const harbourType = createFontPairing({ id: "harbour", label: "Harbour", heading
  */
 export default function SiteTherapy01() {
   return (
-    <SiteShell accent={ACCENT} material="solid" density="spacious" pages={["home", "approach", "contact"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} motion="subtle" material="solid" density="spacious" pages={["home", "approach", "contact"]} className="min-h-dvh bg-scene">
       <FontProvider pairing={harbourType}>
         <SiteShellLocale code="en">
           <TherapySite locale="en" />

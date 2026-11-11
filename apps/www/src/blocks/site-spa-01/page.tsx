@@ -7,5 +7,5 @@ import { SpaSite } from "./components/spa-site";
  * Switch EN / TR in the navbar.
  */
 export default function SiteSpa01() {
-  return <LocaleSwitch en={<SpaSite locale="en" />} tr={<SpaSite locale="tr" />} />;
+  return <LocaleSwitch motion="subtle" en={<SpaSite locale="en" />} tr={<SpaSite locale="tr" />} />;
 }

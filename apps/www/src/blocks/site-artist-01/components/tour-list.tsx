@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Badge, Button, cn, Switch, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 import { sitePageHref } from "@vamos-ui/react/blocks";
+import { Stagger } from "@vamos-ui/react/motion";
 import { ArrowRight, ArrowUpRight, BellRing, Check } from "lucide-react";
 import { copyFor, regions, shows, type Show, type SiteLocale } from "./content";
 
@@ -79,6 +80,7 @@ export function TourList({ locale, variant = "full", limit }: { locale: SiteLoca
                   {gone ? t({ en: ` · ${gone} sold out`, tr: ` · ${gone} tükendi` }) : ""}
                 </span>
               </header>
+              <Stagger asChild step={60}>
               <ol className="m-0 list-none p-0">
                 {list.map((s) => {
                   const sold = s.status === "sold-out";
@@ -88,10 +90,10 @@ export function TourList({ locale, variant = "full", limit }: { locale: SiteLoca
                       key={s.id}
                       data-status={s.status}
                       className={cn(
-                        "grid grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-x-4 gap-y-3 border-b border-line py-4 sm:grid-cols-[4.5rem_minmax(0,1fr)_auto] md:grid-cols-[4.5rem_7rem_minmax(0,1fr)_9rem_auto]",
+                        "group grid grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-x-4 gap-y-3 border-b border-line py-4 sm:grid-cols-[4.5rem_minmax(0,1fr)_auto] md:grid-cols-[4.5rem_7rem_minmax(0,1fr)_9rem_auto]",
                       )}
                     >
-                      <span className={cn("row-span-2 font-display text-[2.6rem] leading-none tabular-nums sm:row-span-1 sm:text-[3.25rem]", sold && "text-fg-subtle line-through decoration-2")}>
+                      <span className={cn("row-span-2 font-display text-[2.6rem] leading-none tabular-nums sm:row-span-1 sm:text-[3.25rem] motion-safe:transition-[color,translate] motion-safe:duration-200", sold ? "text-fg-subtle line-through decoration-2" : "group-hover:text-accent-ink pointer-fine:group-hover:-translate-y-0.5")}>
                         {f.date(s.date, { day: "2-digit" })}
                       </span>
                       <span className="hidden font-mono text-xs leading-relaxed text-fg-muted uppercase md:block">
@@ -140,6 +142,7 @@ export function TourList({ locale, variant = "full", limit }: { locale: SiteLoca
                   );
                 })}
               </ol>
+              </Stagger>
             </section>
           );
         })}

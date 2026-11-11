@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useSiteShell } from "@vamos-ui/react/blocks";
+import { Reveal } from "@vamos-ui/react/motion";
 import type { L, SiteLocale } from "./content";
 
 interface EstateContextValue {
@@ -55,31 +56,11 @@ export function EstateProvider({ children }: { children: React.ReactNode }) {
   return <EstateContext.Provider value={value}>{children}</EstateContext.Provider>;
 }
 
-/** Fades and slowly settles its content when it scrolls into view (skipped for reduced motion). */
-export function SlowReveal({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const [shown, setShown] = React.useState(true);
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const r = el.getBoundingClientRect();
-    if (r.top < window.innerHeight) return;
-    setShown(false);
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e?.isIntersecting) {
-          setShown(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -12% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+/** Slowly settles (or, with `clip`, unveils) its content when it scrolls into view — the kit Reveal at the estate's unhurried pace. Reduced motion and data-motion="off" show it at once. */
+export function SlowReveal({ children, className, effect = "rise" }: { children: React.ReactNode; className?: string; effect?: "rise" | "clip" | "fade" }) {
   return (
-    <div ref={ref} data-shown={shown ? "" : undefined} className={className} style={{ opacity: shown ? 1 : 0, transform: shown ? "none" : "translateY(28px)", transition: "opacity 1.6s cubic-bezier(.2,.7,.1,1), transform 1.8s cubic-bezier(.2,.7,.1,1)" }}>
+    <Reveal effect={effect} duration={effect === "clip" ? 1600 : 1400} rootMargin="0px 0px -12% 0px" className={className}>
       {children}
-    </div>
+    </Reveal>
   );
 }

@@ -3,20 +3,21 @@
 import * as React from "react";
 import { Badge, Button, CheckboxGroup, EmptyState, Field, Input, Select, cn } from "@vamos-ui/react";
 import { ArrowRight, Search } from "lucide-react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { emptyFilters, useCareers, type JobFilters } from "./careers-provider";
 import { copyFor, jobs as allJobs, kinds, places, teams, TODAY, type Job, type KindId, type PlaceId, type SiteLocale, type TeamId } from "./content";
 
 const daysBetween = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000);
 
 /** One job row: ref, title + team, places, band, posted — all one link-like button. */
-export function JobRow({ job, locale, compact = false }: { job: Job; locale: SiteLocale; compact?: boolean }) {
+export function JobRow({ job, locale, compact = false, enter = false }: { job: Job; locale: SiteLocale; compact?: boolean; /** Rise in when mounted (rows appearing after a filter change). */ enter?: boolean }) {
   const { t, f, band } = copyFor(locale);
   const { openJob, applied } = useCareers();
   const team = teams.find((x) => x.id === job.team)!;
   const age = daysBetween(job.posted, TODAY);
   const fresh = age <= 7;
   return (
-    <li className="border-b border-line">
+    <li className={cn("border-b border-line", enter && "vm-enter")}>
       <button
         type="button"
         onClick={() => openJob(job.id)}
@@ -145,7 +146,7 @@ export function JobBoard({ locale }: { locale: SiteLocale }) {
               </h2>
               <ul className="mt-1 border-t border-line">
                 {jobs.map((j) => (
-                  <JobRow key={j.id} job={j} locale={locale} />
+                  <JobRow key={j.id} job={j} locale={locale} enter />
                 ))}
               </ul>
             </section>
@@ -160,10 +161,12 @@ export function JobBoard({ locale }: { locale: SiteLocale }) {
 export function LatestRoles({ locale }: { locale: SiteLocale }) {
   const latest = [...allJobs].sort((a, b) => b.posted.localeCompare(a.posted)).slice(0, 4);
   return (
-    <ul className="border-t-2 border-fg">
-      {latest.map((j) => (
-        <JobRow key={j.id} job={j} locale={locale} compact />
-      ))}
-    </ul>
+    <Stagger asChild step={70}>
+      <ul className="border-t-2 border-fg">
+        {latest.map((j) => (
+          <JobRow key={j.id} job={j} locale={locale} compact />
+        ))}
+      </ul>
+    </Stagger>
   );
 }

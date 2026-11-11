@@ -1,5 +1,6 @@
 import { ArrowRight, MapPin, Search } from "lucide-react";
 import { Button, Input } from "@vamos-ui/react";
+import { CountUp, Reveal, Stagger } from "@vamos-ui/react/motion";
 import { BlockHeading, Container, Footer, Navbar, Section, SiteShellPage, Team, sitePageHref } from "@vamos-ui/react/blocks";
 import { CityPlan } from "./city-plan";
 import { copyFor, courses, DEPT, EMAIL, events, FACULTY, groups, levels, PHONE, people, programmes, UNI, type SiteLocale } from "./content";
@@ -59,11 +60,11 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
             <Container>
               <div className="grid gap-10 pt-12 pb-10 @4xl:grid-cols-12 @4xl:pt-20 @4xl:pb-14">
                 <div className="@4xl:col-span-7">
-                  <p className="m-0 text-small font-semibold tracking-[0.12em] uppercase opacity-90">
+                  <p className="vm-enter m-0 text-small font-semibold tracking-[0.12em] uppercase opacity-90">
                     {t(UNI)} · {t(FACULTY)}
                   </p>
-                  <BlockHeading id="dus-title" level={1} size="display-xl" className="mt-5 max-w-[12ch] text-accent-fg [&_em]:text-accent-fg" text={t({ en: "Urban *Studies*", tr: "Kentsel *Çalışmalar*" })} />
-                  <p className="m-0 mt-6 max-w-[46ch] text-lead">
+                  <BlockHeading id="dus-title" level={1} size="display-xl" className="vm-enter mt-5 max-w-[12ch] text-accent-fg [--vm-i:1] [&_em]:text-accent-fg" text={t({ en: "Urban *Studies*", tr: "Kentsel *Çalışmalar*" })} />
+                  <p className="vm-enter m-0 mt-6 max-w-[46ch] text-lead [--vm-i:2]">
                     {t({
                       en: "We study how cities are made, shared and repaired — on the streets of Istanbul and in fourteen partner cities. 34 staff, 410 students, three research groups.",
                       tr: "Kentlerin nasıl yapıldığını, paylaşıldığını ve onarıldığını inceliyoruz — İstanbul sokaklarında ve on dört ortak kentte. 34 akademisyen, 410 öğrenci, üç araştırma grubu.",
@@ -71,7 +72,7 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
                   </p>
                 </div>
                 <div className="hidden @4xl:col-span-5 @4xl:block">
-                  <figure className="m-0">
+                  <figure className="vm-enter m-0 [--vm-i:1]">
                     <CityPlan className="h-auto w-full opacity-90" />
                     <figcaption className="mt-2 font-mono text-[0.75rem] tracking-[0.04em] opacity-80">
                       {t({ en: "Fig. 1 — Studio I survey, a quarter between river and avenue", tr: "Şek. 1 — Stüdyo I saha çalışması, nehir ile cadde arasında bir mahalle" })}
@@ -80,14 +81,14 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
                 </div>
               </div>
 
-              <form method="get" role="search" aria-label={t({ en: "Find a course", tr: "Ders bulun" })} className="grid gap-3 border-t border-[color-mix(in_oklch,var(--accent-fg)_35%,transparent)] py-6 @3xl:grid-cols-[auto_minmax(0,1fr)_auto] @3xl:items-center">
+              <form method="get" role="search" aria-label={t({ en: "Find a course", tr: "Ders bulun" })} className="vm-enter grid gap-3 border-t border-[color-mix(in_oklch,var(--accent-fg)_35%,transparent)] py-6 [--vm-i:3] @3xl:grid-cols-[auto_minmax(0,1fr)_auto] @3xl:items-center">
                 <input type="hidden" name="page" value="programmes" />
                 {locale !== "en" ? <input type="hidden" name="lang" value={locale} /> : null}
                 <label htmlFor="dus-q" className="font-display text-h3">
                   {t({ en: "Find a course", tr: "Ders bulun" })}
                 </label>
                 <Input id="dus-q" name="q" type="search" size="lg" placeholder={t({ en: "e.g. housing, climate, URB 312", tr: "ör. konut, iklim, URB 312" })} autoComplete="off" />
-                <Button type="submit" variant="solid" size="lg">
+                <Button type="submit" variant="solid" size="lg" className="vm-press">
                   <Search aria-hidden className="size-4" />
                   {t({ en: `Search ${courses.length} courses`, tr: `${courses.length} derste ara` })}
                 </Button>
@@ -105,12 +106,12 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
                     {t({ en: "Three degrees, one studio culture", tr: "Üç derece, tek stüdyo kültürü" })}
                   </h2>
                 </div>
-                <a href={programmesHref()} className="inline-flex items-center gap-1.5 font-semibold text-accent-ink underline decoration-1 underline-offset-[0.3em] hover:decoration-2 focus-ring rounded-[2px]">
+                <a href={programmesHref()} className="vm-nudge inline-flex items-center gap-1.5 font-semibold text-accent-ink underline decoration-1 underline-offset-[0.3em] hover:decoration-2 focus-ring rounded-[2px]">
                   {t({ en: "Programmes and courses", tr: "Programlar ve dersler" })}
                   <ArrowRight aria-hidden className="size-4" />
                 </a>
               </div>
-              <div className="mt-8 overflow-x-auto rounded-ui-sm focus-ring" tabIndex={0} role="region" aria-labelledby="dus-adm">
+              <Reveal className="mt-8 overflow-x-auto rounded-ui-sm focus-ring" tabIndex={0} role="region" aria-labelledby="dus-adm">
                 <table className="w-full min-w-[40rem] border-collapse text-start">
                   <caption className="sr-only">{t({ en: "Degree programmes with length, language, places and deadline", tr: "Süre, dil, kontenjan ve son başvuru tarihiyle programlar" })}</caption>
                   <thead>
@@ -131,13 +132,15 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
                         </th>
                         <td className="py-5 pe-4 whitespace-nowrap">{t(p.years)}</td>
                         <td className="py-5 pe-4">{t(p.language)}</td>
-                        <td className="py-5 pe-4 text-end tabular-nums">{p.places}</td>
+                        <td className="py-5 pe-4 text-end tabular-nums">
+                          <CountUp value={p.places} locale={intl} duration={1000} />
+                        </td>
                         <td className="py-5 text-end font-semibold whitespace-nowrap tabular-nums">{f.date(p.deadline, "long")}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </Reveal>
             </Container>
           </Section>
 
@@ -148,6 +151,7 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
               <h2 id="dus-research" className="m-0 mt-2 max-w-[22ch] font-display text-display-m">
                 {t({ en: "Three groups, each with a project you can join", tr: "Her birinde katılabileceğiniz bir proje olan üç grup" })}
               </h2>
+              <Stagger asChild step={110}>
               <ol className="m-0 mt-10 grid list-none gap-10 p-0 @3xl:grid-cols-3 @3xl:gap-8">
                 {groups.map((g, i) => {
                   const p = lead(g.lead);
@@ -165,6 +169,7 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
                   );
                 })}
               </ol>
+              </Stagger>
             </Container>
           </Section>
 
@@ -181,6 +186,7 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
                     {t({ en: "Open to everyone, no registration. Tea from 16:30 outside B-204.", tr: "Herkese açık, kayıt gerekmez. 16.30’dan itibaren B-204 önünde çay." })}
                   </p>
                 </div>
+                <Stagger asChild step={80}>
                 <ul className="m-0 list-none p-0 @4xl:col-span-8">
                   {events.map((e) => (
                     <li key={e.date} className={`${rule} grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-5 py-5 @2xl:grid-cols-[5.5rem_minmax(0,1fr)_auto]`}>
@@ -200,6 +206,7 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
                     </li>
                   ))}
                 </ul>
+                </Stagger>
               </div>
             </Container>
           </Section>
@@ -220,7 +227,7 @@ export function DepartmentSite({ locale }: { locale: SiteLocale }) {
           />
           <div className="bg-surface">
             <Container className="pb-[var(--section-y,5rem)]">
-              <a href={peopleHref} className="inline-flex items-center gap-2 font-semibold text-accent-ink underline decoration-1 underline-offset-[0.3em] hover:decoration-2 focus-ring rounded-[2px]">
+              <a href={peopleHref} className="vm-nudge inline-flex items-center gap-2 font-semibold text-accent-ink underline decoration-1 underline-offset-[0.3em] hover:decoration-2 focus-ring rounded-[2px]">
                 {t({ en: `All ${people.length} people, with office hours`, tr: `Ofis saatleriyle ${people.length} kişinin tamamı` })}
                 <ArrowRight aria-hidden className="size-4" />
               </a>

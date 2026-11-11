@@ -4,6 +4,7 @@ import * as React from "react";
 import { Badge, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 import { sitePageHref } from "@vamos-ui/react/blocks";
 import { ArrowUpRight } from "lucide-react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { fill, kinds, licences, templateById, templates, type Kind } from "./content";
 import { initialPreview, LivePreview, type PreviewState } from "./live-preview";
 import { useShop } from "./shop-provider";
@@ -44,9 +45,10 @@ export function TemplateGrid() {
           ))}
         </ToggleGroup>
       </div>
+      <Stagger asChild step={70}>
       <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 xl:grid-cols-3">
         {list.map((tpl) => (
-          <li key={tpl.id} className="min-w-0">
+          <li key={tpl.id} className="vm-enter min-w-0">
             <article className="group relative flex flex-col gap-3">
               <p className="tabular flex items-center justify-between font-mono text-[11px] text-fg-muted">
                 <span>
@@ -87,6 +89,7 @@ export function TemplateGrid() {
           </li>
         ))}
       </ul>
+      </Stagger>
     </div>
   );
 }

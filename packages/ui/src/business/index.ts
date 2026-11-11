@@ -179,3 +179,13 @@ export {
   type PermissionDependency,
   type PermissionChange,
 } from "./permission-core";
+
+// Signer status (e-signature progress)
+export {
+  SignerStatus,
+  signerStatusLabels,
+  type SignerStatusProps,
+  type SignerStatusLabels,
+  type Signer,
+  type SignerState,
+} from "./signer-status";

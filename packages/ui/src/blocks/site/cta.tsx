@@ -12,6 +12,7 @@ import { CtaBooking, type BookingField, type BookingWeekday } from "./cta-bookin
 import { EmbedFacade } from "./embed-facade";
 import { formatSitePhone } from "./navbar";
 import { ArrowEnd, CtaList, field, siteTemplate, siteText, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
+import { Reveal } from "../../motion/reveal";
 
 export type CtaVariant = "band" | "split" | "minimal" | "newsletter" | "booking";
 
@@ -102,9 +103,9 @@ export function Cta(props: CtaProps) {
       data-variant={variant}
       className={cn("vb-cta", className)}
     >
-      <div className="vb-reveal">
+      <Reveal disabled={editMode}>
         {variant === "split" ? <Split {...inner} /> : variant === "minimal" ? <Minimal {...inner} /> : variant === "newsletter" ? <Newsletter {...inner} /> : variant === "booking" ? <Booking {...inner} /> : <Band {...inner} />}
-      </div>
+      </Reveal>
     </Section>
   );
 }

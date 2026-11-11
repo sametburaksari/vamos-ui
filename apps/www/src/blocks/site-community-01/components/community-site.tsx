@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { ArrowRight, CalendarDays, Plus } from "lucide-react";
 import { Avatar, Button, Sparkline } from "@vamos-ui/react";
 import { Container, Footer, Navbar, SiteShellPage, sitePageHref } from "@vamos-ui/react/blocks";
+import { CountUp, Stagger } from "@vamos-ui/react/motion";
 import { categories, copyFor, EMAIL, meetups, member, type SiteLocale } from "./content";
 import { CircleMark } from "./circle-mark";
 import { ThreadPage } from "./thread-page";
@@ -38,8 +39,8 @@ function Panel({ id, title, children, action }: { id: string; title: string; chi
 /**
  * One language version of the forum: home (compact header with live counters, the latest
  * topics with activity, and a sidebar of categories, meetups and top contributors), all topics
- * with the category rail, and one thread with replies. Server component; the topic list and
- * thread interactions are client islands.
+ * with the category rail, and one thread with replies. Server component; the SiteShell in
+ * page.tsx picks page and language, the interactive parts are client islands.
  */
 export function CommunitySite({ locale }: { locale: SiteLocale }) {
   const { t, f, intl, labels } = copyFor(locale);
@@ -74,20 +75,21 @@ export function CommunitySite({ locale }: { locale: SiteLocale }) {
         <SiteShellPage id="home" title={t({ en: "Builders Circle — a forum for people who make things", tr: "Builders Circle — bir şeyler yapanların forumu" })}>
           {/* Compact header: what this is and the pulse right now. */}
           <section aria-labelledby="bc-title" className="@container border-b border-line bg-surface">
+            <style>{circleMotion}</style>
             <Container>
               <div className="grid gap-6 py-8 @4xl:grid-cols-[minmax(0,1fr)_auto] @4xl:items-end @4xl:py-10">
                 <div>
-                  <h1 id="bc-title" className="m-0 font-display text-display-m">
+                  <h1 id="bc-title" className="vm-enter m-0 font-display text-display-m">
                     {t({ en: "Ask, answer, show the build.", tr: "Sorun, yanıtlayın, projeyi gösterin." })}
                   </h1>
-                  <p className="m-0 mt-2 max-w-[60ch] text-body text-fg-muted">
+                  <p className="vm-enter [--vm-i:1] m-0 mt-2 max-w-[60ch] text-body text-fg-muted">
                     {t({
                       en: "Builders Circle is a forum for people who make things with their hands — wood, wires, walls and metal. No ads, no algorithm: newest activity first.",
                       tr: "Builders Circle, elleriyle bir şeyler yapanların forumu — ahşap, kablo, duvar ve metal. Reklam yok, algoritma yok: en yeni hareket en üstte.",
                     })}
                   </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Button asChild variant="primary" size="sm">
+                  <div className="vm-enter [--vm-i:2] mt-4 flex flex-wrap gap-2">
+                    <Button asChild variant="primary" size="sm" className="vm-press">
                       <a href="https://forum.example.com/new">
                         <Plus aria-hidden className="size-4" />
                         {start}
@@ -98,16 +100,16 @@ export function CommunitySite({ locale }: { locale: SiteLocale }) {
                     </Button>
                   </div>
                 </div>
-                <dl className="m-0 grid grid-cols-2 gap-x-6 gap-y-3 @md:grid-cols-4 @4xl:gap-x-8">
+                <dl className="vm-enter [--vm-i:3] m-0 grid grid-cols-2 gap-x-6 gap-y-3 @md:grid-cols-4 @4xl:gap-x-8">
                   {[
-                    { k: { en: "Members", tr: "Üye" }, v: f.number(18240) },
-                    { k: { en: "Online now", tr: "Şu an çevrimiçi" }, v: f.number(312), live: true },
-                    { k: { en: "Posts this week", tr: "Bu hafta ileti" }, v: f.number(1486) },
-                    { k: { en: "Answered within 1 h", tr: "1 saatte yanıtlanan" }, v: f.percent(0.71) },
+                    { k: { en: "Members", tr: "Üye" }, v: <CountUp value={18240} locale={intl} duration={1000} /> },
+                    { k: { en: "Online now", tr: "Şu an çevrimiçi" }, v: <CountUp value={312} locale={intl} duration={900} />, live: true },
+                    { k: { en: "Posts this week", tr: "Bu hafta ileti" }, v: <CountUp value={1486} locale={intl} duration={1000} /> },
+                    { k: { en: "Answered within 1 h", tr: "1 saatte yanıtlanan" }, v: <CountUp value={0.71} locale={intl} format={{ style: "percent" }} duration={900} /> },
                   ].map((s) => (
                     <div key={s.k.en} className="border-s-2 border-line ps-3">
                       <dt className="flex items-center gap-1.5 text-[0.75rem] text-fg-muted">
-                        {s.live ? <span aria-hidden className="size-1.5 rounded-full bg-success" /> : null}
+                        {s.live ? <span aria-hidden className="bc-live size-1.5 rounded-full bg-success" /> : null}
                         {t(s.k)}
                       </dt>
                       <dd className="m-0 mt-0.5 text-h3 font-semibold tabular-nums">{s.v}</dd>
@@ -126,7 +128,7 @@ export function CommunitySite({ locale }: { locale: SiteLocale }) {
                     <h2 id="bc-latest" className="m-0 text-h3 font-semibold">
                       {t({ en: "Discussions", tr: "Tartışmalar" })}
                     </h2>
-                    <a href={topicsHref()} className="inline-flex items-center gap-1 text-small font-medium text-accent-ink hover:underline focus-ring rounded-[2px]">
+                    <a href={topicsHref()} className="vm-nudge inline-flex items-center gap-1 text-small font-medium text-accent-ink hover:underline focus-ring rounded-[2px]">
                       {t({ en: "All topics", tr: "Tüm konular" })}
                       <ArrowRight aria-hidden className="size-3.5" />
                     </a>
@@ -137,6 +139,7 @@ export function CommunitySite({ locale }: { locale: SiteLocale }) {
                 <aside className="flex flex-col gap-4" aria-label={t({ en: "Community", tr: "Topluluk" })}>
                   <div id="categories" className="scroll-mt-24">
                     <Panel id="bc-cats" title={t({ en: "Categories", tr: "Kategoriler" })}>
+                      <Stagger asChild effect="fade" step={35}>
                       <ul className="m-0 list-none p-0">
                         {categories.map((c) => (
                           <li key={c.id} className="border-b border-line last:border-b-0">
@@ -156,6 +159,7 @@ export function CommunitySite({ locale }: { locale: SiteLocale }) {
                           </li>
                         ))}
                       </ul>
+                      </Stagger>
                     </Panel>
                   </div>
 
@@ -254,3 +258,19 @@ export function CommunitySite({ locale }: { locale: SiteLocale }) {
     </>
   );
 }
+
+/**
+ * Builders Circle moves like a busy forum should: quick fades, nothing that slows reading. The
+ * one flourish is the like — the heart pops on a spring and the count ticks over. The "online
+ * now" dot pulses as a live indicator.
+ */
+const circleMotion = `
+@keyframes bc-pop { 0% { transform: scale(0.6); } 55% { transform: scale(1.28); } 100% { transform: scale(1); } }
+@keyframes bc-tick { from { opacity: 0; transform: translate3d(0, -0.45em, 0); } }
+@keyframes bc-live { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .bc-pop:where(:not([data-motion="off"] *)) { animation: bc-pop 420ms var(--ease-spring); }
+  .bc-tick:where(:not([data-motion="off"] *)) { display: inline-block; animation: bc-tick 220ms var(--ease-out-quint); }
+  .bc-live:where(:not([data-motion="off"] *)) { animation: bc-live 2400ms var(--ease-in-out) infinite; }
+}
+`;

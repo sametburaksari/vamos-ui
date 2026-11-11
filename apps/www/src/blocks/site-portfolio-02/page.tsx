@@ -22,7 +22,7 @@ const lightHeadings = {
  */
 export default function SitePortfolio02() {
   return (
-    <SiteShell accent="#2B4EDB" theme="light" font="corporate" material="solid" density="spacious" pages={portfolioPages} className="min-h-dvh bg-scene [&_[data-slot=image]]:my-0!" style={lightHeadings}>
+    <SiteShell accent="#2B4EDB" motion="subtle" theme="light" font="corporate" material="solid" density="spacious" pages={portfolioPages} className="min-h-dvh bg-scene [&_[data-slot=image]]:my-0!" style={lightHeadings}>
       <GridProvider>
         <SiteShellLocale code="en">
           <LocaleProvider locale="en-GB">

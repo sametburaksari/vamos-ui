@@ -5,6 +5,8 @@ import { cn } from "../../lib/cn";
 import { ThemeScope } from "../../lib/theme-scope";
 import { useControllableState } from "../../lib/use-controllable-state";
 import { isBuiltInAccent, siteAccent, siteAccentCss, siteAccentKey } from "./shared/site-accent";
+import { motionAllowed } from "../../motion/core";
+import { startPageTransition, viewTransitionsSupported } from "../../motion/page-transition";
 import { parseSiteHref, readSiteLocation, sitePageHref, writeSiteLocation, type SiteLocation, type SiteRouting } from "./shared/site-routing";
 
 export interface SiteShellProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "dir"> {
@@ -43,6 +45,13 @@ export interface SiteShellProps extends Omit<React.HTMLAttributes<HTMLDivElement
   pageParam?: string;
   /** Query key for the locale. Default `"lang"`. */
   localeParam?: string;
+  /**
+   * Motion level for the whole site → `data-motion`. subtle (default): short fades and small
+   * rises, count-ups, the logo ticker. full: longer, wider, a wiping hero title, magnetic
+   * calls-to-action. off: final state everywhere. Reduced motion always wins. Page and
+   * language switches cross-fade (View Transitions where available, a fade otherwise).
+   */
+  motion?: "full" | "subtle" | "off";
 }
 
 export interface SiteShellContextValue {
@@ -54,6 +63,10 @@ export interface SiteShellContextValue {
   navigate: (to: SiteLocation) => void;
   /** The href for a page (respects `routing` and `pageParam`). */
   hrefFor: (page: string, anchor?: string) => string;
+  /** The shell's motion level. */
+  motion: "full" | "subtle" | "off";
+  /** True after a switch that should fade the new page in (no View Transitions available). */
+  pageEnter: boolean;
 }
 
 const SiteShellContext = React.createContext<SiteShellContextValue | null>(null);
@@ -103,6 +116,7 @@ export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(functi
     routing = "search",
     pageParam = "page",
     localeParam = "lang",
+    motion = "subtle",
     className,
     onClick,
     children,
@@ -125,6 +139,18 @@ export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(functi
   );
   /** What to do after the next render: focus the h1, scroll to the top or to an anchor. */
   const pending = React.useRef<{ focus: boolean; scroll: boolean; anchor?: string } | null>(null);
+  const [pageEnter, setPageEnter] = React.useState(false);
+
+  /** Swap page/locale as a page transition: a View Transition, or a fade on the new page. */
+  const transition = React.useCallback((commit: () => void) => {
+    const root = rootRef.current;
+    const animate = motion !== "off" && motionAllowed(root);
+    setPageEnter(animate && !viewTransitionsSupported());
+    if (animate) startPageTransition(commit, { scope: root });
+    else commit();
+  }, [motion]);
+  const transitionRef = React.useRef(transition);
+  transitionRef.current = transition;
 
   const pageKey = pages.join("|");
   const localeKey = locales.join("|");
@@ -141,9 +167,12 @@ export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(functi
         else window.history.replaceState(null, "", url);
       }
       if (pageChanged) pending.current = { focus: !to.anchor, scroll: true, anchor: to.anchor };
-      if (nextLocale !== locale) setLocale(nextLocale);
-      if (pageChanged) setPage(nextPage);
-      else if (to.anchor) scrollToAnchor(rootRef.current, to.anchor, false);
+      if (pageChanged || nextLocale !== locale) {
+        transition(() => {
+          if (nextLocale !== locale) setLocale(nextLocale);
+          if (pageChanged) setPage(nextPage);
+        });
+      } else if (to.anchor) scrollToAnchor(rootRef.current, to.anchor, false);
       // The Navbar's mobile menu is a native popover: close it after any switch.
       rootRef.current?.querySelectorAll<HTMLElement>("[popover]").forEach((p) => {
         try {
@@ -154,7 +183,7 @@ export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(functi
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [page, locale, pageKey, localeKey, routing, homePage, homeLocale, params, setLocale, setPage],
+    [page, locale, pageKey, localeKey, routing, homePage, homeLocale, params, setLocale, setPage, transition],
   );
 
   // URL → state on mount and on back/forward.
@@ -165,11 +194,15 @@ export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(functi
       const nextPage = loc.page && pages.includes(loc.page) ? loc.page : homePage;
       const nextLocale = loc.locale && locales.includes(loc.locale) ? loc.locale : homeLocale;
       const anchor = routing === "search" && window.location.hash.length > 1 ? decodeURIComponent(window.location.hash.slice(1)) : undefined;
-      setLocale(nextLocale);
-      setPage((prev) => {
-        if (prev !== nextPage) pending.current = { focus: !initial && !anchor, scroll: !initial, anchor: initial ? anchor : undefined };
-        return nextPage;
-      });
+      const commit = () => {
+        setLocale(nextLocale);
+        setPage((prev) => {
+          if (prev !== nextPage) pending.current = { focus: !initial && !anchor, scroll: !initial, anchor: initial ? anchor : undefined };
+          return nextPage;
+        });
+      };
+      if (initial) commit();
+      else transitionRef.current(commit);
     };
     // A deep link (`?page=order`) is server-rendered as home and switched here. As a transition,
     // React finishes hydrating the home tree (and any Suspense boundary still dehydrated) before
@@ -232,9 +265,11 @@ export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(functi
       locales,
       navigate: (to) => apply(to, "push"),
       hrefFor: (p, anchor) => sitePageHref(p, anchor, { routing, pageParam }),
+      motion,
+      pageEnter,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [page, locale, pageKey, localeKey, apply, routing, pageParam],
+    [page, locale, pageKey, localeKey, apply, routing, pageParam, motion, pageEnter],
   );
 
   // A colour → scoped variables. A name (built-in preset or your own, like "brand") goes
@@ -263,6 +298,7 @@ export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(functi
         accent={accentStyle ? "site" : custom ? undefined : accent}
         data-site-accent={accentStyle?.key}
         data-site-shell=""
+        data-motion={motion}
         data-page={page}
         lang={locale}
         className={cn("vb-scope font-sans text-fg", className)}
@@ -295,7 +331,7 @@ export interface SiteShellPageProps {
 
 /** One inner page: rendered only while it is the shell's current page. */
 export function SiteShellPage({ id, title, children }: SiteShellPageProps) {
-  const { page } = useSiteShell();
+  const { page, pageEnter } = useSiteShell();
   const active = page === id;
   const first = React.useRef(true);
   React.useEffect(() => {
@@ -304,7 +340,7 @@ export function SiteShellPage({ id, title, children }: SiteShellPageProps) {
   }, [active, title]);
   if (!active) return null;
   return (
-    <div data-site-page={id} className="contents">
+    <div data-site-page={id} data-page-enter={pageEnter ? "" : undefined} className="contents">
       {children}
     </div>
   );

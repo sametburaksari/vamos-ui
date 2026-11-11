@@ -17,7 +17,7 @@ const labType = createFontPairing({ id: "motion-lab", label: "Motion Lab", headi
  */
 export default function SitePhysio01() {
   return (
-    <SiteShell accent={ACCENT} material="glass" density="compact" pages={["home", "treatments", "booking"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} motion="full" material="glass" density="compact" pages={["home", "treatments", "booking"]} className="min-h-dvh bg-scene">
       <FontProvider pairing={labType}>
         <AreaProvider>
           <SiteShellLocale code="en">

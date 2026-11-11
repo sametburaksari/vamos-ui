@@ -55,7 +55,12 @@ function BarPlot({ series: keys, layout, stack, radius = 4, highlight, valueLabe
     [horizontal, chart],
   );
 
-  if (process.env.NODE_ENV !== "production" && chart.data.length > 20 && !horizontal) {
+  // A time series (dates on x) legitimately has many bars; the hint is for long category lists.
+  const timeAxis =
+    (typeof chart.xFormat === "object" && chart.xFormat !== null && ("date" in chart.xFormat || "relative" in chart.xFormat)) ||
+    (chart.x != null && typeof chart.data[0]?.[chart.x] === "string" && /^\d{4}-\d{2}-\d{2}/.test(chart.data[0][chart.x] as string)) ||
+    (chart.x != null && (chart.data[0]?.[chart.x] instanceof Date || typeof chart.data[0]?.[chart.x] === "number" && (chart.data[0][chart.x] as number) > 1e11));
+  if (process.env.NODE_ENV !== "production" && chart.data.length > 20 && !horizontal && !timeAxis) {
     console.warn("[vamos-ui] BarChart: more than 20 categories — use layout=\"horizontal\" or group the tail into \"Other\".");
   }
 

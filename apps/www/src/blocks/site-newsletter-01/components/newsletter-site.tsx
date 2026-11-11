@@ -50,21 +50,21 @@ export function NewsletterSite({ locale }: { locale: SiteLocale }) {
           {/* Nameplate */}
           <Section anchor="top" headingId="sd-sub-title" theme={{ rhythm: "tight" }} className="pt-10! sm:pt-14!">
             <Container>
-              <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 border-y-2 border-fg py-2 font-mono text-[10px] tracking-[0.14em] text-fg uppercase sm:text-[11px]">
+              <div className="vm-enter flex flex-wrap justify-between gap-x-6 gap-y-1 border-y-2 border-fg py-2 font-mono text-[10px] tracking-[0.14em] text-fg uppercase sm:text-[11px]">
                 <span>{t({ en: "Vol. V", tr: "Cilt V" })} · Nº {latest.n}</span>
                 <span className="hidden sm:inline">{t({ en: "Every second Sunday · Istanbul", tr: "İki pazarda bir · İstanbul" })}</span>
                 <span>{f.date(latest.date, { day: "numeric", month: "long", year: "numeric" })}</span>
               </div>
-              <BlockHeading level={1} size="display-2xl" className="mt-6 text-center [--display-scale:1.08] sm:mt-8">
+              <BlockHeading level={1} size="display-2xl" className="vm-enter mt-6 text-center [--display-scale:1.08] [--vm-i:1] sm:mt-8">
                 The Slow <em>Desk</em>
               </BlockHeading>
-              <p className="mx-auto mt-5 max-w-[34ch] text-center font-display text-[1.35rem] leading-snug text-fg-muted italic sm:text-[1.6rem]">
+              <p className="vm-enter mx-auto mt-5 max-w-[34ch] text-center font-display [--vm-i:2] text-[1.35rem] leading-snug text-fg-muted italic sm:text-[1.6rem]">
                 {t({ en: "A letter every second Sunday about doing careful work in a hurried world.", tr: "Aceleci bir dünyada özenli iş yapmak üzerine, iki pazarda bir gelen bir mektup." })}
               </p>
-              <div className="mt-8 border-t border-fg" />
-              <div className="mt-px border-t border-fg" />
+              <div className="sd-rule mt-8 border-t border-fg" />
+              <div className="sd-rule mt-px border-t border-fg" />
               <div id="subscribe" className="mt-14 grid scroll-mt-24 gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20">
-                <div className="flex flex-col gap-6">
+                <div className="vm-enter flex flex-col gap-6 [--vm-i:3]">
                   <h2 id="sd-sub-title" className="font-display text-[2.1rem] leading-[1.05] text-fg">
                     {t({ en: "Seven minutes, twice a month.", tr: "Ayda iki kez, yedi dakika." })}
                   </h2>
@@ -83,7 +83,7 @@ export function NewsletterSite({ locale }: { locale: SiteLocale }) {
                     <span>{t({ en: "since 2022", tr: "2022’den beri" })}</span>
                   </p>
                 </div>
-                <div id="latest" className="pt-6 lg:pt-2">
+                <div id="latest" className="vm-enter pt-6 [--vm-i:4] lg:pt-2">
                   <LatestLetter locale={locale} />
                 </div>
               </div>

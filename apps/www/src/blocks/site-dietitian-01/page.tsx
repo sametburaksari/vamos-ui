@@ -17,7 +17,7 @@ const greenplateType = createFontPairing({ id: "greenplate", label: "Greenplate"
  */
 export default function SiteDietitian01() {
   return (
-    <SiteShell accent={ACCENT} material="glass" density="comfortable" pages={["home", "programmes", "booking"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} motion="subtle" material="glass" density="comfortable" pages={["home", "programmes", "booking"]} className="min-h-dvh bg-scene">
       <FontProvider pairing={greenplateType}>
         <PlanProvider>
           <SiteShellLocale code="en">

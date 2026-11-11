@@ -178,7 +178,10 @@ export interface CommandItemProps extends React.ComponentPropsWithoutRef<typeof 
   icon?: React.ReactNode;
   /** Second line under the label. */
   description?: React.ReactNode;
-  /** `"mod+shift+n"` or `["mod","shift","n"]` — display only. */
+  /**
+   * `"mod+shift+n"` or `["mod","shift","n"]` — display only. An array without modifier keys is a
+   * key sequence (`["g","o"]` shows G then O).
+   */
   shortcut?: string | string[];
   /** Trailing meta (an app badge, a count). */
   badge?: React.ReactNode;
@@ -219,9 +222,22 @@ export const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>(fu
   );
 });
 
-/** Shortcut keycaps at the end of an item. */
+const MODIFIER_KEYS = /^(mod|ctrl|control|meta|cmd|command|alt|option|shift)$/i;
+
+/**
+ * Shortcut keycaps at the end of an item. A string or an array with modifiers is one combination
+ * (`"mod+k"`, `["mod","k"]`); an array of plain keys is a sequence (`["g","o"]` → G O).
+ */
 export function CommandShortcut({ keys, className }: { keys: string | string[]; className?: string }) {
-  return <KbdGroup keys={Array.isArray(keys) ? keys.join("+") : keys} size="sm" variant="ghost" className={cn("shrink-0 ps-3", className)} />;
+  const sequence = Array.isArray(keys) && keys.length > 1 && !keys.some((k) => MODIFIER_KEYS.test(k));
+  return (
+    <KbdGroup
+      keys={sequence ? (keys as string[]) : Array.isArray(keys) ? keys.join("+") : keys}
+      size="sm"
+      variant="ghost"
+      className={cn("shrink-0 ps-3", className)}
+    />
+  );
 }
 
 /* ------------------------------------------------------------------ */

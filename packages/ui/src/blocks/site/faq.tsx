@@ -8,6 +8,7 @@ import { RichText } from "../rich-text";
 import type { BlockBaseProps } from "../types";
 import { richToText, type RichDoc } from "../schema/rich-doc";
 import { ArrowEnd, siteText, useBlockIds, type SiteBlockLabels, type SiteCta } from "./_kit-1";
+import { Stagger } from "../../motion/reveal";
 
 export type FaqVariant = "split" | "stacked" | "columns";
 
@@ -107,30 +108,34 @@ export function Faq({
 
   const list =
     variant === "columns" ? (
-      <dl className="grid gap-x-(--gutter) @4xl:grid-cols-2">
-        {items.map((it, i) => (
-          <div key={i} id={itemId(it)} className="flex flex-col gap-3 border-t border-line py-7">
-            <dt className="text-h3 font-semibold tracking-[-0.012em] text-fg text-balance" data-field={editMode ? `props.items.${i}.q` : undefined}>
-              {it.q}
-            </dt>
-            <dd className="m-0">{answer(it, i)}</dd>
-          </div>
-        ))}
-      </dl>
-    ) : (
-      <div className="vb-faq-list border-b border-line">
-        {items.map((it, i) => (
-          <details key={i} id={itemId(it)} name={exclusive ? `${base}-faq` : undefined} open={openFirst && i === 0 ? true : undefined} className="vb-faq-item group/faq border-t border-line">
-            <summary className="vb-faq-q flex cursor-pointer list-none items-start justify-between gap-6 py-6 text-start focus-ring rounded-[2px]">
-              <QTag className="text-h3 font-semibold tracking-[-0.012em] text-fg text-balance" data-field={editMode ? `props.items.${i}.q` : undefined}>
+      <Stagger asChild effect="fade" disabled={editMode}>
+        <dl className="grid gap-x-(--gutter) @4xl:grid-cols-2">
+          {items.map((it, i) => (
+            <div key={i} id={itemId(it)} className="flex flex-col gap-3 border-t border-line py-7">
+              <dt className="text-h3 font-semibold tracking-[-0.012em] text-fg text-balance" data-field={editMode ? `props.items.${i}.q` : undefined}>
                 {it.q}
-              </QTag>
-              <span aria-hidden className="vb-faq-marker relative mt-[0.45em] size-3.5 shrink-0" />
-            </summary>
-            <div className="vb-faq-a max-w-[64ch] pb-7 pe-10">{answer(it, i)}</div>
-          </details>
-        ))}
-      </div>
+              </dt>
+              <dd className="m-0">{answer(it, i)}</dd>
+            </div>
+          ))}
+        </dl>
+      </Stagger>
+    ) : (
+      <Stagger asChild effect="fade" disabled={editMode}>
+        <div className="vb-faq-list border-b border-line">
+          {items.map((it, i) => (
+            <details key={i} id={itemId(it)} name={exclusive ? `${base}-faq` : undefined} open={openFirst && i === 0 ? true : undefined} className="vb-faq-item group/faq border-t border-line">
+              <summary className="vb-faq-q flex cursor-pointer list-none items-start justify-between gap-6 py-6 text-start focus-ring rounded-[2px]">
+                <QTag className="text-h3 font-semibold tracking-[-0.012em] text-fg text-balance" data-field={editMode ? `props.items.${i}.q` : undefined}>
+                  {it.q}
+                </QTag>
+                <span aria-hidden className="vb-faq-marker relative mt-[0.45em] size-3.5 shrink-0" />
+              </summary>
+              <div className="vb-faq-a max-w-[64ch] pb-7 pe-10">{answer(it, i)}</div>
+            </details>
+          ))}
+        </div>
+      </Stagger>
     );
 
   let content: React.ReactNode;

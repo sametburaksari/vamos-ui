@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@vamos-ui/react";
+import { Stagger } from "@vamos-ui/react/motion";
 
 export interface PracticeIndexItem {
   id: string;
@@ -41,6 +42,7 @@ export function PracticeIndex({ items, label, mattersLabel, moreLabel, headingLe
 
   return (
     <div className="grid gap-10 @5xl:grid-cols-12 @5xl:gap-12">
+      <Stagger asChild effect="clip" step={120}>
       <ol aria-label={label} className="@5xl:col-span-7">
         {items.map((it, i) => (
           <li key={it.id} className="border-t border-[color-mix(in_oklch,var(--accent-ink)_35%,transparent)] last:border-b">
@@ -75,10 +77,12 @@ export function PracticeIndex({ items, label, mattersLabel, moreLabel, headingLe
           </li>
         ))}
       </ol>
+      </Stagger>
 
       {/* Preview of the active practice — wide screens only, decorative: the rows carry the same links and text. */}
       <aside aria-hidden className="hidden @5xl:col-span-5 @5xl:block">
         <div className="sticky top-[calc(var(--topbar-h,4rem)+2rem)] border-t-2 border-accent-ink pt-6">
+          <div key={current.id} className="lv-swap">
           <p className="font-mono text-eyebrow uppercase tracking-[0.14em] text-accent-ink">
             {current.no} — {current.title}
           </p>
@@ -114,6 +118,7 @@ export function PracticeIndex({ items, label, mattersLabel, moreLabel, headingLe
             {moreLabel.replace("{title}", current.title)}
             <ArrowRight aria-hidden className="size-4" />
           </a>
+          </div>
         </div>
       </aside>
     </div>

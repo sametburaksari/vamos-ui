@@ -124,14 +124,15 @@ export function ProgrammePicker({ anchor = "picker", surface }: { anchor?: strin
                   <span className="font-medium text-fg">{fill(t(c.timeline), { weeks: plan.weeks })}</span>
                   <span className="text-fg-muted tabular">{fill(t(c.perWeek), { price: tl(plan.perWeek, locale) })}</span>
                 </div>
-                <ol className="flex h-9 items-stretch gap-[2px]" aria-label={fill(t(c.timeline), { weeks: plan.weeks })}>
+                <ol key={`${programme}-${plan.weeks}`} className="flex h-9 items-stretch gap-[2px]" aria-label={fill(t(c.timeline), { weeks: plan.weeks })}>
                   {Array.from({ length: plan.weeks }, (_, i) => {
                     const n = i + 1;
                     const visit = visitSet.has(n);
                     return (
                       <li
                         key={n}
-                        className={cn("min-w-0 flex-1 rounded-[2px]", visit ? "bg-accent" : "bg-line")}
+                        className={cn("gp-week min-w-0 flex-1 rounded-[2px]", visit ? "bg-accent" : "bg-line")}
+                        style={{ "--vm-i": i } as React.CSSProperties}
                         aria-label={visit ? fill(t(c.visitWeek), { n }) : undefined}
                         aria-hidden={visit ? undefined : true}
                       />

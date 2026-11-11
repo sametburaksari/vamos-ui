@@ -38,14 +38,16 @@ export function TeamCompass({ locale }: { locale: SiteLocale }) {
         <text y="-110" textAnchor="middle" className="fill-fg font-mono text-[13px]" style={{ fontWeight: 700 }}>
           N
         </text>
-        {teams.map((tm) => {
+        {teams.map((tm, i) => {
           const a = (tm.bearing * Math.PI) / 180;
           const on = tm.id === active;
-          return <circle key={tm.id} cx={r2(Math.sin(a) * 78)} cy={r2(-Math.cos(a) * 78)} r={on ? 7 : 4} fill={on ? "var(--accent)" : "var(--fg)"} stroke={on ? "var(--fg)" : "none"} strokeWidth="1.5" className="transition-[r] duration-200 motion-reduce:transition-none" />;
+          return <circle key={tm.id} style={{ "--np-i": i } as React.CSSProperties} cx={r2(Math.sin(a) * 78)} cy={r2(-Math.cos(a) * 78)} r={on ? 7 : 4} fill={on ? "var(--accent)" : "var(--fg)"} stroke={on ? "var(--fg)" : "none"} strokeWidth="1.5" className="np-dot transition-[r] duration-200 motion-reduce:transition-none" />;
         })}
         <g style={{ transform: `rotate(${bearing}deg)`, transition: "transform 600ms cubic-bezier(.2,.8,.2,1)" }} className="motion-reduce:[transition:none!important]">
-          <path d="M0 -70 L7 0 L0 8 L-7 0 Z" fill="var(--fg)" />
-          <path d="M0 70 L7 0 L0 -8 L-7 0 Z" fill="none" stroke="var(--fg)" strokeWidth="1.25" />
+          <g className="np-needle">
+            <path d="M0 -70 L7 0 L0 8 L-7 0 Z" fill="var(--fg)" />
+            <path d="M0 70 L7 0 L0 -8 L-7 0 Z" fill="none" stroke="var(--fg)" strokeWidth="1.25" />
+          </g>
         </g>
         <circle r="4" fill="var(--scene)" stroke="var(--fg)" strokeWidth="1.5" />
       </svg>

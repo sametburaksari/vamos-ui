@@ -4,7 +4,8 @@ import * as React from "react";
 import { Button } from "@vamos-ui/react";
 import { Container, Section, sitePageHref } from "@vamos-ui/react/blocks";
 import { ArrowRight } from "lucide-react";
-import { Drawing } from "./drawing";
+import { Drawing, plotMotion } from "./drawing";
+import { Stagger } from "@vamos-ui/react/motion";
 import { copyFor, families, products, type SiteLocale } from "./content";
 
 const c = {
@@ -74,29 +75,30 @@ export function SheetHero({ locale }: { locale: SiteLocale }) {
             <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--line)_1px,transparent_1px),linear-gradient(90deg,var(--line)_1px,transparent_1px)] bg-[size:24px_24px] opacity-60" />
             <div className="relative grid gap-8 p-5 @3xl:p-8 @5xl:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] @5xl:gap-6 @5xl:p-12">
               <div className="flex flex-col gap-6 @5xl:py-6">
-                <p className="flex items-center gap-3 font-mono text-eyebrow uppercase tracking-[0.14em] text-fg-muted">
+                <p className="vm-enter flex items-center gap-3 font-mono text-eyebrow uppercase tracking-[0.14em] text-fg-muted">
                   <span aria-hidden className="h-2.5 w-6 bg-warning" />
                   {t(c.eyebrow)}
                 </p>
-                <h1 id="os-hero-title" className="font-display text-display-xl uppercase leading-[0.92] tracking-[var(--display-tracking)] text-balance text-fg [font-weight:var(--display-weight)]">
+                <h1 id="os-hero-title" className="vm-enter [--vm-i:1] font-display text-display-xl uppercase leading-[0.92] tracking-[var(--display-tracking)] text-balance text-fg [font-weight:var(--display-weight)]">
                   <Emph text={t(c.title)} />
                 </h1>
-                <p className="max-w-[52ch] text-lead text-fg-muted">{t(c.lead)}</p>
-                <div className="flex flex-wrap gap-3">
-                  <Button asChild variant="primary" size="lg">
+                <p className="vm-enter [--vm-i:2] max-w-[52ch] text-lead text-fg-muted">{t(c.lead)}</p>
+                <div className="vm-enter [--vm-i:3] flex flex-wrap gap-3">
+                  <Button asChild variant="primary" size="lg" className="vm-press vm-nudge">
                     <a href={sitePageHref("products")}>
                       {t(c.catalogue)}
                       <ArrowRight aria-hidden className="rtl:rotate-180" />
                     </a>
                   </Button>
-                  <Button asChild variant="secondary" size="lg">
+                  <Button asChild variant="secondary" size="lg" className="vm-press">
                     <a href={sitePageHref("home", "rfq")}>{t(c.rfq)}</a>
                   </Button>
                 </div>
               </div>
               <figure className="flex flex-col justify-between gap-4">
-                <Drawing kind="flange" label={t(c.figure)} dims={["220", "20", "180"]} className="h-auto w-full" />
-                <dl className="ms-auto grid w-full max-w-[26rem] grid-cols-[auto_1fr_auto_auto] border border-fg bg-surface text-xs [&>*]:border-line [&>*]:px-2.5 [&>*]:py-1.5">
+                <style>{plotMotion}</style>
+                <Drawing kind="flange" label={t(c.figure)} dims={["220", "20", "180"]} className="os-plot h-auto w-full" />
+                <dl className="vm-enter [--vm-i:8] ms-auto grid w-full max-w-[26rem] grid-cols-[auto_1fr_auto_auto] border border-fg bg-surface text-xs [&>*]:border-line [&>*]:px-2.5 [&>*]:py-1.5">
                   <dt className="border-e border-b font-mono uppercase text-fg-muted">{t(c.dwg)}</dt>
                   <dd className="col-span-3 border-b font-mono font-semibold text-fg">OC-WN16-100 · DN100 PN16</dd>
                   <dt className="border-e border-b font-mono uppercase text-fg-muted">{t(c.material)}</dt>
@@ -131,11 +133,12 @@ export function FamilyGrid({ locale }: { locale: SiteLocale }) {
             </h2>
           </div>
         </div>
+        <Stagger asChild effect="fade" step={70}>
         <ul className="grid border-s border-t border-line @2xl:grid-cols-2 @5xl:grid-cols-4">
           {families.map((f, i) => (
             <li key={f.id} className="group relative flex flex-col gap-3 border-e border-b border-line p-5 transition-colors hover:bg-hover">
               <span className="font-mono text-xs text-fg-muted">0{i + 1}</span>
-              <Drawing kind={drawingOf[f.id]} className="h-auto w-full opacity-90" />
+              <Drawing kind={drawingOf[f.id]} className="h-auto w-full opacity-90 motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-(--ease-out-quint) pointer-fine:group-hover:scale-[1.04]" />
               <h3 className="font-display text-h3 uppercase text-fg">
                 <a href={sitePageHref("products", f.id)} className="after:absolute after:inset-0 focus-ring rounded-[2px]">
                   {t(f.name)}
@@ -152,6 +155,7 @@ export function FamilyGrid({ locale }: { locale: SiteLocale }) {
             </li>
           ))}
         </ul>
+        </Stagger>
       </Container>
     </Section>
   );

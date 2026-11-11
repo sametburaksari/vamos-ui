@@ -8,6 +8,7 @@ import type { BlockBaseProps } from "../types";
 import { site2Text, type Site2BlockLabels, type Site2Text } from "./shared/labels-2";
 import { textOf, useBlockIds2, type SiteImage2 } from "./shared/kit-2";
 import { GalleryLightbox } from "./shared/gallery-lightbox";
+import { Stagger } from "../../motion/reveal";
 
 export type GalleryVariant = "mosaic" | "filmstrip" | "grid" | "split-caption";
 export type GallerySpan = "1" | "wide" | "tall" | "big";
@@ -87,29 +88,33 @@ export function GallerySection({
     );
   } else if (variant === "mosaic") {
     body = (
-      <ul className="vb-mosaic grid grid-cols-2 gap-2 @2xl:grid-cols-12">
-        {images.map((g, i) => (
-          <li key={i} data-span={g.span ?? "1"} className="vb-mosaic-cell min-h-0">
-            <Cell g={g} i={i} ctx={ctx} className="size-full" sizes="(min-width: 42rem) 66vw, 100vw" fill />
-          </li>
-        ))}
-      </ul>
+      <Stagger asChild effect="clip" disabled={editMode}>
+        <ul className="vb-mosaic grid grid-cols-2 gap-2 @2xl:grid-cols-12">
+          {images.map((g, i) => (
+            <li key={i} data-span={g.span ?? "1"} className="vb-mosaic-cell min-h-0">
+              <Cell g={g} i={i} ctx={ctx} className="size-full" sizes="(min-width: 42rem) 66vw, 100vw" fill />
+            </li>
+          ))}
+        </ul>
+      </Stagger>
     );
   } else if (variant === "split-caption") {
     body = null;
   } else {
     const a: ImageAspect | undefined = aspect === "mixed" ? undefined : aspect;
     body = (
-      <ul className="grid grid-cols-2 gap-x-3 gap-y-6 @4xl:grid-cols-3 @4xl:gap-x-4">
-        {images.map((g, i) => (
-          <li key={i}>
-            <figure className="flex flex-col gap-2.5">
-              <Cell g={g} i={i} ctx={ctx} aspect={a ?? "3:2"} sizes="(min-width: 56rem) 33vw, 50vw" />
-              {g.caption ? <figcaption className="text-small text-fg-muted">{g.caption}</figcaption> : null}
-            </figure>
-          </li>
-        ))}
-      </ul>
+      <Stagger asChild disabled={editMode}>
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-6 @4xl:grid-cols-3 @4xl:gap-x-4">
+          {images.map((g, i) => (
+            <li key={i}>
+              <figure className="flex flex-col gap-2.5">
+                <Cell g={g} i={i} ctx={ctx} aspect={a ?? "3:2"} sizes="(min-width: 56rem) 33vw, 50vw" />
+                {g.caption ? <figcaption className="text-small text-fg-muted">{g.caption}</figcaption> : null}
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </Stagger>
     );
   }
 

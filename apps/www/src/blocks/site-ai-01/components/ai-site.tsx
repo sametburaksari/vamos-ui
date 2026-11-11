@@ -1,5 +1,6 @@
 import { BookOpen, Braces, FileText, GitPullRequest, Globe, LifeBuoy, Mail, MessagesSquare } from "lucide-react";
 import { BlockHeading, BlockLink, Container, Cta, Faq, Footer, Navbar, Section, SectionHeader, SiteShellPage, sitePageHref } from "@vamos-ui/react/blocks";
+import { CountUp, Stagger } from "@vamos-ui/react/motion";
 import { copyFor, EMAIL, faqHome, integrations, PHONE, useCases, type SiteLocale } from "./content";
 import { PricingPage } from "./pricing-page";
 import { QuillMark } from "./quill-mark";
@@ -14,8 +15,8 @@ const icons = { mail: Mail, docs: FileText, chat: MessagesSquare, desk: LifeBuoy
 
 /**
  * One language version of the Quill site: navbar and footer around three pages (home with the
- * typing demo, pricing, security). Server component; the SiteShell in page.tsx picks page and
- * language, the demo is the only client island.
+ * typing demo, pricing, security). Server component; the SiteShell in
+ * page.tsx picks page and language, the interactive parts are client islands.
  */
 export function AiSite({ locale }: { locale: SiteLocale }) {
   const c = copyFor(locale);
@@ -50,25 +51,25 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
             <Container>
               <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
                 <div className="lg:col-span-7">
-                  <p className="m-0 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-[11px] tracking-[0.08em] text-fg-muted uppercase">
+                  <p className="vm-enter m-0 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-[11px] tracking-[0.08em] text-fg-muted uppercase">
                     <span className="text-accent-ink">v4.2</span>
                     <span aria-hidden className="h-3 w-px bg-line" />
                     {t({ en: "Writing assistant for teams", tr: "Ekipler için yazım asistanı" })}
                   </p>
                   {/* The draft everyone has written once: struck out, then the headline. */}
-                  <p aria-hidden className="m-0 mt-9 max-w-[34ch] text-lead text-fg-subtle">
-                    <s className="decoration-accent decoration-2">{t({ en: "Hi, I just wanted to quickly, maybe, possibly mention that…", tr: "Merhaba, sadece kısaca, belki, aslında şunu söylemek istemiştim ki…" })}</s>
+                  <p aria-hidden className="vm-enter [--vm-i:1] m-0 mt-9 max-w-[34ch] text-lead text-fg-subtle">
+                    <s className="ql-strike decoration-accent decoration-2">{t({ en: "Hi, I just wanted to quickly, maybe, possibly mention that…", tr: "Merhaba, sadece kısaca, belki, aslında şunu söylemek istemiştim ki…" })}</s>
                   </p>
-                  <BlockHeading level={1} size="display-2xl" className="mt-3 max-w-[12ch]" text={t({ en: "Say the hard thing *clearly.*", tr: "Zor olanı *açıkça* söyleyin." })} />
+                  <BlockHeading level={1} size="display-2xl" className="vm-enter [--vm-i:2] mt-3 max-w-[12ch]" text={t({ en: "Say the hard thing *clearly.*", tr: "Zor olanı *açıkça* söyleyin." })} />
                 </div>
                 <div className="flex flex-col gap-7 lg:col-span-5 lg:pb-3">
-                  <p className="m-0 max-w-[42ch] text-lead text-fg-muted">
+                  <p className="vm-enter [--vm-i:3] m-0 max-w-[42ch] text-lead text-fg-muted">
                     {t({
                       en: "Quill rewrites the email you’ve been avoiding, the incident update and the release note — in your team’s voice, with every change shown, and without keeping a word of it.",
                       tr: "Quill ertelediğiniz e-postayı, kesinti bildirimini ve sürüm notunu yeniden yazar — ekibinizin sesiyle, her değişikliği göstererek ve tek kelimesini bile saklamadan.",
                     })}
                   </p>
-                  <div className="flex flex-wrap items-center gap-3">
+                  <div className="vm-enter [--vm-i:4] flex flex-wrap items-center gap-3">
                     <BlockLink href={pricing} appearance="primary" size="lg" {...common}>
                       {t({ en: "Start free — 40 rewrites a month", tr: "Ücretsiz başla — ayda 40 yazım" })}
                     </BlockLink>
@@ -79,24 +80,27 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
                 </div>
               </div>
 
-              <div id="demo" className="mt-12 scroll-mt-24 lg:mt-16">
+              <style>{quillMotion}</style>
+              <div id="demo" className="vm-enter vm-enter-media [--vm-i:5] mt-12 scroll-mt-24 lg:mt-16">
                 <TypingDemo locale={locale} />
               </div>
 
+              <Stagger asChild effect="fade" step={50}>
               <dl className="m-0 mt-8 grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
                 {[
-                  [f.number(2300), t({ en: "teams writing with Quill", tr: "ekip Quill ile yazıyor" })],
+                  [<CountUp key="n" value={2300} locale={intl} duration={900} />, t({ en: "teams writing with Quill", tr: "ekip Quill ile yazıyor" })],
                   [t({ en: "0 days", tr: "0 gün" }), t({ en: "default text retention", tr: "varsayılan metin saklama" })],
-                  [f.number(7), t({ en: "languages, any direction", tr: "dil, her yönde" })],
-                  [t({ en: "1.4 s", tr: "1,4 sn" }), t({ en: "median rewrite time", tr: "ortanca yazım süresi" })],
+                  [<CountUp key="n" value={7} locale={intl} duration={700} />, t({ en: "languages, any direction", tr: "dil, her yönde" })],
+                  [<><CountUp value={1.4} locale={intl} duration={900} />{t({ en: " s", tr: " sn" })}</>, t({ en: "median rewrite time", tr: "ortanca yazım süresi" })],
                 ].map(([v, k]) => (
-                  <div key={k} className="border-t border-line pt-3">
+                  <div key={k as string} className="border-t border-line pt-3">
                     <dt className="sr-only">{k}</dt>
                     <dd className="m-0 font-display text-2xl tracking-[-0.03em] text-fg tabular">{v}</dd>
                     <dd className="m-0 mt-0.5 text-sm text-fg-muted">{k}</dd>
                   </div>
                 ))}
               </dl>
+              </Stagger>
             </Container>
           </Section>
 
@@ -110,16 +114,17 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
                 title={t({ en: "One sentence, *before* and after", tr: "Tek cümle, *önce* ve sonra" })}
                 lead={t({ en: "Real lines from four teams in the pilot, rewritten in Plain. The number on the end is what changed in their first month.", tr: "Pilottaki dört ekipten gerçek cümleler, Sade tonda yeniden yazıldı. Sondaki sayı ilk aylarında değişen şey." })}
               />
+              <Stagger asChild step={55}>
               <ol className="m-0 mt-12 list-none border-b border-line p-0">
                 {useCases.map((u, i) => (
-                  <li key={t(u.team)} className="grid gap-x-8 gap-y-3 border-t border-line py-7 md:grid-cols-[9rem_minmax(0,1fr)_minmax(0,1fr)_11rem] md:items-baseline">
+                  <li key={t(u.team)} className="group grid gap-x-8 gap-y-3 border-t border-line py-7 md:grid-cols-[9rem_minmax(0,1fr)_minmax(0,1fr)_11rem] md:items-baseline">
                     <p className="m-0 flex items-baseline gap-3 font-mono text-xs tracking-[0.08em] text-fg-muted uppercase">
                       <span className="text-fg-subtle tabular">{String(i + 1).padStart(2, "0")}</span>
                       {t(u.team)}
                     </p>
                     <p className="m-0 text-fg-subtle">
                       <span className="sr-only">{t({ en: "Before:", tr: "Önce:" })} </span>
-                      <s className="decoration-accent/60 decoration-1">{t(u.before)}</s>
+                      <s className="decoration-accent/60 decoration-1 motion-safe:transition-colors group-hover:text-fg-muted">{t(u.before)}</s>
                     </p>
                     <p className="m-0 text-lead leading-snug text-fg">
                       <span className="sr-only">{t({ en: "After:", tr: "Sonra:" })} </span>
@@ -129,6 +134,7 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
                   </li>
                 ))}
               </ol>
+              </Stagger>
             </Container>
           </Section>
 
@@ -144,12 +150,13 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
                     lead={t({ en: "No new tab to paste into. Select text, press ⌥ Q, pick a tone.", tr: "Yapıştırmak için yeni sekme yok. Metni seçin, ⌥ Q’ya basın, bir ton seçin." })}
                   />
                 </div>
+                <Stagger asChild effect="fade" step={40}>
                 <ul className="m-0 grid list-none grid-cols-1 gap-px overflow-hidden rounded-ui-lg border border-line bg-line p-0 sm:grid-cols-2 lg:col-span-8">
                   {integrations.map((x) => {
                     const Icon = icons[x.id as keyof typeof icons];
                     return (
-                      <li key={x.id} className="flex items-center gap-4 bg-surface px-5 py-5">
-                        <span className="grid size-10 shrink-0 place-items-center rounded-ui border border-line text-accent-ink">
+                      <li key={x.id} className="group flex items-center gap-4 bg-surface px-5 py-5">
+                        <span className="grid size-10 shrink-0 place-items-center rounded-ui border border-line text-accent-ink motion-safe:transition-[border-color,rotate] motion-safe:duration-150 group-hover:border-accent group-hover:-rotate-6">
                           <Icon aria-hidden className="size-[18px]" strokeWidth={1.6} />
                         </span>
                         <span className="min-w-0">
@@ -160,6 +167,7 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
                     );
                   })}
                 </ul>
+                </Stagger>
               </div>
             </Container>
           </Section>
@@ -181,6 +189,7 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
                     }
                   />
                 </div>
+                <Stagger asChild step={70}>
                 <dl className="m-0 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:col-span-6">
                   {[
                     ["0", t({ en: "days of text kept by default", tr: "gün varsayılan metin saklama" })],
@@ -194,6 +203,7 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
                     </div>
                   ))}
                 </dl>
+                </Stagger>
               </div>
             </Container>
           </Section>
@@ -249,3 +259,20 @@ export function AiSite({ locale }: { locale: SiteLocale }) {
     </>
   );
 }
+
+/**
+ * Quill's motion is crisp: short distances, quick fades. Its one flourish is the struck-out
+ * draft above the headline — the strike is drawn through the sentence as the page opens, the
+ * edit Quill exists to make. Without motion the plain line-through stays.
+ */
+const quillMotion = `
+@keyframes ql-strike { from { background-size: 0% 2px; } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .ql-strike:where(:not([data-motion="off"] *)) {
+    text-decoration: none;
+    background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 58% / 100% 2px;
+    animation: ql-strike 560ms var(--ease-in-out) 520ms backwards;
+  }
+  [dir="rtl"] .ql-strike:where(:not([data-motion="off"] *)) { background-position: 100% 58%; }
+}
+`;

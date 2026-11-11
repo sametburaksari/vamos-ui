@@ -176,7 +176,7 @@ export function CourseFinder({ locale }: { locale: SiteLocale }) {
             const full = free <= 0;
             const panelId = `cf-${c.code.replace(" ", "")}`;
             return (
-              <li key={c.code} className="border-b border-line">
+              <li key={c.code} className="vm-enter border-b border-line">
                 <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-3 py-5 @3xl:grid-cols-[7rem_minmax(0,1fr)_10rem_auto] @3xl:items-start">
                   <p className="m-0 font-mono text-small font-medium tracking-[0.02em] text-accent-ink @3xl:pt-1">{c.code}</p>
                   <div className="col-span-2 min-w-0 @3xl:col-span-1">

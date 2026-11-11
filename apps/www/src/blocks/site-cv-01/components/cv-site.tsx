@@ -5,6 +5,8 @@ import { copyFor, education, EMAIL, GITHUB, jobs, LINKEDIN, PHONE, posts, profil
 import { CvPage } from "./cv-page";
 import { CvSheet } from "./cv-sheet";
 import { PrintButton } from "./print-button";
+import { SectionSpy } from "./section-spy";
+import { Stagger } from "@vamos-ui/react/motion";
 
 export const cvPages = ["home", "cv"];
 
@@ -47,28 +49,28 @@ export function CvSite({ locale }: { locale: SiteLocale }) {
                 {t({ en: "Skip to content", tr: "İçeriğe geç" })}
               </a>
               <div>
-                <p className="font-mono text-[0.75rem] text-fg-muted">deniz@arcan ~ cv</p>
-                <h1 className="mt-3 text-[2.5rem] font-[680] leading-[0.95] tracking-[-0.035em]">{profile.name}</h1>
-                <p className="mt-2 text-fg-muted">
+                <p className="vm-enter font-mono text-[0.75rem] text-fg-muted">deniz@arcan ~ cv</p>
+                <h1 className="vm-enter [--vm-i:1] mt-3 text-[2.5rem] font-[680] leading-[0.95] tracking-[-0.035em]">{profile.name}</h1>
+                <p className="vm-enter [--vm-i:2] mt-2 text-fg-muted">
                   {t(profile.role)} · {t({ en: "Istanbul", tr: "İstanbul" })}
                 </p>
               </div>
-              <Badge tone="outline" dot className="self-start text-fg">
+              <Badge tone="outline" dot className="vm-enter [--vm-i:3] self-start text-fg">
                 {t(profile.status)}
               </Badge>
-              <nav aria-label={t({ en: "Sections", tr: "Bölümler" })} className="hidden @5xl:block">
-                <ul className="flex flex-col border-s border-line">
+              <nav aria-label={t({ en: "Sections", tr: "Bölümler" })} className="vm-enter [--vm-i:4] hidden @5xl:block">
+                <SectionSpy ids={sections.map((s) => s.id)}>
                   {sections.map((s) => (
                     <li key={s.id}>
-                      <a href={`#${s.id}`} className="-ms-px flex items-baseline gap-3 border-s border-transparent py-1.5 ps-4 text-small text-fg-muted hover:border-accent hover:text-fg focus-ring rounded-e-[3px]">
+                      <a href={`#${s.id}`} className="-ms-px flex items-baseline gap-3 border-s border-transparent py-1.5 ps-4 text-small text-fg-muted motion-safe:transition-colors hover:border-accent hover:text-fg focus-ring rounded-e-[3px]">
                         <span className="font-mono text-[0.6875rem] tabular-nums">{n(s.id)}</span>
                         {s.label}
                       </a>
                     </li>
                   ))}
-                </ul>
+                </SectionSpy>
               </nav>
-              <div className="flex flex-wrap gap-2">
+              <div className="vm-enter [--vm-i:5] flex flex-wrap gap-2">
                 <PrintButton variant="primary" fileName={FILE_NAME} hint={pdfHint}>
                   {pdf}
                 </PrintButton>
@@ -90,7 +92,7 @@ export function CvSite({ locale }: { locale: SiteLocale }) {
             <main id="content" tabIndex={-1} className="flex min-w-0 flex-col gap-16 outline-none @5xl:py-16">
               <section id="about" aria-labelledby="cv-about" className="scroll-mt-8">
                 <SectionHead id="about">{t({ en: "About", tr: "Hakkımda" })}</SectionHead>
-                <p className="max-w-[58ch] text-pretty text-[1.3125rem] leading-[1.5] tracking-[-0.01em]">{t(profile.intro)}</p>
+                <p className="vm-enter [--vm-i:2] max-w-[58ch] text-pretty text-[1.3125rem] leading-[1.5] tracking-[-0.01em]">{t(profile.intro)}</p>
                 <p className="mt-4 max-w-[58ch] text-fg-muted">
                   {t({
                     en: "Right now: pricing and permissions at Tilda Ledger. Before that, freight software that had to work in tunnels.",
@@ -101,6 +103,7 @@ export function CvSite({ locale }: { locale: SiteLocale }) {
 
               <section id="experience" aria-labelledby="cv-experience" className="scroll-mt-8">
                 <SectionHead id="experience">{t({ en: "Experience", tr: "Deneyim" })}</SectionHead>
+                <Stagger asChild step={90}>
                 <Timeline variant="steps">
                   {jobs.map((j, i) => (
                     <TimelineItem key={j.id} status={i === 0 ? "current" : "done"}>
@@ -131,10 +134,12 @@ export function CvSite({ locale }: { locale: SiteLocale }) {
                     </TimelineItem>
                   ))}
                 </Timeline>
+                </Stagger>
               </section>
 
               <section id="projects" aria-labelledby="cv-projects" className="scroll-mt-8">
                 <SectionHead id="projects">{t({ en: "Selected projects", tr: "Seçili projeler" })}</SectionHead>
+                <Stagger asChild step={70}>
                 <ul className="flex flex-col border-t border-line">
                   {projects.map((p) => (
                     <li key={p.id} className="border-b border-line">
@@ -159,10 +164,12 @@ export function CvSite({ locale }: { locale: SiteLocale }) {
                     </li>
                   ))}
                 </ul>
+                </Stagger>
               </section>
 
               <section id="writing" aria-labelledby="cv-writing" className="scroll-mt-8">
                 <SectionHead id="writing">{t({ en: "Writing and talks", tr: "Yazılar ve konuşmalar" })}</SectionHead>
+                <Stagger asChild effect="fade" step={45}>
                 <ul className="flex flex-col">
                   {posts.map((p) => (
                     <li key={p.href}>
@@ -176,6 +183,7 @@ export function CvSite({ locale }: { locale: SiteLocale }) {
                     </li>
                   ))}
                 </ul>
+                </Stagger>
                 <Separator className="my-4" />
                 <ul className="flex flex-col gap-1.5 text-small">
                   {talks.map((k) => (

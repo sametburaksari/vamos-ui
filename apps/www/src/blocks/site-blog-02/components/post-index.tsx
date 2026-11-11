@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Search } from "lucide-react";
 import { Button, Input, Kbd, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
+import { Stagger } from "@vamos-ui/react/motion";
 
 export interface IndexPost {
   href: string;
@@ -199,9 +200,10 @@ export function PostIndex({
                   <span className="tabular">{labels.count.replace("{count}", String(g.posts.length))}</span>
                 </h2>
               ) : null}
+              <Stagger asChild effect="fade" step={40}>
               <ol className="flex flex-col">
                 {g.posts.map((p) => (
-                  <li key={p.href + p.title} className="group relative border-b border-line last:border-b-0">
+                  <li key={p.href + p.title} className="group relative border-b border-line last:border-b-0 before:absolute before:inset-y-4 before:-start-3 before:w-0.5 before:origin-top before:scale-y-0 before:bg-accent before:content-[''] motion-safe:before:transition-transform motion-safe:before:duration-200 hover:before:scale-y-100 has-focus-visible:before:scale-y-100">
                     <div className="grid gap-x-6 gap-y-1 py-4 @3xl:grid-cols-[9.5rem_1fr_auto] @3xl:items-baseline">
                       <time dateTime={p.iso} className="font-mono text-eyebrow text-fg-subtle tabular @3xl:text-small">
                         {p.date}
@@ -226,6 +228,7 @@ export function PostIndex({
                   </li>
                 ))}
               </ol>
+              </Stagger>
             </div>
           ))
         )}

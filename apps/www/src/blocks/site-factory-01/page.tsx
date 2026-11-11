@@ -12,7 +12,7 @@ import { FactoryType } from "./components/factory-type";
  */
 export default function SiteFactory01() {
   return (
-    <SiteShell accent="#475569" material="solid" density="compact" pages={factoryPages} className="min-h-dvh bg-scene">
+    <SiteShell accent="#475569" motion="subtle" material="solid" density="compact" pages={factoryPages} className="min-h-dvh bg-scene">
       <FactoryType>
         <SiteShellLocale code="en">
           <FactorySite locale="en" />

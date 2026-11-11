@@ -137,7 +137,7 @@ export function FeeEstimator({ locale }: { locale: SiteLocale }) {
             </div>
             <dl className="flex flex-col py-3 text-small" aria-live="polite">
               {est.lines.map((l) => (
-                <div key={l.id} className="flex items-baseline gap-2 py-1.5">
+                <div key={l.id} className="lg-line flex items-baseline gap-2 py-1.5">
                   <dt className="text-fg">{t(l.label)}</dt>
                   <span aria-hidden className="min-w-4 flex-1 translate-y-[-0.25em] border-b border-dotted border-fg-subtle" />
                   <dd className="font-mono tabular text-fg">{tl(l.amount, locale)}</dd>
@@ -157,7 +157,9 @@ export function FeeEstimator({ locale }: { locale: SiteLocale }) {
             <div className="mt-3 flex items-end justify-between gap-3 border-y-[3px] border-double border-line py-3">
               <span className="text-small font-semibold text-fg">{t(c.total)}</span>
               <span className="font-mono text-[1.75rem] leading-none font-medium tabular text-accent-ink" data-testid="lg-total">
-                {tl(est.gross, locale)}
+                <span key={est.gross} className="lg-settle">
+                  {tl(est.gross, locale)}
+                </span>
               </span>
             </div>
             <p className="mt-5 mb-1 font-mono text-eyebrow uppercase tracking-[0.12em] text-fg-muted">{t(c.once)}</p>
@@ -177,8 +179,8 @@ export function FeeEstimator({ locale }: { locale: SiteLocale }) {
             </dl>
             <p className="mt-5 text-small text-fg-muted">{t(est.partner ? c.teamPartner : c.teamSenior)}</p>
             <div className="mt-5 flex flex-col gap-2">
-              <Button asChild variant="primary" block>
-                <a href={sitePageHref("contact")}>
+              <Button asChild variant="primary" block className="vm-press">
+                <a href={sitePageHref("contact")} className="vm-nudge">
                   {t(c.book)}
                   <ArrowRight aria-hidden className="rtl:rotate-180" />
                 </a>

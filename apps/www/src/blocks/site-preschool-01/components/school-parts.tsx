@@ -6,6 +6,7 @@ import { ArrowRight, CalendarDays, Sprout } from "lucide-react";
 import { fill, GROUPS, groups, longDate, openMornings, photos, plans, REGISTRATION, tl } from "./content";
 import { DailyRhythm } from "./daily-rhythm";
 import { useSchool } from "./school-provider";
+import { Stagger } from "@vamos-ui/react/motion";
 
 const c = {
   eyebrow: { en: "Bilingual preschool · Suadiye", tr: "İki dilli anaokulu · Suadiye" },
@@ -41,24 +42,24 @@ export function SchoolHero() {
       <Container>
         <div className="grid items-center gap-12 @4xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] @4xl:gap-14">
           <div className="flex min-w-0 flex-col gap-6">
-            <p className="flex items-center gap-2 text-small font-semibold text-accent-ink">
+            <p className="vm-enter flex items-center gap-2 text-small font-semibold text-accent-ink">
               <Sprout aria-hidden className="size-4" />
               {t(c.eyebrow)}
             </p>
-            <h1 id="lo-hero-title" className="font-display text-display-l text-balance text-fg">
+            <h1 id="lo-hero-title" className="vm-enter vm-enter-title font-display text-display-l text-balance text-fg [--vm-i:1]">
               {em(t(c.title))}
             </h1>
-            <p className="max-w-[54ch] text-lead text-fg-muted">{t(c.lead)}</p>
-            <div className="flex flex-wrap gap-3">
-              <a href={sitePageHref("enrol")} className={cn(buttonVariants({ variant: "primary", size: "lg" }), "rounded-full")}>
+            <p className="vm-enter max-w-[54ch] text-lead text-fg-muted [--vm-i:2]">{t(c.lead)}</p>
+            <div className="vm-enter flex flex-wrap gap-3 [--vm-i:3]">
+              <a href={sitePageHref("enrol")} className={cn(buttonVariants({ variant: "primary", size: "lg" }), "vm-press vm-nudge rounded-full")}>
                 {t(c.enrol)}
                 <ArrowRight aria-hidden className="rtl:rotate-180" />
               </a>
-              <a href={sitePageHref("home", "day")} className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "rounded-full")}>
+              <a href={sitePageHref("home", "day")} className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "vm-press rounded-full")}>
                 {t(c.see)}
               </a>
             </div>
-            <div className="mt-2 flex max-w-md items-start gap-4 rounded-[1.5rem] border border-line bg-surface p-4">
+            <div className="vm-enter mt-2 flex max-w-md items-start gap-4 rounded-[1.5rem] border border-line bg-surface p-4 [--vm-i:4]">
               <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent-ink">
                 <CalendarDays aria-hidden className="size-5" />
               </span>
@@ -70,11 +71,11 @@ export function SchoolHero() {
             </div>
           </div>
           <div className="relative mx-auto aspect-square w-full max-w-[36rem]">
-            <div aria-hidden className="absolute -end-6 -top-6 size-[38%] rounded-full bg-accent-soft" />
-            <div aria-hidden className="absolute -bottom-2 start-[4%] size-[20%] rounded-full border-[10px] border-accent-soft" />
-            <Image src={photos.paint.src} width={photos.paint.width} height={photos.paint.height} focal={photos.paint.focal} alt={t(photos.paint.alt)} aspect="4/5" priority sizes="(min-width: 1024px) 24vw, 62vw" className="absolute start-0 top-0 w-[60%] overflow-hidden rounded-[2rem] shadow-sm" />
-            <Image src={photos.reading.src} width={photos.reading.width} height={photos.reading.height} alt={t(photos.reading.alt)} aspect={0.8} sizes="(min-width: 1024px) 15vw, 40vw" className="absolute end-0 top-[14%] w-[36%] overflow-hidden rounded-[1.5rem] shadow-sm" />
-            <Image src={photos.blocks.src} width={photos.blocks.width} height={photos.blocks.height} alt={t(photos.blocks.alt)} aspect="1/1" sizes="(min-width: 1024px) 15vw, 40vw" className="absolute end-[12%] bottom-0 w-[40%] overflow-hidden rounded-[1.5rem] shadow-sm" />
+            <div aria-hidden className="lo-dot absolute -end-6 -top-6 size-[38%] rounded-full bg-accent-soft" />
+            <div aria-hidden className="lo-dot absolute -bottom-2 start-[4%] size-[20%] rounded-full border-[10px] border-accent-soft" />
+            <Image src={photos.paint.src} width={photos.paint.width} height={photos.paint.height} focal={photos.paint.focal} alt={t(photos.paint.alt)} aspect="4/5" priority sizes="(min-width: 1024px) 24vw, 62vw" className="lo-print absolute start-0 top-0 w-[60%] overflow-hidden rounded-[2rem] shadow-sm" />
+            <Image src={photos.reading.src} width={photos.reading.width} height={photos.reading.height} alt={t(photos.reading.alt)} aspect={0.8} sizes="(min-width: 1024px) 15vw, 40vw" className="lo-print absolute end-0 top-[14%] w-[36%] overflow-hidden rounded-[1.5rem] shadow-sm [--lo-i:1]" />
+            <Image src={photos.blocks.src} width={photos.blocks.width} height={photos.blocks.height} alt={t(photos.blocks.alt)} aspect="1/1" sizes="(min-width: 1024px) 15vw, 40vw" className="lo-print absolute end-[12%] bottom-0 w-[40%] overflow-hidden rounded-[1.5rem] shadow-sm [--lo-i:2]" />
           </div>
         </div>
       </Container>
@@ -101,11 +102,12 @@ export function GroupsOverview() {
     <Section headingId="lo-groups-h">
       <Container>
         <SectionHeader eyebrow={t(c.groupsEyebrow)} title={t(c.groupsTitle)} headingId="lo-groups-h" className="mb-10" />
+        <Stagger asChild effect="scale" step={110}>
         <ul className="grid gap-4 @3xl:grid-cols-3">
           {GROUPS.map((id, i) => {
             const g = groups[id];
             return (
-              <li key={id} className={cn("flex flex-col gap-4 rounded-[1.75rem] border border-line p-6", i === 1 ? "bg-accent-soft" : "bg-surface")}>
+              <li key={id} className={cn("vm-lift flex flex-col gap-4 rounded-[1.75rem] border border-line p-6", i === 1 ? "bg-accent-soft" : "bg-surface")}>
                 <div className="flex items-baseline justify-between gap-3">
                   <h3 className="font-display text-h3 text-fg">{t(g.name)}</h3>
                   <span className="text-small font-semibold text-fg">{t(g.ages)}</span>
@@ -122,6 +124,7 @@ export function GroupsOverview() {
             );
           })}
         </ul>
+        </Stagger>
       </Container>
     </Section>
   );
@@ -135,6 +138,7 @@ export function FeesSummary({ anchor }: { anchor?: string }) {
         <div className="grid gap-10 @4xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] @4xl:gap-16">
           <SectionHeader eyebrow={t(c.feesEyebrow)} title={t(c.feesTitle)} lead={t(c.feesLead)} headingId="lo-fees-h" />
           <div className="flex flex-col gap-3">
+            <Stagger asChild step={90}>
             <ul className="flex flex-col gap-3">
               {plans.map((p) => (
                 <li key={p.id} className="flex flex-col gap-1 rounded-[1.5rem] border border-line bg-surface p-5 @md:flex-row @md:items-center @md:justify-between @md:gap-6">
@@ -148,6 +152,7 @@ export function FeesSummary({ anchor }: { anchor?: string }) {
                 </li>
               ))}
             </ul>
+            </Stagger>
             <p className="text-small text-fg-muted">{fill(t(c.reg), { fee: tl(REGISTRATION, locale) })}</p>
           </div>
         </div>

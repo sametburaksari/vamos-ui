@@ -13,6 +13,7 @@ import docArticleLayout from "./article-layout";
 import docAttachmentList from "./attachment-list";
 import docAuditLog from "./audit-log";
 import docAvatar from "./avatar";
+import docBackupCodes from "./backup-codes";
 import docBadge from "./badge";
 import docBarChart from "./bar-chart";
 import docBlockEditor from "./block-editor";
@@ -84,6 +85,7 @@ import docMediaLibrary from "./media-library";
 import docMediaPicker from "./media-picker";
 import docMediaText from "./media-text";
 import docMenuList from "./menu-list";
+import docMotion from "./motion";
 import docMultiStepForm from "./multi-step-form";
 import docNavbar from "./navbar";
 import docNavigationMenu from "./navigation-menu";
@@ -93,9 +95,11 @@ import docPageHeader from "./page-header";
 import docPageIntro from "./page-intro";
 import docPagination from "./pagination";
 import docPermissionMatrix from "./permission-matrix";
+import docPinMap from "./pin-map";
 import docPopover from "./popover";
 import docPricingTable from "./pricing-table";
 import docProgress from "./progress";
+import docQrCode from "./qr-code";
 import docRadioGroup from "./radio-group";
 import docRecordDetailLayout from "./record-detail-layout";
 import docRecordPicker from "./record-picker";
@@ -112,8 +116,10 @@ import docSetupChecklist from "./setup-checklist";
 import docSheet from "./sheet";
 import docSidebar from "./sidebar";
 import docSignaturePad from "./signature-pad";
+import docSignerStatus from "./signer-status";
 import docSiteShell from "./site-shell";
 import docSkeleton from "./skeleton";
+import docSlaTimer from "./sla-timer";
 import docSlider from "./slider";
 import docSlugInput from "./slug-input";
 import docSortableList from "./sortable-list";
@@ -137,6 +143,7 @@ import docTimeTracker from "./time-tracker";
 import docToast from "./toast";
 import docTooltip from "./tooltip";
 import docTopBar from "./top-bar";
+import docTour from "./tour";
 import docTreeSelect from "./tree-select";
 import docTreeView from "./tree-view";
 import docTypography from "./typography";
@@ -158,6 +165,7 @@ export const entries: DocEntry[] = [
   docAttachmentList,
   docAuditLog,
   docAvatar,
+  docBackupCodes,
   docBadge,
   docBarChart,
   docBlockEditor,
@@ -229,6 +237,7 @@ export const entries: DocEntry[] = [
   docMediaPicker,
   docMediaText,
   docMenuList,
+  docMotion,
   docMultiStepForm,
   docNavbar,
   docNavigationMenu,
@@ -238,9 +247,11 @@ export const entries: DocEntry[] = [
   docPageIntro,
   docPagination,
   docPermissionMatrix,
+  docPinMap,
   docPopover,
   docPricingTable,
   docProgress,
+  docQrCode,
   docRadioGroup,
   docRecordDetailLayout,
   docRecordPicker,
@@ -257,8 +268,10 @@ export const entries: DocEntry[] = [
   docSheet,
   docSidebar,
   docSignaturePad,
+  docSignerStatus,
   docSiteShell,
   docSkeleton,
+  docSlaTimer,
   docSlider,
   docSlugInput,
   docSortableList,
@@ -282,6 +295,7 @@ export const entries: DocEntry[] = [
   docToast,
   docTooltip,
   docTopBar,
+  docTour,
   docTreeSelect,
   docTreeView,
   docTypography,

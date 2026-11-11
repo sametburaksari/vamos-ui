@@ -18,7 +18,7 @@ const loamType = createFontPairing({ id: "loam", label: "Loam", heading: "Fraunc
  */
 export default function SiteWaitlist01() {
   return (
-    <SiteShell accent={ACCENT} material="glass" density="comfortable" pages={["home", "joined"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} motion="full" material="glass" density="comfortable" pages={["home", "joined"]} className="min-h-dvh bg-scene">
       <FontProvider pairing={loamType}>
         <WaitlistProvider>
           <SiteShellLocale code="en">

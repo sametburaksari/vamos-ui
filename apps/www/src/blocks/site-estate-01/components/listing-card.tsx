@@ -39,12 +39,12 @@ export function ListingCard({ listing, layout = "stack", priority }: { listing: 
       onBlurCapture={() => setActive(null)}
       data-active={on ? "" : undefined}
       className={cn(
-        "group overflow-hidden transition-[box-shadow,border-color] duration-150",
+        "vm-lift group overflow-hidden transition-[box-shadow,border-color] duration-150",
         on && "ring-2 ring-accent-ink",
         layout === "row" ? "grid grid-cols-1 @md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]" : "flex flex-col",
       )}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden [&_img]:transition-transform [&_img]:duration-700 [&_img]:ease-(--ease-out-quint) motion-reduce:[&_img]:transition-none pointer-fine:group-hover:[&_img]:scale-[1.04]">
         <Image src={photo.src} width={photo.width} height={photo.height} alt={t(photo.alt)} aspect={layout === "row" ? "4/3" : "3/2"} priority={priority} sizes="(min-width: 1024px) 30vw, 100vw" className={layout === "row" ? "h-full" : undefined} />
         <Badge tone="neutral" className="surface-popover absolute start-3 top-3 text-fg">
           {t(s[listing.deal])}
@@ -58,7 +58,7 @@ export function ListingCard({ listing, layout = "stack", priority }: { listing: 
           onClick={() => toggleSaved(listing.id)}
           className="surface-popover absolute end-3 top-3 z-10 rounded-full!"
         >
-          {isSaved ? <BookmarkCheck className="text-accent-ink" /> : <Bookmark />}
+          {isSaved ? <BookmarkCheck className="hl-drop text-accent-ink" /> : <Bookmark />}
         </IconButton>
       </div>
       <div className="relative flex flex-col gap-2 p-5">

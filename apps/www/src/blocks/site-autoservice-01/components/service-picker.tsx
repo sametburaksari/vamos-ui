@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Badge, Button, Checkbox, cn, Field, NativeSelect, RadioGroup } from "@vamos-ui/react";
 import { ArrowRight, Clock3, Wrench, Droplets } from "lucide-react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { useJob } from "./job-provider";
 import { categories, closingOn, duration, fill, HANDOVER, OPEN_WEEKDAY, services, tl, toClock, toMinutes, vehicles, type Service, type VehicleId } from "./content";
 
@@ -70,11 +71,13 @@ export function ServicePicker({ mode = "full", headingId }: { mode?: "full" | "c
                 <span className="font-display text-h3 uppercase tracking-tight text-fg">{t(g.name)}</span>
                 {g.lead ? <span className="text-xs text-fg-muted">{t(g.lead)}</span> : null}
               </legend>
-              <ul className="flex flex-col border-t border-line">
-                {g.items.map((s) => (
-                  <ServiceRow key={s.id} uid={uid} s={s} vehicle={vehicle} checked={selected.includes(s.id)} onToggle={(on) => toggle(s.id, on)} />
-                ))}
-              </ul>
+              <Stagger asChild step={50}>
+                <ul className="flex flex-col border-t border-line">
+                  {g.items.map((s) => (
+                    <ServiceRow key={s.id} uid={uid} s={s} vehicle={vehicle} checked={selected.includes(s.id)} onToggle={(on) => toggle(s.id, on)} />
+                  ))}
+                </ul>
+              </Stagger>
             </fieldset>
           ))}
         </div>
@@ -194,7 +197,9 @@ export function JobCard({ headingId, hideAction }: { headingId?: string; hideAct
           <div className="flex flex-col items-end gap-0.5 text-end" aria-live="polite">
             <span className="text-xs text-fg-muted">{t(c.ready)}</span>
             <span className={cn("font-display font-extrabold tabular text-fg", overnight ? "text-lead" : "text-[2.75rem] leading-none tracking-[-0.03em]")} data-testid="gl-ready">
-              {est.items.length ? readyLabel : "—"}
+              <span key={est.items.length ? readyLabel : "none"} className="gl-tick inline-block">
+                {est.items.length ? readyLabel : "—"}
+              </span>
             </span>
           </div>
         </div>

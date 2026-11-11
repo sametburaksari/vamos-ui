@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button, Progress } from "@vamos-ui/react";
 import { BlockImage, Container, Section, sitePageHref } from "@vamos-ui/react/blocks";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { Parallax, Stagger } from "@vamos-ui/react/motion";
 import { AS_OF, copyFor, monthLabel, num, photos, progressAt, projectEnd, projects, statusName, typeName, type Project, type SiteLocale } from "./content";
 
 const c = {
@@ -25,7 +26,7 @@ export const projectHref = (slug: string) => sitePageHref(`project-${slug}`);
 
 /** A thin hazard-tape rule: accent and ink stripes. Decorative. */
 export function HazardRule({ className = "" }: { className?: string }) {
-  return <div aria-hidden className={`h-2 bg-[repeating-linear-gradient(-45deg,var(--accent)_0_14px,var(--fg)_14px_28px)] ${className}`} />;
+  return <div aria-hidden className={`sb-tape h-2 bg-[repeating-linear-gradient(-45deg,var(--accent)_0_14px,var(--fg)_14px_28px)] ${className}`} />;
 }
 
 function Emph({ text }: { text: string }) {
@@ -52,33 +53,37 @@ export function BuildHero({ locale }: { locale: SiteLocale }) {
       <Container>
         <div className="grid gap-10 @5xl:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] @5xl:gap-12">
           <div className="flex flex-col justify-center gap-7 @5xl:py-16">
-            <p className="font-mono text-eyebrow uppercase tracking-[0.16em] text-fg-muted">{t(c.eyebrow)}</p>
-            <h1 id="sb-hero-title" className="font-display text-display-xl uppercase leading-[0.92] text-balance text-fg [font-weight:var(--display-weight)]">
+            <p className="vm-enter font-mono text-eyebrow uppercase tracking-[0.16em] text-fg-muted">{t(c.eyebrow)}</p>
+            <h1 id="sb-hero-title" className="vm-enter vm-enter-title [--vm-i:1] font-display text-display-xl uppercase leading-[0.92] text-balance text-fg [font-weight:var(--display-weight)]">
               <Emph text={t(c.title)} />
             </h1>
-            <p className="max-w-[48ch] text-lead text-fg-muted">{t(c.lead)}</p>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild variant="primary" size="lg">
+            <p className="vm-enter max-w-[48ch] text-lead text-fg-muted [--vm-i:2]">{t(c.lead)}</p>
+            <div className="vm-enter flex flex-wrap gap-3 [--vm-i:3]">
+              <Button asChild variant="primary" size="lg" className="vm-press vm-nudge">
                 <a href={sitePageHref("projects")}>
                   {t(c.projects)}
                   <ArrowRight aria-hidden className="rtl:rotate-180" />
                 </a>
               </Button>
-              <Button asChild variant="secondary" size="lg">
+              <Button asChild variant="secondary" size="lg" className="vm-press">
                 <a href={sitePageHref("home", "contact")}>{t(c.talk)}</a>
               </Button>
             </div>
           </div>
-          <div className="relative min-h-[28rem] overflow-hidden rounded-t-ui-lg @5xl:min-h-[40rem]">
-            <BlockImage {...photos.slab} alt={t(photos.slab.alt)} priority sizes="(min-width: 1024px) 55vw, 100vw" className="absolute inset-0 size-full" imgClassName="size-full object-cover" />
+          <div className="vm-enter vm-enter-media relative min-h-[28rem] overflow-hidden rounded-t-ui-lg [--vm-i:1] @5xl:min-h-[40rem]">
+            <div className="absolute inset-0">
+              <Parallax shift={36} className="size-full">
+                <BlockImage {...photos.slab} alt={t(photos.slab.alt)} priority sizes="(min-width: 1024px) 55vw, 100vw" className="size-full" imgClassName="size-full object-cover" />
+              </Parallax>
+            </div>
             <div className="absolute inset-x-3 bottom-3 @md:inset-x-auto @md:start-5 @md:bottom-5 @md:w-[22rem]">
-              <div className="surface-popover rounded-ui-lg p-4">
+              <div className="sb-board surface-popover rounded-ui-lg p-4">
                 <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-fg-muted">{t(c.board).replace("{month}", monthLabel(AS_OF, locale, true))}</p>
                 <ul className="flex flex-col gap-4">
-                  {live.map((p) => {
+                  {live.map((p, i) => {
                     const pr = progressAt(p, AS_OF).overall;
                     return (
-                      <li key={p.slug} className="relative flex flex-col gap-1.5">
+                      <li key={p.slug} className="relative flex flex-col gap-1.5" style={{ "--sb-i": i } as React.CSSProperties}>
                         <div className="flex items-baseline justify-between gap-3">
                           <a href={projectHref(p.slug)} className="font-display text-[1.15rem] uppercase leading-tight text-fg after:absolute after:inset-0 focus-ring rounded-[2px]">
                             {p.name}
@@ -148,18 +153,18 @@ export function FeaturedProjects({ locale }: { locale: SiteLocale }) {
               {t({ en: "On site, open book", tr: "Şantiyede, açık defter" })}
             </h2>
           </div>
-          <Button asChild variant="secondary">
+          <Button asChild variant="secondary" className="vm-press vm-nudge">
             <a href={sitePageHref("projects")}>
               {t({ en: "All projects", tr: "Tüm projeler" })}
               <ArrowRight aria-hidden className="rtl:rotate-180" />
             </a>
           </Button>
         </div>
-        <div className="grid gap-10 @3xl:grid-cols-2 @5xl:grid-cols-3">
+        <Stagger step={140} className="grid gap-10 @3xl:grid-cols-2 @5xl:grid-cols-3">
           {projects.slice(0, 3).map((p) => (
             <ProjectCard key={p.slug} p={p} locale={locale} />
           ))}
-        </div>
+        </Stagger>
       </Container>
     </Section>
   );

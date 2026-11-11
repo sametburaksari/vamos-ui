@@ -11,6 +11,7 @@ import { labelTemplates, site2Text, type Site2BlockLabels, type Site2Text } from
 import { fieldAttr, formatDate2, isoDay, useBlockIds2, type SiteImage2, type SiteLink2 } from "./shared/kit-2";
 import { TestimonialsCarousel } from "./shared/testimonials-carousel";
 import { carouselLabelKeys } from "./shared/island-keys";
+import { Reveal, Stagger } from "../../motion/reveal";
 
 export type TestimonialsVariant = "feature" | "wall" | "carousel" | "reviews";
 export type ReviewSource = "google" | "yandex" | "tripadvisor" | "trustpilot" | "direct";
@@ -103,17 +104,23 @@ export function Testimonials({
           <>
             {variant !== "reviews" ? header : null}
             {variant === "feature" ? (
-              <FeatureQuote item={items[0]!} ctx={ctx} />
+              <Reveal disabled={editMode}>
+                <FeatureQuote item={items[0]!} ctx={ctx} />
+              </Reveal>
             ) : variant === "wall" ? (
-              <ul className="vb-quote-wall gap-x-(--gutter) @2xl:columns-2 @4xl:columns-3">
-                {items.map((item, i) => (
-                  <li key={i} className="mb-12 break-inside-avoid border-t border-line pt-6">
-                    <QuoteFigure item={item} index={i} ctx={ctx} />
-                  </li>
-                ))}
-              </ul>
+              <Stagger asChild disabled={editMode}>
+                <ul className="vb-quote-wall gap-x-(--gutter) @2xl:columns-2 @4xl:columns-3">
+                  {items.map((item, i) => (
+                    <li key={i} className="mb-12 break-inside-avoid border-t border-line pt-6">
+                      <QuoteFigure item={item} index={i} ctx={ctx} />
+                    </li>
+                  ))}
+                </ul>
+              </Stagger>
             ) : (
-              <ReviewsLayout header={header} items={items} summary={summary} ctx={ctx} />
+              <Reveal disabled={editMode}>
+                <ReviewsLayout header={header} items={items} summary={summary} ctx={ctx} />
+              </Reveal>
             )}
           </>
         )}

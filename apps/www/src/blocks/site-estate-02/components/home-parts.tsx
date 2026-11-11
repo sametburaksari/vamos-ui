@@ -6,6 +6,7 @@ import { BlockHeading, Container, Section, sitePageHref } from "@vamos-ui/react/
 import { ArrowRight, Pause, Play } from "lucide-react";
 import { eur, fill, num, photos, reel, residenceById, type Residence } from "./content";
 import { SlowReveal, useEstate } from "./estate-provider";
+import { Parallax } from "@vamos-ui/react/motion";
 
 const c = {
   eyebrow: { en: "Vellacourt · Private residences, Istanbul", tr: "Vellacourt · Özel konutlar, İstanbul" },
@@ -97,12 +98,12 @@ export function ResidenceFilm() {
       <Container className="relative pb-10 pt-40 @3xl:pb-14">
         <div className="grid gap-10 @5xl:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] @5xl:items-end">
           <div className="flex flex-col gap-6">
-            <p className="text-small uppercase tracking-[0.22em] text-fg">{t(c.eyebrow)}</p>
-            <BlockHeading id="vc-film-title" level={1} size="display-2xl" text={t(c.title)} className="max-w-[12ch] text-fg" />
-            <p className="max-w-[42ch] text-lead text-fg">{t(c.lead)}</p>
+            <p className="vm-enter text-small uppercase tracking-[0.22em] text-fg">{t(c.eyebrow)}</p>
+            <BlockHeading id="vc-film-title" level={1} size="display-2xl" text={t(c.title)} className="vm-enter vm-enter-title max-w-[12ch] text-fg [--vm-i:1]" />
+            <p className="vm-enter max-w-[42ch] text-lead text-fg [--vm-i:2]">{t(c.lead)}</p>
           </div>
 
-          <div className="flex flex-col gap-5">
+          <div className="vm-enter flex flex-col gap-5 [--vm-i:3]">
             <div className="flex items-end justify-between gap-4 border-b border-line pb-4">
               <div className="min-w-0" aria-live="polite">
                 <p className="font-display text-[1.6rem] leading-tight text-fg">{current.name}</p>
@@ -110,7 +111,7 @@ export function ResidenceFilm() {
                   {t(current.place)} · {current.price ? eur(current.price, locale) : t(c.onRequest)}
                 </p>
               </div>
-              <button type="button" onClick={() => open(current.id)} className="inline-flex shrink-0 items-center gap-2 text-small font-medium text-fg underline decoration-line underline-offset-[6px] hover:decoration-current focus-ring rounded-[2px]">
+              <button type="button" onClick={() => open(current.id)} className="vm-nudge inline-flex shrink-0 items-center gap-2 text-small font-medium text-fg underline decoration-line underline-offset-[6px] hover:decoration-current focus-ring rounded-[2px]">
                 {t(c.view)} <ArrowRight aria-hidden className="size-4" />
               </button>
             </div>
@@ -184,7 +185,7 @@ export function FeaturedHouses() {
             <p className="text-small uppercase tracking-[0.22em] text-fg-muted">{t(c.featuredEyebrow)}</p>
             <BlockHeading id="vc-featured-title" level={2} size="display-l" text={t(c.featuredTitle)} />
           </div>
-          <a href={sitePageHref("collection")} className="inline-flex items-center gap-2 text-small font-medium text-fg underline decoration-line underline-offset-[6px] hover:decoration-current focus-ring rounded-[2px]">
+          <a href={sitePageHref("collection")} className="vm-nudge inline-flex items-center gap-2 text-small font-medium text-fg underline decoration-line underline-offset-[6px] hover:decoration-current focus-ring rounded-[2px]">
             {t(c.all)} <ArrowRight aria-hidden className="size-4" />
           </a>
         </div>
@@ -192,7 +193,7 @@ export function FeaturedHouses() {
       <div className="mt-14 flex flex-col gap-20 @4xl:gap-28">
         {list.map((r, i) => (
           <article key={r.id} aria-labelledby={`vc-f-${r.id}`}>
-            <SlowReveal>
+            <SlowReveal effect="clip">
               <button type="button" onClick={() => open(r.id)} className="group block w-full overflow-hidden focus-ring" aria-labelledby={`vc-f-${r.id}`}>
                 <Image src={r.hero.src} width={r.hero.width} height={r.hero.height} alt={t(r.hero.alt)} focal={r.hero.focal} aspect="21/9" sizes="100vw" className="w-full @max-3xl:aspect-[4/5]!" imgClassName="transition-transform duration-[2400ms] ease-out motion-safe:group-hover:scale-[1.035]" />
               </button>
@@ -225,7 +226,9 @@ export function OffMarketBand() {
   return (
     <Section theme={{ mode: "dark" }} aria-labelledby="vc-off-title" className="relative isolate overflow-hidden">
       <div aria-hidden className="absolute inset-0 -z-10">
-        <Image src={photos.library.src} width={photos.library.width} height={photos.library.height} alt="" sizes="100vw" className="size-full" imgClassName="size-full object-cover" />
+        <Parallax shift={64} className="size-full">
+          <Image src={photos.library.src} width={photos.library.width} height={photos.library.height} alt="" sizes="100vw" className="size-full" imgClassName="size-full object-cover" />
+        </Parallax>
         <div className="absolute inset-0 bg-[color-mix(in_oklch,var(--scene)_80%,transparent)]" />
       </div>
       <Container>
@@ -234,7 +237,7 @@ export function OffMarketBand() {
           <div className="flex max-w-[52rem] flex-col items-start gap-6">
             <BlockHeading id="vc-off-title" level={2} size="display-l" text={t(c.offTitle)} className="text-fg" />
             <p className="max-w-[56ch] text-lead text-fg-muted">{t(c.offBody)}</p>
-            <a href={sitePageHref("home", "contact")} className="inline-flex h-12 items-center gap-3 rounded-full bg-accent px-6 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90 focus-ring">
+            <a href={sitePageHref("home", "contact")} className="vm-press vm-nudge inline-flex h-12 items-center gap-3 rounded-full bg-accent px-6 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90 focus-ring">
               {t(c.offCta)} <ArrowRight aria-hidden className="size-4" />
             </a>
           </div>

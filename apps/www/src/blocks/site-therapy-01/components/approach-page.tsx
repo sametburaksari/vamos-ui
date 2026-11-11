@@ -1,5 +1,6 @@
 import { Container, Cta, PageIntro, RichTextSection, Section, SectionHeader, sitePageHref, Steps } from "@vamos-ui/react/blocks";
 import { approach, copyFor, photos, type SiteLocale } from "./content";
+import { Stagger } from "@vamos-ui/react/motion";
 
 const c = {
   philosophyEyebrow: { en: "What we believe", tr: "İnandıklarımız" },
@@ -58,6 +59,7 @@ export function ApproachPage({ locale }: { locale: SiteLocale }) {
       <Section anchor="confidentiality" headingId="qh-conf-h">
         <Container>
           <SectionHeader eyebrow={t(c.confEyebrow)} title={t(c.confTitle)} lead={t(c.confLead)} headingId="qh-conf-h" className="mb-12" />
+          <Stagger asChild effect="fade" step={140} duration={1100}>
           <ol className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-line bg-line @3xl:grid-cols-3">
             {c.limits.map((l, i) => (
               <li key={i} className="flex flex-col gap-3 bg-surface p-6">
@@ -69,6 +71,7 @@ export function ApproachPage({ locale }: { locale: SiteLocale }) {
               </li>
             ))}
           </ol>
+          </Stagger>
           <div className="mt-10 grid gap-2 border-s-2 border-accent ps-5 @3xl:max-w-[60ch]">
             <h3 className="font-display text-h3 text-fg">{t(c.notesTitle)}</h3>
             <p className="text-fg-muted">{t(c.notesText)}</p>

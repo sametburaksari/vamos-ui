@@ -28,12 +28,18 @@ const c = {
   bath: { en: "Bath", tr: "Banyo" },
 };
 
+
 /** A 2+1 floor plan drawn in tokens, with dimension lines like a survey sheet. */
 function FloorPlan({ label, volume }: { label: string; volume: number }) {
   const { t } = useQuote();
   const room = "fill-none stroke-fg";
   const txt = "fill-fg-muted font-mono text-[11px] uppercase tracking-[0.12em]";
   const dim = "fill-accent-ink font-mono text-[10px]";
+  // The first load waits for the rooms to be labelled; later swaps come in at once.
+  const first = React.useRef(true);
+  React.useEffect(() => {
+    first.current = false;
+  }, []);
   return (
     <svg viewBox="0 0 440 300" role="img" aria-label={label} className="h-auto w-full">
       <g className={room} strokeWidth={3}>
@@ -45,21 +51,27 @@ function FloorPlan({ label, volume }: { label: string; volume: number }) {
       <g className="stroke-accent" strokeWidth={6} strokeLinecap="butt">
         <path d="M170 160 H200 M250 160 H280 M140 90 V120" />
       </g>
-      <text x="300" y="100" textAnchor="middle" className={txt}>{t(c.living)}</text>
-      <text x="80" y="100" textAnchor="middle" className={txt}>{t(c.bed1)}</text>
-      <text x="180" y="100" textAnchor="middle" className={txt}>{t(c.bed2)}</text>
-      <text x="120" y="220" textAnchor="middle" className={txt}>{t(c.kitchen)}</text>
-      <text x="260" y="220" textAnchor="middle" className={txt}>{t(c.bath)}</text>
+      <g className="tf-rooms">
+        <text x="300" y="100" textAnchor="middle" className={txt}>{t(c.living)}</text>
+        <text x="80" y="100" textAnchor="middle" className={txt}>{t(c.bed1)}</text>
+        <text x="180" y="100" textAnchor="middle" className={txt}>{t(c.bed2)}</text>
+        <text x="120" y="220" textAnchor="middle" className={txt}>{t(c.kitchen)}</text>
+        <text x="260" y="220" textAnchor="middle" className={txt}>{t(c.bath)}</text>
+      </g>
       <g className="stroke-accent" strokeWidth={1}>
         <path d="M20 14 H400 M20 9 V19 M400 9 V19" />
         <path d="M410 30 V270 M405 30 H415 M405 270 H415" />
       </g>
       <text x="210" y="11" textAnchor="middle" className={dim}>{t({ en: "11.40 m", tr: "11,40 m" })}</text>
       <text x="424" y="150" className={dim} transform="rotate(90 424 150)" textAnchor="middle">{t({ en: "7.20 m", tr: "7,20 m" })}</text>
-      <g className="fill-accent/15 stroke-accent" strokeWidth={1} strokeDasharray="3 3">
-        <rect x="310" y="180" width="80" height="80" />
+      {/* Signature: the load (its volume in m³) is wheeled into the living room; a new home size
+          brings in a new load. */}
+      <g key={volume} className={first.current ? "tf-load [animation-delay:1000ms]" : "tf-load"}>
+        <g className="fill-accent/15 stroke-accent" strokeWidth={1} strokeDasharray="3 3">
+          <rect x="310" y="180" width="80" height="80" />
+        </g>
+        <text x="350" y="224" textAnchor="middle" className={dim}>~{volume} m³</text>
       </g>
-      <text x="350" y="224" textAnchor="middle" className={dim}>~{volume} m³</text>
     </svg>
   );
 }
@@ -76,13 +88,13 @@ export function MoversHero() {
       <Container className="relative">
         <div className="grid items-center gap-12 @5xl:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] @5xl:gap-16">
           <div className="flex flex-col gap-7">
-            <p className="font-mono text-eyebrow uppercase tracking-[0.16em] text-accent-ink">{t(c.eyebrow)}</p>
-            <h1 id="tf-hero-title" className="font-display text-display-xl font-semibold tracking-[-0.025em] text-balance text-fg">
+            <p className="vm-enter font-mono text-eyebrow uppercase tracking-[0.16em] text-accent-ink">{t(c.eyebrow)}</p>
+            <h1 id="tf-hero-title" className="vm-enter [--vm-i:1] font-display text-display-xl font-semibold tracking-[-0.025em] text-balance text-fg">
               {t(c.title)}
             </h1>
-            <p className="max-w-[50ch] text-lead text-fg-muted">{t(c.lead)}</p>
+            <p className="vm-enter [--vm-i:2] max-w-[50ch] text-lead text-fg-muted">{t(c.lead)}</p>
           </div>
-          <div className="surface-popover flex flex-col gap-6 rounded-ui-lg p-5 @md:p-7">
+          <div className="vm-enter vm-enter-media [--vm-i:2] surface-popover flex flex-col gap-6 rounded-ui-lg p-5 @md:p-7">
             <FloorPlan label={t(c.plan)} volume={sizes.find((x) => x.id === size)!.volume} />
             <div className="flex flex-col gap-5 border-t border-line pt-5">
               <p className="font-mono text-eyebrow uppercase tracking-[0.16em] text-fg-muted">{t(c.quick)}</p>
@@ -98,11 +110,13 @@ export function MoversHero() {
                 <div className="flex flex-col" aria-live="polite">
                   <span className="text-xs text-fg-muted">{t(c.from)}</span>
                   <span className="font-display text-[2.25rem] font-semibold leading-none tabular tracking-tight text-fg" data-testid="tf-hero-from">
-                    {tl(est.low, locale)}
+                    <span key={est.low} className="tf-settle">
+                      {tl(est.low, locale)}
+                    </span>
                   </span>
                   <span className="mt-1 text-xs text-fg-muted">{t(c.fromHint)}</span>
                 </div>
-                <Button variant="primary" size="lg" onClick={() => start({ kind, size, fromLift: true, toLift: true, km: 14 })}>
+                <Button variant="primary" size="lg" className="vm-press vm-nudge" onClick={() => start({ kind, size, fromLift: true, toLift: true, km: 14 })}>
                   {t(c.exact)}
                   <ArrowRight aria-hidden className="rtl:rotate-180" />
                 </Button>

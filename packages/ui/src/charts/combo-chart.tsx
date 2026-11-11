@@ -71,7 +71,7 @@ function ComboPlot({ bars, lines, areas = [], endAxisFormat, endAxis, stackBars,
 
   return (
     <ChartFrame>
-      <ComposedChart data={chart.data} margin={{ top: 8, right: 4, bottom: 0, left: 4 }} barCategoryGap="30%">
+      <ComposedChart data={chart.data} stackOffset={startStacked && startDomain[0] < 0 ? "sign" : undefined} margin={{ top: 8, right: 4, bottom: 0, left: 4 }} barCategoryGap="30%">
         <ChartGrid yAxisId="start" />
         <ChartXAxis />
         <ChartYAxis

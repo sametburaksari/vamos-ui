@@ -3,6 +3,7 @@
 import * as React from "react";
 import { CheckCircle2, MessageSquare, Pin } from "lucide-react";
 import { Avatar, AvatarGroup, Pagination, Sparkline, ToggleGroup, ToggleGroupItem, cn } from "@vamos-ui/react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { categories, categoryById, copyFor, member, topicHref, topics, type CategoryId, type SiteLocale, type Topic } from "./content";
 
 export type TopicSort = "latest" | "hot" | "top" | "unanswered";
@@ -100,6 +101,8 @@ export function TopicList({ locale, rail, pageSize, limit, labelledBy }: TopicLi
           <p className="m-0 text-small text-fg-muted">{t({ en: "Start one — the first reply usually comes within the hour.", tr: "Bir tane başlatın — ilk yanıt genellikle bir saat içinde gelir." })}</p>
         </div>
       ) : (
+        /* Keyed by the view: a new sort, category or page fades in as a fresh list, fast. */
+        <Stagger asChild key={`${sort}-${cat}-${page}`} effect="fade" step={30} duration={360}>
         <ul aria-labelledby={labelledBy} className="m-0 list-none p-0">
           {shown.map((topic) => {
             const c = categoryById(topic.category);
@@ -163,6 +166,7 @@ export function TopicList({ locale, rail, pageSize, limit, labelledBy }: TopicLi
             );
           })}
         </ul>
+        </Stagger>
       )}
 
       {pageSize && pageCount > 1 ? (

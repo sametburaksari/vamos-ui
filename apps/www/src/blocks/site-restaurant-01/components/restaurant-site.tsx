@@ -1,6 +1,7 @@
 import { ContactDock, Cta, Faq, Footer, GallerySection, Hero, MapHours, MediaText, MenuList, Navbar, Testimonials } from "@vamos-ui/react/blocks";
 import { branch, copyFor, enTime, hoursFor, menu, PHONE, photos, WHATSAPP } from "./content";
 import type { SiteLocale } from "./locale-switch";
+import { Ticker } from "@vamos-ui/react/motion";
 
 /** One language version of the restaurant site. Server component: every block is plain props. */
 export function RestaurantSite({ locale }: { locale: SiteLocale }) {
@@ -52,6 +53,37 @@ export function RestaurantSite({ locale }: { locale: SiteLocale }) {
             cta: { link: { href: "#book", label: t({ en: "Book a table", tr: "Masa ayırt" }) }, style: "primary" },
           }}
         />
+
+        {/* The board, chalked up at four: today's catch runs under the hero like the chalk line
+            above the bar. Pauses on hover and with its own control. */}
+        <div className="border-y border-line bg-scene py-3.5">
+          <Ticker
+            as="ul"
+            duration={48}
+            gap="2.25rem"
+            aria-label={t({ en: "Today from the boats", tr: "Bugün teknelerden" })}
+            pauseLabel={t({ en: "Pause animation", tr: "Animasyonu durdur" })}
+          >
+            {[
+              t({ en: "Today from the boats", tr: "Bugün teknelerden" }),
+              t({ en: "Bonito on oak charcoal", tr: "Meşe kömüründe palamut" }),
+              t({ en: "Red mullet, pan-fried", tr: "Tavada barbunya" }),
+              t({ en: "Sea bass in paper", tr: "Kağıtta levrek" }),
+              t({ en: "Bluefish, the last of the season", tr: "Lüfer, sezonun sonu" }),
+              t({ en: "Grilled octopus", tr: "Izgara ahtapot" }),
+              t({ en: "Anchovy, when the boats bring it", tr: "Hamsi, tekne getirirse" }),
+            ].map((dish, i) => (
+              <li key={dish} className={i === 0 ? "font-mono text-eyebrow uppercase tracking-[0.16em] text-accent-ink" : "flex items-center gap-[2.25rem] font-display text-[1.35rem] italic text-fg"}>
+                {i === 0 ? dish : (
+                  <>
+                    <span aria-hidden className="text-fg-subtle not-italic">·</span>
+                    {dish}
+                  </>
+                )}
+              </li>
+            ))}
+          </Ticker>
+        </div>
 
         <MediaText
           {...common}
@@ -129,7 +161,7 @@ export function RestaurantSite({ locale }: { locale: SiteLocale }) {
             closedDays: ["mon"],
             timeZone: "Europe/Istanbul",
           }}
-          fineprint={t({ en: "Groups of eleven or more: call 0216 358 11 44.", tr: "On bir kişi ve üzeri gruplar için: 0216 358 11 44." })}
+          fineprint={t({ en: "Groups of eleven or more: call 0216 000 00 00.", tr: "On bir kişi ve üzeri gruplar için: 0216 000 00 00." })}
         />
 
         <MapHours
@@ -151,7 +183,7 @@ export function RestaurantSite({ locale }: { locale: SiteLocale }) {
           items={[
             { q: t({ en: "Do you take walk-ins?", tr: "Rezervasyonsuz geliyor muyuz?" }), a: t({ en: `Yes, at the bar and on the terrace. The dining room is usually fully booked on Fridays and Saturdays after ${enTime("19:30")}.`, tr: "Evet, bar ve terasta. Cuma ve cumartesi 19:30’dan sonra salon genellikle doludur." }) },
             { q: t({ en: "Is there a vegetarian menu?", tr: "Vejetaryen menü var mı?" }), a: t({ en: "Most of the cold meze are vegetarian and five are vegan. Tell us when you book and the kitchen will put a tray together.", tr: "Soğuk mezelerin çoğu vejetaryen, beşi vegan. Rezervasyonda belirtin, mutfak bir tepsi hazırlasın." }) },
-            { q: t({ en: "Can we book the upstairs room?", tr: "Üst kattaki odayı ayırtabilir miyiz?" }), a: t({ en: "The private room seats up to twelve with a set menu from ₺2,400 per person. Write to masa@kiyimeyhane.com with your date.", tr: "Özel oda fiks menüyle on iki kişiye kadar, kişi başı ₺2.400’den başlar. Tarihinizle masa@kiyimeyhane.com adresine yazın." }) },
+            { q: t({ en: "Can we book the upstairs room?", tr: "Üst kattaki odayı ayırtabilir miyiz?" }), a: t({ en: "The private room seats up to twelve with a set menu from ₺2,400 per person. Write to masa@example.com with your date.", tr: "Özel oda fiks menüyle on iki kişiye kadar, kişi başı ₺2.400’den başlar. Tarihinizle masa@example.com adresine yazın." }) },
             { q: t({ en: "Where do we park?", tr: "Nereye park ederiz?" }), a: t({ en: `Valet parking is free from ${enTime("18:00")}. Street parking on Bağdat Caddesi is limited after seven.`, tr: "18:00’den itibaren vale ücretsizdir. Bağdat Caddesi’nde yedi’den sonra park yeri azdır." }) },
           ]}
           deepLink={false}
@@ -168,7 +200,7 @@ export function RestaurantSite({ locale }: { locale: SiteLocale }) {
           { title: t({ en: "Visit", tr: "Ziyaret" }), links: [{ href: "#book", label: t({ en: "Book a table", tr: "Masa ayırt" }) }, { href: "#visit", label: t({ en: "Find us", tr: "Bizi bulun" }) }, { href: "/gift-cards", label: t({ en: "Gift cards", tr: "Hediye kartı" }) }] },
           { title: t({ en: "Help", tr: "Yardım" }), links: [{ href: "/contact", label: t({ en: "Contact", tr: "İletişim" }) }, { href: "/allergens", label: t({ en: "Allergens", tr: "Alerjenler" }) }] },
         ]}
-        contact={{ phone: PHONE, email: "masa@kiyimeyhane.com", address: visit.address }}
+        contact={{ phone: PHONE, email: "masa@example.com", address: visit.address }}
         social={[{ network: "instagram", href: "https://instagram.com/kiyimeyhane" }]}
         legalLinks={[{ href: "/privacy", label: t({ en: "Privacy", tr: "Gizlilik" }) }, { href: "/kvkk", label: t({ en: "KVKK notice", tr: "KVKK aydınlatma metni" }) }]}
         company={{ legalName: "Kıyı Gıda ve Turizm Ltd. Şti.", registry: [{ label: t({ en: "Tax office", tr: "Vergi dairesi" }), value: "Kozyatağı · 5840 219 337" }] }}

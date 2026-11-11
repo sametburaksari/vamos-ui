@@ -7,11 +7,12 @@ import { copyFor, LIVE_DROP, lookbook, NEXT_DROP, nextDropItems, products } from
 import { CalendarLink, DropCountdown, DropDate, NotifyForm } from "./countdown";
 import { LockedTile, ProductTile } from "./drop-card";
 import { useDrop, useDropClock } from "./drop-provider";
+import { Stagger, Ticker } from "@vamos-ui/react/motion";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** A thin running strip of drop facts. Stops (and wraps) for reduced motion. */
-function Ticker() {
+/** A thin running strip of drop facts (the kit Ticker: pauses on hover, focus and its control; static for reduced motion). */
+function FactStrip() {
   const { t } = useDrop();
   const facts = [
     `Drop ${pad(NEXT_DROP.no)} — ${t(NEXT_DROP.name)}`,
@@ -21,26 +22,36 @@ function Ticker() {
     t({ en: "Pick-up in Yeldeğirmeni", tr: "Yeldeğirmeni’nden teslim" }),
     t({ en: "No restocks", tr: "Yeniden üretim yok" }),
   ];
-  const row = (hidden?: boolean) => (
-    <ul aria-hidden={hidden || undefined} className="flex shrink-0 items-center gap-8 pe-8">
-      {facts.map((f) => (
-        <li key={f} className="flex items-center gap-8 whitespace-nowrap">
-          <span>{f}</span>
-          <span aria-hidden className="size-1.5 bg-accent" />
-        </li>
-      ))}
-    </ul>
-  );
   return (
-    <div className="overflow-hidden border-b border-line py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-fg-muted">
-      <div className="nb-marquee flex w-max motion-reduce:w-auto motion-reduce:flex-wrap">
-        {row()}
-        <span className="contents motion-reduce:hidden">{row(true)}</span>
-      </div>
-      <style>{`@keyframes nb-marquee { to { transform: translateX(-50%) } } .nb-marquee { animation: nb-marquee 38s linear infinite } [dir="rtl"] .nb-marquee { animation-direction: reverse } @media (prefers-reduced-motion: reduce) { .nb-marquee { animation: none } }`}</style>
+    <div className="nb-facts border-b border-line py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-fg-muted">
+      <Ticker as="ul" duration={38} gap="2rem" fade={false} aria-label={t({ en: "Drop facts", tr: "Drop bilgileri" })} pauseLabel={t({ en: "Pause animation", tr: "Animasyonu durdur" })}>
+        {facts.map((f) => (
+          <li key={f} className="flex items-center gap-8 whitespace-nowrap">
+            <span>{f}</span>
+            <span aria-hidden className="size-1.5 bg-accent" />
+          </li>
+        ))}
+      </Ticker>
+      <style>{dropMotion}</style>
     </div>
   );
 }
+
+/**
+ * Night Shift moves loud: full motion level, hard cuts and fast wipes, no softness. The
+ * headline is cut in line by line; the countdown digits flip like a departures board as they
+ * change; lookbook frames wipe up like a print. Everything stops for reduced motion.
+ */
+const dropMotion = `
+@keyframes nb-flip { from { transform: translate3d(0, -0.35em, 0) rotateX(70deg); opacity: 0; } }
+/* Static strip (reduced motion): a fixed-column grid, so a late web font cannot re-wrap it. */
+@media (prefers-reduced-motion: reduce) {
+  .nb-facts .vm-marquee .vm-marquee-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); row-gap: 0.5rem; justify-items: start; }
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  [data-countdown] .nb-flip:where(:not([data-motion="off"] *)) { display: inline-block; transform-origin: 50% 0; animation: nb-flip 260ms var(--ease-out-expo); }
+}
+`;
 
 /** A section head in the house style: index number, caps title, a ruled line, a link. */
 function Head({ no, id, title, aside }: { no: string; id: string; title: string; aside?: React.ReactNode }) {
@@ -64,14 +75,14 @@ export function HomePage() {
 
   return (
     <>
-      <Ticker />
+      <FactStrip />
 
       {/* Hero: the countdown is the headline. */}
       <Section anchor="drop" aria-labelledby="nb-h1" theme={{ rhythm: "tight" }}>
         <Container size="wide">
           <div className="grid border border-line @4xl:grid-cols-12">
             <div className="flex flex-col gap-6 p-4 @3xl:p-6 @4xl:col-span-7 @4xl:border-e @4xl:border-line">
-              <p className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.16em] text-fg-muted">
+              <p className="vm-enter flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.16em] text-fg-muted">
                 <span className="text-accent-ink">{live ? t({ en: "Live now", tr: "Şimdi açık" }) : t({ en: "Next drop", tr: "Sıradaki drop" })}</span>
                 <span>
                   <DropDate />
@@ -79,23 +90,23 @@ export function HomePage() {
                 <span>{t({ en: "Istanbul time", tr: "TSİ" })}</span>
               </p>
               <h1 id="nb-h1" tabIndex={-1} className="font-display text-[clamp(3.6rem,1rem+12cqi,11.5rem)] font-[800] uppercase leading-[0.8] tracking-[-0.045em] outline-none">
-                <span className="block font-mono text-[0.22em] font-medium tracking-[-0.02em] text-fg-muted">Drop {pad(NEXT_DROP.no)}</span>
-                <span className="block">{t({ en: "Night", tr: "Gece" })}</span>
-                <span className="block text-accent-ink">{t({ en: "Shift", tr: "Vardiyası" })}</span>
+                <span className="vm-enter [--vm-i:1] block font-mono text-[0.22em] font-medium tracking-[-0.02em] text-fg-muted">Drop {pad(NEXT_DROP.no)}</span>
+                <span className="vm-enter vm-enter-title [--vm-i:2] block">{t({ en: "Night", tr: "Gece" })}</span>
+                <span className="vm-enter vm-enter-title [--vm-i:3] block text-accent-ink">{t({ en: "Shift", tr: "Vardiyası" })}</span>
               </h1>
-              <DropCountdown />
-              <p className="max-w-[52ch] text-pretty text-fg-muted">
+              <DropCountdown className="vm-enter [--vm-i:4]" />
+              <p className="vm-enter [--vm-i:5] max-w-[52ch] text-pretty text-fg-muted">
                 {t({
                   en: "Four pieces cut for the last ferry home: a moto jacket in a run of twenty, a hoodie, a knit and a hi-vis track set. Online and at the shop at the same second. When they’re gone, they’re gone.",
                   tr: "Eve son vapurla dönenler için dört parça: yirmi adetlik bir moto ceket, bir kapüşonlu, bir triko ve bir yüksek görünürlük eşofman takımı. Online ve dükkânda aynı saniyede. Bitince bitti.",
                 })}
               </p>
-              <div className="grid gap-3 @3xl:grid-cols-[minmax(0,1fr)_auto] @3xl:items-end">
+              <div className="vm-enter [--vm-i:6] grid gap-3 @3xl:grid-cols-[minmax(0,1fr)_auto] @3xl:items-end">
                 {live ? null : <NotifyForm />}
                 <CalendarLink />
               </div>
             </div>
-            <figure className="relative overflow-hidden border-t border-line @4xl:col-span-5 @4xl:min-h-[36rem] @4xl:border-t-0">
+            <figure className="vm-enter vm-enter-media [--vm-i:2] relative overflow-hidden border-t border-line @4xl:col-span-5 @4xl:min-h-[36rem] @4xl:border-t-0">
               <Image
                 src={hero.photo.src}
                 width={hero.photo.width}
@@ -128,11 +139,13 @@ export function HomePage() {
             title={t({ en: "What drops Saturday", tr: "Cumartesi çıkanlar" })}
             aside={<p className="max-w-[36ch] text-small text-fg-muted">{t({ en: "Set a reminder per piece. We text 10 minutes before — never after.", tr: "Her parça için ayrı hatırlatma kurun. 10 dakika önce SMS atarız — asla sonra değil." })}</p>}
           />
+          <Stagger asChild step={70}>
           <div className="grid grid-cols-2 gap-px border border-line bg-line @4xl:grid-cols-4">
             {nextDropItems.map((item) => (
               <LockedTile key={item.id} item={item} />
             ))}
           </div>
+          </Stagger>
         </Container>
       </Section>
 
@@ -144,17 +157,19 @@ export function HomePage() {
             id="nb-live"
             title={t({ en: `Still live — ${LIVE_DROP.name.en}`, tr: `Hâlâ açık — ${LIVE_DROP.name.tr}` })}
             aside={
-              <a href={sitePageHref("archive")} className="inline-flex items-center gap-1.5 rounded-[2px] font-mono text-[11px] uppercase tracking-[0.14em] text-fg hover:text-accent-ink focus-ring">
+              <a href={sitePageHref("archive")} className="vm-nudge inline-flex items-center gap-1.5 rounded-[2px] font-mono text-[11px] uppercase tracking-[0.14em] text-fg hover:text-accent-ink focus-ring">
                 {t({ en: "Full archive", tr: "Tüm arşiv" })}
                 <ArrowUpRight aria-hidden className="size-3.5" />
               </a>
             }
           />
+          <Stagger asChild effect="fade" step={50}>
           <div className="grid grid-cols-2 gap-px border border-line bg-line @3xl:grid-cols-3 @6xl:grid-cols-6">
             {liveDrop.map((p, i) => (
               <ProductTile key={p.id} product={p} priority={i < 2} />
             ))}
           </div>
+          </Stagger>
         </Container>
       </Section>
 
@@ -162,6 +177,7 @@ export function HomePage() {
       <Section anchor="lookbook" aria-labelledby="nb-look" theme={{ rhythm: "tight" }}>
         <Container size="wide">
           <Head no="/ LB" id="nb-look" title={t({ en: "Shot on the Kadıköy pier", tr: "Kadıköy iskelesinde çekildi" })} />
+          <Stagger asChild effect="clip" step={90}>
           <ul className="grid grid-cols-2 gap-px border border-line bg-line @4xl:grid-cols-4">
             {lookbook.map((ph, i) => (
               <li key={ph.src} className="bg-scene">
@@ -175,6 +191,7 @@ export function HomePage() {
               </li>
             ))}
           </ul>
+          </Stagger>
         </Container>
       </Section>
 
@@ -182,6 +199,7 @@ export function HomePage() {
       <Section anchor="rules" aria-labelledby="nb-rules" theme={{ rhythm: "tight" }}>
         <Container size="wide">
           <Head no="/ ?" id="nb-rules" title={t({ en: "How a drop works", tr: "Drop nasıl işler" })} />
+          <Stagger asChild step={90}>
           <ol className="grid border-x border-b border-line @3xl:grid-cols-3">
             {[
               {
@@ -207,6 +225,7 @@ export function HomePage() {
               </li>
             ))}
           </ol>
+          </Stagger>
         </Container>
       </Section>
 

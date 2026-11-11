@@ -17,7 +17,7 @@ const quillType = createFontPairing({ id: "quill", label: "Quill", heading: "Fun
  */
 export default function SiteAi01() {
   return (
-    <SiteShell accent={ACCENT} theme="dark" material="glass" density="comfortable" pages={["home", "pricing", "security"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} motion="subtle" theme="dark" material="glass" density="comfortable" pages={["home", "pricing", "security"]} className="min-h-dvh bg-scene">
       <FontProvider pairing={quillType}>
         <SiteShellLocale code="en">
           <AiSite locale="en" />

@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { copyFor, photos, presets, priceBuild, sessionById, tl } from "./content";
 import { useBuild } from "./build-provider";
 import { PackageBuilder } from "./package-builder";
+import { Stagger } from "@vamos-ui/react/motion";
 
 const c = {
   kicker: { en: "Photo studio · Kadıköy · est. 2019", tr: "Fotoğraf stüdyosu · Kadıköy · 2019’dan beri" },
@@ -40,26 +41,26 @@ export function StudioHero() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4 @4xl:flex-row @4xl:items-end @4xl:justify-between">
             <div className="flex flex-col gap-3">
-              <p className="font-mono text-[12px] tracking-tight text-fg-muted uppercase">{t(c.kicker)}</p>
-              <h1 id="lr-hero-title" className="font-display text-display-2xl leading-[0.85] text-fg uppercase">
+              <p className="vm-enter font-mono text-[12px] tracking-tight text-fg-muted uppercase">{t(c.kicker)}</p>
+              <h1 id="lr-hero-title" className="vm-enter [--vm-i:1] font-display text-display-2xl leading-[0.85] text-fg uppercase">
                 {t(c.title)}
               </h1>
             </div>
-            <p className="max-w-[38ch] text-lead text-fg-muted @4xl:pb-3 @4xl:text-end">{t(c.line)}</p>
+            <p className="vm-enter max-w-[38ch] text-lead text-fg-muted [--vm-i:2] @4xl:pb-3 @4xl:text-end">{t(c.line)}</p>
           </div>
 
-          <div className="relative">
-            <span aria-hidden className="absolute -start-2 -top-2 z-[1] size-5 border-s border-t border-fg" />
-            <span aria-hidden className="absolute -end-2 -top-2 z-[1] size-5 border-e border-t border-fg" />
-            <span aria-hidden className="absolute -start-2 -bottom-2 z-[1] size-5 border-s border-b border-fg" />
-            <span aria-hidden className="absolute -end-2 -bottom-2 z-[1] size-5 border-e border-b border-fg" />
+          <div className="lr-develop relative">
+            <span aria-hidden className="lr-mark lr-mark-ts absolute -start-2 -top-2 z-[1] size-5 border-s border-t border-fg" />
+            <span aria-hidden className="lr-mark lr-mark-te absolute -end-2 -top-2 z-[1] size-5 border-e border-t border-fg" />
+            <span aria-hidden className="lr-mark lr-mark-bs absolute -start-2 -bottom-2 z-[1] size-5 border-s border-b border-fg" />
+            <span aria-hidden className="lr-mark lr-mark-be absolute -end-2 -bottom-2 z-[1] size-5 border-e border-b border-fg" />
             <Image src={photos.studio.src} width={photos.studio.width} height={photos.studio.height} alt={t(photos.studio.alt)} aspect="21/9" priority sizes="100vw" className="grayscale" />
-            <p aria-hidden className="absolute start-3 bottom-3 bg-scene px-2 py-1 font-mono text-[11px] text-fg uppercase">
+            <p aria-hidden className="lr-counter absolute start-3 bottom-3 bg-scene px-2 py-1 font-mono text-[11px] text-fg uppercase">
               {t(c.frame)} 01 / 24
             </p>
           </div>
 
-          <div className="grid gap-6 @3xl:grid-cols-[minmax(0,1fr)_auto] @3xl:items-center">
+          <div className="vm-enter grid gap-6 [--vm-i:3] @3xl:grid-cols-[minmax(0,1fr)_auto] @3xl:items-center">
             <dl className="grid grid-cols-2 border-s border-t border-line @3xl:grid-cols-4">
               {c.specs.map((s) => (
                 <div key={s.k.en} className="flex flex-col gap-1 border-e border-b border-line p-3">
@@ -69,11 +70,11 @@ export function StudioHero() {
               ))}
             </dl>
             <div className="flex flex-wrap gap-2">
-              <a href={sitePageHref("packages")} className={buttonVariants({ variant: "primary", size: "lg" })}>
+              <a href={sitePageHref("packages")} className={cn(buttonVariants({ variant: "primary", size: "lg" }), "vm-press vm-nudge")}>
                 {t(c.build)}
                 <ArrowRight aria-hidden className="rtl:rotate-180" />
               </a>
-              <a href={sitePageHref("home", "work")} className={buttonVariants({ variant: "secondary", size: "lg" })}>
+              <a href={sitePageHref("home", "work")} className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "vm-press")}>
                 {t(c.work)}
               </a>
             </div>
@@ -88,6 +89,7 @@ export function StudioHero() {
 export function PresetFrames() {
   const { t, locale, load } = useBuild();
   return (
+    <Stagger asChild effect="fade" step={110}>
     <ul className="grid border-s border-t border-fg @3xl:grid-cols-3">
       {presets.map((p, i) => {
         const price = priceBuild(p.build);
@@ -107,7 +109,7 @@ export function PresetFrames() {
             <a
               href={sitePageHref("packages", "builder")}
               onClick={() => load(p.build)}
-              className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}
+              className={cn(buttonVariants({ variant: "secondary" }), "vm-press vm-nudge justify-between")}
             >
               {t(c.open)}
               <span className="sr-only">: {t(p.name)}</span>
@@ -117,6 +119,7 @@ export function PresetFrames() {
         );
       })}
     </ul>
+    </Stagger>
   );
 }
 

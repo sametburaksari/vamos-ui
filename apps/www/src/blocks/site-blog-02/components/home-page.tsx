@@ -1,6 +1,7 @@
 import { ArrowRight, Rss } from "lucide-react";
 import { Avatar } from "@vamos-ui/react";
 import { Container, Section } from "@vamos-ui/react/blocks";
+import { CountUp, Reveal, Stagger } from "@vamos-ui/react/motion";
 import { CodeTeaser } from "./code-sample";
 import { ARCHIVE_HREF, authors, copyFor, featured, indexLabelsFor, indexPostsFor, POST_HREF, posts, subscribeLabelsFor, tagCounts, tagHref, teaser, type SiteLocale } from "./content";
 import { PostIndex } from "./post-index";
@@ -9,17 +10,50 @@ import { SubscribeForm } from "./subscribe-form";
 const link = "rounded-[2px] focus-ring";
 const prompt = "font-mono text-eyebrow text-fg-subtle";
 
-/** A shell-prompt eyebrow: `$ ls posts/`. */
-function Prompt({ children, id }: { children: React.ReactNode; id?: string }) {
-  return (
-    <p id={id} className={prompt}>
+/**
+ * A shell-prompt eyebrow: `$ ls posts/`. The command types itself out (stepped, one character
+ * at a time) when it scrolls in; `hero` plays from the first paint instead. Without motion it is
+ * plain text.
+ */
+function Prompt({ children, id, hero }: { children: string; id?: string; hero?: boolean }) {
+  const line = (
+    <p id={id} className={`${prompt} cp-prompt`} style={{ "--n": children.length } as React.CSSProperties}>
       <span aria-hidden className="text-accent-ink">
         ${" "}
       </span>
-      {children}
+      <span className={hero ? "cp-type cp-type-now" : "cp-type"}>{children}</span>
     </p>
   );
+  return hero ? line : <Reveal asChild effect="fade" duration={200}>{line}</Reveal>;
 }
+
+/**
+ * The cold path's motion is terse, like its prose: commands type themselves out with a block
+ * caret that blinks three times and stops; tag bars fill like `du` output. Everything else is a
+ * short fade. Clip-path / transform only.
+ */
+const coldPathMotion = `
+@keyframes cp-type { from { clip-path: inset(0 100% 0 0); } }
+@keyframes cp-type-rtl { from { clip-path: inset(0 0 0 100%); } }
+@keyframes cp-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.cp-type { display: inline-block; position: relative; padding-inline-end: 0.9ch; }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .cp-prompt:not([data-reveal-state="pending"]):where(:not([data-motion="off"] *)) .cp-type::after {
+    content: ""; position: absolute; inset-block: 0.1em; inset-inline-end: 0; width: 0.6ch;
+    background: var(--accent); opacity: 0;
+    animation: cp-caret 900ms steps(1) calc(var(--n) * 38ms + 240ms) 3;
+  }
+  .cp-type-now:where(:not([data-motion="off"] *)) { animation: cp-type calc(var(--n) * 38ms) steps(var(--n)) 120ms backwards; }
+  [dir="rtl"] .cp-type-now:where(:not([data-motion="off"] *)) { animation-name: cp-type-rtl; }
+  .cp-prompt:where(:not([data-motion="off"] *)) .cp-type:not(.cp-type-now) { transition: clip-path calc(var(--n) * 38ms) steps(var(--n)) 120ms; }
+  .cp-prompt[data-reveal-state="pending"]:where(:not([data-motion="off"] *)) .cp-type { clip-path: inset(0 100% 0 0); }
+  [dir="rtl"] .cp-prompt[data-reveal-state="pending"]:where(:not([data-motion="off"] *)) .cp-type { clip-path: inset(0 0 0 100%); }
+  [data-reveal-state]:where(:not([data-motion="off"] *)) > li .cp-bar { transition: transform 620ms var(--ease-out-quint) calc(var(--vm-i, 0) * 50ms + 120ms); }
+  [data-reveal-state="pending"]:where(:not([data-motion="off"] *)) > li .cp-bar { transform: scaleX(0); }
+}
+.cp-bar { transform-origin: left center; }
+[dir="rtl"] .cp-bar { transform-origin: right center; }
+`;
 
 /**
  * Home: a plain-text masthead beside the latest post shown as code, the keyboard-first post
@@ -37,20 +71,21 @@ export function HomePage({ locale }: { locale: SiteLocale }) {
       <Section theme={{ rhythm: "tight" }} headingId="cp-title" className="border-b border-line">
         <Container className="grid gap-x-(--gutter) gap-y-12 pt-4 @4xl:grid-cols-12 @4xl:pt-10">
           <div className="flex flex-col gap-6 @4xl:col-span-6">
-            <Prompt>cat README.md</Prompt>
-            <h1 id="cp-title" className="max-w-[13ch] font-display text-display-xl text-balance">
+            <Prompt hero>cat README.md</Prompt>
+            <style>{coldPathMotion}</style>
+            <h1 id="cp-title" className="vm-enter [--vm-i:3] max-w-[13ch] font-display text-display-xl text-balance">
               {t({ en: "Notes from the cold path", tr: "Soğuk yoldan notlar" })}
             </h1>
-            <p className="max-w-[46ch] text-lead text-fg-muted text-pretty">
+            <p className="vm-enter [--vm-i:4] max-w-[46ch] text-lead text-fg-muted text-pretty">
               {t({
                 en: "Long-form writing on databases, queues and the parts of production nobody demos. One post a month, with the code that goes with it — in Go, Rust and TypeScript.",
                 tr: "Veritabanları, kuyruklar ve üretimde kimsenin demo yapmadığı kısımlar üzerine uzun yazılar. Ayda bir yazı, beraberindeki kodla — Go, Rust ve TypeScript’te.",
               })}
             </p>
-            <dl className="grid max-w-[34rem] grid-cols-2 gap-px overflow-hidden rounded-ui border border-line bg-line font-mono @md:grid-cols-4">
+            <dl className="vm-enter [--vm-i:5] grid max-w-[34rem] grid-cols-2 gap-px overflow-hidden rounded-ui border border-line bg-line font-mono @md:grid-cols-4">
               {[
-                { k: t({ en: "posts", tr: "yazı" }), v: String(posts.length) },
-                { k: t({ en: "authors", tr: "yazar" }), v: String(Object.keys(authors).length) },
+                { k: t({ en: "posts", tr: "yazı" }), v: <CountUp value={posts.length} duration={700} /> },
+                { k: t({ en: "authors", tr: "yazar" }), v: <CountUp value={Object.keys(authors).length} duration={500} /> },
                 { k: t({ en: "reading", tr: "okuma" }), v: f.duration(minutes, { unit: "min", style: "narrow" }) },
                 { k: t({ en: "since", tr: "başlangıç" }), v: f.date("2025-08-20", { month: "short", year: "numeric" }) },
               ].map((s) => (
@@ -62,7 +97,7 @@ export function HomePage({ locale }: { locale: SiteLocale }) {
             </dl>
           </div>
 
-          <article aria-labelledby="cp-latest" className="flex flex-col overflow-hidden rounded-ui border border-line bg-surface @4xl:col-span-6 @4xl:self-end">
+          <article aria-labelledby="cp-latest" className="vm-enter vm-enter-media vm-lift [--vm-i:4] flex flex-col overflow-hidden rounded-ui border border-line bg-surface @4xl:col-span-6 @4xl:self-end">
             <div className="flex items-center gap-3 border-b border-line bg-surface-2 px-4 py-2 font-mono text-eyebrow text-fg-muted">
               <span className="text-accent-ink">{t({ en: "latest", tr: "son yazı" })}</span>
               <time dateTime={featured.date} className="tabular">
@@ -101,7 +136,7 @@ export function HomePage({ locale }: { locale: SiteLocale }) {
                 {t({ en: "Recent posts", tr: "Son yazılar" })}
               </h2>
             </div>
-            <a href={ARCHIVE_HREF} className={`inline-flex items-center gap-1.5 font-mono text-small text-accent-ink underline-offset-[0.3em] hover:underline ${link}`}>
+            <a href={ARCHIVE_HREF} className={`vm-nudge inline-flex items-center gap-1.5 font-mono text-small text-accent-ink underline-offset-[0.3em] hover:underline ${link}`}>
               {t({ en: `All ${posts.length} posts`, tr: `${posts.length} yazının tümü` })} <ArrowRight aria-hidden className="size-3.5 rtl:-scale-x-100" />
             </a>
           </div>
@@ -114,6 +149,7 @@ export function HomePage({ locale }: { locale: SiteLocale }) {
           <div className="flex flex-col gap-5 @4xl:col-span-5">
             <Prompt>du -h --max-depth=1 tags/</Prompt>
             <h2 className="font-display text-display-m">{t({ en: "What we write about", tr: "Neler yazıyoruz" })}</h2>
+            <Stagger asChild effect="fade" step={50}>
             <ul className="flex flex-col font-mono text-small">
               {tagCounts.map(({ tag, count }) => (
                 <li key={tag} className="grid grid-cols-[2ch_8rem_1fr] items-center gap-3 border-b border-line py-2 last:border-b-0">
@@ -122,11 +158,12 @@ export function HomePage({ locale }: { locale: SiteLocale }) {
                     #{tag}
                   </a>
                   <span aria-hidden className="h-1.5 rounded-full bg-accent-soft">
-                    <span className="block h-full rounded-full bg-accent" style={{ width: `${(count / maxTag) * 100}%` }} />
+                    <span className="cp-bar block h-full rounded-full bg-accent" style={{ width: `${(count / maxTag) * 100}%` }} />
                   </span>
                 </li>
               ))}
             </ul>
+            </Stagger>
           </div>
 
           <div className="flex flex-col gap-5 @4xl:col-span-6 @4xl:col-start-7">
@@ -134,6 +171,7 @@ export function HomePage({ locale }: { locale: SiteLocale }) {
             <h2 id="cp-authors" className="font-display text-display-m">
               {t({ en: "Who writes here", tr: "Burada kimler yazıyor" })}
             </h2>
+            <Stagger asChild step={80}>
             <ul className="flex flex-col">
               {Object.values(authors).map((a) => {
                 const count = posts.filter((p) => p.author === a.id).length;
@@ -153,6 +191,7 @@ export function HomePage({ locale }: { locale: SiteLocale }) {
                 );
               })}
             </ul>
+            </Stagger>
           </div>
         </Container>
       </Section>

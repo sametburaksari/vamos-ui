@@ -1,5 +1,6 @@
 import { CalendarClock } from "lucide-react";
 import { Alert, Card } from "@vamos-ui/react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { Container, Footer, Navbar, Section, SiteShellPage, sitePageHref } from "@vamos-ui/react/blocks";
 import { CHECKED_AT, components, copyFor, EMAIL, groups, healthLabel, healthTone, incidents, PHONE, upcoming, type Health, type SiteLocale } from "./content";
 import { HistoryPage } from "./history-page";
@@ -73,7 +74,7 @@ export function StatusSite({ locale }: { locale: SiteLocale }) {
               </div>
 
               {/* Overall banner: a thick status-coloured edge, the summary, and the way to the incident. */}
-              <div className="mt-6 overflow-hidden rounded-ui-lg border border-line bg-surface">
+              <div className="vm-enter mt-6 overflow-hidden rounded-ui-lg border border-line bg-surface">
                 <div className={`h-1.5 ${healthTone[worst].fill}`} aria-hidden />
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-3 px-5 py-5 sm:px-6">
                   <span aria-hidden className={`relative grid size-10 shrink-0 place-items-center rounded-full ${healthTone[worst].text}`}>
@@ -94,7 +95,7 @@ export function StatusSite({ locale }: { locale: SiteLocale }) {
                     </p>
                   </div>
                   {active[0] ? (
-                    <IncidentLink id={active[0].id} className="inline-flex h-9 items-center rounded-ui border border-field-border px-3.5 text-sm font-medium text-fg no-underline focus-ring hover:bg-hover">
+                    <IncidentLink id={active[0].id} className="vm-press inline-flex h-9 items-center rounded-ui border border-field-border px-3.5 text-sm font-medium text-fg no-underline focus-ring hover:bg-hover">
                       {t({ en: "View incident", tr: "Olayı görüntüle" })}
                     </IncidentLink>
                   ) : null}
@@ -203,6 +204,7 @@ export function StatusSite({ locale }: { locale: SiteLocale }) {
                 </Card>
                 <Card variant="surface" padding="md">
                   <h2 className="m-0 text-sm font-semibold text-fg">{t({ en: "Recently resolved", tr: "Son çözülenler" })}</h2>
+                  <Stagger asChild effect="fade" step={70}>
                   <ul className="m-0 mt-3 grid list-none gap-3 p-0">
                     {recent.map((x) => (
                       <li key={x.id} className="grid gap-1 border-t border-line pt-3 first:border-t-0 first:pt-0">
@@ -216,6 +218,7 @@ export function StatusSite({ locale }: { locale: SiteLocale }) {
                       </li>
                     ))}
                   </ul>
+                  </Stagger>
                   <a href={sitePageHref("history")} className="mt-4 inline-block text-sm font-medium text-fg underline underline-offset-4 focus-ring">
                     {t({ en: "Full history", tr: "Tüm geçmiş" })}
                   </a>

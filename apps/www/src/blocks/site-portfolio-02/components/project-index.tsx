@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 import { sitePageHref } from "@vamos-ui/react/blocks";
 import { ArrowUpRight } from "lucide-react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { copyFor, projectPage, projects, statuses, typologies, type SiteLocale, type Typology } from "./content";
 
 /** The project index as a drawing register: typology filter, numbered rows, linked when a page exists. */
@@ -42,6 +43,7 @@ export function ProjectIndex({ locale }: { locale: SiteLocale }) {
             <th scope="col" className="w-14 py-2 text-end font-normal">{t({ en: "Year", tr: "Yıl" })}</th>
           </tr>
         </thead>
+        <Stagger asChild effect="fade" step={45} duration={700}>
         <tbody>
           {rows.map((p) => (
             <tr key={p.id} className={cn("group border-b border-line align-baseline", p.page && "hover:bg-hover")}>
@@ -70,6 +72,7 @@ export function ProjectIndex({ locale }: { locale: SiteLocale }) {
             </tr>
           ))}
         </tbody>
+        </Stagger>
       </table>
     </div>
   );

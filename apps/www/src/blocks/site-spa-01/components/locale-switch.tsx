@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { PageTransition, startPageTransition } from "@vamos-ui/react/motion";
 
 export type SiteLocale = "en" | "tr";
 
@@ -12,10 +13,11 @@ function readLocale(): SiteLocale {
 /**
  * Demo-only locale switch. Both language versions are rendered on the server (the blocks stay
  * server components); this island shows one and swaps on the navbar's EN/TR links without a
- * reload. In a real site, route per locale (`/en/…`, `/tr/…`) and render one version.
+ * reload (a page transition, at the given motion level). In a real site, route per locale (`/en/…`, `/tr/…`) and render one version.
  */
-export function LocaleSwitch({ en, tr }: { en: React.ReactNode; tr: React.ReactNode }) {
+export function LocaleSwitch({ en, tr, motion = "subtle" }: { en: React.ReactNode; tr: React.ReactNode; motion?: "full" | "subtle" | "off" }) {
   const [locale, setLocale] = React.useState<SiteLocale>("en");
+  const scope = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     setLocale(readLocale());
@@ -27,7 +29,8 @@ export function LocaleSwitch({ en, tr }: { en: React.ReactNode; tr: React.ReactN
       if (!href?.startsWith("?lang=")) return;
       e.preventDefault();
       window.history.pushState(null, "", href);
-      setLocale(readLocale());
+      // The language switch cross-fades the page (View Transition), with a CSS fade fallback.
+      startPageTransition(() => setLocale(readLocale()), { scope: scope.current });
       // The mobile menu is a native popover: close it after switching.
       document.querySelectorAll<HTMLElement>("[popover]").forEach((p) => {
         try { p.hidePopover(); } catch { /* not open */ }
@@ -42,8 +45,8 @@ export function LocaleSwitch({ en, tr }: { en: React.ReactNode; tr: React.ReactN
   }, []);
 
   return (
-    <div lang={locale} className="contents">
-      {locale === "tr" ? tr : en}
+    <div ref={scope} lang={locale} data-motion={motion}>
+      <PageTransition pageKey={locale}>{locale === "tr" ? tr : en}</PageTransition>
     </div>
   );
 }

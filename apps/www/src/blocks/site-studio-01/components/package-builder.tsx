@@ -206,7 +206,9 @@ export function PackageBuilder() {
           <div className="mt-4 flex items-end justify-between gap-3 border-t border-fg pt-4">
             <span className="font-mono text-small text-fg uppercase">{t(c.total)}</span>
             <span className="tabular font-display text-display-m leading-none text-fg" aria-hidden>
-              {money(price.total)}
+              <span key={price.total} className="lr-tick inline-block">
+                {money(price.total)}
+              </span>
             </span>
           </div>
           <p className="sr-only" aria-live="polite">

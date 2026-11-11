@@ -12,12 +12,12 @@ export function Sprig({ className, flip }: { className?: string; flip?: boolean 
     [100, 10, -18, true],
   ];
   return (
-    <svg viewBox="0 0 120 40" fill="none" aria-hidden focusable="false" className={className} style={flip ? { transform: "scaleX(-1)" } : undefined}>
-      <path d="M4 34 C 32 30, 64 20, 116 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-      {leaves.map(([x, y, r, filled]) => (
-        <ellipse key={`${x}-${y}`} cx={x} cy={y} rx="8" ry="2.8" transform={`rotate(${r} ${x} ${y})`} stroke="currentColor" strokeWidth="1" fill={filled ? "currentColor" : "none"} fillOpacity={filled ? 0.85 : 0} />
+    <svg viewBox="0 0 120 40" fill="none" aria-hidden focusable="false" className={`wd-sprig ${className ?? ""}`} style={flip ? { transform: "scaleX(-1)" } : undefined}>
+      <path pathLength={1} d="M4 34 C 32 30, 64 20, 116 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      {leaves.map(([x, y, r, filled], i) => (
+        <ellipse key={`${x}-${y}`} style={{ "--wd-i": i } as React.CSSProperties} cx={x} cy={y} rx="8" ry="2.8" transform={`rotate(${r} ${x} ${y})`} stroke="currentColor" strokeWidth="1" fill={filled ? "currentColor" : "none"} fillOpacity={filled ? 0.85 : 0} />
       ))}
-      <circle cx="112" cy="10" r="2.6" fill="currentColor" />
+      <circle cx="112" cy="10" r="2.6" fill="currentColor" style={{ "--wd-i": leaves.length } as React.CSSProperties} />
     </svg>
   );
 }

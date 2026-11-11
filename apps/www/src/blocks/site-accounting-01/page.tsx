@@ -12,7 +12,7 @@ import { LedgerType } from "./components/ledger-type";
  */
 export default function SiteAccounting01() {
   return (
-    <SiteShell accent="#1E3A8A" material="solid" density="comfortable" pages={accountingPages} className="min-h-dvh bg-scene">
+    <SiteShell accent="#1E3A8A" motion="subtle" material="solid" density="comfortable" pages={accountingPages} className="min-h-dvh bg-scene">
       <LedgerType>
         <SiteShellLocale code="en">
           <AccountingSite locale="en" />

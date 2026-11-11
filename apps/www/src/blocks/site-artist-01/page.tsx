@@ -25,6 +25,7 @@ export default function SiteArtist01() {
   return (
     <SiteShell
       accent="#EC4899"
+      motion="full"
       theme="dark"
       font="grotesk"
       material="solid"

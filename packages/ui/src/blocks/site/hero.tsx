@@ -92,6 +92,14 @@ export function Hero(props: HeroProps) {
 
 type Inner = HeroProps & { headingId: string; headingLevel: 1 | 2 | 3 };
 
+/**
+ * Entrance cascade (motion.css `.vm-enter`): CSS keyframes from the first paint, no JS, so the
+ * hero never waits for hydration. Follows the SiteShell motion level; off in edit mode.
+ */
+const ENTER = ["[--vm-i:0]", "[--vm-i:1]", "[--vm-i:2]", "[--vm-i:3]", "[--vm-i:4]", "[--vm-i:5]"] as const;
+const enter = (editMode: boolean | undefined, i: number, kind?: "title" | "media") =>
+  editMode ? undefined : cn("vm-enter", ENTER[i], kind === "title" && "vm-enter-title", kind === "media" && "vm-enter-media");
+
 function Eyebrow({ children, editMode, className }: { children?: React.ReactNode; editMode?: boolean; className?: string }) {
   if (!children) return null;
   return (
@@ -135,7 +143,7 @@ function Title({ p, size, className }: { p: Inner; size: "display-2xl" | "displa
       field="props.title"
       labels={p.labels}
       locale={p.locale}
-      className={cn("vb-hero-title", className)}
+      className={cn("vb-hero-title", enter(p.editMode, 1, "title"), className)}
     />
   );
 }
@@ -147,18 +155,18 @@ function Editorial(p: Inner) {
   return (
     <>
       <Container className="flex flex-col gap-8">
-        <Eyebrow editMode={editMode}>{eyebrow}</Eyebrow>
+        <Eyebrow editMode={editMode} className={enter(editMode, 0)}>{eyebrow}</Eyebrow>
         <Title p={p} size="display-xl" className="max-w-[18ch]" />
         <div className="grid gap-x-(--gutter) gap-y-8 pt-2 @4xl:grid-cols-12 @4xl:items-end">
           <div className="flex flex-col gap-6 @4xl:col-span-6 @6xl:col-span-5">
-            <Lead editMode={editMode}>{lead}</Lead>
-            <CtaList actions={actions} components={components} labels={labels} locale={locale} max={1} editMode={editMode} />
+            <Lead editMode={editMode} className={enter(editMode, 2)}>{lead}</Lead>
+            <CtaList actions={actions} components={components} labels={labels} locale={locale} max={1} editMode={editMode} className={enter(editMode, 3)} />
           </div>
-          <Meta items={meta} className="@4xl:col-span-4 @4xl:col-start-9 @4xl:items-end @4xl:text-end" />
+          <Meta items={meta} className={cn("@4xl:col-span-4 @4xl:col-start-9 @4xl:items-end @4xl:text-end", enter(editMode, 4))} />
         </div>
       </Container>
       {media ? (
-        <div className="vb-hero-strip mt-[calc(var(--section-y)*0.6)]">
+        <div className={cn("vb-hero-strip mt-[calc(var(--section-y)*0.6)]", enter(editMode, 4, "media"))}>
           <BlockImage {...media} aspect="21:9" priority sizes="100vw" components={components} labels={labels} editMode={editMode} field="props.media" />
         </div>
       ) : null}
@@ -173,16 +181,16 @@ function SplitMedia(p: Inner) {
   return (
     <Container className="grid gap-x-(--gutter) gap-y-10 @4xl:grid-cols-12 @4xl:items-start">
       <div className="order-2 flex flex-col gap-7 @4xl:order-1 @4xl:col-span-7 @4xl:pt-[calc(var(--section-y)*0.35)] @6xl:pe-[calc(var(--gutter)*2)]">
-        <Eyebrow editMode={editMode}>{eyebrow}</Eyebrow>
+        <Eyebrow editMode={editMode} className={enter(editMode, 0)}>{eyebrow}</Eyebrow>
         <Title p={p} size="display-xl" />
-        <Lead editMode={editMode} className="max-w-[46ch]">
+        <Lead editMode={editMode} className={cn("max-w-[46ch]", enter(editMode, 2))}>
           {lead}
         </Lead>
-        <CtaList actions={actions} components={components} labels={labels} locale={locale} editMode={editMode} className="pt-2" />
-        <Meta items={meta} className="mt-auto border-t border-line pt-5 @4xl:mt-10" />
+        <CtaList actions={actions} components={components} labels={labels} locale={locale} editMode={editMode} className={cn("pt-2", enter(editMode, 3))} />
+        <Meta items={meta} className={cn("mt-auto border-t border-line pt-5 @4xl:mt-10", enter(editMode, 4))} />
       </div>
       {media ? (
-        <figure className="vb-hero-portrait vb-bleed-end relative order-1 my-0 @4xl:order-2 @4xl:col-span-5" {...field(editMode, "media")}>
+        <figure className={cn("vb-hero-portrait vb-bleed-end relative order-1 my-0 @4xl:order-2 @4xl:col-span-5", enter(editMode, 1, "media"))} {...field(editMode, "media")}>
           <BlockImage {...media} aspect="4:5" priority sizes="(min-width: 56rem) 42vw, 100vw" className="aspect-square! @4xl:aspect-[4/5]!" components={components} labels={labels} />
           {caption ? (
             <figcaption className="absolute bottom-0 start-0 bg-scene px-3 py-2 font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted" {...field(editMode, "caption")}>
@@ -202,7 +210,7 @@ function FullBleed(p: Inner) {
   const t = siteText(labels, locale);
   return (
     <div className={cn("vb-hero-bleed", height === "screen" && "vb-hero-screen")}>
-      <div className="vb-hero-media" aria-hidden={video ? undefined : "true"}>
+      <div className={cn("vb-hero-media", enter(editMode, 0, "media"))} aria-hidden={video ? undefined : "true"}>
         {media ? (
           <BlockImage {...media} decorative priority sizes="100vw" className="absolute inset-0 h-full" components={components} labels={labels} editMode={editMode} field="props.media" />
         ) : null}
@@ -210,15 +218,15 @@ function FullBleed(p: Inner) {
       </div>
       <Container className="relative z-[1] grid w-full content-end gap-x-(--gutter) gap-y-10 @4xl:grid-cols-12 @4xl:items-end">
         <div className="flex flex-col gap-6 @4xl:col-span-8 @6xl:col-span-7">
-          <Eyebrow editMode={editMode}>{eyebrow}</Eyebrow>
+          <Eyebrow editMode={editMode} className={enter(editMode, 0)}>{eyebrow}</Eyebrow>
           <Title p={p} size="display-xl" />
-          <Lead editMode={editMode} className="max-w-[52ch] text-fg">
+          <Lead editMode={editMode} className={cn("max-w-[52ch] text-fg", enter(editMode, 2))}>
             {lead}
           </Lead>
-          <CtaList actions={actions} components={components} labels={labels} locale={locale} editMode={editMode} className="pt-2" />
+          <CtaList actions={actions} components={components} labels={labels} locale={locale} editMode={editMode} className={cn("pt-2", enter(editMode, 3))} />
         </div>
         {aside ? (
-          <aside className="vb-hero-aside surface flex flex-col gap-3 rounded-ui p-5 @4xl:col-span-4 @4xl:col-start-9 @6xl:col-span-3 @6xl:col-start-10" {...field(editMode, "aside")}>
+          <aside className={cn("vb-hero-aside surface flex flex-col gap-3 rounded-ui p-5 @4xl:col-span-4 @4xl:col-start-9 @6xl:col-span-3 @6xl:col-start-10", enter(editMode, 4))} {...field(editMode, "aside")}>
             <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted">{aside.title}</p>
             {aside.body ? <p className="text-body tabular text-fg">{aside.body}</p> : null}
             {aside.cta ? <CtaList actions={[aside.cta]} components={components} labels={labels} locale={locale} size="md" max={1} className="pt-1 [&>a]:w-full" /> : null}
@@ -244,26 +252,26 @@ function Product(p: Inner) {
             locale={locale}
             editMode={editMode}
             field="props.release"
-            className="group/rel inline-flex w-fit items-center gap-3 rounded-full border border-line py-1 ps-1 pe-3.5 text-small text-fg-muted transition-colors hover:border-field-border-hover hover:text-fg focus-ring"
+            className={cn("group/rel inline-flex w-fit items-center gap-3 rounded-full border border-line py-1 ps-1 pe-3.5 text-small text-fg-muted transition-colors hover:border-field-border-hover hover:text-fg focus-ring", enter(editMode, 0))}
           >
             {release.tag ? <span className="rounded-full bg-accent-soft px-2.5 py-0.5 font-mono text-eyebrow tracking-[0.04em] text-accent-ink">{release.tag}</span> : null}
             <span>{release.label}</span>
             <ArrowEnd className="group-hover/rel:translate-x-0.5 rtl:group-hover/rel:-translate-x-0.5" />
           </BlockLink>
         ) : (
-          <Eyebrow editMode={editMode}>{eyebrow}</Eyebrow>
+          <Eyebrow editMode={editMode} className={enter(editMode, 0)}>{eyebrow}</Eyebrow>
         )}
         <div className="grid gap-x-(--gutter) gap-y-7 @4xl:grid-cols-12 @4xl:items-end">
           <Title p={p} size="display-xl" className="@4xl:col-span-8" />
           <div className="flex flex-col gap-6 @4xl:col-span-4">
-            <Lead editMode={editMode}>{lead}</Lead>
-            <CtaList actions={actions} components={components} labels={labels} locale={locale} size="md" editMode={editMode} />
+            <Lead editMode={editMode} className={enter(editMode, 2)}>{lead}</Lead>
+            <CtaList actions={actions} components={components} labels={labels} locale={locale} size="md" editMode={editMode} className={enter(editMode, 3)} />
           </div>
         </div>
-        <Meta items={meta} className="flex-row flex-wrap gap-x-6" />
+        <Meta items={meta} className={cn("flex-row flex-wrap gap-x-6", enter(editMode, 4))} />
       </div>
       {screenshot || visual ? (
-        <div className="vb-hero-shot mt-[calc(var(--section-y)*0.55)]" {...field(editMode, "screenshot")}>
+        <div className={cn("vb-hero-shot mt-[calc(var(--section-y)*0.55)]", enter(editMode, 5, "media"))} {...field(editMode, "screenshot")}>
           {visual ?? <BlockImage {...screenshot!} priority sizes="min(100vw, 90rem)" components={components} labels={labels} />}
         </div>
       ) : null}
@@ -277,10 +285,10 @@ function Statement(p: Inner) {
   const { eyebrow, services, actions, components, labels, locale, editMode } = p;
   return (
     <Container className="flex flex-col items-center gap-10 text-center">
-      <Eyebrow editMode={editMode}>{eyebrow}</Eyebrow>
+      <Eyebrow editMode={editMode} className={enter(editMode, 0)}>{eyebrow}</Eyebrow>
       <Title p={p} size="display-2xl" className="max-w-[16ch]" />
       {services?.length ? (
-        <ul className="flex max-w-(--prose) flex-wrap justify-center gap-x-3 gap-y-2 text-lead text-fg-muted" {...field(editMode, "services")}>
+        <ul className={cn("flex max-w-(--prose) flex-wrap justify-center gap-x-3 gap-y-2 text-lead text-fg-muted", enter(editMode, 2))} {...field(editMode, "services")}>
           {services.map((s, i) => (
             <li key={i} className="flex items-baseline gap-3">
               {i > 0 ? (
@@ -295,7 +303,7 @@ function Statement(p: Inner) {
           ))}
         </ul>
       ) : null}
-      <CtaList actions={actions} components={components} labels={labels} locale={locale} editMode={editMode} className="justify-center" />
+      <CtaList actions={actions} components={components} labels={labels} locale={locale} editMode={editMode} className={cn("justify-center", enter(editMode, 3))} />
     </Container>
   );
 }

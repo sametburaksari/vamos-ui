@@ -6,6 +6,7 @@ import { Container, Section } from "@vamos-ui/react/blocks";
 import { categories, currencyOf, products, SIZES, totalStock, type Category } from "./content";
 import { ProductTile } from "./drop-card";
 import { useDrop } from "./drop-provider";
+import { Stagger } from "@vamos-ui/react/motion";
 
 type Sort = "drop" | "price-asc" | "price-desc" | "stock";
 
@@ -44,7 +45,7 @@ export function ArchivePage() {
           <div className="grid gap-4 border-b border-fg pb-4 @3xl:grid-cols-12 @3xl:items-end">
             <div className="@3xl:col-span-7">
               <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent-ink">/ 03 — 06</p>
-              <h1 id="nb-archive" tabIndex={-1} className="mt-2 font-display text-[clamp(3rem,1rem+8cqi,7.5rem)] font-[800] uppercase leading-[0.82] tracking-[-0.045em] outline-none">
+              <h1 id="nb-archive" tabIndex={-1} className="vm-enter vm-enter-title mt-2 font-display text-[clamp(3rem,1rem+8cqi,7.5rem)] font-[800] uppercase leading-[0.82] tracking-[-0.045em] outline-none">
                 {t({ en: "Archive", tr: "Arşiv" })}
               </h1>
             </div>
@@ -101,11 +102,14 @@ export function ArchivePage() {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-px border border-line bg-line @3xl:grid-cols-3 @5xl:grid-cols-4 @7xl:grid-cols-6">
-              {shown.map((p, i) => (
-                <ProductTile key={p.id} product={p} priority={i < 2} />
-              ))}
-            </div>
+            /* Keyed by the result: a new filter or sort deals the tiles out again, fast. */
+            <Stagger asChild key={shown.map((p) => p.id).join()} effect="fade" step={30} duration={380}>
+              <div className="grid grid-cols-2 gap-px border border-line bg-line @3xl:grid-cols-3 @5xl:grid-cols-4 @7xl:grid-cols-6">
+                {shown.map((p, i) => (
+                  <ProductTile key={p.id} product={p} priority={i < 2} />
+                ))}
+              </div>
+            </Stagger>
           )}
         </Container>
       </Section>

@@ -1,6 +1,7 @@
 import { Button } from "@vamos-ui/react";
 import { BlockHeading, BlockImage, Container, Cta, Faq, FeatureGrid, Footer, Navbar, PageIntro, Section, SectionHeader, SiteShellPage, StatsBand, Steps, sitePageHref } from "@vamos-ui/react/blocks";
 import { ArrowRight } from "lucide-react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { benefits, copyFor, EMAIL, faq, jobs, PHONE, photos, principles, process, teams, voices, type SiteLocale } from "./content";
 import { JobBoard, LatestRoles } from "./job-board";
 import { JobDetail } from "./job-detail";
@@ -65,29 +66,29 @@ export function CareersSite({ locale }: { locale: SiteLocale }) {
             <Container>
               <div className="grid gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] lg:items-end lg:gap-16">
                 <div>
-                  <p className="font-mono text-[11px] tracking-[0.12em] text-fg-muted uppercase">
+                  <p className="vm-enter font-mono text-[11px] tracking-[0.12em] text-fg-muted uppercase">
                     {t({ en: `Careers · ${open} open roles · Kadıköy and remote`, tr: `Kariyer · ${open} açık pozisyon · Kadıköy ve uzaktan` })}
                   </p>
-                  <BlockHeading level={1} size="display-xl" className="mt-6 max-w-[14ch]" text={t({ en: "Software for the people *behind* the counter.", tr: "Tezgâhın *arkasındaki* insanlar için yazılım." })} />
-                  <p className="mt-8 max-w-[52ch] text-lead text-fg-muted">
+                  <BlockHeading level={1} size="display-xl" className="vm-enter vm-enter-title mt-6 max-w-[14ch] [--vm-i:1]" text={t({ en: "Software for the people *behind* the counter.", tr: "Tezgâhın *arkasındaki* insanlar için yazılım." })} />
+                  <p className="vm-enter mt-8 max-w-[52ch] text-lead text-fg-muted [--vm-i:2]">
                     {t({
                       en: "Northpoint plans the shifts, checklists and handovers of 2,400 shops, clinics and warehouses. We are 75 people, paid in euros, with every salary band published. Pick a team to see what is open.",
                       tr: "Northpoint 2.400 mağaza, klinik ve deponun vardiyalarını, kontrol listelerini ve devir teslimini planlar. 75 kişiyiz, euro ile ödeme alıyoruz ve tüm maaş bantları açık. Neyin açık olduğunu görmek için bir ekip seçin.",
                     })}
                   </p>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Button asChild variant="primary" size="lg">
+                  <div className="vm-enter mt-8 flex flex-wrap gap-3 [--vm-i:3]">
+                    <Button asChild variant="primary" size="lg" className="vm-press vm-nudge">
                       <a href={jobsHref}>
                         {t({ en: "Browse open roles", tr: "Açık pozisyonlara göz atın" })}
                         <ArrowRight aria-hidden className="rtl:rotate-180" />
                       </a>
                     </Button>
-                    <Button asChild variant="secondary" size="lg">
+                    <Button asChild variant="secondary" size="lg" className="vm-press">
                       <a href={home("process")}>{t({ en: "How we hire", tr: "Nasıl işe alırız" })}</a>
                     </Button>
                   </div>
                 </div>
-                <div aria-label={t({ en: "Teams and open roles", tr: "Ekipler ve açık pozisyonlar" })} role="group">
+                <div aria-label={t({ en: "Teams and open roles", tr: "Ekipler ve açık pozisyonlar" })} role="group" className="vm-enter [--vm-i:2]">
                   <TeamCompass locale={locale} />
                 </div>
               </div>
@@ -100,6 +101,7 @@ export function CareersSite({ locale }: { locale: SiteLocale }) {
               <SectionHeader headingId="np-how-title" align="split" eyebrow={t({ en: "How we work", tr: "Nasıl çalışırız" })} title={t({ en: "Four habits we *hire* for", tr: "İşe alırken baktığımız *dört* alışkanlık" })} lead={t({ en: "Not values on a wall — things you will see in your first week.", tr: "Duvardaki değerler değil — ilk haftanızda göreceğiniz şeyler." })} />
               <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
                 <BlockImage {...photos.office} alt={t(photos.office.alt)} aspect="4:5" className="rounded-ui-lg" sizes="(min-width: 1024px) 40vw, 100vw" />
+                <Stagger asChild step={90}>
                 <ol className="grid content-start gap-x-10 sm:grid-cols-2">
                   {principles.map((p) => (
                     <li key={p.n} className="border-t-2 border-fg pt-4 pb-10">
@@ -109,6 +111,7 @@ export function CareersSite({ locale }: { locale: SiteLocale }) {
                     </li>
                   ))}
                 </ol>
+                </Stagger>
               </div>
             </Container>
           </Section>
@@ -153,7 +156,7 @@ export function CareersSite({ locale }: { locale: SiteLocale }) {
           <Section headingId="np-voices-title" theme={{ surface: "surface-2" }}>
             <Container>
               <BlockHeading id="np-voices-title" size="display-m" text={t({ en: "In their *words*", tr: "Kendi *sözleriyle*" })} />
-              <div className="mt-10 grid gap-px border-y-2 border-fg bg-line md:grid-cols-3">
+              <Stagger effect="fade" step={120} className="mt-10 grid gap-px border-y-2 border-fg bg-line md:grid-cols-3">
                 {voices.map((v) => (
                   <figure key={v.author} className="flex flex-col justify-between gap-8 bg-surface-2 py-6 md:px-6 md:first:ps-0 md:last:pe-0">
                     <blockquote className="font-display text-[1.3rem] leading-snug text-fg">“{t(v.quote)}”</blockquote>
@@ -163,7 +166,7 @@ export function CareersSite({ locale }: { locale: SiteLocale }) {
                     </figcaption>
                   </figure>
                 ))}
-              </div>
+              </Stagger>
             </Container>
           </Section>
 

@@ -1,5 +1,6 @@
 import { Table, TableBody, TableCaption, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@vamos-ui/react";
 import { BlockLink, Container, Faq, PageIntro, RichText, Section, SectionHeader, Steps, sitePageHref } from "@vamos-ui/react/blocks";
+import { ScrollProgress, Stagger } from "@vamos-ui/react/motion";
 import { faqSecurity, policyJson, retention, SECURITY_EMAIL, subprocessors, type Copy } from "./content";
 
 /**
@@ -11,6 +12,8 @@ export function SecurityPage({ c }: { c: Copy }) {
   const common = { locale: intl, labels };
   return (
     <>
+      {/* The one scroll-linked effect on the site: reading progress through the security page. */}
+      <ScrollProgress />
       <PageIntro
         {...common}
         variant="ruled"
@@ -108,6 +111,7 @@ export function SecurityPage({ c }: { c: Copy }) {
                 lead={t({ en: "We email admins 30 days before adding one. Updated 4 November 2026.", tr: "Yeni birini eklemeden 30 gün önce yöneticilere e-posta göndeririz. Güncelleme: 4 Kasım 2026." })}
               />
             </div>
+            <Stagger asChild effect="fade" step={45}>
             <ul className="m-0 list-none p-0 lg:col-span-8">
               {subprocessors.map((s) => (
                 <li key={s.name} className="grid gap-1 border-t border-line py-4 sm:grid-cols-[13rem_minmax(0,1fr)_8rem] sm:gap-6">
@@ -117,6 +121,7 @@ export function SecurityPage({ c }: { c: Copy }) {
                 </li>
               ))}
             </ul>
+            </Stagger>
           </div>
         </Container>
       </Section>

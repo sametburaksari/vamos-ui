@@ -34,7 +34,7 @@ export function ChooseBouquet({ id, size, label, variant = "primary", className 
   const { setBouquet, setSize } = useOrder();
   const { navigate, hrefFor } = useSiteShell();
   return (
-    <Button asChild variant={variant} className={cn("rounded-full", className)}>
+    <Button asChild variant={variant} className={cn("vm-press rounded-full", className)}>
       <a
         href={hrefFor("order")}
         onClick={(e) => {

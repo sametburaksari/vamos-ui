@@ -76,6 +76,7 @@ export function BlogFrame({ pages, children }: { pages: string[]; children: Reac
     <BlogFrameContext.Provider value={value}>
       <SiteShell
         accent="#E9B949"
+        motion="subtle"
         theme={mode}
         font="system"
         material="solid"

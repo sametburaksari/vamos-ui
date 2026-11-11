@@ -11,7 +11,7 @@ import { CvSite, cvPages } from "./components/cv-site";
  */
 export default function SiteCv01() {
   return (
-    <SiteShell accent="#0EA5E9" font="system" material="solid" density="compact" pages={cvPages} className="min-h-dvh bg-scene print:bg-transparent">
+    <SiteShell accent="#0EA5E9" motion="subtle" font="system" material="solid" density="compact" pages={cvPages} className="min-h-dvh bg-scene print:bg-transparent">
       <SiteShellLocale code="en">
         <LocaleProvider locale="en-GB">
           <CvSite locale="en" />

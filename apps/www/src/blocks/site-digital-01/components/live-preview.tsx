@@ -163,7 +163,7 @@ export function LivePreview({
         </div>
         <div ref={ref} className="relative bg-surface-2 [background-image:radial-gradient(var(--color-line)_1px,transparent_1px)] [background-size:16px_16px]" style={{ height: scale ? frameH : 420 }}>
           {scale ? (
-            <div className="mx-auto origin-top" style={{ width: deviceW * scale, height: frameH }}>
+            <div key={`${state.device}:${state.page}`} className={cn("mx-auto origin-top", onStateChange && "gw-swap")} style={{ width: deviceW * scale, height: frameH }}>
               <div
                 role="region"
                 tabIndex={0}

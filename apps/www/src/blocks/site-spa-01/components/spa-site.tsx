@@ -1,6 +1,7 @@
 import { AnnouncementBar, ContactDock, Cta, Faq, FeatureGrid, Footer, GallerySection, Hero, MapHours, MenuList, Navbar, Steps, Team, Testimonials } from "@vamos-ui/react/blocks";
 import { branch, copyFor, enTime, hours, PHONE, photos, portraits, treatments, WHATSAPP } from "./content";
 import type { SiteLocale } from "./locale-switch";
+import { CountUp, Reveal } from "@vamos-ui/react/motion";
 
 /** One language version of the spa site. Server component: every block is plain props. */
 export function SpaSite({ locale }: { locale: SiteLocale }) {
@@ -57,6 +58,26 @@ export function SpaSite({ locale }: { locale: SiteLocale }) {
             { label: t({ en: "Open daily", tr: "Her gün açık" }), value: t({ en: `from ${enTime("09:00")}`, tr: "09:00’dan itibaren" }) },
           ]}
         />
+
+        {/* Signature: steam rises once from the warm stone as this band comes into view, and the
+            temperature counts up to the göbektaşı's 42 °C. */}
+        <Reveal effect="fade" duration={1400} className="sp-steam border-y border-line">
+          <style>{steamMotion}</style>
+          <div className="vb-container flex flex-wrap items-end gap-x-10 gap-y-4 py-10">
+            <svg aria-hidden viewBox="0 0 120 90" className="h-20 w-28 shrink-0 text-accent-ink" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+              <path d="M30 88 C 18 70, 42 58, 30 40 S 34 12, 26 2" />
+              <path d="M60 88 C 48 66, 74 56, 60 34 S 66 10, 58 0" />
+              <path d="M90 88 C 78 72, 100 60, 90 42 S 94 16, 86 6" />
+            </svg>
+            <p className="font-display text-[clamp(2.75rem,6vw,4.5rem)] leading-none text-fg">
+              <CountUp value={42} from={20} duration={2200} locale={intl} />
+              <span className="text-fg-muted"> °C</span>
+            </p>
+            <p className="max-w-[34ch] pb-1.5 text-fg-muted">
+              {t({ en: "The göbektaşı, kept warm from opening to close — as it was in 1871.", tr: "Göbektaşı, açılıştan kapanışa sıcak tutulur — 1871’de olduğu gibi." })}
+            </p>
+          </div>
+        </Reveal>
 
         <FeatureGrid
           {...common}
@@ -167,7 +188,7 @@ export function SpaSite({ locale }: { locale: SiteLocale }) {
           theme={{ rhythm: "tight" }}
           eyebrow="FAQ"
           title={t({ en: "Before your *first* visit", tr: "*İlk* ziyaretinizden önce" })}
-          contact={{ link: { href: "https://wa.me/905324470912", label: t({ en: "Message us on WhatsApp", tr: "WhatsApp’tan yazın" }) }, style: "link" }}
+          contact={{ link: { href: "https://wa.me/905000000000", label: t({ en: "Message us on WhatsApp", tr: "WhatsApp’tan yazın" }) }, style: "link" }}
           items={[
             { q: t({ en: "What should I bring?", tr: "Yanımda ne getirmeliyim?" }), a: t({ en: "Nothing. Peştemal, slippers, towels, shampoo and a hair dryer are provided. Bring swimwear if you prefer to wear it.", tr: "Hiçbir şey. Peştemal, terlik, havlu, şampuan ve saç kurutma makinesi bizden. İsterseniz mayo getirebilirsiniz." }) },
             { q: t({ en: "Is the hammam mixed?", tr: "Hamam karma mı?" }), a: t({ en: "Treatment rooms are private. The marble hall is mixed except on Tuesday mornings, which are for women only.", tr: "Bakım odaları özeldir. Mermer salon salı sabahları dışında karmadır; salı sabahları yalnızca kadınlara açıktır." }) },
@@ -188,7 +209,7 @@ export function SpaSite({ locale }: { locale: SiteLocale }) {
           { title: t({ en: "Treatments", tr: "Bakımlar" }), links: [{ href: "#prices", label: t({ en: "Hammam rituals", tr: "Hamam ritüelleri" }) }, { href: "#prices", label: t({ en: "Massage", tr: "Masaj" }) }, { href: "#prices", label: t({ en: "Facials", tr: "Yüz bakımı" }) }] },
           { title: t({ en: "Visit", tr: "Ziyaret" }), links: [{ href: "#book", label: book }, { href: "#find-us", label: t({ en: "Find us", tr: "Ulaşım" }) }, { href: "/gift-cards", label: t({ en: "Gift cards", tr: "Hediye kartı" }) }] },
         ]}
-        contact={{ phone: PHONE, email: "rezervasyon@hamammoda.com", address: studio.address }}
+        contact={{ phone: PHONE, email: "rezervasyon@example.com", address: studio.address }}
         social={[{ network: "instagram", href: "https://instagram.com/hamammoda" }]}
         legalLinks={[{ href: "/privacy", label: t({ en: "Privacy", tr: "Gizlilik" }) }, { href: "/kvkk", label: t({ en: "KVKK notice", tr: "KVKK aydınlatma metni" }) }]}
         year={2026}
@@ -198,3 +219,14 @@ export function SpaSite({ locale }: { locale: SiteLocale }) {
     </div>
   );
 }
+
+/** Steam: three wisps drawn upward and thinning out, slowly, once. Static wisps without motion. */
+const steamMotion = `
+.sp-steam path { stroke-dasharray: 120; stroke-dashoffset: 0; opacity: 0.55; }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .sp-steam[data-reveal-state]:where(:not([data-motion="off"] *)) path { transition: stroke-dashoffset 2400ms var(--ease-out-quint), opacity 2400ms var(--ease-in-out); }
+  .sp-steam[data-reveal-state]:where(:not([data-motion="off"] *)) path:nth-child(2) { transition-delay: 300ms; }
+  .sp-steam[data-reveal-state]:where(:not([data-motion="off"] *)) path:nth-child(3) { transition-delay: 600ms; }
+  .sp-steam[data-reveal-state="pending"]:where(:not([data-motion="off"] *)) path { stroke-dashoffset: 120; opacity: 0; }
+}
+`;

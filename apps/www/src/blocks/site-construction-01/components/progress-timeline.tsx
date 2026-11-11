@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Badge, Button, Slider } from "@vamos-ui/react";
 import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+import { Reveal } from "@vamos-ui/react/motion";
 import { addMonths, AS_OF, copyFor, fill, monthDiff, monthLabel, num, progressAt, projectEnd, projectStart, projects, type SiteLocale } from "./content";
 
 const c = {
@@ -111,7 +112,8 @@ export function ProgressTimeline({ locale, slug }: { locale: SiteLocale; slug: s
       {/* Gantt */}
       <div>
         <h3 className="sr-only">{t(c.phases)}</h3>
-        <ol className="flex flex-col border-t border-line">
+        <Reveal asChild effect="fade" duration={1500}>
+        <ol className="sb-gantt flex flex-col border-t border-line">
           {shown.states.map((s, i) => {
             const r = real.states[i]!;
             const left = pos(s.phase.start);
@@ -130,7 +132,7 @@ export function ProgressTimeline({ locale, slug }: { locale: SiteLocale; slug: s
                   </span>
                 </div>
                 <div aria-hidden className="relative h-5">
-                  <div className="absolute inset-y-1.5 rounded-[2px] bg-track" style={{ insetInlineStart: `${left}%`, width: `${width}%` }}>
+                  <div className="sb-bar absolute inset-y-1.5 rounded-[2px] bg-track" style={{ insetInlineStart: `${left}%`, width: `${width}%`, "--sb-i": i } as React.CSSProperties}>
                     {/* Forecast part (beyond today) under the built part */}
                     <div className="absolute inset-y-0 start-0 rounded-[2px] bg-[repeating-linear-gradient(135deg,var(--accent)_0_3px,transparent_3px_6px)] ring-1 ring-accent ring-inset transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${s.pct * 100}%` }} />
                     <div className="absolute inset-y-0 start-0 rounded-[2px] bg-accent transition-[width] duration-200 motion-reduce:transition-none" style={{ width: `${r.pct * 100}%` }} />
@@ -142,6 +144,7 @@ export function ProgressTimeline({ locale, slug }: { locale: SiteLocale; slug: s
             );
           })}
         </ol>
+        </Reveal>
       </div>
 
       {/* Diary */}

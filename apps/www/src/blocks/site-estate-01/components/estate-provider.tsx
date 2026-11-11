@@ -76,5 +76,24 @@ export function EstateProvider({ children }: { children: React.ReactNode }) {
     [locale, filters, active, selected, saved, navigate],
   );
 
-  return <EstateContext.Provider value={value}>{children}</EstateContext.Provider>;
+  return (
+    <EstateContext.Provider value={value}>
+      {children}
+      <style>{harbourMotion}</style>
+    </EstateContext.Provider>
+  );
 }
+
+/**
+ * Harbourline moves like a well-kept listing: unhurried, exact, no bounce. The hero headline is
+ * wiped in, the search panel arrives last. Its signatures are small and useful: the search
+ * button's count settles when the filters change, and a saved home's bookmark drops into place.
+ */
+const harbourMotion = `
+@keyframes hl-count { from { opacity: 0; transform: translate3d(0, 0.4em, 0); } }
+@keyframes hl-drop { 0% { transform: translate3d(0, -60%, 0); opacity: 0; } 60% { transform: translate3d(0, 8%, 0); opacity: 1; } 100% { transform: none; } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .hl-count:where(:not([data-motion="off"] *)) { display: inline-block; animation: hl-count 260ms var(--ease-out-quint); }
+  .hl-drop:where(:not([data-motion="off"] *)) { animation: hl-drop 380ms var(--ease-out-quint); }
+}
+`;

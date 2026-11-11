@@ -53,15 +53,15 @@ export function hoursFor(t: (v: Localized<string>) => string): OpeningHours {
   };
 }
 
-export const PHONE = "+902163581144";
-export const WHATSAPP = "+905321234567";
+export const PHONE = "+902160000000";
+export const WHATSAPP = "+905000000000";
 
 export function branch(t: (v: Localized<string>) => string): Branch {
   return {
     name: "Kıyı Meyhane",
     address: { line: "Bağdat Caddesi 412", district: "Caddebostan", city: "Kadıköy", region: "İstanbul", postalCode: "34728", country: "TR", geo: { lat: 40.9656, lng: 29.0647 } },
     phone: PHONE,
-    email: "masa@kiyimeyhane.com",
+    email: "masa@example.com",
     hours: hoursFor(t),
     mapImage: photos.map,
     placeUrl: "https://maps.app.goo.gl/kiyimeyhane",
