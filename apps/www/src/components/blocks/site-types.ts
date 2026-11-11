@@ -1,5 +1,5 @@
 /**
- * Site-type groups for the "Website pages" filter on /blocks. A site block's type is the middle
+ * Site-type groups for the "Website pages" filter on /websites. A site block's type is the middle
  * of its name (`site-store-01` → "store"); unknown types fall into "Other" until listed here.
  */
 export const siteTypeGroups = [

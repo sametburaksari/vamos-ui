@@ -16,67 +16,62 @@ export interface BrowserBlock {
   files: string[];
 }
 
-/** Domain filters, in display order. A block tagged "any" fits every domain. */
-const domainTags = [
-  { id: "cms", label: "CMS" },
-  { id: "crm", label: "CRM" },
-  { id: "hr", label: "HR" },
-  { id: "ops", label: "Ops" },
-  { id: "site", label: "Websites" },
-] as const;
-
 const ALL = "all";
 /** The category shown as a thumbnail grid with a site-type filter. */
 const WEBSITES = "Website pages";
 const siteGroups = [...siteTypeGroups, OTHER_SITE_GROUP, PAGE_GROUP];
-const matchesTag = (b: BrowserBlock, tag: string) => tag === ALL || b.tags.includes(tag) || b.tags.includes("any");
 
 function readQuery() {
-  if (typeof window === "undefined") return { category: ALL, tag: ALL, type: ALL, block: null };
+  if (typeof window === "undefined") return { category: ALL, type: ALL, block: null };
   const q = new URLSearchParams(window.location.search);
-  return { category: q.get("category") ?? ALL, tag: q.get("tag") ?? ALL, type: q.get("type") ?? ALL, block: q.get("block") };
+  return { category: q.get("category") ?? ALL, type: q.get("type") ?? ALL, block: q.get("block") };
 }
 
 /**
- * The /blocks list: filter by category (in `blockCategories` order, with counts) and by domain
- * tag. "Website pages" switches to a thumbnail grid with a site-type filter; picking a card
- * opens its full preview and code. Filters live in the query string so a view can be shared.
+ * Two pages share this browser. `mode="blocks"` (/blocks): app screens filtered by category (in
+ * `blockCategories` order, with counts). `mode="websites"` (/websites): the example sites as a
+ * thumbnail grid with a site-type filter; picking a card opens its full preview and code.
+ * Filters live in the query string so a view can be shared.
  */
-export function BlocksBrowser({ blocks, categories }: { blocks: BrowserBlock[]; categories: readonly string[] }) {
-  const [category, setCategory] = React.useState(ALL);
-  const [tag, setTag] = React.useState(ALL);
+export function BlocksBrowser({ blocks, categories, mode = "blocks" }: { blocks: BrowserBlock[]; categories: readonly string[]; mode?: "blocks" | "websites" }) {
+  const sitesPage = mode === "websites";
+  const [category, setCategory] = React.useState(sitesPage ? WEBSITES : ALL);
   const [type, setType] = React.useState(ALL);
   const [selected, setSelected] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const q = readQuery();
-    if (q.category === ALL || categories.includes(q.category)) setCategory(q.category);
-    if (q.tag === ALL || domainTags.some((t) => t.id === q.tag)) setTag(q.tag);
+    // Old links (/blocks?category=Website pages…) moved to /websites.
+    if (!sitesPage && q.category === WEBSITES) {
+      const rest = new URLSearchParams(window.location.search);
+      rest.delete("category");
+      window.location.replace(`/websites${rest.toString() ? `?${rest}` : ""}`);
+      return;
+    }
+    if (!sitesPage && (q.category === ALL || categories.includes(q.category))) setCategory(q.category);
     if (q.type === ALL || siteGroups.some((g) => g.id === q.type)) setType(q.type);
     if (q.block && blocks.some((b) => b.name === q.block && b.category === WEBSITES)) setSelected(q.block);
-  }, [categories, blocks]);
+  }, [categories, blocks, sitesPage]);
 
-  const update = (next: { category?: string; tag?: string; type?: string; block?: string | null }) => {
-    const c = next.category ?? category;
-    const t = next.tag ?? tag;
+  const update = (next: { category?: string; type?: string; block?: string | null }) => {
+    const c = sitesPage ? WEBSITES : (next.category ?? category);
     // Site type and the opened site only mean something inside "Website pages".
     const ty = c === WEBSITES ? (next.type ?? type) : ALL;
     const b = c === WEBSITES ? (next.block !== undefined ? next.block : next.type !== undefined ? null : selected) : null;
     setCategory(c);
-    setTag(t);
     setType(ty);
     setSelected(b);
     const q = new URLSearchParams(window.location.search);
     const put = (key: string, value: string | null) => (value === null || value === ALL ? q.delete(key) : q.set(key, value));
-    put("category", c);
-    put("tag", t);
+    if (!sitesPage) put("category", c);
+    q.delete("tag");
     put("type", ty);
     put("block", b);
     const qs = q.toString();
     window.history.replaceState(null, "", `${window.location.pathname}${qs ? `?${qs}` : ""}${window.location.hash}`);
   };
 
-  const byTag = blocks.filter((b) => matchesTag(b, tag));
+  const byTag = blocks;
   const counts = new Map<string, number>();
   for (const b of byTag) counts.set(b.category, (counts.get(b.category) ?? 0) + 1);
   // Only categories that have blocks at all; order follows blockCategories.
@@ -92,7 +87,7 @@ export function BlocksBrowser({ blocks, categories }: { blocks: BrowserBlock[]; 
   return (
     <>
       <div className="mt-8 grid gap-3">
-        <div className="-mx-5 overflow-x-auto px-5 scrollbar-none">
+        {sitesPage ? null : <div className="-mx-5 overflow-x-auto px-5 scrollbar-none">
           <ToggleGroup
             aria-label="Category"
             size="sm"
@@ -112,7 +107,7 @@ export function BlocksBrowser({ blocks, categories }: { blocks: BrowserBlock[]; 
               );
             })}
           </ToggleGroup>
-        </div>
+        </div>}
         {websites && presentGroups.length > 1 ? (
           <div className="flex flex-wrap items-center gap-2">
             <span id="blocks-site-type" className="text-[12.5px] text-fg-subtle">Site type</span>
@@ -128,18 +123,9 @@ export function BlocksBrowser({ blocks, categories }: { blocks: BrowserBlock[]; 
             </ToggleGroup>
           </div>
         ) : null}
-        <div className="flex flex-wrap items-center gap-2">
-          <span id="blocks-domain" className="text-[12.5px] text-fg-subtle">Domain</span>
-          <ToggleGroup aria-labelledby="blocks-domain" variant="outline" size="xs" value={tag} onValueChange={(v) => update({ tag: v || ALL })} className="border-0 bg-transparent p-0">
-            <ToggleGroupItem value={ALL}>Any</ToggleGroupItem>
-            {domainTags.map((t) => (
-              <ToggleGroupItem key={t.id} value={t.id}>{t.label}</ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-        </div>
       </div>
 
-      <p className="sr-only" aria-live="polite">{`${shown.length} ${shown.length === 1 ? "block" : "blocks"} shown`}</p>
+      <p className="sr-only" aria-live="polite">{`${shown.length} ${sitesPage ? (shown.length === 1 ? "site" : "sites") : shown.length === 1 ? "block" : "blocks"} shown`}</p>
 
       {websites && shown.length ? (
         <SiteGrid blocks={shown} selected={selected} onSelect={(name) => update({ block: name })} />
@@ -168,8 +154,8 @@ export function BlocksBrowser({ blocks, categories }: { blocks: BrowserBlock[]; 
           kind="no-results"
           className="mt-12"
           title="No blocks for this filter yet"
-          description="Try another domain, or show every category."
-          actions={<Button size="sm" variant="secondary" onClick={() => update({ category: ALL, tag: ALL, type: ALL })}>Clear filters</Button>}
+          description="Try another filter, or show everything."
+          actions={<Button size="sm" variant="secondary" onClick={() => update({ category: ALL, type: ALL })}>Clear filters</Button>}
         />
       )}
     </>
