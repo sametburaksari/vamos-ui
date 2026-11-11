@@ -48,8 +48,9 @@ const ident = (s) => s.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()).r
   const dir = path.join(root, "apps/www/src/blocks");
   const names = fs.readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith("_") && fs.existsSync(path.join(dir, d.name, "meta.ts"))).map((d) => d.name).sort();
   let out = header + 'import type { BlockEntry } from "./types";\n';
-  for (const n of names) out += `import ${ident("meta-" + n)} from "./${n}/meta";\nimport ${ident("page-" + n)} from "./${n}/page";\n`;
-  out += `\nexport const blocks: BlockEntry[] = [\n${names.map((n) => `  { ...${ident("meta-" + n)}, name: "${n}", Component: ${ident("page-" + n)} },`).join("\n")}\n].sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.name.localeCompare(b.name));\n\nexport const blocksByName = Object.fromEntries(blocks.map((b) => [b.name, b]));\n`;
+  // Pages load lazily: a static import of every page would put all blocks in one client bundle.
+  for (const n of names) out += `import ${ident("meta-" + n)} from "./${n}/meta";\n`;
+  out += `\nexport const blocks: BlockEntry[] = [\n${names.map((n) => `  { ...${ident("meta-" + n)}, name: "${n}", load: () => import("./${n}/page") },`).join("\n")}\n].sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.name.localeCompare(b.name));\n\nexport const blocksByName = Object.fromEntries(blocks.map((b) => [b.name, b]));\n`;
   write(path.join(dir, "index.ts"), out);
 }
 console.log("gen: ok");
