@@ -1,5 +1,5 @@
 import { Badge } from "@vamos-ui/react";
-import { C, Callout, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
+import { A, C, Callout, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
 
 export const metadata = { title: "CLI & registry" };
 
@@ -14,6 +14,7 @@ export default function CliPage() {
         { id: "registry", title: "Registry" },
         { id: "item", title: "Registry item format" },
         { id: "vamos-cli", title: "The vamos CLI" },
+        { id: "mcp", title: "MCP server (AI agents)" },
       ]}
       prev={{ href: "/docs/localization", title: "Localization" }}
       next={{ href: "/blocks", title: "Blocks" }}
@@ -61,6 +62,26 @@ npx vamos-ui init --agent    # add the agent rules and skill (also: npx @vamos-u
         Copied components usually stop receiving fixes. <C>vamos-ui diff</C> and <C>vamos-ui upgrade</C> record the version you
         copied, so accessibility and bug fixes can still reach your edited code.
       </Callout>
+
+      <H2 id="mcp">MCP server (AI agents)</H2>
+      <P>
+        Agents get the rules, theming, search, items, blocks, screen plans and code checks through MCP. It works with any
+        model your client runs — Claude, GPT, Gemini or a local model.
+      </P>
+      <Table
+        head={["Client", "Setup"]}
+        rows={[
+          ["ChatGPT, claude.ai, Claude mobile", <span key="1">Add a custom connector with the URL <C>https://mcp.vamos.ist/mcp</C></span>],
+          ["Claude Code", <C key="2">claude mcp add vamos-ui -- npx -y @vamos-ui/mcp</C>],
+          ["Codex", <C key="3">codex mcp add vamos-ui -- npx -y @vamos-ui/mcp</C>],
+          ["Cursor, VS Code, Windsurf, Gemini CLI, Zed, JetBrains", <span key="4">Command <C>npx</C>, arguments <C>-y @vamos-ui/mcp</C></span>],
+        ]}
+      />
+      <P>
+        The hosted server cannot see your files, so the project tools (brand profile, apply, update, project-wide verify) run
+        only with the local server. Full setup for every client:{" "}
+        <A href="https://github.com/sametburaksari/vamos-ui/tree/main/packages/mcp#setup">packages/mcp README</A>.
+      </P>
     </DocPage>
   );
 }
