@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button, EmptyState, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
-import { BlockViewer, type BlockFile } from "./block-viewer";
+import { BlockViewer } from "./block-viewer";
 import { SiteGrid } from "./site-grid";
 import { OTHER_SITE_GROUP, PAGE_GROUP, siteGroupOf, siteTypeGroups } from "./site-types";
 
@@ -12,7 +12,8 @@ export interface BrowserBlock {
   description: string;
   category: string;
   tags: string[];
-  files: BlockFile[];
+  /** File paths; the source is fetched on demand. */
+  files: string[];
 }
 
 /** Domain filters, in display order. A block tagged "any" fits every domain. */

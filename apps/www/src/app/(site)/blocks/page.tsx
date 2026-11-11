@@ -1,23 +1,18 @@
 import { blockCategories, blocks } from "@/blocks/registry";
-import { highlight, readBlockFile } from "@/lib/highlight";
 import { BlocksBrowser } from "@/components/blocks/blocks-browser";
 
 export const metadata = { title: "Blocks" };
 
-export default async function BlocksPage() {
-  const withFiles = await Promise.all(
-    blocks.map(async (b) => ({
-      name: b.name,
-      title: b.title,
-      description: b.description,
-      category: b.category,
-      tags: b.tags ?? ["any"],
-      files: await Promise.all(b.files.map(async (path) => {
-        const raw = await readBlockFile(path);
-        return { path, raw, html: await highlight(raw) };
-      })),
-    })),
-  );
+export default function BlocksPage() {
+  // Source code is not inlined: each viewer loads /blocks/code/<name>.json when its Code tab opens.
+  const withFiles = blocks.map((b) => ({
+    name: b.name,
+    title: b.title,
+    description: b.description,
+    category: b.category,
+    tags: b.tags ?? ["any"],
+    files: b.files,
+  }));
 
   return (
     <main id="main" className="w-full px-5 md:px-8 xl:px-12 py-12">

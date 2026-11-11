@@ -14,11 +14,35 @@ const widths = { desktop: "100%", tablet: "820px", mobile: "390px" } as const;
  * Block viewer: live preview in an iframe (so the block gets the full viewport,
  * its own scroll and its own theme) or the source, file by file.
  */
-export function BlockViewer({ name, title, description, files }: { name: string; title: string; description: string; files: BlockFile[] }) {
+const sourceCache = new Map<string, Promise<BlockFile[]>>();
+function loadSource(name: string): Promise<BlockFile[]> {
+  let p = sourceCache.get(name);
+  if (!p) {
+    p = fetch(`/blocks/code/${name}.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((d: { files: BlockFile[] }) => d.files);
+    p.catch(() => sourceCache.delete(name));
+    sourceCache.set(name, p);
+  }
+  return p;
+}
+
+export function BlockViewer({ name, title, description, files }: { name: string; title: string; description: string; files: string[] }) {
   const [tab, setTab] = React.useState<"preview" | "code">("preview");
   const [size, setSize] = React.useState<keyof typeof widths>("desktop");
-  const [file, setFile] = React.useState(files[0]!.path);
-  const current = files.find((f) => f.path === file) ?? files[0]!;
+  const [file, setFile] = React.useState(files[0]!);
+  const [source, setSource] = React.useState<BlockFile[] | null>(null);
+  const [failed, setFailed] = React.useState(false);
+  React.useEffect(() => {
+    if (tab !== "code" || source) return;
+    let live = true;
+    setFailed(false);
+    loadSource(name).then((s) => live && setSource(s), () => live && setFailed(true));
+    return () => {
+      live = false;
+    };
+  }, [tab, name, source]);
+  const current = source?.find((f) => f.path === file) ?? source?.[0];
   const cli = `npx vamos-ui add ${name}`;
 
   return (
@@ -62,21 +86,27 @@ export function BlockViewer({ name, title, description, files }: { name: string;
       ) : (
         <div className="grid overflow-hidden rounded-ui-lg border border-line bg-surface-2 md:grid-cols-[230px_minmax(0,1fr)]">
           <ul className="border-b border-line p-2 md:border-e md:border-b-0">
-            {files.map((f) => (
-              <li key={f.path}>
-                <button onClick={() => setFile(f.path)}
-                  className={cn("flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start font-mono text-[12px] focus-ring", f.path === file ? "bg-selected text-fg" : "text-fg-muted hover:bg-hover hover:text-fg")}>
-                  <FileCode2 className="size-3.5 shrink-0" /><span className="truncate">{f.path}</span>
+            {files.map((path) => (
+              <li key={path}>
+                <button onClick={() => setFile(path)}
+                  className={cn("flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start font-mono text-[12px] focus-ring", path === file ? "bg-selected text-fg" : "text-fg-muted hover:bg-hover hover:text-fg")}>
+                  <FileCode2 className="size-3.5 shrink-0" /><span className="truncate">{path}</span>
                 </button>
               </li>
             ))}
           </ul>
           <div className="relative min-w-0">
             <div className="flex h-10 items-center justify-between border-b border-line ps-4 pe-2">
-              <span className="font-mono text-[12px] text-fg-muted">{current.path}</span>
-              <CopyButton value={current.raw} />
+              <span className="font-mono text-[12px] text-fg-muted">{file}</span>
+              {current && <CopyButton value={current.raw} />}
             </div>
-            <div className="max-h-[680px] overflow-auto px-4 py-3.5" dangerouslySetInnerHTML={{ __html: current.html }} />
+            {current ? (
+              <div className="max-h-[680px] overflow-auto px-4 py-3.5" dangerouslySetInnerHTML={{ __html: current.html }} />
+            ) : (
+              <div role="status" className="px-4 py-6 text-[13px] text-fg-muted">
+                {failed ? "Could not load the source. Check your connection and open the tab again." : "Loading source…"}
+              </div>
+            )}
           </div>
         </div>
       )}
