@@ -45,8 +45,8 @@ export function Sheet(props: SheetProps) {
   return <Dialog {...props} />;
 }
 
-export const SheetTrigger = DialogTrigger;
-export const SheetClose = DialogClose;
+export const SheetTrigger: typeof DialogTrigger = DialogTrigger;
+export const SheetClose: typeof DialogClose = DialogClose;
 /** `LayerHeader` for sheets. */
 export const SheetHeader = LayerHeader;
 /** `LayerBody` for sheets — the only part that scrolls. */
@@ -209,8 +209,8 @@ export function Drawer(props: DrawerProps) {
   return <Dialog {...props} />;
 }
 
-export const DrawerTrigger = DialogTrigger;
-export const DrawerClose = DialogClose;
+export const DrawerTrigger: typeof DialogTrigger = DialogTrigger;
+export const DrawerClose: typeof DialogClose = DialogClose;
 export const DrawerHeader = LayerHeader;
 export const DrawerFooter = LayerFooter;
 
