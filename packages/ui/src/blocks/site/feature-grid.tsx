@@ -8,6 +8,7 @@ import type { BlockBaseProps } from "../types";
 import { FeatureTabs } from "./feature-tabs";
 import { SiteIcon } from "./_site-icon-1";
 import { ArrowEnd, indexLabel, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
+import { Stagger } from "../../motion/reveal";
 
 export type FeatureGridVariant = "list" | "grid" | "tabs" | "sticky-media";
 
@@ -236,7 +237,13 @@ export function FeatureGrid({
             )) : undefined}
           />
         ) : null}
-        <div className={v === "list" || v === "grid" ? "vb-reveal" : undefined}>{body}</div>
+        {v === "list" || v === "grid" ? (
+          <Stagger asChild disabled={editMode}>
+            {body}
+          </Stagger>
+        ) : (
+          <div>{body}</div>
+        )}
       </Container>
     </Section>
   );

@@ -15,10 +15,15 @@ const courtType = createFontPairing({ id: "vellacourt", label: "Vellacourt", hea
  * (`?page=residence&house=macka`: full-bleed hero, key facts, story, floor plan, gallery with
  * lightbox, private-viewing request). Signature: walk the plan — rooms on the floor plan drive
  * a slow crossfading photograph of that room, by pointer, focus or arrow keys.
+ *
+ * Motion (full, but slow — nothing here hurries): the film's title unveils line by line, text
+ * settles in over a second and a half, each featured house is unveiled like a lifted curtain,
+ * the off-market photograph drifts behind its band as you scroll (the one scroll effect), the
+ * ledger counts, links nudge and the register button presses.
  */
 export default function SiteEstate02() {
   return (
-    <SiteShell accent={ACCENT} material="glass" density="spacious" pages={["home", "collection", "residence"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} material="glass" density="spacious" motion="full" pages={["home", "collection", "residence"]} className="min-h-dvh bg-scene">
       <FontProvider pairing={courtType}>
         <EstateProvider>
           <SiteShellLocale code="en">

@@ -27,6 +27,7 @@
 @import "./styles/editors.css";
 @import "./styles/media.css";
 @import "./styles/blocks.css";
+@import "./styles/motion.css";
 
 @source "./";
 

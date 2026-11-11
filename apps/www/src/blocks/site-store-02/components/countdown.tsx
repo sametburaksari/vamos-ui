@@ -48,7 +48,9 @@ export function DropCountdown({ size = "lg", className }: { size?: "lg" | "sm"; 
             data-unit={i === 3 ? "seconds" : undefined}
             className={cn("tabular font-mono font-medium leading-none tracking-[-0.04em]", size === "lg" ? "text-[clamp(2.2rem,1rem+5cqi,5.25rem)]" : "text-[1.75rem]")}
           >
-            {value}
+            <span key={value} className="nb-flip">
+              {value}
+            </span>
           </span>
         </div>
       ))}

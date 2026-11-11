@@ -4,6 +4,7 @@ import { Countdown } from "./countdown";
 import { LoamMark } from "./loam-mark";
 import { ReferralPanel } from "./referral-panel";
 import { SignupForm } from "./signup-form";
+import { CountUp, Stagger } from "@vamos-ui/react/motion";
 
 const home = (anchor?: string) => sitePageHref("home", anchor);
 
@@ -13,7 +14,8 @@ const wash = "bg-[linear-gradient(180deg,color-mix(in_oklch,var(--scene)_58%,tra
 /**
  * One language version of the Loam waitlist: a single page (promise, form, countdown, proof
  * points, FAQ) and the "you're on the list" state with the referral position counter.
- * Server component; the form, countdown and referral panel are client islands.
+ * Server component; the SiteShell in
+ * page.tsx picks page and language, the interactive parts are client islands.
  */
 export function WaitlistSite({ locale }: { locale: SiteLocale }) {
   const c = copyFor(locale);
@@ -49,18 +51,19 @@ export function WaitlistSite({ locale }: { locale: SiteLocale }) {
               decorative
               priority
               sizes="100vw"
-              className="absolute inset-0 -z-20 size-full"
+              className="lm-grow absolute inset-0 -z-20 size-full overflow-hidden"
               imgClassName="size-full object-cover"
             />
             <div aria-hidden className={`absolute inset-0 -z-10 ${wash}`} />
+            <style>{loamMotion}</style>
             <Container>
               <div className="grid min-h-[calc(100svh-4.5rem)] items-end gap-10 pt-24 pb-14 lg:grid-cols-12 lg:gap-12 lg:pb-20">
                 <div className="lg:col-span-7">
-                  <p className="m-0 font-mono text-[11px] font-medium tracking-[0.14em] text-fg uppercase">
+                  <p className="vm-enter m-0 font-mono text-[11px] font-medium tracking-[0.14em] text-fg uppercase">
                     {t({ en: "Garden planner · iPhone, Android, web · spring 2027", tr: "Bahçe planlayıcı · iPhone, Android, web · 2027 baharı" })}
                   </p>
-                  <BlockHeading id="loam-hero-title" level={1} size="display-2xl" className="mt-6 max-w-[13ch]" text={t({ en: "Plan the garden your *soil* can actually grow.", tr: "*Toprağınızın* gerçekten yetiştirebileceği bahçeyi planlayın." })} />
-                  <p className="m-0 mt-7 max-w-[46ch] text-lead text-fg-muted">
+                  <BlockHeading id="loam-hero-title" level={1} size="display-2xl" className="vm-enter vm-enter-title [--vm-i:1] mt-6 max-w-[13ch]" text={t({ en: "Plan the garden your *soil* can actually grow.", tr: "*Toprağınızın* gerçekten yetiştirebileceği bahçeyi planlayın." })} />
+                  <p className="vm-enter [--vm-i:2] m-0 mt-7 max-w-[46ch] text-lead text-fg-muted">
                     {t({
                       en: "Draw your plot, tell Loam where the sun falls, and get a sowing calendar for your street — not for a seed packet printed somewhere else.",
                       tr: "Parselinizi çizin, güneşin nereye düştüğünü söyleyin; Loam size başka bir yerde basılmış tohum paketine göre değil, sokağınıza göre bir ekim takvimi çıkarsın.",
@@ -68,11 +71,11 @@ export function WaitlistSite({ locale }: { locale: SiteLocale }) {
                   </p>
                 </div>
 
-                <div id="join" className="surface scroll-mt-24 rounded-ui-lg p-5 sm:p-7 lg:col-span-5">
+                <div id="join" className="vm-enter [--vm-i:3] surface scroll-mt-24 rounded-ui-lg p-5 sm:p-7 lg:col-span-5">
                   <p className="m-0 flex items-baseline justify-between gap-4">
                     <span className="font-display text-2xl text-fg">{t({ en: "Get in early", tr: "Erken katılın" })}</span>
                     <span className="font-mono text-xs text-fg-muted tabular">
-                      {f.number(WAITING)} {t({ en: "waiting", tr: "kişi bekliyor" })}
+                      <CountUp value={WAITING} locale={intl} duration={1800} /> {t({ en: "waiting", tr: "kişi bekliyor" })}
                     </span>
                   </p>
                   <div className="mt-5">
@@ -98,16 +101,20 @@ export function WaitlistSite({ locale }: { locale: SiteLocale }) {
                 eyebrow={t({ en: "Why wait for this one", tr: "Neden bunu bekleyesiniz" })}
                 title={t({ en: "Three things we can *already* show", tr: "Şimdiden *gösterebildiğimiz* üç şey" })}
               />
+              <Stagger asChild step={110}>
               <ol className="m-0 mt-12 grid list-none gap-10 p-0 md:grid-cols-3 md:gap-8">
                 {proofs.map((p, i) => (
                   <li key={t(p.title)} className="flex flex-col gap-3 border-t border-line pt-6">
                     <span className="font-mono text-[11px] text-fg-subtle tabular">{String(i + 1).padStart(2, "0")}</span>
-                    <p className="m-0 font-display text-display-xl leading-none text-accent-ink">{t(p.value)}</p>
+                    <p className="m-0 font-display text-display-xl leading-none text-accent-ink">
+                      <ProofValue text={t(p.value)} locale={intl} />
+                    </p>
                     <h3 className="m-0 text-lg font-semibold text-fg">{t(p.title)}</h3>
                     <p className="m-0 text-fg-muted">{t(p.text)}</p>
                   </li>
                 ))}
               </ol>
+              </Stagger>
             </Container>
           </Section>
 
@@ -138,12 +145,12 @@ export function WaitlistSite({ locale }: { locale: SiteLocale }) {
             <div aria-hidden className={`absolute inset-x-0 top-0 -z-10 h-[34rem] ${wash}`} />
             <Container>
               <div className="pt-20 pb-16 sm:pt-28">
-                <p className="m-0 font-mono text-[11px] font-medium tracking-[0.14em] text-fg uppercase">{t({ en: "Spot saved", tr: "Yeriniz ayrıldı" })}</p>
-                <BlockHeading id="loam-joined-title" level={1} size="display-xl" className="mt-4 max-w-[14ch]" text={t({ en: "You’re on the *list.*", tr: "*Listedesiniz.*" })} />
+                <p className="vm-enter m-0 font-mono text-[11px] font-medium tracking-[0.14em] text-fg uppercase">{t({ en: "Spot saved", tr: "Yeriniz ayrıldı" })}</p>
+                <BlockHeading id="loam-joined-title" level={1} size="display-xl" className="vm-enter vm-enter-title [--vm-i:1] mt-4 max-w-[14ch]" text={t({ en: "You’re on the *list.*", tr: "*Listedesiniz.*" })} />
                 <p className="m-0 mt-5 max-w-[50ch] text-lead text-fg-muted">
                   {t({ en: "We’ll email you when it’s your turn. Until then, here is where you stand — and how to get in sooner.", tr: "Sıranız geldiğinde e-posta göndereceğiz. O zamana kadar nerede durduğunuz ve nasıl daha erken girebileceğiniz burada." })}
                 </p>
-                <div className="mt-12">
+                <div className="vm-enter [--vm-i:3] mt-12">
                   <ReferralPanel locale={locale} />
                 </div>
                 <div className="mt-12 grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-end">
@@ -179,3 +186,29 @@ export function WaitlistSite({ locale }: { locale: SiteLocale }) {
     </>
   );
 }
+
+/** A proof value: its leading number counts up, any unit ("4 min") stays put. */
+function ProofValue({ text, locale }: { text: string; locale: string }) {
+  const m = /^(\d+)(.*)$/.exec(text);
+  if (!m) return <>{text}</>;
+  return (
+    <>
+      <CountUp value={Number(m[1])} locale={locale} duration={1600} />
+      {m[2]}
+    </>
+  );
+}
+
+/**
+ * Loam moves like things that grow: unhurried, upward. The seedling photo settles out of a slow
+ * zoom as the page opens; the headline is cut in; numbers count up; and the countdown's digits
+ * rise into place as they change, like shoots. Nothing loops except the ticking clock itself.
+ */
+const loamMotion = `
+@keyframes lm-grow { from { transform: scale(1.12) translate3d(0, 2%, 0); } }
+@keyframes lm-shoot { from { opacity: 0; transform: translate3d(0, 0.45em, 0); } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .lm-grow:where(:not([data-motion="off"] *)) img { animation: lm-grow 2600ms var(--ease-out-quint) backwards; }
+  .lm-shoot:where(:not([data-motion="off"] *)) { display: inline-block; animation: lm-shoot 320ms var(--ease-out-quint); }
+}
+`;

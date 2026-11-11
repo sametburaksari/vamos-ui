@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Button, Field, RadioGroup } from "@vamos-ui/react";
+import { Reveal } from "@vamos-ui/react/motion";
 import { Container, Section, sitePageHref } from "@vamos-ui/react/blocks";
 import { ArrowRight, Check } from "lucide-react";
 import { companyTypes, copyFor, estimate, tl, type CompanyType, type SiteLocale } from "./content";
@@ -69,25 +70,25 @@ export function LedgerHero({ locale }: { locale: SiteLocale }) {
       <Container className="relative">
         <div className="grid items-end gap-12 @5xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] @5xl:gap-16">
           <div className="flex flex-col gap-7 @3xl:ps-10">
-            <p className="font-mono text-eyebrow uppercase tracking-[0.16em] text-fg-muted">{t(c.eyebrow)}</p>
-            <h1 id="lg-hero-title" className="font-display text-display-xl font-[var(--display-weight)] tracking-[var(--display-tracking)] text-balance text-fg">
+            <p className="vm-enter font-mono text-eyebrow uppercase tracking-[0.16em] text-fg-muted">{t(c.eyebrow)}</p>
+            <h1 id="lg-hero-title" className="vm-enter vm-enter-title [--vm-i:1] font-display text-display-xl font-[var(--display-weight)] tracking-[var(--display-tracking)] text-balance text-fg">
               <Emph text={t(c.title)} />
             </h1>
-            <p className="max-w-[54ch] text-lead text-fg-muted">{t(c.lead)}</p>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild variant="primary" size="lg">
+            <p className="vm-enter [--vm-i:2] max-w-[54ch] text-lead text-fg-muted">{t(c.lead)}</p>
+            <div className="vm-enter [--vm-i:3] flex flex-wrap gap-3">
+              <Button asChild variant="primary" size="lg" className="vm-press vm-nudge">
                 <a href={sitePageHref("services", "estimate")}>
                   {t(c.estimate)}
                   <ArrowRight aria-hidden className="rtl:rotate-180" />
                 </a>
               </Button>
-              <Button asChild variant="secondary" size="lg">
+              <Button asChild variant="secondary" size="lg" className="vm-press">
                 <a href={sitePageHref("contact")}>{t(c.call)}</a>
               </Button>
             </div>
           </div>
 
-          <figure className="surface relative rounded-ui-lg p-5 @md:p-7">
+          <figure className="vm-enter vm-enter-media [--vm-i:2] surface relative rounded-ui-lg p-5 @md:p-7">
             <figcaption className="flex flex-col gap-1 border-b-[3px] border-double border-line pb-4">
               <span className="font-display text-h3 text-fg">{t(c.ledgerTitle)}</span>
               <span className="font-mono text-xs text-fg-muted">{t(c.ledgerClient)}</span>
@@ -102,13 +103,13 @@ export function LedgerHero({ locale }: { locale: SiteLocale }) {
                 </tr>
               </thead>
               <tbody>
-                {ledger.map((row) => (
-                  <tr key={row.day} className="border-t border-line">
-                    <td className="py-3 align-top font-mono tabular text-fg-muted">{row.day}</td>
-                    <td className="py-3 pe-3 text-fg">{t(row.entry)}</td>
+                {ledger.map((row, i) => (
+                  <tr key={row.day} className="border-t border-line" style={{ "--vm-i": i } as React.CSSProperties}>
+                    <td className="lg-ink py-3 align-top font-mono tabular text-fg-muted">{row.day}</td>
+                    <td className="lg-ink py-3 pe-3 text-fg">{t(row.entry)}</td>
                     <td className="py-3 text-end">
                       {row.done ? (
-                        <span className="inline-flex items-center gap-1 font-mono text-xs text-accent-ink">
+                        <span className="lg-stamp inline-flex items-center gap-1 font-mono text-xs text-accent-ink">
                           <Check aria-hidden className="size-3.5" strokeWidth={3} />
                           {t(c.done)}
                         </span>
@@ -120,7 +121,9 @@ export function LedgerHero({ locale }: { locale: SiteLocale }) {
                 ))}
               </tbody>
             </table>
-            <p className="mt-4 border-t-[3px] border-double border-line pt-3 text-end font-display text-small italic text-fg-muted">{t(c.signed)}</p>
+            <p className="mt-4 border-t-[3px] border-double border-line pt-3 text-end font-display text-small italic text-fg-muted">
+              <span className="lg-ink inline-block [--vm-i:6]">{t(c.signed)}</span>
+            </p>
           </figure>
         </div>
       </Container>
@@ -136,14 +139,14 @@ export function FeePreview({ locale }: { locale: SiteLocale }) {
     <Section aria-labelledby="lg-fees-title" theme={{ surface: "surface-2" }} anchor="fees">
       <Container>
         <div className="grid gap-10 @5xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] @5xl:gap-16">
-          <div className="flex flex-col gap-4">
+          <Reveal effect="fade" className="flex flex-col gap-4">
             <p className="font-mono text-eyebrow uppercase tracking-[0.16em] text-fg-muted">{t(c.previewEyebrow)}</p>
             <h2 id="lg-fees-title" className="font-display text-display-m text-balance text-fg">
               <Emph text={t(c.previewTitle)} />
             </h2>
             <p className="max-w-[48ch] text-lead text-fg-muted">{t(c.previewLead)}</p>
-          </div>
-          <div className="flex flex-col gap-6">
+          </Reveal>
+          <Reveal effect="rise" delay={120} className="flex flex-col gap-6">
             <Field label={t(c.type)}>
               <RadioGroup variant="segmented" value={type} onValueChange={(v) => setType(v as CompanyType)} items={companyTypes.map((ct) => ({ value: ct.id, label: t(ct.short) }))} />
             </Field>
@@ -151,7 +154,9 @@ export function FeePreview({ locale }: { locale: SiteLocale }) {
               <div className="flex flex-col" aria-live="polite">
                 <span className="text-xs text-fg-muted">{t(c.from)}</span>
                 <span className="font-mono text-[2.5rem] leading-none font-medium tabular tracking-tight text-fg" data-testid="lg-from">
-                  {tl(est.monthly, locale)}
+                  <span key={est.monthly} className="lg-settle">
+                    {tl(est.monthly, locale)}
+                  </span>
                 </span>
                 <span className="mt-1.5 text-xs text-fg-muted">{t(c.perMonth)}</span>
                 <span className="mt-3 text-small text-fg">{t(est.type.note)}</span>
@@ -170,13 +175,13 @@ export function FeePreview({ locale }: { locale: SiteLocale }) {
             </div>
             <div>
               <Button asChild variant="secondary">
-                <a href={sitePageHref("services", "estimate")}>
+                <a href={sitePageHref("services", "estimate")} className="vm-nudge">
                   {t(c.full)}
                   <ArrowRight aria-hidden className="rtl:rotate-180" />
                 </a>
               </Button>
             </div>
-          </div>
+          </Reveal>
         </div>
       </Container>
     </Section>

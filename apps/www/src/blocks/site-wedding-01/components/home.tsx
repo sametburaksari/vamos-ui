@@ -3,6 +3,7 @@ import { BlockHeading, BlockImage, Container, Section, SectionHeader, sitePageHr
 import { ArrowRight } from "lucide-react";
 import { days, photos, RSVP_BY, story, WEDDING_DAY, weekend, type Copy } from "./content";
 import { Sprig } from "./sprig";
+import { Reveal, Stagger } from "@vamos-ui/react/motion";
 
 const rsvp = sitePageHref("rsvp");
 const details = (anchor?: string) => sitePageHref("details", anchor);
@@ -25,27 +26,27 @@ export function WeddingHome({ c }: { c: Copy }) {
           <div className="grid items-center gap-10 py-4 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-14 lg:gap-20">
             {/* Arched photograph with an offset hairline arch behind it. */}
             <div className="relative mx-auto w-full max-w-[26rem] md:mx-0 md:max-w-none">
-              <span aria-hidden className="absolute inset-0 translate-x-3 -translate-y-3 rounded-t-full border border-accent-ink/60" />
-              <BlockImage {...img(photos.hills)} aspect="4:5" priority sizes="(min-width: 48rem) 40vw, 90vw" className="relative overflow-hidden rounded-t-full" />
-              <p className={`${caps} mt-4 flex items-center gap-3`}>
+              <span aria-hidden className="wd-arch absolute inset-0 translate-x-3 -translate-y-3 rounded-t-full border border-accent-ink/60" />
+              <BlockImage {...img(photos.hills)} aspect="4:5" priority sizes="(min-width: 48rem) 40vw, 90vw" className="vm-enter vm-enter-media relative overflow-hidden rounded-t-full" />
+              <p className={`${caps} vm-enter mt-4 flex items-center gap-3 [--vm-i:3]`}>
                 <Sprig className="h-3 w-9 text-accent-ink" />
                 {t({ en: "Urla, during the olive harvest", tr: "Urla, zeytin hasadında" })}
               </p>
             </div>
 
             {/* The card: double hairline frame, centred like stationery. */}
-            <div className="border border-line p-1.5">
+            <div className="vm-enter border border-line p-1.5 [--vm-i:1]">
               <div className="flex flex-col items-center border border-line px-5 py-10 text-center sm:px-10 sm:py-14">
                 <p className={caps}>{t({ en: "Together with their families", tr: "Aileleriyle birlikte" })}</p>
-                <BlockHeading level={1} size="display-xl" className="mt-6 text-balance">
+                <BlockHeading level={1} size="display-xl" className="vm-enter vm-enter-title mt-6 text-balance [--vm-i:2]">
                   <span className="block">Ece Arslan</span>
                   <em className="my-1 block text-[0.62em] leading-none text-accent-ink">&amp;</em>
                   <span className="block">Daniel Whitlock</span>
                 </BlockHeading>
-                <p className="mt-6 max-w-[34ch] font-display text-lead italic text-fg-muted">
+                <p className="vm-enter mt-6 max-w-[34ch] font-display text-lead italic text-fg-muted [--vm-i:3]">
                   {t({ en: "would love you to join them as they marry, under an old olive tree, in June.", tr: "Haziran’da, yaşlı bir zeytin ağacının altında evlenirken yanlarında olmanızı çok isterler." })}
                 </p>
-                <dl className="m-0 mt-9 grid w-full max-w-md grid-cols-3 border-y border-line">
+                <dl className="vm-enter m-0 mt-9 grid w-full max-w-md grid-cols-3 border-y border-line [--vm-i:4]">
                   {[
                     [t({ en: "Day", tr: "Gün" }), date(WEDDING_DAY, { weekday: "long" })],
                     [t({ en: "Date", tr: "Tarih" }), "12 · 06 · 27"],
@@ -61,11 +62,11 @@ export function WeddingHome({ c }: { c: Copy }) {
                   Bademli Olive Estate
                   <span className="block text-small text-fg-muted">{t({ en: "Bademler, Urla · İzmir", tr: "Bademler, Urla · İzmir" })}</span>
                 </p>
-                <div className="mt-9 flex flex-wrap justify-center gap-3">
-                  <Button asChild variant="primary" size="lg" className="rounded-full px-7">
+                <div className="vm-enter mt-9 flex flex-wrap justify-center gap-3 [--vm-i:5]">
+                  <Button asChild variant="primary" size="lg" className="vm-press rounded-full px-7">
                     <a href={rsvp}>{t({ en: "Reply to the invitation", tr: "Davete yanıt verin" })}</a>
                   </Button>
-                  <Button asChild variant="ghost" size="lg" className="rounded-full">
+                  <Button asChild variant="ghost" size="lg" className="vm-press vm-nudge rounded-full">
                     <a href={details()}>
                       {t({ en: "The weekend", tr: "Hafta sonu" })}
                       <ArrowRight aria-hidden className="rtl:rotate-180" />
@@ -87,6 +88,7 @@ export function WeddingHome({ c }: { c: Copy }) {
               <SectionHeader headingId="wd-story-title" eyebrow={t({ en: "Our story", tr: "Hikâyemiz" })} title={t({ en: "Seven years, *one* dictionary", tr: "Yedi yıl, *tek* sözlük" })} />
               <BlockImage {...img(photos.hands)} aspect="4:5" sizes="(min-width: 64rem) 28vw, 90vw" className="mt-10 hidden max-w-xs overflow-hidden rounded-t-full lg:block" />
             </div>
+            <Stagger asChild step={150}>
             <ol className="m-0 grid list-none gap-0 p-0">
               {story.map((s, i) => (
                 <li key={s.year} className="grid gap-x-8 gap-y-2 border-t border-line py-8 first:border-t-0 first:pt-0 sm:grid-cols-[8rem_minmax(0,1fr)]">
@@ -99,6 +101,7 @@ export function WeddingHome({ c }: { c: Copy }) {
                 </li>
               ))}
             </ol>
+            </Stagger>
           </div>
         </Container>
       </Section>
@@ -118,7 +121,7 @@ export function WeddingHome({ c }: { c: Copy }) {
               </Button>
             }
           />
-          <div className="mt-12 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-[1fr_1.35fr_1fr]">
+          <Stagger effect="fade" step={160} className="mt-12 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-[1fr_1.35fr_1fr]">
             {days.map((d, day) => {
               const items = weekend.filter((e) => e.day === day && (day === 1 || e.key));
               const main = day === 1;
@@ -144,7 +147,7 @@ export function WeddingHome({ c }: { c: Copy }) {
                 </div>
               );
             })}
-          </div>
+          </Stagger>
         </Container>
       </Section>
 
@@ -152,7 +155,9 @@ export function WeddingHome({ c }: { c: Copy }) {
       <Section anchor="estate" headingId="wd-estate-title" theme={{ surface: "surface-2" }}>
         <Container>
           <div className="grid items-end gap-10 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:gap-14">
-            <BlockImage {...img(photos.table)} aspect="4:3" sizes="(min-width: 48rem) 55vw, 100vw" className="overflow-hidden rounded-ui" />
+            <Reveal effect="clip" duration={1300}>
+              <BlockImage {...img(photos.table)} aspect="4:3" sizes="(min-width: 48rem) 55vw, 100vw" className="overflow-hidden rounded-ui" />
+            </Reveal>
             <div className="pb-2">
               <SectionHeader headingId="wd-estate-title" eyebrow={t({ en: "The estate", tr: "Mekân" })} title={t({ en: "Bademli, an olive grove above the *gulf*", tr: "Körfeze bakan bir zeytinlik: *Bademli*" })} />
               <p className="mt-6 max-w-[48ch] text-fg-muted">
@@ -161,7 +166,7 @@ export function WeddingHome({ c }: { c: Copy }) {
                   tr: "Badem ağaçlarını Ece’nin babaannesi 1971’de dikti; zeytinler çok daha yaşlı. En yaşlısının altında evlenecek, bademlerin arasına uzanan masada yemek yiyecek ve son servise kadar ahır salonunda dans edeceğiz.",
                 })}
               </p>
-              <a href={details("venue")} className="mt-6 inline-flex items-center gap-2 rounded-ui-sm font-medium text-accent-ink underline decoration-accent-ink/40 underline-offset-4 hover:decoration-accent-ink focus-ring">
+              <a href={details("venue")} className="vm-nudge mt-6 inline-flex items-center gap-2 rounded-ui-sm font-medium text-accent-ink underline decoration-accent-ink/40 underline-offset-4 hover:decoration-accent-ink focus-ring">
                 {t({ en: "Map, travel and where to stay", tr: "Harita, ulaşım ve konaklama" })}
                 <ArrowRight aria-hidden className="size-4 rtl:rotate-180" />
               </a>
@@ -172,6 +177,7 @@ export function WeddingHome({ c }: { c: Copy }) {
 
       {/* ---------------------------------------------------------------- Gifts + reply */}
       <Section anchor="gifts" headingId="wd-gifts-title">
+        <Reveal asChild>
         <Container size="prose" className="text-center">
           <Sprig className="mx-auto h-6 w-20 text-accent-ink" />
           <h2 id="wd-gifts-title" className="m-0 mt-6 font-display text-display-m text-fg">
@@ -187,6 +193,7 @@ export function WeddingHome({ c }: { c: Copy }) {
             {t({ en: "How to contribute", tr: "Nasıl katkıda bulunabilirsiniz" })}
           </a>
         </Container>
+        </Reveal>
       </Section>
 
       <Section anchor="reply" headingId="wd-reply-title" theme={{ surface: "accent", rhythm: "tight" }}>
@@ -200,7 +207,7 @@ export function WeddingHome({ c }: { c: Copy }) {
                 {t({ en: `Find your invitation by name, tell us who’s coming and what they’ll eat. It takes two minutes. Please reply by ${replyBy}.`, tr: `Davetiyenizi adınızla bulun, kimlerin geleceğini ve ne yiyeceklerini söyleyin. İki dakika sürer. Lütfen 1 Nisan’a kadar yanıtlayın.` })}
               </p>
             </div>
-            <Button asChild variant="solid" size="lg" className="shrink-0 rounded-full px-7 text-accent">
+            <Button asChild variant="solid" size="lg" className="vm-press vm-nudge shrink-0 rounded-full px-7 text-accent">
               <a href={rsvp}>
                 {t({ en: "Reply now", tr: "Şimdi yanıtla" })}
                 <ArrowRight aria-hidden className="rtl:rotate-180" />

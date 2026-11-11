@@ -28,15 +28,17 @@ export function CityPlan({ className }: { className?: string }) {
     }
   }
   return (
-    <svg aria-hidden viewBox="0 0 420 300" className={className} fill="none" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke">
-      <path d={blocks.join("")} opacity="0.55" />
+    <svg aria-hidden viewBox="0 0 420 300" className={`dus-plan ${className ?? ""}`} fill="none" stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke">
+      <path className="dus-blocks" d={blocks.join("")} opacity="0.55" />
       {/* the river */}
-      <path d="M300 300C330 240 360 210 420 190M330 300C352 250 380 228 420 215" strokeWidth="1.4" />
+      <path className="dus-line" pathLength={1} d="M300 300C330 240 360 210 420 190M330 300C352 250 380 228 420 215" strokeWidth="1.4" />
       {/* the avenue */}
-      <path d="M0 290L250 20" strokeWidth="2" opacity="0.8" />
+      <path className="dus-line" pathLength={1} d="M0 290L250 20" strokeWidth="2" opacity="0.8" />
       {/* the square */}
-      <circle cx="210" cy="148" r="16" strokeWidth="1.4" />
-      <circle cx="210" cy="148" r="3" fill="currentColor" stroke="none" />
+      <g className="dus-square">
+        <circle cx="210" cy="148" r="16" strokeWidth="1.4" />
+        <circle cx="210" cy="148" r="3" fill="currentColor" stroke="none" />
+      </g>
     </svg>
   );
 }

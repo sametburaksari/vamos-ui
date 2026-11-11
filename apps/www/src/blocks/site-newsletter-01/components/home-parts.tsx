@@ -2,6 +2,7 @@
 
 import { Button } from "@vamos-ui/react";
 import { ArrowRight } from "lucide-react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { IssueRow } from "./archive-search";
 import { useDesk } from "./desk-provider";
 import { copyFor, issues, topics, type SiteLocale } from "./content";
@@ -13,7 +14,7 @@ export function LatestLetter({ locale }: { locale: SiteLocale }) {
   const latest = issues[0]!;
   return (
     <article aria-labelledby="sd-latest-title" className="relative rounded-[3px] border border-fg/70 bg-surface p-6 pt-8 shadow-[8px_8px_0_-1px_var(--surface-2),8px_8px_0_0_var(--line)] sm:p-8">
-      <div aria-hidden className="absolute -top-8 end-5 grid size-[5.5rem] rotate-[8deg] place-items-center rounded-full border-2 border-accent-ink text-center font-mono text-[8px] leading-tight tracking-[0.08em] text-accent-ink uppercase motion-reduce:rotate-0">
+      <div aria-hidden className="sd-stamp absolute -top-8 end-5 grid size-[5.5rem] rotate-[8deg] place-items-center rounded-full border-2 border-accent-ink text-center font-mono text-[8px] leading-tight tracking-[0.08em] text-accent-ink uppercase motion-reduce:rotate-0">
         <span>
           Slow Desk
           <br />
@@ -31,7 +32,7 @@ export function LatestLetter({ locale }: { locale: SiteLocale }) {
         <span className="font-mono text-[11px] text-fg-muted">
           {f.date(latest.date, { day: "numeric", month: "long", year: "numeric" })} · {latest.minutes} {t({ en: "min", tr: "dk" })}
         </span>
-        <Button type="button" variant="link" onClick={() => openIssue(latest.n)}>
+        <Button type="button" variant="link" className="vm-nudge" onClick={() => openIssue(latest.n)}>
           {t({ en: "Continue reading", tr: "Okumaya devam edin" })}
           <ArrowRight aria-hidden className="size-4 rtl:rotate-180" />
         </Button>
@@ -43,11 +44,13 @@ export function LatestLetter({ locale }: { locale: SiteLocale }) {
 /** Five recent letters as archive rows. */
 export function RecentLetters({ locale }: { locale: SiteLocale }) {
   return (
-    <ul className="border-t-2 border-fg">
-      {issues.slice(1, 6).map((i) => (
-        <IssueRow key={i.n} issue={i} locale={locale} />
-      ))}
-    </ul>
+    <Stagger asChild effect="fade" step={90}>
+      <ul className="border-t-2 border-fg">
+        {issues.slice(1, 6).map((i) => (
+          <IssueRow key={i.n} issue={i} locale={locale} />
+        ))}
+      </ul>
+    </Stagger>
   );
 }
 
@@ -56,6 +59,7 @@ export function TopicIndex({ locale }: { locale: SiteLocale }) {
   const { t } = copyFor(locale);
   const { browseTopic } = useDesk();
   return (
+    <Stagger asChild effect="fade" step={70}>
     <ul className="flex flex-col">
       {topics.map((tp) => {
         const n = issues.filter((i) => i.topic === tp.id).length;
@@ -69,5 +73,6 @@ export function TopicIndex({ locale }: { locale: SiteLocale }) {
         );
       })}
     </ul>
+    </Stagger>
   );
 }

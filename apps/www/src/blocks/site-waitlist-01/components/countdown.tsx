@@ -37,7 +37,12 @@ export function Countdown({ locale, className }: { locale: SiteLocale; className
       <ol aria-hidden className="m-0 grid list-none grid-cols-4 gap-2 p-0">
         {units.map(([k, label]) => (
           <li key={k} className="flex flex-col items-start rounded-ui border border-line bg-[color-mix(in_oklch,var(--surface)_60%,transparent)] px-3 py-2.5">
-            <span className="font-display text-[1.75rem] leading-none text-fg tabular">{p ? f.number(p[k], { minimumIntegerDigits: k === "d" ? 1 : 2 }) : "–"}</span>
+            <span className="font-display text-[1.75rem] leading-none text-fg tabular">
+              {/* Keyed by the value: each change rises into place (styles in waitlist-site). */}
+              <span key={p ? p[k] : "–"} className={p ? "lm-shoot" : undefined}>
+                {p ? f.number(p[k], { minimumIntegerDigits: k === "d" ? 1 : 2 }) : "–"}
+              </span>
+            </span>
             <span className="mt-1.5 font-mono text-[10px] tracking-[0.1em] text-fg-muted uppercase">{label}</span>
           </li>
         ))}

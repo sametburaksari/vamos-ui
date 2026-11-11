@@ -2,6 +2,7 @@ import { Button, LocaleProvider } from "@vamos-ui/react";
 import { ComparisonTable, Container, Cta, Faq, FeatureGrid, Footer, Navbar, Section, SectionHeader, SiteShellPage, sitePageHref, Testimonials } from "@vamos-ui/react/blocks";
 import { tr } from "@vamos-ui/react/locale/tr";
 import { ArrowDown } from "lucide-react";
+import { CountUp } from "@vamos-ui/react/motion";
 import { CheckoutPage } from "./checkout-page";
 import { copyFor, EMAIL, faqItems, licences, PHONE, templates, type SiteLocale } from "./content";
 import { HeroPreview, TemplateGrid } from "./home-parts";
@@ -28,7 +29,7 @@ function GridMark() {
  */
 export function DigitalSite({ locale }: { locale: SiteLocale }) {
   const c = copyFor(locale);
-  const { t, f, usd, intl, labels } = c;
+  const { t, usd, intl, labels } = c;
   const common = { locale: intl, labels };
   const sold = templates.reduce((n, x) => n + x.sales, 0);
 
@@ -64,15 +65,15 @@ export function DigitalSite({ locale }: { locale: SiteLocale }) {
             <Container size="wide">
               <div className="grid gap-x-12 gap-y-6 pt-4 pb-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-end lg:pt-12">
                 <div className="flex flex-col gap-5">
-                  <p className="inline-flex items-center gap-2 self-start rounded-full border border-line bg-surface px-3 py-1 font-mono text-[11.5px] text-fg-muted">
+                  <p className="vm-enter inline-flex items-center gap-2 self-start rounded-full border border-line bg-surface px-3 py-1 font-mono text-[11.5px] text-fg-muted">
                     <span aria-hidden className="size-1.5 rounded-full bg-accent" />
                     {t({ en: "6 templates · 63 pages · built on Vamos UI", tr: "6 şablon · 63 sayfa · Vamos UI ile" })}
                   </p>
-                  <h1 id="gw-hero-title" className="font-display text-[clamp(2.7rem,7.5vw,6rem)] leading-[0.9] font-semibold tracking-[-0.05em] text-balance text-fg">
+                  <h1 id="gw-hero-title" className="vm-enter [--vm-i:1] font-display text-[clamp(2.7rem,7.5vw,6rem)] leading-[0.9] font-semibold tracking-[-0.05em] text-balance text-fg">
                     {t({ en: "Try the template", tr: "Şablonu" })} <em className="text-accent-ink not-italic">{t({ en: "before", tr: "satın almadan" })}</em> {t({ en: "you buy it.", tr: "deneyin." })}
                   </h1>
                 </div>
-                <div className="flex flex-col gap-5 lg:pb-2">
+                <div className="vm-enter flex flex-col gap-5 [--vm-i:2] lg:pb-2">
                   <p className="text-lead text-fg-muted">
                     {t({
                       en: "Every preview here is the template itself, running. Switch pages, devices, dark mode, accent and fonts — what you see is what the code does after you download it.",
@@ -80,27 +81,29 @@ export function DigitalSite({ locale }: { locale: SiteLocale }) {
                     })}
                   </p>
                   <div className="flex flex-wrap gap-3">
-                    <Button asChild variant="primary" size="lg">
+                    <Button asChild variant="primary" size="lg" className="vm-press">
                       <a href={home("templates")}>
                         {t({ en: "Browse templates", tr: "Şablonlara göz at" })}
                         <ArrowDown aria-hidden />
                       </a>
                     </Button>
-                    <Button asChild variant="ghost" size="lg">
+                    <Button asChild variant="ghost" size="lg" className="vm-press">
                       <a href={home("licences")}>{t({ en: "How licences work", tr: "Lisanslar nasıl işler" })}</a>
                     </Button>
                   </div>
                 </div>
               </div>
-              <HeroPreview />
-              <dl className="tabular mt-8 grid grid-cols-2 gap-y-4 border-t border-line pt-5 text-small sm:grid-cols-4">
+              <div className="vm-enter [--vm-i:3]">
+                <HeroPreview />
+              </div>
+              <dl className="vm-enter tabular mt-8 grid [--vm-i:4] grid-cols-2 gap-y-4 border-t border-line pt-5 text-small sm:grid-cols-4">
                 {[
-                  [f.number(sold), t({ en: "licences sold", tr: "satılan lisans" })],
+                  [<CountUp key="s" value={sold} locale={intl} />, t({ en: "licences sold", tr: "satılan lisans" })],
                   [usd(licences[0]!.price), t({ en: "personal licence", tr: "kişisel lisans" })],
-                  ["12", t({ en: "months of updates included", tr: "ay güncelleme dahil" })],
-                  ["14", t({ en: "day refund window", tr: "gün iade süresi" })],
+                  [<CountUp key="m" value={12} locale={intl} duration={900} />, t({ en: "months of updates included", tr: "ay güncelleme dahil" })],
+                  [<CountUp key="d" value={14} locale={intl} duration={900} />, t({ en: "day refund window", tr: "gün iade süresi" })],
                 ].map(([v, l]) => (
-                  <div key={l} className="flex flex-row-reverse items-baseline justify-end gap-2">
+                  <div key={String(l)} className="flex flex-row-reverse items-baseline justify-end gap-2">
                     <dt className="text-fg-muted">{l}</dt>
                     <dd className="font-display text-[1.5rem] font-semibold tracking-[-0.02em] text-fg">{v}</dd>
                   </div>

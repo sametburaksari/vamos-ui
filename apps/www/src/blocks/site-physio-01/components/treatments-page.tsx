@@ -4,6 +4,7 @@ import * as React from "react";
 import { Badge, cn, Switch } from "@vamos-ui/react";
 import { Container, Faq, PageIntro, PricingTable, Section, sitePageHref } from "@vamos-ui/react/blocks";
 import { Clock } from "lucide-react";
+import { Stagger } from "@vamos-ui/react/motion";
 import { useArea } from "./area-provider";
 import { AreaChips, mapCopy } from "./body-map";
 import { areas, copyFor, fill, groupNames, treatments, tl, type Treatment } from "./content";
@@ -61,6 +62,7 @@ export function TreatmentsPage() {
                     <span className="font-mono text-xs text-fg-muted tabular">{String(rows.length).padStart(2, "0")}</span>
                   </h2>
                   {rows.length ? (
+                    <Stagger asChild effect="fade" step={50}>
                     <ul className="flex flex-col divide-y divide-line">
                       {rows.map((tr) => {
                         const fits = a.treatments.includes(tr.id);
@@ -88,6 +90,7 @@ export function TreatmentsPage() {
                         );
                       })}
                     </ul>
+                    </Stagger>
                   ) : (
                     <p className="py-4 text-small text-fg-muted">{fill(t(c.noneFor), { area: label })}</p>
                   )}

@@ -87,8 +87,8 @@ export function ThreadPosts({ locale }: { locale: SiteLocale }) {
                   </div>
                   <div className="mt-3 flex items-center gap-1">
                     <Button variant="ghost" size="sm" aria-pressed={on} onClick={() => setLiked((l) => ({ ...l, [p.id]: !on }))} className={cn(on && "text-accent-ink")}>
-                      <Heart aria-hidden className={cn("size-4", on && "fill-current")} />
-                      <span className="tabular-nums">{p.likes + (on ? 1 : 0)}</span>
+                      <Heart aria-hidden className={cn("size-4", on && "bc-pop fill-current")} />
+                      <span key={on ? "on" : "off"} className={cn("tabular-nums", p.id in liked && "bc-tick")}>{p.likes + (on ? 1 : 0)}</span>
                       <span className="sr-only">{t({ en: "likes — like this post", tr: "beğeni — bu iletiyi beğen" })}</span>
                     </Button>
                     <Button variant="ghost" size="sm" onClick={() => quote(p)}>
@@ -102,7 +102,7 @@ export function ThreadPosts({ locale }: { locale: SiteLocale }) {
           );
         })}
         {drafts.map((d) => (
-          <li key={d.id} id={d.id} className="border-b border-line py-5">
+          <li key={d.id} id={d.id} className="vm-enter border-b border-line py-5">
             <article aria-label={t({ en: "Your reply", tr: "Yanıtınız" })} className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-x-3">
               <Avatar name={t({ en: "You", tr: "Siz" })} size="md" />
               <div className="min-w-0">

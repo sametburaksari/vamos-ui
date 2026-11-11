@@ -3,6 +3,7 @@
 import { Container, Section } from "@vamos-ui/react/blocks";
 import { AreaChips, AreaPanel, BodyFigure, mapCopy } from "./body-map";
 import { useArea } from "./area-provider";
+import { CountUp } from "@vamos-ui/react/motion";
 
 const c = {
   eyebrow: { en: "Physiotherapy · Suadiye, Kadıköy", tr: "Fizyoterapi · Suadiye, Kadıköy" },
@@ -31,29 +32,29 @@ export function PhysioHero() {
       <Container>
         <div className="grid gap-10 @4xl:grid-cols-12 @4xl:gap-8">
           <div className="flex min-w-0 flex-col gap-6 @4xl:col-span-5 @4xl:pt-4">
-            <p className="font-mono text-xs tracking-[0.12em] text-fg-muted uppercase">
+            <p className="vm-enter font-mono text-xs tracking-[0.12em] text-fg-muted uppercase">
               <span aria-hidden className="me-2 inline-block size-2 translate-y-[-1px] bg-accent" />
               {t(c.eyebrow)}
             </p>
-            <h1 id="ml-hero-title" className="font-display text-display-l text-balance text-fg uppercase">
+            <h1 id="ml-hero-title" className="vm-enter vm-enter-title [--vm-i:1] font-display text-display-l text-balance text-fg uppercase">
               {em(t(c.title))}
             </h1>
-            <p className="max-w-[46ch] text-fg-muted">{t(c.lead)}</p>
-            <div className="mt-2 flex flex-col gap-3">
+            <p className="vm-enter [--vm-i:2] max-w-[46ch] text-fg-muted">{t(c.lead)}</p>
+            <div className="vm-enter [--vm-i:3] mt-2 flex flex-col gap-3">
               <p className="text-small font-semibold text-fg">{t(mapCopy.where)}</p>
               <AreaChips />
             </div>
-            <dl className="mt-4 grid grid-cols-3 border-t border-line pt-4">
+            <dl className="vm-enter [--vm-i:4] mt-4 grid grid-cols-3 border-t border-line pt-4">
               {c.stats.map((s, i) => (
                 <div key={i} className="flex flex-col gap-1 pe-3">
                   <dt className="order-2 text-xs text-fg-muted">{t(s.l)}</dt>
-                  <dd className="order-1 font-mono text-h3 text-fg tabular">{s.v}</dd>
+                  <dd className="order-1 font-mono text-h3 text-fg tabular">{s.v === "45" ? <CountUp value={45} duration={1100} /> : s.v}</dd>
                 </div>
               ))}
             </dl>
           </div>
-          <BodyFigure className="@4xl:col-span-3 @4xl:pt-2" />
-          <div className="rounded-[var(--radius)] border border-line bg-surface p-5 @md:p-6 @4xl:col-span-4">
+          <BodyFigure className="vm-enter [--vm-i:2] @4xl:col-span-3 @4xl:pt-2" />
+          <div className="vm-enter [--vm-i:4] rounded-[var(--radius)] border border-line bg-surface p-5 @md:p-6 @4xl:col-span-4">
             <AreaPanel />
           </div>
         </div>

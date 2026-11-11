@@ -20,7 +20,7 @@ const heavyCaps = {
  */
 export default function SiteStore02() {
   return (
-    <SiteShell accent="#FF2E88" theme="dark" font="grotesk" material="solid" density="compact" pages={["home", "archive", "product"]} className="min-h-dvh bg-scene [--container:var(--container-wide)] [&_[data-slot=image]]:my-0!" style={heavyCaps}>
+    <SiteShell accent="#FF2E88" motion="full" theme="dark" font="grotesk" material="solid" density="compact" pages={["home", "archive", "product"]} className="min-h-dvh bg-scene [--container:var(--container-wide)] [&_[data-slot=image]]:my-0!" style={heavyCaps}>
       <DropProvider>
         <SiteShellLocale code="en">
           <StoreSite locale="en" />

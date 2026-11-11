@@ -12,7 +12,7 @@ import { CommunitySite, communityPages } from "./components/community-site";
  */
 export default function SiteCommunity01() {
   return (
-    <SiteShell accent="#B45309" font="system" material="solid" density="compact" pages={communityPages} className="min-h-dvh bg-scene">
+    <SiteShell accent="#B45309" motion="subtle" font="system" material="solid" density="compact" pages={communityPages} className="min-h-dvh bg-scene">
       <SiteShellLocale code="en">
         <LocaleProvider locale="en-GB">
           <CommunitySite locale="en" />

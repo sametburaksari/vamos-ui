@@ -7,5 +7,5 @@ import { RestaurantSite } from "./components/restaurant-site";
  * Switch EN / TR in the navbar.
  */
 export default function SiteRestaurant01() {
-  return <LocaleSwitch en={<RestaurantSite locale="en" />} tr={<RestaurantSite locale="tr" />} />;
+  return <LocaleSwitch motion="full" en={<RestaurantSite locale="en" />} tr={<RestaurantSite locale="tr" />} />;
 }

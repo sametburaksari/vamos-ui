@@ -5,6 +5,7 @@ import { SectionHeader } from "../section-header";
 import { BlockImage } from "../block-image";
 import type { BlockBaseProps } from "../types";
 import { CtaList, indexLabel, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
+import { Reveal } from "../../motion/reveal";
 
 export type StepsVariant = "vertical" | "horizontal" | "split";
 
@@ -147,7 +148,7 @@ export function Steps({ variant = "vertical", eyebrow, title, lead, steps, actio
 
   return (
     <Section theme={theme} anchor={anchor} headingId={title ? headingId : undefined} blockId={base} blockType="steps" editMode={editMode} className={cn("vb-steps", className)} data-variant={variant}>
-      <div className="vb-reveal">{content}</div>
+      <Reveal disabled={editMode}>{content}</Reveal>
     </Section>
   );
 }

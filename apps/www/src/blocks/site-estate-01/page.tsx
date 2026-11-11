@@ -22,7 +22,7 @@ const serifHeadings = {
  */
 export default function SiteEstate01() {
   return (
-    <SiteShell accent="#A16207" font="corporate" material="glass" density="comfortable" pages={["home", "listings", "listing"]} className="min-h-dvh bg-scene" style={serifHeadings}>
+    <SiteShell accent="#A16207" motion="subtle" font="corporate" material="glass" density="comfortable" pages={["home", "listings", "listing"]} className="min-h-dvh bg-scene" style={serifHeadings}>
       <EstateProvider>
         <SiteShellLocale code="en">
           <EstateSite locale="en" />

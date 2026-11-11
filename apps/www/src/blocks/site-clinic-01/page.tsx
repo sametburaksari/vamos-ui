@@ -10,7 +10,7 @@ import { ClinicSite } from "./components/clinic-site";
  */
 export default function SiteClinic01() {
   return (
-    <SiteShell accent="#0F766E" font="corporate" material="solid" density="comfortable" pages={["home", "doctors", "appointment"]} className="min-h-dvh bg-scene">
+    <SiteShell accent="#0F766E" motion="subtle" font="corporate" material="solid" density="comfortable" pages={["home", "doctors", "appointment"]} className="min-h-dvh bg-scene">
       <BookingProvider>
         <SiteShellLocale code="en">
           <ClinicSite locale="en" />

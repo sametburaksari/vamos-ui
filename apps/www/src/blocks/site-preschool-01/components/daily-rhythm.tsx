@@ -5,6 +5,7 @@ import { Button, cn, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 import { BookOpen, DoorOpen, Moon, Pause, Play, Shapes, Trees, Utensils, type LucideIcon } from "lucide-react";
 import { DAY_END, DAY_START, fill, GROUPS, groups, kindNames, rhythm, toMin, type Block, type Kind } from "./content";
 import { useSchool } from "./school-provider";
+import { Reveal } from "@vamos-ui/react/motion";
 
 const c = {
   group: { en: "Age group", tr: "Yaş grubu" },
@@ -177,7 +178,7 @@ export function DailyRhythm({ headingId, compact = false }: { headingId?: string
             </span>
           ))}
         </div>
-        <div className="relative">
+        <Reveal effect="fade" duration={1100} className="lo-day relative">
           <div ref={wideRef} role="tablist" aria-label={fill(t(c.day), { group: t(g.name) })} aria-describedby={`${uid}-hint`} onKeyDown={(e) => onKey(e, "wide")} className="flex h-28 gap-1">
             {blocks.map((b, i) => {
               const KIcon = KIND_ICONS[b.kind];
@@ -188,7 +189,7 @@ export function DailyRhythm({ headingId, compact = false }: { headingId?: string
                   key={`${group}-${i}`}
                   type="button"
                   {...tabProps(b, i, "w")}
-                  style={{ flexGrow: toMin(b.end) - toMin(b.start), flexBasis: 0 }}
+                  style={{ flexGrow: toMin(b.end) - toMin(b.start), flexBasis: 0, "--lo-i": i } as React.CSSProperties}
                   className={cn(
                     "focus-ring group relative flex min-w-0 flex-col justify-between overflow-hidden rounded-[1.1rem] p-2.5 text-start transition-[background-color,transform] duration-200 motion-reduce:transition-none",
                     on ? "bg-accent text-accent-fg" : b.kind === "outdoor" ? "bg-accent-soft text-fg hover:-translate-y-0.5" : b.kind === "rest" ? "border border-dashed border-line bg-surface-2 text-fg hover:-translate-y-0.5" : "border border-line bg-surface text-fg hover:-translate-y-0.5",
@@ -207,7 +208,7 @@ export function DailyRhythm({ headingId, compact = false }: { headingId?: string
               </span>
             </div>
           ) : null}
-        </div>
+        </Reveal>
       </div>
 
       {/* Narrow: the same day as a vertical list. */}

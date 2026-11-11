@@ -1,4 +1,5 @@
 import { Badge } from "@vamos-ui/react";
+import { CountUp, Reveal, Stagger } from "@vamos-ui/react/motion";
 import { BlockHeading, Container, Footer, MediaText, Navbar, Section, SectionHeader, SiteShellPage, sitePageHref, Team } from "@vamos-ui/react/blocks";
 import { copyFor, EMAIL, episodes, hosts, photos, type Copy, type SiteLocale } from "./content";
 import { EpisodeList } from "./episode-list";
@@ -71,9 +72,9 @@ export function PodcastSite({ locale }: { locale: SiteLocale }) {
                 title={t({ en: "Every *episode*", tr: "Bütün *bölümler*" })}
                 lead={t({ en: "New conversations every other Thursday at 07:00. Search by guest, dish or idea.", tr: "İki haftada bir perşembe 07:00’de yeni sohbet. Konuğa, yemeğe ya da fikre göre arayın." })}
               />
-              <div className="mt-10">
+              <Reveal className="mt-10">
                 <EpisodeList locale={c.locale} />
-              </div>
+              </Reveal>
             </Container>
           </Section>
 
@@ -106,7 +107,9 @@ export function PodcastSite({ locale }: { locale: SiteLocale }) {
             <Container>
               <div className="grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center">
                 <SectionHeader headingId="lt-listen-title" eyebrow={t({ en: "Follow", tr: "Takip" })} title={t({ en: "Pull up *a chair*", tr: "Bir *sandalye* çekin" })} />
-                <ListenLinks locale={c.locale} />
+                <Reveal delay={120}>
+                  <ListenLinks locale={c.locale} />
+                </Reveal>
               </div>
             </Container>
           </Section>
@@ -121,6 +124,7 @@ export function PodcastSite({ locale }: { locale: SiteLocale }) {
                     title={t({ en: "Who should sit *at the table*?", tr: "Sofraya *kim* oturmalı?" })}
                     lead={t({ en: "Half of our guests came from listeners: a market trader in Bakırköy, a baker on the night shift, a school cook in Van.", tr: "Konuklarımızın yarısı dinleyicilerden geldi: Bakırköy’de bir pazarcı, gece vardiyasında bir fırıncı, Van’da bir okul aşçısı." })}
                   />
+                  <Stagger asChild effect="scale" step={50}>
                   <ul className="m-0 mt-8 flex list-none flex-wrap gap-2 p-0">
                     {episodes.slice(1, 5).map((e) => (
                       <li key={e.no}>
@@ -130,6 +134,7 @@ export function PodcastSite({ locale }: { locale: SiteLocale }) {
                       </li>
                     ))}
                   </ul>
+                  </Stagger>
                 </div>
                 <GuestForm locale={c.locale} />
               </div>
@@ -161,12 +166,12 @@ export function PodcastSite({ locale }: { locale: SiteLocale }) {
 }
 
 function HomeHero({ c }: { c: Copy }) {
-  const { t, f } = c;
+  const { t } = c;
   const latest = episodes[0]!;
   return (
     <Section anchor="top" theme={{ rhythm: "tight" }} className="relative overflow-hidden">
       {/* A plate seen from above, behind the glass player. */}
-      <div aria-hidden className="pointer-events-none absolute -end-[22rem] top-[-6rem] hidden size-[54rem] rounded-full border border-line lg:block">
+      <div aria-hidden className="lt-plate pointer-events-none absolute -end-[22rem] top-[-6rem] hidden size-[54rem] rounded-full border border-line lg:block">
         <div className="absolute inset-[9%] rounded-full border border-line" />
         <div className="absolute inset-[24%] rounded-full bg-accent-soft" />
         <div className="absolute inset-[38%] rounded-full bg-accent opacity-70" />
@@ -174,19 +179,19 @@ function HomeHero({ c }: { c: Copy }) {
       <Container className="relative">
         <div className="grid gap-10 pt-6 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] lg:items-center lg:gap-14 lg:pt-10">
           <div>
-            <p className="m-0 font-mono text-xs tracking-[0.14em] text-fg-muted uppercase">
+            <p className="vm-enter m-0 font-mono text-xs tracking-[0.14em] text-fg-muted uppercase">
               {t({ en: "A podcast about food culture", tr: "Yemek kültürü üzerine bir podcast" })}
             </p>
-            <BlockHeading level={1} size="display-2xl" className="mt-4" text={t({ en: "Long *Table*", tr: "Long *Table*" })} />
-            <p className="mt-6 max-w-[38ch] text-lead text-fg-muted">
+            <BlockHeading level={1} size="display-2xl" className="vm-enter vm-enter-title mt-4 [--vm-i:1]" text={t({ en: "Long *Table*", tr: "Long *Table*" })} />
+            <p className="vm-enter mt-6 max-w-[38ch] text-lead text-fg-muted [--vm-i:2]">
               {t({
                 en: "Conversations about who cooks, who eats, who clears up — and what that says about everyone at the table.",
                 tr: "Kimin pişirdiği, kimin yediği, kimin topladığı — ve bunun sofradaki herkes hakkında ne söylediği üzerine sohbetler.",
               })}
             </p>
-            <dl className="m-0 mt-8 grid max-w-md grid-cols-3 gap-4 border-t border-line pt-5">
+            <dl className="vm-enter m-0 mt-8 grid max-w-md grid-cols-3 gap-4 border-t border-line pt-5 [--vm-i:3]">
               {[
-                { k: t({ en: "Episodes", tr: "Bölüm" }), v: f.number(latest.no) },
+                { k: t({ en: "Episodes", tr: "Bölüm" }), v: <CountUp value={latest.no} locale={c.locale === "tr" ? "tr-TR" : "en-GB"} duration={1100} /> },
                 { k: t({ en: "Every", tr: "Her" }), v: t({ en: "2nd Thu", tr: "2. Perş." }) },
                 { k: t({ en: "Average", tr: "Ortalama" }), v: t({ en: "45 min", tr: "45 dk" }) },
               ].map((x) => (
@@ -197,7 +202,7 @@ function HomeHero({ c }: { c: Copy }) {
               ))}
             </dl>
           </div>
-          <div>
+          <div className="vm-enter [--vm-i:2]">
             <p className="m-0 mb-3 flex items-center gap-2 font-mono text-xs text-fg-muted">
               <span className="size-2 rounded-full bg-accent" aria-hidden />
               {t({ en: "New this week", tr: "Bu hafta yeni" })} ·{" "}

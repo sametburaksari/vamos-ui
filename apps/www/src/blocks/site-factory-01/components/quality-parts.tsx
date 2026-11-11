@@ -4,6 +4,7 @@ import * as React from "react";
 import { LineChart, type ChartConfig } from "@vamos-ui/react/charts";
 import { Container, Section } from "@vamos-ui/react/blocks";
 import { FileDown } from "lucide-react";
+import { CountUp, Stagger } from "@vamos-ui/react/motion";
 import { certificates, copyFor, num, SPC, spc, type SiteLocale } from "./content";
 
 const c = {
@@ -34,11 +35,12 @@ const c = {
 
 export function SpcPanel({ locale }: { locale: SiteLocale }) {
   const { t } = copyFor(locale);
+  const intl = locale === "tr" ? "tr-TR" : "en-GB";
   const um = (v: number) => Math.round((v - 52) * 10000) / 10;
   const data = spc.map((r) => ({ sub: r.sub, mean: um(r.mean) }));
   const config = { mean: { label: t(c.mean), color: "chart-1", format: (v: unknown) => `${num(Number(v), locale, 1)} µm` } } satisfies ChartConfig;
   const outside = data.filter((d) => d.mean > um(SPC.ucl) || d.mean < um(SPC.lcl)).length;
-  const stat = (label: string, value: string, note: string) => (
+  const stat = (label: string, value: React.ReactNode, note: string) => (
     <div className="flex flex-col gap-1 border-t border-line pt-3">
       <dt className="font-mono text-[11px] uppercase tracking-[0.1em] text-fg-muted">{label}</dt>
       <dd className="font-display text-[2.25rem] leading-none font-semibold tabular text-fg">{value}</dd>
@@ -78,8 +80,8 @@ export function SpcPanel({ locale }: { locale: SiteLocale }) {
             </div>
           </div>
           <dl className="grid grid-cols-1 gap-5 self-end @2xl:grid-cols-3 @5xl:grid-cols-1">
-            {stat(t(c.cpk), num(SPC.cpk, locale, 2), t(c.cpkNote))}
-            {stat(t(c.n), num(data.length * 5, locale), t(c.nNote))}
+            {stat(t(c.cpk), <CountUp value={SPC.cpk} locale={intl} format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }} duration={1200} />, t(c.cpkNote))}
+            {stat(t(c.n), <CountUp value={data.length * 5} locale={intl} duration={1000} />, t(c.nNote))}
             {stat(t(c.out), String(outside), t(c.outNote))}
           </dl>
         </div>
@@ -100,6 +102,7 @@ export function CertificateList({ locale }: { locale: SiteLocale }) {
             {t(c.certTitle).split("*").map((p, i) => (i % 2 ? <span key={i} className="text-accent-ink">{p}</span> : p))}
           </h2>
         </div>
+        <Stagger asChild effect="fade" step={60}>
         <ul className="flex flex-col border-t-2 border-fg">
           {certificates.map((cert) => (
             <li key={cert.name} className="grid gap-2 border-b border-line py-4 @3xl:grid-cols-[minmax(0,14rem)_minmax(0,1fr)_auto_auto] @3xl:items-center @3xl:gap-8">
@@ -118,6 +121,7 @@ export function CertificateList({ locale }: { locale: SiteLocale }) {
             </li>
           ))}
         </ul>
+        </Stagger>
       </Container>
     </Section>
   );

@@ -1,6 +1,7 @@
 import { SiteShell, SiteShellLocale } from "@vamos-ui/react/blocks";
 import { createFontPairing, FontProvider } from "@vamos-ui/react/fonts";
 import { ACCENT } from "./components/content";
+import { schoolMotion } from "./components/motion";
 import { PreschoolSite } from "./components/preschool-site";
 import { SchoolProvider } from "./components/school-provider";
 
@@ -14,10 +15,15 @@ const orchardType = createFontPairing({ id: "orchard", label: "Orchard", heading
  * (`?page=enrol`: child → days with a live monthly fee → open morning → parent).
  * Signature: the daily rhythm — a proportional timeline per age group with a live "now" marker
  * in Istanbul time, arrow-key navigation and a "Play the day" walk-through.
+ *
+ * Motion (full, springy but short): the hero steps in and its three photographs land like pinned
+ * prints; figures count up; the daily rhythm's blocks grow up from the timeline (again on every
+ * group switch); groups and fees pop in one by one; buttons press, cards lift.
  */
 export default function SitePreschool01() {
   return (
-    <SiteShell accent={ACCENT} material="glass" density="spacious" pages={["home", "programme", "enrol"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} material="glass" density="spacious" motion="full" pages={["home", "programme", "enrol"]} className="min-h-dvh bg-scene">
+      <style>{schoolMotion}</style>
       <FontProvider pairing={orchardType}>
         <SchoolProvider>
           <SiteShellLocale code="en">

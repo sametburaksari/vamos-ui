@@ -28,7 +28,7 @@ export function CvPage({ locale, fileName }: { locale: SiteLocale; fileName: str
       <div className="vb-container pb-16 print:p-0">
         <CvSheet
           locale={locale}
-          className="mx-auto w-full max-w-[52rem] rounded-[2px] px-5 py-7 shadow-[var(--popover-shadow)] @3xl:min-h-[calc(52rem*1.4142)] @3xl:px-[3.25rem] @3xl:py-[3rem] print:max-w-none print:rounded-none print:p-0 print:shadow-none"
+          className="vm-enter vm-enter-media mx-auto w-full max-w-[52rem] rounded-[2px] px-5 py-7 shadow-[var(--popover-shadow)] @3xl:min-h-[calc(52rem*1.4142)] @3xl:px-[3.25rem] @3xl:py-[3rem] print:max-w-none print:rounded-none print:p-0 print:shadow-none"
         />
       </div>
     </main>

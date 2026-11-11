@@ -414,9 +414,9 @@ export function RsvpFlow({ locale }: { locale: SiteLocale }) {
                     <li key={g.name} className="border-b border-dotted border-line pb-2">
                       <span className="flex items-baseline justify-between gap-3">
                         <span className="font-display text-fg">{g.name}</span>
-                        <span className={`font-mono text-[11px] tracking-[0.08em] uppercase ${r === "yes" ? "text-accent-ink" : "text-fg-muted"}`}>{r === "yes" ? t(c.attending) : r === "no" ? t(c.notAttending) : t(c.pending)}</span>
+                        <span key={r ?? "pending"} className={`wd-ink font-mono text-[11px] tracking-[0.08em] uppercase ${r === "yes" ? "text-accent-ink" : "text-fg-muted"}`}>{r === "yes" ? t(c.attending) : r === "no" ? t(c.notAttending) : t(c.pending)}</span>
                       </span>
-                      {r === "yes" && m ? <span className="block text-small text-fg-muted">{t(m.name)}{dinnerOf(g.name).diets.length ? ` · ${dinnerOf(g.name).diets.map((id) => t(diets.find((x) => x.id === id)!.label)).join(", ")}` : ""}</span> : null}
+                      {r === "yes" && m ? <span key={m.id + dinnerOf(g.name).diets.join()} className="wd-ink block text-small text-fg-muted">{t(m.name)}{dinnerOf(g.name).diets.length ? ` · ${dinnerOf(g.name).diets.map((id) => t(diets.find((x) => x.id === id)!.label)).join(", ")}` : ""}</span> : null}
                     </li>
                   );
                 })}

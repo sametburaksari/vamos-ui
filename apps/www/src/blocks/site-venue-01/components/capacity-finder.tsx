@@ -175,6 +175,8 @@ export function CapacityFinder({ locale, detailed = false }: { locale: SiteLocal
               return (
                 <g key={s.id} className="transition-opacity motion-reduce:transition-none">
                   <rect
+                    key={on ? "fits" : "no"}
+                    className={on ? "om-flood" : undefined}
                     x={p.x}
                     y={p.y}
                     width={p.w}

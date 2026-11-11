@@ -46,13 +46,13 @@ export function Helpful({ locale, count }: { locale: SiteLocale; count: number }
 
       <div aria-live="polite">
         {vote === "yes" ? (
-          <p className="m-0 mt-4 flex items-center gap-2 text-sm text-fg-muted">
+          <p className="vm-enter m-0 mt-4 flex items-center gap-2 text-sm text-fg-muted">
             <Check aria-hidden className="size-4 text-accent-ink" />
             {t({ en: `Glad it helped. You and ${f.number(count)} others said yes.`, tr: `Yardımcı olmasına sevindik. Siz ve ${f.number(count)} kişi daha evet dedi.` })}
           </p>
         ) : null}
         {vote === "no" && sent ? (
-          <p className="m-0 mt-4 flex items-center gap-2 text-sm text-fg-muted">
+          <p className="vm-enter m-0 mt-4 flex items-center gap-2 text-sm text-fg-muted">
             <Check aria-hidden className="size-4 text-accent-ink" />
             {t({ en: "Got it. We’ll rewrite this article — usually within a week.", tr: "Anlaşıldı. Bu makaleyi yeniden yazacağız — genellikle bir hafta içinde." })}
           </p>
@@ -60,7 +60,7 @@ export function Helpful({ locale, count }: { locale: SiteLocale; count: number }
       </div>
 
       {vote === "no" && !sent ? (
-        <form onSubmit={send} className="mt-5 flex flex-col gap-4 border-t border-line pt-5">
+        <form onSubmit={send} className="vm-enter mt-5 flex flex-col gap-4 border-t border-line pt-5">
           <div className="flex flex-col gap-2">
             <span id={`${uid}-why`} className="text-sm font-medium text-fg">
               {t({ en: "What was wrong?", tr: "Sorun neydi?" })}

@@ -6,6 +6,23 @@ import * as React from "react";
  * Engineering drawings in tokens: outlines in `fg`, centre lines dash-dot, sections hatched, and
  * dimensions in accent ink. Decorative unless `label` is given.
  */
+/**
+ * Plotter motion for a drawing: pass `plot` and the outline is drawn stroke by stroke, then the
+ * centre lines, hatching and dimensions follow — the way a pen plotter lays down a sheet.
+ * Changing the drawing's `key` replots it; `[--os-k:0.4]` makes a quick replot for UI feedback. Reduced motion and data-motion="off" show the sheet.
+ */
+export const plotMotion = `
+@keyframes os-draw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+@keyframes os-ink { from { opacity: 0; } }
+@media screen and (prefers-reduced-motion: no-preference) {
+  .os-plot:where(:not([data-motion="off"] *)) .stroke-fg { stroke-dasharray: 1400; animation: os-draw calc(1500ms * var(--os-k, 1)) var(--ease-in-out) calc(250ms * var(--os-k, 1)) backwards; }
+  .os-plot:where(:not([data-motion="off"] *)) .stroke-fg-muted { animation: os-ink calc(500ms * var(--os-k, 1)) linear calc(1200ms * var(--os-k, 1)) backwards; }
+  .os-plot:where(:not([data-motion="off"] *)) :is(.stroke-accent-ink, .fill-accent-ink) { animation: os-ink calc(400ms * var(--os-k, 1)) linear calc(1600ms * var(--os-k, 1)) backwards; }
+  .os-plot:where(:not([data-motion="off"] *)) [fill^="url"] { animation: os-draw calc(1500ms * var(--os-k, 1)) var(--ease-in-out) calc(250ms * var(--os-k, 1)) backwards, os-fill calc(500ms * var(--os-k, 1)) linear calc(1500ms * var(--os-k, 1)) backwards; }
+}
+@keyframes os-fill { from { fill-opacity: 0; } }
+`;
+
 export function Drawing({ kind, label, dims, className }: { kind: "flange" | "housing" | "fitting" | "shaft"; label?: string; dims?: string[]; className?: string }) {
   const hatchId = React.useId().replace(/:/g, "");
   const line = "fill-none stroke-fg";

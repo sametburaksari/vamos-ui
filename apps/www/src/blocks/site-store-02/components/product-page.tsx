@@ -39,7 +39,7 @@ export function ProductPage() {
             ]}
           />
           <div className="grid border border-line @4xl:grid-cols-12">
-            <div className="grid gap-px bg-line @4xl:col-span-7 @4xl:border-e @4xl:border-line">
+            <div className="vm-enter vm-enter-media grid gap-px bg-line @4xl:col-span-7 @4xl:border-e @4xl:border-line">
               {p.photos.map((ph, i) => (
                 <Image
                   key={ph.src}
@@ -63,7 +63,7 @@ export function ProductPage() {
                   <span>{s("drop", { no: String(p.drop).padStart(2, "0") })}</span>
                   <span>{s("run", { n: p.run })}</span>
                 </p>
-                <h1 id="nb-product" tabIndex={-1} className="font-display text-[clamp(2.4rem,1rem+4cqi,4.25rem)] font-[800] uppercase leading-[0.86] tracking-[-0.04em] outline-none">
+                <h1 id="nb-product" tabIndex={-1} className="vm-enter vm-enter-title [--vm-i:1] font-display text-[clamp(2.4rem,1rem+4cqi,4.25rem)] font-[800] uppercase leading-[0.86] tracking-[-0.04em] outline-none">
                   {t(p.name)}
                 </h1>
                 <div className="flex items-baseline justify-between gap-4 border-y border-line py-3">

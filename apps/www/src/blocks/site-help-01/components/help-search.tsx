@@ -154,7 +154,7 @@ export function HelpSearch({ locale, size = "lg", autoFocusKey = true }: { local
           />
         </div>
 
-        <div hidden={!showPanel} className="surface-popover absolute inset-x-0 top-full z-30 mt-2 overflow-hidden rounded-ui-lg">
+        <div hidden={!showPanel} className="help-panel surface-popover absolute inset-x-0 top-full z-30 mt-2 overflow-hidden rounded-ui-lg">
           <CommandList className="max-h-[min(30rem,65dvh)]">
             {hits.length ? (
               <CommandGroup heading={t({ en: "Articles", tr: "Makaleler" })}>

@@ -1,4 +1,5 @@
 import { BlogList, ContactForm, Container, Footer, Hero, Navbar, Section, SiteShellPage, Steps, Team, sitePageHref } from "@vamos-ui/react/blocks";
+import { TextReveal } from "@vamos-ui/react/motion";
 import { copyFor, EMAIL, insights, lawyers, office, PHONE, photos, practices, type SiteLocale } from "./content";
 import { PracticeIndex } from "./practice-index";
 import { PracticePage, practicePage } from "./practice-page";
@@ -76,9 +77,9 @@ export function LawSite({ locale }: { locale: SiteLocale }) {
               <div className="mb-10 grid gap-4 @4xl:grid-cols-12">
                 <div className="@4xl:col-span-6">
                   <p className="font-mono text-eyebrow uppercase tracking-[0.14em] text-accent-ink">{t({ en: "Practice areas", tr: "Çalışma alanları" })}</p>
-                  <h2 id="lv-practice" className="mt-3 font-display text-display-l">
+                  <TextReveal as="h2" id="lv-practice" className="mt-3 font-display text-display-l">
                     {t({ en: "Six practices, one firm", tr: "Altı alan, tek büro" })}
-                  </h2>
+                  </TextReveal>
                 </div>
                 <p className="max-w-[48ch] self-end text-fg-muted @4xl:col-span-5 @4xl:col-start-8">
                   {t({ en: "Each practice is run by a named partner. Larger matters draw on two or three of them; you still have one person to call.", tr: "Her alanı adı belli bir ortak yönetir. Büyük dosyalar iki üç alanı birden kapsar; yine de arayacağınız tek bir kişi vardır." })}

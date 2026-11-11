@@ -1,6 +1,7 @@
 "use client";
 
 import { ComparisonTable, Container, PageIntro, Section, PricingTable, sitePageHref } from "@vamos-ui/react/blocks";
+import { Stagger } from "@vamos-ui/react/motion";
 import { copyFor, planFor, programmes, tl, type ProgrammeId } from "./content";
 import { usePlan } from "./plan-provider";
 import { ProgrammePicker } from "./programme-picker";
@@ -51,6 +52,7 @@ export function ProgrammesPage() {
           <h2 id="gp-all-h" className="sr-only">
             {t(c.all)}
           </h2>
+          <Stagger asChild step={60}>
           <ol className="grid border-t border-line @3xl:grid-cols-2 @3xl:gap-x-10">
             {ORDER.map((id, i) => {
               const p = programmes[id];
@@ -79,6 +81,7 @@ export function ProgrammesPage() {
               );
             })}
           </ol>
+          </Stagger>
         </Container>
       </Section>
       <ProgrammePicker anchor="find" surface="surface-2" />

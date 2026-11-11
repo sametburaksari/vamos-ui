@@ -185,4 +185,25 @@ describe("SiteShell", () => {
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();
   });
+
+  it("motion: data-motion level on the root (subtle by default); page switches fade the new page in", async () => {
+    const { container, unmount } = render(<Demo />);
+    const root = container.querySelector<HTMLElement>("[data-site-shell]")!;
+    expect(root).toHaveAttribute("data-motion", "subtle");
+    expect(container.querySelector("[data-site-page]")).not.toHaveAttribute("data-page-enter");
+    await act(async () => {
+      fireEvent.click(screen.getByRole("link", { name: "Shop" }));
+    });
+    // No View Transitions in jsdom → the CSS fade fallback marks the new page.
+    expect(container.querySelector('[data-site-page="shop"]')).toHaveAttribute("data-page-enter");
+    unmount();
+    window.history.replaceState(null, "", "/view/site-store-01");
+
+    const off = render(<SiteShell motion="off" pages={["home", "shop"]}><SiteShellPage id="home"><a href="?page=shop">Shop</a></SiteShellPage><SiteShellPage id="shop"><h1>Shop</h1></SiteShellPage></SiteShell>);
+    expect(off.container.firstElementChild).toHaveAttribute("data-motion", "off");
+    await act(async () => {
+      fireEvent.click(screen.getByRole("link", { name: "Shop" }));
+    });
+    expect(off.container.querySelector('[data-site-page="shop"]')).not.toHaveAttribute("data-page-enter");
+  });
 });
