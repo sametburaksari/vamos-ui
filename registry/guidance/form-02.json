@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A four-step campaign wizard: audience, message (email/SMS/push), schedule and review.",
+    "Messages that need a live preview, SMS segment counting and pre-send checks."
+  ],
+  "avoidWhen": [
+    "A short single-page form — use form-01.",
+    "A generic multi-step form without messaging specifics — use multi-step-form."
+  ],
+  "related": [
+    "multi-step-form",
+    "stepper",
+    "dashboard-12",
+    "form-01"
+  ],
+  "a11y": [
+    "Channel choice is a role=\"radiogroup\"; invalid fields use aria-invalid and counters use aria-live.",
+    "The test-send email input uses type=\"email\" with autocomplete; keep step headings in order."
+  ]
+}

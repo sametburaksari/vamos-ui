@@ -265,6 +265,51 @@ export function alignZeroDomains(a: [number, number], b: [number, number]): [[nu
   return [fit(aLo, aHi), fit(bLo, bHi)];
 }
 
+/**
+ * Two value axes (Combo) with nice, evenly spaced ticks whose zero lines meet: both axes get the
+ * same number of steps below and above zero, each with its own nice step (1, 2, 2.5, 5… × 10ⁿ), so
+ * one set of grid lines serves both scales. An axis whose data never goes below zero keeps only its
+ * non-negative ticks (its domain still reaches below zero to line up with the other axis).
+ */
+export function alignedAxes(a: [number, number], b: [number, number]): { domains: [[number, number], [number, number]]; ticks: [number[], number[]] } {
+  const norm = ([lo, hi]: [number, number]): [number, number] => [Math.min(0, Number.isFinite(lo) ? lo : 0), Math.max(0, Number.isFinite(hi) ? hi : 0)];
+  const axes = [norm(a), norm(b)] as const;
+  const round = (v: number) => Number(v.toPrecision(12));
+  const build = (neg: number, pos: number, steps: [number, number]) =>
+    axes.map(([lo], i) => {
+      const step = steps[i]!;
+      const all = Array.from({ length: neg + pos + 1 }, (_, k) => round((k - neg) * step));
+      return { domain: [round(-neg * step), round(pos * step)] as [number, number], ticks: lo < 0 ? all : all.filter((v) => v >= 0) };
+    });
+  const anyNeg = axes.some(([lo]) => lo < 0);
+  const anyPos = axes.some(([, hi]) => hi > 0);
+  if (!anyNeg) {
+    // Non-negative data: four equal steps on both axes.
+    const steps = axes.map(([, hi]) => niceStep(hi / 4) || 0.25) as [number, number];
+    const [x, y] = build(0, 4, steps);
+    return { domains: [x!.domain, y!.domain], ticks: [x!.ticks, y!.ticks] };
+  }
+  let best: { score: number; neg: number; pos: number; steps: [number, number] } | null = null;
+  for (const total of [4, 5, 6]) {
+    for (let neg = 1; neg <= total; neg++) {
+      const pos = total - neg;
+      if (anyPos && pos === 0) continue;
+      const steps = axes.map(([lo, hi]) => {
+        const need = Math.max(neg ? -lo / neg : 0, pos ? hi / pos : hi > 0 ? Infinity : 0);
+        return Number.isFinite(need) ? niceStep(need) || 1 : Infinity;
+      }) as [number, number];
+      if (!steps.every(Number.isFinite)) continue;
+      // Share of each axis left empty, plus a small cost per extra step.
+      const waste = axes.reduce((sum, [lo, hi], i) => sum + 1 - (hi - lo) / (steps[i]! * total || 1), 0);
+      const score = waste + (total - 4) * 0.06;
+      if (!best || score < best.score - 1e-9) best = { score, neg, pos, steps };
+    }
+  }
+  const { neg, pos, steps } = best!;
+  const [x, y] = build(neg, pos, steps);
+  return { domains: [x!.domain, y!.domain], ticks: [x!.ticks, y!.ticks] };
+}
+
 export interface SeriesStats {
   key: string;
   min: number;

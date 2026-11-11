@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Password-free sign-in with a passkey ceremony and clear waiting, cancelled and done states.",
+    "Listing, adding, renaming and removing the account's passkeys."
+  ],
+  "avoidWhen": [
+    "Classic email and password sign-in — use login-01.",
+    "Full security overview with devices and history — use settings-07."
+  ],
+  "related": [
+    "login-01",
+    "settings-07",
+    "dialog"
+  ],
+  "a11y": [
+    "Ceremony state changes are announced through aria-live regions.",
+    "Toggle controls expose aria-pressed and the add-passkey flow runs in a titled dialog."
+  ]
+}

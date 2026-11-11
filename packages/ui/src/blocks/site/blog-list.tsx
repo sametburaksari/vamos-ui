@@ -8,6 +8,7 @@ import { BlockLink } from "../block-link";
 import type { BlockBaseProps } from "../types";
 import { site2Text, type Site2BlockLabels, type Site2Text } from "./shared/labels-2";
 import { fieldAttr, formatDate2, isoDay, useBlockIds2, type SiteImage2, type SiteLink2 } from "./shared/kit-2";
+import { columnSizes } from "./shared/image-sizes";
 
 export type BlogListVariant = "editorial" | "list" | "grid" | "compact";
 
@@ -16,6 +17,7 @@ export interface PostSummary {
   href: string;
   title: string;
   excerpt?: string;
+  /** 3:2 cover. `sizes`: featured `(min-width: 56rem) min(59vw, 45rem), 100vw`; grid `min(34vw, 26rem)` / `min(50vw, 38rem)` / 100vw. */
   cover?: SiteImage2;
   category?: { label: string; href?: string };
   /** ISO datetime or `YYYY-MM-DD`. */
@@ -247,7 +249,7 @@ function Editorial({ posts, ctx }: { posts: PostSummary[]; ctx: PostCtx }) {
       <article className="vb-post group/post relative grid gap-x-(--gutter) gap-y-6 @4xl:grid-cols-12 @4xl:items-end">
         {ctx.covers && first!.cover ? (
           <div className="@4xl:col-span-7">
-            <Cover post={first!} ctx={ctx} sizes="(min-width: 56rem) 58vw, 100vw" />
+            <Cover post={first!} ctx={ctx} sizes={columnSizes(7 / 12)} />
           </div>
         ) : null}
         <div className={cn("flex flex-col gap-4", ctx.covers && first!.cover ? "@4xl:col-span-5" : "@4xl:col-span-9")}>
@@ -290,7 +292,7 @@ function ListPost({ post, ctx }: { post: PostSummary; ctx: PostCtx }) {
 function GridPost({ post, ctx }: { post: PostSummary; ctx: PostCtx }) {
   return (
     <article className="vb-post group/post relative flex flex-col gap-4">
-      {ctx.covers ? post.cover ? <Cover post={post} ctx={ctx} sizes="(min-width: 56rem) 33vw, (min-width: 42rem) 50vw, 100vw" /> : <span aria-hidden className="block aspect-[3/2] rounded-ui bg-surface-2" /> : null}
+      {ctx.covers ? post.cover ? <Cover post={post} ctx={ctx} sizes={`(min-width: 56rem) min(34vw, 26rem), ${columnSizes(1 / 2, { from: "42rem" })}`} /> : <span aria-hidden className="block aspect-[3/2] rounded-ui bg-surface-2" /> : null}
       <div className="flex flex-col gap-2.5">
         <Category post={post} />
         <PostTitle post={post} ctx={ctx} className="text-h3 font-semibold tracking-[-0.012em]" />

@@ -169,7 +169,8 @@
 /* ------------------------------------------------------------------ */
 @keyframes vui-marquee { to { transform: translateX(calc(-100% * var(--dir))); } }
 @layer components {
-  .vui-marquee { gap: var(--marquee-gap); }
+  .vui-marquee-viewport { gap: var(--marquee-gap); }
+  .vui-marquee[data-controls] .vui-marquee-viewport { margin-inline-end: 2.25rem; }
   .vui-marquee-track {
     gap: var(--marquee-gap);
     min-width: 100%;
@@ -178,15 +179,40 @@
   }
   .vui-marquee[data-reverse] .vui-marquee-track { animation-direction: reverse; }
   .vui-marquee[data-pause-on-hover]:hover .vui-marquee-track,
-  .vui-marquee[data-pause-on-hover]:focus-within .vui-marquee-track { animation-play-state: paused; }
-  .vui-marquee[data-fade] {
+  .vui-marquee[data-pause-on-hover]:focus-within .vui-marquee-track,
+  .vui-marquee:has(.vui-marquee-pause:checked) .vui-marquee-track { animation-play-state: paused; }
+  .vui-marquee-toggle {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--fg-muted);
+    cursor: pointer;
+  }
+  .vui-marquee-toggle:hover { color: var(--fg); background: color-mix(in srgb, var(--fg) 5%, var(--surface)); }
+  .vui-marquee-toggle:has(:focus-visible) { color: var(--fg); outline: 2px solid var(--ring); outline-offset: 2px; }
+  .vui-marquee-toggle svg { width: 0.75rem; height: 0.75rem; }
+  .vui-marquee-icon-play,
+  .vui-marquee:has(.vui-marquee-pause:checked) .vui-marquee-icon-pause { display: none; }
+  .vui-marquee:has(.vui-marquee-pause:checked) .vui-marquee-icon-play { display: block; }
+  [data-motion="off"] .vui-marquee-toggle { display: none; }
+  [data-motion="off"] .vui-marquee[data-controls] .vui-marquee-viewport { margin-inline-end: 0; }
+  .vui-marquee[data-fade] .vui-marquee-viewport {
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   }
   @media (prefers-reduced-motion: reduce) {
-    .vui-marquee { overflow-x: auto; }
+    .vui-marquee-viewport { overflow-x: auto; margin-inline-end: 0; }
     .vui-marquee-track { animation: none; }
-    .vui-marquee-track[aria-hidden] { display: none; }
+    .vui-marquee-track[aria-hidden],
+    .vui-marquee-toggle { display: none; }
   }
 }
 

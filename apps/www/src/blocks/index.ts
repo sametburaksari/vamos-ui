@@ -7,6 +7,8 @@ import metaAuthPasskey01 from "./auth-passkey-01/meta";
 import metaAuthSession01 from "./auth-session-01/meta";
 import metaAuthSso01 from "./auth-sso-01/meta";
 import metaBoard01 from "./board-01/meta";
+import metaCart01 from "./cart-01/meta";
+import metaCheckout01 from "./checkout-01/meta";
 import metaDashboard01 from "./dashboard-01/meta";
 import metaDashboard02 from "./dashboard-02/meta";
 import metaDashboard03 from "./dashboard-03/meta";
@@ -69,9 +71,11 @@ import metaOnboarding02 from "./onboarding-02/meta";
 import metaOnboarding03 from "./onboarding-03/meta";
 import metaOnboarding04 from "./onboarding-04/meta";
 import metaOnboarding05 from "./onboarding-05/meta";
+import metaOrderConfirmation01 from "./order-confirmation-01/meta";
 import metaOtp01 from "./otp-01/meta";
 import metaPageContact01 from "./page-contact-01/meta";
 import metaPagePricing01 from "./page-pricing-01/meta";
+import metaProduct01 from "./product-01/meta";
 import metaSections01 from "./sections-01/meta";
 import metaSelectWorkspace01 from "./select-workspace-01/meta";
 import metaSettings01 from "./settings-01/meta";
@@ -161,6 +165,8 @@ export const blocks: BlockEntry[] = [
   { ...metaAuthSession01, name: "auth-session-01", load: () => import("./auth-session-01/page") },
   { ...metaAuthSso01, name: "auth-sso-01", load: () => import("./auth-sso-01/page") },
   { ...metaBoard01, name: "board-01", load: () => import("./board-01/page") },
+  { ...metaCart01, name: "cart-01", load: () => import("./cart-01/page") },
+  { ...metaCheckout01, name: "checkout-01", load: () => import("./checkout-01/page") },
   { ...metaDashboard01, name: "dashboard-01", load: () => import("./dashboard-01/page") },
   { ...metaDashboard02, name: "dashboard-02", load: () => import("./dashboard-02/page") },
   { ...metaDashboard03, name: "dashboard-03", load: () => import("./dashboard-03/page") },
@@ -223,9 +229,11 @@ export const blocks: BlockEntry[] = [
   { ...metaOnboarding03, name: "onboarding-03", load: () => import("./onboarding-03/page") },
   { ...metaOnboarding04, name: "onboarding-04", load: () => import("./onboarding-04/page") },
   { ...metaOnboarding05, name: "onboarding-05", load: () => import("./onboarding-05/page") },
+  { ...metaOrderConfirmation01, name: "order-confirmation-01", load: () => import("./order-confirmation-01/page") },
   { ...metaOtp01, name: "otp-01", load: () => import("./otp-01/page") },
   { ...metaPageContact01, name: "page-contact-01", load: () => import("./page-contact-01/page") },
   { ...metaPagePricing01, name: "page-pricing-01", load: () => import("./page-pricing-01/page") },
+  { ...metaProduct01, name: "product-01", load: () => import("./product-01/page") },
   { ...metaSections01, name: "sections-01", load: () => import("./sections-01/page") },
   { ...metaSelectWorkspace01, name: "select-workspace-01", load: () => import("./select-workspace-01/page") },
   { ...metaSettings01, name: "settings-01", load: () => import("./settings-01/page") },

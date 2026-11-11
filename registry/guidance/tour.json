@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A guided product tour that spotlights targets and anchors a step card to each.",
+    "Welcome or closing notes as centred steps without a target."
+  ],
+  "avoidWhen": [
+    "Persistent onboarding tasks — use setup-checklist.",
+    "One-off hints on a control — use tooltip."
+  ],
+  "related": [
+    "setup-checklist",
+    "onboarding-01",
+    "popover",
+    "tooltip"
+  ],
+  "a11y": [
+    "The step card is a dialog labelled by its title; arrow keys move between steps, Escape skips and focus returns when the tour ends."
+  ]
+}

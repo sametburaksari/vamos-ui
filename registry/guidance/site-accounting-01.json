@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An accounting, bookkeeping or tax practice site that needs a service price list, a fee estimate and a monthly filing calendar.",
+    "Small professional-services firms that sell fixed monthly packages by company type."
+  ],
+  "avoidWhen": [
+    "A law firm — use site-law-01.",
+    "A wholesale or manufacturing business — use site-factory-01."
+  ],
+  "related": [
+    "pricing-table",
+    "faq",
+    "team",
+    "contact-form"
+  ],
+  "a11y": [
+    "The fee estimate total and statement are announced through aria-live regions; motion respects prefers-reduced-motion.",
+    "Keep the filing calendar dates as real text so they are read in order."
+  ]
+}

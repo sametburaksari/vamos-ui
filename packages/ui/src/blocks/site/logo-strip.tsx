@@ -12,6 +12,7 @@ export type LogoStripVariant = "row" | "marquee" | "grid";
 export interface LogoItem {
   /** Brand name — the logo's alt text. */
   name: string;
+  /** Logo, 1.75rem tall, at most 9rem wide (`sizes="9rem"`). */
   image: SiteImage;
   /** Used inside dark sections / dark mode instead of `invert()`. */
   imageDark?: SiteImage;
@@ -55,8 +56,8 @@ export function LogoStrip({ variant = "row", caption, logos, monochrome = true, 
   const logo = (l: LogoItem, i: number) => {
     const img = (
       <>
-        <BlockImage {...l.image} alt={l.name} fit="contain" className={cn("vb-logo", l.imageDark && "vb-logo-light")} components={components} />
-        {l.imageDark ? <BlockImage {...l.imageDark} decorative fit="contain" className="vb-logo vb-logo-dark" components={components} /> : null}
+        <BlockImage {...l.image} alt={l.name} fit="contain" sizes="9rem" className={cn("vb-logo", l.imageDark && "vb-logo-light")} components={components} />
+        {l.imageDark ? <BlockImage {...l.imageDark} decorative fit="contain" sizes="9rem" className="vb-logo vb-logo-dark" components={components} /> : null}
       </>
     );
     return (

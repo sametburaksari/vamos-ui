@@ -146,7 +146,7 @@ export function ContactForm({
 
 function InfoList({ info, t, locale, editMode }: { info: ContactInfo; t: Site2Text; locale: string; editMode?: boolean }) {
   const hours = typeof info.hours === "object" ? summarizeHours(info.hours, locale) : undefined;
-  const linkClass = "text-fg underline decoration-line underline-offset-[0.25em] transition-colors hover:decoration-current focus-ring rounded-[2px]";
+  const linkClass = "inline-flex min-h-6 items-center text-fg underline decoration-line underline-offset-[0.25em] transition-colors hover:decoration-current focus-ring rounded-[2px]";
   return (
     <dl className="flex flex-col border-t border-line">
       {info.phone ? (

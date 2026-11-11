@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An editorial magazine, journal or essay publication with issues, topics, long reads and footnotes.",
+    "Writers who want a reading-progress bar, side notes and a filterable archive."
+  ],
+  "avoidWhen": [
+    "A technical or engineering blog — use site-blog-02.",
+    "An email-first publication — use site-newsletter-01."
+  ],
+  "related": [
+    "blog-list",
+    "article-layout",
+    "filter-bar",
+    "pagination"
+  ],
+  "a11y": [
+    "The reading progress bar is role=\"progressbar\" and footnotes use role=\"note\"; archive results are announced via aria-live.",
+    "Write real alt text for each article image."
+  ]
+}

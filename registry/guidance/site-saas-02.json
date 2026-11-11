@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A data, analytics or BI product that sells through an interactive query demo.",
+    "Technical B2B SaaS with seat × usage pricing and a connectors catalogue."
+  ],
+  "avoidWhen": [
+    "General-purpose SaaS with a lighter marketing tone — use site-saas-01.",
+    "Developer tools selling an SDK or CLI — use site-devtool-01."
+  ],
+  "related": [
+    "site-saas-01",
+    "site-devtool-01",
+    "site-ai-01",
+    "site-status-01"
+  ],
+  "a11y": [
+    "Chart figures and the estimator total update in aria-live regions; toggles expose aria-pressed.",
+    "Provide the chart's key numbers as text so the demo is understandable without the visual."
+  ]
+}

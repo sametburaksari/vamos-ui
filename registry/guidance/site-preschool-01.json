@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A preschool, nursery or kindergarten with age groups, daily rhythm, fees and open mornings.",
+    "Early-years settings that take applications with a live monthly fee."
+  ],
+  "avoidWhen": [
+    "Driving or adult courses — use site-course-01.",
+    "Schools or public institutions organised by department — use site-department-01."
+  ],
+  "related": [
+    "site-course-01",
+    "site-department-01",
+    "site-event-01"
+  ],
+  "a11y": [
+    "Age groups are a keyboard-operable tablist, and the live fee is a role=\"status\" aria-live region.",
+    "The play-through animation respects prefers-reduced-motion; keep the timeline readable as static text."
+  ]
+}

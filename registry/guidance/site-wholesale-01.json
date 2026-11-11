@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A B2B wholesaler with tiered bulk prices, a catalogue and quote requests.",
+    "Trade suppliers that need trade accounts, delivery zones and VAT totals."
+  ],
+  "avoidWhen": [
+    "Consumer retail shops — use site-store-01.",
+    "Multi-seller marketplaces — use site-market-01."
+  ],
+  "related": [
+    "site-store-01",
+    "site-market-01",
+    "site-factory-01"
+  ],
+  "a11y": [
+    "Quote totals update through role=\"status\" aria-live and the active catalogue view uses aria-current.",
+    "Provide the staircase tier chart's prices as a text table."
+  ]
+}

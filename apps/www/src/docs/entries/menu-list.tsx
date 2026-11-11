@@ -3,6 +3,7 @@ import Demo from "../examples/menu-list/demo";
 import Photo from "../examples/menu-list/photo";
 import ServiceSpa from "../examples/menu-list/service-list-spa";
 import QrPage from "../examples/menu-list/qr-page";
+import FullPage from "../examples/menu-list/full-menu-page";
 
 const entry: DocEntry = {
   slug: "menu-list",
@@ -25,6 +26,7 @@ const entry: DocEntry = {
     ex("photo", "Photo (brunch)", "menu-list/photo.tsx", Photo, "A 72px square photo per item; items without one keep the column."),
     ex("service-list-spa", "Service list (spa, Turkish)", "menu-list/service-list-spa.tsx", ServiceSpa, "Service · duration · price rows; several durations become small columns; “Randevu” links are named after the service."),
     ex("qr-page", "QR menu at phone width", "menu-list/qr-page.tsx", QrPage, "The category bar scrolls horizontally and sticks under the top edge."),
+    ex("full-menu-page", "Full menu page (restaurant, Turkish)", "menu-list/full-menu-page.tsx", FullPage, "The whole menu on the site itself instead of a link to an external QR menu: headingLevel={1} gives h1 → h2 categories → h3 dishes; dietary tags, allergens, several prices, market price, “Bugün yok”."),
   ],
   api: [
     {
@@ -33,14 +35,16 @@ const entry: DocEntry = {
         { name: "variant", type: '"classic" | "photo" | "service-list"', default: '"classic"', description: "Layout." },
         { name: "categories", type: "{ title; note?; anchor?; items: MenuItem[] }[]", description: "Empty categories are hidden (shown in edit mode)." },
         { name: "categories[].items", type: "MenuItem[]", description: "{ name, description?, prices: { label?, amount?: Money }[] (1–4), duration?, tags?, allergens?, image?, unavailable?, bookHref? }" },
-        { name: "tags", type: '("vegetarian" | "vegan" | "gluten-free" | "spicy" | "new" | "chef-pick")[]', description: "Rendered as accent-ink words." },
+        { name: "tags", type: '("vegetarian" | "vegan" | "gluten-free" | "dairy-free" | "nut-free" | "halal" | "spicy" | "new" | "chef-pick" | "to-share" | "seasonal")[]', description: "Rendered as accent-ink words (MENU_TAGS). vegan, vegetarian, gluten-free, dairy-free and halal also map to schema.org suitableForDiet." },
         { name: "allergens", type: "Allergen[]", description: "gluten, crustaceans, eggs, fish, peanuts, soybeans, milk, nuts, celery, mustard, sesame, sulphites, lupin, molluscs." },
         { name: "priceNote", type: "ReactNode", description: "Tax / service note (required by the house rules)." },
         { name: "showNav", type: "boolean", default: "more than 2 categories", description: "Sticky category jump bar." },
         { name: "bookHref", type: "string", description: "service-list: booking page for every row." },
         { name: "showAllergens", type: "boolean", default: "true", description: "Allergen line under items." },
         { name: "labels / locale", type: "Partial<Site2Labels> / string", description: "Tag and allergen names, Market price, Not today, Book." },
-        { name: "theme / anchor / id / className / headingLevel / components / editMode", type: "BlockBaseProps", description: "Shared block props." },
+        { name: "headingLevel", type: "1 | 2 | 3", default: "2", description: "Outline level of the title; categories and dishes follow (1 → h2 categories, h3 dishes — a whole menu page). Without a title, categories take this level." },
+        { name: "categories[].items[].image", type: "SiteImage", description: "photo variant: 72px square, sizes=\"72px\"." },
+        { name: "theme / anchor / id / className / components / editMode", type: "BlockBaseProps", description: "Shared block props." },
       ],
     },
     { name: "menuJsonLd({ categories, name? })", props: [{ name: "returns", type: "object", description: "schema.org Menu → MenuSection → MenuItem + Offer (+ suitableForDiet)." }] },

@@ -10,6 +10,7 @@ import type { RichDoc } from "../schema/rich-doc";
 import { EmbedFacade } from "./embed-facade";
 import { CtaList, siteText, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
 import { Reveal } from "../../motion/reveal";
+import { columnSizes } from "./shared/image-sizes";
 
 export type MediaTextVariant = "side" | "overlap" | "bleed";
 
@@ -33,7 +34,10 @@ export interface MediaTextProps extends Omit<BlockBaseProps, "variant" | "labels
   /** Short points with accent dashes (≤ 6). */
   bullets?: React.ReactNode[];
   cta?: SiteCta;
-  /** The image (also the video poster). */
+  /**
+   * The image (also the video poster). `sizes`: side `(min-width: 56rem) min(42vw, 32rem), 100vw` ·
+   * overlap `min(67vw, 51rem)` · bleed `59vw` (runs to the section edge); 100vw on narrow screens.
+   */
   media: SiteImage;
   /** Static preview → plays only after a click (YouTube via youtube-nocookie). */
   video?: MediaTextVideo;
@@ -133,7 +137,7 @@ export function MediaText({
   if (variant === "overlap") {
     content = (
       <Container className="grid gap-y-0 @4xl:grid-cols-12 @4xl:pb-[calc(var(--section-y)*0.4)]">
-        <div className={cn("@4xl:col-span-8 @4xl:row-start-1", end && "@4xl:col-start-5")}>{image("(min-width: 56rem) 60vw, 100vw", "rounded-ui")}</div>
+        <div className={cn("@4xl:col-span-8 @4xl:row-start-1", end && "@4xl:col-start-5")}>{image(columnSizes(8 / 12), "rounded-ui")}</div>
         <div
           className={cn(
             "vb-overlap-panel surface relative -mt-12 mx-[clamp(0.75rem,3cqi,1.5rem)] rounded-ui p-[clamp(1.5rem,4cqi,3rem)] @4xl:row-start-1 @4xl:mx-0 @4xl:mt-0 @4xl:self-end @4xl:translate-y-[calc(var(--section-y)*0.35)]",
@@ -147,14 +151,14 @@ export function MediaText({
   } else if (variant === "bleed") {
     content = (
       <Container className="grid gap-x-(--gutter) gap-y-10 @4xl:grid-cols-12 @4xl:items-start">
-        <div className={cn("@4xl:col-span-7", end ? "vb-bleed-end @4xl:order-2 @4xl:col-start-6" : "vb-bleed-start")}>{image("(min-width: 56rem) 60vw, 100vw")}</div>
+        <div className={cn("@4xl:col-span-7", end ? "vb-bleed-end @4xl:order-2 @4xl:col-start-6" : "vb-bleed-start")}>{image(columnSizes(7 / 12, { bleed: true }))}</div>
         <div className={cn("@4xl:col-span-4 @4xl:pt-4", end ? "@4xl:order-1 @4xl:col-start-1" : "@4xl:col-start-9")}>{text}</div>
       </Container>
     );
   } else {
     content = (
       <Container className="grid gap-x-(--gutter) gap-y-10 @4xl:grid-cols-12 @4xl:items-start">
-        <div className={cn("@4xl:col-span-5", end && "@4xl:order-2 @4xl:col-start-8")}>{image("(min-width: 56rem) 40vw, 100vw", "rounded-ui")}</div>
+        <div className={cn("@4xl:col-span-5", end && "@4xl:order-2 @4xl:col-start-8")}>{image(columnSizes(5 / 12), "rounded-ui")}</div>
         <div className={cn("@4xl:col-span-6", end ? "@4xl:order-1 @4xl:col-start-1" : "@4xl:col-start-7")}>{text}</div>
       </Container>
     );

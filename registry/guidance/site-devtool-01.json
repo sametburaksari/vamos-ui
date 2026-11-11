@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A developer tool or API site with a code-first hero, quick start, uptime, cost estimator, plans and docs landing.",
+    "Products whose samples should switch language everywhere at once."
+  ],
+  "avoidWhen": [
+    "Release notes only — use site-changelog-01.",
+    "A non-technical SaaS — use site-saas-01."
+  ],
+  "related": [
+    "tabs",
+    "pricing-table",
+    "kbd",
+    "stat"
+  ],
+  "a11y": [
+    "Includes a skip link and / to search; estimator and delivery log updates are announced via aria-live.",
+    "Keep code samples as selectable text, not images."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A podcast or audio show with an episode player, chapters, archive and transcripts.",
+    "Shows whose episodes carry notes, recipes or credits on their own page."
+  ],
+  "avoidWhen": [
+    "Text-only newsletters — use site-newsletter-01.",
+    "Articles and essays without audio — use site-blog-01."
+  ],
+  "related": [
+    "site-newsletter-01",
+    "site-blog-01",
+    "site-event-01"
+  ],
+  "a11y": [
+    "Live captions and the following transcript use aria-live and aria-current; motion respects prefers-reduced-motion.",
+    "Ensure the waveform scrubber is operable by keyboard and has an accessible name and value."
+  ]
+}

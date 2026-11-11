@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "SaaS subscription metrics: ARR, NRR, quick ratio, churn and the monthly MRR bridge.",
+    "Retention cohorts plus a watch list where you log plays or snooze accounts."
+  ],
+  "avoidWhen": [
+    "Cash and runway planning — use dashboard-09.",
+    "One customer account in depth — use detail-04."
+  ],
+  "related": [
+    "dashboard-09",
+    "detail-04",
+    "heatmap",
+    "bar-chart"
+  ],
+  "a11y": [
+    "Charts carry aria-labels; give the cohort triangle a table fallback or summary.",
+    "Announce snooze and play actions with an undo toast."
+  ]
+}

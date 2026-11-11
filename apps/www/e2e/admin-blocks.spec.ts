@@ -973,3 +973,127 @@ test.describe("admin blocks 5 — onboarding", () => {
     expectClean(errors);
   });
 });
+
+/**
+ * Commerce blocks: product detail, cart + mini-cart, one-page checkout and order confirmation
+ * (Kiln & Linen storefront, TRY, EN / TR).
+ */
+const BLOCKS_COMMERCE = ["product-01", "cart-01", "checkout-01", "order-confirmation-01"];
+
+test.describe("commerce blocks — previews", () => {
+  for (const name of BLOCKS_COMMERCE) {
+    test(`${name}: 1440 and 390 render with a landmark, no console errors, no serious axe, no sideways scroll`, async ({ page }) => {
+      test.setTimeout(150_000);
+      for (const [width, height] of [[1440, 900], [390, 844]] as const) {
+        await page.setViewportSize({ width, height });
+        const errors = await openBlock(page, name);
+        expect((await page.locator("body").innerText()).trim().length, `${name} is empty at ${width}`).toBeGreaterThan(40);
+        await expect(page.getByRole("main").first(), `${name} has a landmark at ${width}`).toBeAttached();
+        expect(await seriousA11y(page), `${name} axe at ${width}`).toEqual([]);
+        expect(await overflowX(page), `${name} overflows at ${width}`).toBeLessThanOrEqual(1);
+        expectClean(errors);
+      }
+    });
+  }
+});
+
+test.describe("commerce blocks", () => {
+  test.describe.configure({ timeout: 120_000 });
+
+  test("product-01: variant stock drives the button, add to cart toasts and counts, tabs switch, Turkish copy", async ({ page }) => {
+    const errors = await open(page, "product-01");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Tide stoneware plate");
+    await expect(page.getByRole("button", { name: "Cart, 7 items" })).toBeVisible();
+    await page.getByRole("radio", { name: /Oat/ }).click();
+    await page.getByRole("radio", { name: /Platter/ }).click();
+    await expect(page.getByRole("button", { name: "Notify me when back" })).toBeVisible();
+    await page.getByRole("radio", { name: /Dinner/ }).click();
+    await expect(page.getByText("Only 2 left in Oat.")).toBeVisible();
+    await page.getByRole("button", { name: /^Add to cart/ }).click();
+    await expect(toast(page, "Added to your cart")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Cart, 8 items" })).toBeVisible();
+    await page.getByRole("button", { name: /Photo 2 of 3/ }).click();
+    await expect(page.getByRole("button", { name: /Photo 2 of 3/ })).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("tab", { name: /Size guide/ }).click();
+    await expect(page.getByRole("table", { name: "Tide plate sizes" })).toBeVisible();
+    await page.getByRole("button", { name: "Cart, 8 items" }).click();
+    await expect(page.getByRole("dialog", { name: /Your cart \(8\)/ })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await page.getByRole("button", { name: /Türkçe/ }).click();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Gelgit taşkil tabak");
+    await expect(page.getByRole("button", { name: /^Sepete ekle/ })).toContainText("₺");
+    expectClean(errors);
+  });
+
+  test("cart-01: quantity unlocks free delivery, a bad and a good code, remove with undo, empty state", async ({ page }) => {
+    const errors = await open(page, "cart-01");
+    await expect(page.getByText(/away from free delivery/)).toBeVisible();
+    const mug = page.getByRole("spinbutton", { name: "Quantity of Speckled stoneware mug" });
+    await mug.fill("3");
+    await mug.press("Tab");
+    await expect(page.getByText("Free standard delivery unlocked")).toBeVisible();
+    const code = page.getByRole("textbox", { name: "Discount code" });
+    await code.fill("nope");
+    await page.getByRole("button", { name: "Apply" }).click();
+    await expect(page.getByText("“NOPE” isn’t a valid code.")).toBeVisible();
+    await code.fill("kiln10");
+    await page.getByRole("button", { name: "Apply" }).click();
+    await expect(page.getByRole("button", { name: "Remove code KILN10" })).toBeVisible();
+    await page.getByRole("button", { name: "Remove Beeswax pillar candles (3)" }).click();
+    await expect(page.getByText("Beeswax pillar candles (3) removed from your cart.")).toBeVisible();
+    await page.getByRole("button", { name: /^Undo: put Beeswax/ }).click();
+    await expect(page.getByRole("button", { name: "Remove Beeswax pillar candles (3)" })).toBeFocused();
+    for (const n of ["Tide stoneware plate", "Speckled stoneware mug", "Beeswax pillar candles (3)"]) await page.getByRole("button", { name: `Remove ${n}` }).click();
+    await expect(page.getByRole("heading", { name: "Your cart is empty" })).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("checkout-01: an empty submit focuses the first error, a full Turkish order with a card places and confirms", async ({ page }) => {
+    const errors = await open(page, "checkout-01");
+    await page.getByRole("button", { name: /^Place order/ }).click();
+    await expect(toast(page, /Check \d+ fields before placing the order/)).toBeVisible();
+    await expect(page.getByRole("textbox", { name: /Email/ })).toBeFocused();
+    await page.getByRole("textbox", { name: /Email/ }).fill("asli.korkmaz@example.com");
+    await page.getByRole("textbox", { name: /Mobile/ }).fill("5320000000");
+    await page.getByRole("textbox", { name: /First name/ }).fill("Aslı");
+    await page.getByRole("textbox", { name: /Last name/ }).fill("Korkmaz");
+    await page.getByRole("combobox", { name: /Province/ }).first().selectOption("İstanbul");
+    await page.getByRole("combobox", { name: /District/ }).first().selectOption("Kadıköy");
+    await page.getByRole("textbox", { name: /Street address/ }).first().fill("Caferağa Mah. Moda Cad. No: 00");
+    await page.getByRole("textbox", { name: /Name on card/ }).fill("ASLI KORKMAZ");
+    const number = page.getByRole("textbox", { name: /Card number/ });
+    await number.fill("4242424242424241");
+    await number.press("Tab");
+    await expect(page.getByText("This card number isn’t valid. Check the digits.")).toBeVisible();
+    await number.fill("4242424242424242");
+    await expect(number).toHaveValue("4242 4242 4242 4242");
+    await expect(page.getByText("Visa", { exact: true })).toBeVisible();
+    await page.getByRole("textbox", { name: /Expiry/ }).fill("1225");
+    await page.getByRole("textbox", { name: /Expiry/ }).press("Tab");
+    await expect(page.getByText("This card has expired.")).toBeVisible();
+    await page.getByRole("textbox", { name: /Expiry/ }).fill("1229");
+    await page.getByRole("textbox", { name: /Security code/ }).fill("123");
+    await page.getByRole("radio", { name: /3 months/ }).click();
+    await page.getByRole("checkbox", { name: /distance sales agreement/ }).click();
+    await page.getByRole("button", { name: /^Place order/ }).click();
+    await expect(page.getByRole("heading", { level: 1, name: "Thank you, Aslı. Your order is in." })).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText(/Card •••• 4242 · 3 months/)).toBeVisible();
+    expectClean(errors);
+  });
+
+  test("order-confirmation-01: copy the order number, a short password is refused, an account is created", async ({ page }) => {
+    const errors = await open(page, "order-confirmation-01");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Your order is confirmed");
+    await expect(page.getByText("Packing in İzmir")).toBeVisible();
+    await page.getByRole("button", { name: "Copy order number" }).click();
+    await expect(toast(page, "Order number KL-30418 copied")).toBeVisible();
+    const pw = page.getByLabel("Password");
+    await pw.fill("short");
+    await page.getByRole("button", { name: "Create account" }).click();
+    await expect(page.getByText("Use at least 8 characters.")).toBeVisible();
+    await pw.fill("kiln-and-linen-26");
+    await page.getByRole("button", { name: "Create account" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Account created for" })).toBeVisible();
+    expectClean(errors);
+  });
+});

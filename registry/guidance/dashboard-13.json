@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Warehouse stock: value, reorder points, out-of-stock and days of cover per warehouse.",
+    "Turning a reorder queue into purchase orders and recording stock movements."
+  ],
+  "avoidWhen": [
+    "Editing many prices and quantities at once — use list-10.",
+    "A single product's information — use detail-07."
+  ],
+  "related": [
+    "list-10",
+    "detail-07",
+    "data-table",
+    "bar-chart"
+  ],
+  "a11y": [
+    "The stock table exposes aria-sort on its sortable column; the cover histogram is role=\"img\".",
+    "Keep the warehouse switch as a labelled control so the scope change is announced."
+  ]
+}

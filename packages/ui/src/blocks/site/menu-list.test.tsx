@@ -44,6 +44,24 @@ describe("MenuList", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
+  it("a whole menu page: h1 title, h2 categories, h3 dishes, dietary tags and allergens", async () => {
+    const page: MenuCategory[] = [
+      { title: "Meze", items: [{ name: "Şakşuka", prices: [{ amount: TRY("190") }], tags: ["vegan", "halal", "to-share"], allergens: ["celery"] }] },
+      { title: "Tatlı", items: [{ name: "Kabak tatlısı", prices: [{ amount: TRY("220") }], tags: ["dairy-free", "seasonal"], allergens: ["nuts", "sesame"] }] },
+    ];
+    const { container } = render(<main><MenuList headingLevel={1} title="Menü" locale="tr-TR" labels={site2LabelsTr} categories={page} priceNote="Fiyatlara KDV dahildir." /></main>);
+    expect(screen.getByRole("heading", { level: 1, name: "Menü" })).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual(["Meze", "Tatlı"]);
+    expect(screen.getByRole("heading", { level: 3, name: "Şakşuka" })).toBeInTheDocument();
+    expect(screen.getByText("Helal")).toBeInTheDocument();
+    expect(screen.getByText("Paylaşımlık")).toBeInTheDocument();
+    expect(screen.getByText("Sütsüz")).toBeInTheDocument();
+    expect(screen.getByText("Mevsimlik")).toBeInTheDocument();
+    const diet = (menuJsonLd({ categories: page }).hasMenuSection as { hasMenuItem: { suitableForDiet: string[] }[] }[]).map((c) => c.hasMenuItem[0]!.suitableForDiet);
+    expect(diet).toEqual([["https://schema.org/VeganDiet", "https://schema.org/HalalDiet"], ["https://schema.org/LowLactoseDiet"]]);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
   it("photo keeps alignment without images; JSON-LD", () => {
     const { container } = render(<MenuList variant="photo" categories={[categories[0]!]} />);
     expect(container.querySelectorAll("li > span.size-\\[72px\\]")).toHaveLength(2);

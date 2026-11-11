@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A florist or gift shop with same-day delivery cut-offs, district fees, subscriptions and an order page.",
+    "Local delivery businesses where available dates depend on district and time."
+  ],
+  "avoidWhen": [
+    "A general online store — use site-store-01.",
+    "A subscription box — use site-subbox-01."
+  ],
+  "related": [
+    "calendar",
+    "filter-bar",
+    "pricing-table",
+    "map-hours"
+  ],
+  "a11y": [
+    "Includes a skip link; cut-off and order changes use aria-live status regions; motion respects prefers-reduced-motion.",
+    "Announce the remaining cut-off time as text, not only a ticking clock."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A moving, cleaning or home-service company that quotes by job size, date and extras.",
+    "Service businesses that want a multi-step quote calculator with a live price range."
+  ],
+  "avoidWhen": [
+    "Trades selling standard products from a catalogue — use site-wholesale-01.",
+    "Clinics booking appointment slots — use site-physio-01."
+  ],
+  "related": [
+    "site-construction-01",
+    "site-autoservice-01",
+    "site-wholesale-01"
+  ],
+  "a11y": [
+    "The live estimate is a role=\"status\" aria-live region, and motion respects prefers-reduced-motion.",
+    "Keep each calculator step's fields labelled and announce step changes to screen readers."
+  ]
+}

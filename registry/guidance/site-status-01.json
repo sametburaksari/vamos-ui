@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A public status page for an API or SaaS: components, uptime bars, incidents and maintenance.",
+    "Teams that publish incident updates and postmortems alongside history."
+  ],
+  "avoidWhen": [
+    "Release notes and product updates — use site-changelog-01.",
+    "Help articles and support — use site-help-01."
+  ],
+  "related": [
+    "site-changelog-01",
+    "site-help-01",
+    "site-saas-02",
+    "site-devtool-01"
+  ],
+  "a11y": [
+    "Uptime bars support arrow-key navigation with day tooltips linked via aria-describedby.",
+    "The overall banner is a role=\"status\" live region and motion respects prefers-reduced-motion."
+  ]
+}

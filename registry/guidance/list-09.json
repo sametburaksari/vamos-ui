@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A day-grouped audit timeline: actor, target, source, IP and before/after preview.",
+    "Investigating changes, reverting with confirmation and exporting with a reason."
+  ],
+  "avoidWhen": [
+    "The audit table component on its own — use audit-log.",
+    "A friendly activity stream for end users — use list-11."
+  ],
+  "related": [
+    "audit-log",
+    "list-11",
+    "export",
+    "activity-timeline"
+  ],
+  "a11y": [
+    "Status messages use role=\"status\"; the density strip is role=\"img\" with day filters as aria-pressed buttons.",
+    "Timeline entries handle keyboard selection for the inspector."
+  ]
+}

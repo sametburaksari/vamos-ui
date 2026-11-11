@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A one-page checkout: contact, delivery, Turkish or international address, payment and agreement.",
+    "Stores that need card checks, instalments, bank transfer or pay at the door, and company invoices."
+  ],
+  "avoidWhen": [
+    "Reviewing cart contents before paying — use cart-01.",
+    "A long non-commerce form split into steps — use multi-step-form."
+  ],
+  "related": [
+    "cart-01",
+    "order-confirmation-01",
+    "address-field",
+    "multi-step-form"
+  ],
+  "a11y": [
+    "Collapsible summary uses aria-expanded with aria-controls; keep every field labelled with errors in text.",
+    "Move focus to the first invalid field on submit."
+  ]
+}

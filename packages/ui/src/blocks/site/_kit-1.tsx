@@ -188,6 +188,7 @@ export function CtaList({ actions, components, labels, locale, size = "lg", forc
             editMode={editMode}
             field={`props.actions.${i}`}
             data-track={a.link.kind}
+            className={style === "link" ? "min-h-6 pointer-coarse:min-h-11" : undefined}
           >
             {a.link.label}
             {style === "link" && arrow ? <ArrowEnd /> : null}

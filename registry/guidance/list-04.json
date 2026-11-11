@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Orders grouped by customer, status or channel with subtotals and a grand total.",
+    "Reviewing revenue by group while expanding into individual orders in place."
+  ],
+  "avoidWhen": [
+    "A flat sortable table — use data-table.",
+    "Hierarchies you reorder — use list-12."
+  ],
+  "related": [
+    "data-table",
+    "dashboard-08",
+    "filter-bar",
+    "collapsible"
+  ],
+  "a11y": [
+    "Group rows are buttons with aria-expanded and aria-controls.",
+    "Revenue bars are decorative (aria-hidden); the figures are present as text."
+  ]
+}

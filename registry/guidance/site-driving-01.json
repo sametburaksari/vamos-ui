@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A driving school with courses by licence type, a pace-based weeks-to-test estimate, instructors and sign-up.",
+    "Schools that compare courses in a table and carry the choice into a sign-up form."
+  ],
+  "avoidWhen": [
+    "A car garage or wash — use site-autoservice-01.",
+    "A general online course — use site-course-01."
+  ],
+  "related": [
+    "comparison-table",
+    "slider",
+    "team",
+    "contact-form"
+  ],
+  "a11y": [
+    "Price and weeks-to-test changes are announced via aria-live and status regions; motion respects motion-reduce.",
+    "The age check error should stay visible next to the birth date field."
+  ]
+}

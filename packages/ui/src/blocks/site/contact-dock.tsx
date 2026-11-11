@@ -8,6 +8,7 @@ import { telHref } from "./shared/kit-2";
 import { BrandIcon, BRAND_NAMES, waLink } from "./shared/brand-icons";
 import { DockHours } from "./shared/dock-hours";
 import { DockAvoid } from "./shared/dock-avoid";
+import { nameWithLabel } from "./shared/tap";
 
 export type ContactDockVariant = "fab" | "bar" | "both";
 export type DockAction = "call" | "whatsapp" | "directions" | "booking" | "email";
@@ -99,6 +100,7 @@ export function ContactDock(props: ContactDockProps) {
   const defaultActions: DockAction[] = ["call", "whatsapp", "directions", "booking", "email"];
   const actions = (props.actions ?? defaultActions).map((a) => [a, actionSpec(a, props, t)] as const).filter((x): x is readonly [DockAction, ActionSpec] => !!x[1]).slice(0, 4);
   const showFab = variant !== "bar" && href;
+  const fabLabel = label ?? t("messageUs");
   const showBar = variant !== "fab" && actions.length >= 2;
   const hoursIsland = hours && offHours !== "show" ? <DockHours hours={hours} mode={offHours} text={t("offHours")} now={now} className="vb-dock-offhours" /> : null;
 
@@ -115,14 +117,14 @@ export function ContactDock(props: ContactDockProps) {
         <div className={cn("vb-dock-fab", variant === "both" && "vb-dock-desktop", position === "start" && "flex-row-reverse")}>
           {hoursIsland ? <span className="vb-dock-note surface-popover max-w-[16rem] rounded-ui px-3 py-2 text-xs text-fg empty:hidden [&:has(>span:empty)]:hidden">{hoursIsland}</span> : null}
           <span aria-hidden className="vb-dock-label surface-popover rounded-full px-3.5 py-2 text-sm font-medium text-fg">
-            {label ?? t("messageUs")}
+            {fabLabel}
           </span>
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
             data-track={provider}
-            aria-label={`${t("messageUsOn", { network })}, ${t("opensInNewTab").replace(/[()]/g, "")}`}
+            aria-label={nameWithLabel(fabLabel, `${t("messageUsOn", { network })}, ${t("opensInNewTab").replace(/[()]/g, "")}`)}
             className="vb-dock-button inline-flex size-[52px] shrink-0 items-center justify-center rounded-full bg-fg text-scene transition-opacity hover:opacity-90 focus-ring"
           >
             <BrandIcon name={provider} className="size-6" />
@@ -140,7 +142,7 @@ export function ContactDock(props: ContactDockProps) {
                   target={s.external ? "_blank" : undefined}
                   rel={s.external ? "noopener noreferrer" : undefined}
                   data-track={a}
-                  aria-label={s.aria}
+                  aria-label={nameWithLabel(s.label, s.aria)}
                   className="flex h-14 flex-col items-center justify-center gap-1 text-[11px] font-medium text-fg transition-colors hover:bg-hover focus-ring"
                 >
                   {s.icon}

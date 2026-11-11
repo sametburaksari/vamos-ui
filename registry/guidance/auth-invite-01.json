@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Accepting a team invitation, showing who invited you, the role and the expiry.",
+    "Letting invitees either create a password or sign in with an existing account."
+  ],
+  "avoidWhen": [
+    "Open self-service registration — use signup-01.",
+    "Choosing among workspaces after sign-in — use select-workspace-01."
+  ],
+  "related": [
+    "signup-01",
+    "login-01",
+    "select-workspace-01"
+  ],
+  "a11y": [
+    "Password rule feedback is announced through an aria-live region and linked with aria-describedby.",
+    "Give the decline confirmation a clear title and return focus to its trigger."
+  ]
+}

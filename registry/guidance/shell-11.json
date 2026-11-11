@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A three-pane help desk: queues, ticket list with SLA clocks and a conversation composer.",
+    "Support tools needing bulk assign, macros and customer context."
+  ],
+  "avoidWhen": [
+    "Generic list-detail screens — use list-layout.",
+    "Field technician apps — use shell-09."
+  ],
+  "related": [
+    "sla-timer",
+    "comment-thread",
+    "list-layout",
+    "data-table"
+  ],
+  "a11y": [
+    "The conversation is role=\"log\"; ticket list supports arrow keys and the current view is aria-current."
+  ]
+}

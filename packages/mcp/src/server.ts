@@ -19,11 +19,15 @@ import {
 } from "./tools.js";
 
 export const SERVER_NAME = "vamos-ui";
-export const SERVER_VERSION = "0.2.2";
+export const SERVER_VERSION = "0.2.3";
 
-const INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
+const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
 Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change).`;
+
+const REMOTE_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
+This hosted server cannot see the user's files. Before building UI with it: call get_rules once per session. For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file.
+Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
 
 const itemType = z.enum(["component", "block", "lib", "style"]);
 
@@ -60,7 +64,7 @@ const REMOTE_NOTE =
 
 export function createServer(options: CreateServerOptions = {}): { server: McpServer; registry: Registry } {
   const registry = options.registry ?? new Registry(options);
-  const server = new McpServer({ name: SERVER_NAME, version: SERVER_VERSION }, { instructions: INSTRUCTIONS });
+  const server = new McpServer({ name: SERVER_NAME, version: SERVER_VERSION }, { instructions: options.remote === true ? REMOTE_INSTRUCTIONS : LOCAL_INSTRUCTIONS });
   const readOnly = { readOnlyHint: true, openWorldHint: false } as const;
   const remote = options.remote === true;
   const local = <T,>(fn: () => T): T | undefined => (remote ? undefined : fn());

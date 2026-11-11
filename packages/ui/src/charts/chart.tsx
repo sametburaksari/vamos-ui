@@ -98,7 +98,7 @@ export function ChartTooltipContent({ active, payload, label, indicator, showTot
           const s = chart.series.find((x) => x.key === key);
           return (
             <div key={key} className="flex items-center gap-2">
-              <ChartIndicator color={seriesColor(key)} variant={ind} pattern={s?.pattern} />
+              <ChartIndicator color={seriesColor(key)} variant={chart.isBar(key) ? "dot" : ind} pattern={chart.isBar(key) ? undefined : s?.pattern} />
               <span className="me-auto text-fg-muted">{s?.label ?? String(p.name ?? key)}</span>
               <span className="font-mono text-fg tabular">{chart.formatSeries(key, raw[key] ?? p.value)}</span>
               {showShare && total ? <span className="w-11 text-end font-mono text-fg-subtle tabular">{chart.f.percent(numeric(key) / total)}</span> : null}

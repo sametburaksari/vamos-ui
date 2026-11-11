@@ -10,6 +10,7 @@ const VALUE_FLAGS = new Set([
   "theme", "material", "accent", "density", "font",
   "ui-dir", "blocks-dir", "css", "alias",
   "name", "accent-dark", "display", "body", "mono", "radius", "tone",
+  "preset", "template", "client", "out", "homepage", "starter",
 ]);
 
 const SHORT: Record<string, string> = { y: "yes", h: "help", v: "version", o: "overwrite", r: "registry" };

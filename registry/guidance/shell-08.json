@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Agencies and partner programmes switching between their own workspace and client or partner portals.",
+    "A view-as-client mode that hides internal notes."
+  ],
+  "avoidWhen": [
+    "A single workspace product — use shell-01.",
+    "Choosing a workspace once after sign-in — use select-workspace-01."
+  ],
+  "related": [
+    "select-workspace-01",
+    "shell-01",
+    "app-shell"
+  ],
+  "a11y": [
+    "Each portal region is labelled with aria-labelledby and the active workspace is aria-current; document the ⌘1–5 shortcuts visibly."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Scannable codes for two-factor enrolment, invite links, tickets and payment slips.",
+    "Server-rendered QR output with no extra dependency."
+  ],
+  "avoidWhen": [
+    "Secrets the user must type — show the text key alongside or use backup-codes.",
+    "Links on desktop where clicking works better — use a plain link."
+  ],
+  "related": [
+    "auth-2fa-setup-01",
+    "backup-codes",
+    "image"
+  ],
+  "a11y": [
+    "The SVG is role=\"img\" with an aria-label; always show the encoded value or link as text too."
+  ]
+}

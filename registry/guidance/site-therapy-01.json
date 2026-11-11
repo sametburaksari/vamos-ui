@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A counselling or psychotherapy practice that needs a calm tone and privacy-first contact.",
+    "Small practices showing fees, therapists, rooms and confidentiality limits."
+  ],
+  "avoidWhen": [
+    "Physical rehab clinics with slot booking — use site-physio-01.",
+    "Multi-department medical clinics — use site-clinic-01."
+  ],
+  "related": [
+    "site-clinic-01",
+    "site-physio-01",
+    "site-dietitian-01"
+  ],
+  "a11y": [
+    "The \"what we will receive\" panel is a role=\"status\" region and motion respects prefers-reduced-motion.",
+    "Keep the leave-this-site button early in tab order and clearly labelled."
+  ]
+}

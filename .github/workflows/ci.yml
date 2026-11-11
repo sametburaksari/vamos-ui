@@ -1,0 +1,95 @@
+# Fast checks on every push and pull request to main.
+#
+# End-to-end tests (apps/www/e2e, Playwright) are not run here: they need a production build of
+# the docs site (~200 pages, several minutes and a lot of memory) and a real Chrome, and take
+# longer than every other check combined. Run them locally, ideally against the static export:
+#   STATIC_EXPORT=1 pnpm --filter @vamos-ui/www build && npx serve apps/www/out -l 3200
+#   PW_WORKERS=3 pnpm --filter @vamos-ui/www e2e
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "22"
+
+jobs:
+  types:
+    name: Generated files + types
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4 # version from "packageManager" in package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Generated index files are up to date
+        run: |
+          node scripts/gen.mjs
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::node scripts/gen.mjs changed files. Run it locally and commit the result."
+            git status --porcelain
+            git --no-pager diff
+            exit 1
+          fi
+
+      - name: tsc packages/ui
+        run: pnpm --dir packages/ui exec tsc --noEmit
+      - name: tsc packages/cli
+        run: pnpm --dir packages/cli exec tsc --noEmit
+      - name: tsc packages/mcp
+        run: pnpm --dir packages/mcp exec tsc --noEmit
+      - name: tsc apps/www
+        run: pnpm --dir apps/www exec tsc --noEmit
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+
+  unit-ui:
+    name: Unit + a11y tests (@vamos-ui/react)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: vitest (with v8 coverage)
+        run: pnpm --dir packages/ui exec vitest run --coverage.enabled --coverage.provider=v8 --coverage.reporter=text-summary --coverage.include="src/**"
+
+  unit-tooling:
+    name: CLI, MCP and registry tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: vitest packages/cli
+        run: pnpm --dir packages/cli exec vitest run
+      - name: vitest packages/mcp
+        run: pnpm --dir packages/mcp exec vitest run
+      - name: Build the registry
+        run: node scripts/build-registry.mjs
+      - name: Registry tests
+        run: node --test scripts/registry/*.test.mjs

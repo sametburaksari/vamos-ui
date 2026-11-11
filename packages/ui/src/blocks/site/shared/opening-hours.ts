@@ -292,18 +292,49 @@ export function openingHoursJsonLd(hours: OpeningHours): Record<string, unknown>
   return out;
 }
 
-/** The status sentence: "Open now · closes at 22:00", "Closed · opens Thu at 12:00". */
-export function describeStatus(s: OpenStatus, labels: Record<"openNow" | "closesAt" | "closingSoon" | "closed" | "closedToday" | "opensAt" | "opensTodayAt" | "open24h", string>, locale = "en-US"): { head: string; tail?: string } {
+/** Label keys `describeStatus` reads. */
+export type StatusLabelKey = "openNow" | "openUntil" | "closingSoon" | "closingSoonUntil" | "openAllDay" | "closed" | "closedToday" | "opensAt" | "opensTodayAt" | "opensTomorrowAt";
+
+// Turkish case suffixes on a clock time follow the last spoken word: "01:00" is read "bir" →
+// "01:00’e" (dative) / "01:00’de" (locative); "22:30" ends in "otuz" → "22:30’a" / "22:30’da".
+const TR_UNITS_DAT = ["", "e", "ye", "e", "e", "e", "ya", "ye", "e", "a"];
+const TR_UNITS_LOC = ["", "de", "de", "te", "te", "te", "da", "de", "de", "da"];
+const TR_TENS_DAT = ["a", "a", "ye", "a", "a", "ye"]; // sıfır, on, yirmi, otuz, kırk, elli
+const TR_TENS_LOC = ["da", "da", "de", "da", "ta", "de"];
+function trSuffix(hhmm: string, kind: "dat" | "loc"): string {
+  const [h = 0, m = 0] = hhmm.split(":").map(Number);
+  const n = m === 0 ? h % 24 : m; // the last word read aloud
+  const unit = n % 10;
+  if (unit) return (kind === "dat" ? TR_UNITS_DAT : TR_UNITS_LOC)[unit]!;
+  return (kind === "dat" ? TR_TENS_DAT : TR_TENS_LOC)[Math.floor(n / 10)]!;
+}
+
+/**
+ * Variables for a time in a status template: `{time}` ("01:00", "1 AM"), plus `{timeTo}` /
+ * `{timeAt}` — the time with the Turkish dative / locative suffix ("01:00’e", "12:00’de") so the
+ * TR strings read naturally; other locales get the plain time.
+ */
+export function timeVars(hhmm: string, locale = "en-US"): { time: string; timeTo: string; timeAt: string } {
+  const time = formatTime(hhmm, locale);
+  if (!/^tr\b/i.test(locale)) return { time, timeTo: time, timeAt: time };
+  return { time, timeTo: `${time}’${trSuffix(hhmm, "dat")}`, timeAt: `${time}’${trSuffix(hhmm, "loc")}` };
+}
+
+/**
+ * The status as `{ head, tail }`, each said once: "Open · until 1 AM", "Closing soon · open until
+ * 1 AM", "Open · 24 hours", "Closed · opens tomorrow at 12 PM", "Closed today · Staff day · opens
+ * Thu at 12 PM". TR: "Açık · 01:00’e kadar", "Kapalı · yarın 12:00’de açılıyor".
+ */
+export function describeStatus(s: OpenStatus, labels: Record<StatusLabelKey, string>, locale = "en-US"): { head: string; tail?: string } {
   const f = (tpl: string, vars?: Record<string, unknown>) => formatMessage(tpl, vars, locale);
   if (s.state !== "closed") {
-    if (s.allDay) return { head: f(labels.openNow), tail: f(labels.open24h) };
-    const tail = f(labels.closesAt, { time: formatTime(s.closesAt!, locale) });
-    return { head: f(s.state === "closing-soon" ? labels.closingSoon : labels.openNow), tail };
+    if (s.allDay) return { head: f(labels.openNow), tail: f(labels.openAllDay) };
+    const vars = timeVars(s.closesAt!, locale);
+    return s.state === "closing-soon" ? { head: f(labels.closingSoon), tail: f(labels.closingSoonUntil, vars) } : { head: f(labels.openNow), tail: f(labels.openUntil, vars) };
   }
   const head = s.special?.closed ? (s.special.note ? `${f(labels.closedToday)} · ${s.special.note}` : f(labels.closedToday)) : f(labels.closed);
   if (!s.opensAt) return { head };
-  const time = formatTime(s.opensAt.time, locale);
-  const tail = s.opensAt.dayOffset === 0 ? f(labels.opensTodayAt, { time }) : f(labels.opensAt, { day: weekdayName(s.opensAt.weekday, locale, "short"), time });
-  return { head, tail };
+  const vars = { ...timeVars(s.opensAt.time, locale), day: weekdayName(s.opensAt.weekday, locale, "short") };
+  const tpl = s.opensAt.dayOffset === 0 ? labels.opensTodayAt : s.opensAt.dayOffset === 1 ? labels.opensTomorrowAt : labels.opensAt;
+  return { head, tail: f(tpl, vars) };
 }
-

@@ -4,7 +4,7 @@
 export const carouselLabelKeys = ["previous", "next", "slideCounter", "slideLabel", "carousel", "slide"] as const;
 export type CarouselLabels = Record<(typeof carouselLabelKeys)[number], string>;
 
-export const openNowLabelKeys = ["openNow", "closesAt", "closingSoon", "closed", "closedToday", "opensAt", "opensTodayAt", "open24h", "today"] as const;
+export const openNowLabelKeys = ["openNow", "openUntil", "closingSoon", "closingSoonUntil", "openAllDay", "closed", "closedToday", "opensAt", "opensTodayAt", "opensTomorrowAt"] as const;
 export type OpenNowLabels = Record<(typeof openNowLabelKeys)[number], string>;
 
 export const contactIslandLabelKeys = [

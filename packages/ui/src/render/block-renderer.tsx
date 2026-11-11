@@ -46,7 +46,7 @@ export function BlockNotice({
   return (
     <div className="vb-container py-4" data-block-id={blockId} data-block-type={type} data-block-notice={tone}>
       <div role="note" data-tone={tone} className="vb-notice flex flex-col gap-1 rounded-ui px-4 py-3.5 @2xl:flex-row @2xl:items-baseline @2xl:gap-4">
-        <span className="shrink-0 font-mono text-eyebrow uppercase tracking-[0.08em] text-(--tone)">{type}</span>
+        <span className="shrink-0 font-mono text-eyebrow uppercase tracking-[0.08em] text-(--tone-ink)">{type}</span>
         <span className="text-small">
           <strong className="font-semibold text-fg">{title}</strong>
           {hint ? <span className="text-fg-muted"> — {hint}</span> : null}

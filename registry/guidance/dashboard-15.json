@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A live website view: visitors right now, per-minute traffic, pages, sources and cities.",
+    "Wall screens or launch days where the page refreshes every few seconds."
+  ],
+  "avoidWhen": [
+    "Historical analytics over weeks — use dashboard-12.",
+    "A general activity stream of workspace events — use list-11."
+  ],
+  "related": [
+    "list-11",
+    "sparkline",
+    "pin-map",
+    "stat"
+  ],
+  "a11y": [
+    "The activity feed is role=\"log\" and the live count uses aria-live; a pause switch stops updates.",
+    "Keep the pause control reachable first so users can stop motion (WCAG 2.2.2)."
+  ]
+}

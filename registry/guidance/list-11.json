@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A workspace event stream with live updates queued behind a new-events pill.",
+    "Following records, filtering by topic and seeing who is active now."
+  ],
+  "avoidWhen": [
+    "Compliance audit trails with diffs — use list-09.",
+    "Notifications addressed to the user — use notification-center."
+  ],
+  "related": [
+    "notification-center",
+    "list-09",
+    "activity-timeline",
+    "dashboard-15"
+  ],
+  "a11y": [
+    "New events do not shift the page; counts are announced in a role=\"status\" / aria-live region.",
+    "Infinite loading sets aria-busy and keeps a button fallback with a clear end."
+  ]
+}

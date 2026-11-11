@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Showing stores, field jobs or vehicles as markers without a tile provider or API key.",
+    "A list and map whose selection stays in sync."
+  ],
+  "avoidWhen": [
+    "Opening hours plus a single location card — use map-hours.",
+    "Value density across a grid — use heatmap."
+  ],
+  "related": [
+    "map-hours",
+    "list-01",
+    "entity-card"
+  ],
+  "a11y": [
+    "Pins are a labelled group with aria-pressed selection; arrow keys move to the nearest pin and Escape clears.",
+    "Always offer the synced list as a non-visual alternative."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An engineering or developer blog with code samples, tags, authors and a keyboard-first post index.",
+    "Teams that publish code in several languages and want samples to switch together."
+  ],
+  "avoidWhen": [
+    "A literary or design magazine — use site-blog-01.",
+    "Product release notes — use site-changelog-01."
+  ],
+  "related": [
+    "blog-list",
+    "article-layout",
+    "kbd",
+    "tabs"
+  ],
+  "a11y": [
+    "Has skip links and keyboard shortcuts (/ to filter, j / k to move); filter results are announced in status regions.",
+    "Shortcuts are ignored while typing in fields; document them on the page for keyboard users."
+  ]
+}

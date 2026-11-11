@@ -46,7 +46,7 @@
   --accent-ink-dark: oklch(0.9 0.19 122);
 }
 [data-accent="ocean"] {
-  --accent-base: oklch(0.64 0.17 245);
+  --accent-base: oklch(0.55 0.17 245);
   --accent-fg: #fff;
   --accent-ink-light: oklch(0.5 0.17 250);
   --accent-ink-dark: oklch(0.78 0.12 240);
@@ -58,7 +58,7 @@
   --accent-ink-dark: oklch(0.8 0.14 50);
 }
 [data-accent="rose"] {
-  --accent-base: oklch(0.66 0.21 10);
+  --accent-base: oklch(0.58 0.21 10);
   --accent-fg: #fff;
   --accent-ink-light: oklch(0.52 0.2 12);
   --accent-ink-dark: oklch(0.8 0.13 10);
@@ -125,6 +125,13 @@
   /* solid danger fill behind white text (destructive buttons); stays >= 4.5:1 in both themes */
   --danger-solid: #d0303c;
   --info: #2563eb;
+  /* Text-safe status inks (text-success/-warning/-danger/-info, tone text). The base hues stay for
+     fills, dots and badges; the inks keep small text >= 4.5:1 on scene, surface, hover and
+     selected rows (measured: success 5.47, warning 5.71, danger 5.51, info 5.44 on --scene). */
+  --success-ink: #0a6e4b;
+  --warning-ink: #8f4c00;
+  --danger-ink: #b8232f;
+  --info-ink: #1f56d6;
 
   --chart-1: var(--accent-ink);
   --chart-2: #2f6fd6;
@@ -188,6 +195,11 @@
   --danger: #f2717a;
   --danger-solid: #c93a45;
   --info: #7cb0ff;
+  /* the dark hues already clear 4.5:1 as text (>= 5.97 on surface-2) */
+  --success-ink: var(--success);
+  --warning-ink: var(--warning);
+  --danger-ink: var(--danger);
+  --info-ink: var(--info);
 
   --chart-2: #6ea4ff;
   --chart-3: #f0a256;
@@ -522,6 +534,15 @@
   --color-danger: var(--danger);
   --color-danger-solid: var(--danger-solid);
   --color-info: var(--info);
+  --color-success-ink: var(--success-ink);
+  --color-warning-ink: var(--warning-ink);
+  --color-danger-ink: var(--danger-ink);
+  --color-info-ink: var(--info-ink);
+  /* text-<status> reads the ink; bg-/border-/fill-<status> keep the base hue */
+  --text-color-success: var(--success-ink);
+  --text-color-warning: var(--warning-ink);
+  --text-color-danger: var(--danger-ink);
+  --text-color-info: var(--info-ink);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -647,15 +668,24 @@ html {
 }
 /* Semantic tints shared by Badge, Alert, Toast and Status picker:
    pick a hue with tone-<name> (or set --tone), paint with tone-soft. */
-@utility tone-neutral { --tone: var(--fg-muted); }
-@utility tone-accent { --tone: var(--accent-ink); }
-@utility tone-success { --tone: var(--success); }
-@utility tone-warning { --tone: var(--warning); }
-@utility tone-danger { --tone: var(--danger); }
-@utility tone-info { --tone: var(--info); }
+@utility tone-neutral { --tone: var(--fg-muted); --tone-ink: var(--fg-muted); }
+@utility tone-accent { --tone: var(--accent-ink); --tone-ink: var(--accent-ink); }
+@utility tone-success { --tone: var(--success); --tone-ink: var(--success-ink); }
+@utility tone-warning { --tone: var(--warning); --tone-ink: var(--warning-ink); }
+@utility tone-danger { --tone: var(--danger); --tone-ink: var(--danger-ink); }
+@utility tone-info { --tone: var(--info); --tone-ink: var(--info-ink); }
 @utility tone-soft {
   background-color: color-mix(in srgb, var(--tone, var(--fg-muted)) var(--tone-mix, 13%), transparent);
-  color: color-mix(in srgb, var(--tone, var(--fg-muted)) var(--tone-ink-mix, 100%), var(--fg));
+  color: color-mix(in srgb, var(--tone, var(--fg-muted)) var(--tone-ink-mix, 100%), var(--tone-ink-base, var(--fg)));
+}
+/* The nav stays dark in the light theme: tone-soft text mixes toward white there instead of --fg
+   (light: >= 4.9:1 on the solid and glass rail for every tone). */
+:where(.surface-nav, .bg-nav) {
+  --tone-ink-base: var(--nav-fg-strong);
+  --tone-ink-mix: 50%;
+}
+:where(.dark .surface-nav, .dark .bg-nav) {
+  --tone-ink-mix: 80%;
 }
 @utility focus-ring {
   &:focus-visible {

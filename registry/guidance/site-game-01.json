@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An indie game studio site with key art, trailer, pillars, dev diary, media page and press kit.",
+    "Studios that need copy buttons and downloadable press assets."
+  ],
+  "avoidWhen": [
+    "A band or musician — use site-artist-01.",
+    "A mobile app landing — use site-app-01."
+  ],
+  "related": [
+    "video-player",
+    "lightbox",
+    "gallery-section",
+    "blog-list"
+  ],
+  "a11y": [
+    "Trailers are click-to-load; copy and download results use aria-live; motion respects prefers-reduced-motion.",
+    "Replace empty alt on screenshots with descriptions of each scene."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A Customer 360 page: health, MRR, pipeline, tickets and balance for one account.",
+    "Account managers who move deals, chase invoices and pin notes from one screen."
+  ],
+  "avoidWhen": [
+    "A list of many accounts — use list-05.",
+    "A plain record layout without the CRM depth — use record-detail-layout."
+  ],
+  "related": [
+    "record-detail-layout",
+    "dashboard-06",
+    "comment-thread",
+    "activity-timeline"
+  ],
+  "a11y": [
+    "One h1 names the account; invoices use a real table and the health chart is role=\"img\".",
+    "History filters are keyboard operable; keep their labels explicit."
+  ]
+}

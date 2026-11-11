@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "An architecture, interiors or design studio presenting projects as captioned plates and drawings.",
+    "Practices that need a filterable project register, awards and a studio page."
+  ],
+  "avoidWhen": [
+    "Photographers with an image wall — use site-portfolio-01.",
+    "Marketing or creative agencies selling services — use site-agency-01."
+  ],
+  "related": [
+    "site-portfolio-01",
+    "site-agency-01",
+    "site-construction-01"
+  ],
+  "a11y": [
+    "Filters expose aria-pressed, the active caption uses aria-current, and motion respects prefers-reduced-motion.",
+    "The G-key grid overlay is decorative; avoid documenting it as a required interaction."
+  ]
+}

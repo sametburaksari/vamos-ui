@@ -55,7 +55,7 @@ export function formatValue(f: Formatter, value: number | string | Date, spec: V
     case "compact":
       return f.compact(n, opts);
     case "compact-currency":
-      return f.currency(n, currency ?? f.currencyCode, { notation: "compact", maximumFractionDigits: 1, ...opts });
+      return f.currency(n, currency ?? f.currencyCode, { notation: "compact", minimumFractionDigits: 0, maximumFractionDigits: 1, ...opts });
     case "percent":
       return f.percent(n, opts);
     case "duration":

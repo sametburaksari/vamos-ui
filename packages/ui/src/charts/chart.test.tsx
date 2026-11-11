@@ -6,7 +6,7 @@ import { LocaleProvider } from "../lib/locale";
 import { createFormatter } from "../format/core";
 import { Chart, ChartDataTable } from "./chart-shell";
 import { ChartFrame, ChartGrid, ChartTooltip, ChartXAxis, ChartYAxis } from "./chart";
-import { alignZeroDomains, formatValue, resolveChartColor, resolveSeries, seriesPalette, summarizeSeries } from "./utils";
+import { alignZeroDomains, alignedAxes, formatValue, resolveChartColor, resolveSeries, seriesPalette, summarizeSeries } from "./utils";
 import { mockChartSize } from "./test-utils";
 
 const rows = [
@@ -41,6 +41,22 @@ describe("chart utils", () => {
     const [a, b] = alignZeroDomains([-50, 100], [0, 0.6]);
     expect(a[0] / (a[1] - a[0])).toBeCloseTo(b[0] / (b[1] - b[0]));
     expect(alignZeroDomains([0, 87], [0, 0.42])).toEqual([[0, 100], [0, 0.6]]);
+  });
+
+  it("gives two axes nice ticks around a shared zero", () => {
+    const { domains, ticks } = alignedAxes([-7200, 17800], [0, 0.42]);
+    const [start, end] = ticks;
+    expect(start).toContain(0);
+    const steps = start.slice(1).map((v, i) => v - start[i]!);
+    expect(new Set(steps).size).toBe(1);
+    expect(start[0]).toBeLessThanOrEqual(-7200);
+    expect(start.at(-1)).toBeGreaterThanOrEqual(17800);
+    // the non-negative end axis shows no negative ticks, but its zero lines up with the start axis
+    expect(end.every((v) => v >= 0)).toBe(true);
+    expect(end.at(-1)).toBeGreaterThanOrEqual(0.42);
+    const share = (d: [number, number]) => -d[0] / (d[1] - d[0]);
+    expect(share(domains[0])).toBeCloseTo(share(domains[1]));
+    expect(alignedAxes([0, 87], [0, 0.42])).toEqual({ domains: [[0, 100], [0, 0.6]], ticks: [[0, 25, 50, 75, 100], [0, 0.15, 0.3, 0.45, 0.6]] });
   });
 
   it("summarises a series", () => {

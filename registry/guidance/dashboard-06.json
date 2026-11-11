@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A CRM sales forecast: closed-won, commit and best case against quota for the quarter.",
+    "Pipeline reviews where managers scope the page by rep and move deals between stages."
+  ],
+  "avoidWhen": [
+    "A general pipeline overview without quota tracking — use dashboard-02.",
+    "Working a single account in depth — use detail-04."
+  ],
+  "related": [
+    "dashboard-02",
+    "funnel",
+    "bar-chart",
+    "kanban"
+  ],
+  "a11y": [
+    "The forecast bar is role=\"img\" with an aria-label; rep filter buttons expose aria-pressed.",
+    "Announce stage moves and their undo through a toast so the change is not visual-only."
+  ]
+}

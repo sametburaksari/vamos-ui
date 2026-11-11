@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A four-step contact import: upload, map columns, fix validation errors, resolve duplicates.",
+    "CSV files with mixed encodings, delimiters and Turkish or English headers."
+  ],
+  "avoidWhen": [
+    "A generic import flow component — use import-wizard.",
+    "A plain file drop without mapping — use file-upload."
+  ],
+  "related": [
+    "import-wizard",
+    "file-upload",
+    "data-table",
+    "stepper"
+  ],
+  "a11y": [
+    "Invalid cells use aria-invalid; F8 jumps to the next error and progress is in role=\"status\".",
+    "Keep column-mapping selects labelled with the source header name."
+  ]
+}

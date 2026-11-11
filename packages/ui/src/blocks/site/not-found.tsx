@@ -8,6 +8,7 @@ import { BlockLink } from "../block-link";
 import type { BlockBaseProps } from "../types";
 import { site2Text, type Site2BlockLabels } from "./shared/labels-2";
 import { fieldAttr, prettyPhone, telHref, useBlockIds2, type SiteLink2 } from "./shared/kit-2";
+import { headingLines } from "./shared/heading-lines";
 
 export type NotFoundVariant = "plain" | "links";
 export type NotFoundKind = "404" | "500" | "maintenance";
@@ -82,7 +83,7 @@ export function NotFound({
             <span className="tabular text-fg">{t(k.code)}</span>
             <span aria-hidden className="h-px w-8 bg-current opacity-40" />
           </p>
-          <BlockHeading id={headingId} level={headingLevel} size="display-l" text={title ?? t(k.title)} editMode={editMode} field="props.title" labels={labels} locale={locale} className="max-w-[20ch]" />
+          <BlockHeading id={headingId} level={headingLevel} size="display-l" text={headingLines(title ?? t(k.title))} editMode={editMode} field="props.title" labels={labels} locale={locale} className="max-w-[20ch]" />
           <p className="max-w-[52ch] text-lead text-fg-muted text-pretty" {...fieldAttr(editMode, "text")}>
             {text ?? t(k.text)}
           </p>

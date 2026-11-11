@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Reorderable trees such as store categories or departments, up to three levels.",
+    "Renaming, changing slugs and visibility, or moving branches with undo."
+  ],
+  "avoidWhen": [
+    "Read-only hierarchy browsing — use tree-view.",
+    "Choosing one node in a form — use tree-select."
+  ],
+  "related": [
+    "tree-view",
+    "tree-select",
+    "sortable-list",
+    "sheet"
+  ],
+  "a11y": [
+    "Moves work with Alt + arrow keys and a move menu, not only drag; results are announced via role=\"status\".",
+    "Find-in-tree expands matches; keep the selected node marked with aria-current."
+  ]
+}

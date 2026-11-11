@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "An independent photographer's portfolio: masonry wall with discipline filter, lightbox and case stories.",
+    "Visual creatives who want the work, not the copy, to lead."
+  ],
+  "avoidWhen": [
+    "Architecture or design studios showing drawings and project registers — use site-portfolio-02.",
+    "Photo studios selling packages and bookings — use site-studio-01."
+  ],
+  "related": [
+    "site-portfolio-02",
+    "site-studio-01",
+    "site-artist-01"
+  ],
+  "a11y": [
+    "Give every image meaningful alt text and make sure the lightbox traps focus, closes on Escape and restores focus.",
+    "The cursor-following cover preview is pointer-only; keep the project index usable as plain links."
+  ]
+}

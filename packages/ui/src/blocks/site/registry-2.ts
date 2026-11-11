@@ -13,7 +13,7 @@ import { BlogList } from "./blog-list";
 import { ArticleLayout } from "./article-layout";
 import { ContactForm } from "./contact-form";
 import { MapHours, localBusinessJsonLd } from "./map-hours";
-import { MenuList, menuJsonLd, ALLERGENS } from "./menu-list";
+import { MenuList, menuJsonLd, ALLERGENS, MENU_TAGS } from "./menu-list";
 import { GallerySection } from "./gallery-section";
 import { ConsentBanner } from "./consent-banner";
 import { ContactDock } from "./contact-dock";
@@ -408,7 +408,7 @@ const MenuItemSchema = f.group({
   description: f.text({ max: 160 }).optional(),
   prices: f.list(f.group({ label: f.text({ max: 20 }).optional(), amount: f.money().optional() }), { min: 1, max: 4 }),
   duration: f.text({ max: 12 }).optional(),
-  tags: z.array(z.enum(["vegetarian", "vegan", "gluten-free", "spicy", "new", "chef-pick"])).optional(),
+  tags: z.array(z.enum(MENU_TAGS)).optional(),
   allergens: z.array(z.enum(ALLERGENS)).optional(),
   image: f.image({ aspect: "1:1" }).optional(),
   unavailable: f.toggle().optional(),

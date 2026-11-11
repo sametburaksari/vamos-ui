@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Re-authenticating over the running app after an idle timeout without losing unsaved work.",
+    "Offering password or passkey to continue, plus a switch-account escape hatch."
+  ],
+  "avoidWhen": [
+    "A first sign-in from scratch — use login-01.",
+    "Picking a workspace after sign-in — use select-workspace-01."
+  ],
+  "related": [
+    "login-01",
+    "alert-dialog",
+    "dialog"
+  ],
+  "a11y": [
+    "The dialog is labelled with aria-labelledby; because it cannot be dismissed, make the continue and switch-account actions obvious and keyboard reachable.",
+    "Visually hidden text gives context to icon-only controls."
+  ]
+}
