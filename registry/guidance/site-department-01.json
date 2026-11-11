@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A university department or faculty site with admissions, research groups, seminars, a course finder and a people directory.",
+    "Academic units with many programmes filtered by level, term, format and language."
+  ],
+  "avoidWhen": [
+    "A paid online course — use site-course-01.",
+    "A city or public-service site — use site-public-01."
+  ],
+  "related": [
+    "filter-bar",
+    "table",
+    "team",
+    "progress"
+  ],
+  "a11y": [
+    "The course finder is role=\"search\" and result counts are announced in a status region; motion respects prefers-reduced-motion.",
+    "Give free-seat meters a text value, not only a bar."
+  ]
+}

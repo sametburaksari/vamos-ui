@@ -23,9 +23,9 @@ export interface TestimonialItem {
   author: React.ReactNode;
   role?: React.ReactNode;
   company?: React.ReactNode;
-  /** Small square portrait. No avatar = name only (never an initials circle). */
+  /** Small round portrait, 40px (`sizes="40px"`). No avatar = name only (never an initials circle). */
   avatar?: SiteImage2;
-  /** Company logo (feature variant). */
+  /** Company logo (feature variant), 6rem wide (`sizes="6rem"`). */
   logo?: SiteImage2;
   /** 1–5. Rendered only with a `source` (D6-8). */
   rating?: number;
@@ -185,7 +185,7 @@ function Attribution({ item, ctx, align = "start", as: Comp = "figcaption" }: { 
         </span>
       </span>
       {align === "between" && item.logo ? (
-        <BlockImage {...item.logo} alt={item.logo.alt ?? ""} decorative={!item.logo.alt} fit="contain" className="h-7 w-24 bg-transparent opacity-80" imgClassName="vb-logo-mono" components={ctx.components} />
+        <BlockImage {...item.logo} alt={item.logo.alt ?? ""} decorative={!item.logo.alt} fit="contain" sizes="6rem" className="h-7 w-24 bg-transparent opacity-80" imgClassName="vb-logo-mono" components={ctx.components} />
       ) : null}
     </Comp>
   );
@@ -200,7 +200,7 @@ function SourceLine({ item, ctx }: { item: TestimonialItem; ctx: QuoteCtx }) {
       {showRating ? <RatingStars rating={item.rating!} label={ctx.t("ratingOutOf", { rating: item.rating })} /> : null}
       {name ? (
         item.link ? (
-          <BlockLink href={item.link.href} newTab={item.link.newTab ?? true} components={ctx.components} labels={ctx.labels} locale={ctx.locale} className="underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]">
+          <BlockLink href={item.link.href} newTab={item.link.newTab ?? true} components={ctx.components} labels={ctx.labels} locale={ctx.locale} className="inline-flex min-h-6 items-center underline decoration-line underline-offset-[0.25em] hover:decoration-current focus-ring rounded-[2px]">
             {name}
           </BlockLink>
         ) : (
@@ -268,7 +268,7 @@ function ReviewsLayout({ header, items, summary, ctx }: { header: React.ReactNod
               — {ctx.t("reviewCount", { count: summary.count })}
             </p>
             {summary.link ? (
-              <BlockLink href={summary.link.href} newTab={summary.link.newTab ?? true} appearance="link" components={ctx.components} labels={ctx.labels} locale={ctx.locale} className="self-start text-small">
+              <BlockLink href={summary.link.href} newTab={summary.link.newTab ?? true} appearance="link" components={ctx.components} labels={ctx.labels} locale={ctx.locale} className="inline-flex min-h-6 items-center self-start text-small">
                 {summary.link.label ?? ctx.t("readAllReviews")}
               </BlockLink>
             ) : null}

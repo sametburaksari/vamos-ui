@@ -9,6 +9,7 @@ import { FeatureTabs } from "./feature-tabs";
 import { SiteIcon } from "./_site-icon-1";
 import { ArrowEnd, indexLabel, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage } from "./_kit-1";
 import { Stagger } from "../../motion/reveal";
+import { columnSizes, SITE_SIZES } from "./shared/image-sizes";
 
 export type FeatureGridVariant = "list" | "grid" | "tabs" | "sticky-media";
 
@@ -17,6 +18,7 @@ export interface FeatureItem {
   text?: React.ReactNode;
   /** Lucide name ("calendar-check") or a node. Small, before the title, never boxed. */
   icon?: React.ReactNode;
+  /** `sizes`: tabs/sticky panel `min(59vw, 45rem)` or `min(50vw, 38rem)`, grid `min(34vw, 26rem)`, stacked (narrow) `min(100vw, 56rem)`. */
   media?: SiteImage;
   /** Makes the whole row clickable (one link, stretched with `::after`). */
   link?: { href: string; label?: React.ReactNode; newTab?: boolean };
@@ -117,7 +119,7 @@ export function FeatureGrid({
             text: it.text,
             panel: (
               <div className="flex flex-col gap-4">
-                {it.media ? <BlockImage {...it.media} aspect="3:2" sizes="(min-width: 56rem) 55vw, 100vw" className="rounded-ui border border-line" components={components} labels={labels} /> : null}
+                {it.media ? <BlockImage {...it.media} aspect="3:2" sizes={columnSizes(7 / 12)} className="rounded-ui border border-line" components={components} labels={labels} /> : null}
                 {it.link ? (
                   <BlockLink href={it.link.href} newTab={it.link.newTab} appearance="link" {...linkProps}>
                     {it.link.label ?? it.title}
@@ -134,7 +136,7 @@ export function FeatureGrid({
             <li key={i} className="flex flex-col gap-3 border-t border-line py-6">
               {itemTitle(it, i)}
               {itemText(it, i)}
-              {it.media ? <BlockImage {...it.media} aspect="3:2" sizes="100vw" className="mt-2 rounded-ui border border-line" components={components} labels={labels} /> : null}
+              {it.media ? <BlockImage {...it.media} aspect="3:2" sizes={SITE_SIZES.narrowOnly} className="mt-2 rounded-ui border border-line" components={components} labels={labels} /> : null}
             </li>
           ))}
         </ol>
@@ -154,7 +156,7 @@ export function FeatureGrid({
                     {...it.media}
                     decorative
                     aspect="4:5"
-                    sizes="(min-width: 56rem) 45vw, 100vw"
+                    sizes={columnSizes(6 / 12)}
                     className={cn("vb-sticky-frame", i > 0 && "absolute! inset-0")}
                     data-pos={i === 0 ? "first" : i === items.length - 1 ? "last" : undefined}
                     style={{ "--vbf-timeline": names[i], zIndex: i } as React.CSSProperties}
@@ -168,7 +170,7 @@ export function FeatureGrid({
         <ol className="vb-sticky-list flex flex-col">
           {items.map((it, i) => (
             <li key={i} className="vb-sticky-item flex min-h-[min(70svh,34rem)] flex-col justify-center gap-4 border-t border-line py-10" style={{ viewTimelineName: names[i] } as React.CSSProperties}>
-              {it.media ? <BlockImage {...it.media} aspect="3:2" sizes="100vw" className="vb-sticky-inline mb-2 rounded-ui" components={components} labels={labels} /> : null}
+              {it.media ? <BlockImage {...it.media} aspect="3:2" sizes={SITE_SIZES.narrowOnly} className="vb-sticky-inline mb-2 rounded-ui" components={components} labels={labels} /> : null}
               <span className="font-mono text-eyebrow tabular text-fg-subtle">{indexLabel(i)}</span>
               {itemTitle(it, i, "text-display-m font-display font-normal")}
               {itemText(it, i, "max-w-[46ch]")}
@@ -188,7 +190,7 @@ export function FeatureGrid({
       <ul className={cn("grid gap-x-(--gutter) gap-y-12 @2xl:grid-cols-2", columns >= 3 && "@4xl:grid-cols-3", columns === 4 && "@6xl:grid-cols-4", columns === 2 && "@4xl:grid-cols-2")}>
         {items.map((it, i) => (
           <li key={i} className={cn("group/fi relative flex flex-col gap-3 border-t border-line pt-4", it.link && "vb-linked")}>
-            {it.media ? <BlockImage {...it.media} aspect="3:2" sizes="(min-width: 56rem) 30vw, 100vw" className="mb-2 rounded-ui" components={components} labels={labels} /> : null}
+            {it.media ? <BlockImage {...it.media} aspect="3:2" sizes={columnSizes(4 / 12)} className="mb-2 rounded-ui" components={components} labels={labels} /> : null}
             <div className="flex items-start gap-3 pt-2">
               {showIndex ? <span className="pt-1.5 font-mono text-eyebrow tabular text-fg-subtle">{indexLabel(i)}</span> : null}
               {it.icon ? <SiteIcon icon={it.icon} className="mt-1" /> : null}

@@ -4,7 +4,7 @@ import { searchItems } from "../core/registry";
 import { rewriteImports } from "../core/transform";
 import { CliError, type RegistryIndexItem, type ItemType } from "../core/types";
 import { out, p, pad, pc, printJson, unwrap, type Context } from "../ui";
-import { installItems, openSession } from "./shared";
+import { fetchSpec, installItems, openSession } from "./shared";
 
 const TYPE_LABEL: Record<ItemType, string> = { component: "Components", block: "Blocks", lib: "Libraries", style: "Styles" };
 const TYPES = Object.keys(TYPE_LABEL) as ItemType[];
@@ -103,8 +103,10 @@ export async function search(ctx: Context, args: ParsedArgs): Promise<number> {
 export async function view(ctx: Context, args: ParsedArgs): Promise<number> {
   const name = args.positionals[0];
   if (!name) throw new CliError("Usage: vamos-ui view <name>");
-  const { registry, config, hasConfig } = await openSession(ctx, { config: "optional" });
-  const item = await registry.item(name);
+  const session = await openSession(ctx, { config: "optional" });
+  const { config, hasConfig } = session;
+  const item = await fetchSpec(session, name);
+  if (item.source && !ctx.json) out(pc.yellow(`Third-party item from ${item.source.host} (${item.source.url})`));
   // In a project with vamos.json the snippet should import from the project alias, as installed files do.
   const usage = item.usage && hasConfig ? rewriteImports(item.usage, config.importAlias) : item.usage;
   const showFiles = bool(args.flags, "files");
@@ -144,7 +146,7 @@ export async function view(ctx: Context, args: ParsedArgs): Promise<number> {
       out(f.content);
     }
   }
-  out(`\n${pc.dim("Install:")} ${pc.cyan(`npx vamos-ui add ${item.name}`)}`);
+  out(`\n${pc.dim("Install:")} ${pc.cyan(`npx vamos-ui add ${item.key ?? item.name}`)}`);
   return 0;
 }
 
@@ -172,7 +174,7 @@ export async function add(ctx: Context, args: ParsedArgs): Promise<number> {
   if (!bool(args.flags, "dry-run")) {
     const conflicts = res.plan.files.filter((f) => f.action === "conflict").length;
     const alias = session.config.importAlias;
-    const first = res.plan.items.find((i) => names.includes(i.name));
+    const first = res.plan.items.find((i) => names.includes(i.name) || (!!i.key && names.includes(i.key)));
     const hint = first?.type === "block" ? `Blocks are in ${session.config.blocksDir}/${first.name}` : `import { … } from "${alias}"`;
     p.outro(`${res.written ? `Wrote ${res.written} file${res.written === 1 ? "" : "s"}` : "Already up to date"}${conflicts ? pc.yellow(`, kept ${conflicts} edited`) : ""}. ${pc.dim(hint)}`);
   } else p.outro("Done.");

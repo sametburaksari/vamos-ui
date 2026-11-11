@@ -129,11 +129,11 @@ const indicatorVariants = cva(
     variants: {
       tone: {
         neutral: "border-line bg-[color-mix(in_oklch,var(--surface)_90%,var(--scene))]",
-        accent: "tone-accent border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone)",
-        success: "tone-success border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone)",
-        warning: "tone-warning border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone)",
-        danger: "tone-danger border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone)",
-        info: "tone-info border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone)",
+        accent: "tone-accent border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone-ink)",
+        success: "tone-success border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone-ink)",
+        warning: "tone-warning border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone-ink)",
+        danger: "tone-danger border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone-ink)",
+        info: "tone-info border-[color-mix(in_srgb,var(--tone)_35%,var(--line))] bg-[color-mix(in_oklch,var(--tone)_14%,color-mix(in_oklch,var(--surface)_92%,var(--scene)))] text-(--tone-ink)",
       },
     },
     defaultVariants: { tone: "neutral" },

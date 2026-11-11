@@ -15,6 +15,38 @@ interface Release {
 /** Newest first. Append new releases at the top. */
 const releases: Release[] = [
   {
+    version: "0.4.0",
+    date: "2026-11-12",
+    changes: {
+      Added: [
+        "Components: Menubar, Collapsible, AspectRatio and PlaceholderArt (tasteful image placeholders from a seed, for blocks without photos).",
+        "Commerce blocks: product detail, cart with mini-cart, one-page checkout (Turkish address fields, card / bank transfer / pay at the door) and order confirmation.",
+        "Live theme editor at /themes: every theme axis plus a custom accent with contrast checks, a live preview, a shareable preset code and the matching CLI commands.",
+        "CLI: `vamos-ui create` (Next.js or Vite), preset codes (`init --preset`, `theme --preset`, `preset`), an open registry (`add` from a URL, `github:owner/repo/item` or `@namespace/item`), `registry build` for third-party registries, and `mcp add` for Claude Code, Cursor, VS Code, Windsurf, Gemini CLI and Codex.",
+        "UI strings in German, French, Spanish and Arabic (RTL), in addition to English and Turkish.",
+        "Docs: install guides for Next.js, Vite and React Router; migration guide; accessibility, security, privacy and terms pages; MCP server page; publishing a registry; a full restaurant menu page example.",
+        "CI on GitHub (types, unit tests with coverage, registry tests) and badges in the README.",
+      ],
+      Changed: [
+        "/websites lists the example sites; /blocks lists app screens only and drops the domain filter.",
+        "Each block preview is its own route, so a preview only loads its own code; the docs server sends compressed files.",
+        "Opening hours read naturally in every state (\"Closing soon · open until 01:00\"); headings split over lines keep a real space between lines.",
+        "Site blocks pass responsive image sizes, give icon-only links accessible names and meet touch target sizes.",
+        "Ocean and rose accents are darker so white button text passes 4.5:1; status colours have text-safe ink variants.",
+      ],
+      Fixed: [
+        "Section rhythm (tight / loose / none) had no effect.",
+        "A navbar logo could render at its full image size.",
+        "The page container shrank to its content inside flex columns, collapsing grid galleries.",
+        "The rich-text editor's image margin leaked onto every kit Image.",
+        "Compact currency rendered differently on server and client (hydration error).",
+        "Marquee: pause control, and the duplicate track is no longer focusable.",
+        "ComboChart ticks around zero; bar series get square legend swatches.",
+        "Media library tile names; nav-rail badges in light mode.",
+      ],
+    },
+  },
+  {
     version: "0.3.0",
     date: "2026-11-11",
     changes: {
@@ -46,7 +78,6 @@ const releases: Release[] = [
   {
     version: "0.2.0",
     date: "2026-11-10",
-    unreleased: true,
     changes: {
       Added: [
         "Full component inventory: all 143 planned items across 13 groups now have docs pages, live examples and props tables.",
@@ -78,7 +109,6 @@ const releases: Release[] = [
   {
     version: "0.1.0",
     date: "2026-11-10",
-    unreleased: true,
     changes: {
       Added: [
         "Design tokens with five axes: theme, material (glass/solid), accent, density and font.",

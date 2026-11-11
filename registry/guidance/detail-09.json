@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A full-page support ticket with SLA clocks, email-style thread and internal notes.",
+    "Agents replying with macros, setting next status and checking the requester's account."
+  ],
+  "avoidWhen": [
+    "Monitoring many tickets' SLAs — use dashboard-10.",
+    "A simple discussion under a record — use comment-thread."
+  ],
+  "related": [
+    "dashboard-10",
+    "comment-thread",
+    "sla-timer",
+    "sheet"
+  ],
+  "a11y": [
+    "The composer mode and status changes are announced via aria-live; thread has headings.",
+    "Make internal notes visually and textually distinct so they are never sent by mistake."
+  ]
+}

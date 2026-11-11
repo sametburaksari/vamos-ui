@@ -140,7 +140,7 @@ export function Webhooks() {
         </div>
       </div>
       <TableContainer className="border-t border-line">
-        <Table>
+        <Table aria-label={c("Delivery log", "Gönderim kaydı")}>
           <TableHeader>
             <TableRow>
               <TableHead className="w-16">{c("Status", "Durum")}</TableHead>

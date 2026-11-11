@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An e-commerce orders desk: revenue, conversion, checkout funnel and a fulfilment queue.",
+    "Operators who bulk-advance orders, reorder best sellers and review return reasons."
+  ],
+  "avoidWhen": [
+    "A store owner's lighter overview — use dashboard-05.",
+    "A single order's full history — use detail-05."
+  ],
+  "related": [
+    "dashboard-05",
+    "detail-05",
+    "funnel",
+    "stat"
+  ],
+  "a11y": [
+    "The period switch is a role=\"group\" of aria-pressed buttons.",
+    "Pair optimistic order updates with an undo toast that screen readers announce."
+  ]
+}

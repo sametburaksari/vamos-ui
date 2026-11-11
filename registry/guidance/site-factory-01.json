@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A manufacturing or machining plant with product families, capabilities, RFQ form, spec catalogue and quality page.",
+    "Industrial suppliers that publish spec tables and datasheets."
+  ],
+  "avoidWhen": [
+    "A construction contractor — use site-construction-01.",
+    "A B2B trade catalogue with ordering — use site-wholesale-01."
+  ],
+  "related": [
+    "table",
+    "line-chart",
+    "contact-form",
+    "pin-map"
+  ],
+  "a11y": [
+    "Unit switches and the SPC chart report via an aria-live status region; motion respects prefers-reduced-motion.",
+    "Give drawings a text description of the selected size."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A store launch checklist with a segmented progress rail and tasks finished inline.",
+    "Go-live gates that unlock when required setup is complete."
+  ],
+  "avoidWhen": [
+    "A small getting-started card — use setup-checklist.",
+    "A linear setup wizard — use onboarding-01."
+  ],
+  "related": [
+    "setup-checklist",
+    "onboarding-01",
+    "progress",
+    "address-field"
+  ],
+  "a11y": [
+    "Progress is announced through aria-live / role=\"status\"; the current segment uses aria-current.",
+    "Address fields use street-address and postal-code autocomplete."
+  ]
+}

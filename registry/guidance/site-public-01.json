@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A district or municipal office where residents come to complete tasks and read announcements.",
+    "Public-sector sites that must ship an accessibility toolbar, statement and services A–Z."
+  ],
+  "avoidWhen": [
+    "Non-profits fundraising from donors — use site-nonprofit-01.",
+    "University or company departments — use site-department-01."
+  ],
+  "related": [
+    "site-department-01",
+    "site-nonprofit-01",
+    "site-help-01"
+  ],
+  "a11y": [
+    "The toolbar re-tunes text size, contrast and link underlines through tokens; system fonts and AAA text contrast are the baseline.",
+    "Status messages use role=\"status\"; keep announcements dated in text, not only colour."
+  ]
+}

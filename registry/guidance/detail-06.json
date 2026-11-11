@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "An HR employee file: identity, reporting line, pay, leave balance, documents and reviews.",
+    "Requesting or withdrawing leave with working-day counts from the employee's page."
+  ],
+  "avoidWhen": [
+    "Team-wide headcount and leave — use dashboard-07.",
+    "Managing users and permissions — use users-roles-01."
+  ],
+  "related": [
+    "dashboard-07",
+    "record-detail-layout",
+    "calendar",
+    "avatar"
+  ],
+  "a11y": [
+    "Pay stays hidden until revealed via a pressed toggle; a role=\"status\" region reports changes.",
+    "Leave rings are role=\"img\" — always show the numeric balance as text."
+  ]
+}

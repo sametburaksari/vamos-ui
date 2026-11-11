@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A consumer mobile app landing (fitness, habits, lifestyle) with phone mockups, plans, reviews and store download.",
+    "Apps that want a scroll-driven feature walkthrough."
+  ],
+  "avoidWhen": [
+    "A fintech or corporate app — use site-app-02.",
+    "A pre-launch app collecting sign-ups — use site-waitlist-01."
+  ],
+  "related": [
+    "pricing-table",
+    "testimonials",
+    "faq",
+    "feature-grid"
+  ],
+  "a11y": [
+    "Includes a skip link; the scroll-driven phone falls back to static screens under prefers-reduced-motion.",
+    "Phone illustrations are role=\"img\" — give them labels that describe the screen."
+  ]
+}

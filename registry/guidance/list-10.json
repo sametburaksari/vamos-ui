@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Spreadsheet-style bulk editing of product prices and stock with live margin.",
+    "Batch adjustments by percentage with review before publishing to all channels."
+  ],
+  "avoidWhen": [
+    "Read-only lists — use data-table.",
+    "Editing one product in depth — use detail-07."
+  ],
+  "related": [
+    "data-table",
+    "detail-07",
+    "dashboard-13",
+    "formatted-input"
+  ],
+  "a11y": [
+    "A role=\"grid\" with gridcells, arrow-key navigation, aria-selected and aria-invalid on bad values.",
+    "Below-cost warnings use role=\"alert\"; read-only cells set aria-readonly."
+  ]
+}

@@ -11,6 +11,8 @@ export interface LockItem {
   installedAt: string;
   /** Project-relative posix path → sha256 of the content the CLI wrote. */
   files: Record<string, string>;
+  /** Fetch URL of a third-party item. */
+  source?: string;
 }
 
 export interface Lockfile {
@@ -65,8 +67,8 @@ export async function writeLock(root: string, uiDir: string, lock: Lockfile): Pr
 }
 
 /** Records (or replaces) an item's written files. */
-export function recordItem(lock: Lockfile, name: string, entry: { version: string; type: string; files: Record<string, string> }, now = new Date()): void {
-  lock.items[name] = { version: entry.version, type: entry.type, installedAt: now.toISOString(), files: entry.files };
+export function recordItem(lock: Lockfile, name: string, entry: { version: string; type: string; files: Record<string, string>; source?: string }, now = new Date()): void {
+  lock.items[name] = { version: entry.version, type: entry.type, installedAt: now.toISOString(), files: entry.files, ...(entry.source ? { source: entry.source } : {}) };
 }
 
 /** Which item owns a project-relative file, if any. */

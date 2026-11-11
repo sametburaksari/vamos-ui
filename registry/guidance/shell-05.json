@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "An app shell with a 60px icon rail whose icons open pinnable flyout navigation panels.",
+    "Content-heavy tools like a media library that need maximum canvas width."
+  ],
+  "avoidWhen": [
+    "Few sections with labelled links — use shell-01.",
+    "Dense back-office module trees — use shell-06."
+  ],
+  "related": [
+    "shell-01",
+    "shell-06",
+    "sidebar",
+    "media-library"
+  ],
+  "a11y": [
+    "Rail buttons expose aria-expanded and aria-controls, the current item is aria-current, and floating panels close on Escape."
+  ]
+}

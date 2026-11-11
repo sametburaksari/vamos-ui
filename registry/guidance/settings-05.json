@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Personal notification preferences as an events by channels matrix.",
+    "Quiet hours, digests, pausing notifications and an SMS channel unlocked by phone verification."
+  ],
+  "avoidWhen": [
+    "The inbox of notifications itself — use notification-center.",
+    "Role permissions grid — use permission-matrix."
+  ],
+  "related": [
+    "notification-center",
+    "permission-matrix",
+    "switch",
+    "settings-01"
+  ],
+  "a11y": [
+    "Locked cells use aria-disabled with explanations and column toggles expose aria-pressed; save-bar changes are announced via aria-live."
+  ]
+}

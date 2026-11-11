@@ -6,6 +6,7 @@ import { RichText } from "../rich-text";
 import type { BlockBaseProps } from "../types";
 import type { RichDoc } from "../schema/rich-doc";
 import { field, useBlockIds, type SiteBlockLabels } from "./_kit-1";
+import { headingLines } from "./shared/heading-lines";
 
 export type RichTextSectionVariant = "column" | "aside-heading" | "two-column";
 
@@ -41,7 +42,7 @@ export interface RichTextSectionProps extends Omit<BlockBaseProps, "variant" | "
 export function RichTextSection({ variant = "column", eyebrow, title, body, dropCap, note, size = "md", id, theme, anchor, className, headingLevel = 2, labels, locale, components, editMode }: RichTextSectionProps) {
   const { base, headingId } = useBlockIds(id, "text");
   const offset = (title ? 1 : 0) as 0 | 1;
-  const heading = title ? <BlockHeading id={headingId} level={headingLevel} size="display-m" text={title} editMode={editMode} field="props.title" labels={labels} locale={locale} /> : null;
+  const heading = title ? <BlockHeading id={headingId} level={headingLevel} size="display-m" text={headingLines(title)} editMode={editMode} field="props.title" labels={labels} locale={locale} /> : null;
   const eyebrowEl = eyebrow ? (
     <p className="font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted" {...field(editMode, "eyebrow")}>
       {eyebrow}

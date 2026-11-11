@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Showing one-time recovery codes after two-factor enrolment or in security settings.",
+    "Letting users copy, download or regenerate codes, with spent codes kept visible."
+  ],
+  "avoidWhen": [
+    "Entering a single code — use input-otp.",
+    "Showing a scannable secret — use qr-code."
+  ],
+  "related": [
+    "auth-2fa-setup-01",
+    "settings-07",
+    "input-otp"
+  ],
+  "a11y": [
+    "The code grid is a labelled group, used codes are announced via sr-only text, and copy feedback uses role=\"status\" with aria-live."
+  ]
+}

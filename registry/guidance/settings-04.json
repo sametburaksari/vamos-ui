@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Developer settings: API keys with scopes, traffic and expiry, plus webhook endpoints and delivery logs.",
+    "Creating keys with a show-once secret and revoking with typed confirmation."
+  ],
+  "avoidWhen": [
+    "A full developer console app — use shell-10.",
+    "Role-based permissions for people — use permission-matrix."
+  ],
+  "related": [
+    "shell-10",
+    "permission-matrix",
+    "data-table",
+    "alert-dialog"
+  ],
+  "a11y": [
+    "Redelivery and copy feedback are announced via aria-live; create and revoke flows run in titled dialogs.",
+    "Never rely on colour alone for webhook health."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A forum or community home with topics, categories, activity counters, meetups and solved threads.",
+    "Maker, user or open-source communities that want a compact, dense layout."
+  ],
+  "avoidWhen": [
+    "A product help centre — use site-help-01.",
+    "A sports club — use site-club-01."
+  ],
+  "related": [
+    "comment-thread",
+    "sparkline",
+    "pagination",
+    "avatar"
+  ],
+  "a11y": [
+    "Reply and like actions report through a status region; motion respects prefers-reduced-motion.",
+    "Give each topic sparkline a text equivalent such as the reply count."
+  ]
+}

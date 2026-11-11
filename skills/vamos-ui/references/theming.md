@@ -71,7 +71,7 @@ Colour tokens (light → dark; glass overrides surfaces with translucent values)
 | `--accent`, `--accent-fg`, `--accent-soft`, `--accent-ink`, `--ring` | derived from `--accent-base` | derived, ink switches to `--accent-ink-dark` | Accent family |
 | `--chart-1 … --chart-6` | accent ink, blue, orange, violet, teal, pink | lighter variants | Chart series |
 
-Accent presets (`--accent-base`): `lime` oklch(0.89 0.21 122) with dark text, `ocean` oklch(0.64 0.17 245), `ember` oklch(0.7 0.19 45) with dark text, `rose` oklch(0.66 0.21 10), `graphite` oklch(0.25 0.01 120) (near white in dark mode).
+Accent presets (`--accent-base`): `lime` oklch(0.89 0.21 122) with dark text, `ocean` oklch(0.55 0.17 245), `ember` oklch(0.7 0.19 45) with dark text, `rose` oklch(0.58 0.21 10), `graphite` oklch(0.25 0.01 120) (near white in dark mode).
 
 Layout and density tokens:
 

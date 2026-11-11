@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A CRM contact list driven by saved, shared and team views with live counts.",
+    "Teams sharing filtered views by link, with unsaved changes kept explicit."
+  ],
+  "avoidWhen": [
+    "A list without view management — use data-table.",
+    "Only the view switcher component — use saved-views."
+  ],
+  "related": [
+    "saved-views",
+    "filter-bar",
+    "data-table",
+    "export"
+  ],
+  "a11y": [
+    "The views rail is a nav with aria-current on the active view.",
+    "Make the unsaved-changes strip reachable by keyboard right after the table controls."
+  ]
+}

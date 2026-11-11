@@ -7,6 +7,8 @@ import { BlockLink } from "../block-link";
 import type { BlockBaseProps } from "../types";
 import { HeroVideo } from "./hero-video";
 import { ArrowEnd, CtaList, field, siteText, useBlockIds, type SiteBlockLabels, type SiteCta, type SiteImage, type SiteMeta } from "./_kit-1";
+import { headingLines } from "./shared/heading-lines";
+import { columnSizes, SITE_SIZES } from "./shared/image-sizes";
 
 export type HeroVariant = "editorial" | "split-media" | "full-bleed" | "product" | "statement";
 
@@ -21,11 +23,12 @@ export interface HeroProps extends Omit<BlockBaseProps, "variant" | "labels"> {
   variant?: HeroVariant;
   /** Small mono line above the title ("Agency · Maltepe, Istanbul"). */
   eyebrow?: React.ReactNode;
-  /** The page `h1`. A string supports one `*emphasis*`. ≤ 9 words reads best. */
+  /** The page `h1`. A string supports one `*emphasis*`; `\n` sets a line break (each line is a block, joined by a real space so search engines and screen readers read "közde, muhabbet"). ≤ 9 words reads best. */
   title: React.ReactNode;
   lead?: React.ReactNode;
   /** Up to two actions; one primary. */
   actions?: SiteCta[];
+  /** `sizes`: editorial strip and full-bleed `100vw`; split-media portrait `(min-width: 56rem) 42vw, 100vw` (it bleeds to the edge). Above the fold: always `priority`. */
   media?: SiteImage;
   /** full-bleed: muted looping MP4 (`media` is the required poster). */
   video?: { src: string };
@@ -33,7 +36,7 @@ export interface HeroProps extends Omit<BlockBaseProps, "variant" | "labels"> {
   caption?: React.ReactNode;
   /** Small true facts ("Founded" · "2014"), up to 4. */
   meta?: SiteMeta[];
-  /** product: the product screenshot (no device frame). */
+  /** product: the product screenshot (no device frame). `sizes`: `min(100vw, 76rem)`. */
   screenshot?: SiteImage;
   /** product: a live composition instead of a screenshot (plain JSX only). */
   visual?: React.ReactNode;
@@ -138,7 +141,7 @@ function Title({ p, size, className }: { p: Inner; size: "display-2xl" | "displa
       id={p.headingId}
       level={p.headingLevel}
       size={size}
-      text={p.title}
+      text={headingLines(p.title)}
       editMode={p.editMode}
       field="props.title"
       labels={p.labels}
@@ -167,7 +170,7 @@ function Editorial(p: Inner) {
       </Container>
       {media ? (
         <div className={cn("vb-hero-strip mt-[calc(var(--section-y)*0.6)]", enter(editMode, 4, "media"))}>
-          <BlockImage {...media} aspect="21:9" priority sizes="100vw" components={components} labels={labels} editMode={editMode} field="props.media" />
+          <BlockImage {...media} aspect="21:9" priority sizes={SITE_SIZES.bleed} components={components} labels={labels} editMode={editMode} field="props.media" />
         </div>
       ) : null}
     </>
@@ -191,7 +194,7 @@ function SplitMedia(p: Inner) {
       </div>
       {media ? (
         <figure className={cn("vb-hero-portrait vb-bleed-end relative order-1 my-0 @4xl:order-2 @4xl:col-span-5", enter(editMode, 1, "media"))} {...field(editMode, "media")}>
-          <BlockImage {...media} aspect="4:5" priority sizes="(min-width: 56rem) 42vw, 100vw" className="aspect-square! @4xl:aspect-[4/5]!" components={components} labels={labels} />
+          <BlockImage {...media} aspect="4:5" priority sizes={columnSizes(5 / 12, { bleed: true })} className="aspect-square! @4xl:aspect-[4/5]!" components={components} labels={labels} />
           {caption ? (
             <figcaption className="absolute bottom-0 start-0 bg-scene px-3 py-2 font-mono text-eyebrow uppercase tracking-[0.08em] text-fg-muted" {...field(editMode, "caption")}>
               {caption}
@@ -212,7 +215,7 @@ function FullBleed(p: Inner) {
     <div className={cn("vb-hero-bleed", height === "screen" && "vb-hero-screen")}>
       <div className={cn("vb-hero-media", enter(editMode, 0, "media"))} aria-hidden={video ? undefined : "true"}>
         {media ? (
-          <BlockImage {...media} decorative priority sizes="100vw" className="absolute inset-0 h-full" components={components} labels={labels} editMode={editMode} field="props.media" />
+          <BlockImage {...media} decorative priority sizes={SITE_SIZES.bleed} className="absolute inset-0 h-full" components={components} labels={labels} editMode={editMode} field="props.media" />
         ) : null}
         {video && media ? <HeroVideo src={video.src} poster={media.src} pauseLabel={t("pauseVideo")} playLabel={t("resumeVideo")} /> : null}
       </div>
@@ -272,7 +275,7 @@ function Product(p: Inner) {
       </div>
       {screenshot || visual ? (
         <div className={cn("vb-hero-shot mt-[calc(var(--section-y)*0.55)]", enter(editMode, 5, "media"))} {...field(editMode, "screenshot")}>
-          {visual ?? <BlockImage {...screenshot!} priority sizes="min(100vw, 90rem)" components={components} labels={labels} />}
+          {visual ?? <BlockImage {...screenshot!} priority sizes={SITE_SIZES.container} components={components} labels={labels} />}
         </div>
       ) : null}
     </Container>

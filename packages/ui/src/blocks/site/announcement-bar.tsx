@@ -92,7 +92,7 @@ export function AnnouncementBar({
       locale={locale}
       editMode={editMode}
       field="props.link"
-      className="group/ann inline-flex shrink-0 items-center gap-1.5 font-medium underline decoration-current/40 underline-offset-[0.28em] transition-[text-decoration-color] hover:decoration-current focus-ring rounded-[2px]"
+      className="group/ann inline-flex min-h-6 shrink-0 items-center gap-1.5 font-medium underline decoration-current/40 underline-offset-[0.28em] transition-[text-decoration-color] hover:decoration-current focus-ring rounded-[2px]"
     >
       {link.label}
       <ArrowEnd className="group-hover/ann:translate-x-0.5 rtl:group-hover/ann:-translate-x-0.5" />

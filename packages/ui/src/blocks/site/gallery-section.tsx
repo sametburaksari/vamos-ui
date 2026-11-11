@@ -9,6 +9,7 @@ import { site2Text, type Site2BlockLabels, type Site2Text } from "./shared/label
 import { textOf, useBlockIds2, type SiteImage2 } from "./shared/kit-2";
 import { GalleryLightbox } from "./shared/gallery-lightbox";
 import { Stagger } from "../../motion/reveal";
+import { columnSizes, filmstripSizes } from "./shared/image-sizes";
 
 export type GalleryVariant = "mosaic" | "filmstrip" | "grid" | "split-caption";
 export type GallerySpan = "1" | "wide" | "tall" | "big";
@@ -30,7 +31,12 @@ export interface GallerySectionProps extends Omit<BlockBaseProps, "variant" | "l
   eyebrow?: React.ReactNode;
   title?: React.ReactNode;
   lead?: React.ReactNode;
-  /** 3–40 images, `alt` required. */
+  /**
+   * 3–40 images, `alt` required. `sizes` per variant: mosaic `min(34vw, 26rem)` per 4-col cell
+   * (`min(67vw, 51rem)` for wide/big) above 42rem, 50vw/100vw below · grid `min(34vw, 26rem)` /
+   * 50vw · filmstrip from the cell height × ratio (≈ 12–24rem for 4:5) · split-caption
+   * `min(59vw, 45rem)` / 100vw.
+   */
   images: GalleryImage[];
   /** Open images in a full-screen viewer. Default true. */
   lightbox?: boolean;
@@ -79,7 +85,7 @@ export function GallerySection({
         <ul className="vb-filmstrip scrollbar-none flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1" tabIndex={0} aria-label={textOf(title).replace(/\*/g, "") || t("galleryImages", { count: images.length })}>
           {images.map((g, i) => (
             <li key={i} className="shrink-0 snap-start">
-              <Cell g={g} i={i} ctx={ctx} className="h-[clamp(15rem,38cqi,30rem)]" style={{ aspectRatio: g.image.width && g.image.height ? `${g.image.width} / ${g.image.height}` : "4 / 5" }} sizes="(min-width: 56rem) 40vw, 80vw" fill />
+              <Cell g={g} i={i} ctx={ctx} className="h-[clamp(15rem,38cqi,30rem)]" style={{ aspectRatio: g.image.width && g.image.height ? `${g.image.width} / ${g.image.height}` : "4 / 5" }} sizes={filmstripSizes(g.image.width && g.image.height ? g.image.width / g.image.height : 0.8)} fill />
             </li>
           ))}
         </ul>
@@ -92,7 +98,7 @@ export function GallerySection({
         <ul className="vb-mosaic grid grid-cols-2 gap-2 @2xl:grid-cols-12">
           {images.map((g, i) => (
             <li key={i} data-span={g.span ?? "1"} className="vb-mosaic-cell min-h-0">
-              <Cell g={g} i={i} ctx={ctx} className="size-full" sizes="(min-width: 42rem) 66vw, 100vw" fill />
+              <Cell g={g} i={i} ctx={ctx} className="size-full" sizes={g.span === "wide" || g.span === "big" ? columnSizes(8 / 12, { from: "42rem" }) : columnSizes(4 / 12, { from: "42rem", narrow: "50vw" })} fill />
             </li>
           ))}
         </ul>
@@ -108,7 +114,7 @@ export function GallerySection({
           {images.map((g, i) => (
             <li key={i}>
               <figure className="flex flex-col gap-2.5">
-                <Cell g={g} i={i} ctx={ctx} aspect={a ?? "3:2"} sizes="(min-width: 56rem) 33vw, 50vw" />
+                <Cell g={g} i={i} ctx={ctx} aspect={a ?? "3:2"} sizes={columnSizes(1 / 3, { narrow: "50vw" })} />
                 {g.caption ? <figcaption className="text-small text-fg-muted">{g.caption}</figcaption> : null}
               </figure>
             </li>
@@ -128,7 +134,7 @@ export function GallerySection({
           {images.map((g, i) => (
             <li key={i}>
               <figure className="flex flex-col gap-4">
-                <Cell g={g} i={i} ctx={ctx} sizes="(min-width: 56rem) 58vw, 100vw" />
+                <Cell g={g} i={i} ctx={ctx} sizes={columnSizes(7 / 12)} />
                 {g.caption ? (
                   <figcaption className="flex gap-4 text-small text-fg-muted text-pretty">
                     <span aria-hidden className="font-mono text-eyebrow tabular text-fg-subtle">

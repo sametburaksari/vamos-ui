@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A full-screen field-service dispatch console: job lanes, a city map and crew load.",
+    "Assigning jobs to the best-matching technician and messaging late customers."
+  ],
+  "avoidWhen": [
+    "Booking rooms or resources on a timeline — use resource-calendar.",
+    "A static location directory — use list-08."
+  ],
+  "related": [
+    "list-08",
+    "resource-calendar",
+    "kanban",
+    "sla-timer"
+  ],
+  "a11y": [
+    "One h1 names the console; lanes are labelled regions and filters use aria-pressed.",
+    "Map pins and list rows share selection — make every action reachable from the list, not only the map."
+  ]
+}

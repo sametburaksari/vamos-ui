@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A single show/hide region, such as advanced form settings or a show-more list.",
+    "Any element as the trigger when there is no need to coordinate several sections."
+  ],
+  "avoidWhen": [
+    "Several related sections where one opens at a time — use accordion.",
+    "Peer views of the same context — use tabs."
+  ],
+  "related": [
+    "accordion",
+    "tabs",
+    "card"
+  ],
+  "a11y": [
+    "The trigger exposes aria-expanded and aria-controls, and the height animation respects reduced motion.",
+    "Make the trigger text describe what will be revealed."
+  ]
+}

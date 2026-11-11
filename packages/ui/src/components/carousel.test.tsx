@@ -133,4 +133,26 @@ describe("Marquee", () => {
     expect(screen.getAllByRole("listitem")).toHaveLength(2);
     await expectNoA11yViolations();
   });
+
+  it("keeps the duplicate track out of the tab order and offers a pause control", async () => {
+    const { container } = renderWithProviders(
+      <Marquee label="Customers">
+        <a href="/customers/kahve">Kahve Dünyası</a>
+        <a href="/customers/moda">Moda Sahne</a>
+      </Marquee>,
+    );
+    const copy = container.querySelector(".vui-marquee-track[aria-hidden]")!;
+    expect(copy).toHaveAttribute("inert");
+    expect(screen.getAllByRole("link")).toHaveLength(2);
+    const pause = screen.getByRole("checkbox", { name: "Pause scrolling" });
+    expect(pause).not.toBeChecked();
+    pause.click();
+    expect(pause).toBeChecked();
+    await expectNoA11yViolations();
+  });
+
+  it("can drop the pause control", () => {
+    renderWithProviders(<Marquee label="Customers" controls={false}><span>Moda Sahne</span></Marquee>);
+    expect(screen.queryByRole("checkbox")).toBeNull();
+  });
 });

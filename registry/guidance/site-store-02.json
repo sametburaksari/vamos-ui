@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A streetwear or limited-edition brand selling in timed drops with stock counts.",
+    "Shops built around a countdown, reminders and quick-add sizes."
+  ],
+  "avoidWhen": [
+    "Evergreen catalogues without drops — use site-store-01.",
+    "Recurring deliveries — use site-subbox-01."
+  ],
+  "related": [
+    "site-store-01",
+    "site-market-01",
+    "site-waitlist-01"
+  ],
+  "a11y": [
+    "Stock and countdown use role=\"status\" aria-live regions; motion respects prefers-reduced-motion.",
+    "Do not announce every countdown tick; size buttons expose aria-pressed."
+  ]
+}

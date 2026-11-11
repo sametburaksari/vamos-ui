@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Subscription billing settings: plan, change-plan with proration, usage meters and next invoice.",
+    "Managing the card on file, billing details and invoice history."
+  ],
+  "avoidWhen": [
+    "Public pricing for prospects — use page-pricing-01.",
+    "General account settings — use settings-01."
+  ],
+  "related": [
+    "page-pricing-01",
+    "pricing-table",
+    "progress",
+    "settings-01"
+  ],
+  "a11y": [
+    "Plan choice is a role=\"radiogroup\" with arrow-key support; edits run in titled dialogs and sheets.",
+    "Give usage meters text values, not only bars."
+  ]
+}

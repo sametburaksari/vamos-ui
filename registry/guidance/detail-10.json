@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A client project overview: completion vs time, budget burn, milestones, tasks and team load.",
+    "Posting status updates and closing milestones while switching between projects."
+  ],
+  "avoidWhen": [
+    "The whole portfolio at once — use dashboard-11.",
+    "Detailed dependency scheduling — use gantt."
+  ],
+  "related": [
+    "dashboard-11",
+    "gantt",
+    "task-list",
+    "activity-timeline"
+  ],
+  "a11y": [
+    "Sections are labelled with aria-labelledby; task filters carry aria-labels.",
+    "Undoable completion should announce itself; give the spend chart a text summary."
+  ]
+}

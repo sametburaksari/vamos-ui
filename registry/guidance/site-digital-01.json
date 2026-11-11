@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A shop for digital products such as templates, themes or UI kits, with live previews, licences and checkout.",
+    "Sellers who need licence tiers, discount codes and tax by country."
+  ],
+  "avoidWhen": [
+    "Physical goods — use site-store-01.",
+    "A recurring subscription box — use site-subbox-01."
+  ],
+  "related": [
+    "comparison-table",
+    "checkout-01",
+    "filter-bar",
+    "faq"
+  ],
+  "a11y": [
+    "Fields in the preview and checkout carry aria-label names; licence choice is a radio group; motion respects prefers-reduced-motion.",
+    "Describe what each live thumbnail shows for users who cannot see it."
+  ]
+}

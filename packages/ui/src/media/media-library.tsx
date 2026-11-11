@@ -1209,7 +1209,9 @@ export const MediaLibrary = React.forwardRef<HTMLDivElement, MediaLibraryProps>(
         data-active={activeId === a.id ? "" : undefined}
         aria-selected={selection === "none" ? undefined : isSel}
         aria-disabled={disabled || undefined}
-        aria-label={[a.filename, missing ? t("missingAlt") : null, a.status === "processing" ? t("processing") : a.status === "failed" ? t("failed") : null].filter(Boolean).join(", ")}
+        // The name carries every visible overlay (duration, "Failed"); those overlays are aria-hidden so
+        // the visible text never contradicts the name (axe label-content-name-mismatch, WCAG 2.5.3).
+        aria-label={[a.filename, a.kind === "video" && a.duration ? f.duration(a.duration) : null, missing ? t("missingAlt") : null, a.status === "processing" ? t("processing") : a.status === "failed" ? t("failed") : null].filter(Boolean).join(", ")}
         tabIndex={index === focusIndex ? 0 : -1}
         onClick={(e) => onTileClick(e, index)}
         onDoubleClick={() => detailsPanel && openDetails(a)}
@@ -1218,8 +1220,8 @@ export const MediaLibrary = React.forwardRef<HTMLDivElement, MediaLibraryProps>(
       >
         <div className="vui-media-tile-frame relative overflow-hidden rounded-ui bg-surface-2">
           <MediaThumb asset={a} rounded="none" />
-          {a.kind === "video" && a.duration ? <span className="tabular absolute end-1.5 bottom-1.5 rounded-sm bg-[color-mix(in_srgb,var(--scene)_82%,transparent)] px-1.5 py-0.5 text-[10.5px] font-medium text-fg">{f.duration(a.duration)}</span> : null}
-          {a.status === "failed" ? <Badge tone="danger" className="absolute start-1.5 top-1.5">{t("failed")}</Badge> : null}
+          {a.kind === "video" && a.duration ? <span aria-hidden className="tabular absolute end-1.5 bottom-1.5 rounded-sm bg-[color-mix(in_srgb,var(--scene)_82%,transparent)] px-1.5 py-0.5 text-[10.5px] font-medium text-fg">{f.duration(a.duration)}</span> : null}
+          {a.status === "failed" ? <Badge aria-hidden tone="danger" className="absolute start-1.5 top-1.5">{t("failed")}</Badge> : null}
           {missing ? <span aria-hidden title={t("missingAlt")} className="vui-media-alt-dot absolute end-2 top-2 size-2 rounded-full bg-warning" /> : null}
           {selection !== "none" ? (
             <span aria-hidden data-slot="media-tile-check" className={cn("vui-media-check absolute start-1.5 top-1.5 flex size-5 items-center justify-center rounded-full", isSel ? "bg-accent text-accent-fg" : "border border-[color-mix(in_srgb,var(--fg)_30%,transparent)] bg-[color-mix(in_srgb,var(--scene)_70%,transparent)] text-transparent")}>

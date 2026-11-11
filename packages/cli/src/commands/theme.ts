@@ -7,6 +7,8 @@ import { detectProject } from "../core/project";
 import { CliError, type ThemeConfig } from "../core/types";
 import { p, pc, printJson, unwrap, type Context } from "../ui";
 import { openSession } from "./shared";
+import { applyPreset, parsePresetFlag, presetTheme } from "./preset";
+import { describePreset, encodePreset, presetNeedsBrand } from "../preset";
 
 export const AXES = {
   theme: { values: ["light", "dark"], default: "light", label: "Theme" },
@@ -52,6 +54,27 @@ export function htmlSnippet(framework: Framework, theme: ThemeConfig, srcDir = f
 
 export async function theme(ctx: Context, args: ParsedArgs): Promise<number> {
   const session = await openSession(ctx, { config: "optional" });
+  const presetCode = str(args.flags, "preset");
+  if (presetCode) {
+    const preset = parsePresetFlag(presetCode);
+    let theme = presetTheme(preset);
+    let saved = false;
+    if (session.hasConfig) {
+      theme = (await applyPreset(session.root, session.config, preset, { dryRun: bool(args.flags, "dry-run") })).theme;
+      saved = !bool(args.flags, "dry-run");
+    } else if (presetNeedsBrand(preset)) {
+      throw new CliError("A custom accent or radius needs a project: it writes vamos.brand.json and brand.css.", "Run `npx vamos-ui init --preset " + encodePreset(preset) + "` instead.");
+    }
+    if (ctx.json) {
+      printJson({ code: encodePreset(preset), preset, theme, attributes: htmlAttributes(theme), saved });
+      return 0;
+    }
+    const project = detectProject(session.root);
+    p.log.success(`${saved ? "Applied" : "Preset"} ${pc.bold(encodePreset(preset))}: ${describePreset(preset)}`);
+    if (!session.hasConfig) p.log.info(pc.dim("No vamos.json here, so nothing was saved."));
+    p.note(htmlSnippet(project.framework, theme, project.srcDir && project.appRouter && !existsSync(path.join(session.root, "app"))), "Set these attributes on <html>");
+    return 0;
+  }
   const current: ThemeConfig = { ...session.config.theme };
   const hasBrand = existsSync(path.join(session.root, session.config.uiDir, "brand.css"));
   const next: ThemeConfig = { ...current };

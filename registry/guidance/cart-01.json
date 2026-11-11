@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A shopping cart page or mini-cart drawer with quantity steppers, discount codes and an order summary.",
+    "Stores that need free-delivery progress, delivery dates and an empty state with recommendations."
+  ],
+  "avoidWhen": [
+    "Collecting address and payment — use checkout-01.",
+    "Editing invoice or quote lines in an admin — use line-items."
+  ],
+  "related": [
+    "checkout-01",
+    "product-01",
+    "order-confirmation-01",
+    "line-items"
+  ],
+  "a11y": [
+    "Sections are labelled with aria-labelledby; announce quantity changes and inline undo to screen readers.",
+    "Give each remove and stepper button an accessible name that includes the product."
+  ]
+}

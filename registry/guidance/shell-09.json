@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Phone-first apps for technicians with a bottom tab bar and a More sheet.",
+    "Field service flows: shift timeline, job sheets with checklist and signature, live map."
+  ],
+  "avoidWhen": [
+    "Desktop back-office tools — use shell-06.",
+    "Help desk queues — use shell-11."
+  ],
+  "related": [
+    "pin-map",
+    "signature-pad",
+    "shell-06",
+    "sheet"
+  ],
+  "a11y": [
+    "Tab bar is a nav landmark with aria-current on the active tab; keep touch targets large and labelled."
+  ]
+}

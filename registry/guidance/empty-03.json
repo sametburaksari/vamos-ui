@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The first day of an app: start from a template, import a file or load sample data.",
+    "Products where a blank list would stall new users."
+  ],
+  "avoidWhen": [
+    "A simple no-results or nothing-yet message — use empty-state.",
+    "A multi-step data import with mapping and validation — use onboarding-04."
+  ],
+  "related": [
+    "empty-state",
+    "empty-01",
+    "onboarding-04",
+    "import-wizard"
+  ],
+  "a11y": [
+    "Templates are a role=\"radiogroup\" with keyboard handling and aria-checked.",
+    "Sample data removal confirms and its result is announced via aria-live."
+  ]
+}

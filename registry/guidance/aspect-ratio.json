@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Embedding an iframe, video or map that must keep a fixed width-to-height ratio.",
+    "Reserving image or placeholder space so the layout does not shift while media loads."
+  ],
+  "avoidWhen": [
+    "Images that already have intrinsic width and height — use Image.",
+    "Full video playback with controls — use video-player."
+  ],
+  "related": [
+    "image",
+    "placeholder-art",
+    "video-player"
+  ],
+  "a11y": [
+    "It is a plain sizing box with no semantics; give the embedded iframe a title and images alt text."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A small-animal veterinary practice with services, fees and team by species.",
+    "Clinics that take appointment requests and publish hours, map and FAQ."
+  ],
+  "avoidWhen": [
+    "Human medical clinics — use site-clinic-01.",
+    "Rehab and physiotherapy — use site-physio-01."
+  ],
+  "related": [
+    "site-clinic-01",
+    "site-clinic-02",
+    "site-physio-01"
+  ],
+  "a11y": [
+    "Switching the pet updates content through a role=\"status\" aria-live region.",
+    "Expose the pet switch's current choice with aria-pressed or a radio group."
+  ]
+}

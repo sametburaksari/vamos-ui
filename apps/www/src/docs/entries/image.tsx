@@ -32,7 +32,7 @@ const entry: DocEntry = {
   ],
   api: [
     { name: "Image", props: [
-      { name: "src", type: "string | MediaAsset", description: "A URL, or an asset that supplies alt, width/height, focal point, placeholder, variants and crops." },
+      { name: "src", type: "string | MediaAsset | null", description: "A URL, or an asset that supplies alt, width/height, focal point, placeholder, variants and crops. null / \"\" renders seeded placeholder art (4:3 unless aspect is set)." },
       { name: "alt", type: "string", description: "Required with a URL; optional with an asset (overrides asset.alt). \"\" marks the image decorative (role=\"presentation\"). Dev warning when it looks like a file name." },
       { name: "width / height", type: "number", description: "Intrinsic size. Sets the box ratio when aspect is \"auto\" (no CLS)." },
       { name: "aspect", type: '"auto" | "1/1" | "4/3" | "3/2" | "16/9" | "21/9" | "4/5" | "1.91/1" | number', default: '"auto"', description: "Box ratio. auto uses width/height; without either the image flows at its natural height." },
@@ -43,7 +43,8 @@ const entry: DocEntry = {
       { name: "widths", type: "number[]", default: "[320, 480, 640, 768, 1024, 1280, 1600, 1920]", description: "srcset steps with a loader (capped at the asset width)." },
       { name: "quality", type: "number", description: "Passed to the loader." },
       { name: "priority", type: "boolean", default: "false", description: "Above the fold: loading=\"eager\" + fetchpriority=\"high\"." },
-      { name: "placeholder", type: '"blur" | "color" | "skeleton" | "none"', default: "blur → color → skeleton", description: "What shows while loading. Default picks blur with a blurDataURL, color with a colour, else skeleton." },
+      { name: "placeholder", type: '"blur" | "color" | "skeleton" | "art" | "none"', default: "blur → color → skeleton", description: "What shows while loading. Default picks blur with a blurDataURL, color with a colour, else skeleton. art: seeded pattern while loading and on error; always used when there is no src (see Placeholder Art)." },
+      { name: "seed / placeholderPattern / placeholderIcon / placeholderCaption", type: "string / pattern / ReactNode | false / boolean | ReactNode", description: "Tune the art placeholder: seed (default alt), forced pattern, glyph, caption." },
       { name: "blurDataURL", type: "string", default: "asset.placeholder", description: "Tiny preview (LQIP data URL or small URL), blurred and scaled under the image." },
       { name: "color", type: "string", default: "asset.dominantColor", description: "Placeholder colour." },
       { name: "loader", type: "ImageLoader", description: "Overrides the provider loader for this image." },

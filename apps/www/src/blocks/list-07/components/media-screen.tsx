@@ -7,7 +7,6 @@ import {
   Button,
   PageHeader,
   Select,
-  Skeleton,
   cn,
 } from "@vamos-ui/react";
 import {
@@ -64,10 +63,6 @@ export function MediaScreen() {
   const [query, setQuery] = React.useState<MediaQuery>({ sort: "newest" });
   const [assets, setAssets] = React.useState<MediaAsset[]>(seedAssets);
   const [adding, setAdding] = React.useState(false);
-  // The library reads files from the adapter after mount; render it client-side only so the
-  // server HTML (a skeleton) never disagrees with the first client render.
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
 
   // One adapter per language: folder names are data, so the Turkish preview gets Turkish folders.
   const adapter = React.useMemo(() => {
@@ -308,24 +303,20 @@ export function MediaScreen() {
         />
       </div>
 
-      {mounted ? (
-        <MediaLibrary
-          key={lang}
-          adapter={adapter}
-          handleRef={handle}
-          query={query}
-          onQueryChange={setQuery}
-          folders="sidebar"
-          selection="multiple"
-          detailsPanel="side"
-          tileSize="md"
-          height="clamp(30rem, calc(100dvh - 22rem), 52rem)"
-          aria-label={c("Media library", "Medya kütüphanesi")}
-          className="mt-4"
-        />
-      ) : (
-        <Skeleton className="mt-4 h-[clamp(30rem,calc(100dvh-22rem),52rem)] rounded-ui-lg" />
-      )}
+      <MediaLibrary
+        key={lang}
+        adapter={adapter}
+        handleRef={handle}
+        query={query}
+        onQueryChange={setQuery}
+        folders="sidebar"
+        selection="multiple"
+        detailsPanel="side"
+        tileSize="md"
+        height="clamp(30rem, calc(100dvh - 22rem), 52rem)"
+        aria-label={c("Media library", "Medya kütüphanesi")}
+        className="mt-4"
+      />
     </div>
   );
 }

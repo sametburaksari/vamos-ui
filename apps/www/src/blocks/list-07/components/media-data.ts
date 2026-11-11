@@ -1,6 +1,5 @@
 // The Kiln & Linen website's media library: product shots (the same photos as the shop admin),
-// lookbook images, two videos (no `duration`: the kit tile shows it as text that is not in the
-// tile's accessible name, an axe label-content-name-mismatch) and the documents the press and wholesale pages link to.
+// lookbook images, two videos and the documents the press and wholesale pages link to.
 import type { MediaAsset, MediaFolder } from "@vamos-ui/react/media";
 import type { L } from "../../_shared/l10n";
 import { people } from "../../_shared/people";
@@ -88,6 +87,7 @@ function build(): MediaAsset[] {
       url: "https://media.example.com/kiln-linen/aw26-campaign-film-30s.mp4",
       width: 1920,
       height: 1080,
+      duration: 30,
       alt: "Thirty-second autumn campaign film",
       folderId: "f-lookbook",
       tags: ["video", "aw26"],
@@ -105,6 +105,7 @@ function build(): MediaAsset[] {
       url: "https://media.example.com/kiln-linen/glaze-process-timelapse.mp4",
       width: 1920,
       height: 1080,
+      duration: 94,
       alt: "",
       folderId: "f-journal",
       tags: ["video", "process"],

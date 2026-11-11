@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A quote builder laid out like the final proposal with catalogue line items and KDV.",
+    "Deal desks that check discount bands and margin, route approval and send for e-signature."
+  ],
+  "avoidWhen": [
+    "A finished order with payments — use detail-05.",
+    "A signed agreement with clauses and renewals — use detail-11."
+  ],
+  "related": [
+    "line-items",
+    "detail-11",
+    "signer-status",
+    "approval-flow"
+  ],
+  "a11y": [
+    "The discount indicator is role=\"meter\" with aria-valuetext; totals update in an aria-live region.",
+    "Sections are named regions (aria-labelledby) so users can jump between document and desk."
+  ]
+}

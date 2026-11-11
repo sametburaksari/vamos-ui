@@ -17,21 +17,41 @@ export function missingDependencies(root: string, specs: string[]): string[] {
   return specs.filter((s) => !present.has(parseSpec(s).name));
 }
 
-export function installCommand(pm: PackageManager, specs: string[]): [string, string[]] {
+export function installCommand(pm: PackageManager, specs: string[], opts: { ignoreScripts?: boolean } = {}): [string, string[]] {
+  const extra = opts.ignoreScripts ? ["--ignore-scripts"] : [];
   switch (pm) {
     case "pnpm":
-      return ["pnpm", ["add", ...specs]];
+      return ["pnpm", ["add", ...extra, ...specs]];
     case "yarn":
-      return ["yarn", ["add", ...specs]];
+      return ["yarn", ["add", ...extra, ...specs]];
     case "bun":
-      return ["bun", ["add", ...specs]];
+      return ["bun", ["add", ...extra, ...specs]];
     default:
-      return ["npm", ["install", ...specs]];
+      return ["npm", ["install", ...extra, ...specs]];
   }
 }
 
-export function runInstall(root: string, pm: PackageManager, specs: string[]): Promise<void> {
-  const [cmd, args] = installCommand(pm, specs);
+/** Installs a project's own package.json dependencies (`<pm> install`). */
+export function projectInstallCommand(pm: PackageManager): [string, string[]] {
+  return [pm, ["install"]];
+}
+
+export function runCommand(root: string, cmd: string, args: string[]): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(cmd, args, { cwd: root, stdio: ["ignore", "pipe", "pipe"], shell: process.platform === "win32" });
+    let output = "";
+    child.stdout?.on("data", (d) => (output += d));
+    child.stderr?.on("data", (d) => (output += d));
+    child.on("error", (err) => reject(new CliError(`Could not run ${cmd}: ${err.message}`, `Run it yourself: ${cmd} ${args.join(" ")}`)));
+    child.on("close", (code) => {
+      if (code === 0) resolve();
+      else reject(new CliError(`${cmd} ${args.join(" ")} failed (exit ${code}).`, `${output.trim().split("\n").slice(-8).join("\n")}\n\nRun it yourself: ${cmd} ${args.join(" ")}`));
+    });
+  });
+}
+
+export function runInstall(root: string, pm: PackageManager, specs: string[], opts: { ignoreScripts?: boolean } = {}): Promise<void> {
+  const [cmd, args] = installCommand(pm, specs, opts);
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, { cwd: root, stdio: ["ignore", "pipe", "pipe"], shell: process.platform === "win32" });
     let output = "";

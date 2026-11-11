@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A family practice, GP, dental or general clinic with services, clinicians, insurance, map and a step-by-step booking.",
+    "Practices that show the next free slot and want a clinician filter."
+  ],
+  "avoidWhen": [
+    "A children's clinic — use site-clinic-02.",
+    "Physiotherapy or rehab — use site-physio-01."
+  ],
+  "related": [
+    "multi-step-form",
+    "team",
+    "map-hours",
+    "faq"
+  ],
+  "a11y": [
+    "The booking summary updates in an aria-live status region; motion respects prefers-reduced-motion.",
+    "Replace empty decorative alt text with real descriptions if you add clinician photos."
+  ]
+}

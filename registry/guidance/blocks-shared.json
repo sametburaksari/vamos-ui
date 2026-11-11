@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Fictional people, companies, products, orders and tickets for demoing admin blocks.",
+    "Shared formatting helpers that the admin blocks import."
+  ],
+  "avoidWhen": [
+    "Real application data — wire your own API instead.",
+    "A standalone UI piece — it renders nothing; pick a component such as data-table."
+  ],
+  "related": [
+    "blocks-api",
+    "data-table",
+    "dashboard-01"
+  ],
+  "a11y": [
+    "It renders no UI; the accessibility of each block that uses it applies."
+  ]
+}

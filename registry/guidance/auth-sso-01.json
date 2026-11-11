@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Enterprise single sign-on: find the organisation by work-email domain or organisation ID.",
+    "A no-match path with a copyable note for IT and a staged redirect to the identity provider."
+  ],
+  "avoidWhen": [
+    "Consumer email and password sign-in — use login-01.",
+    "Passwordless email links — use magic-link-01."
+  ],
+  "related": [
+    "login-01",
+    "magic-link-01",
+    "select-workspace-01"
+  ],
+  "a11y": [
+    "Lookup results and redirect stages are announced through aria-live regions.",
+    "Keep the domain field labelled and errors in text next to it."
+  ]
+}

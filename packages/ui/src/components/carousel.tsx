@@ -33,6 +33,7 @@ const carouselLabels = {
   thumbs: "Slide thumbnails",
   empty: "Nothing to show yet",
   loading: "Loading slides",
+  marqueePause: "Pause scrolling",
 };
 export type CarouselLabels = typeof carouselLabels;
 
@@ -669,16 +670,25 @@ export interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Fade the edges. Default `true`. */
   fade?: boolean;
   gap?: "sm" | "md" | "lg";
+  /**
+   * A small pause control (a native checkbox, works without JavaScript). Moving content that runs
+   * longer than five seconds needs one (WCAG 2.2.2). Default `true`.
+   */
+  controls?: boolean;
+  /** Accessible name of the pause control. Default "Pause scrolling" (dictionary `carousel.marqueePause`). */
+  pauseLabel?: string;
 }
 
 /**
- * Endless logo band in pure CSS: no JS, renders with SSR. The items are listed once for assistive
- * tech; a duplicate track (aria-hidden) closes the loop. Reduced motion: static, scrollable row.
+ * Endless logo band in pure CSS: renders with SSR. The items are listed once for assistive tech;
+ * a duplicate track (`aria-hidden` + `inert`, so its links never take focus) closes the loop.
+ * Pauses on hover/focus and with its pause control. Reduced motion: static, scrollable row.
  */
-export function Marquee({ label, duration = 40, reverse, pauseOnHover = true, fade = true, gap = "lg", className, style, children, ...props }: MarqueeProps) {
+export function Marquee({ label, duration = 40, reverse, pauseOnHover = true, fade = true, gap = "lg", controls = true, pauseLabel, className, style, children, ...props }: MarqueeProps) {
+  const t = useLabels("carousel", carouselLabels, pauseLabel ? { marqueePause: pauseLabel } : undefined);
   const items = React.Children.toArray(children);
   const track = (hidden: boolean) => (
-    <ul aria-hidden={hidden || undefined} aria-label={hidden ? undefined : label} className="vui-marquee-track flex shrink-0 items-center">
+    <ul aria-hidden={hidden || undefined} inert={hidden || undefined} aria-label={hidden ? undefined : label} className="vui-marquee-track flex shrink-0 items-center">
       {items.map((child, i) => (
         <li key={i} className="flex shrink-0 items-center">
           {child}
@@ -692,12 +702,22 @@ export function Marquee({ label, duration = 40, reverse, pauseOnHover = true, fa
       data-reverse={reverse ? "" : undefined}
       data-pause-on-hover={pauseOnHover ? "" : undefined}
       data-fade={fade ? "" : undefined}
-      className={cn("vui-marquee flex overflow-hidden", className)}
+      data-controls={controls ? "" : undefined}
+      className={cn("vui-marquee relative", className)}
       style={{ "--marquee-duration": `${duration}s`, "--marquee-gap": GAP[gap], ...style } as React.CSSProperties}
       {...props}
     >
-      {track(false)}
-      {track(true)}
+      <div className="vui-marquee-viewport flex overflow-hidden">
+        {track(false)}
+        {track(true)}
+      </div>
+      {controls ? (
+        <label className="vui-marquee-toggle">
+          <input type="checkbox" className="vui-marquee-pause sr-only" aria-label={t("marqueePause")} />
+          <Pause aria-hidden className="vui-marquee-icon-pause" />
+          <Play aria-hidden className="vui-marquee-icon-play" />
+        </label>
+      ) : null}
     </div>
   );
 }

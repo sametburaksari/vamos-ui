@@ -61,6 +61,13 @@ export function validateConfig(raw: unknown): VamosConfig {
     }
   }
   c.importAlias = c.importAlias.replace(/\/+$/, "");
+  if (c.registries !== undefined) {
+    if (!c.registries || typeof c.registries !== "object" || Array.isArray(c.registries)) throw new CliError(`${CONFIG_FILE}: "registries" must be an object like { "@acme": "https://acme.dev/r/{name}.json" }.`);
+    for (const [ns, url] of Object.entries(c.registries)) {
+      if (!/^@[a-z0-9][a-z0-9._-]*$/.test(ns)) throw new CliError(`${CONFIG_FILE}: registries key "${ns}" must look like "@acme" (lower case).`);
+      if (typeof url !== "string" || !url.includes("{name}")) throw new CliError(`${CONFIG_FILE}: registries["${ns}"] must be a URL containing {name}, e.g. "https://acme.dev/r/{name}.json".`);
+    }
+  }
   return c;
 }
 
@@ -74,6 +81,7 @@ export async function writeConfig(root: string, config: VamosConfig): Promise<vo
     importAlias: config.importAlias,
     tsx: config.tsx,
     ...(config.theme ? { theme: config.theme } : {}),
+    ...(config.registries && Object.keys(config.registries).length ? { registries: config.registries } : {}),
   };
   await writeFile(path.join(root, CONFIG_FILE), JSON.stringify(ordered, null, 2) + "\n");
 }
