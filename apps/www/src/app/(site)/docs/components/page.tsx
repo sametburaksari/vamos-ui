@@ -11,7 +11,7 @@ export default function ComponentsIndex() {
 
   return (
     <div className="max-w-[980px] pb-20">
-      <div className="mb-2 text-[11.5px] font-medium uppercase tracking-[0.14em] text-fg-subtle">@vamos-ui/react · v0.1</div>
+      <div className="mb-2 text-[11.5px] font-medium uppercase tracking-[0.14em] text-fg-subtle">@vamos-ui/react · v0.2</div>
       <h1 className="font-display text-[length:calc(44px*var(--display-scale))] leading-[1.05]">Components</h1>
       <p className="mt-3 max-w-2xl text-[15.5px] leading-relaxed text-fg-muted">
         One component kit for every admin panel — CMS, CRM, HR, partner portals — and the websites around them.
@@ -20,7 +20,7 @@ export default function ComponentsIndex() {
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <Badge tone="success" size="md" dot>{ready} ready</Badge>
-        <Badge size="md">{all.length} planned</Badge>
+        <Badge size="md">{all.length} in total</Badge>
       </div>
 
       <div className="mt-10 grid gap-10">

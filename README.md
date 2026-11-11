@@ -10,7 +10,7 @@
   <a href="https://ui.vamos.ist">ui.vamos.ist</a> · <a href="https://ui.vamos.ist/docs">Docs</a> · <a href="https://ui.vamos.ist/blocks">Blocks</a> · <a href="https://ui.vamos.ist/docs/changelog">Changelog</a>
 </p>
 
-> **Early preview (v0.1).** Components are being built in the open. APIs will change until v1.
+> **Early preview (v0.2).** Components are being built in the open. APIs will change until v1.
 
 ## Why
 

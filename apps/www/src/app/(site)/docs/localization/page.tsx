@@ -1,5 +1,5 @@
 import { Badge } from "@vamos-ui/react";
-import { C, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
+import { A, C, Code, DocPage, H2, P, Table } from "@/components/docs/prose";
 import { LocaleSamples } from "@/components/docs/locale-samples";
 
 export const metadata = { title: "Localization" };
@@ -70,18 +70,26 @@ function Footer({ page, total, amount }: { page: number; total: number; amount: 
       <P>Dates without a time are sent as <C>YYYY-MM-DD</C>, money as a decimal string, and the time zone is always explicit.</P>
 
       <H2 id="packs">Locale packs</H2>
-      <P>Some rules are country-specific, so they ship as optional packs. The Turkish pack is first:</P>
+      <P>
+        Some rules are country-specific, so they ship as optional, React-free data packs in{" "}
+        <C>@vamos-ui/react/locale-data</C>. The Turkish pack is complete:
+      </P>
+      <Code code={`import { trPack, validateTckn, formatTrIban, computeKdv, trHolidaysForYear } from "@vamos-ui/react/locale-data";
+
+validateTckn("10000000146").valid;      // true
+formatTrIban("TR330006100519786457841326"); // "TR33 0006 1005 1978 6457 8413 26"`} />
       <Table
         head={["Pack content", "Used by", "Status"]}
         rows={[
-          ["TCKN / VKN validation", "Formatted inputs", <Badge key="1" tone="outline">Planned</Badge>],
-          ["TR IBAN validation and mask, +90 phone mask", "Formatted inputs", <Badge key="2" tone="outline">Planned</Badge>],
-          ["KDV rates, withholding codes, rounding", "Line items", <Badge key="3" tone="outline">Planned</Badge>],
-          ["Public holidays", "Calendar, resource calendar", <Badge key="4" tone="outline">Planned</Badge>],
-          ["Provinces and districts", "Address field", <Badge key="5" tone="outline">Planned</Badge>],
+          ["TCKN / VKN validation and masking", <A key="a1" href="/docs/components/formatted-input">Formatted inputs</A>, <Badge key="1" tone="success">Ready</Badge>],
+          ["TR IBAN validation, mask and bank name; +90 phone format", <A key="a2" href="/docs/components/formatted-input">Formatted inputs</A>, <Badge key="2" tone="success">Ready</Badge>],
+          ["KDV rates, withholding (tevkifat), rounding, amount in words", <A key="a3" href="/docs/components/line-items">Line items</A>, <Badge key="3" tone="success">Ready</Badge>],
+          ["Public and religious holidays, work calendar", <A key="a4" href="/docs/components/calendar">Calendar</A>, <Badge key="4" tone="success">Ready</Badge>],
+          ["Provinces, districts and postal codes", <A key="a5" href="/docs/components/address-field">Address field</A>, <Badge key="5" tone="success">Ready</Badge>],
           ["Turkish-aware search and slugs (İ/ı, ş, ğ)", "Combobox, pickers, slug input", <Badge key="6" tone="success">Ready</Badge>],
         ]}
       />
+      <P>Other countries can add a pack with the same shape (<C>LocaleDataPack</C>): week start, holidays, ID and IBAN rules, phone format, money, tax scheme and address data.</P>
 
       <H2 id="rtl">Right-to-left</H2>
       <P>
