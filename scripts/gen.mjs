@@ -5,6 +5,7 @@
  *   packages/ui/src/index.ts              ← lib/public.ts + every src/components/*.tsx
  *   apps/www/src/docs/entries/index.ts    ← every apps/www/src/docs/entries/<slug>.tsx
  *   apps/www/src/blocks/index.ts          ← every apps/www/src/blocks/<name>/meta.ts
+ *   apps/www/src/app/view/<name>/page.tsx ← one preview route per block (git-ignored)
  * Safe to run any number of times. Run: node scripts/gen.mjs
  */
 import fs from "node:fs";
@@ -52,5 +53,25 @@ const ident = (s) => s.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()).r
   for (const n of names) out += `import ${ident("meta-" + n)} from "./${n}/meta";\n`;
   out += `\nexport const blocks: BlockEntry[] = [\n${names.map((n) => `  { ...${ident("meta-" + n)}, name: "${n}", load: () => import("./${n}/page") },`).join("\n")}\n].sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.name.localeCompare(b.name));\n\nexport const blocksByName = Object.fromEntries(blocks.map((b) => [b.name, b]));\n`;
   write(path.join(dir, "index.ts"), out);
+
+  // 4. One static route per block (/view/<name>): a shared [name] route would put every block's
+  //    client code on every preview page. These files are generated and git-ignored.
+  const viewDir = path.join(root, "apps/www/src/app/view");
+  fs.mkdirSync(viewDir, { recursive: true });
+  for (const d of fs.readdirSync(viewDir, { withFileTypes: true })) {
+    const f = path.join(viewDir, d.name, "page.tsx");
+    if (d.isDirectory() && !names.includes(d.name) && fs.existsSync(f) && fs.readFileSync(f, "utf8").startsWith(header)) fs.rmSync(path.join(viewDir, d.name), { recursive: true });
+  }
+  for (const n of names) {
+    fs.mkdirSync(path.join(viewDir, n), { recursive: true });
+    write(
+      path.join(viewDir, n, "page.tsx"),
+      header +
+        `import Block from "@/blocks/${n}/page";\nimport meta from "@/blocks/${n}/meta";\nimport { pageMeta } from "@/lib/seo";\n\n` +
+        `// Fictional demo content: kept out of search results; /blocks and /websites are the indexable entries.\n` +
+        `export const metadata = pageMeta({ title: meta.title, description: meta.description, path: "/view/${n}/", noindex: true });\n\n` +
+        `export default function View() {\n  return <Block />;\n}\n`,
+    );
+  }
 }
 console.log("gen: ok");
