@@ -39,7 +39,7 @@ Follow these steps for every screen you build or change.
 ### 5. Verify and fix
 - Run `npx vamos-ui verify <files or dirs>` (or MCP `verify_code` per file). It exits 1 on errors; `--json` for machine output.
 - Fix every error. Review warnings and fix them unless there is a real reason not to; then suppress with a `// vamos-ui-ignore <reason>` comment on the line above.
-- Rules it checks: `raw-color`, `no-dark-variant`, `no-hardcoded-font`, `icon-button-label`, `img-alt`, `click-events-interactive`, `no-positive-tabindex`, `use-client`, `z-index-token`, `prefer-kit-component`.
+- Rules it checks: `raw-color`, `no-dark-variant`, `no-hardcoded-font`, `icon-button-label`, `img-alt`, `click-events-interactive`, `no-positive-tabindex`, `use-client`, `z-index-token`, `prefer-kit-component`, `placeholder-content`. Without paths it also checks the project: `missing-route` (a link to a page that does not exist) and `site-essentials` (robots, sitemap, metadataBase, canonical, Open Graph, JSON-LD on a website).
 - Run the project's own typecheck and tests too.
 
 ### 6. Check every axis
@@ -49,6 +49,14 @@ Look at the screen (or reason through it when you cannot render) in:
 - comfortable and compact (`data-density`): nothing clips, no fixed px heights,
 - at least one other accent (`data-accent="ocean"`) and font (`data-font="corporate"`): nothing hard-coded leaks through,
 - a 375px-wide phone viewport and RTL where the product supports it.
+
+### 7. Websites: before launch
+Use it when the project is a public website built from `site-*` / `page-*` blocks.
+- `npx vamos-ui add site-…` in a Next.js App Router project also writes `app/robots.ts`, `app/sitemap.ts` and a page for each legal link the block has (`/privacy`, `/kvkk`, `/gizlilik`, `/cookies`, `/terms`, `/accessibility` …) rendering `legal-01`; it never replaces an existing file. For an existing project run `npx vamos-ui site essentials`.
+- The legal presets are template text: replace every [fill-in] field and have the business or a lawyer review them.
+- Root metadata: `metadataBase`, `alternates.canonical`, `openGraph`, a 120–160 character description; each page its own title and canonical.
+- JSON-LD: the kit `Footer` emits Organization; set the business type (`jsonLd={{ "@type": "Dentist" }}`) or add `<JsonLd>` / `localBusinessJsonLd`.
+- Replace every demo phone, email, map link and `href="#"` with the business's real details; `npx vamos-ui verify` lists what is left. Full checklist: rule 11 in [references/rules.md](references/rules.md).
 
 ## Design rules (summary)
 

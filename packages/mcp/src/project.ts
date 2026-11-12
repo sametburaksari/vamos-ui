@@ -132,3 +132,19 @@ export function findRootDocument(root: string): string | undefined {
   const candidates = ["src/app/layout.tsx", "app/layout.tsx", "src/app/layout.jsx", "app/layout.jsx", "index.html", "src/index.html", "pages/_document.tsx", "src/pages/_document.tsx"];
   return candidates.find((c) => existsSync(path.join(root, c)));
 }
+
+/** Every project-relative posix path (app routes, public/, sources) for the route and website checks. */
+export function listProjectPaths(root: string, limit = 20000): string[] {
+  const out: string[] = [];
+  const walk = (abs: string, rel: string) => {
+    if (out.length >= limit) return;
+    for (const entry of readdirSync(abs, { withFileTypes: true })) {
+      if (IGNORE_DIRS.has(entry.name) || entry.name.startsWith(".")) continue;
+      const r = rel ? `${rel}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) walk(path.join(abs, entry.name), r);
+      else out.push(r);
+    }
+  };
+  walk(root, "");
+  return out.sort();
+}
