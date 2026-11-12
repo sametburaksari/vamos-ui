@@ -1,6 +1,6 @@
 {
   "name": "vamos-ui",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Add Vamos UI components, blocks and themes to your project.",
   "type": "module",
   "license": "MIT",
