@@ -4,6 +4,12 @@ Release notes for the `vamos-ui` command line tool.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change commands).
 
+## 0.5.1 — 2026-11-12
+
+### Patch Changes
+
+- e5f3dd6: The package includes its CHANGELOG.md, and is published from GitHub Actions with npm provenance.
+
 ## 0.5.0 — 2026-11-12
 
 ### Added
