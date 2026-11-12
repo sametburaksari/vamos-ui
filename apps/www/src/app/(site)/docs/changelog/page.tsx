@@ -15,6 +15,24 @@ interface Release {
 /** Newest first. Append new releases at the top. */
 const releases: Release[] = [
   {
+    version: "0.4.1",
+    date: "2026-11-12",
+    changes: {
+      Added: [
+        "Website launch essentials: `npx vamos-ui site essentials` writes robots, sitemap and a page for every legal link in the footer, and runs by itself after `add site-…` in a Next.js App Router project.",
+        "Legal page block (legal-01) with template text in English and Turkish: privacy policy, KVKK aydınlatma metni, cookie policy, terms of use, accessibility statement, return and refund policy, distance sales agreement (mesafeli satış sözleşmesi), pre-contract information form (ön bilgilendirme formu) and legal notice (yasal uyarı).",
+        "The kit Footer emits Organization JSON-LD (`jsonLd` prop, `footerJsonLd` helper).",
+        "Verify: placeholder contact details (000 00 00 phones, wa.me/90500…, .example emails, href=\"#\", invented map links), links to routes with no page, missing robots / sitemap / metadataBase / canonical / Open Graph / JSON-LD, title and meta description length, and images in public/ over 300 KB.",
+        "MCP: a website launch checklist in the rules; plan_screen adds it for website screens; verify_design with projectDir runs the project checks.",
+        "Block and website labels in German, French, Spanish and Arabic.",
+      ],
+      Changed: [
+        "@vamos-ui/react is tree-shakeable: importing Button ships about 12 KB gzipped instead of the whole kit. Bundle budgets run in CI.",
+        "The registry version follows the kit version.",
+      ],
+    },
+  },
+  {
     version: "0.4.0",
     date: "2026-11-12",
     changes: {
