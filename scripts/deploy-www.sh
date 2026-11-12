@@ -27,9 +27,13 @@ fi
 ( cd apps/www && STATIC_EXPORT=1 NEXT_PUBLIC_ADMIN_URL="https://ui.vamos.ist/blocks" pnpm exec next build )
 OUT="apps/www/out"
 test -f "$OUT/index.html" && test -d "$OUT/docs"
+# AI-readable docs: /llms.txt, /llms-full.txt and a .md next to every docs page and block
+node scripts/llms.mjs "$OUT"
 # Apache: clean URLs, caching, security headers, custom 404
 cat > "$OUT/.htaccess" <<'HT'
 Options -Indexes
+AddType "text/markdown; charset=utf-8" .md
+AddType "text/plain; charset=utf-8" .txt
 ErrorDocument 404 /404.html
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
@@ -42,12 +46,16 @@ ErrorDocument 404 /404.html
     Header set Access-Control-Allow-Origin "*"
     Header set Cache-Control "public, max-age=300"
   </FilesMatch>
+  <FilesMatch "\.(md|txt)$">
+    Header set Cache-Control "public, max-age=300"
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
   <FilesMatch "\.html$">
     Header set Cache-Control "public, max-age=300"
   </FilesMatch>
 </IfModule>
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml application/xml
+  AddOutputFilterByType DEFLATE text/markdown text/html text/css text/plain text/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml application/xml
 </IfModule>
 <IfModule mod_rewrite.c>
   RewriteEngine On
