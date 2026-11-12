@@ -80,13 +80,13 @@ Follow these on every screen you build or edit. `npx vamos-ui verify` (MCP: `ver
 
 ## 11. Websites: launch checklist
 Use it when the screen is a public website (`site-*`, `page-*`, `legal-01` blocks), before it goes live. `npx vamos-ui site essentials` writes the files; `verify_design({ projectDir })` / `npx vamos-ui verify` reports what is still missing.
-- Legal pages: a page for every footer and consent link (`/privacy` or `/gizlilik`, `/kvkk`, `/cookies` or `/cerez-politikasi`, `/terms` or `/kullanim-kosullari`, `/accessibility`) from the `legal-01` presets; replace every [fill-in] field and have the business or a lawyer review the text. No internal link without a page (404).
+- Legal pages: a page for every footer and consent link (`/privacy` or `/gizlilik`, `/kvkk`, `/cookies` or `/cerez-politikasi`, `/terms` or `/kullanim-kosullari`, `/accessibility`; for a shop `/returns` or `/iade`, `/mesafeli-satis-sozlesmesi`, `/on-bilgilendirme-formu`; `/legal-notice` or `/yasal-uyari`) from the `legal-01` presets; replace every [fill-in] field and have the business or a lawyer review the text. No internal link without a page (404).
 - `robots.txt` and `sitemap.xml` (`app/robots.ts`, `app/sitemap.ts`) listing every public route.
-- Metadata: `metadataBase`, `alternates.canonical` on every page, `openGraph` (siteName, locale, image), a unique title and a 120–160 character description per page.
+- Metadata: `metadataBase`, `alternates.canonical` on every page, `openGraph` (siteName, locale, image), a unique title (under 60 characters) and a 120–160 character description per page; verify flags titles over 60 and descriptions outside 70–160.
 - JSON-LD: the kit `Footer` emits Organization; give it the business type (`jsonLd={{ "@type": "Restaurant" }}`) or add `<JsonLd>` / `localBusinessJsonLd` with address, phone and opening hours.
 - Real contact details: no placeholder phones (`000 00 00`, `555 55 55`, `wa.me/90500…`), no example.com or `.example` emails and links, no `href="#"`, no invented `maps.app.goo.gl` / `g.page` links (copy the share link from the business's Maps listing, or use `directionsUrl()`).
 - Working links: phone as `tel:`, email as `mailto:`, the map link opens the real listing.
-- Images: `sizes` matches the rendered width, so phones do not download images 2–3× larger than shown. Tap targets at least 24px (kit links already are).
+- Images: `sizes` matches the rendered width, so phones do not download images 2–3× larger than shown; files in `public/` under 300 KB (WebP/AVIF), verify flags heavier ones. Tap targets at least 24px (kit links already are).
 
 ## Suppressing a finding
 Only with a reason, on the line above: `// vamos-ui-ignore brand logo SVG needs its own fill`. `vamos-ui-ignore-file` skips a whole file (generated code only).

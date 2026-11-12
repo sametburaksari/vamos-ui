@@ -134,6 +134,20 @@ export function findRootDocument(root: string): string | undefined {
 }
 
 /** Every project-relative posix path (app routes, public/, sources) for the route and website checks. */
+/** Byte sizes of the raster images in public/ (for the image-weight check). */
+export function publicImageSizes(root: string, paths: string[]): Record<string, number> {
+  const sizes: Record<string, number> = {};
+  for (const p of paths) {
+    if (!p.startsWith("public/") || !/\.(?:jpe?g|png|webp|avif|gif)$/i.test(p)) continue;
+    try {
+      sizes[p] = statSync(path.join(root, p)).size;
+    } catch {
+      // vanished between listing and stat
+    }
+  }
+  return sizes;
+}
+
 export function listProjectPaths(root: string, limit = 20000): string[] {
   const out: string[] = [];
   const walk = (abs: string, rel: string) => {

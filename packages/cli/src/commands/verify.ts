@@ -55,10 +55,25 @@ export function listProjectPaths(root: string, limit = 20000): string[] {
   return out.sort();
 }
 
+/** Byte sizes of the raster images in public/ (for the image-weight check). */
+export function publicImageSizes(root: string, paths: string[]): Record<string, number> {
+  const sizes: Record<string, number> = {};
+  for (const p of paths) {
+    if (!p.startsWith("public/") || !/\.(?:jpe?g|png|webp|avif|gif)$/i.test(p)) continue;
+    try {
+      sizes[p] = statSync(path.join(root, p)).size;
+    } catch {
+      // vanished between listing and stat
+    }
+  }
+  return sizes;
+}
+
 /** Route and website-launch checks over the whole project, merged into the report by file. */
 export function addProjectChecks(root: string, files: string[], report: VerifyReport): VerifyReport {
   const sources = files.map((abs) => ({ path: path.relative(root, abs).split(path.sep).join("/"), content: readFileSync(abs, "utf8") }));
-  const issues = verifyProject({ paths: listProjectPaths(root), sources });
+  const paths = listProjectPaths(root);
+  const issues = verifyProject({ paths, sources, sizes: publicImageSizes(root, paths) });
   for (const { file, ...issue } of issues) {
     let entry = report.results.find((r) => r.file === file);
     if (!entry) report.results.push((entry = { file, issues: [] }));

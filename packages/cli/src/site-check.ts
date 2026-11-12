@@ -11,7 +11,15 @@ import type { VerifyIssue, VerifyRule } from "./verify";
 export const PROJECT_RULES: readonly VerifyRule[] = [
   { id: "missing-route", severity: "warning", description: "An internal link points to a route with no page in the app (it will 404)." },
   { id: "site-essentials", severity: "warning", description: "A website without robots, sitemap, metadataBase, canonical URLs, Open Graph or JSON-LD." },
+  { id: "meta-length", severity: "warning", description: "A page title over 60 characters or a meta description outside 70–160 characters (search results cut or ignore it)." },
+  { id: "image-weight", severity: "warning", description: "An image in public/ over 300 KB (slow first load on mobile)." },
 ];
+
+/** Search results show about 60 title characters and 70–160 description characters. */
+export const META_LIMITS = { title: 60, descriptionMin: 70, descriptionMax: 160 } as const;
+/** Images in public/ above this many bytes get a warning. */
+export const IMAGE_WEIGHT_LIMIT = 300 * 1024;
+const RASTER = /\.(?:jpe?g|png|webp|avif|gif)$/i;
 
 export interface ProjectSource {
   /** Project-relative posix path. */
@@ -24,6 +32,8 @@ export interface ProjectCheckInput {
   paths: string[];
   /** Sources to scan for links (usually the files `vamos-ui verify` checks). */
   sources: ProjectSource[];
+  /** Optional byte sizes by project-relative path (at least for images in public/), for the image-weight check. */
+  sizes?: Record<string, number>;
 }
 
 export interface ProjectIssue extends VerifyIssue {
@@ -97,6 +107,54 @@ function lineCol(code: string, offset: number): { line: number; column: number }
   return { line, column: offset - before.lastIndexOf("\n") };
 }
 
+/**
+ * Literal `title` / `description` values in Next.js metadata (`export const metadata`,
+ * `generateMetadata`, openGraph/twitter blocks). Template strings with `${…}` are skipped.
+ */
+export function metadataStrings(code: string): { key: "title" | "description"; value: string; offset: number }[] {
+  let strings;
+  try {
+    strings = lex(code).strings;
+  } catch {
+    return [];
+  }
+  // Only the metadata object / generateMetadata body: `title` and `description` keys elsewhere
+  // in the file (card data, props) are content, not metadata.
+  const regions: [number, number][] = [];
+  const mask = new Uint8Array(code.length);
+  for (const s of strings) mask.fill(1, s.start, s.end);
+  const inString = (i: number) => mask[i] === 1;
+  const head = /export\s+(?:const\s+metadata\b[^=]*=|(?:async\s+)?function\s+generateMetadata\s*\([^)]*\)[^{]*)/g;
+  for (let m; (m = head.exec(code)); ) {
+    let i = code.indexOf("{", m.index + m[0].length);
+    if (i < 0) continue;
+    const start = i;
+    let depth = 0;
+    for (; i < code.length; i++) {
+      if (inString(i)) continue;
+      if (code[i] === "{") depth++;
+      else if (code[i] === "}" && --depth === 0) break;
+    }
+    regions.push([start, i]);
+  }
+  if (!regions.length) return [];
+  const out: { key: "title" | "description"; value: string; offset: number }[] = [];
+  for (const s of strings) {
+    if (s.value.includes("${") || !regions.some(([a, b]) => s.start > a && s.start < b)) continue;
+    const before = code.slice(Math.max(0, s.start - 40), s.start);
+    const m = /\b(title|description|default)\s*:\s*$/.exec(before);
+    if (!m) continue;
+    // `title: { default: "…", template: "%s · Brand" }`: the default is the title.
+    if (m[1] === "default" && !/\btitle\s*:\s*\{[^{}]*$/.test(code.slice(Math.max(0, s.start - 200), s.start))) continue;
+    out.push({ key: m[1] === "description" ? "description" : "title", value: s.value, offset: s.start + 1 });
+  }
+  return out;
+}
+
+function fmtKB(bytes: number): string {
+  return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
+}
+
 /** True when the project builds a public website with the kit's site blocks. */
 export function usesSiteBlocks(input: ProjectCheckInput): boolean {
   if (input.paths.some((p) => /(?:^|\/)blocks\/(?:site|page|legal)-[a-z0-9-]+\//.test(p))) return true;
@@ -126,7 +184,7 @@ export function verifyProject(input: ProjectCheckInput): ProjectIssue[] {
           rule: "missing-route",
           severity: "warning",
           message: `Link to ${clean} has no page in the app, so it returns 404.`,
-          fix: /^\/(?:privacy|gizlilik|kvkk|terms|cookies|cerez|kullanim|accessibility|erisilebilirlik)/.test(clean)
+          fix: /^\/(?:privacy|gizlilik|kvkk|terms|cookies|cerez|kullanim|accessibility|erisilebilirlik|returns|refund|iade|cayma|distance-sales|mesafeli|pre-information|on-bilgilendirme|legal-notice|imprint|impressum|yasal-uyari)/.test(clean)
             ? "Run `npx vamos-ui site essentials` to write the legal pages (legal-01), or remove the link."
             : `Create ${appDir ?? "app"}${clean}/page.tsx, add a redirect, or remove the link.`,
           ...lineCol(src.content, h.offset),
@@ -153,6 +211,52 @@ export function verifyProject(input: ProjectCheckInput): ProjectIssue[] {
     const hasLd = /application\/ld\+json|<JsonLd\b/.test(all) || (/<Footer\b/.test(all) && !/jsonLd=\{false\}/.test(all));
     if (!hasLd) {
       push(layoutPath ?? `${appDir}/layout.tsx`, "No JSON-LD structured data (Organization / LocalBusiness).", "The kit Footer emits Organization JSON-LD; or render <JsonLd data={…} /> with the business type, address, phone and opening hours.");
+    }
+
+    // Title and description lengths in page/layout metadata.
+    for (const src of input.sources) {
+      if (!src.path.startsWith(`${appDir}/`)) continue;
+      for (const m of metadataStrings(src.content)) {
+        const n = [...m.value].length;
+        // A "%s · Brand" template adds the brand, so only flag clearly long titles.
+        const message =
+          m.key === "title"
+            ? n > META_LIMITS.title
+              ? `Title is ${n} characters; search results cut it after about ${META_LIMITS.title}.`
+              : null
+            : n < META_LIMITS.descriptionMin
+              ? `Meta description is ${n} characters; under ${META_LIMITS.descriptionMin} Google usually replaces it with page text.`
+              : n > META_LIMITS.descriptionMax
+                ? `Meta description is ${n} characters; search results cut it after about ${META_LIMITS.descriptionMax}.`
+                : null;
+        if (!message) continue;
+        issues.push({
+          file: src.path,
+          rule: "meta-length",
+          severity: "warning",
+          message,
+          fix: m.key === "title" ? "Lead with what the page is and where (\"Ceramics studio in Kadıköy\"), brand last." : "Write one or two sentences (70–160 characters) that say what the visitor gets and why this business.",
+          ...lineCol(src.content, m.offset),
+        });
+      }
+    }
+  }
+
+  // --- heavy images in public/ ---------------------------------------------------
+  if (input.sizes) {
+    for (const p of input.paths) {
+      if (!p.startsWith("public/") || !RASTER.test(p)) continue;
+      const size = input.sizes[p];
+      if (size === undefined || size <= IMAGE_WEIGHT_LIMIT) continue;
+      issues.push({
+        file: p,
+        rule: "image-weight",
+        severity: "warning",
+        message: `${p} is ${fmtKB(size)}; images over ${fmtKB(IMAGE_WEIGHT_LIMIT)} slow the first load on mobile.`,
+        fix: "Resize to the largest size it is shown at (2× for retina), export as WebP or AVIF, and render it with next/image and a sizes attribute.",
+        line: 1,
+        column: 1,
+      });
     }
   }
   return issues;

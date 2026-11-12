@@ -5,7 +5,7 @@ description: Build interfaces with Vamos UI, the token-based design layer and Re
 
 # Vamos UI
 
-Vamos UI is a framework-neutral design layer: CSS tokens, five theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 150 components) and 146 blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
+Vamos UI is a framework-neutral design layer: CSS tokens, five theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 150 components) and 150+ blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
 
 Whole screens come from blocks. Components come from the kit. Colours, spacing, radius, type and z-index come from tokens. You choose content, structure and states.
 
@@ -52,7 +52,7 @@ Look at the screen (or reason through it when you cannot render) in:
 
 ### 7. Websites: before launch
 Use it when the project is a public website built from `site-*` / `page-*` blocks.
-- `npx vamos-ui add site-…` in a Next.js App Router project also writes `app/robots.ts`, `app/sitemap.ts` and a page for each legal link the block has (`/privacy`, `/kvkk`, `/gizlilik`, `/cookies`, `/terms`, `/accessibility` …) rendering `legal-01`; it never replaces an existing file. For an existing project run `npx vamos-ui site essentials`.
+- `npx vamos-ui add site-…` in a Next.js App Router project also writes `app/robots.ts`, `app/sitemap.ts` and a page for each legal link the block has (`/privacy`, `/kvkk`, `/gizlilik`, `/cookies`, `/terms`, `/accessibility`, `/iade`, `/mesafeli-satis-sozlesmesi`, `/yasal-uyari` …) rendering `legal-01`; it never replaces an existing file. For an existing project run `npx vamos-ui site essentials`.
 - The legal presets are template text: replace every [fill-in] field and have the business or a lawyer review them.
 - Root metadata: `metadataBase`, `alternates.canonical`, `openGraph`, a 120–160 character description; each page its own title and canonical.
 - JSON-LD: the kit `Footer` emits Organization; set the business type (`jsonLd={{ "@type": "Dentist" }}`) or add `<JsonLd>` / `localBusinessJsonLd`.

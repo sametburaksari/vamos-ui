@@ -1,7 +1,7 @@
 import type { VerifyIssue } from "./types.js";
 
 export type VerifySource = (code: string, filename: string) => VerifyIssue[];
-export type VerifyProject = (input: { paths: string[]; sources: { path: string; content: string }[] }) => (VerifyIssue & { file: string })[];
+export type VerifyProject = (input: { paths: string[]; sources: { path: string; content: string }[]; sizes?: Record<string, number> }) => (VerifyIssue & { file: string })[];
 
 let project: VerifyProject | null | undefined;
 

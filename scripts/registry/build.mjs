@@ -23,7 +23,8 @@ const SHARED_DIR = "_shared";
 const SHARED_ITEM = "blocks-shared";
 
 export const REGISTRY_NAME = "vamos-ui";
-export const REGISTRY_VERSION = "0.2.0";
+/** Follows the kit: registry items are the @vamos-ui/react sources at this version. */
+export const REGISTRY_VERSION = JSON.parse(fs.readFileSync(new URL("../../packages/ui/package.json", import.meta.url), "utf8")).version;
 export const HOMEPAGE = "https://ui.vamos.ist";
 export const STYLES = "styles";
 
