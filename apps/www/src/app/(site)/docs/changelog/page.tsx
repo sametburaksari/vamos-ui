@@ -30,7 +30,7 @@ const releases: Release[] = [
         "The /themes editor's corner control is independent of the accent; the generated brand accent is only used for a custom colour.",
       ],
       Fixed: [
-        "MCP 0.2.10: the hosted `audit_site` decodes gzip, deflate and br responses. 0.2.9 read compressed pages as raw bytes and reported a missing title, description and sitemap on sites that have them.",
+        "MCP 0.2.11: the hosted `audit_site` decodes gzip, deflate and br responses. 0.2.9 and 0.2.10 read compressed pages as raw bytes and reported a missing title, description and sitemap on sites that have them.",
       ],
     },
   },
