@@ -38,5 +38,5 @@ export async function middleware(req: NextRequest) {
 
 // /giris, auth API'leri, statik varlıklar hariç her şeyi koru.
 export const config = {
-  matcher: ["/((?!giris|api/auth|_next/static|_next/image|favicon.ico|logos).*)"],
+  matcher: ["/((?!giris|api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|svg|gif|webp|ico)).*)"],
 };
