@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { LogIn, ShieldCheck } from "lucide-react";
 import { Card, CardBody, CardHeader, CardFooter, Field, Input, NativeSelect, Button, Alert } from "@vamos-cms/ui";
 import { TR_MONTHS } from "@/lib/no17-bday";
+import { Logo } from "@/components/logo";
 
 const days = Array.from({ length: 31 }, (_, i) => ({ value: String(i + 1), label: String(i + 1) }));
 const months = TR_MONTHS.map((m, i) => ({ value: String(i), label: m }));
@@ -51,7 +52,7 @@ function GirisForm() {
     <main className="grid min-h-dvh place-items-center bg-canvas px-4 py-10">
       <div className="w-full max-w-[400px]">
         <div className="mb-5 text-center">
-          <div className="mx-auto mb-3 grid size-12 place-items-center rounded-ui-lg bg-nav text-[color:var(--nav-fg-strong)] font-bold">17</div>
+          <Logo className="mx-auto mb-4 h-12 w-auto" />
           <h1 className="text-lg font-semibold tracking-[-0.01em]">NO:17 Paneli</h1>
           <p className="mt-1 text-sm text-fg-muted">Üyelik bilgilerinle giriş yap.</p>
         </div>
