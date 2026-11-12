@@ -117,7 +117,7 @@ describe("get_theming / get_rules", () => {
   it("covers the core rules", () => {
     const rules = getRules();
     expect(rules).toBe(RULES);
-    for (const phrase of ["Tokens only", "Accent is scarce", "glass budget", "Density", "purple", "emoji", "Inter", "card walls", "Realistic content", "aria-label"]) {
+    for (const phrase of ["Tokens only", "Accent is scarce", "glass budget", "Density", "purple", "emoji", "Inter", "card walls", "Realistic content", "aria-label", "launch checklist", "robots.txt", "canonical", "JSON-LD", "/kvkk"]) {
       expect(rules.toLowerCase()).toContain(phrase.toLowerCase());
     }
   });
@@ -146,6 +146,14 @@ describe("plan_screen", () => {
     expect(out).toMatch(/\*\*`list-01`\*\*/);
     expect(out).toMatch(/- `date-range-picker`/);
     expect(out).toMatch(/npx vamos-ui add list-01 date-range-picker/);
+  });
+
+  it("adds the website launch checklist for website screens only", async () => {
+    const site = await planScreen(registry, { description: "Restaurant website landing page with menu and reservations" });
+    expect(site).toMatch(/## Website launch checklist/);
+    expect(site).toMatch(/legal-01/);
+    expect(site).toMatch(/vamos-ui site essentials/);
+    expect(await planScreen(registry, { description: "Ops dashboard with revenue chart and KPI cards" })).not.toMatch(/launch checklist/);
   });
 
   it("understands Turkish descriptions", async () => {

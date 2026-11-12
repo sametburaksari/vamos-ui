@@ -31,13 +31,14 @@ import {
   MAX_FILES,
   collectSourceFiles,
   insideProject,
+  listProjectPaths,
   readProjectConfig,
   resolveProjectDir,
   toPosix,
 } from "./project.js";
 import { formatIssues } from "./tools.js";
 import type { Brand, BrandIssue, GeneratedAccent, VerifyIssue } from "./types.js";
-import { loadVerifier, verifierLoadError } from "./verify.js";
+import { loadProjectVerifier, loadVerifier, verifierLoadError, type VerifyProject } from "./verify.js";
 
 /** A tool answer: readable text plus the same facts as structured content. */
 export interface ToolAnswer {
@@ -445,16 +446,27 @@ async function requireVerifier() {
   return verify;
 }
 
-function verifyProjectFiles(root: string, verify: (code: string, filename: string) => VerifyIssue[], paths: string[] | undefined) {
+function verifyProjectFiles(root: string, verify: (code: string, filename: string) => VerifyIssue[], paths: string[] | undefined, project: VerifyProject | null = null) {
   const config = readProjectConfig(root);
   const inputs = paths?.length ? paths : DEFAULT_ROOTS.filter((r) => existsSync(path.join(root, r)));
   const exclude = !paths?.length && config ? [config.uiDir] : [];
   const collected = collectSourceFiles(root, inputs, exclude);
   const results: FileResult[] = [];
+  const sources: { path: string; content: string }[] = [];
   for (const abs of collected.files) {
     const rel = toPosix(path.relative(root, abs));
-    const issues = verify(readFileSync(abs, "utf8"), rel);
+    const content = readFileSync(abs, "utf8");
+    sources.push({ path: rel, content });
+    const issues = verify(content, rel);
     if (issues.length) results.push({ file: rel, issues });
+  }
+  // Whole-project checks (links to missing routes, website launch basics) only when no paths narrow it.
+  if (project && !paths?.length) {
+    for (const { file, ...issue } of project({ paths: listProjectPaths(root), sources })) {
+      let entry = results.find((r) => r.file === file);
+      if (!entry) results.push((entry = { file, issues: [] }));
+      entry.issues.push(issue);
+    }
   }
   const count = (s: VerifyIssue["severity"]) => results.reduce((n, r) => n + r.issues.filter((i) => i.severity === s).length, 0);
   return { inputs, collected, results, errors: count("error"), warnings: count("warning") };
@@ -472,7 +484,7 @@ export async function verifyDesign(args: VerifyDesignArgs): Promise<ToolAnswer> 
   const root = resolveProjectDir(args.projectDir);
   const verify = await requireVerifier();
   const lib = await loadBrandLib();
-  const code = verifyProjectFiles(root, verify, args.paths);
+  const code = verifyProjectFiles(root, verify, args.paths, await loadProjectVerifier());
 
   const loaded = readBrand(root);
   let brandProblems: BrandIssue[] = [];
@@ -581,7 +593,7 @@ export async function updateDesign(args: { projectDir: string; paths?: string[] 
   }
 
   if (verify) {
-    const code = verifyProjectFiles(root, verify, args.paths);
+    const code = verifyProjectFiles(root, verify, args.paths, await loadProjectVerifier());
     const byRule = new Map<string, { count: number; files: Set<string> }>();
     for (const r of code.results) for (const i of r.issues) {
       const entry = byRule.get(i.rule) ?? { count: 0, files: new Set<string>() };

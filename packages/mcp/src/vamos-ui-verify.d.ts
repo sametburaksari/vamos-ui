@@ -10,4 +10,8 @@ declare module "vamos-ui/verify" {
     fix?: string;
   }
   export function verifySource(code: string, filename: string): VerifyIssue[];
+  export interface ProjectIssue extends VerifyIssue {
+    file: string;
+  }
+  export function verifyProject(input: { paths: string[]; sources: { path: string; content: string }[] }): ProjectIssue[];
 }
