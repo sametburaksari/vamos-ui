@@ -52,9 +52,7 @@ function GirisForm() {
     <main className="grid min-h-dvh place-items-center bg-canvas px-4 py-10">
       <div className="w-full max-w-[400px]">
         <div className="mb-5 text-center">
-          <Logo className="mx-auto mb-4 h-12 w-auto" />
-          <h1 className="text-lg font-semibold tracking-[-0.01em]">NO:17 Paneli</h1>
-          <p className="mt-1 text-sm text-fg-muted">Üyelik bilgilerinle giriş yap.</p>
+          <Logo className="mx-auto h-12 w-auto" />
         </div>
 
         <Card asChild>
