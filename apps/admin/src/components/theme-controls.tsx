@@ -12,10 +12,7 @@ const fontsList = [
   { id: "system", label: "System" },
 ];
 const accents = [
-  { id: "lime", color: "oklch(0.89 0.21 122)" },
-  { id: "ocean", color: "oklch(0.64 0.17 245)" },
-  { id: "ember", color: "oklch(0.7 0.19 45)" },
-  { id: "rose", color: "oklch(0.66 0.21 10)" },
+  { id: "fener", color: "#ffe400" },
   { id: "graphite", color: "oklch(0.3 0.01 120)" },
 ];
 
@@ -37,7 +34,7 @@ export function ThemeControls() {
     setS({
       dark: h.classList.contains("dark"),
       material: (h.dataset.material as State["material"]) ?? "glass",
-      accent: h.dataset.accent ?? "lime",
+      accent: h.dataset.accent ?? "fener",
       density: (h.dataset.density as State["density"]) ?? "comfortable",
       font: h.dataset.font ?? "editorial",
     });
