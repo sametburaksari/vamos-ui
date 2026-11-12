@@ -83,7 +83,7 @@ export const Menubar = React.forwardRef<React.ElementRef<typeof MenubarPrimitive
 });
 
 /** One menu: a `MenubarTrigger` plus its `MenubarContent`. `value` is needed only for a controlled bar. */
-export const MenubarMenu = MenubarPrimitive.Menu;
+export const MenubarMenu: typeof MenubarPrimitive.Menu = MenubarPrimitive.Menu;
 export const MenubarGroup = MenubarPrimitive.Group;
 export const MenubarSub = MenubarPrimitive.Sub;
 export const MenubarRadioGroup = MenubarPrimitive.RadioGroup;
