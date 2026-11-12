@@ -47,6 +47,7 @@ import metaError50001 from "./error-500-01/meta";
 import metaForgotPassword01 from "./forgot-password-01/meta";
 import metaForm01 from "./form-01/meta";
 import metaForm02 from "./form-02/meta";
+import metaLegal01 from "./legal-01/meta";
 import metaList01 from "./list-01/meta";
 import metaList02 from "./list-02/meta";
 import metaList03 from "./list-03/meta";
@@ -205,6 +206,7 @@ export const blocks: BlockEntry[] = [
   { ...metaForgotPassword01, name: "forgot-password-01", load: () => import("./forgot-password-01/page") },
   { ...metaForm01, name: "form-01", load: () => import("./form-01/page") },
   { ...metaForm02, name: "form-02", load: () => import("./form-02/page") },
+  { ...metaLegal01, name: "legal-01", load: () => import("./legal-01/page") },
   { ...metaList01, name: "list-01", load: () => import("./list-01/page") },
   { ...metaList02, name: "list-02", load: () => import("./list-02/page") },
   { ...metaList03, name: "list-03", load: () => import("./list-03/page") },
