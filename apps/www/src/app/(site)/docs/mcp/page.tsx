@@ -52,7 +52,7 @@ export default function McpPage() {
       <P>
         The Vamos UI MCP server lets an AI assistant work with the kit the way its docs describe it: find the right component or
         block, read its real API, plan a screen, give you the install command and check the code it writes against the kit&apos;s
-        rules. It reads the public registry at <C>https://ui.vamos.ist/r</C>, which currently lists 150 components and 153 blocks
+        rules. It reads the public registry at <C>https://ui.vamos.ist/r</C>, which currently lists 150+ components and 150+ blocks
         (dashboards, lists, detail pages, settings, sign-in screens and 59 website pages).
       </P>
       <Table
