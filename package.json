@@ -1,7 +1,7 @@
 {
   "name": "vamos-cms",
   "private": true,
-  "packageManager": "pnpm@11.13.0",
+  "packageManager": "pnpm@9.15.9",
   "engines": {
     "node": ">=22"
   },

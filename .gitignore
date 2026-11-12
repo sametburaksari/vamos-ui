@@ -23,3 +23,4 @@ docs/AGENT-BRIEF.md
 apps/admin/src/lib/no17-roster.generated.ts
 apps/admin/src/data/no17-records.json
 apps/admin/src/data/no17-tickets.generated.json
+.vercel
