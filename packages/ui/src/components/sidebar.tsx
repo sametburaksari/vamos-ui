@@ -859,6 +859,8 @@ export interface AppSwitcherApp {
   name: string;
   description?: string;
   icon?: React.ComponentType<{ className?: string; strokeWidth?: number }> | React.ReactNode;
+  /** Optional brand mark (e.g. a wordmark logo). Shown in place of the icon+name tile when the sidebar is expanded. */
+  logo?: React.ReactNode;
   href: string;
 }
 
@@ -904,7 +906,9 @@ export function AppSwitcher({ apps, activeApp, onSelect, subtitle, workspaces, a
   const single = apps.length < 2 && !(workspaces && workspaces.length > 1);
   const workspace = workspaces?.find((w) => w.id === activeWorkspace);
 
-  const tile = (
+  const tile = app.logo && !collapsed ? (
+    <span className="flex min-w-0 flex-1 items-center">{app.logo}</span>
+  ) : (
     <>
       <span className="grid size-8 shrink-0 place-items-center rounded-[9px] bg-accent text-accent-fg [&_svg]:size-[17px]">
         <AppIcon icon={app.icon} />

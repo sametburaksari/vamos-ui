@@ -77,6 +77,8 @@ export interface AppDefinition {
   name: string;
   description?: string;
   icon?: React.ComponentType<{ className?: string; strokeWidth?: number }> | React.ReactNode;
+  /** Optional brand mark (wordmark logo) shown instead of icon+name in the expanded sidebar header. */
+  logo?: React.ReactNode;
   /** App home. An absolute URL (separately deployed app) triggers a full navigation. */
   href: string;
   /** Path prefix that belongs to the app. Default: `href`. */
@@ -458,7 +460,7 @@ export const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function
     <>
       <SidebarHeader>
         <AppSwitcher
-          apps={ctx.apps.map((a) => ({ id: a.id, name: a.name, description: a.description, icon: a.icon, href: a.href }))}
+          apps={ctx.apps.map((a) => ({ id: a.id, name: a.name, description: a.description, icon: a.icon, logo: a.logo, href: a.href }))}
           activeApp={activeApp.id}
           onSelect={ctx.switchApp}
           workspaces={ctx.workspaces}
