@@ -9,9 +9,14 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "changeset": "changeset",
+    "release:version": "node scripts/release/version.mjs",
+    "release:check": "node scripts/release/check.mjs",
+    "release:publish": "node scripts/release/publish.mjs"
   },
   "devDependencies": {
+    "@changesets/cli": "^3.0.3",
     "turbo": "^2.5.8",
     "typescript": "^5.9.3"
   },

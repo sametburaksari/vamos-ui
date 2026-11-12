@@ -1,0 +1,56 @@
+# Releases from main, without npm tokens.
+#
+# - Pending changesets (.changeset/*.md): opens or updates the "Version packages" pull request
+#   (pnpm release:version: versions, dated CHANGELOG.md files, version constants).
+# - No pending changesets (that pull request was merged): pnpm release:publish builds and packs
+#   every package, installs the tarballs with npm and smoke-tests them, publishes the versions
+#   that are not on npm yet with provenance, and creates a git tag and GitHub release for each.
+#
+# npm trusted publishing: each package on npmjs.com → Settings → Trusted publisher → GitHub
+# Actions, repository sametburaksari/vamos-ui, workflow release.yml. No NPM_TOKEN secret.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # tags, GitHub releases, the version branch
+  pull-requests: write # the "Version packages" pull request
+  id-token: write # npm trusted publishing + provenance
+
+jobs:
+  release:
+    name: Version or publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+      # Trusted publishing needs npm 11.5.1 or later; Node 22 ships npm 10.
+      - run: npm install -g npm@11
+      - run: pnpm install --frozen-lockfile
+      - run: git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - uses: changesets/action@v1
+        with:
+          version: pnpm release:version
+          publish: pnpm release:publish
+          title: "release: version packages"
+          commit: "release: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_OPTIONS: --max-old-space-size=6144
