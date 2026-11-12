@@ -64,7 +64,16 @@ const REMOTE_NOTE =
 
 export function createServer(options: CreateServerOptions = {}): { server: McpServer; registry: Registry } {
   const registry = options.registry ?? new Registry(options);
-  const server = new McpServer({ name: SERVER_NAME, version: SERVER_VERSION }, { instructions: options.remote === true ? REMOTE_INSTRUCTIONS : LOCAL_INSTRUCTIONS });
+  const server = new McpServer({
+    name: SERVER_NAME,
+    title: "Vamos UI",
+    version: SERVER_VERSION,
+    websiteUrl: "https://ui.vamos.ist",
+    icons: [
+      { src: "https://mcp.vamos.ist/icon-512.png", mimeType: "image/png", sizes: ["512x512"] },
+      { src: "https://mcp.vamos.ist/icon.svg", mimeType: "image/svg+xml", sizes: ["any"] },
+    ],
+  }, { instructions: options.remote === true ? REMOTE_INSTRUCTIONS : LOCAL_INSTRUCTIONS });
   const readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false } as const;
   const remote = options.remote === true;
   const local = <T,>(fn: () => T): T | undefined => (remote ? undefined : fn());
