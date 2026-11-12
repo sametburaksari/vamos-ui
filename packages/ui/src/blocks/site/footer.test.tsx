@@ -58,4 +58,19 @@ describe("Footer", () => {
     expect(screen.getByRole("button", { name: /Subscribe/ })).toBeInTheDocument();
     expect(footerBlock.schema.safeParse(footerBlock.sample()).success).toBe(true);
   });
+
+  it("emits Organization JSON-LD by default, refinable and switchable off", () => {
+    const ld = (c: HTMLElement) => [...c.querySelectorAll('script[type="application/ld+json"]')].map((n) => JSON.parse(n.textContent ?? "{}"));
+    const { container, unmount } = render(<Footer {...props} brand={{ name: "Vamos", href: "https://studio.example/" }} />);
+    const [doc] = ld(container);
+    expect(doc).toMatchObject({ "@context": "https://schema.org", "@type": "Organization", name: "Vamos", legalName: "Vamos Dijital Ajans Ltd. Şti.", url: "https://studio.example/", telephone: "+902160000000" });
+    expect(doc.address).toMatchObject({ "@type": "PostalAddress", addressCountry: "TR" });
+    expect(doc.sameAs).toHaveLength(2);
+    unmount();
+    const refined = render(<Footer {...props} jsonLd={{ "@type": "Dentist" }} />);
+    expect(ld(refined.container)[0]["@type"]).toBe("Dentist");
+    refined.unmount();
+    const off = render(<Footer {...props} jsonLd={false} />);
+    expect(ld(off.container)).toHaveLength(0);
+  });
 });

@@ -32,7 +32,8 @@ Every file the CLI writes is recorded with its sha256 in `<uiDir>/.vamos-lock.js
 | `preset [code]` | Prints the project's shareable preset code, or explains a code. See [Preset codes](#preset-codes). |
 | `registry build [dir]` | Builds a third-party registry (`<item>.json` + `index.json`) from `components/`, `lib/` and `blocks/<name>/`, with an optional `registry.json`. `--out` (default `<dir>/r`), `--homepage`, `--name`, `--dry-run`, `--strict`. |
 | `mcp add` | Writes the MCP server config for `--client claude\|cursor\|vscode\|windsurf\|codex\|gemini` (detected when left out; Claude Code as fallback). Idempotent; `--print` shows the config without writing. |
-| `verify [paths...]` | Lints for design-rule and accessibility issues and exits 1 on errors. By default it checks `src/`, `app/`, `components/`, `pages/` and `lib/`, and skips the kit folder. `--json`, `--quiet`. |
+| `verify [paths...]` | Lints for design-rule and accessibility issues and exits 1 on errors. By default it checks `src/`, `app/`, `components/`, `pages/` and `lib/`, skips the kit folder, and also runs the project checks (`missing-route`, `site-essentials`). `--json`, `--quiet`. |
+| `site essentials` | For a Next.js App Router website: writes `app/site.ts`, `app/robots.ts`, `app/sitemap.ts` and a page per legal link the `site-*` blocks have (`/privacy`, `/kvkk`, `/gizlilik`, `/cookies`, `/cerez-politikasi`, `/terms`, `/kullanim-kosullari`, `/accessibility`) rendering `legal-01`. Never replaces a file. Prints the root metadata to add and the links that still have no page. `add site-…` runs it too (`--no-essentials` to skip). |
 | `brand init` | Creates `vamos.brand.json` step by step: name, accent (with a live palette and contrast preview), fonts from the kit catalog (searchable, or a curated pairing), theme defaults and voice. Without a terminal, pass `--name`, `--accent`, `--display`, `--body`, `--mono`, `--radius`, `--tone`. |
 | `brand import <url\|path>` | Proposes a brand from a website (page + up to 8 same-site or CDN stylesheets), a folder of brand files (SVG/PNG logos, CSS, Markdown/text/PDF guidelines) or a single logo, with the evidence for every value. `--yes` accepts, `--no-download` keeps remote logo URLs instead of saving them to `brand/`. |
 | `brand apply` | Writes `<uiDir>/brand.css`, imports it once after the kit styles, sets `theme.accent`/`theme.font` to `brand` in `vamos.json`, and prints the `<html>` attributes plus the `next/font` or Google Fonts setup. |
@@ -159,16 +160,23 @@ Like `vamos-ui/verify`, `vamos-ui/brand` has no dependencies and no Node built-i
 | `use-client` | error | React hooks in a file under `app/` without `"use client"` |
 | `z-index-token` | warning | `z-[999]`, `z-50`, `zIndex: 1000` instead of the z tokens |
 | `prefer-kit-component` | warning | hand-rolled dialog/menu/listbox/tooltip markup, native `<select>` |
+| `placeholder-content` | warning | demo phones (`000 00 00`, `555 55 55`, `wa.me/90500…`), example.com / `.example` emails and URLs, `href="#"`, invented `maps.app.goo.gl` / `g.page` links, `[fill-in]` fields |
+| `missing-route` | warning | project mode: an internal link to a route with no page in `app/` / `pages/` (or file in `public/`) |
+| `site-essentials` | warning | project mode, website projects: no robots, sitemap, `metadataBase`, canonical, Open Graph or JSON-LD |
 
 To silence a finding, put a comment containing `vamos-ui-ignore` on the same line or the line above. `vamos-ui-ignore-file` anywhere in a file skips the whole file. CSS files are checked for raw colours, fonts and z-index too.
 
 ### Library use
 
 ```ts
-import { verifySource, VERIFY_RULES, type VerifyIssue } from "vamos-ui/verify";
+import { verifyProject, verifySource, VERIFY_RULES, type VerifyIssue } from "vamos-ui/verify";
 
 const issues: VerifyIssue[] = verifySource(code, "src/app/page.tsx");
 // { rule, severity: "error" | "warning", message, line, column, fix? }[]
+
+// Project checks: pass every project path and the sources to scan.
+const projectIssues = verifyProject({ paths, sources: [{ path: "src/app/page.tsx", content: code }] });
+// { file, rule, severity, message, line, column, fix? }[]
 ```
 
 `vamos-ui/verify` has no dependencies and no Node built-ins. It works on regexes and tokens, so it runs anywhere and is fast: about 0.4 s for the whole kit.
