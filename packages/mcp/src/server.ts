@@ -19,7 +19,7 @@ import {
 } from "./tools.js";
 
 export const SERVER_NAME = "vamos-ui";
-export const SERVER_VERSION = "0.2.5";
+export const SERVER_VERSION = "0.2.6";
 
 const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
@@ -65,10 +65,9 @@ const REMOTE_NOTE =
 export function createServer(options: CreateServerOptions = {}): { server: McpServer; registry: Registry } {
   const registry = options.registry ?? new Registry(options);
   const server = new McpServer({ name: SERVER_NAME, version: SERVER_VERSION }, { instructions: options.remote === true ? REMOTE_INSTRUCTIONS : LOCAL_INSTRUCTIONS });
-  const readOnly = { readOnlyHint: true, openWorldHint: false } as const;
+  const readOnly = { readOnlyHint: true, destructiveHint: false, openWorldHint: false } as const;
   const remote = options.remote === true;
   const local = <T,>(fn: () => T): T | undefined => (remote ? undefined : fn());
-
   // --- tools ------------------------------------------------------------------
 
   server.registerTool(
@@ -189,7 +188,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         code: z.string().describe("The full file contents."),
         filename: z.string().min(1).describe('Path of the file, e.g. "app/invoices/page.tsx" (used for the "use client" rule and messages).'),
       },
-      annotations: { title: "Verify UI code", readOnlyHint: true, openWorldHint: false, idempotentHint: true },
+      annotations: { title: "Verify UI code", readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
     },
     (args) =>
       run(async () => {
@@ -236,20 +235,39 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
   )
   );
 
+  const importShape = {
+    url: z.string().min(1).optional().describe("Page to read, e.g. https://example.com. http(s) only."),
+    html: z.string().min(1).optional().describe("Page source, when the site cannot be fetched (login, bot protection) or you already have it."),
+    css: z.array(z.string()).optional().describe("Extra stylesheet sources to consider (with html, or in addition to the linked ones)."),
+    base_url: z.string().optional().describe("Base URL to resolve relative links in html."),
+    name: z.string().optional().describe("Brand name, if the user already told you."),
+  };
+  const remoteImportShape = {
+    html: z.string().min(1).describe("The page source to read."),
+    css: z.array(z.string()).optional().describe("Extra stylesheet sources to consider."),
+    name: z.string().optional().describe("Brand name, if the user already told you."),
+  };
+  const verifyShape = {
+    code: z.string().optional().describe("One file's contents."),
+    filename: z.string().optional().describe('Its path, e.g. "app/page.tsx" (with code).'),
+    projectDir: projectDir.optional(),
+    paths: z.array(z.string().min(1)).optional().describe("Project-relative files or folders to lint instead of the defaults (src, app, components, pages, lib)."),
+  };
+  const remoteVerifyShape = {
+    code: z.string().min(1).describe("One file's contents."),
+    filename: z.string().optional().describe('Its path, e.g. "app/page.tsx".'),
+  };
+
   server.registerTool(
     "import_design_system",
     {
       title: "Import a design system from a website",
       description:
-        "Reads a web page (url) or page source (html, optional css and base_url) and drafts a vamos.brand.json: accent from theme-color / CSS variables / most-used colours, fonts from font-family and Google Fonts links, logo and icon candidates, voice hints from title/description. Returns the draft, the evidence for each value, a contrast-checked accent and what is missing. Writes nothing. The draft is meant to be confirmed with the user before it is saved. The hosted server accepts pasted html only (no URL fetching). Docs: https://ui.vamos.ist/docs/mcp/ and https://ui.vamos.ist/docs/theming/",
-      inputSchema: {
-        url: z.string().min(1).optional().describe("Page to read, e.g. https://example.com. http(s) only."),
-        html: z.string().min(1).optional().describe("Page source, when the site cannot be fetched (login, bot protection) or you already have it."),
-        css: z.array(z.string()).optional().describe("Extra stylesheet sources to consider (with html, or in addition to the linked ones)."),
-        base_url: z.string().optional().describe("Base URL to resolve relative links in html."),
-        name: z.string().optional().describe("Brand name, if the user already told you."),
-      },
-      annotations: { title: "Import a design system from a website", readOnlyHint: true, openWorldHint: true },
+        remote
+          ? "Drafts a vamos.brand.json from pasted page source (html, optional css): accent from theme-color / CSS variables / most-used colours, fonts from font-family and Google Fonts links, logo and icon candidates, voice hints from title/description. Returns the draft, the evidence for each value, a contrast-checked accent and what is missing. It does not fetch URLs and writes nothing. The draft is meant to be confirmed with the user. Docs: https://ui.vamos.ist/docs/mcp/"
+          : "Reads a web page (url) or page source (html, optional css and base_url) and drafts a vamos.brand.json: accent from theme-color / CSS variables / most-used colours, fonts from font-family and Google Fonts links, logo and icon candidates, voice hints from title/description. Returns the draft, the evidence for each value, a contrast-checked accent and what is missing. Writes nothing. The draft is meant to be confirmed with the user before it is saved. Docs: https://ui.vamos.ist/docs/mcp/ and https://ui.vamos.ist/docs/theming/",
+      inputSchema: remote ? (remoteImportShape as unknown as typeof importShape) : importShape,
+      annotations: { title: "Import a design system from a website", readOnlyHint: true, destructiveHint: false, openWorldHint: !remote },
     },
     (args) =>
       run(async () => {
@@ -268,7 +286,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         colour: z.string().min(1).describe('Any CSS colour: "#0f766e", "rgb(15 118 110)", "oklch(0.55 0.1 180)", "teal".'),
         dark: z.string().optional().describe("Optional dark-mode fill (colors.accentDark), when the brand has one."),
       },
-      annotations: { title: "Propose a brand accent", readOnlyHint: true, openWorldHint: false, idempotentHint: true },
+      annotations: { title: "Propose a brand accent", readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
     },
     (args) => run(async () => answer(await proposeAccent(args))),
   );
@@ -299,14 +317,11 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Verify the design system",
       description:
-        "Checks UI against the kit rules and the brand. With code (+ filename): lints one file. With projectDir: lints the project's source (skipping the kit folder) and checks vamos.brand.json, its assets, brand.css, the CSS import, vamos.json and the <html> attributes. Lists what it cannot check (screenshots, voice). Useful as a final check before a UI task is finished.",
-      inputSchema: {
-        code: z.string().optional().describe("One file's contents."),
-        filename: z.string().optional().describe('Its path, e.g. "app/page.tsx" (with code).'),
-        projectDir: projectDir.optional(),
-        paths: z.array(z.string().min(1)).optional().describe("Project-relative files or folders to lint instead of the defaults (src, app, components, pages, lib)."),
-      },
-      annotations: { title: "Verify the design system", readOnlyHint: true, openWorldHint: false, idempotentHint: true },
+        remote
+          ? "Checks one pasted React/TSX file (code + filename) against the kit rules and reports each issue with a fix, plus what it cannot check (screenshots, brand voice). It cannot see project files. Useful as a final check before a UI task is finished."
+          : "Checks UI against the kit rules and the brand. With code (+ filename): lints one file. With projectDir: lints the project's source (skipping the kit folder) and checks vamos.brand.json, its assets, brand.css, the CSS import, vamos.json and the <html> attributes. Lists what it cannot check (screenshots, voice). Useful as a final check before a UI task is finished.",
+      inputSchema: remote ? (remoteVerifyShape as unknown as typeof verifyShape) : verifyShape,
+      annotations: { title: "Verify the design system", readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
     },
     (args) =>
       run(async () => {
