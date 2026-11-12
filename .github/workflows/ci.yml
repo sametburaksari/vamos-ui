@@ -95,3 +95,20 @@ jobs:
         run: node scripts/build-registry.mjs
       - name: Registry tests
         run: node --test scripts/registry/*.test.mjs
+
+  package:
+    name: Packages install and run (pnpm release:check)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build, pack, install with npm, smoke test
+        run: pnpm release:check
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
