@@ -33,6 +33,7 @@ describe("MCP server over InMemoryTransport", () => {
     expect(tools.map((t) => t.name).sort()).toEqual(
       [
         "apply_design_system",
+        "audit_site",
         "get_block",
         "get_brand",
         "get_item",

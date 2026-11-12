@@ -5,7 +5,7 @@ export const metadata = pageMeta({ title: "Directory", description: "A directory
 
 const checklist = [
   "Styling reads Vamos UI semantic tokens only — no hard-coded colours, no dark: variants.",
-  "Works in all five axes: light/dark, glass/solid, every accent, both densities, every font preset.",
+  "Works in all six axes: light/dark, glass/solid, every accent, both densities, every font preset, every corner setting.",
   "Keyboard and screen-reader support for every interactive part.",
   "Built-in text comes from props or a locale dictionary, not hard-coded strings.",
   "An OSI-approved license (MIT, Apache-2.0, BSD or ISC) stated in the registry.",

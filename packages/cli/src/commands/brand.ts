@@ -543,6 +543,9 @@ export function brandTheme(current: ThemeConfig | undefined, brand: Brand): Them
   if (brand.theme.dark !== undefined) t.theme = brand.theme.dark ? "dark" : "light";
   if (brand.theme.material) t.material = brand.theme.material;
   if (brand.theme.density) t.density = brand.theme.density;
+  // Corners are the data-radius axis (vamos.json theme.radius), not part of brand.css.
+  if (brand.theme.radius === "sharp" || brand.theme.radius === "round") t.radius = brand.theme.radius;
+  else if (brand.theme.radius === "default") delete t.radius;
   return t;
 }
 

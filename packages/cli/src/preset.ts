@@ -3,7 +3,7 @@
  *
  *   v1dgokg        dark · glass · ocean · compact · grotesk
  *   v1lsx4f46e5ce  light · solid · #4f46e5 · comfortable · editorial
- *   v1dgrkgs       ... with sharp corners (optional 6th axis: radius)
+ *   v1dgrkgs       ... with sharp corners (optional 6th axis: corners → data-radius)
  *
  * Layout: "v1" + one letter per axis in a fixed order (theme, material, accent, density, font,
  * radius). A custom accent is "x" followed by six hex digits. Radius is optional and left out when
@@ -189,21 +189,22 @@ export function describePreset(preset: Preset): string {
 }
 
 /**
- * The attributes for <html>. A custom accent or radius needs the generated brand.css
- * (`vamos-ui init --preset` / `theme --preset` write it), so it maps to data-accent="brand".
+ * The attributes for <html>. A custom accent needs the generated brand.css (`vamos-ui init --preset`
+ * / `theme --preset` write it), so it maps to data-accent="brand". Corners are their own axis:
+ * data-radius="sharp|round" (left out for the default), which works with every accent.
  */
 export function presetAttributes(preset: Preset): Record<string, string> {
-  const needsBrand = !isNamedAccent(preset.accent) || preset.radius !== PRESET_DEFAULTS.radius;
   return {
     ...(preset.theme === "dark" ? { class: "dark" } : {}),
     "data-material": preset.material,
-    "data-accent": needsBrand ? "brand" : preset.accent,
+    "data-accent": presetNeedsBrand(preset) ? "brand" : preset.accent,
     "data-density": preset.density,
     "data-font": preset.font,
+    ...(preset.radius !== PRESET_DEFAULTS.radius ? { "data-radius": preset.radius } : {}),
   };
 }
 
-/** Does applying this preset need a generated brand.css (custom accent or non-default radius)? */
+/** Does applying this preset need a generated brand.css? Only for a custom accent colour. */
 export function presetNeedsBrand(preset: Preset): boolean {
-  return !isNamedAccent(preset.accent) || preset.radius !== PRESET_DEFAULTS.radius;
+  return !isNamedAccent(preset.accent);
 }

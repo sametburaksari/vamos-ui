@@ -4,7 +4,7 @@
  *   r/schema.json        RegistryItem (r/<name>.json)
  *   r/index-schema.json  r/index.json
  *   r/config-schema.json vamos.json in a user project
- *   r/axes.json          the five theme axes
+ *   r/axes.json          the six theme axes
  */
 
 const BASE = "https://ui.vamos.ist/r";
@@ -45,6 +45,12 @@ export const AXES = [
     values: ["editorial", "grotesk", "corporate", "system"],
     default: "editorial",
     description: "Type pairing (UI, heading, code) plus heading character: weight, tracking, <em> style and display scale.",
+  },  {
+    name: "radius",
+    attribute: "data-radius",
+    values: ["default", "sharp", "round"],
+    default: "default",
+    description: "Corners. Absent = default (14px, compact 10px); sharp = 6px (4px), round = 20px (14px). Scales --radius, so everything on rounded-ui / rounded-ui-sm / rounded-ui-lg or var(--radius) follows: buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. rounded-full shapes stay round on purpose: pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars (and small fixed details such as chart bars and event chips). Works with every accent, material and density.",
   },
 ];
 
@@ -53,7 +59,7 @@ export function axesDocument() {
     target: "html",
     note: "Set axes on <html> or on any element; each subtree can override them independently.",
     axes: AXES.map((a) => ({ ...a, values: [...a.values] })),
-    example: '<html class="dark" data-material="glass" data-accent="ocean" data-density="compact" data-font="grotesk">',
+    example: '<html class="dark" data-material="glass" data-accent="ocean" data-density="compact" data-font="grotesk" data-radius="sharp">',
   };
 }
 

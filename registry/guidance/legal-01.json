@@ -1,6 +1,7 @@
 {
   "whenToUse": [
     "The pages a website footer links to: privacy policy, KVKK aydınlatma metni, cookie policy, terms of use, accessibility statement, returns and refund policy (iade ve değişim), legal notice / imprint (yasal uyarı). One route per page (`npx vamos-ui site essentials` writes them).",
+    "Filling the business details: pass `values` (company name, legal name, address, email, phone, website, MERSİS, tax office and number, KEP, ETBİS …) and the matching [fill-in] fields are replaced; `npx vamos-ui site essentials` passes them from vamos.site.json.",
     "An online shop selling to consumers in Turkey: the distance sales agreement (mesafeli satış sözleşmesi) and pre-contract information form (ön bilgilendirme formu) presets, shown at checkout and sent with the order confirmation.",
     "Any long legal or policy text: pass your own `doc` with sections; the table of contents and anchors follow."
   ],

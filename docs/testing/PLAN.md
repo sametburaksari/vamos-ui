@@ -14,7 +14,7 @@ Owner: test planner (orchestrated). Applies to every agent that builds a compone
 | Property | fast-check | `*.prop.test.ts` next to the module | node | invariants over random input (§3) |
 | E2E smoke | Playwright (channel `chrome`) | `apps/www/e2e/*.spec.ts` | docs dev server :3200 | every docs page and block loads, 200, no console errors, in 4 themes |
 | A11y (page) | `@axe-core/playwright` via `seriousA11y()` | `apps/www/e2e` | real Chrome | serious/critical rules incl. landmarks, name/content match, contrast (§6) |
-| Visual review | Playwright screenshots + checklist §7 | `apps/www/e2e/visual.spec.ts` (M0 exit) | real Chrome | house style, all 5 axes, RTL, mobile |
+| Visual review | Playwright screenshots + checklist §7 | `apps/www/e2e/visual.spec.ts` (M0 exit) | real Chrome | house style, all 6 axes, RTL, mobile |
 | Performance | Lighthouse + bundle check §8 | `apps/www/e2e/perf.spec.ts` + `next build` output | prod build | site-block budgets |
 
 Commands:

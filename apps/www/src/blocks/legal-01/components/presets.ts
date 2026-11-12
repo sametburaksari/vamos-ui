@@ -1,4 +1,4 @@
-import type { LegalDoc, LegalKind, LegalLocale } from "./types";
+import type { LegalDoc, LegalKind, LegalLocale, LegalValues } from "./types";
 
 /*
  * Template text for the legal pages a small-business website needs. Everything in [brackets] is a
@@ -1052,4 +1052,74 @@ export const legalPresets: Record<LegalKind, Record<LegalLocale, LegalDoc>> = {
 /** The preset for one page, e.g. `legalPreset("kvkk", "tr")`. */
 export function legalPreset(kind: LegalKind, locale: LegalLocale = "en"): LegalDoc {
   return legalPresets[kind][locale];
+}
+
+/** Placeholder → the LegalValues field that fills it (English and Turkish presets). */
+const fillIns: Record<string, keyof LegalValues> = {
+  "[Company name]": "companyName",
+  "[Şirket adı]": "companyName",
+  "[Company legal name]": "legalName",
+  "[Şirket unvanı]": "legalName",
+  "[Registered address]": "address",
+  "[Address]": "address",
+  "[Adres]": "address",
+  "[İşletme adresi]": "address",
+  "[City]": "city",
+  "[Şehir]": "city",
+  "[Country]": "country",
+  "[Contact email]": "email",
+  "[İletişim e-postası]": "email",
+  "[Privacy contact email]": "privacyEmail",
+  "[KVKK contact email]": "privacyEmail",
+  "[KVKK iletişim e-postası]": "privacyEmail",
+  "[Returns email]": "returnsEmail",
+  "[İade e-postası]": "returnsEmail",
+  "[Complaints email]": "complaintsEmail",
+  "[Şikâyet e-postası]": "complaintsEmail",
+  "[Phone number]": "phone",
+  "[Telefon numarası]": "phone",
+  "[website address]": "website",
+  "[web sitesi adresi]": "website",
+  "[MERSIS number]": "mersis",
+  "[MERSİS no]": "mersis",
+  "[Tax office]": "taxOffice",
+  "[Vergi dairesi]": "taxOffice",
+  "[Tax number]": "taxNumber",
+  "[Vergi no]": "taxNumber",
+  "[Registration number]": "tradeRegistry",
+  "[Ticaret sicil no]": "tradeRegistry",
+  "[ETBİS doğrulama bağlantısı veya karekodu]": "etbis",
+  "[KEP address]": "kep",
+  "[KEP adresi]": "kep",
+};
+
+function fillText(text: string, values: LegalValues): string {
+  return text.replace(/\[[^\]]+\]/g, (field) => {
+    if (field.startsWith("[Selling online in Turkey: ETBİS") && values.etbis?.trim()) return `ETBİS registration: ${values.etbis.trim()}`;
+    const key = fillIns[field];
+    const value = key ? values[key]?.trim() : undefined;
+    return value ? value : field;
+  });
+}
+
+/**
+ * Fills a document's [fill-in] fields from `values`. Placeholders without a value (and the
+ * per-site ones like retention periods or providers) stay in brackets and stay highlighted.
+ */
+export function fillLegalDoc(doc: LegalDoc, values: LegalValues = {}): LegalDoc {
+  const fill = (t: string) => fillText(t, values);
+  const date = values.updated?.trim();
+  return {
+    ...doc,
+    title: fill(doc.title),
+    summary: doc.summary === undefined ? undefined : fill(doc.summary),
+    updated: date && /^\d{4}-\d{2}-\d{2}$/.test(date) && !/^\d{4}-\d{2}-\d{2}$/.test(doc.updated) ? date : doc.updated,
+    sections: doc.sections.map((s) => ({
+      ...s,
+      title: fill(s.title),
+      body: s.body.map((b) =>
+        typeof b === "string" ? fill(b) : "list" in b ? { list: b.list.map(fill) } : { table: { ...b.table, caption: fill(b.table.caption), head: b.table.head.map(fill), rows: b.table.rows.map((r) => r.map(fill)) } },
+      ),
+    })),
+  };
 }

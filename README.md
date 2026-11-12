@@ -16,13 +16,13 @@
   <a href="LICENSE-MIT"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT" /></a>
 </p>
 
-> **Early preview (v0.2).** Components are being built in the open. APIs will change until v1.
+> **Preview (0.x).** Components are being built in the open. APIs can still change until v1; see the [changelog](https://ui.vamos.ist/docs/changelog/) for the current version.
 
 ## Why
 
 Most admin panels look the same, and most component kits stop at buttons and dialogs. Vamos UI covers the whole surface a business app needs — data tables, pickers, calendars, kanban, line items, approval flows, media, a block editor — plus site blocks and full-screen blocks, all styled by tokens.
 
-- **Five theme axes.** Theme, material (solid or Liquid Glass), accent, density and font are attributes on `<html>` or any section. Components never use `dark:`.
+- **Six theme axes.** Mode, material (solid or Liquid Glass), accent, density, font and corners are attributes on `<html>` or any section. Components never use `dark:`.
 - **Grouped by what a component is.** A calendar is the same calendar in a CRM, an HR tool or a CMS. Domain screens ship as blocks.
 - **Install or own.** One npm package, or copy single components with the `vamos-ui` CLI and keep receiving fixes.
 - **English first, locales built in.** Built-in strings come from a locale dictionary; numbers, money and dates go through `Intl`. Turkish is the first extra locale.
@@ -51,6 +51,26 @@ import { Button } from "@vamos-ui/react";
 ```
 
 Full guide: [ui.vamos.ist/docs/installation](https://ui.vamos.ist/docs/installation).
+
+## Theming
+
+Six independent axes, each an attribute on `<html>` or on any subtree (a section can differ from the page):
+
+| Axis | Attribute | Values |
+|---|---|---|
+| Mode | `class` | light (none) · `dark` |
+| Material | `data-material` | `solid` · `glass` |
+| Accent | `data-accent` | `lime` · `ocean` · `ember` · `rose` · `graphite` (or your own) |
+| Density | `data-density` | `comfortable` · `compact` |
+| Font | `data-font` | `editorial` · `grotesk` · `corporate` · `system` |
+| Corners | `data-radius` | default (no attribute) · `sharp` · `round` |
+
+**Corners** scale `--radius`: default 14px (compact 10px), sharp 6px (4px), round 20px (14px). It works with every accent, material and density.
+
+- Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks.
+- Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips.
+
+Pick them visually at [ui.vamos.ist/themes](https://ui.vamos.ist/themes) or with `npx vamos-ui theme`. Guide: [ui.vamos.ist/docs/theming](https://ui.vamos.ist/docs/theming).
 
 ## Repository
 

@@ -16,7 +16,7 @@ export default function ComponentsIndex() {
       <h1 className="font-display text-[length:calc(44px*var(--display-scale))] leading-[1.05]">Components</h1>
       <p className="mt-3 max-w-2xl text-[15.5px] leading-relaxed text-fg-muted">
         One component kit for every admin panel — CMS, CRM, HR, partner portals — and the websites around them.
-        Every component follows five axes: theme, material (glass/solid), accent, density and font.
+        Every component follows six axes: mode, material (glass/solid), accent, density, font and corners.
         Pick a component to see a live preview, the code, installation and the props table.
       </p>
       <div className="mt-4 flex flex-wrap gap-2">

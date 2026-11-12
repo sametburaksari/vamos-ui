@@ -14,6 +14,7 @@ const missing = fileURLToPath(new URL("./test/stubs/missing-module.ts", import.m
 // Vite resolves dynamic imports up front; point unbuilt entries at a stub that throws on import.
 alias["vamos-ui/verify"] = verifySrc ?? missing;
 alias["vamos-ui/brand"] = brandSrc ?? missing;
+alias["vamos-ui/audit"] = resolveFirst("../cli/src/audit/index.ts") ?? missing;
 
 export default defineConfig({
   test: {

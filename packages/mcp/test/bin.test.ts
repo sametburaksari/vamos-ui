@@ -15,7 +15,7 @@ describe.skipIf(!existsSync(BIN))("built bin over stdio", () => {
     await client.connect(transport);
     try {
       const { tools } = await client.listTools();
-      expect(tools).toHaveLength(15);
+      expect(tools).toHaveLength(16);
       const found = (await client.callTool({ name: "search", arguments: { query: "date range" } })) as { content: { text: string }[] };
       expect(found.content[0]!.text).toMatch(/`date-range-picker`/);
       const verified = (await client.callTool({
