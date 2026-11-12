@@ -3,6 +3,7 @@ import { createServer as createHttpServer, type IncomingMessage, type ServerResp
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { DEFAULT_REGISTRY } from "./registry.js";
+import { handleOAuth } from "./oauth.js";
 import { createServer, SERVER_VERSION } from "./server.js";
 
 const HELP = `vamos-ui-mcp ${SERVER_VERSION} — MCP server for Vamos UI
@@ -110,6 +111,7 @@ async function serveHttp(args: Args): Promise<void> {
     res.setHeader("access-control-allow-methods", "GET, POST, DELETE, OPTIONS");
     const url = new URL(req.url ?? "/", "http://localhost");
     if (req.method === "OPTIONS") return void res.writeHead(204).end();
+    if (await handleOAuth(req, res, url)) return;
     if (url.pathname === "/" || url.pathname === "/health") {
       return sendJson(res, 200, { name: "vamos-ui", version: SERVER_VERSION, transport: "streamable-http", endpoint: "/mcp", registry: registry.location });
     }
