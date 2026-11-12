@@ -1,6 +1,6 @@
 {
   "name": "@vamos-ui/mcp",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "MCP server that gives AI agents the Vamos UI components, blocks, tokens and rules.",
   "type": "module",
   "license": "MIT",
