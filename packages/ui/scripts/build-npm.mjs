@@ -102,7 +102,7 @@ const out = {
   type: "module",
   sideEffects: ["**/*.css"],
   exports: exportsMap,
-  files: ["dist", "README.md", "LICENSE"],
+  files: ["dist", "README.md", "CHANGELOG.md", "LICENSE"],
   repository: { type: "git", url: "git+https://github.com/sametburaksari/vamos-ui.git", directory: "packages/ui" },
   homepage: "https://ui.vamos.ist",
   bugs: "https://github.com/sametburaksari/vamos-ui/issues",
@@ -113,6 +113,7 @@ const out = {
 };
 fs.writeFileSync(path.join(OUT, "package.json"), JSON.stringify(out, null, 2) + "\n");
 fs.copyFileSync(path.join(PKG, "LICENSE"), path.join(OUT, "LICENSE"));
+fs.copyFileSync(path.join(PKG, "CHANGELOG.md"), path.join(OUT, "CHANGELOG.md"));
 fs.writeFileSync(
   path.join(OUT, "README.md"),
   `# @vamos-ui/react
