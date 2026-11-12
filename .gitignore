@@ -18,3 +18,8 @@ docs/plan/
 docs/plan-prompt.md
 docs/durum-*.md
 docs/AGENT-BRIEF.md
+
+# NO:17 kişisel veri — repoya ASLA girmez (env'den üretilir: NO17_PRIVATE_B64)
+apps/admin/src/lib/no17-roster.generated.ts
+apps/admin/src/data/no17-records.json
+apps/admin/src/data/no17-tickets.generated.json

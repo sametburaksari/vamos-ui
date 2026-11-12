@@ -3,6 +3,37 @@
 
 @source "../";
 
+/* ================================================================== */
+/* NO:17 — Fenerbahçe sarı-lacivert tema                               */
+/* Accent = Fener sarısı, kenar çubuğu/üst bar = lacivert.             */
+/* Kit paketine dokunulmadı; her şey burada override edilir.          */
+/* ================================================================== */
+
+/* Accent: sarı zemin + lacivert yazı. Açık temada link/accent = lacivert, */
+/* koyu temada = sarı. (Varsayılan accent "fener".)                        */
+:root[data-accent="fener"],
+[data-accent="fener"] {
+  --accent-base: oklch(0.905 0.185 100);     /* Fenerbahçe sarısı ~#FFE400 */
+  --accent-fg: oklch(0.23 0.075 266);         /* sarı üstüne lacivert yazı */
+  --accent-ink-light: oklch(0.40 0.12 266);   /* açık zeminde accent yazı = lacivert */
+  --accent-ink-dark: oklch(0.905 0.185 100);  /* koyu zeminde accent yazı = sarı */
+}
+
+/* Kenar çubuğu & üst bar: lacivert kimlik (her temada koyu kalır).        */
+/* Özgüllük :root[data-accent] (0,2,0) → kit'in glass/dark nav kurallarını  */
+/* kaynak sırasıyla geçer.                                                  */
+:root[data-accent="fener"] {
+  --nav: #0a1a46;                              /* lacivert */
+  --nav-fg: rgba(255, 255, 255, 0.76);
+  --nav-fg-strong: #ffe400;                    /* aktif başlık/logo = sarı */
+  --nav-hover: rgba(255, 228, 0, 0.10);
+  --nav-active: rgba(255, 228, 0, 0.17);
+  --nav-line: rgba(255, 255, 255, 0.10);
+  --nav-sub: rgba(0, 0, 0, 0.26);
+  --nav-popover: #0d1f52;
+  --nav-popover-border: rgba(255, 255, 255, 0.12);
+}
+
 /* Shiki: dual-theme highlighting that follows the site theme. */
 .shiki,
 .shiki span {

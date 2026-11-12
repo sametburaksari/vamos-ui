@@ -54,7 +54,10 @@ export * from "./components/progress";
 export * from "./components/radio-group";
 export * from "./components/record-detail-layout";
 export * from "./components/record-picker";
-export * from "./components/resizable";
+// NO:17 panel react-resizable-panels kullanmıyor; bu paketin 4.21 sürümü React 19.1
+// ile uyumsuz ('Activity' export'u yok) ve production build'i kırıyor. Panel-only
+// dağıtımda barrel'den çıkarıldı (component dosyası duruyor).
+// export * from "./components/resizable";
 export * from "./components/scroll-area";
 export * from "./components/select";
 export * from "./components/separator";

@@ -17,11 +17,11 @@ const fonts = [onest, instrument, jetbrains, hanken, bricolage, geistMono, plex,
 export const metadata: Metadata = { title: "Vamos", description: "Open-source admin panel and component kit" };
 
 // Apply the theme axes before first paint (no flash).
-const boot = `try{var s=JSON.parse(localStorage.getItem("vamos-theme")||"{}");var h=document.documentElement;if(s.dark)h.classList.add("dark");h.dataset.material=s.material||"glass";h.dataset.accent=s.accent||"lime";h.dataset.density=s.density||"comfortable";h.dataset.font=s.font||"editorial"}catch(e){}`;
+const boot = `try{var s=JSON.parse(localStorage.getItem("vamos-theme")||"{}");var h=document.documentElement;if(s.dark)h.classList.add("dark");h.dataset.material=s.material||"glass";h.dataset.accent=(["fener","graphite"].indexOf(s.accent)>=0?s.accent:"fener");h.dataset.density=s.density||"comfortable";h.dataset.font=s.font||"editorial"}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-material="glass" data-accent="lime" data-font="editorial" suppressHydrationWarning className={fonts.map((f) => f.variable).join(" ")}>
+    <html lang="en" data-material="glass" data-accent="fener" data-font="editorial" suppressHydrationWarning className={fonts.map((f) => f.variable).join(" ")}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: boot }} />
       </head>
