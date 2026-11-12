@@ -115,7 +115,7 @@ No install: add the remote MCP server **`https://mcp.vamos.ist/mcp`** (Streamabl
 - **Claude Code:** `claude mcp add --transport http vamos-ui https://mcp.vamos.ist/mcp`
 - **Cursor / VS Code:** `{ "mcpServers": { "vamos-ui": { "url": "https://mcp.vamos.ist/mcp" } } }` (VS Code: `"servers"` with `"type": "http"`).
 
-The hosted server cannot see your files, so the project tools (`get_brand`, `apply_design_system`, `update_design`, `verify_design` with `projectDir`) and URL import are local-only. Everything else — rules, theming, search, items, blocks, screen plans, code checks, accents, live-site audits — works the same (`audit_site` reaches public sites only). Run your own with `npx -y @vamos-ui/mcp --http --port 3333`.
+The hosted server cannot see your files, so the project tools (`get_brand`, `apply_design_system`, `update_design`, `verify_design` with `projectDir`) and URL import are local-only. Everything else — rules, theming, search, items, blocks, screen plans, code checks, accents, website project plans, current-site import and live-site audits — works the same (`import_site` and `audit_site` reach public sites only). Run your own with `npx -y @vamos-ui/mcp --http --port 3333`.
 
 ### Which models?
 
@@ -143,6 +143,8 @@ npx -y @vamos-ui/mcp --registry https://ui.example.com/r
 | `get_theming(include_tokens?)` | The 6 axes (mode, material, accent, density, font, corners) and what the corner setting covers, semantic classes, brand accents, token table. |
 | `verify_code(code, filename)` | Lints a file (raw colours, `dark:`, fonts, missing labels/alt, click handlers on divs, z-index, hand-rolled overlays…). Returns text plus structured `{ ok, issues }`. |
 | `install_command(names)` | The exact `npx vamos-ui add …` command, with names validated. |
+| `start_project(answers?, lang?, imported?)` | The website project interview: returns the next few questions (each with options and why it matters); with enough answers, the plan (pages and components, legal pages, hosting, forms, measurement with consent mode, compliance for Turkey, domain ideas, tasks per specialist, open questions) and the contents of `vamos.project.json` and a `vamos.site.json` draft. Same as `npx vamos-ui new`. Writes nothing. |
+| `import_site(url, maxPages?, lang?)` | Reads a current website: name, description, phones, WhatsApp, emails, address, hours, social profiles and languages with their sources; brand candidates (colours, fonts, logos); navigation; texts and images per page; warnings such as different phone numbers. Pass its `url`, `navigation` and `site` to `start_project` as `imported` so existing addresses are kept. Same as `npx vamos-ui site import`. Only GET requests; on the hosted server up to 4 linked pages and public addresses only. |
 | `audit_site(url, maxPages?)` | Audits a live website over HTTP, built with the kit or not: redirects, speed, compression, security headers; title, description, canonical, Open Graph, JSON-LD; robots.txt and its AI crawler policy, sitemap.xml, llms.txt; placeholder contact data, missing alt and names, legal links; broken internal links and images over 300 KB across up to `maxPages` pages (default 10, max 30). Same checks as `npx vamos-ui audit`. Only GET/HEAD requests; on the hosted server private, loopback, link-local, CGNAT and metadata addresses are refused on every hop. |
 
 ### Design system (brand profile)
