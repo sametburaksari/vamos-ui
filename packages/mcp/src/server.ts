@@ -19,7 +19,7 @@ import {
 } from "./tools.js";
 
 export const SERVER_NAME = "vamos-ui";
-export const SERVER_VERSION = "0.2.4";
+export const SERVER_VERSION = "0.2.5";
 
 const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
@@ -76,7 +76,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Design rules",
       description:
-        "The design rules every screen built with Vamos UI must follow: tokens only, accent only for the one primary action/active state/data highlight, glass budget, density tokens, kit components over hand-rolled markup, no AI-looking patterns, realistic content, accessibility. Call this ONCE at the start of any UI task, before writing code.",
+        "The design rules every screen built with Vamos UI must follow: tokens only, accent only for the one primary action/active state/data highlight, glass budget, density tokens, kit components over hand-rolled markup, no AI-looking patterns, realistic content, accessibility. Useful once at the start of a UI task, before code is written.",
       annotations: { title: "Design rules", ...readOnly },
     },
     () => run(getRules),
@@ -87,7 +87,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Theming guide",
       description:
-        "The 5 theme axes (dark class, data-material, data-accent, data-density, data-font) with values, the semantic Tailwind classes, how to add a brand accent, and the full CSS token table. Call when you set up a project, change colours/fonts/density, or need a token name.",
+        "The 5 theme axes (dark class, data-material, data-accent, data-density, data-font) with values, the semantic Tailwind classes, how to add a brand accent, and the full CSS token table. Useful when setting up a project, changing colours, fonts or density, or looking up a token name.",
       inputSchema: {
         include_tokens: z.boolean().optional().describe("Include the full token table (default true). Pass false for a shorter answer."),
       },
@@ -101,7 +101,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "List registry items",
       description:
-        "Lists components, blocks (whole screens), lib and style items, grouped by docs group or block category. Call to browse what exists, e.g. all blocks in \"Dashboards\" or every component in \"Overlays & feedback\". For a specific need, search is faster.",
+        "Lists components, blocks (whole screens), lib and style items, grouped by docs group or block category. Use it to browse what exists, e.g. all blocks in \"Dashboards\" or every component in \"Overlays & feedback\"; search is faster for a specific need.",
       inputSchema: {
         type: itemType.optional().describe("Only this item type."),
         group: z.string().optional().describe('Component docs group, partial match, e.g. "Forms", "Overlays & feedback", "Charts".'),
@@ -118,7 +118,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Search components and blocks",
       description:
-        "Ranked search over item names, titles, descriptions, tags and usage guidance. Accepts English or Turkish (\"tarih seçici\", \"giriş sayfası\"), case- and accent-insensitive. Call when you know what you need but not its name; then call get_item or get_block with the result.",
+        "Ranked search over item names, titles, descriptions, tags and usage guidance. Accepts English or Turkish (\"tarih seçici\", \"giriş sayfası\"), case- and accent-insensitive. Use it when the need is known but not the item name; results can be opened with get_item or get_block.",
       inputSchema: {
         query: z.string().min(1).describe('What you need, e.g. "date range picker", "confirm delete", "kanban board".'),
         type: itemType.optional().describe("Restrict to one item type."),
@@ -134,7 +134,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Get a component or item",
       description:
-        "Usage snippet, props tables, examples, when-to-use/avoid guidance, dependencies and file list of one registry item. Call before using a component you have not used in this session, so you use its real API. Source files are only included with include: [\"files\"] — usually install it instead.",
+        "Usage snippet, props tables, examples, when-to-use/avoid guidance, dependencies and file list of one registry item. Returns the component's real API, so code can use actual props. Source files are only included with include: [\"files\"].",
       inputSchema: {
         name: z.string().min(1).describe('Registry item name, e.g. "button", "data-table", "lib-utils".'),
         include: z
@@ -153,7 +153,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Get a block (whole screen)",
       description:
-        "Full source of a block — a complete screen such as dashboard-01, login-01, list-01 — with the kit components it uses and how to adapt it. Call after plan_screen picked a block, or when the user names one. Start from the block instead of composing the screen from scratch.",
+        "Full source of a block — a complete screen such as dashboard-01, login-01, list-01 — with the kit components it uses and how to adapt it. Use it after plan_screen suggests a block, or when the user names one.",
       inputSchema: {
         name: z.string().min(1).describe('Block name, e.g. "dashboard-01", "settings-01".'),
       },
@@ -167,7 +167,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Plan a screen",
       description:
-        "Turns a screen description into a plan: the block to start from (plus alternatives), extra components to add with reasons, the install command, density and a build checklist. Call FIRST whenever you are asked to build a new page or screen.",
+        "Turns a screen description into a plan: the block to start from (plus alternatives), extra components to add with reasons, the install command, density and a build checklist. Use it when a new page or screen is requested.",
       inputSchema: {
         description: z
           .string()
@@ -184,7 +184,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Verify UI code",
       description:
-        "Lints a file against the Vamos UI rules: raw colours and palette classes, dark: variants, hard-coded fonts, icon-only buttons without aria-label, images without alt, onClick on non-interactive elements, positive tabIndex, missing \"use client\", arbitrary z-index, hand-rolled modals/dropdowns/tooltips. Call on EVERY file you create or edit, fix all errors, and call again until it is clean.",
+        "Lints a file against the Vamos UI rules: raw colours and palette classes, dark: variants, hard-coded fonts, icon-only buttons without aria-label, images without alt, onClick on non-interactive elements, positive tabIndex, missing \"use client\", arbitrary z-index, hand-rolled modals/dropdowns/tooltips. Returns each issue with its line and a suggested fix.",
       inputSchema: {
         code: z.string().describe("The full file contents."),
         filename: z.string().min(1).describe('Path of the file, e.g. "app/invoices/page.tsx" (used for the "use client" rule and messages).'),
@@ -206,7 +206,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Install command",
       description:
-        "Returns the exact `npx vamos-ui add …` command for one or more items (validates the names; dependencies resolve automatically). Call when you are about to add components or blocks to the user's project, and run or show that command instead of copying source by hand.",
+        "Returns the exact `npx vamos-ui add …` command for one or more items (validates the names; dependencies resolve automatically). Use it when components or blocks are to be added to a project.",
       inputSchema: {
         names: z.array(z.string().min(1)).min(1).describe('Item names, e.g. ["dashboard-01", "date-range-picker"].'),
       },
@@ -228,7 +228,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Get the brand profile",
       description:
-        "Reads the project's vamos.brand.json: brand name, accent (with the generated accent variables), fonts, theme defaults, voice (tone, copy rules, do/don't examples) and assets (logos with how-to-use notes), plus any problems. Call at the start of UI work in a project that may have a brand, and follow its voice in all copy.",
+        "Reads the project's vamos.brand.json: brand name, accent (with the generated accent variables), fonts, theme defaults, voice (tone, copy rules, do/don't examples) and assets (logos with how-to-use notes), plus any problems. Use it at the start of UI work in a project that may have a brand profile.",
       inputSchema: { projectDir: projectDir.optional().describe("Project root (default: the server's working directory).") },
       annotations: { title: "Get the brand profile", ...readOnly },
     },
@@ -241,7 +241,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Import a design system from a website",
       description:
-        "Reads a web page (url) or page source (html, optional css and base_url) and drafts a vamos.brand.json: accent from theme-color / CSS variables / most-used colours, fonts from font-family and Google Fonts links, logo and icon candidates, voice hints from title/description. Returns the draft, the evidence for each value, a contrast-checked accent and what is missing. Writes nothing. Always confirm the draft with the user before saving it. Docs: https://ui.vamos.ist/docs/mcp/ and https://ui.vamos.ist/docs/theming/",
+        "Reads a web page (url) or page source (html, optional css and base_url) and drafts a vamos.brand.json: accent from theme-color / CSS variables / most-used colours, fonts from font-family and Google Fonts links, logo and icon candidates, voice hints from title/description. Returns the draft, the evidence for each value, a contrast-checked accent and what is missing. Writes nothing. The draft is meant to be confirmed with the user before it is saved. The hosted server accepts pasted html only (no URL fetching). Docs: https://ui.vamos.ist/docs/mcp/ and https://ui.vamos.ist/docs/theming/",
       inputSchema: {
         url: z.string().min(1).optional().describe("Page to read, e.g. https://example.com. http(s) only."),
         html: z.string().min(1).optional().describe("Page source, when the site cannot be fetched (login, bot protection) or you already have it."),
@@ -263,7 +263,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Propose a brand accent",
       description:
-        "Turns one brand colour into the four accent variables (--accent-base, --accent-fg, --accent-ink-light, --accent-ink-dark) using OKLCH, checks WCAG contrast (4.5:1 for text) and reports what was adjusted. Call when the user gives a brand colour, before writing it into vamos.brand.json.",
+        "Turns one brand colour into the four accent variables (--accent-base, --accent-fg, --accent-ink-light, --accent-ink-dark) using OKLCH, checks WCAG contrast (4.5:1 for text) and reports what was adjusted. Use it when the user gives a brand colour.",
       inputSchema: {
         colour: z.string().min(1).describe('Any CSS colour: "#0f766e", "rgb(15 118 110)", "oklch(0.55 0.1 180)", "teal".'),
         dark: z.string().optional().describe("Optional dark-mode fill (colors.accentDark), when the brand has one."),
@@ -299,7 +299,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Verify the design system",
       description:
-        "Checks UI against the kit rules and the brand. With code (+ filename): lints one file. With projectDir: lints the project's source (skipping the kit folder) and checks vamos.brand.json, its assets, brand.css, the CSS import, vamos.json and the <html> attributes. Lists what it cannot check (screenshots, voice). Call before you finish any UI task.",
+        "Checks UI against the kit rules and the brand. With code (+ filename): lints one file. With projectDir: lints the project's source (skipping the kit folder) and checks vamos.brand.json, its assets, brand.css, the CSS import, vamos.json and the <html> attributes. Lists what it cannot check (screenshots, voice). Useful as a final check before a UI task is finished.",
       inputSchema: {
         code: z.string().optional().describe("One file's contents."),
         filename: z.string().optional().describe('Its path, e.g. "app/page.tsx" (with code).'),
@@ -321,7 +321,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Plan a design update",
       description:
-        "Plans how to bring an existing project in line with its brand and the kit rules: brand file edits, manual steps, problems and rule violations grouped by rule — the same plan `npx vamos-ui update --dry-run` shows. Changes nothing. Call before restyling or migrating an existing project, and show the plan to the user first.",
+        "Plans how to bring an existing project in line with its brand and the kit rules: brand file edits, manual steps, problems and rule violations grouped by rule — the same plan `npx vamos-ui update --dry-run` shows. Changes nothing. Use it before restyling or migrating an existing project.",
       inputSchema: {
         projectDir,
         paths: z.array(z.string().min(1)).optional().describe("Limit the code check to these project-relative paths."),
