@@ -1,6 +1,6 @@
 # Vamos UI MCP — directory submission kit
 
-Prepared 2026-11-12 for the hosted server `https://mcp.vamos.ist/mcp` (server `vamos-ui`, 13 tools from 0.2.9 with `audit_site`, 0.2.11 fixes compressed pages, all `readOnlyHint: true`, every tool has a `title`).
+Prepared 2026-11-12 for the hosted server `https://mcp.vamos.ist/mcp` (server `vamos-ui`, 15 tools: `audit_site` since 0.2.9, `start_project` and `import_site` since 0.3.0, all `readOnlyHint: true`, every tool has a `title`).
 Counts come from the live registry `https://ui.vamos.ist/r/index.json` on 2026-11-12: 150 components, 153 blocks (59 of them website pages), 427 items in total. Re-check them before submitting if the registry changed.
 
 ## Türkçe özet (sahibi için)
@@ -67,7 +67,7 @@ What Claude can do with it:
 - Return the exact `npx vamos-ui add` command for the chosen items.
 - Audit a live public website (metadata, Open Graph, JSON-LD, robots.txt and AI crawlers, sitemap, placeholder content, legal links, broken links, heavy images) and return a scored report.
 
-All 13 tools are read-only. The hosted server has no sign-in, cannot see your files and does not run or deploy code; the only URLs it requests are the public site you ask `audit_site` to check (GET/HEAD, up to 30 pages, private and internal addresses refused). For project-wide checks and brand files, the same server runs locally with `npx -y @vamos-ui/mcp`.
+All 15 tools are read-only. The hosted server has no sign-in, cannot see your files and does not run or deploy code; the only URLs it requests are the public site you ask `audit_site` to check (GET/HEAD, up to 30 pages) or `import_site` to read (GET, up to 5 pages); private and internal addresses are refused. For project-wide checks and brand files, the same server runs locally with `npx -y @vamos-ui/mcp`.
 ```
 
 **Categories** (pick 1–2 from the portal's list): `Developer tools` (primary), `Design` (if offered).

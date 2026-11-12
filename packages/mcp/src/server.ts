@@ -2,6 +2,7 @@ import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mc
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import { auditSite } from "./audit-tool.js";
+import { importSiteTool, startProjectTool } from "./project-tool.js";
 import { applyDesignSystem, getBrand, importDesignSystem, proposeAccent, updateDesign, verifyDesign, type ToolAnswer } from "./design-tools.js";
 import { RULES } from "./guidance.js";
 import { Registry, RegistryError, type RegistryOptions } from "./registry.js";
@@ -24,11 +25,11 @@ export const SERVER_VERSION = "0.2.12";
 
 const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
-Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL.`;
+Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped.`;
 
 const REMOTE_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 This hosted server cannot see the user's files. Before building UI with it: call get_rules once per session. For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file.
-Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
+Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped. Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
 
 const itemType = z.enum(["component", "block", "lib", "style"]);
 
@@ -354,6 +355,47 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       annotations: { title: "Audit a live website", readOnlyHint: true, destructiveHint: false, openWorldHint: true },
     },
     (args) => run(async () => answer(await auditSite(args, { remote, version: SERVER_VERSION }))),
+  );
+
+  server.registerTool(
+    "start_project",
+    {
+      title: "Plan a new website",
+      description:
+        "Runs the website project interview: returns the next few questions (business, site type, languages, current site, domain, hosting, one page or several, sections, store or booking needs, contact channels and where form messages go, measurement tools, who runs the site), each with its options and why it matters. Called again with the answers so far, it returns the following questions; once every required question is answered it returns the plan (pages and the kit components on them, legal pages, hosting and build output, form delivery and spam protection, measurement with consent mode, compliance notes for Turkey, domain ideas, a task list per specialist and open questions) and the contents of vamos.project.json and a vamos.site.json draft. Writes nothing itself." +
+        (remote ? " This hosted server cannot write files; the result includes the file contents." : ""),
+      inputSchema: {
+        answers: z.record(z.string(), z.union([z.string(), z.array(z.string())])).optional().describe("Answers so far: question id → value (multi-choice questions take an array). \"\" skips an optional question."),
+        lang: z.enum(["tr", "en"]).optional().describe("Language of the questions and the plan (default tr)."),
+        imported: z
+          .object({
+            url: z.string().optional(),
+            navigation: z.array(z.object({ path: z.string(), label: z.string() })).optional(),
+            site: z.record(z.string(), z.unknown()).optional(),
+          })
+          .optional()
+          .describe("The current site as read by import_site (url, navigation, site), so its addresses are kept and its details fill the draft."),
+      },
+      annotations: { title: "Plan a new website", ...readOnly },
+    },
+    (args) => run(async () => answer(await startProjectTool(args))),
+  );
+
+  server.registerTool(
+    "import_site",
+    {
+      title: "Read a current website",
+      description:
+        "Reads a current website (the start page and a few linked pages: about, contact and services first) and returns, each with the page it came from: business name, description, phone numbers, WhatsApp, emails, address, opening hours, social profiles and languages; brand candidates (accent colours, fonts, logo and icon files); the navigation; headings and paragraphs per page; content images with alt text; and warnings such as different phone numbers on different pages. Read-only: it only sends GET requests and writes nothing." +
+        (remote ? " Public http(s) sites only; private and internal addresses are refused." : ""),
+      inputSchema: {
+        url: z.string().min(1).describe('The current site, e.g. "https://example.com" (https:// is assumed when left out).'),
+        maxPages: z.number().int().min(0).max(8).optional().describe("Linked pages to read besides the start page (default and max 4 on the hosted server)."),
+        lang: z.enum(["tr", "en"]).optional().describe("Language of the summary (default tr)."),
+      },
+      annotations: { title: "Read a current website", readOnlyHint: true, destructiveHint: false, openWorldHint: true },
+    },
+    (args) => run(async () => answer(await importSiteTool(args, { remote, version: SERVER_VERSION }))),
   );
 
   local(() =>
