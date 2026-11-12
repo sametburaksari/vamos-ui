@@ -14,7 +14,7 @@ const plex = IBM_Plex_Sans({ subsets: ["latin", "latin-ext"], weight: ["400", "5
 const plexMono = IBM_Plex_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "500"], variable: "--ff-plex-mono", preload: false });
 const fonts = [onest, instrument, jetbrains, hanken, bricolage, geistMono, plex, plexMono];
 
-export const metadata: Metadata = { title: "Vamos", description: "Open-source admin panel and component kit" };
+export const metadata: Metadata = { title: "NO:17 Fener Paneli", description: "Fenerbahçe NO:17 taraftar grubu — üye paneli" };
 
 // Apply the theme axes before first paint (no flash).
 const boot = `try{var s=JSON.parse(localStorage.getItem("vamos-theme")||"{}");var h=document.documentElement;if(s.dark)h.classList.add("dark");h.dataset.material=s.material||"glass";h.dataset.accent=(["fener","graphite"].indexOf(s.accent)>=0?s.accent:"fener");h.dataset.density=s.density||"comfortable";h.dataset.font=s.font||"editorial"}catch(e){}`;
