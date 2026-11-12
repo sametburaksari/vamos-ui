@@ -9,7 +9,7 @@ export { BlockLink, type BlockLinkProps } from "./block-link";
 export { RichText, renderInline, renderRichBlocks, type RichTextProps, type RichTextRenderOptions } from "./rich-text";
 export { JsonLd, mergeJsonLd, serializeJsonLd, type JsonLdProps, type JsonLdNode } from "./json-ld";
 export { createBlocks, fieldAttrs, type CreateBlocksOptions, type BoundBlocks } from "./create-blocks";
-export { blockLabels, blockLabelsTr, blockText, type BlockLabels } from "./labels";
+export { blockLabels, blockLabelsTr, blockLabelsDe, blockLabelsFr, blockLabelsEs, blockLabelsAr, blockText, type BlockLabels } from "./labels";
 export type { BlockAdapters, BlockBaseProps, BlockComponentProps, BlockRuntime, ImageData, LinkData } from "./types";
 
 // Pure helpers (no zod) re-exported for components
@@ -59,7 +59,7 @@ export { ConsentSettingsButton } from "./site/shared/consent-island";
 export { getConsent, onConsent, readConsent, writeConsent, parseConsent, openConsentPreferences, consentDefaultsScript, consentModeSignals, CONSENT_COOKIE, CONSENT_EVENT, CONSENT_OPEN_EVENT, CONSENT_CATEGORIES, type ConsentCategory, type ConsentRecord, type ConsentChoices } from "./site/shared/consent";
 export { validateContactForm, isSpam, contactFieldLabel, HONEYPOT_FIELD, type ContactFieldConfig, type ContactFieldName, type SiteFormState, type SiteFormAction, type ContactValidation } from "./site/shared/site-form";
 export { BrandIcon, BRAND_NAMES, type BrandName, type BrandIconProps } from "./site/shared/brand-icons";
-export { site2Labels, site2LabelsTr, type Site2Labels, type Site2BlockLabels } from "./site/shared/labels-2";
+export { site2Labels, site2LabelsTr, site2LabelsDe, site2LabelsFr, site2LabelsEs, site2LabelsAr, type Site2Labels, type Site2BlockLabels } from "./site/shared/labels-2";
 
 // Site shell: locale switch, inner pages and a scoped accent for whole-site blocks
 export { SiteShell, SiteShellPage, SiteShellLocale, SiteShellLink, useSiteShell, type SiteShellProps, type SiteShellPageProps, type SiteShellLocaleProps, type SiteShellLinkProps, type SiteShellContextValue } from "./site/site-shell";
