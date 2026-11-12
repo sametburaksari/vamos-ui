@@ -140,6 +140,10 @@ export default function Page() {
 }
 \`\`\`
 
+Next.js with webpack (\`next build --webpack\`, the Next.js 15 default): add
+\`experimental: { optimizePackageImports: ["@vamos-ui/react"] }\` to next.config, or a Server Component
+that imports from the package root ships every client component. Turbopack and Vite need nothing.
+
 Prefer to own the source? Copy single components with the CLI: \`npx vamos-ui add button\`.
 
 MIT licensed. “Vamos UI” and the logo are trademarks of Vamos.

@@ -70,7 +70,7 @@ const valueColor: Record<ResolvedTone, string> = {
 /* Linear                                                               */
 /* ------------------------------------------------------------------ */
 
-export const progressTrackVariants = cva("relative w-full overflow-hidden rounded-full bg-track", {
+export const progressTrackVariants = /*#__PURE__*/ cva("relative w-full overflow-hidden rounded-full bg-track", {
   variants: {
     size: { xs: "h-0.5", sm: "h-1", md: "h-2" },
   },
@@ -99,7 +99,7 @@ export interface ProgressProps extends SharedProgressProps, Omit<React.HTMLAttri
  * <Progress aria-label="Loading" value={null} />
  * ```
  */
-export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(function Progress(
+export const Progress = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ProgressProps>(function Progress(
   { value, max, tone, display, valueText, labels, size, label, showValue, hint, className, id, ...props },
   ref,
 ) {
@@ -188,7 +188,7 @@ export interface ProgressCircleProps extends SharedProgressProps, Omit<React.HTM
  * <ProgressCircle aria-label="Profile complete" value={72} size="lg" />
  * ```
  */
-export const ProgressCircle = React.forwardRef<HTMLDivElement, ProgressCircleProps>(function ProgressCircle(
+export const ProgressCircle = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ProgressCircleProps>(function ProgressCircle(
   { value, max, tone, display, valueText, labels, size = "md", showValue, children, className, ...props },
   ref,
 ) {

@@ -103,7 +103,7 @@ interface NativeSelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectEl
   invalid?: boolean;
 }
 
-const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(function NativeSelect({ className, size = "md", invalid, children, ...rest }, ref) {
+const NativeSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, NativeSelectProps>(function NativeSelect({ className, size = "md", invalid, children, ...rest }, ref) {
   const props = useFieldControl({ ...rest, "aria-invalid": invalid ? true : rest["aria-invalid"] });
   return (
     <div data-slot="address-select" className={cn(controlVariants({ size }), "px-0", className)}>
@@ -186,7 +186,7 @@ export interface RegionSelectProps extends Omit<NativeSelectProps, "value" | "de
  * <Field label="Province"><RegionSelect source={trAddress} level="province" /></Field>
  * ```
  */
-export const RegionSelect = React.forwardRef<HTMLSelectElement, RegionSelectProps>(function RegionSelect(
+export const RegionSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, RegionSelectProps>(function RegionSelect(
   { source, level, province, value, defaultValue, onValueChange, placeholder, labels, disabled, ...rest },
   ref,
 ) {
@@ -260,7 +260,7 @@ const DEFAULT_FIELDS: AddressPart[] = ["country", "region1", "region2", "line1",
  * <AddressField legend="Billing address" name="billing" defaultValue={{ country: "TR" }} required={["line1", "region1", "region2"]} />
  * ```
  */
-export const AddressField = React.forwardRef<HTMLFieldSetElement, AddressFieldProps>(function AddressField(props, ref) {
+export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, AddressFieldProps>(function AddressField(props, ref) {
   const {
     value,
     defaultValue,

@@ -726,4 +726,4 @@ function ComboboxInner<T = ComboboxOption>(props: ComboboxProps<T>, ref: React.F
  * <Combobox items={categories} onCreate={async (name) => api.createCategory(name)} />
  * ```
  */
-export const Combobox = React.forwardRef(ComboboxInner) as <T = ComboboxOption>(props: ComboboxProps<T> & { ref?: React.Ref<HTMLButtonElement> }) => React.ReactElement;
+export const Combobox = /*#__PURE__*/ React.forwardRef(ComboboxInner) as <T = ComboboxOption>(props: ComboboxProps<T> & { ref?: React.Ref<HTMLButtonElement> }) => React.ReactElement;

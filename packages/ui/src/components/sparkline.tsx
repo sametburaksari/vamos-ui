@@ -63,7 +63,7 @@ export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>,
  * <Sparkline values={weekly} variant="bars" size="xs" domain={[0, 120]} label={sparklineSummary(weekly)} />
  * ```
  */
-export const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(function Sparkline(
+export const Sparkline = /*#__PURE__*/ React.forwardRef<SVGSVGElement, SparklineProps>(function Sparkline(
   { values, variant = "line", size = "sm", width, height, color, strokeWidth = 1.6, showLast, showMinMax, reference, domain, label, className, style, ...props },
   ref,
 ) {

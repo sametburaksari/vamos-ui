@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Collapsible } from "radix-ui";
+import * as Collapsible from "radix-ui/collapsible";
 import { ArrowLeft, ChevronDown, ChevronLeft, ChevronRight, LockKeyhole, SearchX } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -55,7 +55,7 @@ interface RecordLayoutContextValue {
   labels?: RecordLayoutLabels;
 }
 
-const RecordLayoutContext = React.createContext<RecordLayoutContextValue>({
+const RecordLayoutContext = /*#__PURE__*/ React.createContext<RecordLayoutContextValue>({
   narrow: false,
   readOnly: false,
   asidePosition: "end",
@@ -92,7 +92,7 @@ export interface SidePaneHandleProps extends Omit<React.HTMLAttributes<HTMLDivEl
  * `aria-valuenow`; arrows resize, Shift+arrows in bigger steps, Home/End jump to min/max,
  * double-click resets). Logical: works in RTL.
  */
-export const SidePaneHandle = React.forwardRef<HTMLDivElement, SidePaneHandleProps>(function SidePaneHandle(
+export const SidePaneHandle = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SidePaneHandleProps>(function SidePaneHandle(
   { value, min = 240, max = 560, defaultValue, onValueChange, edge = "start", step = 16, className, onKeyDown, onDoubleClick, ...props },
   ref,
 ) {
@@ -216,7 +216,7 @@ export interface RecordLayoutProps extends React.HTMLAttributes<HTMLDivElement> 
  * </RecordLayout>
  * ```
  */
-export const RecordLayout = React.forwardRef<HTMLDivElement, RecordLayoutProps>(function RecordLayout(
+export const RecordLayout = /*#__PURE__*/ React.forwardRef<HTMLDivElement, RecordLayoutProps>(function RecordLayout(
   {
     asidePosition = "end",
     asideWidth: asideWidthProp,
@@ -350,7 +350,7 @@ export interface RecordHeaderProps extends Omit<React.HTMLAttributes<HTMLElement
 }
 
 /** The record's header: back link + pager, media, h1, status, subtitle, actions and key facts. */
-export const RecordHeader = React.forwardRef<HTMLElement, RecordHeaderProps>(function RecordHeader(
+export const RecordHeader = /*#__PURE__*/ React.forwardRef<HTMLElement, RecordHeaderProps>(function RecordHeader(
   { media, title, subtitle, status, facts, actions, back, pager, saving, size = "md", loading, labels, className, children, ...props },
   ref,
 ) {
@@ -446,7 +446,7 @@ export interface RecordPagerProps extends Omit<React.HTMLAttributes<HTMLElement>
 }
 
 /** "3 of 128" with previous/next buttons and `j` / `k` shortcuts. */
-export const RecordPager = React.forwardRef<HTMLElement, RecordPagerProps>(function RecordPager(
+export const RecordPager = /*#__PURE__*/ React.forwardRef<HTMLElement, RecordPagerProps>(function RecordPager(
   { index, total, prevHref, nextHref, onPrevious, onNext, shortcuts = true, labels, className, ...props },
   ref,
 ) {
@@ -517,7 +517,7 @@ export interface RecordMainProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** The main column: tabs, overview, activity, related lists. */
-export const RecordMain = React.forwardRef<HTMLDivElement, RecordMainProps>(function RecordMain({ tabs, className, children, ...props }, ref) {
+export const RecordMain = /*#__PURE__*/ React.forwardRef<HTMLDivElement, RecordMainProps>(function RecordMain({ tabs, className, children, ...props }, ref) {
   return (
     <div ref={ref} data-slot="record-main" className={cn("flex min-w-0 flex-col gap-(--gap) [grid-area:main]", className)} {...props}>
       {tabs ? <div data-slot="record-main-tabs" className="-mb-1">{tabs}</div> : null}
@@ -536,7 +536,7 @@ export interface RecordSectionProps extends Omit<React.HTMLAttributes<HTMLElemen
 }
 
 /** A titled card in the main column: overview, activity, related deals. `<section aria-labelledby>`. */
-export const RecordSection = React.forwardRef<HTMLElement, RecordSectionProps>(function RecordSection(
+export const RecordSection = /*#__PURE__*/ React.forwardRef<HTMLElement, RecordSectionProps>(function RecordSection(
   { title, description, action, padding = "md", className, children, id, ...props },
   ref,
 ) {
@@ -569,7 +569,7 @@ export interface RecordAsideProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 /** The side column (`<aside>`): description lists, owners, tags, related records. */
-export const RecordAside = React.forwardRef<HTMLElement, RecordAsideProps>(function RecordAside({ className, children, labels, ...props }, ref) {
+export const RecordAside = /*#__PURE__*/ React.forwardRef<HTMLElement, RecordAsideProps>(function RecordAside({ className, children, labels, ...props }, ref) {
   const ctx = React.useContext(RecordLayoutContext);
   const t = useLabels("record", recordLabels, labels ?? ctx.labels);
   return (
@@ -611,7 +611,7 @@ export interface RecordAsideSectionProps extends Omit<React.HTMLAttributes<HTMLE
 }
 
 /** A titled block in the side column; folds like an accordion item when space is short. */
-export const RecordAsideSection = React.forwardRef<HTMLElement, RecordAsideSectionProps>(function RecordAsideSection(
+export const RecordAsideSection = /*#__PURE__*/ React.forwardRef<HTMLElement, RecordAsideSectionProps>(function RecordAsideSection(
   { title, action, collapsible = false, defaultOpen = true, open: openProp, onOpenChange, headingLevel = 2, className, children, ...props },
   ref,
 ) {

@@ -37,7 +37,7 @@ export interface QrCodeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
  * <QrCode value={otpauthUri} aria-label="QR code for your authenticator app" />
  * ```
  */
-export const QrCode = React.forwardRef<HTMLDivElement, QrCodeProps>(function QrCode(
+export const QrCode = /*#__PURE__*/ React.forwardRef<HTMLDivElement, QrCodeProps>(function QrCode(
   { value, errorCorrection, size = 176, margin, plate = true, fallback = "Too long for a QR code", children, className, style, ...props },
   ref,
 ) {

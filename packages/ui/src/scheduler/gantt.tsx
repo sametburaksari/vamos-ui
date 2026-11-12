@@ -140,7 +140,7 @@ export interface GanttProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "
   labels?: Partial<GanttLabels>;
 }
 
-export const ganttVariants = cva("ui-gantt relative flex min-w-0 flex-col", {
+export const ganttVariants = /*#__PURE__*/ cva("ui-gantt relative flex min-w-0 flex-col", {
   variants: { framed: { true: "surface rounded-ui-lg", false: "" } },
   defaultVariants: { framed: true },
 });
@@ -170,7 +170,7 @@ interface EditState {
  * />
  * ```
  */
-export const Gantt = React.forwardRef<HTMLDivElement, GanttProps>(function Gantt(
+export const Gantt = /*#__PURE__*/ React.forwardRef<HTMLDivElement, GanttProps>(function Gantt(
   {
     tasks,
     links = [],

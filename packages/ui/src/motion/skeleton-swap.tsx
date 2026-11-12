@@ -21,7 +21,7 @@ export interface SkeletonSwapProps extends React.HTMLAttributes<HTMLDivElement> 
  * <SkeletonSwap loading={isLoading} skeleton={<InvoiceSkeleton />}><InvoiceTable rows={rows} /></SkeletonSwap>
  * ```
  */
-export const SkeletonSwap = React.forwardRef<HTMLDivElement, SkeletonSwapProps>(function SkeletonSwap({ loading, skeleton, className, children, ...props }, ref) {
+export const SkeletonSwap = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SkeletonSwapProps>(function SkeletonSwap({ loading, skeleton, className, children, ...props }, ref) {
   const inner = React.useRef<HTMLDivElement | null>(null);
   const [prevLoading, setPrevLoading] = React.useState(loading);
   const [leaving, setLeaving] = React.useState(false);

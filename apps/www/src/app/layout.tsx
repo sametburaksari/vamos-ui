@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Onest, Instrument_Serif, JetBrains_Mono, Hanken_Grotesk, Bricolage_Grotesque, Geist_Mono, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { fontBootScript } from "@vamos-ui/react/fonts";
-import { TooltipProvider } from "@vamos-ui/react";
+import { RootProviders } from "@/components/root-providers";
 import "./globals.css";
 import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="min-h-dvh font-sans text-[14px]">
-        <TooltipProvider>{children}</TooltipProvider>
+        <RootProviders>{children}</RootProviders>
       </body>
     </html>
   );

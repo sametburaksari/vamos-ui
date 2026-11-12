@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
+import * as AlertDialogPrimitive from "radix-ui/alert-dialog";
 import { TriangleAlert } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -19,7 +19,7 @@ interface AlertDialogContextValue {
   tone: Tone;
   actionRef: React.RefObject<HTMLButtonElement | null>;
 }
-const AlertDialogContentContext = React.createContext<AlertDialogContextValue>({ tone: "default", actionRef: { current: null } });
+const AlertDialogContentContext = /*#__PURE__*/ React.createContext<AlertDialogContextValue>({ tone: "default", actionRef: { current: null } });
 
 /**
  * Confirms an irreversible or high-stakes action. `role="alertdialog"`; the overlay never closes it.
@@ -52,7 +52,7 @@ export interface AlertDialogContentProps extends React.ComponentPropsWithoutRef<
 }
 
 /** Fixed 420px panel. Below 640px it anchors to the bottom and stacks the buttons, action on top. */
-export const AlertDialogContent = React.forwardRef<HTMLDivElement, AlertDialogContentProps>(function AlertDialogContent(
+export const AlertDialogContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AlertDialogContentProps>(function AlertDialogContent(
   { tone = "default", dismissible = true, container, className, children, onEscapeKeyDown, onOpenAutoFocus, onCloseAutoFocus, ...props },
   ref,
 ) {
@@ -140,7 +140,7 @@ export function AlertDialogIcon({ className, children }: { className?: string; c
 export interface AlertDialogHeaderProps extends LayerHeaderProps {}
 
 /** `LayerHeader` that adds the warning icon well when the content is `tone="danger"` (pass `icon={null}` to drop it). */
-export const AlertDialogHeader = React.forwardRef<HTMLDivElement, AlertDialogHeaderProps>(function AlertDialogHeader({ icon, className, ...props }, ref) {
+export const AlertDialogHeader = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AlertDialogHeaderProps>(function AlertDialogHeader({ icon, className, ...props }, ref) {
   const { tone } = React.useContext(AlertDialogContentContext);
   const resolvedIcon = icon === undefined ? (tone === "danger" ? <AlertDialogIcon /> : undefined) : icon;
   return <LayerHeader ref={ref} icon={resolvedIcon} className={cn("pt-6", className)} {...props} />;
@@ -149,7 +149,7 @@ export const AlertDialogHeader = React.forwardRef<HTMLDivElement, AlertDialogHea
 export const AlertDialogBody = LayerBody;
 
 /** Footer without the hairline; buttons at the end, stacked on mobile. */
-export const AlertDialogFooter = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof LayerFooter>>(function AlertDialogFooter(
+export const AlertDialogFooter = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof LayerFooter>>(function AlertDialogFooter(
   { className, ...props },
   ref,
 ) {
@@ -163,7 +163,7 @@ export interface AlertDialogCancelProps extends ButtonProps {
 }
 
 /** Closes without acting. Receives initial focus in a danger dialog. Default label "Cancel". */
-export const AlertDialogCancel = React.forwardRef<HTMLButtonElement, AlertDialogCancelProps>(function AlertDialogCancel(
+export const AlertDialogCancel = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, AlertDialogCancelProps>(function AlertDialogCancel(
   { children, labels, variant = "secondary", ...props },
   ref,
 ) {
@@ -184,7 +184,7 @@ export interface AlertDialogActionProps extends ButtonProps {
 }
 
 /** Runs the action and closes. `variant` follows the content tone (`danger` or `primary`). */
-export const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialogActionProps>(function AlertDialogAction(
+export const AlertDialogAction = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, AlertDialogActionProps>(function AlertDialogAction(
   { children, labels, variant, keepOpen, onClick, ...props },
   ref,
 ) {
@@ -319,7 +319,7 @@ export function ConfirmDialog({ open, onResult, title, description, tone = "defa
 }
 
 type ConfirmFn = (options: ConfirmOptions) => Promise<boolean>;
-const ConfirmContext = React.createContext<ConfirmFn | null>(null);
+const ConfirmContext = /*#__PURE__*/ React.createContext<ConfirmFn | null>(null);
 
 /**
  * Provides `useConfirm()` to its subtree and renders the one shared confirmation dialog.

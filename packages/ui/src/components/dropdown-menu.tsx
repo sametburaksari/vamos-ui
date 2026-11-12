@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
+import * as DropdownMenuPrimitive from "radix-ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { cn } from "../lib/cn";
 import { usePortalContainer } from "../lib/theme-scope";
@@ -40,7 +40,7 @@ export interface DropdownMenuContentProps extends React.ComponentPropsWithoutRef
 }
 
 /** The menu panel. Portals into the nearest `ThemeScope`; only the first layer blurs in glass mode. */
-export const DropdownMenuContent = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Content>, DropdownMenuContentProps>(function DropdownMenuContent(
+export const DropdownMenuContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Content>, DropdownMenuContentProps>(function DropdownMenuContent(
   { className, size = "md", sideOffset = 6, collisionPadding = 12, align = "start", ...props },
   ref,
 ) {
@@ -88,7 +88,7 @@ export interface DropdownMenuItemProps extends React.ComponentPropsWithoutRef<ty
  * `event.preventDefault()` in `onSelect` to keep it open (async actions).
  * With `asChild` the child (a link) is rendered as the item and must hold its own content.
  */
-export const DropdownMenuItem = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Item>, DropdownMenuItemProps>(function DropdownMenuItem(
+export const DropdownMenuItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Item>, DropdownMenuItemProps>(function DropdownMenuItem(
   { className, icon, description, shortcut, badge, tone = "default", inset, asChild, children, ...props },
   ref,
 ) {
@@ -119,7 +119,7 @@ export interface DropdownMenuCheckboxItemProps extends React.ComponentPropsWitho
 }
 
 /** A toggle (`menuitemcheckbox`). Selecting closes the menu; call `event.preventDefault()` in `onSelect` to keep it open (column toggles). */
-export const DropdownMenuCheckboxItem = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>, DropdownMenuCheckboxItemProps>(
+export const DropdownMenuCheckboxItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>, DropdownMenuCheckboxItemProps>(
   function DropdownMenuCheckboxItem({ className, shortcut, description, children, ...props }, ref) {
     const size = React.useContext(MenuSizeContext);
     return (
@@ -145,7 +145,7 @@ export interface DropdownMenuRadioItemProps extends React.ComponentPropsWithoutR
 }
 
 /** One choice inside a `DropdownMenuRadioGroup` (`menuitemradio`). */
-export const DropdownMenuRadioItem = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>, DropdownMenuRadioItemProps>(function DropdownMenuRadioItem(
+export const DropdownMenuRadioItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>, DropdownMenuRadioItemProps>(function DropdownMenuRadioItem(
   { className, shortcut, description, children, ...props },
   ref,
 ) {
@@ -164,13 +164,13 @@ export const DropdownMenuRadioItem = React.forwardRef<React.ElementRef<typeof Dr
   );
 });
 
-export const DropdownMenuLabel = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Label>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & { inset?: boolean }>(
+export const DropdownMenuLabel = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Label>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & { inset?: boolean }>(
   function DropdownMenuLabel({ className, inset, ...props }, ref) {
     return <DropdownMenuPrimitive.Label ref={ref} data-slot="dropdown-menu-label" className={cn(menuLabelClass, inset && "ps-8", className)} {...props} />;
   },
 );
 
-export const DropdownMenuSeparator = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>>(
+export const DropdownMenuSeparator = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>>(
   function DropdownMenuSeparator({ className, ...props }, ref) {
     return <DropdownMenuPrimitive.Separator ref={ref} data-slot="dropdown-menu-separator" className={cn(menuSeparatorClass, className)} {...props} />;
   },
@@ -187,7 +187,7 @@ export interface DropdownMenuSubTriggerProps extends React.ComponentPropsWithout
 }
 
 /** Opens a submenu on hover, Enter, Space or → (← in RTL). */
-export const DropdownMenuSubTrigger = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>, DropdownMenuSubTriggerProps>(function DropdownMenuSubTrigger(
+export const DropdownMenuSubTrigger = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>, DropdownMenuSubTriggerProps>(function DropdownMenuSubTrigger(
   { className, icon, inset, children, ...props },
   ref,
 ) {
@@ -207,7 +207,7 @@ export const DropdownMenuSubTrigger = React.forwardRef<React.ElementRef<typeof D
 });
 
 /** A submenu panel. It is one layer deeper, so it is opaque in glass mode. */
-export const DropdownMenuSubContent = React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.SubContent>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent> & { size?: "sm" | "md" }>(
+export const DropdownMenuSubContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof DropdownMenuPrimitive.SubContent>, React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent> & { size?: "sm" | "md" }>(
   function DropdownMenuSubContent({ className, size: sizeProp, sideOffset = 4, collisionPadding = 12, ...props }, ref) {
     const container = usePortalContainer();
     const parentSize = React.useContext(MenuSizeContext);

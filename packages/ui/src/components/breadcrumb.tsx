@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { DropdownMenu, Slot } from "radix-ui";
+import * as DropdownMenu from "radix-ui/dropdown-menu";
+import * as Slot from "radix-ui/slot";
 import { ChevronRight, ChevronsUpDown, MoreHorizontal } from "lucide-react";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
@@ -18,7 +19,7 @@ const breadcrumbLabels = {
 };
 
 type BreadcrumbSize = "sm" | "md";
-const SizeContext = React.createContext<BreadcrumbSize>("md");
+const SizeContext = /*#__PURE__*/ React.createContext<BreadcrumbSize>("md");
 
 export interface BreadcrumbMenuLink {
   label: React.ReactNode;
@@ -60,7 +61,7 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
  *
  * Compound: `<Breadcrumb><BreadcrumbList><BreadcrumbItem><BreadcrumbLink href/></BreadcrumbItem><BreadcrumbSeparator/>…<BreadcrumbPage/></BreadcrumbList></Breadcrumb>`.
  */
-export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(function Breadcrumb(
+export const Breadcrumb = /*#__PURE__*/ React.forwardRef<HTMLElement, BreadcrumbProps>(function Breadcrumb(
   { items, maxItems, separator, size = "md", jsonLd, baseUrl, labels, className, children, ...props },
   ref,
 ) {
@@ -121,19 +122,19 @@ function BreadcrumbTrail({ items, maxItems, separator, labels }: Pick<Breadcrumb
   );
 }
 
-const listVariants = cva("flex min-w-0 flex-wrap items-center text-fg-muted", {
+const listVariants = /*#__PURE__*/ cva("flex min-w-0 flex-wrap items-center text-fg-muted", {
   variants: { size: { sm: "gap-1 text-[13px] [&_svg]:size-3.5", md: "gap-1.5 text-sm [&_svg]:size-4" } },
   defaultVariants: { size: "md" },
 });
 
 /** The ordered list of crumbs. */
-export const BreadcrumbList = React.forwardRef<HTMLOListElement, React.OlHTMLAttributes<HTMLOListElement>>(function BreadcrumbList({ className, ...props }, ref) {
+export const BreadcrumbList = /*#__PURE__*/ React.forwardRef<HTMLOListElement, React.OlHTMLAttributes<HTMLOListElement>>(function BreadcrumbList({ className, ...props }, ref) {
   const size = React.useContext(SizeContext);
   return <ol ref={ref} data-slot="breadcrumb-list" className={cn(listVariants({ size }), className)} {...props} />;
 });
 
 /** One crumb (`li`). */
-export const BreadcrumbItem = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(function BreadcrumbItem({ className, ...props }, ref) {
+export const BreadcrumbItem = /*#__PURE__*/ React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(function BreadcrumbItem({ className, ...props }, ref) {
   return <li ref={ref} data-slot="breadcrumb-item" className={cn("inline-flex min-w-0 items-center gap-0.5", className)} {...props} />;
 });
 
@@ -147,7 +148,7 @@ export interface BreadcrumbLinkProps extends Omit<React.AnchorHTMLAttributes<HTM
 }
 
 /** A crumb that links up the hierarchy. Uses the app's router `Link` (external URLs open in a new tab). */
-export const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(function BreadcrumbLink(
+export const BreadcrumbLink = /*#__PURE__*/ React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(function BreadcrumbLink(
   { href, icon, asChild, className, children, title, ...props },
   ref,
 ) {
@@ -166,7 +167,7 @@ export interface BreadcrumbPageProps extends React.HTMLAttributes<HTMLSpanElemen
 }
 
 /** The current page: plain text, `aria-current="page"` (override for a non-link middle crumb). */
-export const BreadcrumbPage = React.forwardRef<HTMLSpanElement, BreadcrumbPageProps>(function BreadcrumbPage({ icon, className, children, title, ...props }, ref) {
+export const BreadcrumbPage = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, BreadcrumbPageProps>(function BreadcrumbPage({ icon, className, children, title, ...props }, ref) {
   const current = !("aria-current" in props) || props["aria-current"] !== undefined;
   return (
     <span
@@ -226,7 +227,7 @@ export interface BreadcrumbEllipsisProps extends React.ButtonHTMLAttributes<HTML
 }
 
 /** "…" for collapsed crumbs; opens a menu with the hidden pages. */
-export const BreadcrumbEllipsis = React.forwardRef<HTMLButtonElement, BreadcrumbEllipsisProps>(function BreadcrumbEllipsis(
+export const BreadcrumbEllipsis = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, BreadcrumbEllipsisProps>(function BreadcrumbEllipsis(
   { items, labels, className, ...props },
   ref,
 ) {

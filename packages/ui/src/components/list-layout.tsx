@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ToggleGroup as ToggleGroupPrimitive } from "radix-ui";
+import * as ToggleGroupPrimitive from "radix-ui/toggle-group";
 import { cva } from "class-variance-authority";
 import { SlidersHorizontal, X } from "lucide-react";
 import { cn } from "../lib/cn";
@@ -47,13 +47,13 @@ interface ListLayoutContextValue {
   toolbarRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const ListLayoutContext = React.createContext<ListLayoutContextValue | null>(null);
+const ListLayoutContext = /*#__PURE__*/ React.createContext<ListLayoutContextValue | null>(null);
 
 /* ------------------------------------------------------------------ */
 /* ListLayout                                                          */
 /* ------------------------------------------------------------------ */
 
-export const listLayoutVariants = cva("@container/list relative mx-auto flex w-full min-w-0 flex-col", {
+export const listLayoutVariants = /*#__PURE__*/ cva("@container/list relative mx-auto flex w-full min-w-0 flex-col", {
   variants: {
     width: {
       /** Edge to edge of the page area. */
@@ -97,7 +97,7 @@ export interface ListLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
  *
  * Responds to its own width (container queries), so it behaves the same in a split view.
  */
-export const ListLayout = React.forwardRef<HTMLDivElement, ListLayoutProps>(function ListLayout(
+export const ListLayout = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ListLayoutProps>(function ListLayout(
   { width = "full", stickyToolbar = true, stickyTop, className, style, ...props },
   ref,
 ) {
@@ -147,7 +147,7 @@ export interface ListToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
  * The row above the content. Sticky under the top bar on the bar surface; while a selection is
  * active the `ListBulkBar` takes its place.
  */
-export const ListToolbar = React.forwardRef<HTMLDivElement, ListToolbarProps>(function ListToolbar(
+export const ListToolbar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ListToolbarProps>(function ListToolbar(
   { search, filters, filterCount, views, viewSwitch, actions, searchLabel, labels, className, children, ...props },
   ref,
 ) {
@@ -253,7 +253,7 @@ export interface ListViewSwitchProps extends Omit<React.HTMLAttributes<HTMLDivEl
  * Table / grid / board switch: a segmented radio group (one tab stop, arrow keys move, Space selects). Labels
  * collapse to icons below ~640px of list width; the accessible name stays.
  */
-export const ListViewSwitch = React.forwardRef<HTMLDivElement, ListViewSwitchProps>(function ListViewSwitch(
+export const ListViewSwitch = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ListViewSwitchProps>(function ListViewSwitch(
   { options, value: valueProp, defaultValue, onValueChange, label, labels, className, ...props },
   ref,
 ) {
@@ -318,7 +318,7 @@ export interface ListBulkBarProps extends Omit<React.HTMLAttributes<HTMLDivEleme
  * The selection bar. Presentational: the Data Table (or your list) owns the selection. Announces
  * "{n} selected" politely; Esc inside the bar clears the selection and focus returns to the toolbar.
  */
-export const ListBulkBar = React.forwardRef<HTMLDivElement, ListBulkBarProps>(function ListBulkBar(
+export const ListBulkBar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ListBulkBarProps>(function ListBulkBar(
   { count, total, onSelectAll, allSelected, onClear, labels, className, children, onKeyDown, ...props },
   ref,
 ) {
@@ -426,7 +426,7 @@ export interface ListContentProps extends React.HTMLAttributes<HTMLDivElement> {
  * The content slot (table, grid or board) with every state. `refreshing` keeps the content and
  * shows a thin indeterminate bar; all states set `aria-busy` while work is pending.
  */
-export const ListContent = React.forwardRef<HTMLDivElement, ListContentProps>(function ListContent(
+export const ListContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ListContentProps>(function ListContent(
   { state = "ready", empty, noResults, error, onRetry, onClearFilters, skeleton, skeletonRows = 6, resultCount, labels, className, children, ...props },
   ref,
 ) {
@@ -510,6 +510,6 @@ export const ListContent = React.forwardRef<HTMLDivElement, ListContentProps>(fu
 export interface ListFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 /** The row under the content: `PaginationBar`, "Load more", a summary line. */
-export const ListFooter = React.forwardRef<HTMLDivElement, ListFooterProps>(function ListFooter({ className, ...props }, ref) {
+export const ListFooter = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ListFooterProps>(function ListFooter({ className, ...props }, ref) {
   return <div ref={ref} data-slot="list-footer" className={cn("flex flex-wrap items-center gap-3 border-t border-line pt-3 pb-1", className)} {...props} />;
 });

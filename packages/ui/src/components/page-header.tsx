@@ -25,7 +25,7 @@ export {
   parseSidebarCookie,
 } from "../lib/nav";
 
-export const pageHeaderTitleVariants = cva("font-display min-w-0 text-fg [text-wrap:balance]", {
+export const pageHeaderTitleVariants = /*#__PURE__*/ cva("font-display min-w-0 text-fg [text-wrap:balance]", {
   variants: {
     size: {
       /** Record pages. */
@@ -80,7 +80,7 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>,
  * />
  * ```
  */
-export const PageHeader = React.forwardRef<HTMLElement, PageHeaderProps>(function PageHeader(
+export const PageHeader = /*#__PURE__*/ React.forwardRef<HTMLElement, PageHeaderProps>(function PageHeader(
   { title, eyebrow, breadcrumb, back, description, meta, actions, menu, tabs, size = "md", sticky, align = "start", loading, className, children, ...props },
   ref,
 ) {
@@ -132,7 +132,7 @@ export const PageHeader = React.forwardRef<HTMLElement, PageHeaderProps>(functio
 });
 
 /** The `<h1>`. */
-export const PageHeaderTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement> & { size?: "sm" | "md" | "lg" }>(function PageHeaderTitle(
+export const PageHeaderTitle = /*#__PURE__*/ React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement> & { size?: "sm" | "md" | "lg" }>(function PageHeaderTitle(
   { size, className, ...props },
   ref,
 ) {

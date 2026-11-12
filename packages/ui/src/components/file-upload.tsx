@@ -461,7 +461,7 @@ export interface FileUploadProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * <FileUpload name="cv" accept=".pdf" maxFiles={1} />   // no upload → sent with the form
  * ```
  */
-export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(function FileUpload(props, ref) {
+export const FileUpload = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FileUploadProps>(function FileUpload(props, ref) {
   const {
     accept,
     maxSize,
@@ -644,7 +644,7 @@ function f_names(files: UploadFile[]) {
 }
 
 /** `FileUpload` with `variant="button"`. */
-export const FileUploadButton = React.forwardRef<HTMLDivElement, Omit<FileUploadProps, "variant">>(function FileUploadButton(props, ref) {
+export const FileUploadButton = /*#__PURE__*/ React.forwardRef<HTMLDivElement, Omit<FileUploadProps, "variant">>(function FileUploadButton(props, ref) {
   return <FileUpload ref={ref} variant="button" {...props} />;
 });
 
@@ -653,7 +653,7 @@ export const FileUploadButton = React.forwardRef<HTMLDivElement, Omit<FileUpload
 /* ------------------------------------------------------------------ */
 
 /** The list of files under a FileUpload (usable alone for attachment lists). */
-export const FileUploadList = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(function FileUploadList({ className, ...props }, ref) {
+export const FileUploadList = /*#__PURE__*/ React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(function FileUploadList({ className, ...props }, ref) {
   return <ul ref={ref} data-slot="file-upload-list" className={cn("grid gap-1.5", className)} {...props} />;
 });
 
@@ -667,7 +667,7 @@ export interface FileUploadItemProps extends Omit<React.LiHTMLAttributes<HTMLLIE
 }
 
 /** One file row: thumbnail or type icon, name, size, status, progress and actions. */
-export const FileUploadItem = React.forwardRef<HTMLLIElement, FileUploadItemProps>(function FileUploadItem({ file, onRemove, onRetry, formMode, labels, className, ...props }, ref) {
+export const FileUploadItem = /*#__PURE__*/ React.forwardRef<HTMLLIElement, FileUploadItemProps>(function FileUploadItem({ file, onRemove, onRetry, formMode, labels, className, ...props }, ref) {
   const t = useLabels("upload", uploadLabels, labels);
   const f = useFormat();
   const Icon = iconFor(file.type, file.name);
@@ -762,7 +762,7 @@ export interface ImageUploadProps extends Omit<React.HTMLAttributes<HTMLDivEleme
  * <Field label="Cover image"><ImageUpload aspect="16/9" maxSize={5_000_000} upload={uploadImage} /></Field>
  * ```
  */
-export const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(function ImageUpload(props, ref) {
+export const ImageUpload = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ImageUploadProps>(function ImageUpload(props, ref) {
   const {
     value,
     defaultValue,

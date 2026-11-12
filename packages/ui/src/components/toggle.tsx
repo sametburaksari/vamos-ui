@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Toggle as TogglePrimitive, ToggleGroup as ToggleGroupPrimitive } from "radix-ui";
+import * as TogglePrimitive from "radix-ui/toggle";
+import * as ToggleGroupPrimitive from "radix-ui/toggle-group";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
 
-export const toggleVariants = cva(
+export const toggleVariants = /*#__PURE__*/ cva(
   [
     "relative inline-flex shrink-0 select-none items-center justify-center gap-1.5 whitespace-nowrap font-medium outline-none",
     "transition-[background-color,color,box-shadow,border-color] duration-150 focus-ring [&_svg]:shrink-0",
@@ -54,7 +55,7 @@ export interface ToggleProps extends Omit<React.ComponentPropsWithoutRef<typeof 
  * <Toggle variant="outline" defaultPressed>Show archived</Toggle>
  * ```
  */
-export const Toggle = React.forwardRef<React.ElementRef<typeof TogglePrimitive.Root>, ToggleProps>(function Toggle(
+export const Toggle = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof TogglePrimitive.Root>, ToggleProps>(function Toggle(
   { variant = "ghost", size = "md", label, className, children, title, ...props },
   ref,
 ) {
@@ -90,7 +91,7 @@ interface ToggleGroupContextValue {
   variant: ToggleVariant;
   size: ToggleSize;
 }
-const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({ variant: "outline", size: "md" });
+const ToggleGroupContext = /*#__PURE__*/ React.createContext<ToggleGroupContextValue>({ variant: "outline", size: "md" });
 
 interface ToggleGroupBaseProps {
   /**
@@ -144,7 +145,7 @@ const trackClass = (orientation: "horizontal" | "vertical") =>
  * </ToggleGroup>
  * ```
  */
-export const ToggleGroup = React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitive.Root>, ToggleGroupProps>(function ToggleGroup(props, ref) {
+export const ToggleGroup = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitive.Root>, ToggleGroupProps>(function ToggleGroup(props, ref) {
   const { variant = "segmented", size = "md", orientation = "horizontal", block, className, children, ...rest } = props;
   const ctx = React.useMemo(() => ({ variant, size }), [variant, size]);
   const layout = cn(
@@ -216,7 +217,7 @@ export interface ToggleGroupItemProps extends Omit<React.ComponentPropsWithoutRe
 }
 
 /** One toggle inside a `ToggleGroup`. */
-export const ToggleGroupItem = React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitive.Item>, ToggleGroupItemProps>(function ToggleGroupItem(
+export const ToggleGroupItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitive.Item>, ToggleGroupItemProps>(function ToggleGroupItem(
   { label, className, children, title, ...props },
   ref,
 ) {

@@ -17,7 +17,7 @@ export interface FloatingArrowProps extends React.SVGAttributes<SVGSVGElement> {
  *
  * Only the two slanted edges are stroked, so the arrow melts into the layer's own border.
  */
-export const FloatingArrow = React.forwardRef<SVGSVGElement, FloatingArrowProps>(function FloatingArrow(
+export const FloatingArrow = /*#__PURE__*/ React.forwardRef<SVGSVGElement, FloatingArrowProps>(function FloatingArrow(
   { fill = "var(--popover)", stroke = "var(--popover-border)", width = 14, height = 7, style, ...props },
   ref,
 ) {

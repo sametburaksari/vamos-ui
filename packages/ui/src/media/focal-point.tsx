@@ -50,7 +50,7 @@ export interface FocalPointPickerProps extends Omit<React.HTMLAttributes<HTMLDiv
  * <FocalPointPicker src={asset} defaultValue={asset.focalPoint} onValueCommit={(focalPoint) => adapter.update(asset.id, { focalPoint })} />
  * ```
  */
-export const FocalPointPicker = React.forwardRef<HTMLDivElement, FocalPointPickerProps>(function FocalPointPicker(
+export const FocalPointPicker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FocalPointPickerProps>(function FocalPointPicker(
   { src, value, defaultValue, onValueChange, onValueCommit, previews = ["1/1", "16/9", "4/5"], maxHeight = "20rem", disabled, labels, className, ...props },
   ref,
 ) {

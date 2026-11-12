@@ -191,7 +191,7 @@ export function AttachmentName({ name, className, ...props }: React.HTMLAttribut
 /* AttachmentList                                                       */
 /* ------------------------------------------------------------------ */
 
-const listVariants = cva("", {
+const listVariants = /*#__PURE__*/ cva("", {
   variants: {
     layout: {
       list: "flex flex-col divide-y divide-line overflow-hidden rounded-ui border border-line",
@@ -242,7 +242,7 @@ export interface AttachmentListProps extends Omit<React.HTMLAttributes<HTMLDivEl
  * <AttachmentList layout="chips" items={commentFiles} readOnly />
  * ```
  */
-export const AttachmentList = React.forwardRef<HTMLDivElement, AttachmentListProps>(function AttachmentList(
+export const AttachmentList = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AttachmentListProps>(function AttachmentList(
   { items, layout = "list", size = "md", onPreview, onDownload, onRemove, onRetry, onAddFiles, accept, uploadSlot, readOnly, empty, labels, className, "aria-label": ariaLabel, ...props },
   ref,
 ) {

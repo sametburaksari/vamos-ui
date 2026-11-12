@@ -411,7 +411,7 @@ export interface BlockEditorContentProps extends React.HTMLAttributes<HTMLDivEle
  * The editable canvas. Wears the site theme (`canvasTheme`) and is always `solid`, even inside a
  * glass admin, for long-text readability and scroll performance.
  */
-export const BlockEditorContent = React.forwardRef<HTMLDivElement, BlockEditorContentProps>(function BlockEditorContent({ className, ...props }, ref) {
+export const BlockEditorContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, BlockEditorContentProps>(function BlockEditorContent({ className, ...props }, ref) {
   const { editor, variant, lang, editorLabel, a11y, readOnly, size, canvasTheme = {} } = useBlockEditor();
 
   // ARIA on the contenteditable element (Tiptap owns the node).

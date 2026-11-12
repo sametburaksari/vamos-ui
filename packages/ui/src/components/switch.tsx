@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Switch as SwitchPrimitive } from "radix-ui";
+import * as SwitchPrimitive from "radix-ui/switch";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { mergeIds } from "../lib/compose-refs";
@@ -9,7 +9,7 @@ import { useFieldControl } from "../lib/field-context";
 import { useControllableState } from "../lib/use-controllable-state";
 import { Spinner } from "./spinner";
 
-export const switchVariants = cva(
+export const switchVariants = /*#__PURE__*/ cva(
   [
     "group/switch relative inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent p-[2px] outline-none",
     "bg-track transition-[background-color,box-shadow] duration-200",
@@ -62,7 +62,7 @@ export interface SwitchProps
  * <Switch size="sm" checked={active} onCheckedChange={save} loading={saving} aria-label="Active" />
  * ```
  */
-export const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitive.Root>, SwitchProps>(function Switch(rawProps, ref) {
+export const Switch = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SwitchPrimitive.Root>, SwitchProps>(function Switch(rawProps, ref) {
   const {
     checked: checkedProp,
     defaultChecked,

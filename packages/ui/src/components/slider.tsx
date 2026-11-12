@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Slider as SliderPrimitive } from "radix-ui";
+import * as SliderPrimitive from "radix-ui/slider";
 import { cn } from "../lib/cn";
 import { mergeIds } from "../lib/compose-refs";
 import { FieldContextReset, useFieldContext } from "../lib/field-context";
@@ -75,7 +75,7 @@ const snap = (n: number, min: number, step: number) => {
  * <Slider defaultValue={[60]} marks={[0, 25, 50, 75, 100]} aria-label="Deal probability" />
  * ```
  */
-export const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, SliderProps>(function Slider(
+export const Slider = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, SliderProps>(function Slider(
   {
     value: valueProp,
     defaultValue,

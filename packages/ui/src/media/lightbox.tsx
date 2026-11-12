@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Dialog as DialogPrimitive, Slot } from "radix-ui";
+import * as DialogPrimitive from "radix-ui/dialog";
+import * as Slot from "radix-ui/slot";
 import { Download, ImageOff, Info, X, ZoomIn, ZoomOut } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -48,7 +49,7 @@ interface LightboxContextValue {
   isOpen: boolean;
   index: number;
 }
-const LightboxContext = React.createContext<LightboxContextValue | null>(null);
+const LightboxContext = /*#__PURE__*/ React.createContext<LightboxContextValue | null>(null);
 
 /** Open / close the surrounding `Lightbox` from custom triggers. */
 export function useLightbox(): LightboxContextValue {
@@ -159,7 +160,7 @@ export interface LightboxTriggerProps extends React.ButtonHTMLAttributes<HTMLBut
 }
 
 /** Opens the surrounding Lightbox at `index`. Renders a button (or the child with `asChild`). */
-export const LightboxTrigger = React.forwardRef<HTMLButtonElement, LightboxTriggerProps>(function LightboxTrigger({ index, asChild, onClick, className, type, ...props }, ref) {
+export const LightboxTrigger = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, LightboxTriggerProps>(function LightboxTrigger({ index, asChild, onClick, className, type, ...props }, ref) {
   const lb = useLightbox();
   const Comp = asChild ? Slot.Root : "button";
   return (

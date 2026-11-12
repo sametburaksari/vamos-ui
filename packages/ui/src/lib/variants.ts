@@ -14,7 +14,7 @@ import { cva, type VariantProps } from "class-variance-authority";
  * <button className={controlVariants({ size: "sm" })}>Status</button>
  * ```
  */
-export const controlVariants = cva(
+export const controlVariants = /*#__PURE__*/ cva(
   [
     "relative flex w-full min-w-0 items-center rounded-ui border text-fg",
     "transition-[border-color,box-shadow,background-color] duration-150",
@@ -72,7 +72,7 @@ export type ControlVariantProps = VariantProps<typeof controlVariants>;
  * </DropdownMenu.Item>
  * ```
  */
-export const itemVariants = cva(
+export const itemVariants = /*#__PURE__*/ cva(
   [
     "relative flex w-full cursor-default select-none items-center gap-2 rounded-ui-sm text-start text-fg outline-none",
     "transition-colors duration-100",

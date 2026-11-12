@@ -22,7 +22,7 @@ export interface TableContainerProps extends React.HTMLAttributes<HTMLDivElement
  * Scroll wrapper for a Table: horizontal (and optional vertical) scrolling with soft edge fades
  * that show there is more content. It is a focusable, named region so keyboard users can scroll.
  */
-export const TableContainer = React.forwardRef<HTMLDivElement, TableContainerProps>(function TableContainer({ className, maxHeight, style, ...props }, ref) {
+export const TableContainer = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TableContainerProps>(function TableContainer({ className, maxHeight, style, ...props }, ref) {
   return (
     <div
       ref={ref}
@@ -71,7 +71,7 @@ export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> 
  * </TableContainer>
  * ```
  */
-export const Table = React.forwardRef<HTMLTableElement, TableProps>(function Table(
+export const Table = /*#__PURE__*/ React.forwardRef<HTMLTableElement, TableProps>(function Table(
   { className, density = "inherit", striped, hover = true, bordered = "rows", stickyHeader, stickyFirstColumn, layout = "auto", children, ...props },
   ref,
 ) {
@@ -105,7 +105,7 @@ export interface TableCaptionProps extends React.HTMLAttributes<HTMLTableCaption
 }
 
 /** Names the table. Visible under the table by default; `visuallyHidden` keeps it for screen readers. */
-export const TableCaption = React.forwardRef<HTMLTableCaptionElement, TableCaptionProps>(function TableCaption({ className, visuallyHidden, side = "bottom", ...props }, ref) {
+export const TableCaption = /*#__PURE__*/ React.forwardRef<HTMLTableCaptionElement, TableCaptionProps>(function TableCaption({ className, visuallyHidden, side = "bottom", ...props }, ref) {
   return (
     <caption
       ref={ref}
@@ -120,15 +120,15 @@ export const TableCaption = React.forwardRef<HTMLTableCaptionElement, TableCapti
   );
 });
 
-export const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(function TableHeader({ className, ...props }, ref) {
+export const TableHeader = /*#__PURE__*/ React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(function TableHeader({ className, ...props }, ref) {
   return <thead ref={ref} data-slot="table-header" className={className} {...props} />;
 });
 
-export const TableBody = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(function TableBody({ className, ...props }, ref) {
+export const TableBody = /*#__PURE__*/ React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(function TableBody({ className, ...props }, ref) {
   return <tbody ref={ref} data-slot="table-body" className={className} {...props} />;
 });
 
-export const TableFooter = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(function TableFooter({ className, ...props }, ref) {
+export const TableFooter = /*#__PURE__*/ React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(function TableFooter({ className, ...props }, ref) {
   return <tfoot ref={ref} data-slot="table-footer" className={cn("font-medium", className)} {...props} />;
 });
 
@@ -141,7 +141,7 @@ export interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement>
   highlighted?: boolean;
 }
 
-export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(function TableRow({ className, selected, disabled, highlighted, ...props }, ref) {
+export const TableRow = /*#__PURE__*/ React.forwardRef<HTMLTableRowElement, TableRowProps>(function TableRow({ className, selected, disabled, highlighted, ...props }, ref) {
   return (
     <tr
       ref={ref}
@@ -171,7 +171,7 @@ export interface TableHeadProps extends Omit<React.ThHTMLAttributes<HTMLTableCel
  * Column header (`<th scope="col">`). With `onSort` the label becomes a button and the cell
  * gets `aria-sort`.
  */
-export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(function TableHead(
+export const TableHead = /*#__PURE__*/ React.forwardRef<HTMLTableCellElement, TableHeadProps>(function TableHead(
   { className, align, numeric, sort, onSort, scope = "col", children, ...props },
   ref,
 ) {
@@ -218,7 +218,7 @@ export interface TableCellProps extends Omit<React.TdHTMLAttributes<HTMLTableCel
   rowHeader?: boolean;
 }
 
-export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(function TableCell(
+export const TableCell = /*#__PURE__*/ React.forwardRef<HTMLTableCellElement, TableCellProps>(function TableCell(
   { className, align, numeric, truncate, rowHeader, children, ...props },
   ref,
 ) {
@@ -264,7 +264,7 @@ export interface TableEmptyProps extends Omit<React.HTMLAttributes<HTMLTableRowE
 }
 
 /** A single full-width row for an empty table body. */
-export const TableEmpty = React.forwardRef<HTMLTableRowElement, TableEmptyProps>(function TableEmpty(
+export const TableEmpty = /*#__PURE__*/ React.forwardRef<HTMLTableRowElement, TableEmptyProps>(function TableEmpty(
   { colSpan, icon, title, description, className, children, ...props },
   ref,
 ) {

@@ -163,7 +163,7 @@ function ContactActions({ name, contact, t, size = "sm" }: { name: string; conta
  * />
  * ```
  */
-export const EntityCard = React.forwardRef<HTMLElement, EntityCardProps>(function EntityCard(
+export const EntityCard = /*#__PURE__*/ React.forwardRef<HTMLElement, EntityCardProps>(function EntityCard(
   {
     kind = "person",
     name,

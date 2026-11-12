@@ -132,7 +132,7 @@ const levelLabel = (t: LabelFn<PermissionMatrixLabels>, v: PermissionLevel | und
  *   inherited={manager} inheritedFrom="Manager" baseline={saved} onSave={save} dependencies={[{ action: "edit", requires: "view" }]} />
  * ```
  */
-export const PermissionMatrix = React.forwardRef<HTMLDivElement, PermissionMatrixProps>(function PermissionMatrix(
+export const PermissionMatrix = /*#__PURE__*/ React.forwardRef<HTMLDivElement, PermissionMatrixProps>(function PermissionMatrix(
   {
     resources,
     actions,

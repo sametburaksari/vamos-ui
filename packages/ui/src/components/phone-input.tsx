@@ -82,7 +82,7 @@ const accept = (ch: string) => (ch >= "0" && ch <= "9") || ch === "+";
  * <Field label="Mobile"><PhoneInput defaultCountry="TR" onValueChange={(e164) => save(e164)} /></Field>
  * ```
  */
-export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(function PhoneInput(props, forwardedRef) {
+export const PhoneInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, PhoneInputProps>(function PhoneInput(props, forwardedRef) {
   const {
     country: countryProp,
     defaultCountry,

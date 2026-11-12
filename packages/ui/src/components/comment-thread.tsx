@@ -315,7 +315,7 @@ function findTrigger(value: string, caret: number, triggers: string[]): PickerSt
  * ↑/↓ move, Enter or Tab insert, Esc close), optional attachments, and ⌘/Ctrl+Enter to send.
  * Picked mentions are stored as `@[Name](user:id)` in the submitted body.
  */
-export const CommentComposer = React.forwardRef<HTMLTextAreaElement, CommentComposerProps>(function CommentComposer(
+export const CommentComposer = /*#__PURE__*/ React.forwardRef<HTMLTextAreaElement, CommentComposerProps>(function CommentComposer(
   { onSubmit, onCancel, defaultValue, parentId, mentionSources, allowAttachments, placeholder, submitLabel, author, autoFocus, variant = "inline", compact, labels, className, ...props },
   ref,
 ) {
@@ -666,7 +666,7 @@ export interface CommentProps extends Omit<React.HTMLAttributes<HTMLElement>, "o
 }
 
 /** One comment: avatar, author and time, body with mention chips, attachments, reactions and actions. An `<article>` labelled by its header. */
-export const Comment = React.forwardRef<HTMLElement, CommentProps>(function Comment(
+export const Comment = /*#__PURE__*/ React.forwardRef<HTMLElement, CommentProps>(function Comment(
   {
     comment: c,
     currentUserId,
@@ -961,7 +961,7 @@ export interface CommentThreadProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * />
  * ```
  */
-export const CommentThread = React.forwardRef<HTMLDivElement, CommentThreadProps>(function CommentThread(
+export const CommentThread = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CommentThreadProps>(function CommentThread(
   {
     comments,
     currentUserId,

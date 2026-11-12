@@ -89,7 +89,7 @@ function a11yProps(semantic: "progress" | "meter", value: number | null, max: nu
  * <ProgressRing value={85} aria-label="Profile completeness" format="percent" size="md" />
  * ```
  */
-export const ProgressRing = React.forwardRef<HTMLDivElement, ProgressRingProps>(function ProgressRing(
+export const ProgressRing = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ProgressRingProps>(function ProgressRing(
   { value, max = 100, size = "md", thickness, color = "chart-1", thresholds, label, format, semantic = "progress", labels, className, style, "aria-label": ariaLabel, ...props },
   ref,
 ) {
@@ -149,7 +149,7 @@ export const ProgressRing = React.forwardRef<HTMLDivElement, ProgressRingProps>(
  * <Gauge value={64} aria-label="SEO score" semantic="meter" thresholds={[{ at: 0, color: "danger", label: "Poor" }, { at: 50, color: "warning", label: "Fair" }, { at: 80, color: "success", label: "Good" }]} color="auto" />
  * ```
  */
-export const Gauge = React.forwardRef<HTMLDivElement, GaugeProps>(function Gauge(
+export const Gauge = /*#__PURE__*/ React.forwardRef<HTMLDivElement, GaugeProps>(function Gauge(
   { value, max = 100, size = "lg", thickness, color = "chart-1", thresholds, label, format, semantic = "meter", arc = 270, showThresholdBands, target, labels, className, style, "aria-label": ariaLabel, ...props },
   ref,
 ) {

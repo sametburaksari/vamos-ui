@@ -34,7 +34,7 @@ export interface TextRevealProps extends Omit<React.HTMLAttributes<HTMLElement>,
  * <TextReveal as="h2">Small rooms, slow mornings, nothing to scroll.</TextReveal>
  * ```
  */
-export const TextReveal = React.forwardRef<HTMLElement, TextRevealProps>(function TextReveal(
+export const TextReveal = /*#__PURE__*/ React.forwardRef<HTMLElement, TextRevealProps>(function TextReveal(
   { children, as: Tag = "h2", by = "word", effect = "mask", step, delay, once, rootMargin, threshold, disabled, onReveal, className, style, ...props },
   ref,
 ) {

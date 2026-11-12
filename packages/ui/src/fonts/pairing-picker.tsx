@@ -37,7 +37,7 @@ export interface FontPairingPickerProps extends Omit<React.HTMLAttributes<HTMLDi
  * Pick one of the curated pairings. A WAI-ARIA radio group with a roving tab stop:
  * arrow keys move and select, Home/End jump to the ends.
  */
-export const FontPairingPicker = React.forwardRef<HTMLDivElement, FontPairingPickerProps>(function FontPairingPicker(
+export const FontPairingPicker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FontPairingPickerProps>(function FontPairingPicker(
   { value: valueProp, defaultValue, onValueChange, pairings = fontPairings, layout = "grid", showDescription, loadPreviews = true, disabled, labels, className, onKeyDown, ...props },
   ref,
 ) {

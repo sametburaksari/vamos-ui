@@ -101,7 +101,7 @@ export interface BlockEditorContextValue {
   a11y?: { id?: string; describedBy?: string; invalid?: boolean; required?: boolean; labelledBy?: string };
 }
 
-export const BlockEditorContext = React.createContext<BlockEditorContextValue | null>(null);
+export const BlockEditorContext = /*#__PURE__*/ React.createContext<BlockEditorContextValue | null>(null);
 
 /** The surrounding `BlockEditor` (editor instance, registry, labels…). */
 export function useBlockEditor(): BlockEditorContextValue {

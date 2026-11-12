@@ -129,7 +129,7 @@ interface DonutContextValue {
   setActive: (k: string | null) => void;
   raw: { key: string; value: number }[];
 }
-const DonutContext = React.createContext<DonutContextValue | null>(null);
+const DonutContext = /*#__PURE__*/ React.createContext<DonutContextValue | null>(null);
 const useDonut = () => React.useContext(DonutContext)!;
 
 function useSlices(slices: { key: string; value: number }[]): Slice[] {

@@ -140,7 +140,7 @@ interface ResolvedStep extends StepItem {
  * An ordered list; the current step has `aria-current="step"` and every step's name includes its
  * position and status ("Step 2 of 4, Map columns, current").
  */
-export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(function Stepper(
+export const Stepper = /*#__PURE__*/ React.forwardRef<HTMLDivElement, StepperProps>(function Stepper(
   {
     value,
     onValueChange,

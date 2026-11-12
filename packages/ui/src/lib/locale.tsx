@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Direction } from "radix-ui";
+import * as Direction from "radix-ui/direction";
 import { en, type Messages, type MessagesInput } from "../locales/en";
 import { createFormatter, type Formatter } from "../format/core";
 import { formatMessage } from "./message-format";
@@ -80,7 +80,7 @@ function createValue(locale: string, messages: ResolvedMessages, dir: "ltr" | "r
 }
 
 const defaultValue = createValue("en-US", en as ResolvedMessages, "ltr", "UTC", "USD");
-const LocaleContext = React.createContext<LocaleValue>(defaultValue);
+const LocaleContext = /*#__PURE__*/ React.createContext<LocaleValue>(defaultValue);
 
 /**
  * Locale for built-in strings, text rules and Intl formatting. No i18n library required.

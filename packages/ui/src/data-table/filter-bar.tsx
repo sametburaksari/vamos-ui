@@ -647,7 +647,7 @@ export interface FilterChipProps {
  * One applied filter: `Stage │ is any of │ Proposal, Won │ ×`. Every segment is its own button
  * with a full accessible name; × removes it (Delete / Backspace too).
  */
-export const FilterChip = React.forwardRef<HTMLDivElement, FilterChipProps>(function FilterChip({ clause, field, onEdit, onRemove, readOnly, disabled, size = "md", labels, optionCache }, ref) {
+export const FilterChip = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FilterChipProps>(function FilterChip({ clause, field, onEdit, onRemove, readOnly, disabled, size = "md", labels, optionCache }, ref) {
   const t = useLabels("filterBar", filterBarLabels, labels);
   const format = useFormat();
   const dl = React.useMemo(() => describeLabelsFrom(t), [t]);
@@ -762,7 +762,7 @@ type EditorState = { kind: "add" } | { kind: "edit"; clauseId: string; step: "fi
  * <FilterBar fields={fields} value={filters} onChange={setFilters} resultCount={rows.length} />
  * ```
  */
-export const FilterBar = React.forwardRef<HTMLDivElement, FilterBarProps>(function FilterBar(
+export const FilterBar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FilterBarProps>(function FilterBar(
   {
     fields,
     value: valueProp,

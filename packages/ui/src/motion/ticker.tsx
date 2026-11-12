@@ -35,7 +35,7 @@ export interface TickerProps extends React.HTMLAttributes<HTMLDivElement> {
  * <Ticker as="ul" duration={30}>{logos.map((l) => <li key={l.name}>…</li>)}</Ticker>
  * ```
  */
-export const Ticker = React.forwardRef<HTMLDivElement, TickerProps>(function Ticker(
+export const Ticker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TickerProps>(function Ticker(
   { duration = 40, direction = "start", as: Group = "div", gap, fade = true, controls = true, pauseLabel = "Pause animation", groupClassName, className, style, children, "aria-label": ariaLabel, ...props },
   ref,
 ) {

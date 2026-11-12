@@ -19,7 +19,7 @@ export type StatLabels = Partial<typeof statLabels>;
 /* Delta                                                                */
 /* ------------------------------------------------------------------ */
 
-const deltaVariants = cva("inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap font-medium leading-none [&_svg]:shrink-0", {
+const deltaVariants = /*#__PURE__*/ cva("inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap font-medium leading-none [&_svg]:shrink-0", {
   variants: {
     variant: {
       text: "text-xs [&_svg]:size-3.5",
@@ -64,7 +64,7 @@ export interface DeltaProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
  * <Delta value={1250} kind="currency" variant="badge" />
  * ```
  */
-export const Delta = React.forwardRef<HTMLSpanElement, DeltaProps>(function Delta(
+export const Delta = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, DeltaProps>(function Delta(
   { value, kind = "percent", currency, intent = "higher-is-better", variant, precision, srLabel, comparison, labels, className, ...props },
   ref,
 ) {
@@ -103,7 +103,7 @@ export const Delta = React.forwardRef<HTMLSpanElement, DeltaProps>(function Delt
 /* Stat parts                                                           */
 /* ------------------------------------------------------------------ */
 
-const statVariants = cva(
+const statVariants = /*#__PURE__*/ cva(
   "group/stat relative grid min-w-0 grid-cols-[minmax(0,1fr)_auto] content-start items-start gap-x-3 [grid-template-areas:'label_delta'_'value_trend'_'target_target'_'foot_foot']" +
     // without a sparkline the value may use the full width (a wide delta must not squeeze "$3,815,400.00")
     " [&:not(:has([data-slot=stat-trend]))_[data-slot=stat-value]]:[grid-column:1/-1]",
@@ -175,7 +175,7 @@ export interface StatProps extends Omit<React.HTMLAttributes<HTMLElement>, "titl
  *
  * Compose for custom layouts: `<Stat><StatLabel/><StatValue/><StatDelta/><StatTrend/><StatFooter/></Stat>`.
  */
-export const Stat = React.forwardRef<HTMLElement, StatProps>(function Stat(
+export const Stat = /*#__PURE__*/ React.forwardRef<HTMLElement, StatProps>(function Stat(
   {
     label,
     value,
@@ -401,7 +401,7 @@ const columnClasses = {
  * A responsive row of Stats. Columns follow the container width, not the viewport, so the same
  * row works in a page, a sheet or a dashboard widget.
  */
-export const StatGroup = React.forwardRef<HTMLDivElement, StatGroupProps>(function StatGroup({ columns = 4, variant = "cards", className, children, ...props }, ref) {
+export const StatGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, StatGroupProps>(function StatGroup({ columns = 4, variant = "cards", className, children, ...props }, ref) {
   return (
     <div ref={ref} data-slot="stat-group" className={cn("@container", className)} {...props}>
       <div

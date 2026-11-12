@@ -72,7 +72,7 @@ interface ToolbarButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   first?: boolean;
 }
 
-const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(function ToolbarButton({ label, shortcut, active, first, className, children, ...props }, ref) {
+const ToolbarButton = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(function ToolbarButton({ label, shortcut, active, first, className, children, ...props }, ref) {
   return (
     <IconButtonTooltip label={label} shortcut={shortcut} side="top">
       <button

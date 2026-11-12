@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Popover as PopoverPrimitive } from "radix-ui";
+import * as PopoverPrimitive from "radix-ui/popover";
 import { Check, ChevronsUpDown, ExternalLink, LayoutList, Plus, RotateCw, Search, TriangleAlert, X } from "lucide-react";
 import { cn } from "../lib/cn";
 import { mergeIds } from "../lib/compose-refs";
@@ -1353,4 +1353,4 @@ function RecordPickerInner<R>(props: RecordPickerProps<R>, forwardedRef: React.F
  * <Field label="Company"><RecordPicker source={companies} value={companyId} onValueChange={setCompanyId} /></Field>
  * ```
  */
-export const RecordPicker = React.forwardRef(RecordPickerInner) as <R>(props: RecordPickerProps<R> & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement;
+export const RecordPicker = /*#__PURE__*/ React.forwardRef(RecordPickerInner) as <R>(props: RecordPickerProps<R> & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement;

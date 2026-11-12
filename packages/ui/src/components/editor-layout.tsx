@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Collapsible } from "radix-ui";
+import * as Collapsible from "radix-ui/collapsible";
 import { ArrowLeft, Check, ChevronDown, CloudOff, PanelRight, TriangleAlert } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -63,7 +63,7 @@ interface EditorLayoutContextValue {
   labels?: EditorLayoutLabels;
 }
 
-const EditorLayoutContext = React.createContext<EditorLayoutContextValue | null>(null);
+const EditorLayoutContext = /*#__PURE__*/ React.createContext<EditorLayoutContextValue | null>(null);
 
 function useEditorLayout() {
   return React.useContext(EditorLayoutContext);
@@ -125,7 +125,7 @@ export interface EditorLayoutProps extends React.HTMLAttributes<HTMLDivElement> 
  * </EditorLayout>
  * ```
  */
-export const EditorLayout = React.forwardRef<HTMLDivElement, EditorLayoutProps>(function EditorLayout(
+export const EditorLayout = /*#__PURE__*/ React.forwardRef<HTMLDivElement, EditorLayoutProps>(function EditorLayout(
   {
     panelOpen: panelOpenProp,
     defaultPanelOpen = true,
@@ -251,7 +251,7 @@ export interface EditorBarProps extends Omit<React.HTMLAttributes<HTMLDivElement
 }
 
 /** The sticky publish bar: back, title, save status, actions, panel toggle. */
-export const EditorBar = React.forwardRef<HTMLDivElement, EditorBarProps>(function EditorBar(
+export const EditorBar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, EditorBarProps>(function EditorBar(
   { back, title, status, actions, secondaryActions, menu, panelToggle = true, focusToggle = false, labels, className, children, ...props },
   ref,
 ) {
@@ -341,7 +341,7 @@ const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
  * Where the document's changes are: "Unsaved changes" · "Saving…" · "Saved 2 min ago" ·
  * "Couldn't save · Retry" · "Offline · changes kept locally". A polite status; the error is an alert.
  */
-export const SaveStatus = React.forwardRef<HTMLSpanElement, SaveStatusProps>(function SaveStatus(
+export const SaveStatus = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, SaveStatusProps>(function SaveStatus(
   { state, at, onRetry, guard = true, now: nowProp, labels, className, ...props },
   ref,
 ) {
@@ -444,7 +444,7 @@ export interface EditorCanvasProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 /** The writing area: a centred column with generous margins. */
-export const EditorCanvas = React.forwardRef<HTMLDivElement, EditorCanvasProps>(function EditorCanvas(
+export const EditorCanvas = /*#__PURE__*/ React.forwardRef<HTMLDivElement, EditorCanvasProps>(function EditorCanvas(
   { width = "prose", tone = "surface", notice, loading, labels, className, children, ...props },
   ref,
 ) {
@@ -493,7 +493,7 @@ export interface EditorPanelProps extends Omit<React.HTMLAttributes<HTMLElement>
 }
 
 /** The side panel: `<aside>` of collapsible settings sections; a non-modal sheet on narrow layouts. */
-export const EditorPanel = React.forwardRef<HTMLElement, EditorPanelProps>(function EditorPanel(
+export const EditorPanel = /*#__PURE__*/ React.forwardRef<HTMLElement, EditorPanelProps>(function EditorPanel(
   { tabs, value: valueProp, defaultValue, onValueChange, footer, labels, className, children, ...props },
   ref,
 ) {
@@ -571,7 +571,7 @@ export const EditorPanel = React.forwardRef<HTMLElement, EditorPanelProps>(funct
 export interface EditorPanelContentProps extends React.ComponentPropsWithoutRef<typeof TabsContent> {}
 
 /** The sections of one panel tab (`value` matches a tab `id`). */
-export const EditorPanelContent = React.forwardRef<HTMLDivElement, EditorPanelContentProps>(function EditorPanelContent({ className, ...props }, ref) {
+export const EditorPanelContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, EditorPanelContentProps>(function EditorPanelContent({ className, ...props }, ref) {
   return <TabsContent ref={ref} className={cn("mt-0", className)} {...props} />;
 });
 
@@ -606,7 +606,7 @@ function readStored(id: string | undefined): boolean | undefined {
 }
 
 /** A folding meta box in the panel: Status, Permalink, Categories, Featured image, SEO. */
-export const EditorPanelSection = React.forwardRef<HTMLElement, EditorPanelSectionProps>(function EditorPanelSection(
+export const EditorPanelSection = /*#__PURE__*/ React.forwardRef<HTMLElement, EditorPanelSectionProps>(function EditorPanelSection(
   { id, title, summary, defaultOpen = false, open: openProp, onOpenChange, actions, headingLevel = 2, className, children, ...props },
   ref,
 ) {

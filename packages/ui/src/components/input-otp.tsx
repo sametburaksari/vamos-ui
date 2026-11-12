@@ -25,7 +25,7 @@ interface OTPStyleContextValue {
   mask: boolean;
   invalid: boolean;
 }
-const OTPStyleContext = React.createContext<OTPStyleContextValue>({ size: "md", mask: false, invalid: false });
+const OTPStyleContext = /*#__PURE__*/ React.createContext<OTPStyleContextValue>({ size: "md", mask: false, invalid: false });
 
 /* ------------------------------------------------------------------ */
 /* Composite parts                                                     */
@@ -59,7 +59,7 @@ export interface InputOTPRootProps
  * field) with visual slots drawn over it. Compose `InputOTPGroup` / `InputOTPSlot` /
  * `InputOTPSeparator`, or use the `InputOTP` shorthand.
  */
-export const InputOTPRoot = React.forwardRef<HTMLInputElement, InputOTPRootProps>(function InputOTPRoot(rawProps, ref) {
+export const InputOTPRoot = /*#__PURE__*/ React.forwardRef<HTMLInputElement, InputOTPRootProps>(function InputOTPRoot(rawProps, ref) {
   const {
     maxLength,
     value: valueProp,
@@ -125,7 +125,7 @@ export const InputOTPRoot = React.forwardRef<HTMLInputElement, InputOTPRootProps
 });
 
 /** A run of joined slots. */
-export const InputOTPGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function InputOTPGroup({ className, ...props }, ref) {
+export const InputOTPGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function InputOTPGroup({ className, ...props }, ref) {
   return <div ref={ref} data-slot="input-otp-group" className={cn("ui-otp-group flex items-center", className)} {...props} />;
 });
 
@@ -135,7 +135,7 @@ export interface InputOTPSlotProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 /** One visual character box: active ring, fake caret, filled state. */
-export const InputOTPSlot = React.forwardRef<HTMLDivElement, InputOTPSlotProps>(function InputOTPSlot({ index, className, ...props }, ref) {
+export const InputOTPSlot = /*#__PURE__*/ React.forwardRef<HTMLDivElement, InputOTPSlotProps>(function InputOTPSlot({ index, className, ...props }, ref) {
   const ctx = React.useContext(OTPInputContext);
   const { size, mask, invalid } = React.useContext(OTPStyleContext);
   const slot = ctx.slots[index];
@@ -172,7 +172,7 @@ export const InputOTPSlot = React.forwardRef<HTMLDivElement, InputOTPSlotProps>(
 });
 
 /** Visual divider between groups (123–456). */
-export const InputOTPSeparator = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function InputOTPSeparator({ className, ...props }, ref) {
+export const InputOTPSeparator = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function InputOTPSeparator({ className, ...props }, ref) {
   return (
     <div ref={ref} role="separator" data-slot="input-otp-separator" className={cn("flex w-3 items-center justify-center text-fg-subtle", className)} {...props}>
       <span className="h-px w-2.5 bg-current" />
@@ -201,7 +201,7 @@ export interface InputOTPProps extends Omit<InputOTPRootProps, "maxLength" | "ch
  * </Field>
  * ```
  */
-export const InputOTP = React.forwardRef<HTMLInputElement, InputOTPProps>(function InputOTP({ length = 6, groups, ...props }, ref) {
+export const InputOTP = /*#__PURE__*/ React.forwardRef<HTMLInputElement, InputOTPProps>(function InputOTP({ length = 6, groups, ...props }, ref) {
   const sizes = groups && groups.reduce((a, b) => a + b, 0) === length ? groups : [length];
   let start = 0;
   return (

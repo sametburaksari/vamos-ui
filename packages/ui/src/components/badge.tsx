@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { ChipRemoveButton, LocaleCount } from "../lib/islands";
 
-export const badgeVariants = cva(
+export const badgeVariants = /*#__PURE__*/ cva(
   "inline-flex shrink-0 items-center gap-1 whitespace-nowrap font-medium leading-none [&_svg]:size-3 [&_svg]:shrink-0",
   {
     variants: {
@@ -70,7 +70,7 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
  *
  * No CSS `uppercase` — it breaks Turkish (i → I) without the right `lang`; use `upperText()`.
  */
-export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+export const Badge = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   { className, tone, size, shape, dot, color, count, max = 99, onRemove, removeLabel, disabled, asChild, children, style, ...props },
   ref,
 ) {

@@ -84,7 +84,7 @@ export function getImageSources(source: string | MediaAsset, options: ImageSourc
 /* Loader context                                                       */
 /* ------------------------------------------------------------------ */
 
-const ImageLoaderContext = React.createContext<ImageLoader | undefined>(undefined);
+const ImageLoaderContext = /*#__PURE__*/ React.createContext<ImageLoader | undefined>(undefined);
 
 /**
  * Sets the image loader for every kit `Image` below (CDN URL builder). Same signature as the
@@ -122,7 +122,7 @@ export function useImageSources(source: string | MediaAsset, options: ImageSourc
 /* Image                                                                */
 /* ------------------------------------------------------------------ */
 
-export const imageVariants = cva("vui-image relative isolate block max-w-full overflow-hidden bg-skeleton", {
+export const imageVariants = /*#__PURE__*/ cva("vui-image relative isolate block max-w-full overflow-hidden bg-skeleton", {
   variants: {
     rounded: { none: "", ui: "rounded-ui", "ui-lg": "rounded-ui-lg", full: "rounded-full" },
     fit: { cover: "", contain: "" },
@@ -203,7 +203,7 @@ const FILENAME_ALT = /(^(img|dsc|pxl|screenshot)[-_ ]?\d+)|\.(jpe?g|png|gif|webp
  * <Image src={asset} alt="Lobby of the Kadıköy office" aspect="16/9" sizes="(min-width: 1024px) 50vw, 100vw" rounded="ui" />
  * ```
  */
-export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Image(
+export const Image = /*#__PURE__*/ React.forwardRef<HTMLImageElement, ImageProps>(function Image(
   {
     src: source,
     alt: altProp,
@@ -416,7 +416,7 @@ export interface FigureProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 /** `<figure>` for a captioned image (blocks, galleries, articles). */
-export const Figure = React.forwardRef<HTMLElement, FigureProps>(function Figure({ gap = "sm", className, ...props }, ref) {
+export const Figure = /*#__PURE__*/ React.forwardRef<HTMLElement, FigureProps>(function Figure({ gap = "sm", className, ...props }, ref) {
   return <figure ref={ref} data-slot="figure" className={cn("m-0 flex flex-col", gap === "sm" ? "gap-2" : "gap-3", className)} {...props} />;
 });
 
@@ -426,7 +426,7 @@ export interface FigureCaptionProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 /** `<figcaption>`: caption text plus an optional credit. */
-export const FigureCaption = React.forwardRef<HTMLElement, FigureCaptionProps>(function FigureCaption({ credit, className, children, ...props }, ref) {
+export const FigureCaption = /*#__PURE__*/ React.forwardRef<HTMLElement, FigureCaptionProps>(function FigureCaption({ credit, className, children, ...props }, ref) {
   return (
     <figcaption ref={ref} data-slot="figure-caption" className={cn("text-[13px] leading-relaxed text-pretty text-fg-muted", className)} {...props}>
       {children}

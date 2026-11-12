@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Select as SelectPrimitive } from "radix-ui";
+import * as SelectPrimitive from "radix-ui/select";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useFieldControl } from "../lib/field-context";
@@ -185,7 +185,7 @@ export function StatusBadge({ status, size = "md", className }: { status: Status
  *   confirm={(s) => s.value === "rejected" && { title: "Reject request?", requireNote: true, tone: "danger" }} />
  * ```
  */
-export const StatusPicker = React.forwardRef<HTMLButtonElement, StatusPickerProps>(function StatusPicker(
+export const StatusPicker = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, StatusPickerProps>(function StatusPicker(
   {
     statuses,
     value: valueProp,

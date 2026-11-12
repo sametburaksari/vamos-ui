@@ -205,7 +205,7 @@ const clock = (sec: number) => {
  * <TimerButton adapter={adapter} projects={projects} defaultProjectId="mobile-app" />
  * ```
  */
-export const TimerButton = React.forwardRef<HTMLDivElement, TimerButtonProps>(function TimerButton(
+export const TimerButton = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TimerButtonProps>(function TimerButton(
   { adapter, projects = [], projectId: projectIdProp, defaultProjectId, onProjectChange, variant = "compact", staleAfterMin = 600, onStart, onStop, onAdjust, titleTicker = false, labels, className, ...props },
   ref,
 ) {
@@ -363,7 +363,7 @@ export interface TimesheetProps extends Omit<React.HTMLAttributes<HTMLDivElement
   labels?: Partial<TimeTrackerLabels>;
 }
 
-export const timesheetVariants = cva("ui-ts relative min-w-0", {
+export const timesheetVariants = /*#__PURE__*/ cva("ui-ts relative min-w-0", {
   variants: { framed: { true: "surface rounded-ui-lg", false: "" } },
   defaultVariants: { framed: true },
 });
@@ -373,7 +373,7 @@ export const timesheetVariants = cva("ui-ts relative min-w-0", {
  * <Timesheet weekStart="2026-11-09" rows={projects} value={hours} onCellChange={save} dailyTarget={8 * 60} />
  * ```
  */
-export const Timesheet = React.forwardRef<HTMLDivElement, TimesheetProps>(function Timesheet(
+export const Timesheet = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TimesheetProps>(function Timesheet(
   { weekStart, days: dayCount = 7, rows, value: valueProp, defaultValue, onCellChange, dailyTarget, locked = false, workCalendar, display = "clock", labels, className, ...props },
   ref,
 ) {
@@ -618,7 +618,7 @@ export interface TimeEntryListProps extends React.HTMLAttributes<HTMLDivElement>
 }
 
 /** Entries grouped by day (newest first) with day totals. */
-export const TimeEntryList = React.forwardRef<HTMLDivElement, TimeEntryListProps>(function TimeEntryList({ entries, onEntryOpen, showAmounts = false, labels, className, ...props }, ref) {
+export const TimeEntryList = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TimeEntryListProps>(function TimeEntryList({ entries, onEntryOpen, showAmounts = false, labels, className, ...props }, ref) {
   const t = useLabels("timeTracker", timeTrackerLabels, labels);
   const { locale, timeZone, format } = useLocale();
   const now = useNow(entries.some((e) => !e.end && e.durationMin === undefined), 30_000);
