@@ -7,6 +7,7 @@ import { init } from "./commands/init";
 import { mcp } from "./commands/mcp";
 import { preset } from "./commands/preset";
 import { registry } from "./commands/registry";
+import { site } from "./commands/site";
 import { diff, upgrade } from "./commands/sync";
 import { theme } from "./commands/theme";
 import { update } from "./commands/update";
@@ -30,6 +31,8 @@ ${pc.bold("Commands")}
   list                 List registry items         --type, --group, --category, --tag
   search <query>       Search by name, title, description and tags
   view <name>          Show usage, props, guidance and files   --files
+  site essentials      Website launch basics: robots, sitemap, legal pages for the footer links
+                       (legal-01), metadata hints. Runs after \`add site-…\` too (--no-essentials)
   diff [names...]      Compare installed files with the registry   --summary, --check
   upgrade [names...]   Update installed items, keeping your local edits
   theme                Pick the 5 theme axes and print the <html> attributes
@@ -73,6 +76,7 @@ const COMMANDS: Record<string, (ctx: Context, args: ReturnType<typeof parseArgs>
   mcp,
   registry,
   brand,
+  site,
   verify,
   lint: verify,
 };
@@ -91,7 +95,7 @@ export async function run(argv: string[], opts: RunOptions = {}): Promise<number
     out(VERSION);
     return 0;
   }
-  const ownHelp = ["brand", "update", "create", "mcp", "registry"].includes(args.command ?? "");
+  const ownHelp = ["brand", "update", "create", "mcp", "registry", "site"].includes(args.command ?? "");
   if (!args.command || (bool(args.flags, "help") && !ownHelp) || args.command === "help") {
     out(HELP);
     return args.command || bool(args.flags, "help") ? 0 : 1;

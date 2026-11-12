@@ -4,7 +4,7 @@
 
 import { z, f, defineBlock, createRegistry, type AnyBlockDefinition } from "../schema";
 import type { BlockComponentProps } from "../types";
-import type * as React from "react";
+import * as React from "react";
 import { PricingTable } from "./pricing-table";
 import { ComparisonTable } from "./comparison-table";
 import { Testimonials } from "./testimonials";
@@ -17,7 +17,7 @@ import { MenuList, menuJsonLd, ALLERGENS, MENU_TAGS } from "./menu-list";
 import { GallerySection } from "./gallery-section";
 import { ConsentBanner } from "./consent-banner";
 import { ContactDock } from "./contact-dock";
-import { Footer } from "./footer";
+import { Footer, type FooterProps } from "./footer";
 import { NotFound } from "./not-found";
 import { REVIEW_SOURCE_NAMES } from "./testimonials";
 import type { ContactFieldConfig, SiteFormState } from "./shared/site-form";
@@ -569,7 +569,8 @@ export const footerBlock = defineBlock({
   },
   jsonLd: (p) => ({ "@type": "Organization", name: p.company?.legalName ?? p.brand.name, telephone: p.contact?.phone, email: p.contact?.email, sameAs: p.social.map((s) => s.href) }),
   lint: (p) => (!p.company ? [{ code: "missing-company-details", severity: "info", message: "Sites that sell online usually must show the legal name and tax / registry numbers in the footer.", path: "props.company" }] : []),
-  component: asBlock(Footer),
+  // The renderer emits the definition's jsonLd once per page; the component must not repeat it.
+  component: asBlock((p: FooterProps) => React.createElement(Footer, { ...p, jsonLd: false })),
 });
 
 /* ------------------------------------------------------------------ 404 */

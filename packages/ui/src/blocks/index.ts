@@ -49,7 +49,7 @@ export { GallerySection, type GallerySectionProps, type GalleryVariant, type Gal
 export { ConsentBanner, ConsentDefaults, type ConsentBannerProps, type ConsentVariant } from "./site/consent-banner";
 export { ContactDock, type ContactDockProps, type ContactDockVariant, type DockAction, type MessagingProvider } from "./site/contact-dock";
 export { EmbedFacade, type EmbedFacadeProps } from "./site/embed-facade";
-export { Footer, type FooterProps, type FooterVariant } from "./site/footer";
+export { Footer, footerJsonLd, type FooterProps, type FooterVariant } from "./site/footer";
 export { NotFound, type NotFoundProps, type NotFoundVariant, type NotFoundKind } from "./site/not-found";
 // Shared modules: opening hours, consent, form contract, brand marks, labels
 export { isOpenAt, hoursStatus, hoursOn, weekRows, summarizeHours, orderedWeek, weekStartOf, weekdayName, formatTime, formatRange, zonedMoment, openingHoursJsonLd, describeStatus, timeVars, type OpenStatus, type OpenState, type WeekRow, type DayHours, type ZonedMoment, type Weekday, type TimeRange } from "./site/shared/opening-hours";
