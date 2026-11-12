@@ -9,14 +9,23 @@
 //      each package version on npm that has no tag yet.
 //
 //   --dry-run   show what would be published and tagged, change nothing
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import path from "node:path";
-import { OUT, PACKAGES, changelogSection, isPublished, log, run, tagOf, tarballName, versionOf } from "./lib.mjs";
+import { OUT, PACKAGES, ROOT, changelogSection, isPublished, log, run, tagOf, tarballName, versionOf } from "./lib.mjs";
 
 const dryRun = process.argv.includes("--dry-run");
 const inCI = !!process.env.GITHUB_ACTIONS;
 
-const pending = PACKAGES.filter((p) => !isPublished(p.name, versionOf(p)));
+const remoteTags = new Set(
+  run("git", ["ls-remote", "--tags", "origin"], { capture: true })
+    .split("\n")
+    .map((l) => l.split("refs/tags/")[1]?.replace(/\^\{\}$/, ""))
+    .filter(Boolean),
+);
+
+// A version counts as published when npm has it, or when its tag exists: tags are only created
+// after a successful publish, and npm can take minutes to show a new version ("processing").
+const pending = PACKAGES.filter((p) => !remoteTags.has(tagOf(p)) && !isPublished(p.name, versionOf(p)));
 if (pending.length) {
   log(`To publish: ${pending.map(tagOf).join(", ")}`);
   if (!dryRun) {
@@ -26,18 +35,16 @@ if (pending.length) {
       if (inCI) args.push("--provenance");
       else args.push("--auth-type=web");
       log(`\n▸ npm ${args.join(" ")}`);
-      run("npm", args);
+      const res = spawnSync("npm", args, { cwd: ROOT, encoding: "utf8", stdio: ["inherit", "inherit", "pipe"] });
+      process.stderr.write(res.stderr ?? "");
+      // npm answers 409 when the version was already accepted and is still being processed.
+      if (res.status !== 0 && /E409|previously staged|cannot publish over/i.test(res.stderr ?? "")) log(`${tagOf(pkg)} is already on npm (still processing); continuing.`);
+      else if (res.status !== 0) throw new Error(`npm publish ${tagOf(pkg)} failed (exit ${res.status}).`);
     }
   }
 } else log("Every package version is already on npm.");
 
 // Tags and GitHub releases for versions that are on npm but not tagged yet.
-const remoteTags = new Set(
-  run("git", ["ls-remote", "--tags", "origin"], { capture: true })
-    .split("\n")
-    .map((l) => l.split("refs/tags/")[1]?.replace(/\^\{\}$/, ""))
-    .filter(Boolean),
-);
 const toTag = PACKAGES.filter((p) => !remoteTags.has(tagOf(p)) && (pending.includes(p) ? !dryRun : true));
 for (const pkg of toTag) {
   const tag = tagOf(pkg);
