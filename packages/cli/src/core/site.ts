@@ -7,7 +7,16 @@ import type { VamosConfig } from "./types";
 /** The block every legal route page renders. */
 export const LEGAL_BLOCK = "legal-01";
 
-type LegalKind = "privacy" | "kvkk" | "cookies" | "terms" | "accessibility";
+type LegalKind =
+  | "privacy"
+  | "kvkk"
+  | "cookies"
+  | "terms"
+  | "accessibility"
+  | "returns"
+  | "distance-sales"
+  | "pre-information"
+  | "legal-notice";
 
 /**
  * Legal slugs (English and Turkish) → legal-01 preset and its starting language.
@@ -29,6 +38,23 @@ export const LEGAL_SLUGS: Record<string, { kind: LegalKind; locale: "en" | "tr" 
   "kullanim-kosullari": { kind: "terms", locale: "tr" },
   accessibility: { kind: "accessibility", locale: "en" },
   erisilebilirlik: { kind: "accessibility", locale: "tr" },
+  returns: { kind: "returns", locale: "en" },
+  "refund-policy": { kind: "returns", locale: "en" },
+  iade: { kind: "returns", locale: "tr" },
+  "iade-politikasi": { kind: "returns", locale: "tr" },
+  "iade-ve-degisim": { kind: "returns", locale: "tr" },
+  "cayma-hakki": { kind: "returns", locale: "tr" },
+  "distance-sales": { kind: "distance-sales", locale: "en" },
+  "distance-sales-agreement": { kind: "distance-sales", locale: "en" },
+  "mesafeli-satis": { kind: "distance-sales", locale: "tr" },
+  "mesafeli-satis-sozlesmesi": { kind: "distance-sales", locale: "tr" },
+  "pre-information": { kind: "pre-information", locale: "en" },
+  "on-bilgilendirme": { kind: "pre-information", locale: "tr" },
+  "on-bilgilendirme-formu": { kind: "pre-information", locale: "tr" },
+  "legal-notice": { kind: "legal-notice", locale: "en" },
+  imprint: { kind: "legal-notice", locale: "en" },
+  impressum: { kind: "legal-notice", locale: "en" },
+  "yasal-uyari": { kind: "legal-notice", locale: "tr" },
 };
 
 /** Website blocks whose links the essentials cover. */

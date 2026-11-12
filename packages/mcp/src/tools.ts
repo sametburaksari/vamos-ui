@@ -460,7 +460,7 @@ export async function planScreen(registry: Registry, args: { description: string
           "",
           "## Website launch checklist",
           "Use it before the site goes live (rule 11 in get_rules has the detail):",
-          "- A page for every footer link: legal pages (/privacy or /gizlilik, /kvkk, /cookies, /terms, /accessibility) from `legal-01`, with every [fill-in] replaced and the text reviewed by the business or a lawyer. `npx vamos-ui site essentials` writes them with robots and sitemap.",
+          "- A page for every footer link: legal pages (/privacy or /gizlilik, /kvkk, /cookies, /terms, /accessibility; for a shop also /iade, /mesafeli-satis-sozlesmesi, /on-bilgilendirme-formu; /yasal-uyari or /imprint) from `legal-01`, with every [fill-in] replaced and the text reviewed by the business or a lawyer. `npx vamos-ui site essentials` writes them with robots and sitemap.",
           "- robots.txt and sitemap.xml listing every public route.",
           "- `metadataBase`, `alternates.canonical`, `openGraph` and a 120–160 character description in the metadata.",
           "- JSON-LD: the kit `Footer` emits Organization; set the business type or add `<JsonLd>` / `localBusinessJsonLd`.",

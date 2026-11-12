@@ -1,5 +1,14 @@
 /** The legal pages a website footer usually links to. Each has a ready preset in ./presets. */
-export type LegalKind = "privacy" | "kvkk" | "cookies" | "terms" | "accessibility";
+export type LegalKind =
+  | "privacy"
+  | "kvkk"
+  | "cookies"
+  | "terms"
+  | "accessibility"
+  | "returns"
+  | "distance-sales"
+  | "pre-information"
+  | "legal-notice";
 
 export type LegalLocale = "en" | "tr";
 
@@ -33,6 +42,10 @@ export const legalRoutes: Record<LegalKind, string> = {
   cookies: "/cookies",
   terms: "/terms",
   accessibility: "/accessibility",
+  returns: "/returns",
+  "distance-sales": "/distance-sales",
+  "pre-information": "/pre-information",
+  "legal-notice": "/legal-notice",
 };
 
 /** Common slugs (English and Turkish) → the preset that fits, with the language to start from. */
@@ -52,4 +65,21 @@ export const legalSlugs: Record<string, { kind: LegalKind; locale: LegalLocale }
   "kullanim-kosullari": { kind: "terms", locale: "tr" },
   accessibility: { kind: "accessibility", locale: "en" },
   erisilebilirlik: { kind: "accessibility", locale: "tr" },
+  returns: { kind: "returns", locale: "en" },
+  "refund-policy": { kind: "returns", locale: "en" },
+  iade: { kind: "returns", locale: "tr" },
+  "iade-politikasi": { kind: "returns", locale: "tr" },
+  "iade-ve-degisim": { kind: "returns", locale: "tr" },
+  "cayma-hakki": { kind: "returns", locale: "tr" },
+  "distance-sales": { kind: "distance-sales", locale: "en" },
+  "distance-sales-agreement": { kind: "distance-sales", locale: "en" },
+  "mesafeli-satis": { kind: "distance-sales", locale: "tr" },
+  "mesafeli-satis-sozlesmesi": { kind: "distance-sales", locale: "tr" },
+  "pre-information": { kind: "pre-information", locale: "en" },
+  "on-bilgilendirme": { kind: "pre-information", locale: "tr" },
+  "on-bilgilendirme-formu": { kind: "pre-information", locale: "tr" },
+  "legal-notice": { kind: "legal-notice", locale: "en" },
+  imprint: { kind: "legal-notice", locale: "en" },
+  impressum: { kind: "legal-notice", locale: "en" },
+  "yasal-uyari": { kind: "legal-notice", locale: "tr" },
 };
