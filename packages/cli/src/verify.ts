@@ -10,6 +10,8 @@
 
 import { lex, lineIndex, matchBracket, position, type Comment } from "./lexer";
 
+export { PROJECT_RULES, collectRoutes, internalHrefs, usesSiteBlocks, verifyProject, type ProjectCheckInput, type ProjectIssue, type ProjectSource } from "./site-check";
+
 export type VerifySeverity = "error" | "warning";
 
 export interface VerifyIssue {
@@ -39,6 +41,7 @@ export const VERIFY_RULES: readonly VerifyRule[] = [
   { id: "use-client", severity: "error", description: "Files under app/ that use React hooks need a \"use client\" directive." },
   { id: "z-index-token", severity: "warning", description: "Arbitrary z-index values. Use the z tokens (--z-sticky, --z-nav, --z-overlay, --z-popover, --z-toast, --z-tooltip)." },
   { id: "prefer-kit-component", severity: "warning", description: "Hand-rolled modal/dropdown/tooltip/select markup. Use the kit component." },
+  { id: "placeholder-content", severity: "warning", description: "Placeholder contact data or links left in: dummy phone numbers (000 00 00, 555 55 55), example.com / .example emails and URLs, href=\"#\", invented map short links, [fill-in] fields." },
 ];
 
 const SEVERITY: Record<string, VerifySeverity> = Object.fromEntries(VERIFY_RULES.map((r) => [r.id, r.severity]));
@@ -412,6 +415,8 @@ export function verifySource(code: string, filename: string): VerifyIssue[] {
     hint(key, sm.index, `State "${sm[1]}" suggests a hand-rolled ${kind}.`, `Use ${comp} from the kit; it manages open state, focus and dismissal.`);
   }
 
+  checkPlaceholders(code, strings, push);
+
   // --- "use client" -----------------------------------------------------------
   if (/(^|\/)app\//.test(file) && /\.(tsx|jsx|ts|js)$/.test(file) && !/(^|\/)(route|middleware|proxy)\.[jt]sx?$/.test(file)) {
     const hook = REACT_HOOKS.exec(masked);
@@ -424,6 +429,60 @@ export function verifySource(code: string, filename: string): VerifyIssue[] {
   }
 
   return finish(code, issues, comments);
+}
+
+const PHONE_LIKE = /^(?:tel:|sms:)?\+?[\d\s().-]{7,22}$/;
+const EXAMPLE_HOST = /(?:^|[@./])example(?:\.(?:com|org|net))?(?=$|[/:?#"'\s])/i;
+const URL_OR_EMAIL = /^(?:https?:\/\/|mailto:|[\w.+-]+@)/i;
+const WA_LINK = /^https?:\/\/(?:wa\.me|api\.whatsapp\.com\/send\?phone=)\/?\+?(\d+)/i;
+const MAP_SHORT = /^https?:\/\/(?:maps\.app\.goo\.gl|goo\.gl\/maps|g\.page)\/([^/?#]+)/i;
+const FILL_IN = /(?<![\w-])\[[A-ZÇĞİÖŞÜ][\p{L}\p{N} .,'’/&()-]{2,48}\]/u;
+
+/** A run of digits that no real number has: six or more of one digit, or 1234567 / 7654321. */
+export function isPlaceholderNumber(digits: string): boolean {
+  const national = digits.replace(/^(?:00|\+)?90/, "").replace(/^0/, "");
+  if (national.length < 7) return false;
+  return /(\d)\1{5,}/.test(national.slice(3)) || /^(\d)\1+$/.test(national) || /1234567|7654321|5555555/.test(national);
+}
+
+function checkPlaceholders(code: string, strings: { value: string; start: number }[], push: (rule: string, offset: number, message: string, fix?: string) => void): void {
+  const fix = "Use the business’s real details before launch, or remove the item.";
+  let fillIns = 0;
+  let firstFill = -1;
+  for (const s of strings) {
+    const v = s.value.trim();
+    if (!v || v.length > 4000) continue;
+    const at = s.start + 1;
+    if (PHONE_LIKE.test(v)) {
+      const digits = v.replace(/\D/g, "");
+      if (digits.length >= 7 && digits.length <= 15 && isPlaceholderNumber(digits)) push("placeholder-content", at, `"${v}" looks like a placeholder number.`, fix);
+      continue;
+    }
+    const wa = WA_LINK.exec(v);
+    if (wa && isPlaceholderNumber(wa[1]!)) {
+      push("placeholder-content", at, `WhatsApp link "${v}" points to a placeholder number.`, fix);
+      continue;
+    }
+    if (URL_OR_EMAIL.test(v) && EXAMPLE_HOST.test(v.replace(/^mailto:/i, ""))) {
+      push("placeholder-content", at, `"${v}" is an example address; it goes nowhere on a live site.`, fix);
+      continue;
+    }
+    const map = MAP_SHORT.exec(v);
+    if (map && /^[a-z-]+$/.test(map[1]!)) {
+      push("placeholder-content", at, `"${v}" looks like an invented map link (real short links are random letters and digits).`, "Copy the share link from the business’s Maps listing, or build one with directionsUrl().");
+      continue;
+    }
+    if (v === "#") {
+      const before = code.slice(Math.max(0, s.start - 24), s.start);
+      if (/\bhref\s*[:=]\s*\{?\s*$/.test(before)) push("placeholder-content", at, 'href="#" goes nowhere.', "Link to the real page or anchor, or use a <button> for an action.");
+      continue;
+    }
+    if (FILL_IN.test(v)) {
+      fillIns++;
+      if (firstFill < 0) firstFill = at;
+    }
+  }
+  if (fillIns) push("placeholder-content", firstFill, `${fillIns === 1 ? "1 string still contains" : `${fillIns} strings still contain`} [fill-in] fields such as "${FILL_IN.exec(strings.find((x) => x.start + 1 === firstFill)!.value)![0]}".`, "Replace every [bracketed] field with the real text, and have legal pages reviewed before launch.");
 }
 
 /**
