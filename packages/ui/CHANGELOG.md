@@ -4,6 +4,12 @@ Release notes for the component kit. Until 0.4.2 this file also covered the CLI 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the kit uses [semantic versioning](https://semver.org/) (0.x: minor versions may change APIs).
 
+## 0.4.3 — 2026-11-12
+
+### Patch Changes
+
+- e5f3dd6: The package includes its CHANGELOG.md, and is published from GitHub Actions with npm provenance.
+
 ## 0.4.2 — 2026-11-12
 
 ### Added
