@@ -100,7 +100,7 @@ All 12 tools are read-only. The hosted server has no sign-in, cannot see your fi
 No account or credentials are needed.
 
 1. Add the connector with the URL https://mcp.vamos.ist/mcp (Streamable HTTP, no authentication).
-2. Health check: https://mcp.vamos.ist/health returns {"name":"vamos-ui","version":"0.2.2",...}.
+2. Health check: https://mcp.vamos.ist/health returns {"name":"vamos-ui","version":"0.2.3",...}.
 3. Try these prompts in a new chat with the connector enabled:
    a) "Using Vamos UI, plan a store admin dashboard with KPI cards, a revenue chart and the latest orders."
       → plan_screen then get_block; starts from block dashboard-05 and gives "npx vamos-ui add dashboard-05 …".
