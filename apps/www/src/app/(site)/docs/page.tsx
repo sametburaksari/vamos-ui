@@ -3,7 +3,7 @@ import { A, C, DocPage, H2, P, Table, UL } from "@/components/docs/prose";
 import { inventory } from "@/lib/catalog";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({ title: "Introduction", description: "What Vamos UI is: one React component kit for every admin panel and website, with five theme axes, business components, blocks, a CLI and an MCP server.", path: "/docs/" });
+export const metadata = pageMeta({ title: "Introduction", description: "What Vamos UI is: one React component kit for every admin panel and website, with six theme axes, business components, blocks, a CLI and an MCP server.", path: "/docs/" });
 
 export default function IntroductionPage() {
   const all = inventory.flatMap((g) => g.items);
@@ -35,7 +35,7 @@ export default function IntroductionPage() {
 
       <H2 id="principles">Principles</H2>
       <UL>
-        <li><b className="text-fg">Five theme axes.</b> Theme, material (glass or solid), accent, density and font are attributes on <C>&lt;html&gt;</C> or any subtree. Components never use <C>dark:</C>. See <A href="/docs/theming">Theming</A>.</li>
+        <li><b className="text-fg">Six theme axes.</b> Mode, material (glass or solid), accent, density, font and corners are attributes on <C>&lt;html&gt;</C> or any subtree. Components never use <C>dark:</C>. See <A href="/docs/theming">Theming</A>.</li>
         <li><b className="text-fg">Not generic.</b> No default purple gradients, no emoji icons, no wall of identical cards. Typography and spacing do the work.</li>
         <li><b className="text-fg">Grouped by what a component is.</b> A calendar is the same in a CRM and an HR tool. Domain screens — post editor, pipeline, leave request — are <A href="/blocks">Blocks</A> built from the kit.</li>
         <li><b className="text-fg">Accessible by default.</b> Keyboard support, focus management and ARIA patterns are part of every component spec.</li>
@@ -59,7 +59,7 @@ export default function IntroductionPage() {
         head={["", "Vamos UI"]}
         rows={[
           ["Distribution", "One npm package, or copy single components with the vamos-ui CLI — and keep receiving fixes with diff/upgrade"],
-          ["Theming", "Five independent axes (theme, material, accent, density, font), switchable on any subtree"],
+          ["Theming", "Six independent axes (mode, material, accent, density, font, corners), switchable on any subtree"],
           ["Material", "Solid or Liquid Glass, with a blur budget so glass stays fast"],
           ["Scope", "Primitives, business components (data table, pickers, calendars, kanban, line items, flows) and site blocks"],
           ["Blocks", "Whole screens for panels, sign-in, settings and websites — built only from the kit"],

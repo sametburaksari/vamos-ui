@@ -1,6 +1,6 @@
 # Vamos UI — theming
 
-Vamos UI is themed by five independent axes, set as attributes on `<html>` or on any element; a subtree can differ from the page. Components only read CSS variables, so switching an axis is one attribute: no rebuild and no `dark:` classes. The live token list is `https://ui.vamos.ist/r/tokens.json` (MCP: `get_theming`); the axes are in `r/axes.json`.
+Vamos UI is themed by six independent axes (mode, material, accent, density, font, corners), set as attributes on `<html>` or on any element; a subtree can differ from the page. Components only read CSS variables, so switching an axis is one attribute: no rebuild and no `dark:` classes. The live token list is `https://ui.vamos.ist/r/tokens.json` (MCP: `get_theming`); the axes are in `r/axes.json`.
 
 ## Axes
 
@@ -11,10 +11,13 @@ Vamos UI is themed by five independent axes, set as attributes on `<html>` or on
 | Accent | `data-accent` | `lime`, `ocean`, `ember`, `rose`, `graphite` | The one accent colour and everything derived from it |
 | Density | `data-density` | `comfortable`, `compact` | Control height, radius, gaps, row height, cell padding, top bar |
 | Type | `data-font` | `editorial`, `grotesk`, `corporate`, `system` | UI, heading and code font families plus display weight, tracking and scale |
+| Corners | `data-radius` | default (no attribute), `sharp`, `round` | `--radius` scale: 14/10px, sharp 6/4px, round 20/14px (comfortable/compact) |
 
 ```html
 <html lang="en" class="dark" data-material="solid" data-accent="lime" data-density="comfortable" data-font="editorial">
 ```
+
+Corners: `data-radius="sharp"` or `"round"` (absent = default) works with every accent, material and density. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips. Give custom elements `rounded-ui*` so they follow; never hard-code a corner radius.
 
 Subtrees: `<section class="light">` inside a dark page, `<aside data-density="compact">`, `<div data-accent="ocean">` for a preview. In copy mode `npx vamos-ui theme` writes the axes to vamos.json and prints these attributes. Components use `ThemeScope` for live previews (see settings-02).
 
@@ -78,7 +81,7 @@ Layout and density tokens:
 | Token | Comfortable | Compact | Use |
 |---|---|---|---|
 | `--control-h` | 2.5rem | 2.125rem | Height of buttons, inputs, selects |
-| `--radius` | 14px | 10px | Base radius (`rounded-ui`; `-sm` = −4px, `-lg` = +6px) |
+| `--radius` | 14px | 10px | Base radius (`rounded-ui`; `-sm` = −4px, `-lg` = +6px); × 0.4 with `data-radius="sharp"`, × 1.4 with `"round"` |
 | `--gap` | 1.25rem | 0.875rem | Card padding and stack gaps |
 | `--row-h` / `--cell-px` | 3.25rem / 1rem | 2.5rem / 0.75rem | Table and list rows |
 | `--topbar-h` | 3.5rem | 3rem | App top bar |

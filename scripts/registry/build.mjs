@@ -592,7 +592,7 @@ export function buildRegistry(options) {
         name,
         type,
         title: "Styles & tokens",
-        description: "Design tokens for the five theme axes (theme, material, accent, density, font), Tailwind v4 theme mapping and the component CSS. Import once after Tailwind.",
+        description: "Design tokens for the six theme axes (mode, material, accent, density, font, corners), Tailwind v4 theme mapping and the component CSS. Import once after Tailwind.",
         docs: docsUrl("/docs/installation"),
         dependencies: [],
         registryDependencies: [],

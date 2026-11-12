@@ -32,9 +32,12 @@ import {
   ThemeScope,
 } from "@vamos-ui/react";
 import { Hero } from "@vamos-ui/react/blocks";
-import { describePreset, generateAccent, isNamedAccent, RADIUS, type Preset } from "@/lib/theme-codec";
+import { describePreset, generateAccent, isNamedAccent, type Preset } from "@/lib/theme-codec";
 
-/** Scope attributes + inline variables for the preview (a custom accent or radius has no kit CSS). */
+/**
+ * Scope attributes + inline variables for the preview. Only a custom accent colour has no kit CSS
+ * (it gets the generated "brand" accent inline); corners are the kit's data-radius axis.
+ */
 export function previewScope(preset: Preset): { accent: string; style: React.CSSProperties } {
   const style: Record<string, string> = {};
   let accent: string = preset.accent;
@@ -47,7 +50,6 @@ export function previewScope(preset: Preset): { accent: string; style: React.CSS
     style["--accent-ink-light"] = p.inkLight;
     style["--accent-ink-dark"] = p.inkDark;
   }
-  if (preset.radius !== "default") style["--radius"] = RADIUS[preset.radius][preset.density];
   return { accent, style: style as React.CSSProperties };
 }
 
@@ -76,6 +78,7 @@ export function ThemePreview({ preset }: { preset: Preset }) {
         accent={accent}
         density={preset.density}
         font={preset.font}
+        radius={preset.radius}
         style={style}
         data-testid="theme-preview"
         className="preview-stage relative overflow-hidden rounded-ui-lg border border-line bg-scene font-sans text-fg"

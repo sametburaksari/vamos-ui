@@ -14,7 +14,7 @@ Schema: `https://ui.vamos.ist/r/brand-schema.json`. Lives at the project root ne
 | `theme.dark` | boolean | no | Default to dark mode. |
 | `theme.material` | `"solid"` \| `"glass"` | no | Default `data-material`. |
 | `theme.density` | `"comfortable"` \| `"compact"` | no | Default `data-density`. |
-| `theme.radius` | `"sharp"` \| `"default"` \| `"round"` | no | Corner style. |
+| `theme.radius` | `"sharp"` \| `"default"` \| `"round"` | no | Corner style. `brand apply` saves it as `theme.radius` in vamos.json (`data-radius` on `<html>`), not in brand.css. |
 | `voice.tone` | string | no | A few words: "Direct, calm, no jargon". |
 | `voice.rules` | string[] | no | Copy rules: "Sentence case", "Verbs on buttons", "No exclamation marks". |
 | `voice.examples` | `{ do, dont? }[]` | no | Real before/after pairs. |

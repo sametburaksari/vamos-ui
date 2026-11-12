@@ -13,5 +13,5 @@ declare module "vamos-ui/verify" {
   export interface ProjectIssue extends VerifyIssue {
     file: string;
   }
-  export function verifyProject(input: { paths: string[]; sources: { path: string; content: string }[]; sizes?: Record<string, number> }): ProjectIssue[];
+  export function verifyProject(input: { paths: string[]; sources: { path: string; content: string }[]; sizes?: Record<string, number>; siteJson?: string }): ProjectIssue[];
 }

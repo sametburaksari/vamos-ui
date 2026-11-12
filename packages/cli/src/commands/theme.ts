@@ -16,6 +16,7 @@ export const AXES = {
   accent: { values: ["lime", "ocean", "ember", "rose", "graphite"], default: "lime", label: "Accent" },
   density: { values: ["comfortable", "compact"], default: "comfortable", label: "Density" },
   font: { values: ["system", "editorial", "grotesk", "corporate"], default: "system", label: "Font pairing" },
+  radius: { values: ["default", "sharp", "round"], default: "default", label: "Corners" },
 } as const;
 
 type Axis = keyof typeof AXES;
@@ -36,6 +37,8 @@ export function htmlAttributes(theme: ThemeConfig): Record<string, string> {
     "data-accent": t.accent,
     "data-density": t.density,
     "data-font": t.font,
+    // Corners: absent = default, so only sharp/round are written.
+    ...(t.radius && t.radius !== "default" ? { "data-radius": t.radius } : {}),
   };
 }
 
@@ -63,7 +66,7 @@ export async function theme(ctx: Context, args: ParsedArgs): Promise<number> {
       theme = (await applyPreset(session.root, session.config, preset, { dryRun: bool(args.flags, "dry-run") })).theme;
       saved = !bool(args.flags, "dry-run");
     } else if (presetNeedsBrand(preset)) {
-      throw new CliError("A custom accent or radius needs a project: it writes vamos.brand.json and brand.css.", "Run `npx vamos-ui init --preset " + encodePreset(preset) + "` instead.");
+      throw new CliError("A custom accent colour needs a project: it writes vamos.brand.json and brand.css.", "Run `npx vamos-ui init --preset " + encodePreset(preset) + "` instead.");
     }
     if (ctx.json) {
       printJson({ code: encodePreset(preset), preset, theme, attributes: htmlAttributes(theme), saved });
@@ -113,6 +116,8 @@ export async function theme(ctx: Context, args: ParsedArgs): Promise<number> {
       (next as Record<string, string>)[axis] = value;
     }
   }
+  // Default corners are the absence of data-radius, so they are not stored.
+  if ((next.radius as string | undefined) === "default") delete next.radius;
 
   const changed = JSON.stringify(next) !== JSON.stringify(current);
   if (changed && session.hasConfig) {

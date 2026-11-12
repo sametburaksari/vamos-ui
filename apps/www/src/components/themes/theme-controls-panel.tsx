@@ -12,6 +12,13 @@ const fonts: Record<PresetFont, { label: string; faces: string }> = {
   system: { label: "System", faces: "Platform UI font" },
 };
 
+/** --radius per corner setting and density (styles.css: --radius-base × --radius-scale). */
+const CORNER_PX: Record<Preset["radius"], Record<Preset["density"], string>> = {
+  default: { comfortable: "14px", compact: "10px" },
+  sharp: { comfortable: "6px", compact: "4px" },
+  round: { comfortable: "20px", compact: "14px" },
+};
+
 const cap = (s: string) => s[0]!.toUpperCase() + s.slice(1);
 
 function Row({ label, id, children, hint }: { label: string; id: string; children: React.ReactNode; hint?: React.ReactNode }) {
@@ -48,8 +55,8 @@ function Tile({ name, value, checked, onSelect, children, className, label }: { 
 export function ThemeControlsPanel({ preset, onChange, customColour, onCustomColour }: { preset: Preset; onChange: (next: Partial<Preset>) => void; customColour: string; onCustomColour: (hex: string) => void }) {
   const id = React.useId();
   const custom = !isNamedAccent(preset.accent);
-  const segmented = <K extends "theme" | "material" | "density" | "radius">(axis: K, label: string) => (
-    <Row label={label} id={`${id}-${axis}`}>
+  const segmented = <K extends "theme" | "material" | "density" | "radius">(axis: K, label: string, extra?: { hint?: React.ReactNode; help?: React.ReactNode }) => (
+    <Row label={label} id={`${id}-${axis}`} hint={extra?.hint}>
       <RadioGroup
         variant="segmented"
         size="sm"
@@ -59,6 +66,7 @@ export function ThemeControlsPanel({ preset, onChange, customColour, onCustomCol
         items={(PRESET_AXES[axis] as readonly string[]).map((v) => ({ value: v, label: cap(v) }))}
         data-axis={axis}
       />
+      {extra?.help ? <p className="text-[12.5px] leading-snug text-fg-muted">{extra.help}</p> : null}
     </Row>
   );
 
@@ -118,7 +126,14 @@ export function ThemeControlsPanel({ preset, onChange, customColour, onCustomCol
         </div>
       </Row>
 
-      {segmented("radius", "Corners")}
+      {segmented("radius", "Corners", {
+        hint: `data-radius · ${CORNER_PX[preset.radius][preset.density]}`,
+        help: (
+          <>
+            Its own axis, so it works with every accent. Buttons, fields, cards, dialogs, menus and tables follow it; pills, avatars, switches and progress bars stay round.
+          </>
+        ),
+      })}
     </div>
   );
 }

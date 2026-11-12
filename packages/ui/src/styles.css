@@ -5,12 +5,13 @@
  *   @import "tailwindcss";
  *   @import "@vamos-ui/react/styles.css";
  *
- * Five independent axes, set on <html> (or on any subtree):
+ * Six independent axes, set on <html> (or on any subtree):
  *   class="dark"                          → theme (light | dark)
  *   data-material="glass|solid"           → surface material (Liquid Glass | solid)
  *   data-accent="lime|ocean|ember|..."    → accent colour (or set --accent-base yourself)
  *   data-density="comfortable|compact"    → density
  *   data-font="editorial|grotesk|..."     → type pairing
+ *   data-radius="sharp|round"             → corners (absent = default)
  *
  * Components only read the variables defined here and never use `dark:`.
  * Every axis can therefore be switched with one attribute, even per subtree.
@@ -439,7 +440,11 @@
 /* ------------------------------------------------------------------ */
 
 :root {
-  --radius: 14px;
+  /* Corners: --radius = density base × corner scale (data-radius). Every rule that changes
+     either input redeclares --radius so a nested subtree recomputes it. */
+  --radius-base: 14px;
+  --radius-scale: 1;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
   --control-h: 2.5rem;
   --gap: 1.25rem;
   --dir: 1;
@@ -472,7 +477,8 @@
 
 }
 [data-density="compact"] {
-  --radius: 10px;
+  --radius-base: 10px;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
   --control-h: 2.125rem;
   --gap: 0.875rem;
   --row-h: 2.5rem;
@@ -487,6 +493,25 @@
 [data-density="spacious"] {
   --row-h: 3.75rem;
   --cell-px: 1.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Corners — data-radius="sharp|round" (absent = default)              */
+/* ------------------------------------------------------------------ */
+/* Scales --radius (and so rounded-ui / rounded-ui-sm / rounded-ui-lg and every calc(var(--radius) …)):
+   default 14px (compact 10px), sharp 6px (4px), round 20px (14px). Pills, avatars, switches,
+   radio dots and progress bars use rounded-full and stay round on purpose. */
+[data-radius="default"] {
+  --radius-scale: 1;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
+}
+[data-radius="sharp"] {
+  --radius-scale: 0.4;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
+}
+[data-radius="round"] {
+  --radius-scale: 1.4;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
 }
 [dir="rtl"] {
   --dir: -1;
@@ -563,7 +588,7 @@
   --color-bar-border: var(--bar-border);
 
   --radius-ui: var(--radius);
-  --radius-ui-sm: calc(var(--radius) - 4px);
+  --radius-ui-sm: max(0px, calc(var(--radius) - 4px));
   --radius-ui-lg: calc(var(--radius) + 6px);
 
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;

@@ -83,3 +83,40 @@ export const legalSlugs: Record<string, { kind: LegalKind; locale: LegalLocale }
   impressum: { kind: "legal-notice", locale: "en" },
   "yasal-uyari": { kind: "legal-notice", locale: "tr" },
 };
+
+/**
+ * The business details a preset's [fill-in] fields ask for. Each one that is set replaces the
+ * matching placeholders (English and Turkish, e.g. "[Company name]" and "[Şirket adı]"); fields
+ * left out stay visible as [fill-in] so nothing ships half-edited.
+ */
+export interface LegalValues {
+  /** Business name as customers know it. */
+  companyName?: string;
+  /** Registered legal name (şirket unvanı). */
+  legalName?: string;
+  /** Full postal address. */
+  address?: string;
+  city?: string;
+  country?: string;
+  /** Public contact email. */
+  email?: string;
+  /** Email for privacy / KVKK requests. */
+  privacyEmail?: string;
+  /** Email for returns. */
+  returnsEmail?: string;
+  /** Email for complaints. */
+  complaintsEmail?: string;
+  phone?: string;
+  /** Site address, e.g. www.example.com.tr. */
+  website?: string;
+  mersis?: string;
+  taxOffice?: string;
+  taxNumber?: string;
+  /** Trade registry number (ticaret sicil no). */
+  tradeRegistry?: string;
+  /** ETBİS registration number or verification link. */
+  etbis?: string;
+  kep?: string;
+  /** Last-updated date, `YYYY-MM-DD`; replaces a placeholder date. */
+  updated?: string;
+}

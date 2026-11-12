@@ -1,6 +1,6 @@
 import { LegalPage } from "./components/legal-page";
-import { legalPreset } from "./components/presets";
-import type { LegalDoc, LegalKind, LegalLocale } from "./components/types";
+import { fillLegalDoc, legalPreset } from "./components/presets";
+import type { LegalDoc, LegalKind, LegalLocale, LegalValues } from "./components/types";
 
 export interface Legal01Props {
   /** Your own content. Wins over `preset`. */
@@ -14,6 +14,11 @@ export interface Legal01Props {
   locale?: LegalLocale;
   /** The "template text, review before publishing" notice. Default true. */
   notice?: boolean;
+  /**
+   * Business details that replace the matching [fill-in] fields (company name, legal name, address,
+   * email, phone, website, MERSİS, tax office and number, KEP, ETBİS …). Unknown fields stay visible.
+   */
+  values?: LegalValues;
 }
 
 /**
@@ -24,10 +29,11 @@ export interface Legal01Props {
  *
  * ```tsx
  * // app/kvkk/page.tsx
- * <Legal01 preset="kvkk" locale="tr" />
+ * <Legal01 preset="kvkk" locale="tr" values={{ legalName: "Kıyı Seramik Ltd. Şti.", email: "merhaba@kiyiseramik.com.tr" }} />
  * ```
  */
-export default function Legal01({ doc, preset = "privacy", locale, notice = true }: Legal01Props = {}) {
+export default function Legal01({ doc, preset = "privacy", locale, notice = true, values }: Legal01Props = {}) {
   const lang = locale ?? (preset === "kvkk" && !doc ? "tr" : "en");
-  return <LegalPage doc={doc ?? legalPreset(preset, lang)} locale={lang} notice={notice} />;
+  const base = doc ?? legalPreset(preset, lang);
+  return <LegalPage doc={values ? fillLegalDoc(base, values) : base} locale={lang} notice={notice} />;
 }

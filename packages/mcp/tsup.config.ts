@@ -11,6 +11,7 @@ const require = createRequire(import.meta.url);
 const sources: Record<string, string[]> = {
   "vamos-ui/verify": ["../cli/src/verify.ts"],
   "vamos-ui/brand": ["../cli/src/brand.ts", "../cli/src/brand/index.ts"],
+  "vamos-ui/audit": ["../cli/src/audit/index.ts"],
 };
 const alias: Record<string, string> = {};
 const external: string[] = [];

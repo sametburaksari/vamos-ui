@@ -157,10 +157,13 @@ describe("vamos-ui brand", () => {
     expect(out).toContain("brand.css is up to date");
     const css = read("src/app/globals.css");
     expect(css).toBe(`@import "tailwindcss";\n@import "../components/vamos/styles.css";\n@import "../components/vamos/brand.css";\n\nbody { margin: 0; }\n`);
-    expect(JSON.parse(read("vamos.json")).theme).toEqual({ accent: "brand", font: "brand" });
+    // Corners from brand.theme.radius become the data-radius axis, not CSS in brand.css.
+    expect(JSON.parse(read("vamos.json")).theme).toEqual({ accent: "brand", font: "brand", radius: "round" });
     expect(read("src/components/vamos/brand.css")).toContain('[data-accent="brand"] {');
+    expect(read("src/components/vamos/brand.css")).not.toContain("--radius");
     expect(out).toContain('import { Sora, Plus_Jakarta_Sans } from "next/font/google";');
     expect(out).toContain('data-accent="brand"');
+    expect(out).toContain('data-radius="round"');
   });
 
   it("brand apply --dry-run writes nothing", async () => {

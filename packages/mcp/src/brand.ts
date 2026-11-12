@@ -297,6 +297,9 @@ export function desiredTheme(current: ProjectTheme | undefined, brand: Brand): P
   if (brand.theme?.dark !== undefined) next.theme = brand.theme.dark ? "dark" : "light";
   if (brand.theme?.material) next.material = brand.theme.material;
   if (brand.theme?.density) next.density = brand.theme.density;
+  // Corners are the data-radius axis (vamos.json theme.radius), not part of brand.css.
+  if (brand.theme?.radius === "sharp" || brand.theme?.radius === "round") next.radius = brand.theme.radius;
+  else if (brand.theme?.radius === "default") delete next.radius;
   return next;
 }
 
@@ -307,6 +310,7 @@ export function htmlAttributes(theme: ProjectTheme): string {
     `data-accent="${theme.accent ?? "brand"}"`,
     `data-density="${theme.density ?? "comfortable"}"`,
     theme.font ? `data-font="${theme.font}"` : "",
+    theme.radius && theme.radius !== "default" ? `data-radius="${theme.radius}"` : "",
   ].filter(Boolean);
   return `<html lang="en" ${attrs.join(" ")}>`;
 }

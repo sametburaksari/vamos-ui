@@ -20,7 +20,7 @@ const copy = {
   inc: [
     { en: "React source, Next.js App Router, TypeScript", tr: "React kaynak kodu, Next.js App Router, TypeScript" },
     { en: "Every page in the set, with sample data", tr: "Setteki tüm sayfalar, örnek veriyle" },
-    { en: "Works with all five theme axes: mode, material, accent, density, fonts", tr: "Beş tema ekseniyle çalışır: mod, malzeme, vurgu, yoğunluk, yazı tipi" },
+    { en: "Works with all six theme axes: mode, material, accent, density, fonts, corners", tr: "Altı tema ekseniyle çalışır: mod, malzeme, vurgu, yoğunluk, yazı tipi, köşeler" },
     { en: "English and Turkish strings, ready for more", tr: "İngilizce ve Türkçe metinler, fazlasına hazır" },
   ],
   specs: { en: "Details", tr: "Ayrıntılar" },
