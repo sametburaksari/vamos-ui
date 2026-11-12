@@ -32,6 +32,7 @@ import {
   collectSourceFiles,
   insideProject,
   listProjectPaths,
+  publicImageSizes,
   readProjectConfig,
   resolveProjectDir,
   toPosix,
@@ -462,7 +463,8 @@ function verifyProjectFiles(root: string, verify: (code: string, filename: strin
   }
   // Whole-project checks (links to missing routes, website launch basics) only when no paths narrow it.
   if (project && !paths?.length) {
-    for (const { file, ...issue } of project({ paths: listProjectPaths(root), sources })) {
+    const all = listProjectPaths(root);
+    for (const { file, ...issue } of project({ paths: all, sources, sizes: publicImageSizes(root, all) })) {
       let entry = results.find((r) => r.file === file);
       if (!entry) results.push((entry = { file, issues: [] }));
       entry.issues.push(issue);
