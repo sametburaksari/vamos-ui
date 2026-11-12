@@ -17,7 +17,8 @@ Writes what a public Next.js site needs and is easy to forget, never replacing a
   app/robots.ts          robots.txt
   app/sitemap.ts         sitemap.xml
   app/<legal>/page.tsx   one page per legal link the site blocks have (privacy, kvkk, gizlilik,
-                         cookies, cerez-politikasi, terms, kullanim-kosullari, accessibility),
+                         cookies, cerez-politikasi, terms, kullanim-kosullari, accessibility,
+                         iade, mesafeli-satis-sozlesmesi, on-bilgilendirme-formu, yasal-uyari …),
                          rendering the ${LEGAL_BLOCK} block (installed if missing)
 Then prints the root-layout metadata to add (metadataBase, canonical, Open Graph) and any
 internal links that still have no page.`;
@@ -35,7 +36,7 @@ export async function writeEssentials(ctx: Context, session: Session, opts: Pick
   if (project.framework !== "next" || !project.appRouter) {
     if (!ctx.json)
       p.log.info(
-        `Not a Next.js App Router project, so nothing was written. Before launch the site still needs: robots.txt, sitemap.xml, a page for every legal link (privacy / KVKK / cookies / terms; the ${LEGAL_BLOCK} block renders them), canonical + Open Graph tags and JSON-LD.`,
+        `Not a Next.js App Router project, so nothing was written. Before launch the site still needs: robots.txt, sitemap.xml, a page for every legal link (privacy / KVKK / cookies / terms / returns / legal notice; the ${LEGAL_BLOCK} block renders them), canonical + Open Graph tags and JSON-LD.`,
       );
     return { written: [], unmatched: [], skipped: true };
   }
