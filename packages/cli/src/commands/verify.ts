@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { findProjectRoot, readConfig } from "../core/config";
 import { CliError } from "../core/types";
-import { verifySource, type VerifyIssue } from "../verify";
+import { verifyProject, verifySource, type VerifyIssue } from "../verify";
 import type { ParsedArgs } from "../args";
 import { out, pad, pc, plural, printJson, type Context } from "../ui";
 
@@ -39,6 +39,36 @@ export function projectFiles(ctx: Context, root: string, positionals: string[], 
   return collectFiles(root, inputs, uiDir ? [path.resolve(root, uiDir)] : []);
 }
 
+/** Every project-relative posix path (for route and launch checks), skipping build output and dot folders. */
+export function listProjectPaths(root: string, limit = 20000): string[] {
+  const out: string[] = [];
+  const walk = (abs: string, rel: string) => {
+    if (out.length >= limit) return;
+    for (const entry of readdirSync(abs, { withFileTypes: true })) {
+      if (IGNORE_DIRS.has(entry.name) || entry.name.startsWith(".")) continue;
+      const r = rel ? `${rel}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) walk(path.join(abs, entry.name), r);
+      else out.push(r);
+    }
+  };
+  walk(root, "");
+  return out.sort();
+}
+
+/** Route and website-launch checks over the whole project, merged into the report by file. */
+export function addProjectChecks(root: string, files: string[], report: VerifyReport): VerifyReport {
+  const sources = files.map((abs) => ({ path: path.relative(root, abs).split(path.sep).join("/"), content: readFileSync(abs, "utf8") }));
+  const issues = verifyProject({ paths: listProjectPaths(root), sources });
+  for (const { file, ...issue } of issues) {
+    let entry = report.results.find((r) => r.file === file);
+    if (!entry) report.results.push((entry = { file, issues: [] }));
+    entry.issues.push(issue);
+    if (issue.severity === "error") report.errors++;
+    else report.warnings++;
+  }
+  return report;
+}
+
 export interface VerifyReport {
   files: number;
   errors: number;
@@ -66,6 +96,8 @@ export async function verify(ctx: Context, args: ParsedArgs): Promise<number> {
   const config = await readConfig(root).catch(() => null);
   const files = projectFiles(ctx, root, args.positionals, config?.uiDir ?? null, "verify");
   const report = verifyFiles(root, files);
+  // Project mode (no paths): also check links against the app's routes and the website basics.
+  if (!args.positionals.length) addProjectChecks(root, files, report);
   if (ctx.json) {
     printJson(report);
     return report.errors ? 1 : 0;
