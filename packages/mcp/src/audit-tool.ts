@@ -148,9 +148,9 @@ export function publicOnlyGuard(lookup: Lookup = defaultLookup): (url: URL) => P
     let check = cache.get(host);
     if (!check) {
       check = (async () => {
-        if (BLOCKED_HOST.test(host)) throw new RefusedUrlError(`Refused ${host}: local and internal host names cannot be audited from the hosted server.`);
+        if (BLOCKED_HOST.test(host)) throw new RefusedUrlError(`Refused ${host}: local and internal host names cannot be reached from the hosted server.`);
         if (isIP(host)) {
-          if (isBlockedAddress(host)) throw new RefusedUrlError(`Refused ${host}: private, loopback, link-local or reserved addresses cannot be audited from the hosted server.`);
+          if (isBlockedAddress(host)) throw new RefusedUrlError(`Refused ${host}: private, loopback, link-local or reserved addresses cannot be reached from the hosted server.`);
           return;
         }
         let addresses: { address: string }[];

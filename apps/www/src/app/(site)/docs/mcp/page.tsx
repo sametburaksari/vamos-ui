@@ -25,6 +25,8 @@ const tools: [name: string, title: string, what: string][] = [
   ["import_design_system", "Import a design system from a website", "Reads page HTML (and optional CSS) and drafts a vamos.brand.json: accent, fonts, logo candidates, with the evidence for each value. Writes nothing."],
   ["propose_accent", "Propose a brand accent", "Turns one brand colour into the four accent variables (OKLCH) and checks WCAG contrast for each text pair."],
   ["verify_design", "Verify the design system", "Lints a file against the kit rules and the brand. On the hosted server it takes code + filename; project-wide checks need the local server."],
+  ["start_project", "Plan a new website", "Asks the project questions a few at a time (business, site type, current site, domain, hosting, pages, store or booking, forms, measurement, legal) and, once enough is known, returns the plan and the contents of vamos.project.json and vamos.site.json. Writes nothing itself."],
+  ["import_site", "Read a current website", "Reads a public website: business details with their sources, brand candidates (colours, fonts, logos), navigation, texts and images, and warns about mismatches such as two phone numbers. Up to 4 linked pages on the hosted server; only GET requests."],
   ["audit_site", "Audit a live website", "Checks a public website over HTTP, built with the kit or not: metadata, Open Graph, JSON-LD, robots.txt and AI crawlers, sitemap, placeholder content, legal links, broken internal links and heavy images, as a scored report. Up to 30 pages; only GET and HEAD requests."],
 ];
 
@@ -117,8 +119,8 @@ npx vamos-ui mcp add --client claude --print   # show the config, write nothing`
       <H2 id="tools">Tools</H2>
       <P>
         Every tool is marked read-only (<C>readOnlyHint: true</C>): none of them changes anything on your machine, in an account
-        or on the server. <C>audit_site</C> is also marked open-world (<C>openWorldHint: true</C>) because it requests the site
-        you name.
+        or on the server. <C>audit_site</C> and <C>import_site</C> are also marked open-world (<C>openWorldHint: true</C>) because they
+        request the site you name.
       </P>
       <div className="hidden sm:block">
         <Table
@@ -166,8 +168,8 @@ npx vamos-ui mcp add --client claude --print   # show the config, write nothing`
           <strong className="text-fg">Only public sites, only for audits.</strong> <C>import_design_system</C> does not fetch{" "}
           <C>url</C> on the hosted server: paste the page HTML (and CSS) instead, or use the local server or{" "}
           <C>npx vamos-ui brand import &lt;url&gt;</C>. <C>audit_site</C> fetches the site you name with GET and HEAD requests,
-          up to 30 pages and 45 seconds, and refuses private, loopback, link-local, CGNAT and cloud-metadata addresses on every
-          redirect. For a local or private site, or more pages, run <C>npx vamos-ui audit &lt;url&gt;</C>.
+          up to 30 pages and 45 seconds, and <C>import_site</C> reads a start page and up to 4 linked pages in 30 seconds; both
+          refuse private, loopback, link-local, CGNAT and cloud-metadata addresses on every redirect. For a local or private site, or more pages, run <C>npx vamos-ui audit &lt;url&gt;</C>.
         </li>
         <li>
           <strong className="text-fg">It does not install or run code.</strong> It returns source, plans and the{" "}
@@ -187,7 +189,7 @@ npx -y @vamos-ui/mcp --registry https://ui.example.com/r   # point at your own r
       <H2 id="privacy">Privacy</H2>
       <P>
         The hosted server has no accounts and keeps no state. It processes tool arguments in memory to answer and does not store
-        them; <C>audit_site</C> requests the pages of the site you name and keeps nothing from them; the web server logs IP address, time and URL for 30 days. Details in the <A href="/privacy">privacy policy</A>.
+        them; <C>audit_site</C> and <C>import_site</C> request the pages of the site you name and keep nothing from them; the web server logs IP address, time and URL for 30 days. Details in the <A href="/privacy">privacy policy</A>.
         Don&apos;t send secrets or personal data in code you ask it to check.
       </P>
 
