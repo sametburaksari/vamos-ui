@@ -34,6 +34,16 @@ This project uses Vamos UI (docs: https://ui.vamos.ist). Kit source lives in \`$
 - Icon-only actions use \`<IconButton label="…">\`. Every image has \`alt\` (\`alt=""\` when decorative).
 - Clickable things are buttons or links, never \`<div onClick>\`. No positive \`tabIndex\`.
 
+**Websites** (projects with \`site-*\` / \`page-*\` blocks)
+- Business details live in \`vamos.site.json\` (\`npx vamos-ui site init\`): name, contact, address, opening hours, legal ids, analytics ids. Read them from there; never invent a phone, email, address, map link or tracking id, and never leave a placeholder (\`000 00 00\`, \`example.com\`, \`href="#"\`, \`[fill-in]\`) in shipped code.
+- \`npx vamos-ui site essentials\` writes robots, sitemap, llms.txt, JSON-LD and the legal pages (legal-01). Legal presets are template text: the business or a lawyer reviews them.
+- One H1 per page, a title under 60 characters, a 120–160 character description, \`alternates.canonical\` and Open Graph on every page.
+- Before launch: \`npx vamos-ui audit <url>\` on the deployed site.
+
+**Docs for agents**
+- Every docs page has a Markdown version: https://ui.vamos.ist/llms.txt (index), https://ui.vamos.ist/docs/components/<name>.md, https://ui.vamos.ist/blocks/<name>.md.
+- MCP server (optional): \`npx vamos-ui mcp add\`, or the hosted https://mcp.vamos.ist/mcp.
+
 **Check your work**
 - \`npx vamos-ui verify\` must pass with no errors before you finish.
 ${END}`;
@@ -51,7 +61,7 @@ export function upsertBlock(existing: string | null, block: string): string {
 export function skillMarkdown(config: VamosConfig): string {
   return `---
 name: vamos-ui
-description: Build and review UI with the Vamos UI kit (tokens, 5 theme axes, components and blocks). Use when creating screens, adding components, theming, or reviewing UI code in this project.
+description: Build and review UI with the Vamos UI kit (tokens, 6 theme axes, components and blocks). Use when creating screens, adding components, theming, or reviewing UI code in this project.
 ---
 
 # Vamos UI
@@ -69,6 +79,19 @@ ${agentRules(config).replace(START, "").replace(END, "").replace("## Vamos UI\n"
 `;
 }
 
+/** Cursor rule file (.cursor/rules/vamos-ui.mdc): the same rules, scoped to UI source files. */
+export function cursorRules(config: VamosConfig): string {
+  const body = agentRules(config).replace(START, "").replace(END, "").trim();
+  return `---
+description: Vamos UI kit rules (tokens, theme axes, components, blocks, website launch checks)
+globs: ["**/*.tsx", "**/*.jsx", "**/*.css", "vamos.site.json"]
+alwaysApply: false
+---
+
+${body}
+`;
+}
+
 export interface AgentResult {
   written: string[];
   skillSource: "registry" | "builtin";
@@ -77,14 +100,25 @@ export interface AgentResult {
 export async function writeAgentFiles(root: string, config: VamosConfig, registry: Registry): Promise<AgentResult> {
   const block = agentRules(config);
   const written: string[] = [];
-  for (const name of ["AGENTS.md", "CLAUDE.md"]) {
+  // AGENTS.md (Codex, Cursor, Gemini, …), CLAUDE.md (Claude Code) and GitHub Copilot read a
+  // markdown file; the vamos-ui block is upserted so the rest of each file stays untouched.
+  for (const name of ["AGENTS.md", "CLAUDE.md", ".github/copilot-instructions.md"]) {
     const file = path.join(root, name);
     const current = existsSync(file) ? await readFile(file, "utf8") : null;
     const next = upsertBlock(current, block);
     if (next !== current) {
+      await mkdir(path.dirname(file), { recursive: true });
       await writeFile(file, next);
       written.push(name);
     }
+  }
+  // Cursor project rules: a file of our own, applied to UI files.
+  const cursorFile = path.join(root, ".cursor/rules/vamos-ui.mdc");
+  const cursor = cursorRules(config);
+  if (!existsSync(cursorFile) || (await readFile(cursorFile, "utf8")) !== cursor) {
+    await mkdir(path.dirname(cursorFile), { recursive: true });
+    await writeFile(cursorFile, cursor);
+    written.push(".cursor/rules/vamos-ui.mdc");
   }
   let skill: string;
   let skillSource: AgentResult["skillSource"] = "registry";

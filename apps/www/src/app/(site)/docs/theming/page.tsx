@@ -2,7 +2,7 @@ import { AxisDemo } from "@/components/docs/axis-demo";
 import { C, Callout, Code, DocPage, H2, H3, P, Table } from "@/components/docs/prose";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({ title: "Theming", description: "Five independent theme axes — light/dark, glass/solid material, accent, density and font — set with HTML attributes on any subtree.", path: "/docs/theming/" });
+export const metadata = pageMeta({ title: "Theming", description: "Six independent theme axes — light/dark, glass/solid material, accent, density, font and corners — set with HTML attributes on any subtree.", path: "/docs/theming/" });
 
 const tokens: [string, string][] = [
   ["scene", "Page background behind every surface"],
@@ -26,14 +26,15 @@ export default function ThemingPage() {
     <DocPage
       eyebrow="Docs"
       title="Theming"
-      description="Five independent axes, set as attributes. Change any of them on <html> or on a single section."
+      description="Six independent axes, set as attributes. Change any of them on <html> or on a single section."
       toc={[
-        { id: "axes", title: "The five axes" },
+        { id: "axes", title: "The six axes" },
         { id: "theme", title: "Theme", sub: true },
         { id: "material", title: "Material", sub: true },
         { id: "accent", title: "Accent", sub: true },
         { id: "density", title: "Density", sub: true },
         { id: "font", title: "Font", sub: true },
+        { id: "corners", title: "Corners", sub: true },
         { id: "tokens", title: "Token reference" },
         { id: "custom-accent", title: "Custom accent" },
         { id: "sections", title: "Per-section theming" },
@@ -42,7 +43,7 @@ export default function ThemingPage() {
       prev={{ href: "/docs/installation", title: "Installation" }}
       next={{ href: "/docs/localization", title: "Localization" }}
     >
-      <H2 id="axes">The five axes</H2>
+      <H2 id="axes">The six axes</H2>
       <Table
         head={["Axis", "Attribute", "Values"]}
         rows={[
@@ -51,6 +52,7 @@ export default function ThemingPage() {
           ["Accent", <C key="c">data-accent</C>, "lime · ocean · ember · rose · graphite (or your own)"],
           ["Density", <C key="d">data-density</C>, "comfortable · compact"],
           ["Font", <C key="e">data-font</C>, "editorial · grotesk · corporate · system"],
+          ["Corners", <C key="f">data-radius</C>, "default (no attribute) · sharp · round"],
         ]}
       />
       <P>Every demo below is the same markup. Only the attribute on the wrapper changes.</P>
@@ -67,7 +69,7 @@ export default function ThemingPage() {
       <AxisDemo axis="accent" />
 
       <H3 id="density">Density</H3>
-      <P>Changes <C>--radius</C>, <C>--control-h</C> and <C>--gap</C>. Compact suits data-heavy screens.</P>
+      <P>Changes <C>--control-h</C>, <C>--gap</C>, table rows and the corner base (<C>--radius</C> 14px → 10px). Compact suits data-heavy screens.</P>
       <AxisDemo axis="density" />
 
       <H3 id="font">Font</H3>
@@ -82,6 +84,29 @@ export default function ThemingPage() {
       />
       <P>Heading weight, tracking, size scale and the style of <C>&lt;em&gt;</C> change with the preset.</P>
       <AxisDemo axis="font" />
+
+      <H3 id="corners">Corners</H3>
+      <P>
+        <C>data-radius=&quot;sharp&quot;</C> or <C>&quot;round&quot;</C> scales <C>--radius</C>; leave the attribute out for the default. It is its own axis, so it
+        works with every accent, material and density, and on any subtree.
+      </P>
+      <Table
+        head={["Value", "Comfortable", "Compact"]}
+        rows={[
+          ["default (no attribute)", "14px", "10px"],
+          [<C key="s">sharp</C>, "6px", "4px"],
+          [<C key="r">round</C>, "20px", "14px"],
+        ]}
+      />
+      <Table
+        head={["", "What"]}
+        rows={[
+          ["Follows the setting", <>Everything on <C>rounded-ui</C> / <C>rounded-ui-sm</C> / <C>rounded-ui-lg</C> or <C>var(--radius)</C>: buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks.</>],
+          ["Stays round on purpose", <><C>rounded-full</C> shapes: pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars, plus small fixed details such as chart bars and event chips.</>],
+        ]}
+      />
+      <P>Give your own elements <C>rounded-ui*</C> classes so they follow too; never hard-code a corner radius.</P>
+      <AxisDemo axis="radius" />
 
       <H2 id="tokens">Token reference</H2>
       <P>Components read only these semantic tokens. Each is available as a Tailwind colour, e.g. <C>bg-surface</C>, <C>text-fg-muted</C>, <C>border-line</C>.</P>

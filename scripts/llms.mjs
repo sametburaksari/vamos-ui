@@ -214,11 +214,11 @@ for (const entry of index.items) {
 // --- llms.txt / llms-full.txt -------------------------------------------------------
 const intro = `# Vamos UI
 
-> Open-source design layer and React component kit for admin panels (CMS, CRM, HR, partner portals) and websites: CSS tokens with five theme axes (mode, accent, material, density, font), semantic Tailwind classes, ${components.length} components in @vamos-ui/react, ${blocks.length} blocks (whole screens and example websites), a CLI (npx vamos-ui) and an MCP server (https://mcp.vamos.ist/mcp). MIT licensed. English and Turkish first.
+> Open-source design layer and React component kit for admin panels (CMS, CRM, HR, partner portals) and websites: CSS tokens with six theme axes (mode, material, accent, density, font, corners), semantic Tailwind classes, ${components.length} components in @vamos-ui/react, ${blocks.length} blocks (whole screens and example websites), a CLI (npx vamos-ui) and an MCP server (https://mcp.vamos.ist/mcp). MIT licensed. English and Turkish first.
 
 Key facts for assistants:
 - Install the kit: \`npm i @vamos-ui/react\` and import from "@vamos-ui/react"; or copy sources with \`npx vamos-ui add <name>\`. Start a project with \`npx vamos-ui create\`.
-- Style with the kit's semantic classes and tokens (bg-surface, text-fg, text-fg-muted, border-line; accent through data-accent), not raw colours, so all five theme axes keep working.
+- Style with the kit's semantic classes and tokens (bg-surface, text-fg, text-fg-muted, border-line; accent through data-accent), not raw colours, so all six theme axes keep working.
 - Before building UI, read the rules (${SITE}/docs/mcp.md) or call the MCP tools get_rules, plan_screen, get_block and verify_code.
 - Websites: \`npx vamos-ui site essentials\` writes robots, sitemap and legal pages; \`npx vamos-ui verify\` reports placeholder contact details, missing pages and launch basics.
 - Registry JSON for every item: ${SITE}/r/index.json and ${SITE}/r/<name>.json.`;

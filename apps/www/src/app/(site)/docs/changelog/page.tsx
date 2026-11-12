@@ -15,6 +15,23 @@ interface Release {
 /** Newest first. Append new releases at the top. */
 const releases: Release[] = [
   {
+    version: "0.4.2",
+    date: "2026-11-12",
+    changes: {
+      Added: [
+        "`npx vamos-ui audit <url>` audits a live website over HTTP: redirects, title and description length, canonical, Open Graph, JSON-LD, robots, sitemap, llms.txt and AI crawler policy, placeholder contact details, legal pages, broken internal links and heavy images. Score, `--json` and exit codes for CI. The MCP server has the same check as `audit_site` (public sites only on the hosted server).",
+        "`vamos.site.json`: one file for a website's business details, legal ids, analytics ids and AI settings (`npx vamos-ui site init`). `site essentials` builds robots (AI crawlers allowed, blocked or listed), llms.txt, LocalBusiness / FAQ JSON-LD and the legal pages from it, with known [fill-in] fields filled. Nothing defaults to anyone's real data; verify lists the empty fields.",
+        "`vamos-ui init` writes the AI assistant rules by default: AGENTS.md, CLAUDE.md, .github/copilot-instructions.md and .cursor/rules/vamos-ui.mdc (existing content kept; `--no-agent` skips them).",
+        "ui.vamos.ist/llms.txt, llms-full.txt and a Markdown version of every docs page, component and block.",
+        "Corners are a sixth theme axis: `data-radius=\"sharp\"` or `\"round\"` on `<html>` or any subtree (absent = default) scales `--radius` (default 14px / compact 10px, sharp 6px / 4px, round 20px / 14px) and works with every accent, material and density. Everything on `rounded-ui*` or `var(--radius)` follows it (buttons, inputs, selects, cards, dialogs, popovers, menus, tables, square badges, calendars, chart tooltips, site blocks); `rounded-full` pills, avatars, switches, radio dots, slider thumbs and progress bars stay round. ThemeScope and `themeAttributes` take `radius`.",
+      ],
+      Changed: [
+        "Preset codes keep the corner letter but map it to `data-radius` instead of the generated brand accent, so sharp or round corners combine with a named accent (`v1dgokgs` is dark · glass · ocean · compact · grotesk · sharp) and `theme --preset` works without a project. `vamos-ui theme --radius`, `theme.radius` in vamos.json, and `brand apply` saves `brand.theme.radius` there instead of writing `--radius` into brand.css.",
+        "The /themes editor's corner control is independent of the accent; the generated brand accent is only used for a custom colour.",
+      ],
+    },
+  },
+  {
     version: "0.4.1",
     date: "2026-11-12",
     changes: {

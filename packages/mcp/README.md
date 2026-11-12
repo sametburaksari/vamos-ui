@@ -115,7 +115,7 @@ No install: add the remote MCP server **`https://mcp.vamos.ist/mcp`** (Streamabl
 - **Claude Code:** `claude mcp add --transport http vamos-ui https://mcp.vamos.ist/mcp`
 - **Cursor / VS Code:** `{ "mcpServers": { "vamos-ui": { "url": "https://mcp.vamos.ist/mcp" } } }` (VS Code: `"servers"` with `"type": "http"`).
 
-The hosted server cannot see your files, so the project tools (`get_brand`, `apply_design_system`, `update_design`, `verify_design` with `projectDir`) and URL import are local-only. Everything else — rules, theming, search, items, blocks, screen plans, code checks, accents — works the same. Run your own with `npx -y @vamos-ui/mcp --http --port 3333`.
+The hosted server cannot see your files, so the project tools (`get_brand`, `apply_design_system`, `update_design`, `verify_design` with `projectDir`) and URL import are local-only. Everything else — rules, theming, search, items, blocks, screen plans, code checks, accents, live-site audits — works the same (`audit_site` reaches public sites only). Run your own with `npx -y @vamos-ui/mcp --http --port 3333`.
 
 ### Which models?
 
@@ -140,9 +140,10 @@ npx -y @vamos-ui/mcp --registry https://ui.example.com/r
 | `search(query, type?, limit?)` | Find items by need, in English or Turkish ("date range picker", "tarih seçici"). |
 | `get_item(name, include?, format?)` | Usage, props, examples, when-to-use guidance, dependencies; source with `include: ["files"]`. |
 | `list_items(type?, group?, category?, tag?)` | Browse by docs group or block category. |
-| `get_theming(include_tokens?)` | The 5 axes, semantic classes, brand accents, token table. |
+| `get_theming(include_tokens?)` | The 6 axes (mode, material, accent, density, font, corners) and what the corner setting covers, semantic classes, brand accents, token table. |
 | `verify_code(code, filename)` | Lints a file (raw colours, `dark:`, fonts, missing labels/alt, click handlers on divs, z-index, hand-rolled overlays…). Returns text plus structured `{ ok, issues }`. |
 | `install_command(names)` | The exact `npx vamos-ui add …` command, with names validated. |
+| `audit_site(url, maxPages?)` | Audits a live website over HTTP, built with the kit or not: redirects, speed, compression, security headers; title, description, canonical, Open Graph, JSON-LD; robots.txt and its AI crawler policy, sitemap.xml, llms.txt; placeholder contact data, missing alt and names, legal links; broken internal links and images over 300 KB across up to `maxPages` pages (default 10, max 30). Same checks as `npx vamos-ui audit`. Only GET/HEAD requests; on the hosted server private, loopback, link-local, CGNAT and metadata addresses are refused on every hop. |
 
 ### Design system (brand profile)
 

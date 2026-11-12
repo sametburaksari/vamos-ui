@@ -336,7 +336,9 @@ describe("buildRegistry (this repository)", () => {
     const fg = tokens.find((/** @type {{ name: string }} */ t) => t.name === "--fg");
     assert.notEqual(fg.light, fg.dark);
     const { axes } = read("axes.json");
-    assert.deepEqual(axes.map((/** @type {{ name: string }} */ a) => a.name), ["theme", "material", "accent", "density", "font"]);
+    assert.deepEqual(axes.map((/** @type {{ name: string }} */ a) => a.name), ["theme", "material", "accent", "density", "font", "radius"]);
+    const radius = tokens.find((/** @type {{ name: string }} */ t) => t.name === "--radius-scale");
+    assert.ok(radius?.overrides.some((/** @type {{ selector: string }} */ o) => o.selector.includes('data-radius="sharp"')));
   });
 
   test("ships the kit barrels and the agent skill for the CLI", () => {

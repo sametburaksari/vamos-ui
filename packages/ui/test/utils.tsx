@@ -26,6 +26,7 @@ export type ThemeAxes = {
   accent?: string;
   density?: "comfortable" | "compact";
   font?: string;
+  radius?: "default" | "sharp" | "round";
 };
 
 export interface ProviderOptions extends Omit<RenderOptions, "wrapper"> {
@@ -49,6 +50,7 @@ function themeAttrs(t: ThemeAxes = {}) {
     "data-accent": t.accent ?? "lime",
     "data-density": t.density ?? "comfortable",
     "data-font": t.font ?? "editorial",
+    "data-radius": t.radius && t.radius !== "default" ? t.radius : undefined,
   };
 }
 

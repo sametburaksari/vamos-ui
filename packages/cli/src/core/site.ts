@@ -1,6 +1,8 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { collectRoutes, internalHrefs } from "../site-check";
+import { AI_BOTS, SITE_FILE, parseSiteJson, type SiteInfo } from "../site-info";
 import type { ProjectInfo } from "./project";
 import type { VamosConfig } from "./types";
 
@@ -80,6 +82,14 @@ export interface EssentialsPlan {
   /** Root layout metadata keys that are missing (metadataBase, alternates, openGraph). */
   layoutMissing: string[];
   layoutPath: string | null;
+  /** vamos.site.json, when the project has one (null otherwise or when it does not parse). */
+  site: SiteInfo | null;
+  /** Set when vamos.site.json exists but is not valid JSON. */
+  siteError?: string;
+  /** True when the root layout still has to render <SiteJsonLd /> (the JSON-LD component exists or is written now). */
+  jsonLdInLayout: boolean;
+  /** Things the user should do by hand (an existing file predates vamos.site.json, an outdated block …). */
+  notes: string[];
 }
 
 const IGNORE = new Set(["node_modules", ".next", ".git", "dist", "build", "out", "coverage", ".turbo", ".vercel"]);
@@ -144,7 +154,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
 }
 `;
 
-function legalPage(route: string, kind: LegalKind, locale: "en" | "tr", pageImport: string, presetsImport: string): string {
+function legalPage(route: string, kind: LegalKind, locale: "en" | "tr", pageImport: string, presetsImport: string, siteImport: string | null): string {
+  if (siteImport) {
+    return `${header(`The ${route} page (legal-01, preset "${kind}").`)}import type { Metadata } from "next";
+import Legal01 from "${pageImport}";
+import { fillLegalDoc, legalPreset } from "${presetsImport}";
+import { LEGAL_VALUES } from "${siteImport}";
+
+// Template text. Fields known from vamos.site.json are filled in (LEGAL_VALUES); replace every
+// [bracketed] field that is left, have the business or its lawyer review the page, then pass
+// notice={false}. \`npx vamos-ui verify\` lists the fields that are still open.
+const doc = fillLegalDoc(legalPreset("${kind}", "${locale}"), LEGAL_VALUES);
+
+export const metadata: Metadata = {
+  title: doc.title,
+  description: doc.summary,
+  alternates: { canonical: "${route}" },
+};
+
+export default function Page() {
+  return <Legal01 doc={doc} locale="${locale}" values={LEGAL_VALUES} />;
+}
+`;
+  }
   return `${header(`The ${route} page (legal-01, preset "${kind}").`)}import type { Metadata } from "next";
 import Legal01 from "${pageImport}";
 import { legalPreset } from "${presetsImport}";
@@ -165,6 +197,40 @@ export default function Page() {
 `;
 }
 
+/** packages/cli/templates/site, from src/core (dev, tests) or dist (published). */
+function siteTemplatesDir(): string {
+  let dir = path.dirname(fileURLToPath(import.meta.url));
+  for (let i = 0; i < 5; i++) {
+    const candidate = path.join(dir, "templates", "site");
+    if (existsSync(path.join(candidate, "site.ts"))) return candidate;
+    dir = path.dirname(dir);
+  }
+  throw new Error("The vamos-ui templates/site folder is missing from this install. Reinstall vamos-ui.");
+}
+
+function readSiteTemplate(name: "site.ts" | "robots.ts" | "llms-route.ts" | "site-json-ld.tsx", vars: Record<string, string> = {}): string {
+  let text = readFileSync(path.join(siteTemplatesDir(), name), "utf8");
+  for (const [k, v] of Object.entries(vars)) text = text.split(k).join(v);
+  return text;
+}
+
+/** What the root layout needs to render the JSON-LD (printed; the layout is never edited). */
+export const JSON_LD_SNIPPET = `import { SiteJsonLd } from "./site-json-ld";
+
+// inside <body>, once:
+<SiteJsonLd />`;
+
+/** Root-layout metadata from vamos.site.json (printed as a hint). */
+export const LAYOUT_METADATA_FROM_SITE = `import { SITE_URL, site } from "./site";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: { default: site.name, template: \`%s — \${site.name}\` },
+  description: site.description,
+  alternates: { canonical: "/" },
+  openGraph: { type: "website", siteName: site.name, locale: site.locale?.replace("-", "_"), images: ["/og.jpg"] },
+};`;
+
 /** Root-layout metadata the site should set; printed as a hint (the layout is never edited). */
 export const LAYOUT_METADATA_SNIPPET = `export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -176,7 +242,9 @@ export const LAYOUT_METADATA_SNIPPET = `export const metadata: Metadata = {
 
 /**
  * Decides which essentials a Next.js App Router site still lacks: robots.ts, sitemap.ts (plus the
- * site.ts they share) and one page per legal route the installed site blocks link to.
+ * site.ts they share) and one page per legal route the installed site blocks link to. With a
+ * vamos.site.json it also plans llms.txt and the JSON-LD component, and the legal pages and
+ * robots.ts read the business details from it.
  */
 export function planEssentials(root: string, config: Pick<VamosConfig, "blocksDir">, project: Pick<ProjectInfo, "alias">): EssentialsPlan {
   const paths = walk(root);
@@ -186,12 +254,38 @@ export function planEssentials(root: string, config: Pick<VamosConfig, "blocksDi
     const url = route === "/" ? [] : route.slice(1).split("/");
     return routes.some((r) => r.segments.length === url.length && r.segments.every((s, i) => s === url[i] || /^\[.+\]$/.test(s)));
   };
+  const notes: string[] = [];
+
+  // vamos.site.json: the business details everything below reads.
+  let site: SiteInfo | null = null;
+  let siteError: string | undefined;
+  if (existsSync(path.join(root, SITE_FILE))) {
+    const parsed = parseSiteJson(readFileSync(path.join(root, SITE_FILE), "utf8"));
+    site = parsed.site;
+    siteError = parsed.error;
+  }
 
   // Links from the installed website blocks and the app's own files.
   const blocksDir = config.blocksDir.replace(/\/+$/, "");
   const scanned = paths.filter((p) => /\.(?:tsx|jsx|ts|js)$/.test(p) && ((p.startsWith(`${blocksDir}/`) && isSiteBlock(p.slice(blocksDir.length + 1).split("/")[0]!)) || p.startsWith(`${appDir}/`)));
   const linked = new Set<string>();
   for (const p of scanned) for (const h of internalHrefs(readFileSync(path.join(root, p), "utf8"))) linked.add(h.path.replace(/\/+$/, "") || "/");
+
+  // app/site.ts: written now, or an existing one that already exports what the site.json files import.
+  const exists = (re: RegExp) => paths.some((p) => re.test(p));
+  const siteTsPath = paths.find((p) => new RegExp(`^${appDir}/site\\.(?:ts|js)$`).test(p)) ?? null;
+  const siteTs = siteTsPath ? readFileSync(path.join(root, siteTsPath), "utf8") : "";
+  const siteTsReady = /export const site\b/.test(siteTs) && /\bLEGAL_VALUES\b/.test(siteTs) && /\bLEGAL_ROUTES\b/.test(siteTs);
+  const useSite = !!site && (!siteTsPath || siteTsReady);
+  if (site && siteTsPath && !siteTsReady) {
+    notes.push(`${siteTsPath} predates vamos.site.json (no \`site\`, LEGAL_ROUTES or LEGAL_VALUES export), so llms.txt, JSON-LD and the legal page values were skipped. Delete it and run \`npx vamos-ui site essentials\` again, or add those exports by hand.`);
+  }
+  const siteTarget = `${appDir}/site`;
+
+  // Legal pages fill their fields from LEGAL_VALUES only with a legal-01 that has fillLegalDoc.
+  const presetsFile = path.join(root, blocksDir, LEGAL_BLOCK, "components", "presets.ts");
+  const legalHasValues = !existsSync(presetsFile) || /\bfillLegalDoc\b/.test(readFileSync(presetsFile, "utf8"));
+  if (useSite && !legalHasValues) notes.push(`The installed ${LEGAL_BLOCK} predates the \`values\` prop, so new legal pages do not read vamos.site.json. Update it with \`npx vamos-ui add ${LEGAL_BLOCK} --overwrite\`.`);
 
   const files: EssentialFile[] = [];
   const kept: string[] = [];
@@ -212,25 +306,60 @@ export function planEssentials(root: string, config: Pick<VamosConfig, "blocksDi
       continue;
     }
     const file = `${appDir}/${slug}/page.tsx`;
-    files.push({ path: file, reason: `legal page (${legal.kind}, ${legal.locale})`, content: legalPage(route, legal.kind, legal.locale, importPath(file, pageTarget, project.alias), importPath(file, presetsTarget, project.alias)) });
+    const siteImport = useSite && legalHasValues ? importPath(file, siteTarget, project.alias) : null;
+    files.push({
+      path: file,
+      reason: `legal page (${legal.kind}, ${legal.locale}${siteImport ? ", values from vamos.site.json" : ""})`,
+      content: legalPage(route, legal.kind, legal.locale, importPath(file, pageTarget, project.alias), importPath(file, presetsTarget, project.alias), siteImport),
+    });
     legalRoutes.push(route);
   }
 
-  const exists = (re: RegExp) => paths.some((p) => re.test(p));
   const sitemapRoutes = ["/", ...[...linked].filter((r) => r !== "/" && (hasRoute(r) || files.some((f) => f.path === `${appDir}${r}/page.tsx`))).sort()];
-  const hasRobots = exists(new RegExp(`^(?:${appDir}/robots\\.(?:ts|js|txt)|public/robots\\.txt)$`));
+  const robotsPath = paths.find((p) => new RegExp(`^(?:${appDir}/robots\\.(?:ts|js|txt)|public/robots\\.txt)$`).test(p));
   const hasSitemap = exists(new RegExp(`^(?:${appDir}/sitemap\\.(?:ts|js|xml)|public/sitemap\\.xml)$`));
   const basics: EssentialFile[] = [];
-  if ((!hasRobots || !hasSitemap) && !exists(new RegExp(`^${appDir}/site\\.(?:ts|js)$`))) basics.push({ path: `${appDir}/site.ts`, reason: "site origin + sitemap routes", content: siteFile(sitemapRoutes) });
-  if (hasRobots) kept.push("robots");
-  else basics.push({ path: `${appDir}/robots.ts`, reason: "robots.txt", content: ROBOTS });
+  if (!siteTsPath && (useSite || !robotsPath || !hasSitemap)) {
+    basics.push(
+      useSite
+        ? {
+            path: `${appDir}/site.ts`,
+            reason: "business info (vamos.site.json), site origin + sitemap routes",
+            content: readSiteTemplate("site.ts", {
+              __SITE_JSON__: importPath(`${appDir}/site.ts`, SITE_FILE, null),
+              __ROUTES__: JSON.stringify(sitemapRoutes, null, 2),
+              __LEGAL_ROUTES__: JSON.stringify(sitemapRoutes.filter((r) => LEGAL_SLUGS[r.slice(1)]), null, 2),
+            }),
+          }
+        : { path: `${appDir}/site.ts`, reason: "site origin + sitemap routes", content: siteFile(sitemapRoutes) },
+    );
+  }
+  if (robotsPath) {
+    kept.push("robots");
+    if (site && site.ai?.allowAiCrawlers !== undefined && site.ai.allowAiCrawlers !== true) {
+      const robots = readFileSync(path.join(root, robotsPath), "utf8");
+      if (!/allowAiCrawlers|GPTBot/.test(robots)) notes.push(`${robotsPath} exists and does not follow ai.allowAiCrawlers in vamos.site.json; AI crawlers are still allowed. Delete it and run \`npx vamos-ui site essentials\` again, or add the AI bot rules by hand.`);
+    }
+  } else basics.push({ path: `${appDir}/robots.ts`, reason: useSite ? "robots.txt (AI crawlers per vamos.site.json)" : "robots.txt", content: useSite ? readSiteTemplate("robots.ts", { __AI_BOTS__: JSON.stringify(AI_BOTS, null, 2) }) : ROBOTS });
   if (hasSitemap) kept.push("sitemap");
   else basics.push({ path: `${appDir}/sitemap.ts`, reason: "sitemap.xml", content: SITEMAP });
+
+  if (useSite) {
+    const hasLlms = exists(new RegExp(`^(?:${appDir}/llms\\.txt/route\\.(?:ts|js)|public/llms\\.txt)$`));
+    if (hasLlms) kept.push("llms.txt");
+    else if (site!.ai?.llmsTxt !== false) {
+      const file = `${appDir}/llms.txt/route.ts`;
+      basics.push({ path: file, reason: "llms.txt (from vamos.site.json)", content: readSiteTemplate("llms-route.ts", { __SITE_IMPORT__: importPath(file, siteTarget, project.alias) }) });
+    }
+    if (exists(new RegExp(`^${appDir}/site-json-ld\\.(?:tsx|jsx)$`))) kept.push("JSON-LD");
+    else basics.push({ path: `${appDir}/site-json-ld.tsx`, reason: "JSON-LD component (render it in the root layout)", content: readSiteTemplate("site-json-ld.tsx") });
+  }
   files.unshift(...basics);
 
   const layoutPath = paths.find((p) => new RegExp(`^${appDir}/layout\\.(?:tsx|jsx|ts|js)$`).test(p)) ?? null;
   const layout = layoutPath ? readFileSync(path.join(root, layoutPath), "utf8") : "";
   const layoutMissing = ["metadataBase", "alternates", "openGraph"].filter((k) => !new RegExp(`\\b${k}\\b`).test(layout));
+  const jsonLdInLayout = useSite && !/<SiteJsonLd\b/.test(layout);
 
-  return { appDir, files: files.filter((f) => !existsSync(path.join(root, f.path))), kept, unmatched, legalRoutes, layoutMissing, layoutPath };
+  return { appDir, files: files.filter((f) => !existsSync(path.join(root, f.path))), kept, unmatched, legalRoutes, layoutMissing, layoutPath, site, siteError, jsonLdInLayout, notes };
 }

@@ -18,6 +18,7 @@ export default function CliPage() {
         { id: "open-registry", title: "Items from other registries" },
         { id: "presets", title: "Preset codes" },
         { id: "vamos-cli", title: "The vamos CLI" },
+        { id: "site", title: "Website essentials" },
         { id: "mcp", title: "MCP server (AI agents)" },
       ]}
       prev={{ href: "/docs/localization", title: "Localization" }}
@@ -111,7 +112,7 @@ npx vamos-ui create my-app --no-install            # write files only`} />
 
       <H2 id="presets">Preset codes</H2>
       <P>
-        A preset code is the five theme axes (plus an optional corner radius) in one short string, so a look can be shared in a
+        A preset code is the six theme axes (the sixth, corners, is optional) in one short string, so a look can be shared in a
         message, a README or an issue:
       </P>
       <Code lang="bash" code={`npx vamos-ui preset                    # print this project's code, e.g. v1dgokg
@@ -128,12 +129,14 @@ npx vamos-ui create my-app --preset v1lsx4f46e5ce   # a custom accent colour (#4
           ["Accent", <span key="a"><C>l</C> lime, <C>o</C> ocean, <C>e</C> ember, <C>r</C> rose, <C>g</C> graphite, or <C>x</C> and six hex digits</span>],
           ["Density", <span key="d"><C>c</C> comfortable, <C>k</C> compact</span>],
           ["Font", <span key="f"><C>s</C> system, <C>e</C> editorial, <C>g</C> grotesk, <C>c</C> corporate</span>],
-          ["Radius (optional)", <span key="r"><C>d</C> default, <C>s</C> sharp, <C>r</C> round; left out when default</span>],
+          ["Corners (optional)", <span key="r"><C>d</C> default, <C>s</C> sharp, <C>r</C> round (<C>data-radius</C>); left out when default</span>],
         ]}
       />
       <P>
-        Codes ignore case and the separators <C>-</C>, <C>_</C> and <C>.</C>. A custom accent or radius is applied through the
-        brand file: the CLI writes <C>vamos.brand.json</C> and <C>brand.css</C> and selects <C>data-accent=&quot;brand&quot;</C>.
+        Codes ignore case and the separators <C>-</C>, <C>_</C> and <C>.</C>. Only a custom accent is applied through the brand
+        file: the CLI writes <C>vamos.brand.json</C> and <C>brand.css</C> and selects <C>data-accent=&quot;brand&quot;</C>. Corners map
+        to <C>data-radius</C> (saved as <C>theme.radius</C> in <C>vamos.json</C>), so <C>v1dgokgs</C> is ocean with sharp corners
+        and needs no brand file. See <A href="/docs/theming#corners">Theming → Corners</A> for what follows the setting.
         Tools can use the same codec: <C>{`import { encodePreset, decodePreset } from "vamos-ui/preset"`}</C>.
       </P>
 
@@ -146,17 +149,48 @@ npx vamos-ui add github:acme/ui/stat-card   # copy an item from another registry
 npx vamos-ui diff button     # show what changed upstream since you copied it
 npx vamos-ui upgrade button  # three-way merge upstream changes into your edited copy
 npx vamos-ui search calendar # find components and blocks
-npx vamos-ui theme           # pick the five theme axes
+npx vamos-ui theme           # pick the six theme axes
 npx vamos-ui preset          # print the shareable preset code
 npx vamos-ui verify src      # lint for design-rule and accessibility issues
+npx vamos-ui audit https://example.com   # audit a live site: SEO basics, broken links, placeholders
 npx vamos-ui brand import https://example.com  # turn a site into a brand profile
+npx vamos-ui site init       # empty vamos.site.json: the business info for a website
+npx vamos-ui site essentials # robots, sitemap, llms.txt, JSON-LD and legal pages
 npx vamos-ui registry build  # build your own registry from a folder of components
 npx vamos-ui mcp add         # connect your AI client to the MCP server
-npx vamos-ui init --agent    # add the agent rules and skill`} />
+npx vamos-ui init --no-agent # skip the AI rules (AGENTS.md, CLAUDE.md, Copilot, Cursor) and skill`} />
       <Callout title="Why diff matters">
         Copied components usually stop receiving fixes. <C>vamos-ui diff</C> and <C>vamos-ui upgrade</C> record the version you
         copied, so accessibility and bug fixes can still reach your edited code.
       </Callout>
+
+      <H2 id="site">Website essentials</H2>
+      <P>
+        A website built from <C>site-*</C> blocks keeps its business information in one file, <C>vamos.site.json</C> at the
+        project root: name, legal name, description, url, locale, schema.org type, contact, address, geo, opening hours, social
+        links, legal ids (tax office and number, MERSİS, trade registry, KEP, ETBİS, data controller, privacy email), analytics
+        ids and AI settings. <C>site init</C> writes it with every business field empty; fill it in with the business&apos;s own
+        details. Nothing has a default value, analytics ids included.
+      </P>
+      <Code lang="bash" code={`npx vamos-ui site init --name "Kıyı Seramik" --url https://kiyiseramik.com.tr --locale tr-TR
+npx vamos-ui site essentials            # writes what is missing, never replaces a file
+npx vamos-ui site essentials --dry-run  # show the plan`} />
+      <Table
+        head={["File", "What it does"]}
+        rows={[
+          [<C key="s">app/site.ts</C>, <span key="sd">The typed <C>site</C> object (the JSON), <C>SITE_URL</C> (<C>NEXT_PUBLIC_SITE_URL</C>, else <C>site.url</C>), <C>SITE_ROUTES</C> and the legal page values.</span>],
+          [<C key="r">app/robots.ts</C>, <span key="rd"><C>ai.allowAiCrawlers</C>: <C>true</C> allows every crawler; <C>false</C> disallows the known AI bots (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot …); a list allows only those AI bots.</span>],
+          [<C key="m">app/sitemap.ts</C>, "sitemap.xml from SITE_ROUTES."],
+          [<C key="l">app/llms.txt/route.ts</C>, <span key="ld"><A href="https://llmstxt.org">llms.txt</A>: name, description, services, contact, opening hours, FAQ, key pages and legal pages. Off with <C>ai.llmsTxt: false</C>.</span>],
+          [<C key="j">app/site-json-ld.tsx</C>, <span key="jd"><C>&lt;SiteJsonLd /&gt;</C>: the business type with address, phone, geo, opening hours and <C>sameAs</C>, plus <C>FAQPage</C> when <C>ai.faq</C> is set. Render it once in the root layout.</span>],
+          [<C key="p">app/&lt;legal&gt;/page.tsx</C>, <span key="pd">One page per legal link the blocks have, rendering <C>legal-01</C> with <C>values</C> from the site file, so the known <C>[fill-in]</C> fields are filled.</span>],
+        ]}
+      />
+      <P>
+        The JSON Schema is at <C>https://ui.vamos.ist/r/site-schema.json</C> (set <C>$schema</C> for editor hints).{" "}
+        <C>vamos-ui verify</C> reports empty required fields (name, url, phone or email, city; MERSİS and ETBİS for a shop) and a
+        website without llms.txt (rule <C>site-info</C>). The legal pages stay template text: the business or its lawyer reviews them.
+      </P>
 
       <H2 id="mcp">MCP server (AI agents)</H2>
       <P>

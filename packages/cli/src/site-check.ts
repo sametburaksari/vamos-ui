@@ -6,6 +6,7 @@
  */
 
 import { lex } from "./lexer";
+import { SITE_FILE, missingSiteFields, parseSiteJson } from "./site-info";
 import type { VerifyIssue, VerifyRule } from "./verify";
 
 export const PROJECT_RULES: readonly VerifyRule[] = [
@@ -13,6 +14,7 @@ export const PROJECT_RULES: readonly VerifyRule[] = [
   { id: "site-essentials", severity: "warning", description: "A website without robots, sitemap, metadataBase, canonical URLs, Open Graph or JSON-LD." },
   { id: "meta-length", severity: "warning", description: "A page title over 60 characters or a meta description outside 70–160 characters (search results cut or ignore it)." },
   { id: "image-weight", severity: "warning", description: "An image in public/ over 300 KB (slow first load on mobile)." },
+  { id: "site-info", severity: "warning", description: "vamos.site.json with empty required fields (name, url, phone or email, city; MERSİS and ETBİS for a shop), or a website without llms.txt." },
 ];
 
 /** Search results show about 60 title characters and 70–160 description characters. */
@@ -34,6 +36,8 @@ export interface ProjectCheckInput {
   sources: ProjectSource[];
   /** Optional byte sizes by project-relative path (at least for images in public/), for the image-weight check. */
   sizes?: Record<string, number>;
+  /** Raw contents of vamos.site.json at the project root, when it exists (for the site-info check). */
+  siteJson?: string;
 }
 
 export interface ProjectIssue extends VerifyIssue {
@@ -193,6 +197,19 @@ export function verifyProject(input: ProjectCheckInput): ProjectIssue[] {
     }
   }
 
+  // --- vamos.site.json ------------------------------------------------------------
+  const info = (file: string, message: string, fix: string) => issues.push({ file, rule: "site-info", severity: "warning", message, fix, line: 1, column: 1 });
+  const parsed = input.siteJson !== undefined ? parseSiteJson(input.siteJson) : null;
+  if (parsed?.error) info(SITE_FILE, parsed.error, "Fix the JSON; `npx vamos-ui site init` shows the expected shape.");
+  if (parsed?.site) {
+    const ecommerce = input.paths.some((p) => /(?:^|\/)blocks\/(?:cart-01|checkout-01|site-store-[a-z0-9-]+)\//.test(p));
+    const missing = missingSiteFields(parsed.site, { ecommerce });
+    if (missing.length) {
+      const shop = missing.some((m) => m.startsWith("legal.")) ? " An online shop selling in Turkey must show its MERSİS number and ETBİS registration." : "";
+      info(SITE_FILE, `${SITE_FILE} has no ${missing.join(", ")}.${shop}`, "Fill in the business's own details; llms.txt, JSON-LD and the legal pages read them.");
+    }
+  }
+
   // --- launch basics for a website ------------------------------------------------
   if (appDir && usesSiteBlocks(input)) {
     const has = (re: RegExp) => input.paths.some((p) => re.test(p));
@@ -211,6 +228,16 @@ export function verifyProject(input: ProjectCheckInput): ProjectIssue[] {
     const hasLd = /application\/ld\+json|<JsonLd\b/.test(all) || (/<Footer\b/.test(all) && !/jsonLd=\{false\}/.test(all));
     if (!hasLd) {
       push(layoutPath ?? `${appDir}/layout.tsx`, "No JSON-LD structured data (Organization / LocalBusiness).", "The kit Footer emits Organization JSON-LD; or render <JsonLd data={…} /> with the business type, address, phone and opening hours.");
+    }
+
+    // llms.txt: a summary of the business for AI assistants.
+    const llmsOff = parsed?.site?.ai?.llmsTxt === false;
+    if (!llmsOff && !has(new RegExp(`^(?:${appDir}/llms\\.txt/route\\.(?:ts|js)|public/llms\\.txt)$`))) {
+      info(
+        `${appDir}/llms.txt/route.ts`,
+        "No llms.txt (app/llms.txt/route.ts or public/llms.txt), so AI assistants get no summary of the business.",
+        parsed?.site ? "Run `npx vamos-ui site essentials` to write it from vamos.site.json." : "Run `npx vamos-ui site init`, fill in vamos.site.json, then `npx vamos-ui site essentials`.",
+      );
     }
 
     // Title and description lengths in page/layout metadata.

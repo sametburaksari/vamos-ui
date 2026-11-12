@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { findProjectRoot, readConfig } from "../core/config";
 import { CliError } from "../core/types";
-import { verifyProject, verifySource, type VerifyIssue } from "../verify";
+import { SITE_FILE, verifyProject, verifySource, type VerifyIssue } from "../verify";
 import type { ParsedArgs } from "../args";
 import { out, pad, pc, plural, printJson, type Context } from "../ui";
 
@@ -73,7 +73,9 @@ export function publicImageSizes(root: string, paths: string[]): Record<string, 
 export function addProjectChecks(root: string, files: string[], report: VerifyReport): VerifyReport {
   const sources = files.map((abs) => ({ path: path.relative(root, abs).split(path.sep).join("/"), content: readFileSync(abs, "utf8") }));
   const paths = listProjectPaths(root);
-  const issues = verifyProject({ paths, sources, sizes: publicImageSizes(root, paths) });
+  const siteFile = path.join(root, SITE_FILE);
+  const siteJson = existsSync(siteFile) ? readFileSync(siteFile, "utf8") : undefined;
+  const issues = verifyProject({ paths, sources, sizes: publicImageSizes(root, paths), siteJson });
   for (const { file, ...issue } of issues) {
     let entry = report.results.find((r) => r.file === file);
     if (!entry) report.results.push((entry = { file, issues: [] }));

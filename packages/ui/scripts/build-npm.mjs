@@ -118,7 +118,7 @@ fs.writeFileSync(
   `# @vamos-ui/react
 
 One component kit for every admin panel — CMS, CRM, HR, partner portals — and the websites around them.
-Five theme axes: theme, material (glass/solid), accent, density and font.
+Six theme axes: mode, material (glass/solid), accent, density, font and corners (data-radius).
 
 Docs: https://ui.vamos.ist · Source: https://github.com/sametburaksari/vamos-ui
 

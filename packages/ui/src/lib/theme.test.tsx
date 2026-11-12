@@ -21,7 +21,7 @@ describe("ThemeScope", () => {
       );
     }
     render(
-      <ThemeScope data-testid="scope" theme="dark" material="glass" accent="ocean" density="compact" font="grotesk">
+      <ThemeScope data-testid="scope" theme="dark" material="glass" accent="ocean" density="compact" font="grotesk" radius="sharp">
         <Pop />
       </ThemeScope>,
     );
@@ -31,12 +31,18 @@ describe("ThemeScope", () => {
     expect(scope).toHaveAttribute("data-accent", "ocean");
     expect(scope).toHaveAttribute("data-density", "compact");
     expect(scope).toHaveAttribute("data-font", "grotesk");
+    expect(scope).toHaveAttribute("data-radius", "sharp");
     const content = screen.getByText("Filters");
     expect(scope.contains(content)).toBe(true);
     expect(content).toHaveAttribute("data-layer-depth", "1");
   });
   it("themeAttributes is a plain function", () => {
     expect(themeAttributes({ theme: "light", accent: "ember", glassQuality: "low" })).toMatchObject({ className: "light", "data-accent": "ember", "data-glass-quality": "low" });
+  });
+  it("maps corners to data-radius and leaves the default out", () => {
+    expect(themeAttributes({ accent: "ocean", radius: "round" })).toMatchObject({ "data-accent": "ocean", "data-radius": "round" });
+    expect(themeAttributes({ radius: "default" })["data-radius"]).toBeUndefined();
+    expect(themeAttributes({})["data-radius"]).toBeUndefined();
   });
 });
 

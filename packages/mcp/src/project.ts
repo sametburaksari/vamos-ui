@@ -13,6 +13,8 @@ export interface ProjectTheme {
   accent?: string;
   density?: string;
   font?: string;
+  /** Corners → data-radius (absent = default). */
+  radius?: string;
 }
 
 export interface ProjectConfig {

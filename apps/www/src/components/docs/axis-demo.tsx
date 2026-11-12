@@ -2,7 +2,7 @@
 
 import { Badge, Button, Card, CardBody, CardHeader, Input, cn } from "@vamos-ui/react";
 
-type Axis = "theme" | "material" | "accent" | "density" | "font";
+type Axis = "theme" | "material" | "accent" | "density" | "font" | "radius";
 
 const values: Record<Axis, { label: string; props: Record<string, string> }[]> = {
   theme: [
@@ -19,6 +19,11 @@ const values: Record<Axis, { label: string; props: Record<string, string> }[]> =
     { label: "compact", props: { "data-density": "compact" } },
   ],
   font: ["editorial", "grotesk", "corporate", "system"].map((f) => ({ label: f, props: { "data-font": f } })),
+  radius: [
+    { label: "default", props: {} },
+    { label: "sharp", props: { "data-radius": "sharp" } },
+    { label: "round", props: { "data-radius": "round" } },
+  ],
 };
 
 function Mini() {
@@ -45,7 +50,7 @@ export function AxisDemo({ axis }: { axis: Axis }) {
         const { className, ...data } = v.props;
         return (
           <div key={v.label} className="grid gap-1.5">
-            <code className="font-mono text-[11.5px] text-fg-subtle">{axis === "theme" ? `class="${className}"` : `${Object.keys(data)[0]}="${v.label}"`}</code>
+            <code className="font-mono text-[11.5px] text-fg-subtle">{axis === "theme" ? `class="${className}"` : Object.keys(data).length ? `${Object.keys(data)[0]}="${v.label}"` : "no data-radius (default)"}</code>
             <div
               {...data}
               className={cn("preview-stage relative overflow-hidden rounded-ui-lg border border-line bg-scene p-4 text-fg", className)}

@@ -114,6 +114,14 @@ describe("get_theming / get_rules", () => {
     expect(await getTheming(registry, { include_tokens: false })).not.toMatch(/## Tokens/);
   });
 
+  it("documents corners as the sixth axis and its scope", async () => {
+    const out = await getTheming(registry, { include_tokens: false });
+    expect(out).toMatch(/six independent axes \(mode, material, accent, density, font, corners\)/);
+    expect(out).toContain("## Corners");
+    expect(out).toMatch(/`data-radius="sharp"` or `"round"` \(absent = default\)/);
+    expect(out).toMatch(/Stays round on purpose: `rounded-full`/);
+  });
+
   it("covers the core rules", () => {
     const rules = getRules();
     expect(rules).toBe(RULES);

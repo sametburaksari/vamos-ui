@@ -46,7 +46,7 @@ export default function InstallationPage() {
         rows={[
           ["1. Install", <C key="i">pnpm add @vamos-ui/react</C>],
           ["2. Styles", <span key="s">Import Tailwind, then <C>@vamos-ui/react/styles.css</C>, in your app stylesheet.</span>],
-          ["3. Theme axes", <span key="t"><C>class=&quot;dark&quot;</C>, <C>data-material</C>, <C>data-accent</C>, <C>data-density</C>, <C>data-font</C> on <C>&lt;html&gt;</C>, plus a small boot script that restores the saved choice before paint.</span>],
+          ["3. Theme axes", <span key="t"><C>class=&quot;dark&quot;</C>, <C>data-material</C>, <C>data-accent</C>, <C>data-density</C>, <C>data-font</C> and optionally <C>data-radius</C> on <C>&lt;html&gt;</C>, plus a small boot script that restores the saved choice before paint.</span>],
           ["4. Fonts", <span key="f">Load the families of your <C>data-font</C> preset and expose them as <C>--ff-*</C> variables.</span>],
           ["5. Providers", <span key="p"><C>VamosProvider</C> (locale, router link, navigate) and <C>TooltipProvider</C> at the root. Optional, recommended.</span>],
         ]}

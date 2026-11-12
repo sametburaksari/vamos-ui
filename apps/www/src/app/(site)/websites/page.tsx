@@ -6,7 +6,7 @@ const sites = blocks.filter((b) => b.category === "Website pages");
 
 export const metadata = pageMeta({
   title: "Websites",
-  description: `${sites.length} complete example websites built only from Vamos UI kit components — firms, studios, shops, events, SaaS and more. Every one is themeable, bilingual (EN / TR) and copies into your project with one command.`,
+  description: `${sites.length} example websites built from Vamos UI components: firms, studios, shops, SaaS. Themeable, EN / TR, one command to copy.`,
   path: "/websites/",
 });
 

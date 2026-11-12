@@ -5,7 +5,7 @@ description: Build interfaces with Vamos UI, the token-based design layer and Re
 
 # Vamos UI
 
-Vamos UI is a framework-neutral design layer: CSS tokens, five theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 150 components) and 150+ blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
+Vamos UI is a framework-neutral design layer: CSS tokens, six theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 150 components) and 150+ blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
 
 Whole screens come from blocks. Components come from the kit. Colours, spacing, radius, type and z-index come from tokens. You choose content, structure and states.
 
@@ -16,7 +16,7 @@ Follow these steps for every screen you build or change.
 ### 1. Check the project setup
 - If `vamos.json` exists at the project root, read it: `uiDir`, `blocksDir`, `css`, `importAlias` tell you where the kit lives and how to import it. Import from `importAlias` (for example `@/components/vamos`), not from `@vamos-ui/react`.
 - If the project depends on `@vamos-ui/react` (package mode), import from `@vamos-ui/react` and its subpaths (`/charts`, `/data-table`, `/blocks`, `/media`, `/editor`, `/business`, `/sortable`, `/scheduler`, `/fonts`, `/format`, `/motion`).
-- If neither, run `npx vamos-ui init` (add `--agent` to also write these rules into AGENTS.md / CLAUDE.md). It detects Next.js, Vite and Tailwind v4, writes `vamos.json`, copies the styles and base libs, and adds `@import ".../styles.css";` to the CSS entry after `@import "tailwindcss";`.
+- If neither, run `npx vamos-ui init` (it also writes these rules into AGENTS.md, CLAUDE.md, Copilot and Cursor rule files; `--no-agent` skips that). It detects Next.js, Vite and Tailwind v4, writes `vamos.json`, copies the styles and base libs, and adds `@import ".../styles.css";` to the CSS entry after `@import "tailwindcss";`.
 - If `vamos.brand.json` exists, the project has a brand profile: read it (MCP `get_brand`) and follow **vamos-apply-design-system** on top of this workflow. Its accent is `data-accent="brand"`, its voice governs all copy and its logos come from `assets`.
 - Make sure the root element carries the axes, e.g. `<html lang="en" class="dark" data-material="solid" data-accent="lime" data-density="comfortable" data-font="editorial">`. `npx vamos-ui theme` sets them in vamos.json and prints the attributes.
 
@@ -53,7 +53,8 @@ Look at the screen (or reason through it when you cannot render) in:
 ### 7. Websites: before launch
 Use it when the project is a public website built from `site-*` / `page-*` blocks.
 - `npx vamos-ui add site-…` in a Next.js App Router project also writes `app/robots.ts`, `app/sitemap.ts` and a page for each legal link the block has (`/privacy`, `/kvkk`, `/gizlilik`, `/cookies`, `/terms`, `/accessibility`, `/iade`, `/mesafeli-satis-sozlesmesi`, `/yasal-uyari` …) rendering `legal-01`; it never replaces an existing file. For an existing project run `npx vamos-ui site essentials`.
-- The legal presets are template text: replace every [fill-in] field and have the business or a lawyer review them.
+- Business info goes in `vamos.site.json` (`npx vamos-ui site init` writes it empty): name, contact, address, opening hours, legal ids, analytics ids, AI settings. Every value comes from the business; never invent or reuse one, leave unknown fields empty and ask. With it, `site essentials` also writes `app/llms.txt/route.ts`, `app/site-json-ld.tsx` (render `<SiteJsonLd />` in the root layout), robots that follow `ai.allowAiCrawlers`, and legal pages whose known [fill-in] fields are filled from it.
+- The legal presets are template text: replace every [fill-in] field that is left and have the business or a lawyer review them.
 - Root metadata: `metadataBase`, `alternates.canonical`, `openGraph`, a 120–160 character description; each page its own title and canonical.
 - JSON-LD: the kit `Footer` emits Organization; set the business type (`jsonLd={{ "@type": "Dentist" }}`) or add `<JsonLd>` / `localBusinessJsonLd`.
 - Replace every demo phone, email, map link and `href="#"` with the business's real details; `npx vamos-ui verify` lists what is left. Full checklist: rule 11 in [references/rules.md](references/rules.md).
@@ -74,7 +75,7 @@ The full rules are in [references/rules.md](references/rules.md) (the same text 
 
 ## Theming and brand accents
 
-Five axes on `<html>` or any subtree; components only read variables, so a subtree can differ (`<aside data-density="compact">`, `<section class="light">`).
+Six axes on `<html>` or any subtree; components only read variables, so a subtree can differ (`<aside data-density="compact">`, `<section class="light">`).
 
 | Axis | Attribute | Values |
 |---|---|---|
@@ -83,6 +84,9 @@ Five axes on `<html>` or any subtree; components only read variables, so a subtr
 | Accent | `data-accent` | `lime`, `ocean`, `ember`, `rose`, `graphite` (or your own) |
 | Density | `data-density` | `comfortable`, `compact` |
 | Type | `data-font` | `editorial`, `grotesk`, `corporate`, `system` |
+| Corners | `data-radius` | default (no attribute), `sharp`, `round` |
+
+Corners work with every accent. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips.
 
 A brand colour is a new accent value with four variables, selected with `data-accent="brand"`. `npx vamos-ui brand apply` generates it (contrast-checked) from vamos.brand.json into `<uiDir>/brand.css`; written by hand it looks like this:
 

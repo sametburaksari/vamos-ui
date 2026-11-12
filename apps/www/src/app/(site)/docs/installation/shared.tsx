@@ -43,9 +43,10 @@ export default function Welcome() {
 
 export const axesTable = (
   <P>
-    The five axes are attributes on <C>&lt;html&gt;</C> (or any element): <C>class=&quot;dark&quot;</C>,{" "}
+    The six axes are attributes on <C>&lt;html&gt;</C> (or any element): <C>class=&quot;dark&quot;</C>,{" "}
     <C>data-material=&quot;glass|solid&quot;</C>, <C>data-accent=&quot;lime|ocean|ember|rose|graphite&quot;</C>,{" "}
-    <C>data-density=&quot;comfortable|compact&quot;</C> and <C>data-font=&quot;editorial|grotesk|corporate|system&quot;</C>.
+    <C>data-density=&quot;comfortable|compact&quot;</C>, <C>data-font=&quot;editorial|grotesk|corporate|system&quot;</C> and,
+    optionally, <C>data-radius=&quot;sharp|round&quot;</C> for corners.
     The boot script reads the user&apos;s saved choice from <C>localStorage</C> (key <C>vamos-theme</C>) before the first
     paint. See <C>Theming</C> for every token.
   </P>

@@ -464,7 +464,9 @@ function verifyProjectFiles(root: string, verify: (code: string, filename: strin
   // Whole-project checks (links to missing routes, website launch basics) only when no paths narrow it.
   if (project && !paths?.length) {
     const all = listProjectPaths(root);
-    for (const { file, ...issue } of project({ paths: all, sources, sizes: publicImageSizes(root, all) })) {
+    const siteFile = path.join(root, "vamos.site.json");
+    const siteJson = existsSync(siteFile) ? readFileSync(siteFile, "utf8") : undefined;
+    for (const { file, ...issue } of project({ paths: all, sources, sizes: publicImageSizes(root, all), siteJson })) {
       let entry = results.find((r) => r.file === file);
       if (!entry) results.push((entry = { file, issues: [] }));
       entry.issues.push(issue);

@@ -41,6 +41,12 @@ export const BUILTIN_AXES: Axis[] = [
     values: ["editorial", "grotesk", "corporate", "system"],
     default: "editorial",
     description: "Type pairing for UI text, headings and code. Display headings change weight, tracking and scale with it.",
+  },  {
+    name: "radius",
+    attribute: "data-radius",
+    values: ["default", "sharp", "round"],
+    default: "default",
+    description: "Corners. Absent = default (14px, compact 10px); sharp = 6px (4px), round = 20px (14px). Scales --radius, so everything on rounded-ui / rounded-ui-sm / rounded-ui-lg or var(--radius) follows: buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. rounded-full shapes stay round on purpose: pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars (and small fixed details such as chart bars and event chips). Works with every accent, material and density.",
   },
 ];
 

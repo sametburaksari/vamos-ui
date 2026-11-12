@@ -179,19 +179,21 @@ export function describePreset(preset: Preset): string {
   return parts.join(" · ");
 }
 
+/** <html> attributes. Corners are their own axis (data-radius, left out for the default). */
 export function presetAttributes(preset: Preset): Record<string, string> {
-  const needsBrand = presetNeedsBrand(preset);
   return {
     ...(preset.theme === "dark" ? { class: "dark" } : {}),
     "data-material": preset.material,
-    "data-accent": needsBrand ? "brand" : preset.accent,
+    "data-accent": presetNeedsBrand(preset) ? "brand" : preset.accent,
     "data-density": preset.density,
     "data-font": preset.font,
+    ...(preset.radius !== PRESET_DEFAULTS.radius ? { "data-radius": preset.radius } : {}),
   };
 }
 
+/** Only a custom accent colour needs a generated brand.css. */
 export function presetNeedsBrand(preset: Preset): boolean {
-  return !isNamedAccent(preset.accent) || preset.radius !== PRESET_DEFAULTS.radius;
+  return !isNamedAccent(preset.accent);
 }
 
 // ---------------------------------------------------------------------------
@@ -540,6 +542,7 @@ export const KIT_ACCENT_BASE: Record<PresetAccentName, string> = {
   graphite: "oklch(0.25 0.01 120)",
 };
 
+/** The --radius each corner setting resolves to (styles.css: --radius-base × --radius-scale). */
 export const RADIUS: Record<"sharp" | "round", { comfortable: string; compact: string }> = {
   sharp: { comfortable: "6px", compact: "4px" },
   round: { comfortable: "20px", compact: "14px" },
@@ -549,8 +552,8 @@ export const RADIUS: Record<"sharp" | "round", { comfortable: string; compact: s
 export const presetAccentSource = (preset: Preset) => (isNamedAccent(preset.accent) ? KIT_ACCENT_BASE[preset.accent] : preset.accent);
 
 /**
- * The brand.css `vamos-ui init/theme/create --preset` writes for a custom accent or radius
- * (brandCss for a brand with only colors.accent and theme.radius set). null when none is needed.
+ * The brand.css `vamos-ui init/theme/create --preset` writes for a custom accent (brandCss for a
+ * brand with only colors.accent set; corners are data-radius, not brand.css). null when none is needed.
  */
 export function presetBrandCss(preset: Preset, name = "my-app"): string | null {
   if (!presetNeedsBrand(preset)) return null;
@@ -567,15 +570,7 @@ export function presetBrandCss(preset: Preset, name = "my-app"): string | null {
   out.push(`  --accent-fg: ${palette.fg}; /* ${palette.contrast.fgOnBase}:1 on the fill */`);
   out.push(`  --accent-ink-light: ${palette.inkLight}; /* ${palette.contrast.inkLightOnLight}:1 on light surfaces */`);
   out.push(`  --accent-ink-dark: ${palette.inkDark}; /* ${palette.contrast.inkDarkOnDark}:1 on dark surfaces */`);
-  const radius = preset.radius;
-  if (radius === "sharp" || radius === "round") out.push(`  --radius: ${RADIUS[radius].comfortable};`);
   out.push("}");
-  if (radius === "sharp" || radius === "round") {
-    out.push(`${sel}[data-density="compact"],`);
-    out.push(`${sel} [data-density="compact"] {`);
-    out.push(`  --radius: ${RADIUS[radius].compact};`);
-    out.push("}");
-  }
   if (palette.dark) {
     out.push(`.dark${sel},`);
     out.push(`.dark ${sel} {`);

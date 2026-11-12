@@ -114,7 +114,14 @@ export function ThemeOutput({ preset }: { preset: Preset }) {
       </div>
 
       <div className={cn("grid min-w-0 items-start gap-6", brand && "xl:grid-cols-2")}>
-        <Block wrap title="html attributes" value={html} copyKey="html" copied={copied === "html"} onCopy={copy} note={brand ? <>A custom accent or corner radius selects the generated accent: <code className="font-mono text-[12px]">data-accent=&quot;brand&quot;</code>.</> : "Set these on <html> (or any element, to theme just that subtree)."} />
+        <Block wrap title="html attributes" value={html} copyKey="html" copied={copied === "html"} onCopy={copy} note={
+            <>
+              Set these on <code className="font-mono text-[12px]">&lt;html&gt;</code> (or any element, to theme just that subtree).
+              {brand ? <> A custom accent colour selects the generated accent: <code className="font-mono text-[12px]">data-accent=&quot;brand&quot;</code>.</> : null}
+              {attrs["data-radius"] ? <> Corners are their own axis, <code className="font-mono text-[12px]">data-radius=&quot;{attrs["data-radius"]}&quot;</code>: controls, cards and overlays follow it; pills, avatars and switches stay round.</> : null}
+            </>
+          }
+        />
         {brand ? <Block title="brand.css" value={brand} copyKey="brand" copied={copied === "brand"} onCopy={copy} note="The commands above write this file for you (with vamos.brand.json). Import it after the kit's styles.css." /> : null}
       </div>
     </section>

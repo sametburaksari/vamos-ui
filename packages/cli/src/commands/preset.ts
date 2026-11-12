@@ -6,19 +6,10 @@ import { parseColor, toHex } from "../brand/color";
 import { BRAND_AXIS_VALUE, BRAND_FILE, emptyBrand, serializeBrand, type Brand } from "../brand/types";
 import { writeConfig } from "../core/config";
 import { CliError, type ThemeConfig, type VamosConfig } from "../core/types";
-import { decodePreset, describePreset, encodePreset, isNamedAccent, normalizeHex, presetAttributes, presetNeedsBrand, PresetError, PRESET_DEFAULTS, type Preset, type PresetAccentName } from "../preset";
+import { decodePreset, describePreset, encodePreset, normalizeHex, presetAttributes, presetNeedsBrand, PresetError, PRESET_DEFAULTS, type Preset } from "../preset";
 import { out, p, pc, printJson, type Context } from "../ui";
 import { applyBrand, loadBrand } from "./brand";
 import { openSession } from "./shared";
-
-/** The kit's accent fills (styles.css), used when a named accent needs a brand.css for a custom radius. */
-const KIT_ACCENT_BASE: Record<PresetAccentName, string> = {
-  lime: "oklch(0.89 0.21 122)",
-  ocean: "oklch(0.55 0.17 245)",
-  ember: "oklch(0.7 0.19 45)",
-  rose: "oklch(0.58 0.21 10)",
-  graphite: "oklch(0.25 0.01 120)",
-};
 
 /** Decodes a code and turns PresetError into a CliError with a hint. */
 export function parsePresetFlag(code: string): Preset {
@@ -30,7 +21,7 @@ export function parsePresetFlag(code: string): Preset {
   }
 }
 
-/** The vamos.json theme for a preset (a custom accent or radius selects the generated brand accent). */
+/** The vamos.json theme for a preset (only a custom accent selects the generated brand accent). */
 export function presetTheme(preset: Preset): ThemeConfig {
   return {
     theme: preset.theme,
@@ -38,6 +29,7 @@ export function presetTheme(preset: Preset): ThemeConfig {
     accent: presetNeedsBrand(preset) ? BRAND_AXIS_VALUE : preset.accent,
     density: preset.density,
     font: preset.font,
+    ...(preset.radius !== PRESET_DEFAULTS.radius ? { radius: preset.radius } : {}),
   };
 }
 
@@ -53,13 +45,13 @@ function projectName(root: string): string {
 
 export interface PresetApplyResult {
   theme: ThemeConfig;
-  /** vamos.brand.json and brand.css were written (custom accent or radius). */
+  /** vamos.brand.json and brand.css were written (custom accent only). */
   brand: { file: string; cssFile: string } | null;
 }
 
 /**
- * Applies a preset to a configured project: the theme in vamos.json and, for a custom accent or a
- * non-default radius, vamos.brand.json + brand.css (through the same path as `brand apply`).
+ * Applies a preset to a configured project: the theme in vamos.json (corners as theme.radius →
+ * data-radius) and, for a custom accent, vamos.brand.json + brand.css (same path as `brand apply`).
  */
 export async function applyPreset(root: string, config: VamosConfig, preset: Preset, opts: { dryRun?: boolean } = {}): Promise<PresetApplyResult> {
   const theme = presetTheme(preset);
@@ -69,8 +61,7 @@ export async function applyPreset(root: string, config: VamosConfig, preset: Pre
   }
   const loaded = await loadBrand(root);
   const brand: Brand = loaded?.brand ? structuredClone(loaded.brand) : emptyBrand(projectName(root));
-  brand.colors = { ...brand.colors, accent: isNamedAccent(preset.accent) ? KIT_ACCENT_BASE[preset.accent] : preset.accent };
-  if (isNamedAccent(preset.accent)) delete brand.colors.accentDark;
+  brand.colors = { ...brand.colors, accent: preset.accent };
   brand.theme = { ...brand.theme, dark: preset.theme === "dark", material: preset.material, density: preset.density };
   if (preset.radius === "default") delete brand.theme.radius;
   else brand.theme.radius = preset.radius;
@@ -86,7 +77,7 @@ export async function applyPreset(root: string, config: VamosConfig, preset: Pre
 export async function currentPreset(root: string, config: VamosConfig): Promise<{ preset: Preset; notes: string[] }> {
   const t = config.theme ?? {};
   const notes: string[] = [];
-  const input: Partial<Record<keyof Preset, string>> = { theme: t.theme, material: t.material, density: t.density, font: t.font };
+  const input: Partial<Record<keyof Preset, string>> = { theme: t.theme, material: t.material, density: t.density, font: t.font, radius: t.radius };
   if (t.font === BRAND_AXIS_VALUE) {
     input.font = PRESET_DEFAULTS.font;
     notes.push("Brand fonts are not part of a preset code; the code uses the default font pairing.");
@@ -97,7 +88,8 @@ export async function currentPreset(root: string, config: VamosConfig): Promise<
     const parsed = colour ? (normalizeHex(colour) ?? (parseColor(colour) ? toHex(parseColor(colour)!) : null)) : null;
     if (parsed) input.accent = parsed;
     else notes.push(`accent is "brand" but ${BRAND_FILE} has no readable accent colour; the code uses the default accent.`);
-    if (loaded?.brand.theme.radius) input.radius = loaded.brand.theme.radius;
+    // Older projects kept corners in vamos.brand.json only.
+    if (!t.radius && loaded?.brand.theme.radius) input.radius = loaded.brand.theme.radius;
   } else input.accent = t.accent;
   return { preset: normalizeInput(input), notes };
 }

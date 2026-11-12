@@ -11,6 +11,7 @@
 import { lex, lineIndex, matchBracket, position, type Comment } from "./lexer";
 
 export { PROJECT_RULES, collectRoutes, internalHrefs, usesSiteBlocks, verifyProject, type ProjectCheckInput, type ProjectIssue, type ProjectSource } from "./site-check";
+export { AI_BOTS, SITE_FILE, SITE_JSON_SCHEMA, SITE_SCHEMA, missingSiteFields, parseSiteJson, siteTemplate, type SiteFaq, type SiteInfo, type SiteService } from "./site-info";
 
 export type VerifySeverity = "error" | "warning";
 

@@ -68,6 +68,8 @@ export interface ThemeConfig {
   accent?: string;
   density?: string;
   font?: string;
+  /** Corners → data-radius. "default" (or absent) leaves the attribute out. */
+  radius?: "default" | "sharp" | "round";
 }
 
 export interface VamosConfig {

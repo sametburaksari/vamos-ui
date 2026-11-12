@@ -7,11 +7,6 @@ import { BRAND_AXIS_VALUE, type Brand } from "./types";
 export const BRAND_CSS_FILE = "brand.css";
 export const BRAND_CSS_HEADER = "/* vamos-ui brand";
 
-const RADIUS: Record<"sharp" | "round", { comfortable: string; compact: string }> = {
-  sharp: { comfortable: "6px", compact: "4px" },
-  round: { comfortable: "20px", compact: "14px" },
-};
-
 export interface BrandCssOptions {
   /** Precomputed palette (saves recomputing when the caller already has it). */
   palette?: AccentPalette;
@@ -23,8 +18,10 @@ export const brandHasFonts = (brand: Pick<Brand, "fonts">) =>
 
 /**
  * The stylesheet for a brand: `[data-accent="brand"]` with the four accent variables (plus a
- * dark-mode fill when needed, radius and backdrop tint) and `[data-font="brand"]` with the
- * font variables. Import it after the kit's styles.css. Throws a TypeError on invalid colours.
+ * dark-mode fill when needed and backdrop tint) and `[data-font="brand"]` with the font
+ * variables. Import it after the kit's styles.css. Throws a TypeError on invalid colours.
+ * Corners (brand.theme.radius) are not written here: they are the kit's data-radius axis,
+ * which `brand apply` saves as theme.radius in vamos.json.
  */
 export function brandCss(brand: Brand, options: BrandCssOptions = {}): string {
   const palette = options.palette ?? generateAccent(brand.colors.accent, { dark: brand.colors.accentDark });
@@ -41,21 +38,11 @@ export function brandCss(brand: Brand, options: BrandCssOptions = {}): string {
   out.push(`  --accent-ink-light: ${palette.inkLight}; /* ${palette.contrast.inkLightOnLight}:1 on light surfaces */`);
   out.push(`  --accent-ink-dark: ${palette.inkDark}; /* ${palette.contrast.inkDarkOnDark}:1 on dark surfaces */`);
 
-  const radius = brand.theme?.radius;
-  if (radius === "sharp" || radius === "round") out.push(`  --radius: ${RADIUS[radius].comfortable};`);
-
   const tint = brand.colors.neutralTint ? parseColor(brand.colors.neutralTint) : null;
   if (brand.colors.neutralTint && !tint) throw new TypeError(`"${brand.colors.neutralTint}" (neutralTint) is not a colour.`);
   const scene = tint ? { light: formatOklch({ l: 0.95, c: Math.min(0.014, Math.max(0.006, tint.c * 0.12)), h: tint.h, alpha: 1 }), dark: formatOklch({ l: 0.165, c: Math.min(0.01, Math.max(0.004, tint.c * 0.08)), h: tint.h, alpha: 1 }) } : null;
   if (scene) out.push(`  --scene: ${scene.light};`);
   out.push("}");
-
-  if (radius === "sharp" || radius === "round") {
-    out.push(`${sel}[data-density="compact"],`);
-    out.push(`${sel} [data-density="compact"] {`);
-    out.push(`  --radius: ${RADIUS[radius].compact};`);
-    out.push("}");
-  }
 
   if (palette.dark || scene) {
     out.push(`.dark${sel},`);

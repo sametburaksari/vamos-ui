@@ -81,6 +81,8 @@ Follow these on every screen you build or edit. \`verify_code\` checks the mecha
 
 ## 11. Websites: launch checklist
 Use it when the screen is a public website (\`site-*\`, \`page-*\`, \`legal-01\` blocks), before it goes live. \`npx vamos-ui site essentials\` writes the files; \`verify_design({ projectDir })\` / \`npx vamos-ui verify\` reports what is still missing.
+- Business info lives in one file: \`vamos.site.json\` at the project root (\`npx vamos-ui site init\` writes it empty; schema https://ui.vamos.ist/r/site-schema.json). Every value comes from the business: never invent a name, phone, address, email, tax id, MERSİS/ETBİS number or analytics id, and never reuse one from another project. Empty fields stay empty and verify (\`site-info\`) lists them; ask the user for them. Read contact details in code from \`site\` in \`app/site.ts\` instead of retyping them.
+- With \`vamos.site.json\`, \`site essentials\` also writes \`app/llms.txt/route.ts\` (llms.txt) and \`app/site-json-ld.tsx\` (render \`<SiteJsonLd />\` once in the root layout; then pass the kit \`Footer\` \`jsonLd={false}\`), robots follows \`ai.allowAiCrawlers\` (true / false / list of AI bots), and the legal pages get \`values\` so known [fill-in] fields are filled.
 - Legal pages: a page for every footer and consent link (\`/privacy\` or \`/gizlilik\`, \`/kvkk\`, \`/cookies\` or \`/cerez-politikasi\`, \`/terms\` or \`/kullanim-kosullari\`, \`/accessibility\`; for a shop \`/returns\` or \`/iade\`, \`/mesafeli-satis-sozlesmesi\`, \`/on-bilgilendirme-formu\`; \`/legal-notice\` or \`/yasal-uyari\`) from the \`legal-01\` presets; replace every [fill-in] field and have the business or a lawyer review the text. No internal link without a page (404).
 - \`robots.txt\` and \`sitemap.xml\` (\`app/robots.ts\`, \`app/sitemap.ts\`) listing every public route.
 - Metadata: \`metadataBase\`, \`alternates.canonical\` on every page, \`openGraph\` (siteName, locale, image), a unique title (under 60 characters) and a 120–160 character description per page; verify flags titles over 60 and descriptions outside 70–160.
@@ -108,7 +110,7 @@ const CLASS_GROUPS: { title: string; classes: string[] }[] = [
 
 function htmlFor(axes: Axis[]): string {
   const attrs = axes
-    .filter((axis) => axis.attribute !== "class")
+    .filter((axis) => axis.attribute !== "class" && axis.default !== "default")
     .map((axis) => `${axis.attribute}="${axis.default}"`)
     .join(" ");
   return `<html lang="en" class="dark" ${attrs}>`;
@@ -124,7 +126,7 @@ export function buildTheming(axes: Axis[], tokens: Token[], options: ThemingOpti
   lines.push("# Vamos UI — theming");
   lines.push("");
   lines.push(
-    "Vamos UI is themed by five independent axes, set as attributes on `<html>` or on any element (a subtree can differ from the page). Components only read CSS variables, so switching an axis is one attribute — no rebuild, no `dark:` classes.",
+    "Vamos UI is themed by six independent axes (mode, material, accent, density, font, corners), set as attributes on `<html>` or on any element (a subtree can differ from the page). Components only read CSS variables, so switching an axis is one attribute — no rebuild, no `dark:` classes.",
   );
   lines.push("");
   lines.push("## Axes");
@@ -194,7 +196,7 @@ export function buildTheming(axes: Axis[], tokens: Token[], options: ThemingOpti
   lines.push("## Brand profile (vamos.brand.json)");
   lines.push("");
   lines.push(
-    "A project can describe its brand in `vamos.brand.json` at the root: `name`, `colors` (`accent`, optional `accentDark`, `neutralTint`), `fonts` (`display`, `body`, `mono` — Google Fonts families), `theme` (`dark`, `material`, `density`, `radius`), `voice` (`tone`, `rules`, `examples` of do/don't copy) and `assets` (logo files with a `use` note). `npx vamos-ui brand apply` generates `<uiDir>/brand.css` with `[data-accent=\"brand\"]` and the font variables, imports it after the kit styles and sets `\"theme\": { \"accent\": \"brand\" }` in vamos.json.",
+    "A project can describe its brand in `vamos.brand.json` at the root: `name`, `colors` (`accent`, optional `accentDark`, `neutralTint`), `fonts` (`display`, `body`, `mono` — Google Fonts families), `theme` (`dark`, `material`, `density`, `radius`), `voice` (`tone`, `rules`, `examples` of do/don't copy) and `assets` (logo files with a `use` note). `npx vamos-ui brand apply` generates `<uiDir>/brand.css` with `[data-accent=\"brand\"]` and the font variables, imports it after the kit styles and sets `\"theme\": { \"accent\": \"brand\" }` in vamos.json. `theme.radius` is not CSS in brand.css: it becomes `\"theme\": { \"radius\": … }` in vamos.json and `data-radius` on `<html>`.",
   );
   lines.push("");
   lines.push("```json");
@@ -221,6 +223,12 @@ export function buildTheming(axes: Axis[], tokens: Token[], options: ThemingOpti
   lines.push("");
   lines.push(
     "`data-density=\"compact\"` shrinks `--control-h` (2.5rem → 2.125rem), `--radius` (14px → 10px), `--gap`, `--row-h`, `--cell-px` and `--topbar-h`. Size custom elements from these variables so they follow.",
+  );
+  lines.push("");
+  lines.push("## Corners");
+  lines.push("");
+  lines.push(
+    "`data-radius=\"sharp\"` or `\"round\"` (absent = default) scales `--radius`: default 14px (compact 10px), sharp 6px (4px), round 20px (14px). It is its own axis, so it works with every accent, material and density, and on any subtree. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips. Give custom elements `rounded-ui*` so they follow; never hard-code a corner radius.",
   );
 
   if (options.includeTokens !== false) {

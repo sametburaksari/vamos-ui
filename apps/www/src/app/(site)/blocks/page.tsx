@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({ title: "Blocks", description: "Whole admin screens built only from kit components: app shells, dashboards, sign-in, lists, detail pages, settings and onboarding. Copy any of them with one command.", path: "/blocks/" });
+export const metadata = pageMeta({ title: "Blocks", description: "Whole admin screens from kit components: app shells, dashboards, sign-in, lists, detail pages, settings. Copy any with one command.", path: "/blocks/" });
 
 export default function BlocksPage() {
   // Source code is not inlined: each viewer loads /blocks/code/<name>.json when its Code tab opens.

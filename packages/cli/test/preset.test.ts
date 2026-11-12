@@ -11,6 +11,7 @@ import {
   normalizeHex,
   normalizePreset,
   presetAttributes,
+  presetNeedsBrand,
   PresetError,
   PRESET_AXES,
   PRESET_DEFAULTS,
@@ -82,6 +83,17 @@ describe("preset codec", () => {
     expect(presetAttributes(decodePreset("v1lsx4f46e5ce"))["data-accent"]).toBe("brand");
     expect(describePreset(decodePreset("v1lslcsr"))).toContain("round corners");
   });
+
+  it("maps corners to data-radius, independent of the accent", () => {
+    const sharp = decodePreset("v1dgokgs");
+    expect(presetAttributes(sharp)).toEqual({ class: "dark", "data-material": "glass", "data-accent": "ocean", "data-density": "compact", "data-font": "grotesk", "data-radius": "sharp" });
+    expect(presetNeedsBrand(sharp)).toBe(false);
+    expect(presetAttributes(decodePreset("v1lslcsr"))).toMatchObject({ "data-accent": "lime", "data-radius": "round" });
+    expect(presetAttributes(decodePreset("v1dgokg"))).not.toHaveProperty("data-radius");
+    const custom = decodePreset("v1lsx4f46e5ces");
+    expect(presetNeedsBrand(custom)).toBe(true);
+    expect(presetAttributes(custom)).toMatchObject({ "data-accent": "brand", "data-radius": "sharp" });
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -133,17 +145,17 @@ describe("vamos-ui preset (CLI)", () => {
     expect(json.code).toBe("v1dgokg");
   });
 
-  it("a custom accent and radius write vamos.brand.json + brand.css and read back", async () => {
+  it("a custom accent writes vamos.brand.json + brand.css; corners go to theme.radius and read back", async () => {
     const app = makeApp("custom");
     expect((await cli(app, "init", "--yes", "--no-install", "--preset", "v1lsx4f46e5ces")).code).toBe(0);
     const config = JSON.parse(readFileSync(path.join(app, "vamos.json"), "utf8"));
-    expect(config.theme).toMatchObject({ accent: "brand", font: "editorial", theme: "light" });
+    expect(config.theme).toMatchObject({ accent: "brand", font: "editorial", theme: "light", radius: "sharp" });
     const brand = JSON.parse(readFileSync(path.join(app, "vamos.brand.json"), "utf8"));
     expect(brand.colors.accent).toBe("#4f46e5");
     expect(brand.theme.radius).toBe("sharp");
     const css = readFileSync(path.join(app, "src/components/vamos/brand.css"), "utf8");
     expect(css).toContain(`[data-accent="brand"]`);
-    expect(css).toContain("--radius: 6px");
+    expect(css).not.toContain("--radius");
     expect(readFileSync(path.join(app, "src/app/globals.css"), "utf8")).toContain("brand.css");
     expect((await cli(app, "preset")).out.split("\n")[0]).toBe("v1lsx4f46e5ces");
   });
@@ -158,6 +170,33 @@ describe("vamos-ui preset (CLI)", () => {
     expect(ok.code).toBe(0);
     expect(JSON.parse(ok.out)).toMatchObject({ code: "v1lsekc", saved: true, attributes: { "data-accent": "ember", "data-density": "compact", "data-font": "corporate" } });
     expect(JSON.parse(readFileSync(path.join(app, "vamos.json"), "utf8")).theme.accent).toBe("ember");
+  });
+
+  it("a named accent with sharp corners needs no brand, also without a project", async () => {
+    const app = makeApp("sharp");
+    await cli(app, "init", "--yes", "--no-install");
+    const res = await cli(app, "theme", "--preset", "v1dgokgs", "--json");
+    expect(res.code).toBe(0);
+    expect(JSON.parse(res.out)).toMatchObject({ code: "v1dgokgs", saved: true, attributes: { "data-accent": "ocean", "data-radius": "sharp" } });
+    expect(JSON.parse(readFileSync(path.join(app, "vamos.json"), "utf8")).theme).toEqual({ theme: "dark", material: "glass", accent: "ocean", density: "compact", font: "grotesk", radius: "sharp" });
+    expect(existsSync(path.join(app, "vamos.brand.json"))).toBe(false);
+    expect((await cli(app, "preset")).out.split("\n")[0]).toBe("v1dgokgs");
+
+    const bare = makeApp("bare-round");
+    const loose = await cli(bare, "theme", "--preset", "v1lslcsr", "--json");
+    expect(loose.code).toBe(0);
+    expect(JSON.parse(loose.out)).toMatchObject({ saved: false, attributes: { "data-accent": "lime", "data-radius": "round" } });
+    expect(existsSync(path.join(bare, "vamos.json"))).toBe(false);
+  });
+
+  it("theme --radius sets and clears data-radius", async () => {
+    const app = makeApp("radius-flag");
+    await cli(app, "init", "--yes", "--no-install");
+    const r = await cli(app, "theme", "--radius", "round", "--json");
+    expect(JSON.parse(r.out)).toMatchObject({ theme: { radius: "round" }, attributes: { "data-radius": "round" } });
+    const d = await cli(app, "theme", "--radius", "default", "--json");
+    expect(JSON.parse(d.out).attributes).not.toHaveProperty("data-radius");
+    expect(JSON.parse(readFileSync(path.join(app, "vamos.json"), "utf8")).theme).not.toHaveProperty("radius");
   });
 
   it("preset <code> explains a code without writing", async () => {

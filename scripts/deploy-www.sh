@@ -23,6 +23,7 @@ if [ -f scripts/build-registry.mjs ]; then node scripts/build-registry.mjs; fi
 if [ -f packages/cli/package.json ]; then
   ( cd packages/cli && pnpm build >/dev/null )
   node --input-type=module -e "import { BRAND_JSON_SCHEMA } from './packages/cli/dist/brand.js'; import fs from 'node:fs'; fs.writeFileSync('apps/www/public/r/brand-schema.json', JSON.stringify(BRAND_JSON_SCHEMA, null, 2));"
+  node --input-type=module -e "import { SITE_JSON_SCHEMA } from './packages/cli/dist/verify.js'; import fs from 'node:fs'; fs.writeFileSync('apps/www/public/r/site-schema.json', JSON.stringify(SITE_JSON_SCHEMA, null, 2));"
 fi
 ( cd apps/www && STATIC_EXPORT=1 NEXT_PUBLIC_ADMIN_URL="https://ui.vamos.ist/blocks" pnpm exec next build )
 OUT="apps/www/out"

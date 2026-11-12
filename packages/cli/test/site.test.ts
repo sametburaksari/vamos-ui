@@ -2,8 +2,10 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { run } from "../src/cli";
 import { LEGAL_SLUGS, planEssentials } from "../src/core/site";
 import { collectRoutes, internalHrefs, verifyProject } from "../src/site-check";
+import { AI_BOTS, SITE_JSON_SCHEMA, SITE_SCHEMA, siteTemplate, type SiteInfo } from "../src/site-info";
 
 const footer = `import { Footer } from "@vamos-ui/react/blocks";
 export const F = () => <Footer brand={{ name: "Kıyı" }} legalLinks={[{ href: "/privacy", label: "Privacy" }, { href: "/kvkk", label: "KVKK" }]} />;`;
@@ -51,7 +53,7 @@ describe("verifyProject", () => {
   it("is quiet for a complete site and for apps that are not websites", () => {
     const layout = `export const metadata = { metadataBase: new URL("https://kiyi.com.tr"), alternates: { canonical: "/" }, openGraph: { siteName: "Kıyı" } };`;
     const site = verifyProject({
-      paths: ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "app/privacy/page.tsx", "app/kvkk/page.tsx", "components/blocks/site-spa-01/page.tsx"],
+      paths: ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "app/llms.txt/route.ts", "app/privacy/page.tsx", "app/kvkk/page.tsx", "components/blocks/site-spa-01/page.tsx"],
       sources: [{ path: "app/layout.tsx", content: layout }, { path: "components/f.tsx", content: footer }],
     });
     expect(site).toEqual([]);
@@ -143,7 +145,7 @@ describe("planEssentials", () => {
 });
 
 describe("meta-length and image-weight", () => {
-  const base = ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "components/blocks/site-spa-01/page.tsx"];
+  const base = ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "public/llms.txt", "components/blocks/site-spa-01/page.tsx"];
   const layout = `export const metadata = { metadataBase: new URL("https://kiyi.com.tr"), alternates: { canonical: "/" }, openGraph: { siteName: "Kıyı" } };`;
 
   it("flags short or long descriptions and long titles in metadata only", () => {
@@ -174,5 +176,251 @@ describe("meta-length and image-weight", () => {
     });
     expect(issues.map((i) => [i.rule, i.file])).toEqual([["image-weight", "public/hero.jpg"]]);
     expect(issues[0]!.message).toContain("2.3 MB");
+  });
+});
+
+/** A fictional business, filled in completely. */
+const KIYI: SiteInfo = {
+  $schema: SITE_SCHEMA,
+  name: "Kıyı Seramik",
+  legalName: "Kıyı Seramik Atölyesi Ltd. Şti.",
+  description: "Wheel classes, glaze workshops and handmade tableware in a small ceramics studio by the sea.",
+  url: "https://kiyiseramik.com.tr",
+  locale: "tr-TR",
+  type: "ProfessionalService",
+  contact: { phone: "+90 216 555 01 23", whatsapp: "+90 555 555 01 23", email: "merhaba@kiyiseramik.com.tr" },
+  address: { street: "Deniz Sk. 7", district: "Moda", city: "İstanbul", postalCode: "34710", country: "TR" },
+  geo: { latitude: 40.98, longitude: 29.02 },
+  openingHours: ["Tu-Sa 10:00-19:00"],
+  social: ["https://instagram.com/kiyiseramik"],
+  legal: { taxOffice: "Kadıköy", taxNumber: "1234567890", mersis: "0123456789000015", kep: "kiyiseramik@hs01.kep.tr", privacyEmail: "kvkk@kiyiseramik.com.tr" },
+  ai: { services: [{ name: "Wheel class", description: "Four evenings, clay and firing included.", url: "/atolye" }], faq: [{ question: "Do I need experience?", answer: "No, the beginner class starts from zero." }] },
+};
+
+describe("vamos.site.json", () => {
+  let dir = "";
+  afterEach(() => {
+    if (dir) rmSync(dir, { recursive: true, force: true });
+    dir = "";
+  });
+  const write = (rel: string, content: string) => {
+    mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    writeFileSync(path.join(dir, rel), content);
+  };
+  /** A Next.js site with the store block linking to a few legal pages. */
+  const scaffold = (site?: SiteInfo | string) => {
+    dir = mkdtempSync(path.join(tmpdir(), "vamos-sitejson-"));
+    write("package.json", "{}");
+    write("app/layout.tsx", `export const metadata = { title: "x" };`);
+    write("app/page.tsx", `export default function P() { return null; }`);
+    write("components/blocks/site-spa-01/components/spa-site.tsx", `const l = [{ href: "/gizlilik" }, { href: "/kvkk" }, { href: "/atolye" }];`);
+    write("app/atolye/page.tsx", `export default function A() { return null; }`);
+    if (site !== undefined) write("vamos.site.json", typeof site === "string" ? site : JSON.stringify(site));
+  };
+  const plan = () => planEssentials(dir, { blocksDir: "components/blocks" }, { alias: null });
+  /** Writes the planned files, plus a stand-in JSX runtime so the generated .tsx can be imported. */
+  const materialize = () => {
+    const p = plan();
+    for (const f of p.files) write(f.path, f.content);
+    for (const rt of ["jsx-runtime", "jsx-dev-runtime"])
+      write(`node_modules/react/${rt}.js`, "export const jsx = (type, props) => ({ type, props }); export const jsxs = jsx; export const jsxDEV = jsx; export const Fragment = 'f';");
+    write("node_modules/react/package.json", `{"name":"react","type":"module"}`);
+    return p;
+  };
+  const load = async <T,>(rel: string): Promise<T> => (await import(path.join(dir, rel))) as T;
+
+  it("the template is empty: no business values, defaults only for the AI switches", () => {
+    const t = siteTemplate();
+    expect(t.$schema).toBe("https://ui.vamos.ist/r/site-schema.json");
+    expect([t.name, t.url, t.contact?.phone, t.contact?.email, t.address?.city, t.legal?.mersis, t.analytics?.ga4, t.analytics?.gtm, t.analytics?.googleAds]).toEqual(["", "", "", "", "", "", "", "", ""]);
+    expect(t.ai).toEqual({ llmsTxt: true, allowAiCrawlers: true, services: [], faq: [] });
+    expect(JSON.stringify(t).toLowerCase()).not.toMatch(/vamos(?!\.ist\/r\/site-schema)/);
+    expect(siteTemplate({ name: "Kıyı", url: "https://kiyi.com.tr/", locale: "tr-TR" })).toMatchObject({ name: "Kıyı", url: "https://kiyi.com.tr", locale: "tr-TR", locales: ["tr-TR"] });
+    expect(SITE_JSON_SCHEMA.$id).toBe(SITE_SCHEMA);
+    expect(Object.keys(SITE_JSON_SCHEMA.properties)).toEqual(expect.arrayContaining(Object.keys(t)));
+  });
+
+  it("site init writes the template once and never overwrites it", async () => {
+    scaffold();
+    const opts = { cwd: dir, interactive: false, env: { ...process.env, CI: "1", NO_COLOR: "1" } };
+    expect(await run(["site", "init", "--name", "Kıyı Seramik", "--url", "https://kiyiseramik.com.tr", "--locale", "tr-TR", "--json"], opts)).toBe(0);
+    const written = JSON.parse(readFileSync(path.join(dir, "vamos.site.json"), "utf8")) as SiteInfo;
+    expect(written).toMatchObject({ name: "Kıyı Seramik", url: "https://kiyiseramik.com.tr", locale: "tr-TR", contact: { phone: "", email: "" } });
+    write("vamos.site.json", JSON.stringify({ ...written, name: "Edited" }));
+    expect(await run(["site", "init", "--name", "Other", "--json"], opts)).toBe(0);
+    expect(JSON.parse(readFileSync(path.join(dir, "vamos.site.json"), "utf8")).name).toBe("Edited");
+  });
+
+  it("without vamos.site.json essentials keeps the plain files (no llms.txt, no JSON-LD)", () => {
+    scaffold();
+    const p = plan();
+    expect(p.site).toBeNull();
+    expect(p.files.map((f) => f.path)).toEqual(["app/site.ts", "app/robots.ts", "app/sitemap.ts", "app/gizlilik/page.tsx", "app/kvkk/page.tsx"]);
+    expect(p.files[0]!.content).not.toContain("vamos.site.json");
+    expect(p.files.find((f) => f.path === "app/kvkk/page.tsx")!.content).not.toContain("LEGAL_VALUES");
+  });
+
+  it("with vamos.site.json writes a typed site object, llms.txt, JSON-LD and legal pages that read it", async () => {
+    scaffold(KIYI);
+    const p = materialize();
+    expect(p.files.map((f) => f.path)).toEqual([
+      "app/site.ts",
+      "app/robots.ts",
+      "app/sitemap.ts",
+      "app/llms.txt/route.ts",
+      "app/site-json-ld.tsx",
+      "app/gizlilik/page.tsx",
+      "app/kvkk/page.tsx",
+    ]);
+    expect(p.jsonLdInLayout).toBe(true);
+    const siteTs = p.files[0]!.content;
+    expect(siteTs).toContain(`import siteJson from "../vamos.site.json";`);
+    expect(siteTs).toContain("export const site = siteJson as unknown as SiteInfo;");
+    expect(p.files.find((f) => f.path === "app/llms.txt/route.ts")!.content).toContain(`export const dynamic = "force-static";`);
+    const kvkk = p.files.find((f) => f.path === "app/kvkk/page.tsx")!.content;
+    expect(kvkk).toContain(`import { LEGAL_VALUES } from "../site";`);
+    expect(kvkk).toContain(`fillLegalDoc(legalPreset("kvkk", "tr"), LEGAL_VALUES)`);
+    expect(kvkk).toContain(`values={LEGAL_VALUES}`);
+
+    const site = await load<{ SITE_URL: string; LEGAL_ROUTES: string[]; LEGAL_VALUES: Record<string, string | undefined> }>("app/site.ts");
+    expect(site.SITE_URL).toBe(process.env.NEXT_PUBLIC_SITE_URL || "https://kiyiseramik.com.tr");
+    expect(site.LEGAL_ROUTES).toEqual(["/gizlilik", "/kvkk"]);
+    expect(site.LEGAL_VALUES).toMatchObject({
+      companyName: "Kıyı Seramik",
+      legalName: "Kıyı Seramik Atölyesi Ltd. Şti.",
+      address: "Deniz Sk. 7, Moda, 34710 İstanbul, TR",
+      website: "kiyiseramik.com.tr",
+      mersis: "0123456789000015",
+      privacyEmail: "kvkk@kiyiseramik.com.tr",
+      country: undefined,
+      etbis: undefined,
+    });
+
+    const { llmsTxt } = await load<{ llmsTxt: () => string }>("app/llms.txt/route.ts");
+    const txt = llmsTxt();
+    expect(txt.startsWith("# Kıyı Seramik\n\n> Wheel classes")).toBe(true);
+    expect(txt).toContain("## Services\n\n- [Wheel class](https://kiyiseramik.com.tr/atolye): Four evenings");
+    expect(txt).toContain("- Phone: +90 216 555 01 23");
+    expect(txt).toContain("- WhatsApp: https://wa.me/905555550123");
+    expect(txt).toContain("- Address: Deniz Sk. 7, Moda, 34710 İstanbul, TR");
+    expect(txt).toContain("## Opening hours\n\n- Tu-Sa 10:00-19:00");
+    expect(txt).toContain("## Pages\n\n- [Home](https://kiyiseramik.com.tr)\n- [Atolye](https://kiyiseramik.com.tr/atolye)");
+    expect(txt).toContain("## Legal\n\n- [Gizlilik](https://kiyiseramik.com.tr/gizlilik)\n- [Kvkk](https://kiyiseramik.com.tr/kvkk)");
+
+    const ld = await load<{ siteJsonLd: () => { "@graph": Record<string, any>[] }; SiteJsonLd: () => { props: { dangerouslySetInnerHTML: { __html: string } } } }>("app/site-json-ld.tsx");
+    const [business, faq] = ld.siteJsonLd()["@graph"];
+    expect(business).toMatchObject({
+      "@type": "ProfessionalService",
+      name: "Kıyı Seramik",
+      telephone: "+90 216 555 01 23",
+      address: { "@type": "PostalAddress", streetAddress: "Deniz Sk. 7", addressLocality: "Moda", addressRegion: "İstanbul", postalCode: "34710", addressCountry: "TR" },
+      geo: { "@type": "GeoCoordinates", latitude: 40.98, longitude: 29.02 },
+      openingHours: ["Tu-Sa 10:00-19:00"],
+      sameAs: ["https://instagram.com/kiyiseramik"],
+    });
+    expect(faq).toMatchObject({ "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: "Do I need experience?", acceptedAnswer: { text: expect.stringContaining("beginner") } }] });
+    expect(ld.SiteJsonLd().props.dangerouslySetInnerHTML.__html).not.toContain("<");
+  });
+
+  it("JSON-LD leaves out empty fields and FAQPage without faq; llms.txt is skipped when ai.llmsTxt is false", async () => {
+    scaffold({ ...siteTemplate({ name: "Kıyı", url: "https://kiyi.com.tr" }), ai: { llmsTxt: false } });
+    const p = materialize();
+    expect(p.files.map((f) => f.path)).not.toContain("app/llms.txt/route.ts");
+    const ld = await load<{ siteJsonLd: () => { "@graph": Record<string, unknown>[] } }>("app/site-json-ld.tsx");
+    const graph = ld.siteJsonLd()["@graph"];
+    expect(graph).toHaveLength(1);
+    expect(Object.keys(graph[0]!).sort()).toEqual(["@id", "@type", "name", "url"]);
+    expect(graph[0]!["@type"]).toBe("LocalBusiness");
+  });
+
+  it("robots.ts follows ai.allowAiCrawlers: true allows all, false blocks the AI bots, a list allows only those", async () => {
+    type Rules = { rules: { userAgent: string | string[]; allow?: string; disallow?: string }[] };
+    const robotsFor = async (allow: boolean | string[]) => {
+      scaffold({ ...KIYI, ai: { allowAiCrawlers: allow } });
+      materialize();
+      const mod = await load<{ default: () => Rules }>("app/robots.ts");
+      const out = mod.default();
+      rmSync(dir, { recursive: true, force: true });
+      dir = "";
+      return out.rules;
+    };
+    expect(await robotsFor(true)).toEqual([{ userAgent: "*", allow: "/" }]);
+    expect(await robotsFor(false)).toEqual([{ userAgent: "*", allow: "/" }, { userAgent: [...AI_BOTS], disallow: "/" }]);
+    const listed = await robotsFor(["ClaudeBot", "GPTBot"]);
+    expect(listed[1]!.userAgent).not.toContain("ClaudeBot");
+    expect(listed[1]!.userAgent).not.toContain("GPTBot");
+    expect(listed[1]!.userAgent).toContain("CCBot");
+    for (const bot of ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-User", "Claude-SearchBot", "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot-Extended", "CCBot", "Bytespider", "meta-externalagent", "Amazonbot"]) {
+      expect(AI_BOTS).toContain(bot);
+    }
+  });
+
+  it("never replaces files, and says when an older site.ts or robots.ts does not read vamos.site.json", () => {
+    scaffold({ ...KIYI, ai: { allowAiCrawlers: false } });
+    write("app/site.ts", `export const SITE_URL = "x"; export const SITE_ROUTES = ["/"];`);
+    write("app/robots.ts", `export default function robots() { return { rules: [] }; }`);
+    write("public/llms.txt", "# Kıyı\n");
+    const p = plan();
+    const paths = p.files.map((f) => f.path);
+    expect(paths).not.toContain("app/site.ts");
+    expect(paths).not.toContain("app/robots.ts");
+    expect(paths).not.toContain("app/site-json-ld.tsx");
+    expect(p.files.find((f) => f.path === "app/kvkk/page.tsx")!.content).not.toContain("LEGAL_VALUES");
+    expect(p.notes.join("\n")).toContain("app/site.ts predates vamos.site.json");
+    expect(p.notes.join("\n")).toContain("does not follow ai.allowAiCrawlers");
+  });
+
+  it("reports invalid JSON and falls back to the plain files", () => {
+    scaffold("{ nope");
+    const p = plan();
+    expect(p.site).toBeNull();
+    expect(p.siteError).toContain("not valid JSON");
+    expect(p.files.map((f) => f.path)).not.toContain("app/site-json-ld.tsx");
+  });
+});
+
+describe("legal-01 values", () => {
+  it("fills the matching [fill-in] fields and leaves the unknown ones visible", async () => {
+    const { fillLegalDoc, legalPreset } = await import("../../../apps/www/src/blocks/legal-01/components/presets");
+    const doc = fillLegalDoc(legalPreset("kvkk", "tr"), { legalName: "Kıyı Seramik Atölyesi Ltd. Şti.", mersis: "0123456789000015", email: "merhaba@kiyiseramik.com.tr", updated: "2026-11-01" });
+    const text = JSON.stringify(doc);
+    expect(text).toContain("Kıyı Seramik Atölyesi Ltd. Şti.");
+    expect(text).toContain("0123456789000015");
+    expect(text).not.toContain("[Şirket unvanı]");
+    expect(text).not.toContain("[MERSİS no]");
+    expect(text).toContain("[Vergi no]");
+    expect(text).toContain("[KEP adresi]");
+    expect(doc.updated).toBe("2026-11-01");
+    // The data category "[adres]" is not the business address.
+    const en = JSON.stringify(fillLegalDoc(legalPreset("kvkk", "en"), { address: "Deniz Sk. 7, Moda, 34710 İstanbul" }));
+    expect(en).toContain("phone number, email address, [address].");
+    expect(en).not.toContain("[Address]");
+    // No values: unchanged.
+    expect(fillLegalDoc(legalPreset("privacy", "en"))).toEqual(legalPreset("privacy", "en"));
+  });
+});
+
+describe("verify site-info", () => {
+  const complete = ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "components/blocks/site-spa-01/page.tsx"];
+  const layout = { path: "app/layout.tsx", content: `export const metadata = { metadataBase: new URL("https://kiyi.com.tr"), alternates: { canonical: "/" }, openGraph: { siteName: "Kıyı" } }; <script type="application/ld+json" />` };
+  const siteInfo = (paths: string[], siteJson?: string) => verifyProject({ paths, sources: [layout], siteJson }).filter((i) => i.rule === "site-info");
+
+  it("warns when a website has no llms.txt, unless ai.llmsTxt is false", () => {
+    expect(siteInfo(complete).map((i) => i.message)).toEqual([expect.stringContaining("No llms.txt")]);
+    expect(siteInfo([...complete, "app/llms.txt/route.ts"])).toEqual([]);
+    expect(siteInfo(complete, JSON.stringify({ ...KIYI, ai: { llmsTxt: false } }))).toEqual([]);
+  });
+
+  it("warns about empty required fields, and MERSİS / ETBİS for a shop", () => {
+    const paths = [...complete, "app/llms.txt/route.ts"];
+    const empty = siteInfo(paths, JSON.stringify(siteTemplate()));
+    expect(empty).toHaveLength(1);
+    expect(empty[0]).toMatchObject({ file: "vamos.site.json" });
+    expect(empty[0]!.message).toContain("name, url, contact.phone or contact.email, address.city");
+    expect(siteInfo(paths, JSON.stringify(KIYI))).toEqual([]);
+    const shop = siteInfo([...paths, "components/blocks/cart-01/page.tsx"], JSON.stringify(KIYI));
+    expect(shop[0]!.message).toContain("legal.etbis");
+    expect(shop[0]!.message).not.toContain("legal.mersis");
+    expect(siteInfo(paths, "{ nope")[0]!.message).toContain("not valid JSON");
   });
 });

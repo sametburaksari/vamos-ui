@@ -100,9 +100,11 @@ export async function init(ctx: Context, args: ParsedArgs): Promise<number> {
     p.log.step(`Preset ${pc.bold(encodePreset(preset))}: ${describePreset(preset)}${res.brand ? pc.dim(` (wrote ${res.brand.file} and ${res.brand.cssFile})`) : ""}${bool(args.flags, "dry-run") ? pc.dim(" (dry run)") : ""}`);
   }
 
-  if (bool(args.flags, "agent") && bool(args.flags, "dry-run")) {
-    p.log.info(pc.dim("Would write AGENTS.md / CLAUDE.md rules and .claude/skills/vamos-ui (dry run)."));
-  } else if (bool(args.flags, "agent")) {
+  // Agent rules are on by default (AI assistants then follow the kit from the first prompt); --no-agent skips them.
+  const agent = bool(args.flags, "agent", true);
+  if (agent && bool(args.flags, "dry-run")) {
+    p.log.info(pc.dim("Would write AGENTS.md, CLAUDE.md, .github/copilot-instructions.md, .cursor/rules/vamos-ui.mdc and .claude/skills/vamos-ui (dry run)."));
+  } else if (agent) {
     const res = await writeAgentFiles(root, config, registry);
     p.log.step(`Agent rules: ${res.written.join(", ")}${res.skillSource === "builtin" ? pc.dim(" (built-in skill)") : ""}`);
     p.log.info(`Optional MCP server: ${pc.cyan("npx vamos-ui mcp add")} ${pc.dim("(Claude Code, Cursor, VS Code, Windsurf, Codex, Gemini CLI)")}`);

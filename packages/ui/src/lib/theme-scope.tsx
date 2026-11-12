@@ -6,7 +6,7 @@ import * as Slot from "radix-ui/slot";
 import { cn } from "./cn";
 import { useComposedRefs } from "./compose-refs";
 
-/** The five theme axes (plus direction) that can be set on any subtree. */
+/** The six theme axes (plus direction) that can be set on any subtree. */
 export interface ThemeAxes {
   /** `"light"` | `"dark"` → class. */
   theme?: "light" | "dark";
@@ -18,6 +18,11 @@ export interface ThemeAxes {
   density?: "comfortable" | "compact" | "spacious";
   /** → `data-font` (editorial, grotesk, corporate, system or your own preset). */
   font?: string;
+  /**
+   * → `data-radius` (corners). `"default"` leaves the attribute out. Scales `--radius`, so every
+   * `rounded-ui*` surface follows; `rounded-full` pills, avatars and switches stay round.
+   */
+  radius?: "default" | "sharp" | "round";
   /** → `dir` + Radix DirectionProvider. */
   dir?: "ltr" | "rtl";
   /** → `data-glass-quality="low"` disables blur for low-power devices. */
@@ -38,6 +43,7 @@ export function themeAttributes(axes: ThemeAxes): { className?: string } & Recor
     "data-accent": axes.accent,
     "data-density": axes.density,
     "data-font": axes.font,
+    "data-radius": axes.radius && axes.radius !== "default" ? axes.radius : undefined,
     "data-glass-quality": axes.glassQuality === "low" ? "low" : undefined,
     dir: axes.dir,
   };
@@ -79,12 +85,12 @@ export interface ThemeScopeProps extends ThemeAxes, Omit<React.HTMLAttributes<HT
  * those turn it into the containing block for the fixed-position overlays inside it.
  */
 export const ThemeScope = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ThemeScopeProps>(function ThemeScope(
-  { theme, material, accent, density, font, dir, glassQuality, asChild, portal = true, className, children, ...props },
+  { theme, material, accent, density, font, radius, dir, glassQuality, asChild, portal = true, className, children, ...props },
   ref,
 ) {
   const [node, setNode] = React.useState<HTMLElement | null>(null);
   const composed = useComposedRefs<HTMLDivElement>(ref, setNode);
-  const { className: themeClass, ...attrs } = themeAttributes({ theme, material, accent, density, font, dir, glassQuality });
+  const { className: themeClass, ...attrs } = themeAttributes({ theme, material, accent, density, font, radius, dir, glassQuality });
   const Comp = asChild ? Slot.Root : "div";
   let content = (
     <Comp ref={composed} data-slot="theme-scope" className={cn(themeClass, className)} {...attrs} {...props}>

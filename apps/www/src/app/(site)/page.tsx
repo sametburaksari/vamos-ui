@@ -48,7 +48,7 @@ export default function Home() {
 
       <section className="grid gap-12 py-20 lg:grid-cols-[1fr_1.4fr]">
         <div>
-          <h2 className="font-display text-[length:calc(36px*var(--display-scale))] leading-[1.05]">Five axes. <em>Zero</em> rewrites.</h2>
+          <h2 className="font-display text-[length:calc(36px*var(--display-scale))] leading-[1.05]">Six axes. <em>Zero</em> rewrites.</h2>
           <p className="mt-3 max-w-md text-[15px] leading-relaxed text-fg-muted">
             Components only read tokens. Set an attribute on <code className="font-mono text-[13px]">&lt;html&gt;</code> — or on any section —
             and everything below follows. Try the controls in the header.

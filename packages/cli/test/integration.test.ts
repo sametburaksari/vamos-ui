@@ -177,12 +177,23 @@ describe("vamos-ui end to end (fixture registry)", () => {
     expect(good.out).toContain("No issues");
   });
 
-  it("init --agent writes rules and the skill", async () => {
-    const { code } = await cli("init", "--yes", "--no-install", "--agent");
+  it("init writes the agent rules and the skill by default", async () => {
+    const { code } = await cli("init", "--yes", "--no-install");
     expect(code).toBe(0);
     expect(read("AGENTS.md")).toContain("npx vamos-ui verify");
+    expect(read("AGENTS.md")).toContain("vamos.site.json");
     expect(read("CLAUDE.md")).toContain("vamos-ui:start");
+    expect(read(".github/copilot-instructions.md")).toContain("vamos-ui:start");
+    expect(read(".cursor/rules/vamos-ui.mdc")).toMatch(/^---\ndescription: Vamos UI/);
     expect(read(".claude/skills/vamos-ui/SKILL.md")).toMatch(/^---\nname: vamos-ui/);
+  });
+
+  it("init --no-agent writes no agent files", async () => {
+    for (const f of ["AGENTS.md", "CLAUDE.md", ".cursor", ".github"]) rmSync(path.join(project, f), { recursive: true, force: true });
+    const { code } = await cli("init", "--yes", "--no-install", "--no-agent", "--force");
+    expect(code).toBe(0);
+    expect(existsSync(path.join(project, "AGENTS.md"))).toBe(false);
+    expect(existsSync(path.join(project, ".cursor"))).toBe(false);
   });
 });
 

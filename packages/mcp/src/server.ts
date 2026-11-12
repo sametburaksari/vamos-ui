@@ -1,6 +1,7 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import { auditSite } from "./audit-tool.js";
 import { applyDesignSystem, getBrand, importDesignSystem, proposeAccent, updateDesign, verifyDesign, type ToolAnswer } from "./design-tools.js";
 import { RULES } from "./guidance.js";
 import { Registry, RegistryError, type RegistryOptions } from "./registry.js";
@@ -19,15 +20,15 @@ import {
 } from "./tools.js";
 
 export const SERVER_NAME = "vamos-ui";
-export const SERVER_VERSION = "0.2.8";
+export const SERVER_VERSION = "0.2.9";
 
-const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
+const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
-Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change).`;
+Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL.`;
 
-const REMOTE_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
+const REMOTE_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 This hosted server cannot see the user's files. Before building UI with it: call get_rules once per session. For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file.
-Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
+Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
 
 const itemType = z.enum(["component", "block", "lib", "style"]);
 
@@ -95,7 +96,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Theming guide",
       description:
-        "The 5 theme axes (dark class, data-material, data-accent, data-density, data-font) with values, the semantic Tailwind classes, how to add a brand accent, and the full CSS token table. Useful when setting up a project, changing colours, fonts or density, or looking up a token name.",
+        "The 6 theme axes (dark class, data-material, data-accent, data-density, data-font, data-radius) with values, what the corner setting covers, the semantic Tailwind classes, how to add a brand accent, and the full CSS token table. Useful when setting up a project, changing colours, fonts, density or corners, or looking up a token name.",
       inputSchema: {
         include_tokens: z.boolean().optional().describe("Include the full token table (default true). Pass false for a shorter answer."),
       },
@@ -337,6 +338,22 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         if (remote && args.projectDir) return { content: [{ type: "text", text: `${REMOTE_NOTE}\nHere, pass one file as code (+ filename).` }], isError: true };
         return answer(await verifyDesign(args));
       }),
+  );
+
+  server.registerTool(
+    "audit_site",
+    {
+      title: "Audit a live website",
+      description:
+        "Audits a live website over HTTP (no browser): redirects, status, speed, compression and security headers; title, meta description, canonical, Open Graph, JSON-LD, lang and viewport; robots.txt (and which AI crawlers it blocks), sitemap.xml and llms.txt; placeholder phones, example.com emails, lorem ipsum and [fill-in] fields; images without alt, unnamed links and buttons; privacy / KVKK / cookie / terms links; broken internal links and images over 300 KB, crawling up to maxPages same-site pages (respects robots.txt). Returns a scored report grouped by error / warning / info, with fixes. Works for any site, built with Vamos UI or not. Read-only: it only sends GET/HEAD requests." +
+        (remote ? " Public http(s) sites only; private and internal addresses are refused." : ""),
+      inputSchema: {
+        url: z.string().min(1).describe('The site to audit, e.g. "https://example.com" (https:// is assumed when left out).'),
+        maxPages: z.number().int().min(1).max(30).optional().describe("Pages to crawl, the start page included (default 10, max 30)."),
+      },
+      annotations: { title: "Audit a live website", readOnlyHint: true, destructiveHint: false, openWorldHint: true },
+    },
+    (args) => run(async () => answer(await auditSite(args, { remote, version: SERVER_VERSION }))),
   );
 
   local(() =>

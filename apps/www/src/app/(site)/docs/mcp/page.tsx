@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo";
 export const metadata = pageMeta({
   title: "MCP server",
   description:
-    "Connect Claude, ChatGPT, Claude Code, Cursor or VS Code to the Vamos UI MCP server at https://mcp.vamos.ist/mcp: 12 read-only tools for components, blocks, screen plans, theming, code checks and brand accents.",
+    "Connect Claude, ChatGPT, Claude Code, Cursor or VS Code to the Vamos UI MCP server at https://mcp.vamos.ist/mcp: 13 read-only tools for components, blocks, screen plans, theming, code checks, brand accents and live-site audits.",
   path: "/docs/mcp/",
 });
 
@@ -14,7 +14,7 @@ const README = "https://github.com/sametburaksari/vamos-ui/tree/main/packages/mc
 
 const tools: [name: string, title: string, what: string][] = [
   ["get_rules", "Design rules", "The rules every Vamos UI screen follows: tokens only, accent use, density, kit components over hand-rolled markup, accessibility. Called once at the start of a UI task."],
-  ["get_theming", "Theming guide", "The five theme axes (dark, material, accent, density, font), the semantic Tailwind classes and, optionally, the full CSS token table."],
+  ["get_theming", "Theming guide", "The six theme axes (dark, material, accent, density, font, corners) and what the corner setting covers, the semantic Tailwind classes and, optionally, the full CSS token table."],
   ["list_items", "List registry items", "Browses components, blocks, lib and style items by docs group, block category or tag."],
   ["search", "Search components and blocks", "Ranked search over names, descriptions, tags and usage guidance, in English or Turkish."],
   ["get_item", "Get a component or item", "Usage snippet, props, examples, when to use or avoid it, dependencies and file list of one item; source on request."],
@@ -25,6 +25,7 @@ const tools: [name: string, title: string, what: string][] = [
   ["import_design_system", "Import a design system from a website", "Reads page HTML (and optional CSS) and drafts a vamos.brand.json: accent, fonts, logo candidates, with the evidence for each value. Writes nothing."],
   ["propose_accent", "Propose a brand accent", "Turns one brand colour into the four accent variables (OKLCH) and checks WCAG contrast for each text pair."],
   ["verify_design", "Verify the design system", "Lints a file against the kit rules and the brand. On the hosted server it takes code + filename; project-wide checks need the local server."],
+  ["audit_site", "Audit a live website", "Checks a public website over HTTP, built with the kit or not: metadata, Open Graph, JSON-LD, robots.txt and AI crawlers, sitemap, placeholder content, legal links, broken internal links and heavy images, as a scored report. Up to 30 pages; only GET and HEAD requests."],
 ];
 
 export default function McpPage() {
@@ -61,7 +62,7 @@ export default function McpPage() {
           ["Hosted URL", <C key="u">{URL}</C>],
           ["Transport", "Streamable HTTP, stateless (POST only)"],
           ["Sign-in", "None — no account or API key"],
-          ["Tools", "12, all read-only"],
+          ["Tools", "13, all read-only"],
           ["Also runs locally", <span key="l"><C>npx -y @vamos-ui/mcp</C> (stdio), with three extra project tools</span>],
         ]}
       />
@@ -116,7 +117,8 @@ npx vamos-ui mcp add --client claude --print   # show the config, write nothing`
       <H2 id="tools">Tools</H2>
       <P>
         Every tool is marked read-only (<C>readOnlyHint: true</C>): none of them changes anything on your machine, in an account
-        or on the server.
+        or on the server. <C>audit_site</C> is also marked open-world (<C>openWorldHint: true</C>) because it requests the site
+        you name.
       </P>
       <div className="hidden sm:block">
         <Table
@@ -161,8 +163,11 @@ npx vamos-ui mcp add --client claude --print   # show the config, write nothing`
           <C>verify_design</C> with <C>projectDir</C> returns an error; pass one file as <C>code</C> + <C>filename</C> instead.
         </li>
         <li>
-          <strong className="text-fg">No URL fetching.</strong> <C>import_design_system</C> does not fetch <C>url</C> on the hosted
-          server: paste the page HTML (and CSS) instead, or use the local server or <C>npx vamos-ui brand import &lt;url&gt;</C>.
+          <strong className="text-fg">Only public sites, only for audits.</strong> <C>import_design_system</C> does not fetch{" "}
+          <C>url</C> on the hosted server: paste the page HTML (and CSS) instead, or use the local server or{" "}
+          <C>npx vamos-ui brand import &lt;url&gt;</C>. <C>audit_site</C> fetches the site you name with GET and HEAD requests,
+          up to 30 pages and 45 seconds, and refuses private, loopback, link-local, CGNAT and cloud-metadata addresses on every
+          redirect. For a local or private site, or more pages, run <C>npx vamos-ui audit &lt;url&gt;</C>.
         </li>
         <li>
           <strong className="text-fg">It does not install or run code.</strong> It returns source, plans and the{" "}
@@ -182,7 +187,7 @@ npx -y @vamos-ui/mcp --registry https://ui.example.com/r   # point at your own r
       <H2 id="privacy">Privacy</H2>
       <P>
         The hosted server has no accounts and keeps no state. It processes tool arguments in memory to answer and does not store
-        them; the web server logs IP address, time and URL for 30 days. Details in the <A href="/privacy">privacy policy</A>.
+        them; <C>audit_site</C> requests the pages of the site you name and keeps nothing from them; the web server logs IP address, time and URL for 30 days. Details in the <A href="/privacy">privacy policy</A>.
         Don&apos;t send secrets or personal data in code you ask it to check.
       </P>
 
