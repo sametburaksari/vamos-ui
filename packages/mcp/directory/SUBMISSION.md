@@ -1,6 +1,6 @@
 # Vamos UI MCP — directory submission kit
 
-Prepared 2026-11-12 for the hosted server `https://mcp.vamos.ist/mcp` (server `vamos-ui`, 13 tools from 0.2.9 with `audit_site`, 0.2.10 fixes compressed pages, all `readOnlyHint: true`, every tool has a `title`).
+Prepared 2026-11-12 for the hosted server `https://mcp.vamos.ist/mcp` (server `vamos-ui`, 13 tools from 0.2.9 with `audit_site`, 0.2.11 fixes compressed pages, all `readOnlyHint: true`, every tool has a `title`).
 Counts come from the live registry `https://ui.vamos.ist/r/index.json` on 2026-11-12: 150 components, 153 blocks (59 of them website pages), 427 items in total. Re-check them before submitting if the registry changed.
 
 ## Türkçe özet (sahibi için)
