@@ -52,6 +52,7 @@ Look at the screen (or reason through it when you cannot render) in:
 
 ### 7. Websites: before launch
 Use it when the project is a public website built from `site-*` / `page-*` blocks.
+- New website: start with the plan. `npx vamos-ui new` (MCP: `start_project`) asks about the business, current site, domain, hosting, one page or several, store or booking, forms, measurement and legal, then writes `vamos.project.json` (pages with their components, legal pages, hosting and form setup, measurement with consent mode, compliance, tasks, open questions) and fills `vamos.site.json`. Ask its questions in the user's words, a few at a time; build what the plan lists; ask the open questions instead of inventing answers. With a current site, read it first: `npx vamos-ui site import <url>` (MCP: `import_site`), and keep its addresses.
 - `npx vamos-ui add site-…` in a Next.js App Router project also writes `app/robots.ts`, `app/sitemap.ts` and a page for each legal link the block has (`/privacy`, `/kvkk`, `/gizlilik`, `/cookies`, `/terms`, `/accessibility`, `/iade`, `/mesafeli-satis-sozlesmesi`, `/yasal-uyari` …) rendering `legal-01`; it never replaces an existing file. For an existing project run `npx vamos-ui site essentials`.
 - Business info goes in `vamos.site.json` (`npx vamos-ui site init` writes it empty): name, contact, address, opening hours, legal ids, analytics ids, AI settings. Every value comes from the business; never invent or reuse one, leave unknown fields empty and ask. With it, `site essentials` also writes `app/llms.txt/route.ts`, `app/site-json-ld.tsx` (render `<SiteJsonLd />` in the root layout), robots that follow `ai.allowAiCrawlers`, and legal pages whose known [fill-in] fields are filled from it.
 - The legal presets are template text: replace every [fill-in] field that is left and have the business or a lawyer review them.
@@ -129,6 +130,8 @@ Regenerate the catalogs after adding components, blocks or guidance: `node skill
 
 | Tool | Use it to |
 |---|---|
+| `start_project(answers?)` | Plan a new website: the next questions, then the plan and `vamos.project.json` / `vamos.site.json` |
+| `import_site(url)` | Read a current website: details with sources, brand candidates, navigation, texts, images |
 | `plan_screen(description)` | Get the block to start from and the components to use |
 | `search(query)` | Find items by name, purpose or guidance (English or Turkish) |
 | `list_items(type?, group?, category?, tag?)` | Browse the registry |
