@@ -297,6 +297,28 @@ describe("verify_design / update_design", () => {
     expect(res.data.code).toMatchObject({ errors: 1 });
   });
 
+  it("adds route and website-launch checks with the real verifier", async () => {
+    setVerifier(undefined);
+    const root = project({
+      "vamos.json": CONFIG,
+      "src/app/layout.tsx": "export const metadata = { title: 'x' };\nexport default function L({ children }) { return children; }",
+      "src/app/page.tsx": 'import { Footer } from "@vamos-ui/react/blocks";\nexport default function P() { return <Footer brand={{ name: "Kıyı" }} legalLinks={[{ href: "/kvkk", label: "KVKK" }]} contact={{ phone: "+902160000000" }} />; }',
+    });
+    const res = await verifyDesign({ projectDir: root });
+    const issues = (res.data.results as { file: string; issues: { rule: string; message: string }[] }[]).flatMap((r) => r.issues.map((i) => `${r.file} ${i.rule} ${i.message}`));
+    expect(issues).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(/^src\/app\/page.tsx missing-route Link to \/kvkk/),
+        expect.stringMatching(/^src\/app\/page.tsx placeholder-content/),
+        expect.stringMatching(/site-essentials No robots.txt/),
+        expect.stringMatching(/site-essentials No sitemap.xml/),
+        expect.stringMatching(/src\/app\/layout.tsx site-essentials Root metadata has no metadataBase/),
+      ]),
+    );
+    expect(res.data.ok).toBe(true); // warnings only
+    expect((await verifyDesign({ projectDir: root, paths: ["src/app/page.tsx"] })).text).not.toMatch(/missing-route/);
+  });
+
   it("works without a brand profile", async () => {
     setVerifier(() => []);
     const root = project({ "vamos.json": CONFIG, "src/app/page.tsx": "export default 1;" });

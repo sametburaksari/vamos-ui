@@ -455,6 +455,19 @@ export async function planScreen(registry: Registry, args: { description: string
     "- Tokens only: semantic classes, no palette colours, no `dark:`, no font literals.",
     "- Realistic domain content and the empty, loading and error states.",
     "- Icon-only buttons get `aria-label`; overlays come from the kit (Dialog/Sheet/DropdownMenu/Tooltip).",
+    ...(siteScreen
+      ? [
+          "",
+          "## Website launch checklist",
+          "Use it before the site goes live (rule 11 in get_rules has the detail):",
+          "- A page for every footer link: legal pages (/privacy or /gizlilik, /kvkk, /cookies, /terms, /accessibility) from `legal-01`, with every [fill-in] replaced and the text reviewed by the business or a lawyer. `npx vamos-ui site essentials` writes them with robots and sitemap.",
+          "- robots.txt and sitemap.xml listing every public route.",
+          "- `metadataBase`, `alternates.canonical`, `openGraph` and a 120–160 character description in the metadata.",
+          "- JSON-LD: the kit `Footer` emits Organization; set the business type or add `<JsonLd>` / `localBusinessJsonLd`.",
+          "- The business's real phone, email and map links: no demo numbers (000 00 00), example.com / .example addresses, `href=\"#\"` or invented map short links.",
+          "- `sizes` on images that matches the rendered width.",
+        ]
+      : []),
     "",
     "## Next",
     chosen ? `1. get_block("${chosen.name}") for the full source.` : "1. get_item(name) for each component above.",

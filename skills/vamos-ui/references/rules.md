@@ -78,6 +78,16 @@ Follow these on every screen you build or edit. `npx vamos-ui verify` (MCP: `ver
 - Voice: every label, button, empty state, error and toast follows `voice.tone` and `voice.rules` and matches the `do` side of `voice.examples`. Without a voice, write plain, specific copy and ask before inventing taglines.
 - Assets: use the logo files in `assets` as their `use` note says. Never redraw, recolour, stretch or invent a logo. Missing logo or conflicting rules: say so and ask.
 
+## 11. Websites: launch checklist
+Use it when the screen is a public website (`site-*`, `page-*`, `legal-01` blocks), before it goes live. `npx vamos-ui site essentials` writes the files; `verify_design({ projectDir })` / `npx vamos-ui verify` reports what is still missing.
+- Legal pages: a page for every footer and consent link (`/privacy` or `/gizlilik`, `/kvkk`, `/cookies` or `/cerez-politikasi`, `/terms` or `/kullanim-kosullari`, `/accessibility`) from the `legal-01` presets; replace every [fill-in] field and have the business or a lawyer review the text. No internal link without a page (404).
+- `robots.txt` and `sitemap.xml` (`app/robots.ts`, `app/sitemap.ts`) listing every public route.
+- Metadata: `metadataBase`, `alternates.canonical` on every page, `openGraph` (siteName, locale, image), a unique title and a 120–160 character description per page.
+- JSON-LD: the kit `Footer` emits Organization; give it the business type (`jsonLd={{ "@type": "Restaurant" }}`) or add `<JsonLd>` / `localBusinessJsonLd` with address, phone and opening hours.
+- Real contact details: no placeholder phones (`000 00 00`, `555 55 55`, `wa.me/90500…`), no example.com or `.example` emails and links, no `href="#"`, no invented `maps.app.goo.gl` / `g.page` links (copy the share link from the business's Maps listing, or use `directionsUrl()`).
+- Working links: phone as `tel:`, email as `mailto:`, the map link opens the real listing.
+- Images: `sizes` matches the rendered width, so phones do not download images 2–3× larger than shown. Tap targets at least 24px (kit links already are).
+
 ## Suppressing a finding
 Only with a reason, on the line above: `// vamos-ui-ignore brand logo SVG needs its own fill`. `vamos-ui-ignore-file` skips a whole file (generated code only).
 
