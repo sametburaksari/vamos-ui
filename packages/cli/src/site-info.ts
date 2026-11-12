@@ -73,7 +73,7 @@ export interface SiteInfo {
     privacyEmail?: string;
   };
   /** Measurement ids only; nothing is set unless you set it. */
-  analytics?: { ga4?: string; gtm?: string; googleAds?: string };
+  analytics?: { ga4?: string; gtm?: string; googleAds?: string; metaPixel?: string };
   ai?: {
     /** Serve /llms.txt. Default true. */
     llmsTxt?: boolean;
@@ -153,6 +153,7 @@ export const SITE_JSON_SCHEMA = {
         ga4: str('Google Analytics 4 measurement id, e.g. "G-XXXXXXX".', { pattern: "^(G-[A-Z0-9]+)?$" }),
         gtm: str('Google Tag Manager container id, e.g. "GTM-XXXXXX".', { pattern: "^(GTM-[A-Z0-9]+)?$" }),
         googleAds: str('Google Ads tag id, e.g. "AW-123456789".', { pattern: "^(AW-[0-9]+)?$" }),
+        metaPixel: str('Meta (Facebook / Instagram) pixel / dataset id, digits only, e.g. "123456789012345".', { pattern: "^([0-9]{6,20})?$" }),
       },
     },
     ai: {
@@ -206,7 +207,7 @@ export function siteTemplate(init: { name?: string; url?: string; locale?: strin
     openingHours: [],
     social: [],
     legal: { taxOffice: "", taxNumber: "", mersis: "", tradeRegistry: "", kep: "", etbis: "", dataController: "", privacyEmail: "" },
-    analytics: { ga4: "", gtm: "", googleAds: "" },
+    analytics: { ga4: "", gtm: "", googleAds: "", metaPixel: "" },
     ai: { llmsTxt: true, allowAiCrawlers: true, services: [], faq: [] },
   };
 }

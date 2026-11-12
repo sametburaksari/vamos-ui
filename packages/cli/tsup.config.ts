@@ -11,7 +11,7 @@ export default defineConfig([
   },
   {
     // Library entry: pure, no Node built-ins, safe to bundle into other tools (e.g. the MCP server).
-    entry: { verify: "src/verify.ts", brand: "src/brand/index.ts", preset: "src/preset.ts", audit: "src/audit/index.ts" },
+    entry: { verify: "src/verify.ts", brand: "src/brand/index.ts", preset: "src/preset.ts", audit: "src/audit/index.ts", project: "src/project/index.ts" },
     format: ["esm"],
     target: "es2022",
     platform: "neutral",

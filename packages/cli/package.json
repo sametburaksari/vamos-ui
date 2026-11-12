@@ -33,6 +33,11 @@
       "import": "./dist/audit.js",
       "default": "./dist/audit.js"
     },
+    "./project": {
+      "types": "./dist/project.d.ts",
+      "import": "./dist/project.js",
+      "default": "./dist/project.js"
+    },
     "./preset": {
       "types": "./dist/preset.d.ts",
       "import": "./dist/preset.js",

@@ -8,12 +8,14 @@ import { JSON_LD_SNIPPET, LAYOUT_METADATA_FROM_SITE, LAYOUT_METADATA_SNIPPET, LE
 import { CliError } from "../core/types";
 import { SITE_FILE, missingSiteFields, siteTemplate } from "../site-info";
 import { out, p, pc, plural, printJson, type Context } from "../ui";
+import { siteImport } from "./new";
 import { installItems, openSession, type InstallOptions, type Session } from "./shared";
 
 const SITE_HELP = `${pc.bold("vamos-ui site")}  Business info and launch basics for a website built from site-* blocks.
 
 ${pc.bold("Usage")}
   npx vamos-ui site init [--name <name>] [--url <https://…>] [--locale <tr-TR>]
+  npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
 
 ${pc.bold("site init")} writes an empty ${SITE_FILE} at the project root (never over an existing one):
@@ -109,6 +111,7 @@ export async function site(ctx: Context, args: ParsedArgs): Promise<number> {
     return sub || bool(args.flags, "help") ? 0 : 1;
   }
   if (sub === "init") return siteInit(ctx, args);
+  if (sub === "import") return siteImport(ctx, args);
   if (sub !== "essentials") {
     out(`${pc.red("Unknown site command")} "${sub}".\n\n${SITE_HELP}`);
     return 1;
