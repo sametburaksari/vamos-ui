@@ -76,7 +76,7 @@ export interface ImageFieldCropPreset {
   name?: string;
 }
 
-export const imageFieldVariants = cva("vui-image-field group/imgfield relative grid min-w-0 gap-2", {
+export const imageFieldVariants = /*#__PURE__*/ cva("vui-image-field group/imgfield relative grid min-w-0 gap-2", {
   variants: {
     size: { sm: "w-24", md: "w-full max-w-[22rem]", full: "w-full" },
     layout: { stacked: "", inline: "grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4" },
@@ -140,7 +140,7 @@ const ratioOf = (aspect: ImageAspect | undefined, a?: MediaAsset) => aspectRatio
  * </Field>
  * ```
  */
-export const ImageField = React.forwardRef<HTMLDivElement, ImageFieldProps>(function ImageField(props, ref) {
+export const ImageField = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ImageFieldProps>(function ImageField(props, ref) {
   const {
     value: valueProp,
     defaultValue,

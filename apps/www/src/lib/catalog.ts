@@ -1,5 +1,7 @@
 import { inventory as raw, recipes, type InvGroup, type InvItem } from "./inventory";
-import { entries } from "@/docs/entries";
+// Plain data generated from the docs entries — never import `@/docs/entries` here: this module is
+// used by the home page, and the entries pull every docs example into its client bundle.
+import { docCovers } from "@/docs/covers";
 
 /**
  * The inventory with live status: an item is "ready" (and linked) as soon as a
@@ -7,7 +9,7 @@ import { entries } from "@/docs/entries";
  * mark progress — writing the docs entry is what ships a component.
  */
 const coveredBy = new Map<string, string>();
-for (const e of entries) for (const name of e.covers) if (!coveredBy.has(name)) coveredBy.set(name, e.slug);
+for (const e of docCovers) for (const name of e.covers) if (!coveredBy.has(name)) coveredBy.set(name, e.slug);
 
 export const inventory: InvGroup[] = raw.map((g) => ({
   group: g.group,

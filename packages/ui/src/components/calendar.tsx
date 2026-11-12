@@ -131,7 +131,7 @@ interface GridContextValue {
   dayTitle?: CalendarGridOwnProps["dayTitle"];
   size: CalendarGridSize;
 }
-const GridContext = React.createContext<GridContextValue>({ size: "md" });
+const GridContext = /*#__PURE__*/ React.createContext<GridContextValue>({ size: "md" });
 
 // Modifiers surfaced as data attributes on the day cell (in addition to rdp's own).
 const DATA_MODIFIERS: Record<string, string> = {
@@ -203,7 +203,7 @@ function GridChevron({ orientation = "left", className }: ChevronProps) {
   return <Icon aria-hidden className={cn("size-4", (orientation === "left" || orientation === "right") && "rtl:-scale-x-100", className)} />;
 }
 
-const MonthDateContext = React.createContext<Date | null>(null);
+const MonthDateContext = /*#__PURE__*/ React.createContext<Date | null>(null);
 
 function GridMonthCaption({ calendarMonth, displayIndex: _i, ...props }: MonthCaptionProps) {
   return (
@@ -525,7 +525,7 @@ function initialSelectionMonth(props: CalendarProps): string | null | undefined 
  * <Calendar months={12} size="sm" markers={density} />
  * ```
  */
-export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function Calendar(props, ref) {
+export const Calendar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CalendarProps>(function Calendar(props, ref) {
   const {
     months = 1,
     month: monthProp,
@@ -834,7 +834,7 @@ export interface CalendarLegendProps extends React.HTMLAttributes<HTMLUListEleme
 }
 
 /** Key for the marks on a Calendar (dot tones, holidays, today). */
-export const CalendarLegend = React.forwardRef<HTMLUListElement, CalendarLegendProps>(function CalendarLegend({ items, className, labels: _labels, ...props }, ref) {
+export const CalendarLegend = /*#__PURE__*/ React.forwardRef<HTMLUListElement, CalendarLegendProps>(function CalendarLegend({ items, className, labels: _labels, ...props }, ref) {
   return (
     <ul ref={ref} data-slot="calendar-legend" className={cn("flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-fg-muted", className)} {...props}>
       {items.map((item, i) => (
@@ -892,7 +892,7 @@ export interface CalendarSlotsProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * <CalendarSlots day={day} slots={slots} value={time} onValueChange={setTime} />
  * ```
  */
-export const CalendarSlots = React.forwardRef<HTMLDivElement, CalendarSlotsProps>(function CalendarSlots(
+export const CalendarSlots = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CalendarSlotsProps>(function CalendarSlots(
   { slots, value: valueProp, defaultValue, onValueChange, day, loading, error, onRetry, hourCycle, columns = 3, labels, className, ...props },
   ref,
 ) {

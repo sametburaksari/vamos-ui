@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Dialog, NavigationMenu as RadixNav } from "radix-ui";
+import * as Dialog from "radix-ui/dialog";
+import * as RadixNav from "radix-ui/navigation-menu";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
@@ -42,7 +43,7 @@ type NavigationMenuLayout = "list" | "grid-2" | "featured";
 /* Root                                                                */
 /* ------------------------------------------------------------------ */
 
-const rootVariants = cva("relative z-(--z-nav) flex max-w-max flex-1 items-center justify-center", {
+const rootVariants = /*#__PURE__*/ cva("relative z-(--z-nav) flex max-w-max flex-1 items-center justify-center", {
   variants: {
     variant: {
       /** Sits in a site header. */
@@ -83,7 +84,7 @@ export interface NavigationMenuProps extends React.ComponentPropsWithoutRef<type
  * </NavigationMenu>
  * ```
  */
-export const NavigationMenu = React.forwardRef<HTMLElement, NavigationMenuProps>(function NavigationMenu(
+export const NavigationMenu = /*#__PURE__*/ React.forwardRef<HTMLElement, NavigationMenuProps>(function NavigationMenu(
   { variant = "bar", viewport = true, items, labels, className, children, "aria-label": ariaLabel, ...props },
   ref,
 ) {
@@ -135,12 +136,12 @@ function NavigationMenuItems({ items, viewport }: { items: SiteNavItem[]; viewpo
 }
 
 /** The row of top-level items. */
-export const NavigationMenuList = React.forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<typeof RadixNav.List>>(function NavigationMenuList({ className, ...props }, ref) {
+export const NavigationMenuList = /*#__PURE__*/ React.forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<typeof RadixNav.List>>(function NavigationMenuList({ className, ...props }, ref) {
   return <RadixNav.List ref={ref} data-slot="navigation-menu-list" className={cn("flex flex-1 list-none items-center justify-center gap-0.5", className)} {...props} />;
 });
 
 /** One top-level item (a trigger + content, or a plain link). */
-export const NavigationMenuItem = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<typeof RadixNav.Item>>(function NavigationMenuItem({ className, ...props }, ref) {
+export const NavigationMenuItem = /*#__PURE__*/ React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<typeof RadixNav.Item>>(function NavigationMenuItem({ className, ...props }, ref) {
   return <RadixNav.Item ref={ref} data-slot="navigation-menu-item" className={cn("relative", className)} {...props} />;
 });
 
@@ -151,7 +152,7 @@ const topItemClass = cn(
 );
 
 /** Opens a panel. Hover (with intent delay), click, Enter/Space or ↓. */
-export const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof RadixNav.Trigger>>(function NavigationMenuTrigger(
+export const NavigationMenuTrigger = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof RadixNav.Trigger>>(function NavigationMenuTrigger(
   { className, children, ...props },
   ref,
 ) {
@@ -177,7 +178,7 @@ export interface NavigationMenuContentProps extends React.ComponentPropsWithoutR
 }
 
 /** The panel of an item. */
-export const NavigationMenuContent = React.forwardRef<HTMLDivElement, NavigationMenuContentProps>(function NavigationMenuContent(
+export const NavigationMenuContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, NavigationMenuContentProps>(function NavigationMenuContent(
   { layout = "list", inline, className, ...props },
   ref,
 ) {
@@ -198,7 +199,7 @@ export const NavigationMenuContent = React.forwardRef<HTMLDivElement, Navigation
 });
 
 /** The shared, animated container all panels render into. Rendered by `NavigationMenu` unless `viewport={false}`. */
-export const NavigationMenuViewport = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof RadixNav.Viewport>>(function NavigationMenuViewport(
+export const NavigationMenuViewport = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof RadixNav.Viewport>>(function NavigationMenuViewport(
   { className, ...props },
   ref,
 ) {
@@ -221,7 +222,7 @@ export const NavigationMenuViewport = React.forwardRef<HTMLDivElement, React.Com
 });
 
 /** A list of links inside a panel (`ul`). */
-export const NavigationMenuGroup = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement> & { heading?: React.ReactNode }>(function NavigationMenuGroup(
+export const NavigationMenuGroup = /*#__PURE__*/ React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement> & { heading?: React.ReactNode }>(function NavigationMenuGroup(
   { heading, className, children, ...props },
   ref,
 ) {
@@ -248,7 +249,7 @@ export interface NavigationMenuLinkProps extends Omit<React.ComponentPropsWithou
 }
 
 /** A link — in the bar (`variant="top"`) or in a panel with icon and description. Uses the app's router `Link`. */
-export const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, NavigationMenuLinkProps>(function NavigationMenuLink(
+export const NavigationMenuLink = /*#__PURE__*/ React.forwardRef<HTMLAnchorElement, NavigationMenuLinkProps>(function NavigationMenuLink(
   { href, variant = "panel", title, description, icon, active, className, children, ...props },
   ref,
 ) {
@@ -312,7 +313,7 @@ export function NavigationMenuFeatured({ title, description, href, eyebrow, clas
 }
 
 /** Optional arrow under the open trigger. */
-export const NavigationMenuIndicator = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof RadixNav.Indicator>>(function NavigationMenuIndicator(
+export const NavigationMenuIndicator = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof RadixNav.Indicator>>(function NavigationMenuIndicator(
   { className, ...props },
   ref,
 ) {

@@ -38,7 +38,7 @@ function decimalsOf(v: number) {
  * <CountUp value={1240} /> reviews · <CountUp value={4.8} locale="tr-TR" />
  * ```
  */
-export const CountUp = React.forwardRef<HTMLSpanElement, CountUpProps>(function CountUp(
+export const CountUp = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, CountUpProps>(function CountUp(
   { value, from = 0, duration, delay = 0, locale: localeProp, format, className, ...props },
   ref,
 ) {

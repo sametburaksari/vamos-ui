@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Collapsible, Popover as PopoverPrimitive } from "radix-ui";
+import * as Collapsible from "radix-ui/collapsible";
+import * as PopoverPrimitive from "radix-ui/popover";
 import { ArrowUpRight, Check, ChevronDown, ChevronRight, ChevronsUpDown, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -59,7 +60,7 @@ interface SidebarContextValue {
   onNavigate?: () => void;
   t: ReturnType<typeof useLabels<SidebarLabels>>;
 }
-const SidebarContext = React.createContext<SidebarContextValue | null>(null);
+const SidebarContext = /*#__PURE__*/ React.createContext<SidebarContextValue | null>(null);
 
 /** Collapsed state and helpers of the nearest `Sidebar`. */
 export function useSidebar() {
@@ -74,10 +75,10 @@ const useSidebarCtx = () => {
 };
 
 /** Active trail from `SidebarNav` (data-driven); `null` in the compound API (each item checks its own href). */
-const TrailContext = React.createContext<string[] | null>(null);
+const TrailContext = /*#__PURE__*/ React.createContext<string[] | null>(null);
 
 type Placement = "inline" | "flyout" | "mobile";
-const SubContext = React.createContext<{ placement: Placement; depth: number; close?: () => void }>({ placement: "inline", depth: 1 });
+const SubContext = /*#__PURE__*/ React.createContext<{ placement: Placement; depth: number; close?: () => void }>({ placement: "inline", depth: 1 });
 
 /* ------------------------------------------------------------------ */
 /* Sidebar                                                             */
@@ -114,7 +115,7 @@ export interface SidebarProps extends Omit<React.HTMLAttributes<HTMLElement>, "d
  * </Sidebar>
  * ```
  */
-export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(function Sidebar(
+export const Sidebar = /*#__PURE__*/ React.forwardRef<HTMLElement, SidebarProps>(function Sidebar(
   { variant = "nav", collapsed: collapsedProp, defaultCollapsed = false, onCollapsedChange, collapsible = true, mode = "desktop", shortcut = false, onNavigate, labels, className, children, ...props },
   ref,
 ) {
@@ -149,7 +150,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(function Side
 });
 
 /** Top slot: app switcher, workspace switcher, logo. */
-export const SidebarHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function SidebarHeader({ className, ...props }, ref) {
+export const SidebarHeader = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function SidebarHeader({ className, ...props }, ref) {
   return <div ref={ref} data-slot="sidebar-header" className={cn("grid gap-1 border-b border-nav-line p-2", className)} {...props} />;
 });
 
@@ -159,7 +160,7 @@ export interface SidebarContentProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 /** The scrolling `<nav>` with the menu. */
-export const SidebarContent = React.forwardRef<HTMLElement, SidebarContentProps>(function SidebarContent({ className, ...props }, ref) {
+export const SidebarContent = /*#__PURE__*/ React.forwardRef<HTMLElement, SidebarContentProps>(function SidebarContent({ className, ...props }, ref) {
   const { t } = useSidebarCtx();
   return (
     <nav
@@ -173,7 +174,7 @@ export const SidebarContent = React.forwardRef<HTMLElement, SidebarContentProps>
 });
 
 /** Bottom slot: shared menu, collapse button, user. */
-export const SidebarFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function SidebarFooter({ className, ...props }, ref) {
+export const SidebarFooter = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function SidebarFooter({ className, ...props }, ref) {
   return <div ref={ref} data-slot="sidebar-footer" className={cn("border-t border-nav-line", className)} {...props} />;
 });
 
@@ -183,7 +184,7 @@ export interface SidebarGroupProps extends Omit<React.HTMLAttributes<HTMLDivElem
 }
 
 /** A section: optional heading plus a list of `SidebarItem`s. */
-export const SidebarGroup = React.forwardRef<HTMLDivElement, SidebarGroupProps>(function SidebarGroup({ label, className, children, ...props }, ref) {
+export const SidebarGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SidebarGroupProps>(function SidebarGroup({ label, className, children, ...props }, ref) {
   const { collapsed } = useSidebarCtx();
   const id = React.useId();
   return (
@@ -287,7 +288,7 @@ interface LinkRowProps {
 }
 
 /** An `<a>` through the app router, a `<button>` (no href) or a disabled `<span>`. */
-const LinkRow = React.forwardRef<HTMLElement, LinkRowProps & Record<`aria-${string}`, unknown>>(function LinkRow(
+const LinkRow = /*#__PURE__*/ React.forwardRef<HTMLElement, LinkRowProps & Record<`aria-${string}`, unknown>>(function LinkRow(
   { href, external, disabled, className, children, onClick, buttonProps, ...rest },
   ref,
 ) {
@@ -801,7 +802,7 @@ export function SidebarNav({ items, badges, features, trail: trailProp, classNam
 /* ------------------------------------------------------------------ */
 
 /** Toggles the rail. `aria-pressed` is true while collapsed. */
-export const SidebarCollapseButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(function SidebarCollapseButton({ className, onClick, ...props }, ref) {
+export const SidebarCollapseButton = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(function SidebarCollapseButton({ className, onClick, ...props }, ref) {
   const { collapsed, setCollapsed, collapsible, mode, t } = useSidebarCtx();
   const { dir } = useLocale();
   if (!collapsible || mode === "mobile") return null;

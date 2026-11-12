@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Tabs } from "radix-ui";
+import * as Tabs from "radix-ui/tabs";
 import { cn } from "../../lib/cn";
 
 export interface FeatureTabsItem {

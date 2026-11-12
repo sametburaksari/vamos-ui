@@ -15,7 +15,7 @@ export function parseAspectRatio(ratio: AspectRatioValue | string | undefined): 
   return Number.isFinite(n) && n > 0 ? n : undefined;
 }
 
-export const aspectRatioVariants = cva("relative isolate block w-full overflow-hidden", {
+export const aspectRatioVariants = /*#__PURE__*/ cva("relative isolate block w-full overflow-hidden", {
   variants: {
     rounded: { none: "", ui: "rounded-ui", "ui-lg": "rounded-ui-lg", full: "rounded-full" },
     /** How a direct `img` / `video` child fills the box. */
@@ -41,7 +41,7 @@ export interface AspectRatioProps extends React.HTMLAttributes<HTMLDivElement>, 
  * </AspectRatio>
  * ```
  */
-export const AspectRatio = React.forwardRef<HTMLDivElement, AspectRatioProps>(function AspectRatio(
+export const AspectRatio = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AspectRatioProps>(function AspectRatio(
   { ratio = "16/9", rounded, fit, tone, className, style, children, ...props },
   ref,
 ) {

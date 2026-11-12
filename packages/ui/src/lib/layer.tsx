@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 
-const LayerDepthContext = React.createContext(0);
+const LayerDepthContext = /*#__PURE__*/ React.createContext(0);
 
 /**
  * Depth of the current floating layer: 0 = page, 1 = first overlay (dialog, popover, menu…),
@@ -45,7 +45,7 @@ export interface LayerProps extends React.HTMLAttributes<HTMLDivElement> {
  * </Popover.Portal>
  * ```
  */
-export const Layer = React.forwardRef<HTMLDivElement, LayerProps>(function Layer({ asChild, ...props }, ref) {
+export const Layer = /*#__PURE__*/ React.forwardRef<HTMLDivElement, LayerProps>(function Layer({ asChild, ...props }, ref) {
   const depth = useLayerDepth() + 1;
   const Comp = asChild ? Slot.Root : "div";
   return (

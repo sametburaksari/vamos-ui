@@ -58,7 +58,7 @@ export interface ParallaxProps extends React.HTMLAttributes<HTMLDivElement> {
  * <Parallax shift={48} className="aspect-[16/9] rounded-ui-lg"><img className="size-full object-cover" … /></Parallax>
  * ```
  */
-export const Parallax = React.forwardRef<HTMLDivElement, ParallaxProps>(function Parallax({ shift = 40, clip = true, className, style, children, ...props }, ref) {
+export const Parallax = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ParallaxProps>(function Parallax({ shift = 40, clip = true, className, style, children, ...props }, ref) {
   const inner = React.useRef<HTMLDivElement | null>(null);
   const [fallback, setFallback] = React.useState(false);
   React.useEffect(() => {
@@ -101,7 +101,7 @@ export interface ScrollProgressProps extends React.HTMLAttributes<HTMLDivElement
  * <ScrollProgress />
  * ```
  */
-export const ScrollProgress = React.forwardRef<HTMLDivElement, ScrollProgressProps>(function ScrollProgress({ fixed = true, className, ...props }, ref) {
+export const ScrollProgress = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ScrollProgressProps>(function ScrollProgress({ fixed = true, className, ...props }, ref) {
   const inner = React.useRef<HTMLDivElement | null>(null);
   const [fallback, setFallback] = React.useState(false);
   React.useEffect(() => setFallback(!supports("animation-timeline: scroll()")), []);

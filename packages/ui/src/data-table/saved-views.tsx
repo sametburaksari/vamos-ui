@@ -125,7 +125,7 @@ function defaultShareUrl(id: string) {
  * <SavedViews views={views} {...table.savedViewsBinding(views)} onSave={create} onUpdate={update} />
  * ```
  */
-export const SavedViews = React.forwardRef<HTMLDivElement, SavedViewsProps>(function SavedViews(
+export const SavedViews = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SavedViewsProps>(function SavedViews(
   {
     views,
     activeId,

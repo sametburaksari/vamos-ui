@@ -466,7 +466,7 @@ interface Internal<T> {
   filterRequest: { field: string; key: number } | null;
 }
 
-const DataTableContext = React.createContext<DataTableContextValue | null>(null);
+const DataTableContext = /*#__PURE__*/ React.createContext<DataTableContextValue | null>(null);
 
 /**
  * The table's state and helpers, for custom layouts and bindings inside `<DataTable>`.

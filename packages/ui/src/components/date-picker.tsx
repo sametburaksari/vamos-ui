@@ -229,7 +229,7 @@ const iconButton =
  * <DatePicker trigger="button" placeholder="Any date" clearable />
  * ```
  */
-export const DatePicker = React.forwardRef<HTMLInputElement | HTMLButtonElement, DatePickerProps>(function DatePicker(rawProps, forwardedRef) {
+export const DatePicker = /*#__PURE__*/ React.forwardRef<HTMLInputElement | HTMLButtonElement, DatePickerProps>(function DatePicker(rawProps, forwardedRef) {
   const {
     value: valueProp,
     defaultValue,
@@ -498,7 +498,7 @@ function zoneLabel(timeZone: string, locale: string): string {
  * <DateTimePicker value={publishAt} onValueChange={setPublishAt} timeZone="Europe/Istanbul" />
  * ```
  */
-export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerProps>(function DateTimePicker(
+export const DateTimePicker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, DateTimePickerProps>(function DateTimePicker(
   { value: valueProp, defaultValue, onValueChange, defaultTime = "09:00", step = 15, hourCycle, minTime, maxTime, timeZone, name, timeLabels, labels, className, size = "md", ...dateProps },
   ref,
 ) {

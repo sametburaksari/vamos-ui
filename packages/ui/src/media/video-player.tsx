@@ -71,7 +71,7 @@ export function formatMediaTime(seconds: number, locale = "en-US"): string {
 
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
-export const videoPlayerVariants = cva("vui-video group/video relative isolate overflow-hidden bg-scene", {
+export const videoPlayerVariants = /*#__PURE__*/ cva("vui-video group/video relative isolate overflow-hidden bg-scene", {
   variants: {
     rounded: { none: "", ui: "rounded-ui", "ui-lg": "rounded-ui-lg" },
     chrome: { overlay: "", bar: "" },
@@ -128,7 +128,7 @@ const MIME = { mp4: "video/mp4", webm: "video/webm", hls: "application/vnd.apple
  *   tracks={[{ src: "/media/onboarding.en.vtt", lang: "en", label: "English", default: true }]} />
  * ```
  */
-export const VideoPlayer = React.forwardRef<HTMLDivElement, VideoPlayerProps>(function VideoPlayer(
+export const VideoPlayer = /*#__PURE__*/ React.forwardRef<HTMLDivElement, VideoPlayerProps>(function VideoPlayer(
   {
     src,
     poster: posterProp,
@@ -511,7 +511,7 @@ export interface VideoEmbedProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * `youtube-nocookie.com` (or `player.vimeo.com` with `dnt=1`) iframe. No third-party request,
  * cookie or script before the visitor chooses to play.
  */
-export const VideoEmbed = React.forwardRef<HTMLDivElement, VideoEmbedProps>(function VideoEmbed(
+export const VideoEmbed = /*#__PURE__*/ React.forwardRef<HTMLDivElement, VideoEmbedProps>(function VideoEmbed(
   { provider, id, title, poster, aspect = "16/9", start, rounded = "ui", labels, className, style, ...props },
   ref,
 ) {
@@ -575,7 +575,7 @@ export interface BackgroundVideoProps extends React.HTMLAttributes<HTMLDivElemen
  * Muted, looping, decorative video (hero backgrounds). `aria-hidden`, with a visible pause
  * button (WCAG 2.2.2). Reduced motion shows the poster only.
  */
-export const BackgroundVideo = React.forwardRef<HTMLDivElement, BackgroundVideoProps>(function BackgroundVideo({ src, poster, labels, className, children, ...props }, ref) {
+export const BackgroundVideo = /*#__PURE__*/ React.forwardRef<HTMLDivElement, BackgroundVideoProps>(function BackgroundVideo({ src, poster, labels, className, children, ...props }, ref) {
   const t = useLabels("videoPlayer", videoLabels, labels);
   const reduced = useReducedMotion();
   const video = React.useRef<HTMLVideoElement>(null);

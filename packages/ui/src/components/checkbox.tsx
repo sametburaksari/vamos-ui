@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Checkbox as CheckboxPrimitive } from "radix-ui";
+import * as CheckboxPrimitive from "radix-ui/checkbox";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { mergeIds } from "../lib/compose-refs";
@@ -10,7 +10,7 @@ import { useControllableState } from "../lib/use-controllable-state";
 
 export type CheckboxCheckedState = boolean | "indeterminate";
 
-export const checkboxVariants = cva(
+export const checkboxVariants = /*#__PURE__*/ cva(
   [
     "peer relative inline-flex shrink-0 items-center justify-center border bg-field text-accent-fg outline-none",
     // 16–18px boxes need the stronger edge in every material, or they vanish on dark solid
@@ -50,7 +50,7 @@ interface CheckboxGroupContextValue {
   size?: "sm" | "md";
   variant?: "default" | "card";
 }
-const CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null);
+const CheckboxGroupContext = /*#__PURE__*/ React.createContext<CheckboxGroupContextValue | null>(null);
 
 /* ------------------------------------------------------------------ */
 /* Checkbox                                                            */
@@ -104,7 +104,7 @@ function DashIcon() {
  * <Field label="I accept the terms" orientation="horizontal" error={err}><Checkbox name="terms" /></Field>
  * ```
  */
-export const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(function Checkbox(rawProps, ref) {
+export const Checkbox = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(function Checkbox(rawProps, ref) {
   const group = React.useContext(CheckboxGroupContext);
   const {
     checked: checkedProp,
@@ -271,7 +271,7 @@ export interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * </Field>
  * ```
  */
-export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(function CheckboxGroup(
+export const CheckboxGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CheckboxGroupProps>(function CheckboxGroup(
   {
     value,
     defaultValue,
@@ -364,6 +364,6 @@ export interface CheckboxGroupItemProps extends Omit<CheckboxProps, "checked" | 
 }
 
 /** One option inside a `CheckboxGroup`. */
-export const CheckboxGroupItem = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxGroupItemProps>(function CheckboxGroupItem(props, ref) {
+export const CheckboxGroupItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxGroupItemProps>(function CheckboxGroupItem(props, ref) {
   return <Checkbox ref={ref} {...props} />;
 });

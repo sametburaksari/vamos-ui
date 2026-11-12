@@ -174,7 +174,7 @@ export interface SchedulerProps extends Omit<React.HTMLAttributes<HTMLDivElement
   labels?: Partial<SchedulerLabels>;
 }
 
-export const schedulerVariants = cva("ui-sch relative flex min-w-0 flex-col", {
+export const schedulerVariants = /*#__PURE__*/ cva("ui-sch relative flex min-w-0 flex-col", {
   variants: {
     variant: {
       full: "surface rounded-ui-lg",
@@ -229,7 +229,7 @@ interface Ctx {
   scrollRef: React.RefObject<HTMLDivElement | null>;
   rtl: boolean;
 }
-const SchedulerContext = React.createContext<Ctx | null>(null);
+const SchedulerContext = /*#__PURE__*/ React.createContext<Ctx | null>(null);
 const useSch = () => {
   const c = React.useContext(SchedulerContext);
   if (!c) throw new Error("Scheduler parts must be used inside <Scheduler>");
@@ -280,7 +280,7 @@ function stepDate(view: SchedulerView, anchor: IsoDate, dir: 1 | -1, listDays: n
  * />
  * ```
  */
-export const Scheduler = React.forwardRef<HTMLDivElement, SchedulerProps>(function Scheduler(
+export const Scheduler = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SchedulerProps>(function Scheduler(
   {
     events,
     view: viewProp,

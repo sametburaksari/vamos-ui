@@ -125,7 +125,7 @@ export interface SearchPreviewProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * How a page appears in a search result on desktop or mobile, with pixel-accurate truncation
  * (`measureSerp`) and keyword bolding.
  */
-export const SearchPreview = React.forwardRef<HTMLDivElement, SearchPreviewProps>(function SearchPreview(
+export const SearchPreview = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SearchPreviewProps>(function SearchPreview(
   { data, device = "desktop", highlight: term, appearance = "auto", size = "md", labels, className, ...props },
   ref,
 ) {
@@ -200,7 +200,7 @@ export interface SocialCardPreviewProps extends Omit<React.HTMLAttributes<HTMLDi
 }
 
 /** How a shared link unfurls on Facebook, LinkedIn, X, WhatsApp or Slack, with image warnings. */
-export const SocialCardPreview = React.forwardRef<HTMLDivElement, SocialCardPreviewProps>(function SocialCardPreview(
+export const SocialCardPreview = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SocialCardPreviewProps>(function SocialCardPreview(
   { data, platform, appearance = "auto", size = "md", hideWarnings, labels, className, ...props },
   ref,
 ) {
@@ -354,7 +354,7 @@ export interface LengthMeterProps extends React.HTMLAttributes<HTMLDivElement> {
  * Characters (graphemes) and, for SEO fields, rendered pixels against the limit, said in words
  * too ("58 of 60 characters, 540 of 600 px: good"), never by colour alone.
  */
-export const LengthMeter = React.forwardRef<HTMLDivElement, LengthMeterProps>(function LengthMeter(
+export const LengthMeter = /*#__PURE__*/ React.forwardRef<HTMLDivElement, LengthMeterProps>(function LengthMeter(
   { value, max: maxProp, min: minProp, field, device = "desktop", label, labels, className, ...props },
   ref,
 ) {

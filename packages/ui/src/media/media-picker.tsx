@@ -433,7 +433,7 @@ function PickerUrlForm({ adapter, onImported, t }: { adapter: MediaAdapter; onIm
 export type MediaPickOptions = Omit<MediaPickerProps, "open" | "defaultOpen" | "onOpenChange" | "onSelect" | "children">;
 type PickFn = (options?: MediaPickOptions) => Promise<MediaAsset[]>;
 
-const PickerContext = React.createContext<PickFn | null>(null);
+const PickerContext = /*#__PURE__*/ React.createContext<PickFn | null>(null);
 
 /**
  * Hosts one Media picker for `useMediaPicker()`. Put it once near the app root, inside `MediaProvider`.

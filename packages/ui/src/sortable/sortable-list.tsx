@@ -50,7 +50,7 @@ interface SharedProps<T> {
 // SortableList
 // ---------------------------------------------------------------------------------------------
 
-export const sortableListVariants = cva("vui-sortable-list flex min-w-0", {
+export const sortableListVariants = /*#__PURE__*/ cva("vui-sortable-list flex min-w-0", {
   variants: {
     orientation: { vertical: "flex-col", horizontal: "flex-row flex-wrap items-stretch" },
     variant: {
@@ -66,7 +66,7 @@ export const sortableListVariants = cva("vui-sortable-list flex min-w-0", {
   defaultVariants: { orientation: "vertical", variant: "card" },
 });
 
-export const sortableRowVariants = cva(
+export const sortableRowVariants = /*#__PURE__*/ cva(
   "vui-sortable-row group/row relative flex min-w-0 items-center gap-1.5 text-sm text-fg outline-none",
   {
     variants: {

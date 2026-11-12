@@ -81,7 +81,7 @@ export function usePaginationRange(options: PaginationRangeOptions): PaginationR
 /* ------------------------------------------------------------------ */
 
 type PaginationSize = "sm" | "md";
-const SizeContext = React.createContext<PaginationSize>("md");
+const SizeContext = /*#__PURE__*/ React.createContext<PaginationSize>("md");
 
 const itemSize = {
   sm: "h-8 min-w-8 px-2 text-[13px] rounded-ui-sm [&_svg]:size-3.5",
@@ -89,12 +89,12 @@ const itemSize = {
 } as const;
 
 /** The `<ul>` of page items. */
-export const PaginationList = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(function PaginationList({ className, ...props }, ref) {
+export const PaginationList = /*#__PURE__*/ React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(function PaginationList({ className, ...props }, ref) {
   return <ul ref={ref} data-slot="pagination-list" className={cn("flex items-center gap-1", className)} {...props} />;
 });
 
 /** One `<li>`. */
-export const PaginationItem = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(function PaginationItem({ className, ...props }, ref) {
+export const PaginationItem = /*#__PURE__*/ React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(function PaginationItem({ className, ...props }, ref) {
   return <li ref={ref} data-slot="pagination-item" className={cn("inline-flex", className)} {...props} />;
 });
 
@@ -109,7 +109,7 @@ export interface PaginationLinkProps extends Omit<React.AnchorHTMLAttributes<HTM
 }
 
 /** A page number, or the shell for Previous / Next. Router `Link` when `href` is set, else a button. */
-export const PaginationLink = React.forwardRef<HTMLElement, PaginationLinkProps>(function PaginationLink(
+export const PaginationLink = /*#__PURE__*/ React.forwardRef<HTMLElement, PaginationLinkProps>(function PaginationLink(
   { href, isActive, disabled, loading, className, children, onClick, ...props },
   ref,
 ) {
@@ -169,7 +169,7 @@ export interface PaginationStepProps extends PaginationLinkProps {
 }
 
 /** Previous-page control. The arrow flips in RTL. */
-export const PaginationPrevious = React.forwardRef<HTMLElement, PaginationStepProps>(function PaginationPrevious({ showLabel, labels, className, ...props }, ref) {
+export const PaginationPrevious = /*#__PURE__*/ React.forwardRef<HTMLElement, PaginationStepProps>(function PaginationPrevious({ showLabel, labels, className, ...props }, ref) {
   const t = useLabels("pagination", paginationLabels, labels);
   return (
     <PaginationLink ref={ref} aria-label={t("previousPage")} className={cn(showLabel && "gap-1 ps-2 pe-3", className)} data-slot="pagination-previous" {...props}>
@@ -180,7 +180,7 @@ export const PaginationPrevious = React.forwardRef<HTMLElement, PaginationStepPr
 });
 
 /** Next-page control. The arrow flips in RTL. */
-export const PaginationNext = React.forwardRef<HTMLElement, PaginationStepProps>(function PaginationNext({ showLabel, labels, className, ...props }, ref) {
+export const PaginationNext = /*#__PURE__*/ React.forwardRef<HTMLElement, PaginationStepProps>(function PaginationNext({ showLabel, labels, className, ...props }, ref) {
   const t = useLabels("pagination", paginationLabels, labels);
   return (
     <PaginationLink ref={ref} aria-label={t("nextPage")} className={cn(showLabel && "gap-1 ps-3 pe-2", className)} data-slot="pagination-next" {...props}>
@@ -237,7 +237,7 @@ export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>,
  *
  * Moving focus to the top of the list after a page change is the consumer's job.
  */
-export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(function Pagination(
+export const Pagination = /*#__PURE__*/ React.forwardRef<HTMLElement, PaginationProps>(function Pagination(
   { page, pageCount, onPageChange, getHref, siblingCount, boundaryCount, variant = "numbers", size = "md", hideOnSinglePage = true, loading, labels, className, ...props },
   ref,
 ) {
@@ -320,7 +320,7 @@ export interface PaginationBarProps extends Omit<PaginationProps, "pageCount"> {
  * The table footer: "1–20 of 312" + rows per page + page numbers. Changing the page size keeps the
  * first visible row on screen (the page is recomputed) — the consumer receives both callbacks.
  */
-export const PaginationBar = React.forwardRef<HTMLDivElement, PaginationBarProps>(function PaginationBar(
+export const PaginationBar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, PaginationBarProps>(function PaginationBar(
   { total, pageSize, pageSizeOptions = [10, 20, 50, 100], onPageSizeChange, page, onPageChange, labels, size = "md", className, style, id, ...props },
   ref,
 ) {
@@ -389,7 +389,7 @@ export interface CursorPaginationProps extends React.HTMLAttributes<HTMLElement>
 }
 
 /** Previous / Next for cursor APIs where the total is unknown. */
-export const CursorPagination = React.forwardRef<HTMLElement, CursorPaginationProps>(function CursorPagination(
+export const CursorPagination = /*#__PURE__*/ React.forwardRef<HTMLElement, CursorPaginationProps>(function CursorPagination(
   { hasPrev, hasNext, onPrev, onNext, loading, status, size = "md", labels, className, ...props },
   ref,
 ) {

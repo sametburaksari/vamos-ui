@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Label as LabelPrimitive } from "radix-ui";
+import * as LabelPrimitive from "radix-ui/label";
 import { CircleAlert, X } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useComposedRefs, mergeIds } from "../lib/compose-refs";
@@ -73,7 +73,7 @@ const setNativeValue = (el: HTMLInputElement | HTMLTextAreaElement, value: strin
  * <Input addonStart="https://" addonEnd=".vamos.ist" defaultValue="northpoint" />
  * ```
  */
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(rawProps, forwardedRef) {
+export const Input = /*#__PURE__*/ React.forwardRef<HTMLInputElement, InputProps>(function Input(rawProps, forwardedRef) {
   const {
     className,
     inputClassName,
@@ -208,7 +208,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
  * <Field label="Anything we should know first?"><Textarea maxLength={400} showCount /></Field>
  * ```
  */
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea({ className, rows = 4, invalid, showCount, labels, ...rest }, ref) {
+export const Textarea = /*#__PURE__*/ React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea({ className, rows = 4, invalid, showCount, labels, ...rest }, ref) {
   const props = useFieldControl({ ...rest, "aria-invalid": invalid ? true : rest["aria-invalid"] });
   const t = useLabels("input", inputLabels, labels);
   const countId = React.useId();
@@ -257,7 +257,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
 /* ------------------------------------------------------------------ */
 
 /** Form label (Radix Label: no text selection on double-click). */
-export const Label = React.forwardRef<HTMLLabelElement, React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>>(function Label({ className, ...props }, ref) {
+export const Label = /*#__PURE__*/ React.forwardRef<HTMLLabelElement, React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>>(function Label({ className, ...props }, ref) {
   return (
     <LabelPrimitive.Root
       ref={ref}
@@ -454,7 +454,7 @@ export interface FieldsetProps extends React.FieldsetHTMLAttributes<HTMLFieldSet
  * </Fieldset>
  * ```
  */
-export const Fieldset = React.forwardRef<HTMLFieldSetElement, FieldsetProps>(function Fieldset(
+export const Fieldset = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, FieldsetProps>(function Fieldset(
   { legend, hint, error, className, children, "aria-describedby": describedBy, ...props },
   ref,
 ) {
@@ -489,6 +489,6 @@ export const Fieldset = React.forwardRef<HTMLFieldSetElement, FieldsetProps>(fun
 });
 
 /** Title of a Fieldset. */
-export const Legend = React.forwardRef<HTMLLegendElement, React.HTMLAttributes<HTMLLegendElement>>(function Legend({ className, ...props }, ref) {
+export const Legend = /*#__PURE__*/ React.forwardRef<HTMLLegendElement, React.HTMLAttributes<HTMLLegendElement>>(function Legend({ className, ...props }, ref) {
   return <legend ref={ref} data-slot="legend" className={cn("mb-0 p-0 text-sm font-semibold tracking-[-0.005em] text-fg", className)} {...props} />;
 });

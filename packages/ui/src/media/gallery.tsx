@@ -29,7 +29,7 @@ const galleryLabels = {
 };
 export type GalleryLabels = typeof galleryLabels;
 
-export const galleryVariants = cva("vui-gallery @container/gallery min-w-0", {
+export const galleryVariants = /*#__PURE__*/ cva("vui-gallery @container/gallery min-w-0", {
   variants: {
     gap: { sm: "[--gallery-gap:0.375rem]", md: "[--gallery-gap:0.75rem]", lg: "[--gallery-gap:1.25rem]" },
   },

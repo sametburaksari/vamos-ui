@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
+import * as ContextMenuPrimitive from "radix-ui/context-menu";
 import { cn } from "../lib/cn";
 import { usePortalContainer } from "../lib/theme-scope";
 import { Layer } from "../lib/layer";
@@ -37,7 +37,7 @@ export interface ContextMenuContentProps extends React.ComponentPropsWithoutRef<
 }
 
 /** The menu panel, opened at the pointer. Portals into the nearest `ThemeScope`. */
-export const ContextMenuContent = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Content>, ContextMenuContentProps>(function ContextMenuContent(
+export const ContextMenuContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Content>, ContextMenuContentProps>(function ContextMenuContent(
   { className, size = "md", collisionPadding = 12, ...props },
   ref,
 ) {
@@ -74,7 +74,7 @@ export interface ContextMenuItemProps extends React.ComponentPropsWithoutRef<typ
 }
 
 /** One action. Same API as `DropdownMenuItem`. */
-export const ContextMenuItem = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Item>, ContextMenuItemProps>(function ContextMenuItem(
+export const ContextMenuItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Item>, ContextMenuItemProps>(function ContextMenuItem(
   { className, icon, description, shortcut, badge, tone = "default", inset, asChild, children, ...props },
   ref,
 ) {
@@ -97,7 +97,7 @@ export interface ContextMenuCheckboxItemProps extends React.ComponentPropsWithou
   description?: React.ReactNode;
 }
 
-export const ContextMenuCheckboxItem = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>, ContextMenuCheckboxItemProps>(function ContextMenuCheckboxItem(
+export const ContextMenuCheckboxItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>, ContextMenuCheckboxItemProps>(function ContextMenuCheckboxItem(
   { className, shortcut, description, children, ...props },
   ref,
 ) {
@@ -121,7 +121,7 @@ export interface ContextMenuRadioItemProps extends React.ComponentPropsWithoutRe
   description?: React.ReactNode;
 }
 
-export const ContextMenuRadioItem = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.RadioItem>, ContextMenuRadioItemProps>(function ContextMenuRadioItem(
+export const ContextMenuRadioItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.RadioItem>, ContextMenuRadioItemProps>(function ContextMenuRadioItem(
   { className, shortcut, description, children, ...props },
   ref,
 ) {
@@ -140,13 +140,13 @@ export const ContextMenuRadioItem = React.forwardRef<React.ElementRef<typeof Con
   );
 });
 
-export const ContextMenuLabel = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Label>, React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label> & { inset?: boolean }>(
+export const ContextMenuLabel = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Label>, React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label> & { inset?: boolean }>(
   function ContextMenuLabel({ className, inset, ...props }, ref) {
     return <ContextMenuPrimitive.Label ref={ref} data-slot="context-menu-label" className={cn(menuLabelClass, inset && "ps-8", className)} {...props} />;
   },
 );
 
-export const ContextMenuSeparator = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Separator>>(
+export const ContextMenuSeparator = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Separator>>(
   function ContextMenuSeparator({ className, ...props }, ref) {
     return <ContextMenuPrimitive.Separator ref={ref} data-slot="context-menu-separator" className={cn(menuSeparatorClass, className)} {...props} />;
   },
@@ -157,7 +157,7 @@ export interface ContextMenuSubTriggerProps extends React.ComponentPropsWithoutR
   inset?: boolean;
 }
 
-export const ContextMenuSubTrigger = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>, ContextMenuSubTriggerProps>(function ContextMenuSubTrigger(
+export const ContextMenuSubTrigger = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>, ContextMenuSubTriggerProps>(function ContextMenuSubTrigger(
   { className, icon, inset, children, ...props },
   ref,
 ) {
@@ -176,7 +176,7 @@ export const ContextMenuSubTrigger = React.forwardRef<React.ElementRef<typeof Co
   );
 });
 
-export const ContextMenuSubContent = React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.SubContent>, React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent> & { size?: "sm" | "md" }>(
+export const ContextMenuSubContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof ContextMenuPrimitive.SubContent>, React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent> & { size?: "sm" | "md" }>(
   function ContextMenuSubContent({ className, size: sizeProp, sideOffset = 4, collisionPadding = 12, ...props }, ref) {
     const container = usePortalContainer();
     const parentSize = React.useContext(MenuSizeContext);

@@ -72,7 +72,7 @@ interface CarouselContextValue {
   pause: () => void;
 }
 
-const CarouselContext = React.createContext<CarouselContextValue | null>(null);
+const CarouselContext = /*#__PURE__*/ React.createContext<CarouselContextValue | null>(null);
 
 function useCarouselContext(part: string): CarouselContextValue {
   const ctx = React.useContext(CarouselContext);
@@ -109,7 +109,7 @@ export function useCarousel() {
 /* Root                                                                 */
 /* ------------------------------------------------------------------ */
 
-export const carouselVariants = cva("vui-carousel relative min-w-0", {
+export const carouselVariants = /*#__PURE__*/ cva("vui-carousel relative min-w-0", {
   variants: {
     preset: {
       default: "",
@@ -187,7 +187,7 @@ const GAP: Record<NonNullable<CarouselProps["gap"]>, string> = {
  * </Carousel>
  * ```
  */
-export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Carousel(
+export const Carousel = /*#__PURE__*/ React.forwardRef<HTMLElement, CarouselProps>(function Carousel(
   {
     label,
     preset = "default",
@@ -396,7 +396,7 @@ export const Carousel = React.forwardRef<HTMLElement, CarouselProps>(function Ca
 /* Viewport + slides                                                    */
 /* ------------------------------------------------------------------ */
 
-const SlideIndexContext = React.createContext<{ index: number; total: number }>({ index: -1, total: 0 });
+const SlideIndexContext = /*#__PURE__*/ React.createContext<{ index: number; total: number }>({ index: -1, total: 0 });
 
 export interface CarouselViewportProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Built-in previous / next arrows on the stage. Default `true` (hidden when `controls="hidden"` or one slide). */
@@ -413,7 +413,7 @@ export interface CarouselViewportProps extends React.HTMLAttributes<HTMLDivEleme
  * The clipping viewport and the slide track. Children are `CarouselSlide`s. Renders the arrows
  * (and the pause button with autoplay) on the stage, so they line up with the slides.
  */
-export const CarouselViewport = React.forwardRef<HTMLDivElement, CarouselViewportProps>(function CarouselViewport(
+export const CarouselViewport = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CarouselViewportProps>(function CarouselViewport(
   { arrows = true, playPause = true, empty, containerClassName, className, children, ...props },
   ref,
 ) {
@@ -472,7 +472,7 @@ export const CarouselViewport = React.forwardRef<HTMLDivElement, CarouselViewpor
 export interface CarouselSlideProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 /** One slide: `role="group"`, `aria-roledescription="slide"`, labelled "3 of 7"; `inert` while off-screen. */
-export const CarouselSlide = React.forwardRef<HTMLDivElement, CarouselSlideProps>(function CarouselSlide({ className, children, ...props }, ref) {
+export const CarouselSlide = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CarouselSlideProps>(function CarouselSlide({ className, children, ...props }, ref) {
   const c = useCarouselContext("CarouselSlide");
   const { index: i, total } = React.useContext(SlideIndexContext);
   const hidden = c.inView !== null && i >= 0 && !c.inView.has(i);
@@ -537,7 +537,7 @@ export function CarouselNext(props: ArrowProps) {
 export interface CarouselDotsProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 /** One button per slide; the current one is `aria-current` and painted with `--accent`. */
-export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(function CarouselDots({ className, ...props }, ref) {
+export const CarouselDots = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CarouselDotsProps>(function CarouselDots({ className, ...props }, ref) {
   const c = useCarouselContext("CarouselDots");
   if (c.count <= 1) return null;
   return (
@@ -580,7 +580,7 @@ export interface CarouselThumbsProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 /** A row of thumbnail buttons under a gallery carousel; the selected one gets a `--ring` border. */
-export const CarouselThumbs = React.forwardRef<HTMLDivElement, CarouselThumbsProps>(function CarouselThumbs({ items, aspect = 4 / 3, align = "start", className, ...props }, ref) {
+export const CarouselThumbs = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CarouselThumbsProps>(function CarouselThumbs({ items, aspect = 4 / 3, align = "start", className, ...props }, ref) {
   const c = useCarouselContext("CarouselThumbs");
   const listRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
@@ -640,7 +640,7 @@ export function CarouselPlayPause({ className, size, ...props }: CarouselPlayPau
 export interface CarouselCounterProps extends React.HTMLAttributes<HTMLSpanElement> {}
 
 /** "3 / 7" in the locale's digits. */
-export const CarouselCounter = React.forwardRef<HTMLSpanElement, CarouselCounterProps>(function CarouselCounter({ className, ...props }, ref) {
+export const CarouselCounter = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, CarouselCounterProps>(function CarouselCounter({ className, ...props }, ref) {
   const c = useCarouselContext("CarouselCounter");
   if (c.count === 0) return null;
   return (

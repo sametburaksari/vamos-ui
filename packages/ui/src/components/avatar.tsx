@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Avatar as AvatarPrimitive } from "radix-ui";
+import * as AvatarPrimitive from "radix-ui/avatar";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -22,7 +22,7 @@ export type AvatarLabels = typeof avatarLabels;
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type AvatarStatus = "online" | "away" | "busy" | "offline";
 
-export const avatarVariants = cva(
+export const avatarVariants = /*#__PURE__*/ cva(
   "relative inline-flex shrink-0 select-none items-center justify-center align-middle font-medium leading-none tracking-[0.01em]",
   {
     variants: {
@@ -77,7 +77,7 @@ interface AvatarGroupContextValue {
   size?: AvatarSize;
   shape?: "circle" | "square";
 }
-const AvatarGroupContext = React.createContext<AvatarGroupContextValue | null>(null);
+const AvatarGroupContext = /*#__PURE__*/ React.createContext<AvatarGroupContextValue | null>(null);
 
 /* ------------------------------------------------------------------ */
 /* Composite parts                                                     */
@@ -89,7 +89,7 @@ export interface AvatarRootProps extends React.ComponentPropsWithoutRef<typeof A
 }
 
 /** Root of the composite API: `<AvatarRoot><AvatarImage/><AvatarFallback/></AvatarRoot>`. */
-export const AvatarRoot = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root>, AvatarRootProps>(function AvatarRoot(
+export const AvatarRoot = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Root>, AvatarRootProps>(function AvatarRoot(
   { size, shape, className, ...props },
   ref,
 ) {
@@ -109,14 +109,14 @@ export const AvatarRoot = React.forwardRef<React.ElementRef<typeof AvatarPrimiti
 });
 
 /** The photo. Pass `asChild` to render a framework image (Next `<Image>`). */
-export const AvatarImage = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Image>, React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>>(
+export const AvatarImage = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Image>, React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>>(
   function AvatarImage({ className, ...props }, ref) {
     return <AvatarPrimitive.Image ref={ref} data-slot="avatar-image" className={cn("size-full rounded-[inherit] object-cover", className)} {...props} />;
   },
 );
 
 /** Shown while the image loads (after `delayMs`), when it fails, or when there is none. */
-export const AvatarFallback = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Fallback>, React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>>(
+export const AvatarFallback = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof AvatarPrimitive.Fallback>, React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>>(
   function AvatarFallback({ className, ...props }, ref) {
     return (
       <AvatarPrimitive.Fallback
@@ -165,7 +165,7 @@ export interface AvatarProps extends Omit<React.HTMLAttributes<HTMLSpanElement>,
  * <Avatar name="Northwind Traders" shape="square" size="lg" />
  * ```
  */
-export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
+export const Avatar = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
   { src, name, size, shape, status, statusLabel, fallback, delayMs = 300, neutral, labels, className, style, ...props },
   ref,
 ) {
@@ -241,7 +241,7 @@ const overlap: Record<AvatarSize, Record<"sm" | "md" | "lg", string>> = {
  * </AvatarGroup>
  * ```
  */
-export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(function AvatarGroup(
+export const AvatarGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AvatarGroupProps>(function AvatarGroup(
   { max = 4, total, size = "md", shape = "circle", onOverflowClick, spacing = "md", labels, className, children, ...props },
   ref,
 ) {

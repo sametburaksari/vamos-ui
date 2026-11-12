@@ -5,7 +5,7 @@ import { cn } from "../lib/cn";
 const SIZES = { xs: 12, sm: 16, md: 20, lg: 28 } as const;
 const STROKE = { xs: 3, sm: 2.75, md: 2.5, lg: 2.25 } as const;
 
-export const spinnerVariants = cva("ui-spinner inline-block shrink-0 align-middle", {
+export const spinnerVariants = /*#__PURE__*/ cva("ui-spinner inline-block shrink-0 align-middle", {
   variants: {
     tone: {
       /** Inherits the text colour — the default inside buttons. */
@@ -39,7 +39,7 @@ export interface SpinnerProps extends Omit<React.SVGAttributes<SVGSVGElement>, "
  * <Button loading>Save</Button>   // uses a decorative Spinner
  * ```
  */
-export const Spinner = React.forwardRef<SVGSVGElement, SpinnerProps>(function Spinner(
+export const Spinner = /*#__PURE__*/ React.forwardRef<SVGSVGElement, SpinnerProps>(function Spinner(
   { size = "sm", tone, label, delay, className, style, ...props },
   ref,
 ) {

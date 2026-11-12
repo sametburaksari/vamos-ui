@@ -59,7 +59,7 @@ export interface FunnelProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
  * <Funnel title="Sales pipeline" steps={[{ key: "leads", label: "Leads", value: 1240 }, …]} />
  * ```
  */
-export const Funnel = React.forwardRef<HTMLDivElement, FunnelProps>(function Funnel(
+export const Funnel = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FunnelProps>(function Funnel(
   { steps, orientation = "horizontal", format = "integer", amountFormat = "currency", show = ["conversion", "dropoff"], color = "chart-1", compareTo, onStepClick, size = "md", loading, title, labels, className, style, ...props },
   ref,
 ) {

@@ -47,12 +47,12 @@ export interface VamosContextValue {
 }
 
 /** Default link: a plain `<a>` (router hints are dropped). */
-export const DefaultLink = React.forwardRef<HTMLAnchorElement, VamosLinkProps>(function DefaultLink({ replace: _r, prefetch: _p, ...props }, ref) {
+export const DefaultLink = /*#__PURE__*/ React.forwardRef<HTMLAnchorElement, VamosLinkProps>(function DefaultLink({ replace: _r, prefetch: _p, ...props }, ref) {
   return <a ref={ref} {...props} />;
 });
 
 /** Default image: a plain `<img>` with lazy loading; `fill` covers the positioned parent. */
-export const DefaultImage = React.forwardRef<HTMLImageElement, VamosImageProps>(function DefaultImage(
+export const DefaultImage = /*#__PURE__*/ React.forwardRef<HTMLImageElement, VamosImageProps>(function DefaultImage(
   { fill, priority, quality: _q, style, loading, decoding, ...props },
   ref,
 ) {
@@ -74,7 +74,7 @@ const defaultNavigate = (href: string, o?: NavigateOptions) => {
   else window.location.assign(href);
 };
 
-const VamosContext = React.createContext<VamosContextValue>({
+const VamosContext = /*#__PURE__*/ React.createContext<VamosContextValue>({
   Link: DefaultLink,
   Image: DefaultImage,
   navigate: defaultNavigate,
@@ -175,7 +175,7 @@ export interface SmartLinkProps extends VamosLinkProps {
  * Internal links go through the app's router `Link`; external ones render `<a target="_blank" rel="noopener noreferrer">`
  * (`mailto:` / `tel:` stay in the same tab).
  */
-export const SmartLink = React.forwardRef<HTMLAnchorElement, SmartLinkProps>(function SmartLink({ href, external, target, rel, ...props }, ref) {
+export const SmartLink = /*#__PURE__*/ React.forwardRef<HTMLAnchorElement, SmartLinkProps>(function SmartLink({ href, external, target, rel, ...props }, ref) {
   const Link = useLink();
   const isExternal = external ?? isExternalHref(href);
   if (isExternal) {

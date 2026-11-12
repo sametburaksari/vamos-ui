@@ -187,7 +187,7 @@ function groupStatus(g: Group): ApprovalStageStatus {
  * <ApprovalFlow requester={{ name: "Deniz Aydın", at: "2026-11-03T09:12:00Z" }} stages={stages} />
  * ```
  */
-export const ApprovalFlow = React.forwardRef<HTMLOListElement, ApprovalFlowProps>(function ApprovalFlow(
+export const ApprovalFlow = /*#__PURE__*/ React.forwardRef<HTMLOListElement, ApprovalFlowProps>(function ApprovalFlow(
   { stages, requester, orientation = "vertical", variant = "full", now, labels, className, ...props },
   ref,
 ) {
@@ -395,7 +395,7 @@ export interface ApprovalSummaryProps extends React.HTMLAttributes<HTMLSpanEleme
 }
 
 /** Inline status for table rows: one dot per stage + "2 of 3 approved". */
-export const ApprovalSummary = React.forwardRef<HTMLSpanElement, ApprovalSummaryProps>(function ApprovalSummary(
+export const ApprovalSummary = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, ApprovalSummaryProps>(function ApprovalSummary(
   { stages, showCurrent = true, labels, className, ...props },
   ref,
 ) {

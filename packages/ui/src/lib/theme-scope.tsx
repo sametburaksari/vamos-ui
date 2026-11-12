@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Direction, Slot } from "radix-ui";
+import * as Direction from "radix-ui/direction";
+import * as Slot from "radix-ui/slot";
 import { cn } from "./cn";
 import { useComposedRefs } from "./compose-refs";
 
@@ -42,7 +43,7 @@ export function themeAttributes(axes: ThemeAxes): { className?: string } & Recor
   };
 }
 
-const PortalContainerContext = React.createContext<HTMLElement | null>(null);
+const PortalContainerContext = /*#__PURE__*/ React.createContext<HTMLElement | null>(null);
 
 /**
  * The element overlays should portal into, or `undefined` for `document.body`.
@@ -77,7 +78,7 @@ export interface ThemeScopeProps extends ThemeAxes, Omit<React.HTMLAttributes<HT
  * The scope element must not use `transform`, `filter`, `backdrop-filter` or `contain`, because
  * those turn it into the containing block for the fixed-position overlays inside it.
  */
-export const ThemeScope = React.forwardRef<HTMLDivElement, ThemeScopeProps>(function ThemeScope(
+export const ThemeScope = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ThemeScopeProps>(function ThemeScope(
   { theme, material, accent, density, font, dir, glassQuality, asChild, portal = true, className, children, ...props },
   ref,
 ) {

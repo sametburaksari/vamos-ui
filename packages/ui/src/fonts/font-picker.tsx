@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown, Search } from "lucide-react";
-import { Popover as PopoverPrimitive } from "radix-ui";
+import * as PopoverPrimitive from "radix-ui/popover";
 import { cn } from "../lib/cn";
 import { controlVariants } from "../lib/variants";
 import { useControllableState } from "../lib/use-controllable-state";
@@ -106,7 +106,7 @@ type Row = { font: GoogleFont; group: string };
  * focus stays in the search field; ↑/↓, PageUp/PageDown, Home/End (with Ctrl) move, Enter selects.
  * Use it inline (settings pages) or through `FontPicker` (popover).
  */
-export const FontPickerList = React.forwardRef<HTMLDivElement, FontPickerListProps>(function FontPickerList(
+export const FontPickerList = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FontPickerListProps>(function FontPickerList(
   { value: valueProp, defaultValue, onValueChange, fonts = googleFonts, categories, previewText = FONT_PREVIEW_TEXT, loadPreviews = true, specimen = true, autoFocus, listHeight = "18rem", labels, className, ...props },
   ref,
 ) {
@@ -350,7 +350,7 @@ export interface FontPickerProps extends Omit<FontPickerListProps, "autoFocus" |
  * A select-like trigger that opens the searchable font list in a popover. Closes on selection.
  * Inside a `Field` it picks up the id, description and invalid state.
  */
-export const FontPicker = React.forwardRef<HTMLButtonElement, FontPickerProps>(function FontPicker(rawProps, ref) {
+export const FontPicker = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, FontPickerProps>(function FontPicker(rawProps, ref) {
   const props = useFieldControl(rawProps);
   const {
     open: openProp, defaultOpen, onOpenChange, size = "md", placeholder, disabled, showCategory = true, align = "start",

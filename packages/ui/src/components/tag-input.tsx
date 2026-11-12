@@ -93,7 +93,7 @@ const PASTE_SPLIT = /[,;\n\r\t]+/;
  * <TagInput validate={(v) => /^\S+@\S+\.\S+$/.test(v) || "Not an email address"} />
  * ```
  */
-export const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(function TagInput(props, forwardedRef) {
+export const TagInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, TagInputProps>(function TagInput(props, forwardedRef) {
   const {
     value: valueProp,
     defaultValue,

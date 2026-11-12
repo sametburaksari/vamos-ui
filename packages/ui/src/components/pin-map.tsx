@@ -122,7 +122,7 @@ function niceStep(span: number, target: number) {
  *   selectedId={selected} onSelectedIdChange={setSelected} />
  * ```
  */
-export const PinMap = React.forwardRef<HTMLDivElement, PinMapProps>(function PinMap(
+export const PinMap = /*#__PURE__*/ React.forwardRef<HTMLDivElement, PinMapProps>(function PinMap(
   { pins, bounds, aspectRatio = 16 / 10, variant = "pin", selectedId: selectedProp, defaultSelectedId = null, onSelectedIdChange, callout, showLabels, backdrop, bare, className, style, children, ...props },
   ref,
 ) {

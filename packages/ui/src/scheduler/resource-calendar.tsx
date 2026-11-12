@@ -210,7 +210,7 @@ export interface ResourceCalendarProps extends Omit<React.HTMLAttributes<HTMLDiv
   labels?: Partial<ResourceCalendarLabels>;
 }
 
-export const resourceCalendarVariants = cva("ui-rc relative flex min-w-0 flex-col", {
+export const resourceCalendarVariants = /*#__PURE__*/ cva("ui-rc relative flex min-w-0 flex-col", {
   variants: { variant: { blocks: "", codes: "" }, framed: { true: "surface rounded-ui-lg", false: "" } },
   defaultVariants: { variant: "blocks", framed: true },
 });
@@ -256,7 +256,7 @@ const blockEndDay = (b: ResourceBlock, tz: string) => (isDateOnly(b.start) ? (is
  * />
  * ```
  */
-export const ResourceCalendar = React.forwardRef<HTMLDivElement, ResourceCalendarProps>(function ResourceCalendar(
+export const ResourceCalendar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ResourceCalendarProps>(function ResourceCalendar(
   {
     resources,
     blocks,

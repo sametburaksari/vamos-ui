@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { LocalizedText } from "../lib/islands";
 
-export const skeletonVariants = cva("block bg-skeleton", {
+export const skeletonVariants = /*#__PURE__*/ cva("block bg-skeleton", {
   variants: {
     shape: {
       rect: "rounded-ui-sm",
@@ -25,7 +25,7 @@ export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement>, Var
  *
  * The shimmer runs in the reading direction (RTL-aware) and stops under `prefers-reduced-motion`.
  */
-export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(function Skeleton({ className, shape, shimmer, ...props }, ref) {
+export const Skeleton = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SkeletonProps>(function Skeleton({ className, shape, shimmer, ...props }, ref) {
   return <div ref={ref} aria-hidden data-slot="skeleton" className={cn(skeletonVariants({ shape, shimmer }), className)} {...props} />;
 });
 
@@ -40,7 +40,7 @@ export interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 /** Paragraph placeholder: full-width lines with a shorter last line. */
-export const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(function SkeletonText(
+export const SkeletonText = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SkeletonTextProps>(function SkeletonText(
   { lines = 3, lastLineWidth = "62%", shimmer, lineClassName, className, ...props },
   ref,
 ) {
@@ -77,7 +77,7 @@ export interface SkeletonRowProps extends React.HTMLAttributes<HTMLDivElement> {
 const COLUMN_WIDTHS = ["72%", "48%", "60%", "36%", "54%", "40%"];
 
 /** A table/list row placeholder; height follows `--row-h`, padding `--cell-px`. */
-export const SkeletonRow = React.forwardRef<HTMLDivElement, SkeletonRowProps>(function SkeletonRow(
+export const SkeletonRow = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SkeletonRowProps>(function SkeletonRow(
   { columns = 4, avatar, shimmer, className, ...props },
   ref,
 ) {
@@ -124,7 +124,7 @@ export interface SkeletonGroupProps extends React.HTMLAttributes<HTMLDivElement>
  * <SkeletonGroup loading={isLoading}>{isLoading ? <SkeletonText /> : <Article />}</SkeletonGroup>
  * ```
  */
-export const SkeletonGroup = React.forwardRef<HTMLDivElement, SkeletonGroupProps>(function SkeletonGroup(
+export const SkeletonGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SkeletonGroupProps>(function SkeletonGroup(
   { label, loading = true, children, ...props },
   ref,
 ) {

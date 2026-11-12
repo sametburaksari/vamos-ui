@@ -203,7 +203,7 @@ export interface MediaUploadQueueProps extends React.HTMLAttributes<HTMLDivEleme
 }
 
 /** Per-file progress with cancel, retry and the reason a file failed; a polite live summary. */
-export const MediaUploadQueue = React.forwardRef<HTMLDivElement, MediaUploadQueueProps>(function MediaUploadQueue({ queue, variant = "inline", labels, className, ...props }, ref) {
+export const MediaUploadQueue = /*#__PURE__*/ React.forwardRef<HTMLDivElement, MediaUploadQueueProps>(function MediaUploadQueue({ queue, variant = "inline", labels, className, ...props }, ref) {
   const t = useLabels("mediaUploadQueue", queueLabels, labels);
   const f = useFormat();
   if (!queue.items.length) return null;
@@ -294,7 +294,7 @@ type SaveState = "idle" | "saving" | "saved" | "error";
  * Preview, editable metadata with autosave (alt text, decorative, title, caption, description),
  * focal point, file info, usage and actions. The body of the library's details panel.
  */
-export const MediaDetails = React.forwardRef<HTMLDivElement, MediaDetailsProps>(function MediaDetails(
+export const MediaDetails = /*#__PURE__*/ React.forwardRef<HTMLDivElement, MediaDetailsProps>(function MediaDetails(
   { asset, adapter: adapterProp, onChange, onDelete, onClose, readOnly: readOnlyProp, autosaveDelay = 700, labels, className, ...props },
   ref,
 ) {
@@ -665,7 +665,7 @@ const GRID_GAP = 12;
  * Keyboard (grid): arrows move, Space selects, Shift + arrows extends, Ctrl/⌘ + A selects all,
  * Enter opens details, Delete asks to delete, Esc clears the selection.
  */
-export const MediaLibrary = React.forwardRef<HTMLDivElement, MediaLibraryProps>(function MediaLibrary(
+export const MediaLibrary = /*#__PURE__*/ React.forwardRef<HTMLDivElement, MediaLibraryProps>(function MediaLibrary(
   {
     adapter: adapterProp,
     view: viewProp,

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Popover as PopoverPrimitive } from "radix-ui";
+import * as PopoverPrimitive from "radix-ui/popover";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { usePortalContainer } from "../lib/theme-scope";
@@ -16,7 +16,7 @@ export const PopoverAnchor = PopoverPrimitive.Anchor;
 /** Closes the popover; use `asChild` with a Button. */
 export const PopoverClose = PopoverPrimitive.Close;
 
-export const popoverContentVariants = cva(
+export const popoverContentVariants = /*#__PURE__*/ cva(
   ["surface-popover ui-pop z-(--z-popover) rounded-ui-lg outline-none", "max-h-(--radix-popover-content-available-height) overflow-y-auto overscroll-contain"],
   {
     variants: {
@@ -37,7 +37,7 @@ export const popoverContentVariants = cva(
   },
 );
 
-const PopoverTitleContext = React.createContext<{ id: string; register: (on: boolean) => void } | null>(null);
+const PopoverTitleContext = /*#__PURE__*/ React.createContext<{ id: string; register: (on: boolean) => void } | null>(null);
 
 export interface PopoverContentProps extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>, VariantProps<typeof popoverContentVariants> {
   /** Show the pointer arrow. Default `false`. */
@@ -49,7 +49,7 @@ export interface PopoverContentProps extends React.ComponentPropsWithoutRef<type
  * (only the first layer blurs in glass mode; a popover inside a dialog turns opaque),
  * and is labelled by its `PopoverTitle` when one is rendered.
  */
-export const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive.Content>, PopoverContentProps>(function PopoverContent(
+export const PopoverContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof PopoverPrimitive.Content>, PopoverContentProps>(function PopoverContent(
   { className, size, padded, arrow = false, sideOffset = 6, collisionPadding = 12, align = "center", children, ...props },
   ref,
 ) {
@@ -91,7 +91,7 @@ export interface PopoverHeaderProps extends Omit<React.HTMLAttributes<HTMLDivEle
 }
 
 /** Title + optional description at the top of the content. */
-export const PopoverHeader = React.forwardRef<HTMLDivElement, PopoverHeaderProps>(function PopoverHeader(
+export const PopoverHeader = /*#__PURE__*/ React.forwardRef<HTMLDivElement, PopoverHeaderProps>(function PopoverHeader(
   { title, description, action, className, children, ...props },
   ref,
 ) {
@@ -108,7 +108,7 @@ export const PopoverHeader = React.forwardRef<HTMLDivElement, PopoverHeaderProps
 });
 
 /** Heading inside the content; wired to `aria-labelledby`. */
-export const PopoverTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(function PopoverTitle({ className, id, ...props }, ref) {
+export const PopoverTitle = /*#__PURE__*/ React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(function PopoverTitle({ className, id, ...props }, ref) {
   const ctx = React.useContext(PopoverTitleContext);
   const register = ctx?.register;
   React.useEffect(() => {
@@ -124,7 +124,7 @@ export function PopoverDescription({ className, ...props }: React.HTMLAttributes
 }
 
 /** Bottom row for actions. Bleeds to the panel edge with a hairline on top. */
-export const PopoverFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function PopoverFooter({ className, ...props }, ref) {
+export const PopoverFooter = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function PopoverFooter({ className, ...props }, ref) {
   return (
     <div
       ref={ref}

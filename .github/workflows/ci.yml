@@ -49,6 +49,8 @@ jobs:
 
       - name: tsc packages/ui
         run: pnpm --dir packages/ui exec tsc --noEmit
+      - name: Bundle size (packages/ui)
+        run: node packages/ui/scripts/size-check.mjs
       - name: tsc packages/cli
         run: pnpm --dir packages/cli exec tsc --noEmit
       - name: tsc packages/mcp

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import { cn } from "../lib/cn";
 import { motionLevel, type MotionLevel } from "./core";
 
@@ -90,7 +90,7 @@ export interface TiltProps extends React.HTMLAttributes<HTMLDivElement> {
  * <Tilt max={6} glare><article className="surface rounded-ui-lg p-6">…</article></Tilt>
  * ```
  */
-export const Tilt = React.forwardRef<HTMLDivElement, TiltProps>(function Tilt({ max = 5, glare = false, level = "subtle", asChild, className, style, children, ...props }, ref) {
+export const Tilt = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TiltProps>(function Tilt({ max = 5, glare = false, level = "subtle", asChild, className, style, children, ...props }, ref) {
   const inner = React.useRef<HTMLDivElement | null>(null);
   usePointerVars(
     inner,
@@ -133,7 +133,7 @@ export interface MagneticProps extends React.HTMLAttributes<HTMLSpanElement> {
  * <Magnetic><Button variant="primary" size="xl">Book a table</Button></Magnetic>
  * ```
  */
-export const Magnetic = React.forwardRef<HTMLSpanElement, MagneticProps>(function Magnetic({ strength = 0.3, limit = 10, level = "full", asChild, className, children, ...props }, ref) {
+export const Magnetic = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, MagneticProps>(function Magnetic({ strength = 0.3, limit = 10, level = "full", asChild, className, children, ...props }, ref) {
   const inner = React.useRef<HTMLSpanElement | null>(null);
   usePointerVars(
     inner,

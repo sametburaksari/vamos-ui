@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Separator as SeparatorPrimitive } from "radix-ui";
+import * as SeparatorPrimitive from "radix-ui/separator";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 
-export const separatorVariants = cva("shrink-0 border-0", {
+export const separatorVariants = /*#__PURE__*/ cva("shrink-0 border-0", {
   variants: {
     tone: {
       line: "bg-line",
@@ -48,7 +48,7 @@ export interface SeparatorProps
  * <Separator label="or continue with" />
  * ```
  */
-export const Separator = React.forwardRef<React.ElementRef<typeof SeparatorPrimitive.Root>, SeparatorProps>(function Separator(
+export const Separator = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SeparatorPrimitive.Root>, SeparatorProps>(function Separator(
   { className, orientation = "horizontal", decorative = true, tone, inset, label, labelAlign = "center", ...props },
   ref,
 ) {

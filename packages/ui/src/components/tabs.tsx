@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Tabs as RadixTabs } from "radix-ui";
+import * as RadixTabs from "radix-ui/tabs";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { useControllableState } from "../lib/use-controllable-state";
@@ -14,7 +14,7 @@ import { Badge, type BadgeProps } from "./badge";
 /* Variants (shared by Radix tabs and link tabs)                       */
 /* ------------------------------------------------------------------ */
 
-export const tabsListVariants = cva("relative flex min-w-max", {
+export const tabsListVariants = /*#__PURE__*/ cva("relative flex min-w-max", {
   variants: {
     variant: {
       /** Pages and records: hairline rule with an accent underline on the selected tab. */
@@ -29,7 +29,7 @@ export const tabsListVariants = cva("relative flex min-w-max", {
   defaultVariants: { variant: "underline" },
 });
 
-export const tabsTriggerVariants = cva(
+export const tabsTriggerVariants = /*#__PURE__*/ cva(
   [
     "group/tab relative inline-flex shrink-0 select-none items-center gap-2 whitespace-nowrap font-medium text-fg-muted outline-none",
     "transition-[color,background-color,box-shadow] duration-150 focus-ring",
@@ -71,8 +71,8 @@ type TabsVariant = NonNullable<VariantProps<typeof tabsListVariants>["variant"]>
 type TabsSize = "sm" | "md";
 type TabsOrientation = "horizontal" | "vertical";
 
-const TabsContext = React.createContext<{ value: string; orientation: TabsOrientation }>({ value: "", orientation: "horizontal" });
-const TabsListContext = React.createContext<{ variant: TabsVariant; size: TabsSize }>({ variant: "underline", size: "md" });
+const TabsContext = /*#__PURE__*/ React.createContext<{ value: string; orientation: TabsOrientation }>({ value: "", orientation: "horizontal" });
+const TabsListContext = /*#__PURE__*/ React.createContext<{ variant: TabsVariant; size: TabsSize }>({ variant: "underline", size: "md" });
 
 /* ------------------------------------------------------------------ */
 /* Tabs                                                                */
@@ -101,7 +101,7 @@ export interface TabsProps extends Omit<React.ComponentPropsWithoutRef<typeof Ra
  * `activationMode="manual"` for heavy panels (focus moves with arrows, Enter/Space selects).
  * For route-based tabs use `TabsLinkList` — that is navigation, not the Tabs pattern.
  */
-export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
+export const Tabs = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   { value: valueProp, defaultValue, onValueChange, orientation = "horizontal", className, ...props },
   ref,
 ) {
@@ -136,7 +136,7 @@ export interface TabsListProps extends React.ComponentPropsWithoutRef<typeof Rad
 }
 
 /** The row (or column) of tab triggers. */
-export const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(function TabsList(
+export const TabsList = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TabsListProps>(function TabsList(
   { variant = "underline", size = "md", fill, overflow = "scroll", className, children, ...props },
   ref,
 ) {
@@ -193,7 +193,7 @@ export interface TabsTriggerProps extends React.ComponentPropsWithoutRef<typeof 
 }
 
 /** One tab. `value` must match a `TabsContent`. */
-export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(function TabsTrigger(
+export const TabsTrigger = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, TabsTriggerProps>(function TabsTrigger(
   { value, icon, count, badgeTone, className, children, ...props },
   ref,
 ) {
@@ -252,7 +252,7 @@ function TabContent({ icon, count, badgeTone, children }: { icon?: React.ReactNo
 export interface TabsContentProps extends React.ComponentPropsWithoutRef<typeof RadixTabs.Content> {}
 
 /** The panel for one tab. Unmounted while inactive unless `forceMount`. */
-export const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(function TabsContent({ className, ...props }, ref) {
+export const TabsContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TabsContentProps>(function TabsContent({ className, ...props }, ref) {
   return <RadixTabs.Content ref={ref} data-slot="tabs-content" className={cn("min-w-0 flex-1 rounded-ui outline-none focus-ring", className)} {...props} />;
 });
 
@@ -282,7 +282,7 @@ export interface TabsLinkListProps extends React.HTMLAttributes<HTMLElement> {
  * </TabsLinkList>
  * ```
  */
-export const TabsLinkList = React.forwardRef<HTMLElement, TabsLinkListProps>(function TabsLinkList(
+export const TabsLinkList = /*#__PURE__*/ React.forwardRef<HTMLElement, TabsLinkListProps>(function TabsLinkList(
   { variant = "underline", size = "md", fill, orientation = "horizontal", overflow = "scroll", className, children, ...props },
   ref,
 ) {
@@ -329,7 +329,7 @@ export interface TabsLinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAncho
 }
 
 /** One route tab. Renders the app's `Link`. */
-export const TabsLink = React.forwardRef<HTMLAnchorElement, TabsLinkProps>(function TabsLink(
+export const TabsLink = /*#__PURE__*/ React.forwardRef<HTMLAnchorElement, TabsLinkProps>(function TabsLink(
   { href, active, exact, icon, count, badgeTone, disabled, className, children, ...props },
   ref,
 ) {

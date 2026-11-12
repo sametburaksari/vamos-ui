@@ -150,9 +150,9 @@ interface AppShellContextValue {
   shortcuts: boolean;
 }
 
-const AppShellContext = React.createContext<AppShellContextValue | null>(null);
+const AppShellContext = /*#__PURE__*/ React.createContext<AppShellContextValue | null>(null);
 /** Rail state as resolved by the layout (preference or width). */
-const CollapsedContext = React.createContext(false);
+const CollapsedContext = /*#__PURE__*/ React.createContext(false);
 
 function writeCookie(v: boolean) {
   try {
@@ -415,7 +415,7 @@ export interface AppShellProps extends Omit<React.HTMLAttributes<HTMLDivElement>
  * </AppShellProvider>
  * ```
  */
-export const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function AppShell(
+export const AppShell = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AppShellProps>(function AppShell(
   { sidebar, topbar, banner, notifications, actions, user, badges, sidebarFooter, appSwitcherFooter, layout = "sidebar", loading, announceRouteChanges = true, height = "screen", globals = true, labels, className, children, ...props },
   ref,
 ) {

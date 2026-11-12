@@ -1,6 +1,6 @@
 import * as React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Popover } from "radix-ui";
+import * as Popover from "radix-ui/popover";
 import { ThemeScope, themeAttributes, usePortalContainer } from "./theme-scope";
 import { Layer, useLayerDepth } from "./layer";
 import { SmartLink, VamosProvider, useCan, useNavigation } from "./provider";

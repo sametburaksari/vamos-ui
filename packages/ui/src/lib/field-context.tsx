@@ -21,7 +21,7 @@ export interface FieldContextValue {
   name?: string;
 }
 
-export const FieldContext = React.createContext<FieldContextValue | null>(null);
+export const FieldContext = /*#__PURE__*/ React.createContext<FieldContextValue | null>(null);
 
 /** The surrounding Field, or `null`. */
 export function useFieldContext(): FieldContextValue | null {

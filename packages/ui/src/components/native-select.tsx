@@ -39,7 +39,7 @@ export interface NativeSelectProps extends Omit<React.SelectHTMLAttributes<HTMLS
  * </Field>
  * ```
  */
-export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(function NativeSelect(
+export const NativeSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, NativeSelectProps>(function NativeSelect(
   { className, selectClassName, size = "md", variant = "default", invalid, placeholder, items, children, ...rest },
   ref,
 ) {

@@ -118,7 +118,7 @@ export function isTimeOutOfRange(value: string | null | undefined, opts: { min?:
  * <Field label="Start"><TimeInput value={time} onValueChange={setTime} /></Field>
  * ```
  */
-export const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>(function TimeInput(rawProps, ref) {
+export const TimeInput = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TimeInputProps>(function TimeInput(rawProps, ref) {
   const field = useFieldContext();
   const {
     value: valueProp,
@@ -468,7 +468,7 @@ export interface TimePickerProps extends TimeInputProps {
  * <TimePicker value={time} onValueChange={setTime} slots step={30} min="09:00" max="18:00" />
  * ```
  */
-export const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(function TimePicker(
+export const TimePicker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TimePickerProps>(function TimePicker(
   { slots = false, step = 15, slotRange, open: openProp, onOpenChange, value: valueProp, defaultValue, onValueChange, labels, ...props },
   ref,
 ) {
@@ -624,7 +624,7 @@ export function timeRangeMinutes(range: TimeRange, overnight = false): number | 
  * Start and end time with a duration hint (shift start/end, opening hours). The end must be after
  * the start unless `overnight` is set.
  */
-export const TimeRangePicker = React.forwardRef<HTMLDivElement, TimeRangePickerProps>(function TimeRangePicker(
+export const TimeRangePicker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TimeRangePickerProps>(function TimeRangePicker(
   { value: valueProp, defaultValue, onValueChange, overnight = false, showDuration = true, nameStart, nameEnd, labels, className, size = "md", ...props },
   ref,
 ) {

@@ -1,20 +1,20 @@
 "use client";
 
 import * as React from "react";
-import { Accordion as RadixAccordion } from "radix-ui";
+import * as RadixAccordion from "radix-ui/accordion";
 import { ChevronDown } from "lucide-react";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
 
 type AccordionVariant = "plain" | "separated" | "card";
 type AccordionSize = "sm" | "md";
-const AccordionContext = React.createContext<{ variant: AccordionVariant; size: AccordionSize; headingLevel: 2 | 3 | 4 | 5 | 6 }>({
+const AccordionContext = /*#__PURE__*/ React.createContext<{ variant: AccordionVariant; size: AccordionSize; headingLevel: 2 | 3 | 4 | 5 | 6 }>({
   variant: "plain",
   size: "md",
   headingLevel: 3,
 });
 
-const rootVariants = cva("w-full", {
+const rootVariants = /*#__PURE__*/ cva("w-full", {
   variants: {
     variant: {
       /** Ruled list: hairlines between items. */
@@ -53,7 +53,7 @@ export type AccordionProps = AccordionRootProps & {
  *
  * Persisting the open sections is the consumer's job: control `value` and store it.
  */
-export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(function Accordion(
+export const Accordion = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AccordionProps>(function Accordion(
   { variant = "plain", size = "md", headingLevel = 3, className, ...props },
   ref,
 ) {
@@ -65,7 +65,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(functi
   );
 });
 
-const accordionItemVariants = cva("group/acc-item", {
+const accordionItemVariants = /*#__PURE__*/ cva("group/acc-item", {
   variants: {
     variant: {
       plain: "border-b border-line last:border-b-0",
@@ -78,7 +78,7 @@ const accordionItemVariants = cva("group/acc-item", {
 export interface AccordionItemProps extends React.ComponentPropsWithoutRef<typeof RadixAccordion.Item> {}
 
 /** One section. `value` identifies it; `disabled` locks it. */
-export const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(function AccordionItem({ className, ...props }, ref) {
+export const AccordionItem = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AccordionItemProps>(function AccordionItem({ className, ...props }, ref) {
   const { variant } = React.useContext(AccordionContext);
   return <RadixAccordion.Item ref={ref} data-slot="accordion-item" className={cn(accordionItemVariants({ variant }), className)} {...props} />;
 });
@@ -95,7 +95,7 @@ export interface AccordionTriggerProps extends React.ComponentPropsWithoutRef<ty
 }
 
 /** The section header: a heading with the toggle button (and optional actions beside it). */
-export const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>(function AccordionTrigger(
+export const AccordionTrigger = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, AccordionTriggerProps>(function AccordionTrigger(
   { icon, meta, actions, className, children, ...props },
   ref,
 ) {
@@ -142,7 +142,7 @@ export const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTri
 export interface AccordionContentProps extends React.ComponentPropsWithoutRef<typeof RadixAccordion.Content> {}
 
 /** The collapsible body. Animates its height (`ui-collapse`, reduced-motion safe). */
-export const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>(function AccordionContent({ className, children, ...props }, ref) {
+export const AccordionContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AccordionContentProps>(function AccordionContent({ className, children, ...props }, ref) {
   const { variant, size } = React.useContext(AccordionContext);
   return (
     <RadixAccordion.Content ref={ref} data-slot="accordion-content" className="ui-collapse" {...props}>

@@ -69,7 +69,7 @@ const gridCols = { 1: "", 2: "@lg/dl:grid-cols-2", 3: "@lg/dl:grid-cols-2 @3xl/d
  * ]} />
  * ```
  */
-export const DescriptionList = React.forwardRef<HTMLDListElement, DescriptionListProps>(function DescriptionList(
+export const DescriptionList = /*#__PURE__*/ React.forwardRef<HTMLDListElement, DescriptionListProps>(function DescriptionList(
   { items, layout = "horizontal", columns = 2, labelWidth, divided, size = "md", emptyValue, onEdit, loading, labels, className, style, children, ...props },
   ref,
 ) {
@@ -163,7 +163,7 @@ export interface DescriptionItemProps extends Omit<React.HTMLAttributes<HTMLDivE
 }
 
 /** One label/value pair (`<div><dt/><dd/></div>`). */
-export const DescriptionItem = React.forwardRef<HTMLDivElement, DescriptionItemProps>(function DescriptionItem(
+export const DescriptionItem = /*#__PURE__*/ React.forwardRef<HTMLDivElement, DescriptionItemProps>(function DescriptionItem(
   { label, children, hint, copyable, span, emptyValue, edit, action, labels, className, ...props },
   ref,
 ) {

@@ -23,7 +23,7 @@ export type TopBarLabels = typeof topBarLabels;
  * Bridge between the top bar and the App shell (mobile nav button). App shell provides it; outside
  * a shell the menu button needs its own `onClick`.
  */
-export const TopBarShellContext = React.createContext<{ openMobileNav: () => void; mobileNavOpen: boolean } | null>(null);
+export const TopBarShellContext = /*#__PURE__*/ React.createContext<{ openMobileNav: () => void; mobileNavOpen: boolean } | null>(null);
 
 export interface TopBarProps extends React.HTMLAttributes<HTMLElement> {
   /** Sticks to the top of the scrolling area. Default `true`. */
@@ -47,7 +47,7 @@ export interface TopBarProps extends React.HTMLAttributes<HTMLElement> {
  * </TopBar>
  * ```
  */
-export const TopBar = React.forwardRef<HTMLElement, TopBarProps>(function TopBar({ sticky = true, variant = "bar", scrollTarget, className, role, ...props }, ref) {
+export const TopBar = /*#__PURE__*/ React.forwardRef<HTMLElement, TopBarProps>(function TopBar({ sticky = true, variant = "bar", scrollTarget, className, role, ...props }, ref) {
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     if (typeof window === "undefined") return;
@@ -101,7 +101,7 @@ export interface TopBarMenuButtonProps extends Omit<React.ButtonHTMLAttributes<H
 }
 
 /** Opens the App shell's mobile navigation. Visible only below 768px. */
-export const TopBarMenuButton = React.forwardRef<HTMLButtonElement, TopBarMenuButtonProps>(function TopBarMenuButton({ className, onClick, labels, ...props }, ref) {
+export const TopBarMenuButton = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, TopBarMenuButtonProps>(function TopBarMenuButton({ className, onClick, labels, ...props }, ref) {
   const shell = React.useContext(TopBarShellContext);
   const t = useLabels("topBar", topBarLabels, labels);
   return (
@@ -138,7 +138,7 @@ export interface TopBarSearchProps extends Omit<React.ButtonHTMLAttributes<HTMLB
  * The ⌘K trigger: a real button that looks like a field. Collapses to an icon button when the bar is
  * narrower than 560px.
  */
-export const TopBarSearch = React.forwardRef<HTMLButtonElement, TopBarSearchProps>(function TopBarSearch({ placeholder, shortcut = "mod+k", onOpen, onClick, className, labels, ...props }, ref) {
+export const TopBarSearch = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, TopBarSearchProps>(function TopBarSearch({ placeholder, shortcut = "mod+k", onOpen, onClick, className, labels, ...props }, ref) {
   const t = useLabels("topBar", topBarLabels, labels);
   const palette = useCommandPalette();
   const open = (e: React.MouseEvent<HTMLButtonElement>) => {

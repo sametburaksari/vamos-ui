@@ -607,7 +607,7 @@ function LineItemsInner<R>(props: LineItemsProps<R>, ref: React.ForwardedRef<HTM
  * <LineItems currency="TRY" taxPack={trLineTaxPack()} units={["hour", "day", "pcs"]} defaultValue={rows} onValueChange={(rows, totals) => save(rows, totals.payable)} />
  * ```
  */
-export const LineItems = React.forwardRef(LineItemsInner) as <R = unknown>(
+export const LineItems = /*#__PURE__*/ React.forwardRef(LineItemsInner) as <R = unknown>(
   props: LineItemsProps<R> & { ref?: React.Ref<HTMLDivElement> },
 ) => React.ReactElement;
 

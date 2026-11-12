@@ -46,7 +46,7 @@ export interface BlockHeadingProps extends Omit<React.HTMLAttributes<HTMLHeading
  * <BlockHeading level={1} size="display-xl" text="Dinner, *slowly*." />
  * ```
  */
-export const BlockHeading = React.forwardRef<HTMLHeadingElement, BlockHeadingProps>(function BlockHeading(
+export const BlockHeading = /*#__PURE__*/ React.forwardRef<HTMLHeadingElement, BlockHeadingProps>(function BlockHeading(
   { text, children, level = 2, size = "display-m", editMode, field, labels, locale, className, ...props },
   ref,
 ) {

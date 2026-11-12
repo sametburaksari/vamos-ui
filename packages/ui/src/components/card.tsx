@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { SkeletonText } from "./skeleton";
 
-export const cardVariants = cva("relative block [--card-p:var(--gap)]", {
+export const cardVariants = /*#__PURE__*/ cva("relative block [--card-p:var(--gap)]", {
   variants: {
     variant: {
       /** The main surface: glass or solid from tokens. */
@@ -52,7 +52,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement>, VariantPro
  * </Card>
  * ```
  */
-export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
+export const Card = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CardProps>(function Card(
   { className, variant, padding, interactive, asChild, as = "div", loading, selected, ...props },
   ref,
 ) {
@@ -86,7 +86,7 @@ export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 }
 
 /** Prop-based header (title, description, action). For custom layouts compose CardTitle / CardDescription / CardAction. */
-export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(function CardHeader(
+export const CardHeader = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CardHeaderProps>(function CardHeader(
   { eyebrow, title, description, action, titleAs = "h3", titleId, divider, className, children, ...props },
   ref,
 ) {
@@ -122,7 +122,7 @@ export function CardEyebrow({ className, ...props }: React.HTMLAttributes<HTMLPa
 }
 
 /** Card title. Default `<h3>`. */
-export const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement> & { as?: "h2" | "h3" | "h4" | "p" }>(
+export const CardTitle = /*#__PURE__*/ React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement> & { as?: "h2" | "h3" | "h4" | "p" }>(
   function CardTitle({ as: Tag = "h3", className, ...props }, ref) {
     return <Tag ref={ref} data-slot="card-title" className={cn("text-[15px] font-semibold tracking-[-0.01em] text-balance text-fg", className)} {...props} />;
   },
@@ -145,7 +145,7 @@ export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
   loadingLines?: number;
 }
 
-export const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(function CardBody({ className, loading, loadingLines = 3, children, ...props }, ref) {
+export const CardBody = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CardBodyProps>(function CardBody({ className, loading, loadingLines = 3, children, ...props }, ref) {
   return (
     <div ref={ref} data-slot="card-body" className={cn("px-(--card-p,1.25rem) pb-(--card-p,1.25rem)", className)} {...props}>
       {loading ? <SkeletonText lines={loadingLines} /> : children}
@@ -153,7 +153,7 @@ export const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(function
   );
 });
 
-export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function CardFooter({ className, ...props }, ref) {
+export const CardFooter = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function CardFooter({ className, ...props }, ref) {
   return (
     <div
       ref={ref}
@@ -165,6 +165,6 @@ export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
 });
 
 /** A secondary tile inside a card (`surface-2`, never blurs). */
-export const Inset = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function Inset({ className, ...props }, ref) {
+export const Inset = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function Inset({ className, ...props }, ref) {
   return <div ref={ref} data-slot="inset" className={cn("surface-2 rounded-ui", className)} {...props} />;
 });

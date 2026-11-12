@@ -58,7 +58,7 @@ const accept = (ch: string) => /^[0-9A-Za-z]$/.test(ch);
  * </Field>
  * ```
  */
-export const IbanInput = React.forwardRef<HTMLInputElement, IbanInputProps>(function IbanInput(
+export const IbanInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, IbanInputProps>(function IbanInput(
   { countries, rules = [trIbanRule], showBank = true, value, defaultValue, onValueChange, validateOn = "blur", onValidate, mono = true, labels, name, invalid, trailing, inputClassName, onBlur, onKeyDown, disabled, placeholder, ...rest },
   forwardedRef,
 ) {

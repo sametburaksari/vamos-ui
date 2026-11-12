@@ -223,7 +223,7 @@ export interface DiffViewProps extends Omit<React.HTMLAttributes<HTMLDivElement>
  * <DiffView before={v11.body} after={v12.body} mode="split" beforeLabel="v11" afterLabel="v12" />
  * ```
  */
-export const DiffView = React.forwardRef<HTMLDivElement, DiffViewProps>(function DiffView(
+export const DiffView = /*#__PURE__*/ React.forwardRef<HTMLDivElement, DiffViewProps>(function DiffView(
   { before, after, granularity = "word", mode = "unified", context = 3, beforeLabel, afterLabel, lineNumbers = true, toolbar = true, actions, wrap = true, labels, className, ...props },
   ref,
 ) {
@@ -494,7 +494,7 @@ export interface FieldDiffProps extends Omit<React.HTMLAttributes<HTMLDivElement
  * ]} />
  * ```
  */
-export const FieldDiff = React.forwardRef<HTMLDivElement, FieldDiffProps>(function FieldDiff(
+export const FieldDiff = /*#__PURE__*/ React.forwardRef<HTMLDivElement, FieldDiffProps>(function FieldDiff(
   { before, after, fields, onlyChanges = true, beforeLabel, afterLabel, labels, className, ...props },
   ref,
 ) {
@@ -619,7 +619,7 @@ export interface VersionHistoryProps extends Omit<React.HTMLAttributes<HTMLDivEl
  * />
  * ```
  */
-export const VersionHistory = React.forwardRef<HTMLDivElement, VersionHistoryProps>(function VersionHistory(
+export const VersionHistory = /*#__PURE__*/ React.forwardRef<HTMLDivElement, VersionHistoryProps>(function VersionHistory(
   { versions, compare, defaultCompare, onCompareChange, loadVersion, fields, onRestore, layout = "page", defaultMode, granularity = "word", context = 3, labels, className, ...props },
   ref,
 ) {

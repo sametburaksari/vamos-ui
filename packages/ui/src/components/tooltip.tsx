@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Slot, Tooltip as TooltipPrimitive } from "radix-ui";
+import * as Slot from "radix-ui/slot";
+import * as TooltipPrimitive from "radix-ui/tooltip";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { usePortalContainer } from "../lib/theme-scope";
@@ -12,7 +13,7 @@ import { KbdGroup } from "./kbd";
 /* Provider                                                            */
 /* ------------------------------------------------------------------ */
 
-const TooltipProviderContext = React.createContext(false);
+const TooltipProviderContext = /*#__PURE__*/ React.createContext(false);
 
 /** `true` when a `TooltipProvider` is above this point (IconButton switches from `title` to Tooltip). */
 export function useHasTooltipProvider(): boolean {
@@ -56,7 +57,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 
 export const TooltipTrigger = TooltipPrimitive.Trigger;
 
-export const tooltipContentVariants = cva(
+export const tooltipContentVariants = /*#__PURE__*/ cva(
   [
     "ui-pop z-(--z-tooltip) max-w-[min(18rem,calc(100vw-1.5rem))] select-none rounded-ui-sm px-2 py-1 text-[12.5px] leading-snug font-medium",
     // tooltips never blur — they open and close too often to spend the glass budget on
@@ -86,7 +87,7 @@ export interface TooltipContentProps extends React.ComponentPropsWithoutRef<type
   shortcut?: string | string[];
 }
 
-export const TooltipContent = React.forwardRef<React.ElementRef<typeof TooltipPrimitive.Content>, TooltipContentProps>(function TooltipContent(
+export const TooltipContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof TooltipPrimitive.Content>, TooltipContentProps>(function TooltipContent(
   { className, tone, arrow = false, shortcut, sideOffset = 6, collisionPadding = 8, children, ...props },
   ref,
 ) {

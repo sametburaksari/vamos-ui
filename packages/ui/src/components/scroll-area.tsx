@@ -1,14 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { ScrollArea as RadixScrollArea } from "radix-ui";
+import * as RadixScrollArea from "radix-ui/scroll-area";
 import { cn } from "../lib/cn";
 import { useComposedRefs } from "../lib/compose-refs";
 import { useEdgeFade } from "../lib/use-edge-fade";
 import { useIsomorphicLayoutEffect } from "../lib/use-controllable-state";
 
 type BarSize = "sm" | "md";
-const BarSizeContext = React.createContext<BarSize>("sm");
+const BarSizeContext = /*#__PURE__*/ React.createContext<BarSize>("sm");
 
 const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"]),[contenteditable="true"]';
 
@@ -43,7 +43,7 @@ export interface ScrollAreaProps extends Omit<React.ComponentPropsWithoutRef<typ
  * only for embedded regions (performance and iOS momentum). The viewport is keyboard-focusable only
  * when its content has nothing focusable of its own.
  */
-export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(function ScrollArea(
+export const ScrollArea = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ScrollAreaProps>(function ScrollArea(
   {
     orientation = "vertical",
     maxHeight,
@@ -114,7 +114,7 @@ export interface ScrollBarProps extends React.ComponentPropsWithoutRef<typeof Ra
 }
 
 /** A scrollbar for `ScrollArea`. Rendered automatically from `orientation`; use it directly for custom layouts. */
-export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(function ScrollBar({ orientation = "vertical", size, className, ...props }, ref) {
+export const ScrollBar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ScrollBarProps>(function ScrollBar({ orientation = "vertical", size, className, ...props }, ref) {
   const ctxSize = React.useContext(BarSizeContext);
   const s = size ?? ctxSize;
   return (

@@ -32,7 +32,7 @@ export interface BlockLinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnch
  * <BlockLink href="https://maps.app.goo.gl/x" newTab>Directions</BlockLink>
  * ```
  */
-export const BlockLink = React.forwardRef<HTMLAnchorElement, BlockLinkProps>(function BlockLink(
+export const BlockLink = /*#__PURE__*/ React.forwardRef<HTMLAnchorElement, BlockLinkProps>(function BlockLink(
   { href, newTab, appearance, size = "lg", components, labels, locale, field, editMode, className, children, rel, target, ...props },
   ref,
 ) {

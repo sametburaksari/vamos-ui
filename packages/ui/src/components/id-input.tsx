@@ -89,7 +89,7 @@ export interface IdInputProps extends BaseFormattedProps<string | null> {
  * </Field>
  * ```
  */
-export const IdInput = React.forwardRef<HTMLInputElement, IdInputProps>(function IdInput(
+export const IdInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, IdInputProps>(function IdInput(
   { kind, masked = false, value, defaultValue, onValueChange, validateOn = "blur", onValidate, mono = true, labels, name, invalid, inputClassName, onBlur, onFocus, onKeyDown, disabled, placeholder, ...rest },
   forwardedRef,
 ) {
@@ -192,11 +192,11 @@ export interface NationalIdInputProps extends Omit<IdInputProps, "kind"> {
 }
 
 /** `IdInput` preset for personal IDs. Default kind `tr-tckn`. */
-export const NationalIdInput = React.forwardRef<HTMLInputElement, NationalIdInputProps>(function NationalIdInput({ kind = "tr-tckn", ...props }, ref) {
+export const NationalIdInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, NationalIdInputProps>(function NationalIdInput({ kind = "tr-tckn", ...props }, ref) {
   return <IdInput ref={ref} kind={kind} {...props} />;
 });
 
 /** `IdInput` preset for tax numbers. Default kind `tr-tax-id` (VKN or a sole proprietor's TCKN). */
-export const TaxIdInput = React.forwardRef<HTMLInputElement, NationalIdInputProps>(function TaxIdInput({ kind = "tr-tax-id", ...props }, ref) {
+export const TaxIdInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, NationalIdInputProps>(function TaxIdInput({ kind = "tr-tax-id", ...props }, ref) {
   return <IdInput ref={ref} kind={kind} {...props} />;
 });

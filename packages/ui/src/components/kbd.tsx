@@ -6,7 +6,7 @@ import { cn } from "../lib/cn";
 import { formatKey, parseShortcut, shortcutKeys, useIsMac } from "../lib/use-hotkeys";
 import { useLabels } from "../lib/labels";
 
-export const kbdVariants = cva(
+export const kbdVariants = /*#__PURE__*/ cva(
   "ui-keycap inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-[calc(var(--radius)*0.42)] font-mono font-medium leading-none tabular",
   {
     variants: {
@@ -123,7 +123,7 @@ export interface KbdProps extends React.HTMLAttributes<HTMLElement>, VariantProp
  * <Kbd keyName="mod" />   // ⌘ on macOS, Ctrl elsewhere
  * ```
  */
-export const Kbd = React.forwardRef<HTMLElement, KbdProps>(function Kbd({ keyName, size, variant, labels, className, children, ...props }, ref) {
+export const Kbd = /*#__PURE__*/ React.forwardRef<HTMLElement, KbdProps>(function Kbd({ keyName, size, variant, labels, className, children, ...props }, ref) {
   const isMac = useIsMac();
   const t = useLabels("kbd", kbdLabels, labels);
   let content: React.ReactNode = children;
@@ -172,7 +172,7 @@ export interface KbdGroupProps extends Omit<React.HTMLAttributes<HTMLElement>, "
  * <KbdGroup keys={["g", "p"]} separator="then" />
  * ```
  */
-export const KbdGroup = React.forwardRef<HTMLElement, KbdGroupProps>(function KbdGroup({ keys, separator, size, variant, labels, className, ...props }, ref) {
+export const KbdGroup = /*#__PURE__*/ React.forwardRef<HTMLElement, KbdGroupProps>(function KbdGroup({ keys, separator, size, variant, labels, className, ...props }, ref) {
   const isMac = useIsMac();
   const tokens = typeof keys === "string" ? shortcutKeys(keys, isMac) : keys;
   return (

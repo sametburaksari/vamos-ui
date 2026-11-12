@@ -75,7 +75,7 @@ export interface SectionProps extends Omit<React.HTMLAttributes<HTMLElement>, "i
  * </Section>
  * ```
  */
-export const Section = React.forwardRef<HTMLElement, SectionProps>(function Section(
+export const Section = /*#__PURE__*/ React.forwardRef<HTMLElement, SectionProps>(function Section(
   { as: Comp = "section", theme, anchor, headingId, blockId, blockType, editMode, priority, components, labels, className, style, children, ...props },
   ref,
 ) {
@@ -128,7 +128,7 @@ export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** Centres content at a token width with fluid gutters (`--gutter`). Server component. */
-export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(function Container({ size = "content", className, ...props }, ref) {
+export const Container = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ContainerProps>(function Container({ size = "content", className, ...props }, ref) {
   return <div ref={ref} data-size={size === "content" ? undefined : size} className={cn("vb-container", className)} {...props} />;
 });
 

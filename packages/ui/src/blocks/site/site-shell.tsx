@@ -69,7 +69,7 @@ export interface SiteShellContextValue {
   pageEnter: boolean;
 }
 
-const SiteShellContext = React.createContext<SiteShellContextValue | null>(null);
+const SiteShellContext = /*#__PURE__*/ React.createContext<SiteShellContextValue | null>(null);
 
 /** Page, locale and navigation of the closest Site shell. Throws outside one. */
 export function useSiteShell(): SiteShellContextValue {
@@ -96,7 +96,7 @@ export function useSiteShell(): SiteShellContextValue {
  * </SiteShell>
  * ```
  */
-export const SiteShell = React.forwardRef<HTMLDivElement, SiteShellProps>(function SiteShell(
+export const SiteShell = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SiteShellProps>(function SiteShell(
   {
     accent,
     accentDark,
@@ -374,7 +374,7 @@ export interface SiteShellLinkProps extends Omit<React.AnchorHTMLAttributes<HTML
  * A link to an inner page for client code. Server components can use a plain
  * `href={sitePageHref("pricing")}` instead; the shell handles both.
  */
-export const SiteShellLink = React.forwardRef<HTMLAnchorElement, SiteShellLinkProps>(function SiteShellLink({ page, anchor, ...props }, ref) {
+export const SiteShellLink = /*#__PURE__*/ React.forwardRef<HTMLAnchorElement, SiteShellLinkProps>(function SiteShellLink({ page, anchor, ...props }, ref) {
   const { hrefFor, page: current } = useSiteShell();
   return <a ref={ref} href={hrefFor(page, anchor)} aria-current={!anchor && current === page ? "page" : undefined} {...props} />;
 });

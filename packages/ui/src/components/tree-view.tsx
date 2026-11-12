@@ -24,7 +24,7 @@ const treeViewLabels = {
 };
 export type TreeViewLabels = typeof treeViewLabels;
 
-export const treeRowVariants = cva(
+export const treeRowVariants = /*#__PURE__*/ cva(
   [
     "group/tree-row relative flex w-full min-w-0 cursor-default select-none items-center gap-1.5 rounded-ui-sm pe-1.5 text-start outline-none",
     "transition-colors duration-100",
@@ -122,7 +122,7 @@ export interface TreeViewRowProps extends React.HTMLAttributes<HTMLDivElement> {
  * icon, label, badge and hover actions. Used by Tree view and Tree select; render it inside an
  * element carrying `tree.getTreeProps()`.
  */
-export const TreeViewRow = React.forwardRef<HTMLDivElement, TreeViewRowProps>(function TreeViewRow(
+export const TreeViewRow = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TreeViewRowProps>(function TreeViewRow(
   { item, tree, indent = 16, guides = true, size = "md", variant = "default", checkbox, query, label, actions, labels, onRowClick, className, style, onClick, onDoubleClick, ...props },
   ref,
 ) {
@@ -284,7 +284,7 @@ export interface TreeViewProps extends Omit<React.HTMLAttributes<HTMLDivElement>
  * <TreeView aria-label="Categories" data={categories} selectionMode="checkbox" checkValueMode="leaf" />
  * ```
  */
-export const TreeView = React.forwardRef<HTMLDivElement, TreeViewProps>(function TreeView(
+export const TreeView = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TreeViewProps>(function TreeView(
   {
     data,
     expanded,

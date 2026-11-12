@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Popover as PopoverPrimitive } from "radix-ui";
+import * as PopoverPrimitive from "radix-ui/popover";
 import { ChevronsUpDown, Plus, Search, X } from "lucide-react";
 import { cn } from "../lib/cn";
 import { FieldContextReset, useFieldControl } from "../lib/field-context";
@@ -128,7 +128,7 @@ function PathSeparator() {
  * <TreeSelect multiple nodes={regions} valueMode="parent" value={territories} onValueChange={setTerritories} />
  * ```
  */
-export const TreeSelect = React.forwardRef<HTMLDivElement, TreeSelectProps>(function TreeSelect(props, ref) {
+export const TreeSelect = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TreeSelectProps>(function TreeSelect(props, ref) {
   const {
     nodes,
     loadChildren,

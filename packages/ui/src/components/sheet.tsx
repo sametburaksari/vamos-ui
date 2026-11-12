@@ -71,7 +71,7 @@ export interface SheetContentProps extends LayerContentShellProps {
 
 const sideAlias = { left: "start", right: "end" } as const;
 
-export const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(function SheetContent(
+export const SheetContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SheetContentProps>(function SheetContent(
   { side: sideProp = "end", size = "md", inset, className, ...props },
   ref,
 ) {
@@ -215,7 +215,7 @@ export const DrawerHeader = LayerHeader;
 export const DrawerFooter = LayerFooter;
 
 /** The scrolling body of a drawer; dragging starts from it only while it is scrolled to the top. */
-export const DrawerBody = React.forwardRef<HTMLDivElement, LayerBodyProps>(function DrawerBody(props, ref) {
+export const DrawerBody = /*#__PURE__*/ React.forwardRef<HTMLDivElement, LayerBodyProps>(function DrawerBody(props, ref) {
   return <LayerBody ref={ref} data-slot="drawer-body" {...props} />;
 });
 
@@ -231,7 +231,7 @@ export interface DrawerContentProps extends Omit<SheetContentProps, "side"> {
   handle?: boolean;
 }
 
-export const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(function DrawerContent(
+export const DrawerContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, DrawerContentProps>(function DrawerContent(
   { dragToDismiss = true, handle = true, size = "lg", className, children, onPointerDown, onPointerMove, onPointerUp, onPointerCancel, ...props },
   ref,
 ) {

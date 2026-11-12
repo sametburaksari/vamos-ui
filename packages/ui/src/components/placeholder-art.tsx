@@ -120,7 +120,7 @@ export interface PlaceholderArtProps extends Omit<React.HTMLAttributes<HTMLDivEl
  * <AspectRatio ratio="4/3"><PlaceholderArt seed="harbour-terrace" label="Harbour terrace at dusk" /></AspectRatio>
  * ```
  */
-export const PlaceholderArt = React.forwardRef<HTMLDivElement, PlaceholderArtProps>(function PlaceholderArt(
+export const PlaceholderArt = /*#__PURE__*/ React.forwardRef<HTMLDivElement, PlaceholderArtProps>(function PlaceholderArt(
   { seed, pattern = "auto", icon, label, caption, strength = "subtle", className, style, ...props },
   ref,
 ) {

@@ -149,7 +149,7 @@ function Bold({ text, query, locale }: { text: string; query: string; locale: st
  * <UserPicker multiple trigger="avatars" source={people} value={assignees} onValueChange={setAssignees} aria-label="Assignees" />
  * ```
  */
-export const UserPicker = React.forwardRef<HTMLDivElement, UserPickerProps>(function UserPicker(props, ref) {
+export const UserPicker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, UserPickerProps>(function UserPicker(props, ref) {
   const { source, teams, getTeamMembers, currentUserId, trigger = "field", maxAvatars = 3, roleLabel, labels, selectedRecords, ...rest } = props;
   const t = useLabels("userPicker", userPickerLabels, labels);
   const { locale } = useLocale();
@@ -303,7 +303,7 @@ export const UserPicker = React.forwardRef<HTMLDivElement, UserPickerProps>(func
 });
 
 /** Avatar stack + "+" — the compact trigger for table cells and record headers. */
-const AvatarsTrigger = React.forwardRef<
+const AvatarsTrigger = /*#__PURE__*/ React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement> & { selected: Row[]; max: number; size?: "sm" | "md" | "lg" }
 >(function AvatarsTrigger({ selected, max, size = "md", className, "aria-label": label, ...props }, ref) {

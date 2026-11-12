@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { HexAlphaColorPicker, HexColorPicker } from "react-colorful";
-import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
+import * as RadioGroupPrimitive from "radix-ui/radio-group";
 import { Check, ChevronDown, Pipette } from "lucide-react";
 import { cn } from "../lib/cn";
 import { mergeIds } from "../lib/compose-refs";
@@ -99,7 +99,7 @@ export interface ColorSwatchPickerProps {
  * A row of preset colours as a radio group (one tab stop, arrow keys move and select). For label
  * colours, calendar categories and campaign colours where a free picker is too much.
  */
-export const ColorSwatchPicker = React.forwardRef<HTMLDivElement, ColorSwatchPickerProps>(function ColorSwatchPicker(
+export const ColorSwatchPicker = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ColorSwatchPickerProps>(function ColorSwatchPicker(
   { swatches: swatchesProp, value: valueProp, defaultValue, onValueChange, size = "md", name: nameProp, disabled, id, className, labels, ...aria },
   ref,
 ) {
@@ -443,7 +443,7 @@ export interface ColorPickerProps {
  * <ColorPicker alpha swatches="tokens" variant="inline" />
  * ```
  */
-export const ColorPicker = React.forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(props, ref) {
+export const ColorPicker = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(props, ref) {
   const {
     value: valueProp,
     defaultValue,

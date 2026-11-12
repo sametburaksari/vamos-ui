@@ -171,7 +171,7 @@ export interface AuditLogProps extends Omit<React.HTMLAttributes<HTMLDivElement>
  * />
  * ```
  */
-export const AuditLog = React.forwardRef<HTMLDivElement, AuditLogProps>(function AuditLog(
+export const AuditLog = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AuditLogProps>(function AuditLog(
   {
     events,
     rowCount,

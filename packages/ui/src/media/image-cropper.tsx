@@ -102,7 +102,7 @@ export interface ImageCropperProps extends Omit<React.HTMLAttributes<HTMLDivElem
  * <ImageCropper src={asset} defaultAspect={1.91} onChange={(rect) => adapter.update(asset.id, { crops: { ...asset.crops, og: rect } })} />
  * ```
  */
-export const ImageCropper = React.forwardRef<HTMLDivElement, ImageCropperProps>(function ImageCropper(
+export const ImageCropper = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ImageCropperProps>(function ImageCropper(
   {
     src,
     value,

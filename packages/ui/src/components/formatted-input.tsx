@@ -319,7 +319,7 @@ export interface FormattedInputProps extends BaseFormattedProps<string | null> {
  * <FormattedInput mask="AA-####-##" uppercase placeholder="TR-2026-01" />
  * ```
  */
-export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(function FormattedInput(
+export const FormattedInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, FormattedInputProps>(function FormattedInput(
   { mask, formatter, uppercase, valueFormat = "unmasked", value, defaultValue, onValueChange, validateOn = "blur", onValidate, mono, labels, name, invalid, className, inputClassName, onBlur, onKeyDown, placeholder, ...rest },
   forwardedRef,
 ) {
@@ -417,7 +417,7 @@ const decimalsOf = (n: number) => {
  * <NumberInput defaultValue={12} min={1} max={500} stepper aria-label="Quantity" />
  * ```
  */
-export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(function NumberInput(props, forwardedRef) {
+export const NumberInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, NumberInputProps>(function NumberInput(props, forwardedRef) {
   const { min, max, step = 1, precision, stepper, grouping = true, value, defaultValue, onValueChange, validateOn = "blur", onValidate, mono, labels, name, invalid, className, inputClassName, onBlur, onKeyDown, trailing, size, disabled, readOnly, ...rest } = props;
   const { locale, format: f } = useLocale();
   const t = useLabels("numberInput", numberInputLabels, labels);
@@ -551,7 +551,7 @@ export function percentSignPosition(locale: string): "start" | "end" {
  * Percent entry (discounts, tax rates, commission). The value is in percent units (`12.5` =
  * 12.5%), the sign sits where the locale puts it. Default range 0–100, two decimals.
  */
-export const PercentInput = React.forwardRef<HTMLInputElement, PercentInputProps>(function PercentInput({ min = 0, max = 100, precision = 2, trailing, ...props }, ref) {
+export const PercentInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, PercentInputProps>(function PercentInput({ min = 0, max = 100, precision = 2, trailing, ...props }, ref) {
   const { locale } = useLocale();
   const sign = <span aria-hidden className="font-medium text-fg-subtle">%</span>;
   const start = percentSignPosition(locale) === "start";

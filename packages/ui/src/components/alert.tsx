@@ -7,7 +7,7 @@ import { IconButton } from "./button";
 
 export type AlertTone = "neutral" | "info" | "success" | "warning" | "danger" | "accent";
 
-export const alertVariants = cva(
+export const alertVariants = /*#__PURE__*/ cva(
   [
     "vui-alert relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-start text-fg",
     // Tinted surface + hairline in the tone colour; body text stays --fg for contrast.
@@ -81,7 +81,7 @@ export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "
  *
  * Critical information must not live only in a toast — show it here too.
  */
-export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+export const Alert = /*#__PURE__*/ React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   { tone, variant, size, title, icon, actions, onDismiss, dismissLabel, live, className, children, ...props },
   ref,
 ) {

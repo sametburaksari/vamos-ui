@@ -85,7 +85,7 @@ export interface SlugInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
  * <SlugInput variant="permalink" source={title} prefix="https://vamos.ist/blog/" />
  * ```
  */
-export const SlugInput = React.forwardRef<HTMLInputElement, SlugInputProps>(function SlugInput(props, forwardedRef) {
+export const SlugInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, SlugInputProps>(function SlugInput(props, forwardedRef) {
   const {
     value,
     defaultValue,

@@ -59,7 +59,7 @@ export interface CommandProps extends React.ComponentPropsWithoutRef<typeof Cmdk
  * </Command>
  * ```
  */
-export const Command = React.forwardRef<HTMLDivElement, CommandProps>(function Command({ className, filter, label, loop = true, vimBindings = false, labels, ...props }, ref) {
+export const Command = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CommandProps>(function Command({ className, filter, label, loop = true, vimBindings = false, labels, ...props }, ref) {
   const { locale } = useLocale();
   const t = useLabels("command", commandLabels, labels);
   const defaultFilter = React.useMemo(() => cmdkFilter(locale), [locale]);
@@ -86,7 +86,7 @@ export interface CommandInputProps extends React.ComponentPropsWithoutRef<typeof
 }
 
 /** The search field. Placeholder from the dictionary (`command.placeholder`). */
-export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(function CommandInput({ className, chip, end, placeholder, labels, ...props }, ref) {
+export const CommandInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, CommandInputProps>(function CommandInput({ className, chip, end, placeholder, labels, ...props }, ref) {
   const t = useLabels("command", commandLabels, labels);
   return (
     <div data-slot="command-input" className="flex items-center gap-2.5 border-b border-line px-4">
@@ -111,7 +111,7 @@ export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps
 });
 
 /** The scrolling listbox. */
-export const CommandList = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.List>>(function CommandList({ className, ...props }, ref) {
+export const CommandList = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.List>>(function CommandList({ className, ...props }, ref) {
   return (
     <Cmdk.List
       ref={ref}
@@ -123,7 +123,7 @@ export const CommandList = React.forwardRef<HTMLDivElement, React.ComponentProps
 });
 
 /** Shown when nothing matches. Default text from the dictionary (`command.empty`). */
-export const CommandEmpty = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Empty> & { labels?: Partial<CommandLabels> }>(
+export const CommandEmpty = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Empty> & { labels?: Partial<CommandLabels> }>(
   function CommandEmpty({ className, children, labels, ...props }, ref) {
     const t = useLabels("command", commandLabels, labels);
     return (
@@ -135,7 +135,7 @@ export const CommandEmpty = React.forwardRef<HTMLDivElement, React.ComponentProp
 );
 
 /** A loading row (async results). */
-export const CommandLoading = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Loading> & { labels?: Partial<CommandLabels> }>(
+export const CommandLoading = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Loading> & { labels?: Partial<CommandLabels> }>(
   function CommandLoading({ className, children, labels, label, ...props }, ref) {
     const t = useLabels("command", commandLabels, labels);
     return (
@@ -151,7 +151,7 @@ export const CommandLoading = React.forwardRef<HTMLDivElement, React.ComponentPr
 );
 
 /** A titled group of items. */
-export const CommandGroup = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Group>>(function CommandGroup({ className, ...props }, ref) {
+export const CommandGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Group>>(function CommandGroup({ className, ...props }, ref) {
   return (
     <Cmdk.Group
       ref={ref}
@@ -168,7 +168,7 @@ export const CommandGroup = React.forwardRef<HTMLDivElement, React.ComponentProp
 });
 
 /** A hairline between groups. */
-export const CommandSeparator = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Separator>>(function CommandSeparator({ className, ...props }, ref) {
+export const CommandSeparator = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof Cmdk.Separator>>(function CommandSeparator({ className, ...props }, ref) {
   // Decorative: role="separator" is not an allowed child of the listbox (axe aria-required-children);
   // the group headings already tell screen readers where a section starts.
   return <Cmdk.Separator ref={ref} aria-hidden data-slot="command-separator" className={cn("-mx-1.5 my-1.5 h-px bg-line", className)} {...props} />;
@@ -192,7 +192,7 @@ export interface CommandItemProps extends React.ComponentPropsWithoutRef<typeof 
 }
 
 /** One selectable row. Highlighted with the arrow keys; Enter or click runs `onSelect`. */
-export const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>(function CommandItem(
+export const CommandItem = /*#__PURE__*/ React.forwardRef<HTMLDivElement, CommandItemProps>(function CommandItem(
   { className, icon, description, shortcut, badge, chevron, loading, children, ...props },
   ref,
 ) {
@@ -412,7 +412,7 @@ interface PaletteContextValue {
   navigate: (href: string) => void;
 }
 
-const PaletteContext = React.createContext<PaletteContextValue | null>(null);
+const PaletteContext = /*#__PURE__*/ React.createContext<PaletteContextValue | null>(null);
 
 const allowedBy = (a: CommandAction, can: (p: string) => boolean) => !a.permission || (Array.isArray(a.permission) ? a.permission : [a.permission]).every((p) => can(p));
 const toShortcut = (s: string | string[]) => (Array.isArray(s) ? s.join("+") : s);

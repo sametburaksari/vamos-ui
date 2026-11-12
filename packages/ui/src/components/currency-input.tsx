@@ -63,7 +63,7 @@ export function currencyAffix(locale: string, currency: string, display: "narrow
  * <CurrencyInput currency="TRY" min="0.01" align="end" onValueChange={(v) => setAmount(v)} />
  * ```
  */
-export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(function CurrencyInput(props, forwardedRef) {
+export const CurrencyInput = /*#__PURE__*/ React.forwardRef<HTMLInputElement, CurrencyInputProps>(function CurrencyInput(props, forwardedRef) {
   const {
     currency: currencyProp,
     precision: precisionProp,

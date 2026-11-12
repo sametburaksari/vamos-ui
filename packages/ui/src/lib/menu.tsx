@@ -13,7 +13,7 @@ import { useCan, useLink } from "./provider";
 import { KbdGroup } from "../components/kbd";
 
 /** Floating panel of a menu (root content and sub-content). */
-export const menuContentVariants = cva(
+export const menuContentVariants = /*#__PURE__*/ cva(
   [
     "surface-popover ui-pop z-(--z-popover) rounded-ui-lg p-1 outline-none",
     "overflow-x-hidden overflow-y-auto overscroll-contain",
@@ -44,7 +44,7 @@ export const menuSeparatorClass = itemSlots.separator;
 export const menuIndicatorClass = itemSlots.indicator;
 
 /** Size context so items pick up the content's `size`. */
-export const MenuSizeContext = React.createContext<"sm" | "md">("md");
+export const MenuSizeContext = /*#__PURE__*/ React.createContext<"sm" | "md">("md");
 
 export interface MenuItemContentProps {
   icon?: React.ReactNode;

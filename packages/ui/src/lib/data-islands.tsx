@@ -465,7 +465,7 @@ const optionValue = (el: React.ReactElement<OptionProps>) => el.props.value ?? e
  * Listbox behaviour for `ItemList selectable`: roving focus, ↑ ↓ Home End, Space/Enter toggles,
  * click selects. Direct `Item` children with a `value` become options.
  */
-export const ItemListbox = React.forwardRef<HTMLUListElement, ItemListboxProps>(function ItemListbox(
+export const ItemListbox = /*#__PURE__*/ React.forwardRef<HTMLUListElement, ItemListboxProps>(function ItemListbox(
   { selectable, value: valueProp, defaultValue, onValueChange, children, onKeyDown, className, ...props },
   ref,
 ) {
