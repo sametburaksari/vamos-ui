@@ -11,6 +11,7 @@ import { lookup as dnsLookup } from "node:dns/promises";
 import http from "node:http";
 import https from "node:https";
 import { Readable } from "node:stream";
+import zlib from "node:zlib";
 import { isIP } from "node:net";
 import type { AuditReport, FetchLike } from "vamos-ui/audit";
 import type { ToolAnswer } from "./design-tools.js";
@@ -168,6 +169,15 @@ export function publicOnlyGuard(lookup: Lookup = defaultLookup): (url: URL) => P
   };
 }
 
+/** Decodes a gzip, deflate or br response stream; other encodings pass through unchanged. */
+export function decodeBody(stream: Readable, encoding: string | string[] | undefined): Readable {
+  const enc = String(encoding ?? "").trim().toLowerCase();
+  const decoder = enc === "gzip" || enc === "x-gzip" ? zlib.createGunzip() : enc === "deflate" ? zlib.createInflate() : enc === "br" ? zlib.createBrotliDecompress() : null;
+  if (!decoder) return stream;
+  stream.on("error", (err) => decoder.destroy(err));
+  return stream.pipe(decoder);
+}
+
 /**
  * fetch for the hosted server that checks the address it actually connects to: Node's
  * `lookup` hook runs at connect time, so a host that answers the guard's lookup with a public
@@ -200,7 +210,9 @@ export function pinnedFetch(lookup: Lookup = defaultLookup): FetchLike {
         for (const [k, v] of Object.entries(res.headers)) if (v !== undefined) out.set(k, Array.isArray(v) ? v.join(", ") : String(v));
         const noBody = init.method === "HEAD" || status === 204 || status === 304 || status < 200;
         if (noBody) res.resume();
-        resolve(new Response(noBody ? null : (Readable.toWeb(res) as ReadableStream<Uint8Array>), { status, statusText: res.statusMessage, headers: out }));
+        // node:http does not decode bodies the way fetch does; decode here so the audit reads HTML.
+        // The audit's byte cap applies to the decoded stream, which also bounds compression bombs.
+        resolve(new Response(noBody ? null : (Readable.toWeb(decodeBody(res, res.headers["content-encoding"])) as ReadableStream<Uint8Array>), { status, statusText: res.statusMessage, headers: out }));
       });
       req.on("error", reject);
       req.end();
