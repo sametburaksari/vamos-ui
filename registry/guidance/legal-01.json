@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The pages a website footer links to: privacy policy, KVKK aydınlatma metni, cookie policy, terms of use, accessibility statement. One route per page (`npx vamos-ui site essentials` writes them).",
+    "Any long legal or policy text: pass your own `doc` with sections; the table of contents and anchors follow."
+  ],
+  "avoidWhen": [
+    "Publishing a preset unchanged: it is template text with [fill-in] fields and must be reviewed by the business or a lawyer first.",
+    "Short notices inside a form (consent checkbox text): link to this page instead."
+  ],
+  "related": [
+    "page-intro",
+    "footer",
+    "consent-banner",
+    "typography"
+  ],
+  "a11y": [
+    "The title is the page h1; each section is an h2 with an anchor the table of contents links to.",
+    "Fill-in fields are marked with <mark>, so they are visible and announced as highlighted until replaced."
+  ]
+}
