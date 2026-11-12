@@ -342,6 +342,8 @@ describe("buildRegistry (this repository)", () => {
   test("ships the kit barrels and the agent skill for the CLI", () => {
     const barrels = new Map(result.barrels.files.map((f) => [f.path, f.content]));
     assert.ok(barrels.get("index.ts")?.includes('export * from "./lib/public"'));
+    // Components are named re-exports (not `export *`) so Turbopack keeps only the imported client modules.
+    assert.ok(!/^export \* from "\.\/components\//m.test(barrels.get("index.ts") ?? ""));
     assert.ok(barrels.has("lib/public.ts"));
     assert.ok(barrels.get("blocks/schema/index.ts")?.includes('from "zod"'));
     // Real modules named index.ts belong to items, not to the barrels.

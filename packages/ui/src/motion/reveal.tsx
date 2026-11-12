@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import { cn } from "../lib/cn";
 import { inViewport, ioSupported, motionAllowed, observe, transitionEnd } from "./core";
 
@@ -142,7 +142,7 @@ const timing = (delay?: number, duration?: number, extra?: Record<string, string
  * <Reveal effect="rise" delay={80}><Card>…</Card></Reveal>
  * ```
  */
-export const Reveal = React.forwardRef<HTMLDivElement, RevealProps>(function Reveal(
+export const Reveal = /*#__PURE__*/ React.forwardRef<HTMLDivElement, RevealProps>(function Reveal(
   { effect = "rise", delay, duration, once, rootMargin, threshold, disabled, onReveal, asChild, className, style, ...props },
   ref,
 ) {
@@ -166,7 +166,7 @@ export interface StaggerProps extends RevealBaseProps {
  * <Stagger asChild step={70}><ul className="grid grid-cols-3">{plans.map(…)}</ul></Stagger>
  * ```
  */
-export const Stagger = React.forwardRef<HTMLDivElement, StaggerProps>(function Stagger(
+export const Stagger = /*#__PURE__*/ React.forwardRef<HTMLDivElement, StaggerProps>(function Stagger(
   { effect = "rise", step, delay, duration, once, rootMargin, threshold, disabled, onReveal, asChild, className, style, ...props },
   ref,
 ) {

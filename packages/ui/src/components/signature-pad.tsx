@@ -165,7 +165,7 @@ export interface SignaturePadProps extends Omit<React.HTMLAttributes<HTMLDivElem
  * <Field label="Customer signature" required><SignaturePad name="signature" exportPng /></Field>
  * ```
  */
-export const SignaturePad = React.forwardRef<HTMLDivElement, SignaturePadProps>(function SignaturePad(props, ref) {
+export const SignaturePad = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SignaturePadProps>(function SignaturePad(props, ref) {
   const {
     value,
     defaultValue,

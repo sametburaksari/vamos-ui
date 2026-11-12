@@ -39,7 +39,7 @@ export interface SectionHeaderProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * <SectionHeader eyebrow="Private dining" title="Rooms for *twelve* or forty" lead="…" align="split" headingId="rooms" />
  * ```
  */
-export const SectionHeader = React.forwardRef<HTMLDivElement, SectionHeaderProps>(function SectionHeader(
+export const SectionHeader = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SectionHeaderProps>(function SectionHeader(
   { eyebrow, index, title, lead, actions, align = "start", size = "m", headingLevel = 2, headingId, editMode, labels, locale, className, ...props },
   ref,
 ) {

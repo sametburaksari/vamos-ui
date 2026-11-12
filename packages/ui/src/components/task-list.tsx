@@ -116,7 +116,7 @@ export interface TaskListProps extends Omit<React.HTMLAttributes<HTMLDivElement>
  * <TaskList variant="checklist" items={prePublish} onToggle={toggle} />
  * ```
  */
-export const TaskList = React.forwardRef<HTMLDivElement, TaskListProps>(function TaskList(
+export const TaskList = /*#__PURE__*/ React.forwardRef<HTMLDivElement, TaskListProps>(function TaskList(
   {
     items,
     onToggle,

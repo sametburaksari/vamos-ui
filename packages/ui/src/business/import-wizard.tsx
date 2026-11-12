@@ -188,7 +188,7 @@ const DEFAULT_LOCALES = [
  * <ImportWizard fields={contactFields} dedupeKeys={["email"]} onImport={(rows, { signal }) => api.contacts.bulk(rows, { signal })} />
  * ```
  */
-export const ImportWizard = React.forwardRef<HTMLDivElement, ImportWizardProps>(function ImportWizard(
+export const ImportWizard = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ImportWizardProps>(function ImportWizard(
   {
     fields,
     dedupeKeys,

@@ -23,7 +23,7 @@ const KIND: Record<EmptyStateKind, { icon: React.ComponentType<{ "aria-hidden"?:
   done: { icon: CircleCheck, label: "done", well: "tone-success tone-soft" },
 };
 
-export const emptyStateVariants = cva("vui-empty flex w-full flex-col items-center text-center", {
+export const emptyStateVariants = /*#__PURE__*/ cva("vui-empty flex w-full flex-col items-center text-center", {
   variants: {
     size: {
       /** Inside a table, card or popover. */
@@ -73,7 +73,7 @@ export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * <EmptyState kind="no-results" size="sm" actions={<Button size="sm" onClick={clear}>Clear filters</Button>} />
  * ```
  */
-export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
+export const EmptyState = /*#__PURE__*/ React.forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
   { kind = "first-use", size = "md", icon, illustration, title, description, actions, framed, as = "h3", className, children, role, ...props },
   ref,
 ) {

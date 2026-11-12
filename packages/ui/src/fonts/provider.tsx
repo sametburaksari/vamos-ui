@@ -12,7 +12,7 @@ export interface FontPairingContextValue {
   pairings: FontPairing[];
 }
 
-const FontPairingContext = React.createContext<FontPairingContextValue | null>(null);
+const FontPairingContext = /*#__PURE__*/ React.createContext<FontPairingContextValue | null>(null);
 
 /** The active pairing and a setter. Outside a `FontProvider` it returns the Editorial preset and a no-op setter. */
 export function useFontPairing(): FontPairingContextValue {

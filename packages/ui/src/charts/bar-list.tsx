@@ -57,7 +57,7 @@ const textOf = (item: BarListItem) => item.textLabel ?? (typeof item.label === "
  * <BarList aria-label="Top sources" data={[{ key: "google", label: "Google", value: 4120 }]} showShare />
  * ```
  */
-export const BarList = React.forwardRef<HTMLOListElement, BarListProps>(function BarList(
+export const BarList = /*#__PURE__*/ React.forwardRef<HTMLOListElement, BarListProps>(function BarList(
   { data, format = "number", color, max, sort = "desc", showShare, onItemClick, size = "md", variant = "filled", loading, loadingRows = 5, emptyMessage, labels, className, ...props },
   ref,
 ) {

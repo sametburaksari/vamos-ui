@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { Spinner } from "./spinner";
 import { IconButtonTooltip, type TooltipContentProps } from "./tooltip";
 
-export const buttonVariants = cva(
+export const buttonVariants = /*#__PURE__*/ cva(
   [
     "relative inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap font-medium",
     "transition-[background-color,border-color,box-shadow,color,filter,opacity] duration-150 focus-ring",
@@ -78,7 +78,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
  * Defaults to `type="button"` (no accidental form submits). With `asChild` + `disabled`/`loading`
  * the element gets `aria-disabled`, leaves the tab order and ignores clicks.
  */
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+export const Button = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { className, variant, size, block, pill, asChild, loading, loadingText, loadingMode = "inline", disabled, children, type, onClick, ...props },
   ref,
 ) {
@@ -155,7 +155,7 @@ const iconSize = { xs: "icon-xs", sm: "icon-sm", md: "icon", lg: "icon-lg" } as 
  * <IconButton label="Edit" shortcut="mod+e"><Pencil /></IconButton>
  * ```
  */
-export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
+export const IconButton = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
   { label, size = "md", variant = "ghost", title, loading, tooltip = true, tooltipSide, shortcut, children, ...props },
   ref,
 ) {

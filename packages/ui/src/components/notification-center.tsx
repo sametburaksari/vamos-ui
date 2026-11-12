@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Popover as PopoverPrimitive } from "radix-ui";
+import * as PopoverPrimitive from "radix-ui/popover";
 import { Bell, Check, CheckCheck, Settings } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -179,7 +179,7 @@ interface NotificationContextValue {
   size: "md" | "lg";
   t: ReturnType<typeof useLabels<NotificationLabels>>;
 }
-const NotificationContext = React.createContext<NotificationContextValue | null>(null);
+const NotificationContext = /*#__PURE__*/ React.createContext<NotificationContextValue | null>(null);
 const useNC = () => {
   const ctx = React.useContext(NotificationContext);
   if (!ctx) throw new Error("Notification parts must be used inside <NotificationCenter>.");
@@ -426,7 +426,7 @@ export function NotificationCenter({
 /* ------------------------------------------------------------------ */
 
 /** The bell with the unread badge (99+). `aria-label` includes the count. */
-export const NotificationTrigger = React.forwardRef<HTMLButtonElement, Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & { size?: "xs" | "sm" | "md" }>(
+export const NotificationTrigger = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & { size?: "xs" | "sm" | "md" }>(
   function NotificationTrigger({ className, size = "sm", onClick, ...props }, ref) {
     const { open, setOpen, unread, important, triggerRef, t } = useNC();
     const { format } = useLocale();
@@ -694,7 +694,7 @@ export interface NotificationItemProps extends Omit<React.HTMLAttributes<HTMLEle
 }
 
 /** One notification. Usable on its own — e.g. a full "/notifications" page. */
-export const NotificationItem = React.forwardRef<HTMLElement, NotificationItemProps>(function NotificationItem(
+export const NotificationItem = /*#__PURE__*/ React.forwardRef<HTMLElement, NotificationItemProps>(function NotificationItem(
   { notification: n, onOpen, onMarkRead, onAction, pendingAction, posinset, setsize, labels, className, ...props },
   ref,
 ) {

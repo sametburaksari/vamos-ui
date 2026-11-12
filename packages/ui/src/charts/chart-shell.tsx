@@ -95,7 +95,7 @@ export interface ChartContextValue {
   isBar: (key: string) => boolean;
 }
 
-const ChartContext = React.createContext<ChartContextValue | null>(null);
+const ChartContext = /*#__PURE__*/ React.createContext<ChartContextValue | null>(null);
 
 /** Chart context: config, formatters and hidden series. Use inside `<Chart>`. */
 export function useChart(): ChartContextValue {

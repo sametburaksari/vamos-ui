@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Collapsible as CollapsiblePrimitive } from "radix-ui";
+import * as CollapsiblePrimitive from "radix-ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import { cn } from "../lib/cn";
 
@@ -18,7 +18,7 @@ export interface CollapsibleProps extends React.ComponentPropsWithoutRef<typeof 
  * </Collapsible>
  * ```
  */
-export const Collapsible = React.forwardRef<React.ElementRef<typeof CollapsiblePrimitive.Root>, CollapsibleProps>(function Collapsible({ className, ...props }, ref) {
+export const Collapsible = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof CollapsiblePrimitive.Root>, CollapsibleProps>(function Collapsible({ className, ...props }, ref) {
   return <CollapsiblePrimitive.Root ref={ref} data-slot="collapsible" className={cn("group/collapsible", className)} {...props} />;
 });
 
@@ -35,7 +35,7 @@ export interface CollapsibleTriggerProps extends React.ComponentPropsWithoutRef<
  * The toggle button (`aria-expanded`, `aria-controls`). Styled as a quiet full-width row; pass
  * `asChild` to make any button (a Button, a link-styled text) the trigger instead.
  */
-export const CollapsibleTrigger = React.forwardRef<React.ElementRef<typeof CollapsiblePrimitive.Trigger>, CollapsibleTriggerProps>(function CollapsibleTrigger(
+export const CollapsibleTrigger = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof CollapsiblePrimitive.Trigger>, CollapsibleTriggerProps>(function CollapsibleTrigger(
   { className, chevron = true, icon, meta, asChild, children, ...props },
   ref,
 ) {
@@ -89,7 +89,7 @@ export interface CollapsibleContentProps extends React.ComponentPropsWithoutRef<
  * The hidden region. Animates its height (`ui-collapse`); no animation with
  * `prefers-reduced-motion` or inside `data-motion="off"`. `forceMount` keeps it in the DOM while closed.
  */
-export const CollapsibleContent = React.forwardRef<React.ElementRef<typeof CollapsiblePrimitive.Content>, CollapsibleContentProps>(function CollapsibleContent(
+export const CollapsibleContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof CollapsiblePrimitive.Content>, CollapsibleContentProps>(function CollapsibleContent(
   { className, ...props },
   ref,
 ) {

@@ -49,7 +49,7 @@ export interface BackupCodesProps extends Omit<React.HTMLAttributes<HTMLDivEleme
  * <BackupCodes codes={codes} used={["4K7Q-PX2M"]} onRegenerate={regenerate} />
  * ```
  */
-export const BackupCodes = React.forwardRef<HTMLDivElement, BackupCodesProps>(function BackupCodes(
+export const BackupCodes = /*#__PURE__*/ React.forwardRef<HTMLDivElement, BackupCodesProps>(function BackupCodes(
   { codes, used = [], title, filename = "backup-codes.txt", fileNote, onCopy, onDownload, onRegenerate, regenerating, labels, className, ...props },
   ref,
 ) {

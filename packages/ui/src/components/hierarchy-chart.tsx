@@ -1133,7 +1133,7 @@ function HierarchyChartInner<T extends HierarchyNodeData>(props: HierarchyChartP
  * />
  * ```
  */
-export const HierarchyChart = React.forwardRef(HierarchyChartInner) as <T extends HierarchyNodeData>(
+export const HierarchyChart = /*#__PURE__*/ React.forwardRef(HierarchyChartInner) as <T extends HierarchyNodeData>(
   props: HierarchyChartProps<T> & { ref?: React.Ref<HierarchyChartHandle> },
 ) => React.ReactElement;
 

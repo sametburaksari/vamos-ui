@@ -83,7 +83,7 @@ function counts(items: SetupItem[]) {
  * {hidden ? <SetupChecklistLauncher items={steps} onOpen={() => setHidden(false)} /> : null}
  * ```
  */
-export const SetupChecklist = React.forwardRef<HTMLElement, SetupChecklistProps>(function SetupChecklist(
+export const SetupChecklist = /*#__PURE__*/ React.forwardRef<HTMLElement, SetupChecklistProps>(function SetupChecklist(
   { title, description, items, onSkip, onUndoSkip, dismissed, onDismissedChange, variant = "card", expandFirstIncomplete = true, onAllDone, loading, labels, className, ...props },
   ref,
 ) {
@@ -310,7 +310,7 @@ export interface SetupChecklistLauncherProps extends Omit<React.ButtonHTMLAttrib
 }
 
 /** A pill that reopens a dismissed checklist: "Setup guide · 3 of 6". */
-export const SetupChecklistLauncher = React.forwardRef<HTMLButtonElement, SetupChecklistLauncherProps>(function SetupChecklistLauncher(
+export const SetupChecklistLauncher = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, SetupChecklistLauncherProps>(function SetupChecklistLauncher(
   { items, onOpen, floating, labels, className, ...props },
   ref,
 ) {

@@ -63,7 +63,7 @@ export interface PageTransitionProps extends React.HTMLAttributes<HTMLDivElement
  * <PageTransition pageKey={tab}>{panels[tab]}</PageTransition>
  * ```
  */
-export const PageTransition = React.forwardRef<HTMLDivElement, PageTransitionProps>(function PageTransition({ pageKey, className, children, ...props }, ref) {
+export const PageTransition = /*#__PURE__*/ React.forwardRef<HTMLDivElement, PageTransitionProps>(function PageTransition({ pageKey, className, children, ...props }, ref) {
   const first = React.useRef(pageKey);
   // Inside a View Transition the browser already cross-fades: no second fade on top.
   const inViewTransition = typeof document !== "undefined" && document.documentElement.hasAttribute("data-vm-transition");

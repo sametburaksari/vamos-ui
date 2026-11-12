@@ -54,7 +54,7 @@ export interface TimelineProps extends React.OlHTMLAttributes<HTMLOListElement> 
  * Composable timeline (`<ol>`). For data use `ActivityTimeline`; compose these parts for
  * custom rows: `Timeline › TimelineGroup › TimelineItem › TimelineIndicator + TimelineContent`.
  */
-export const Timeline = React.forwardRef<HTMLOListElement, TimelineProps>(function Timeline({ variant = "feed", density = "inherit", className, ...props }, ref) {
+export const Timeline = /*#__PURE__*/ React.forwardRef<HTMLOListElement, TimelineProps>(function Timeline({ variant = "feed", density = "inherit", className, ...props }, ref) {
   return (
     <ol
       ref={ref}
@@ -82,7 +82,7 @@ export interface TimelineGroupProps extends Omit<React.LiHTMLAttributes<HTMLLIEl
 }
 
 /** A labelled section (a day). Children are TimelineItems. */
-export const TimelineGroup = React.forwardRef<HTMLLIElement, TimelineGroupProps>(function TimelineGroup({ date, label, now, labels, className, children, ...props }, ref) {
+export const TimelineGroup = /*#__PURE__*/ React.forwardRef<HTMLLIElement, TimelineGroupProps>(function TimelineGroup({ date, label, now, labels, className, children, ...props }, ref) {
   const id = React.useId();
   return (
     <li ref={ref} data-slot="timeline-group" aria-labelledby={id} className={cn("grid gap-(--tl-gap)", className)} {...props}>
@@ -102,7 +102,7 @@ export interface TimelineItemProps extends React.LiHTMLAttributes<HTMLLIElement>
   highlight?: boolean;
 }
 
-export const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(function TimelineItem({ status, highlight, className, ...props }, ref) {
+export const TimelineItem = /*#__PURE__*/ React.forwardRef<HTMLLIElement, TimelineItemProps>(function TimelineItem({ status, highlight, className, ...props }, ref) {
   return (
     <li
       ref={ref}
@@ -123,7 +123,7 @@ export const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(f
   );
 });
 
-const indicatorVariants = cva(
+const indicatorVariants = /*#__PURE__*/ cva(
   "relative z-[1] grid size-(--tl-ind) shrink-0 place-items-center rounded-full border text-fg-muted [&_svg]:size-[calc(var(--tl-ind)*0.5)] [&_svg]:shrink-0",
   {
     variants: {
@@ -241,7 +241,7 @@ export interface TimelineNewItemsProps extends React.ButtonHTMLAttributes<HTMLBu
 }
 
 /** "3 new updates" pill for live feeds: new items wait above instead of shifting the list. */
-export const TimelineNewItems = React.forwardRef<HTMLButtonElement, TimelineNewItemsProps>(function TimelineNewItems({ count, labels, className, children, ...props }, ref) {
+export const TimelineNewItems = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, TimelineNewItemsProps>(function TimelineNewItems({ count, labels, className, children, ...props }, ref) {
   if (count <= 0) return null;
   return (
     <button
@@ -323,7 +323,7 @@ export interface ActivityTimelineProps extends Omit<TimelineProps, "children"> {
  * ]} />
  * ```
  */
-export const ActivityTimeline = React.forwardRef<HTMLOListElement, ActivityTimelineProps>(function ActivityTimeline(
+export const ActivityTimeline = /*#__PURE__*/ React.forwardRef<HTMLOListElement, ActivityTimelineProps>(function ActivityTimeline(
   {
     items,
     variant = "feed",

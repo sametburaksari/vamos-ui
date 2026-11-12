@@ -23,7 +23,7 @@ export const useResizablePanelRef = usePanelRef;
 /** Typed ref for a `ResizableGroup`'s `groupRef` (`getLayout()`, `setLayout()`). */
 export const useResizableGroupRef = useGroupRef;
 
-const OrientationContext = React.createContext<"horizontal" | "vertical">("horizontal");
+const OrientationContext = /*#__PURE__*/ React.createContext<"horizontal" | "vertical">("horizontal");
 
 /** localStorage that never throws (private mode, SSR, blocked storage). */
 const safeLocalStorage: LayoutStorage = {
@@ -71,7 +71,7 @@ export interface ResizableGroupProps extends Omit<GroupProps, "orientation"> {
  * units (`"35%"`, `"280px"`, `"20rem"`). In glass mode surfaces inside stop blurring while a
  * handle is dragged. On phones, show one pane and open the other in a Sheet (not automatic).
  */
-export const ResizableGroup = React.forwardRef<HTMLDivElement, ResizableGroupProps>(function ResizableGroup(props, ref) {
+export const ResizableGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ResizableGroupProps>(function ResizableGroup(props, ref) {
   return props.autoSaveId ? <PersistedGroup {...props} forwardedRef={ref} /> : <BaseGroup {...props} forwardedRef={ref} />;
 });
 

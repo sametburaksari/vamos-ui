@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Select as SelectPrimitive } from "radix-ui";
+import * as SelectPrimitive from "radix-ui/select";
 import { Check, ChevronDown, ChevronUp, X } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useFieldContext, useFieldControl } from "../lib/field-context";
@@ -38,7 +38,7 @@ interface SelectContextValue {
   size: "sm" | "md" | "lg";
   itemSize: "sm" | "md";
 }
-const SelectContext = React.createContext<SelectContextValue>({ size: "md", itemSize: "md" });
+const SelectContext = /*#__PURE__*/ React.createContext<SelectContextValue>({ size: "md", itemSize: "md" });
 
 /* ------------------------------------------------------------------ */
 /* Composite parts                                                     */
@@ -64,7 +64,7 @@ export interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeo
  * The button that shows the value. Uses `controlVariants`, so it lines up with Input.
  * Reads the surrounding Field (id, description, invalid, disabled).
  */
-export const SelectTrigger = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Trigger>, SelectTriggerProps>(function SelectTrigger(
+export const SelectTrigger = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SelectPrimitive.Trigger>, SelectTriggerProps>(function SelectTrigger(
   { className, size = "md", variant = "default", invalid, readOnly, loading, children, ...rest },
   ref,
 ) {
@@ -102,7 +102,7 @@ export const SelectTrigger = React.forwardRef<React.ElementRef<typeof SelectPrim
 });
 
 /** Shows the selected item's text, or the placeholder. Children override the rendering. */
-export const SelectValue = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Value>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>>(
+export const SelectValue = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SelectPrimitive.Value>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>>(
   function SelectValue({ className, ...props }, ref) {
     return <SelectPrimitive.Value ref={ref} data-slot="select-value" className={cn("min-w-0 truncate", className)} {...props} />;
   },
@@ -117,7 +117,7 @@ export interface SelectContentProps extends React.ComponentPropsWithoutRef<typeo
  * The floating list. Popper-positioned under the trigger, at least as wide as it, portalled into
  * the nearest ThemeScope, and one layer deep (glass blur only at depth 1).
  */
-export const SelectContent = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Content>, SelectContentProps>(function SelectContent(
+export const SelectContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SelectPrimitive.Content>, SelectContentProps>(function SelectContent(
   { className, children, position = "popper", sideOffset = 6, collisionPadding = 12, itemSize, ...props },
   ref,
 ) {
@@ -166,7 +166,7 @@ export interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof S
  * One option. Typeahead uses a locale-folded copy of the text, so typing "i" finds "İstanbul"
  * and "c" finds "Çanakkale". Pass `textValue` when children aren't plain text.
  */
-export const SelectItem = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Item>, SelectItemProps>(function SelectItem(
+export const SelectItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SelectPrimitive.Item>, SelectItemProps>(function SelectItem(
   { className, children, icon, description, textValue, ...props },
   ref,
 ) {
@@ -206,7 +206,7 @@ export interface SelectGroupProps extends React.ComponentPropsWithoutRef<typeof 
 }
 
 /** Groups items under a heading; announced as a group. */
-export const SelectGroup = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Group>, SelectGroupProps>(function SelectGroup(
+export const SelectGroup = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SelectPrimitive.Group>, SelectGroupProps>(function SelectGroup(
   { label, children, ...props },
   ref,
 ) {
@@ -218,13 +218,13 @@ export const SelectGroup = React.forwardRef<React.ElementRef<typeof SelectPrimit
   );
 });
 
-export const SelectLabel = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Label>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>>(
+export const SelectLabel = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SelectPrimitive.Label>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>>(
   function SelectLabel({ className, ...props }, ref) {
     return <SelectPrimitive.Label ref={ref} data-slot="select-label" className={cn(itemSlots.groupLabel, className)} {...props} />;
   },
 );
 
-export const SelectSeparator = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>>(
+export const SelectSeparator = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof SelectPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>>(
   function SelectSeparator({ className, ...props }, ref) {
     return <SelectPrimitive.Separator ref={ref} data-slot="select-separator" className={cn(itemSlots.separator, className)} {...props} />;
   },
@@ -442,6 +442,6 @@ function SelectInner<V extends string = string>(
  * </Field>
  * ```
  */
-export const Select = React.forwardRef(SelectInner) as <V extends string = string>(
+export const Select = /*#__PURE__*/ React.forwardRef(SelectInner) as <V extends string = string>(
   props: SelectProps<V> & { ref?: React.Ref<HTMLButtonElement> },
 ) => React.ReactElement;

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
+import * as RadioGroupPrimitive from "radix-ui/radio-group";
 import { cn } from "../lib/cn";
 import { mergeIds } from "../lib/compose-refs";
 import { FieldContextReset, useFieldContext } from "../lib/field-context";
@@ -21,7 +21,7 @@ interface RadioGroupContextValue {
   value: string | null;
   readOnly?: boolean;
 }
-const RadioGroupContext = React.createContext<RadioGroupContextValue>({ variant: "default", size: "md", value: null });
+const RadioGroupContext = /*#__PURE__*/ React.createContext<RadioGroupContextValue>({ variant: "default", size: "md", value: null });
 
 export interface RadioGroupProps<V extends string = string>
   extends Omit<React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>, "value" | "defaultValue" | "onValueChange" | "orientation"> {
@@ -143,7 +143,7 @@ function RadioGroupInner<V extends string = string>(
   );
 }
 
-export const RadioGroup = React.forwardRef(RadioGroupInner) as <V extends string = string>(
+export const RadioGroup = /*#__PURE__*/ React.forwardRef(RadioGroupInner) as <V extends string = string>(
   props: RadioGroupProps<V> & { ref?: React.Ref<HTMLDivElement> },
 ) => React.ReactElement;
 
@@ -166,7 +166,7 @@ const circle =
   "peer relative inline-flex shrink-0 items-center justify-center rounded-full border border-field-border-hover bg-field outline-none transition-[border-color,box-shadow,background-color] duration-150 hover:border-fg-subtle focus-visible:border-ring focus-visible:shadow-[0_0_0_3px_var(--accent-soft)] data-[state=checked]:border-accent-ink disabled:cursor-not-allowed disabled:opacity-45 group-aria-invalid/radio:border-danger";
 
 /** One option inside a `RadioGroup`. */
-export const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, RadioGroupItemProps>(function RadioGroupItem(
+export const RadioGroupItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, RadioGroupItemProps>(function RadioGroupItem(
   { label, description, icon, children, className, controlClassName, id: idProp, "aria-describedby": describedBy, onKeyDown, ...props },
   ref,
 ) {

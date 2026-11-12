@@ -96,7 +96,7 @@ interface Ctx {
   headingRef: React.MutableRefObject<HTMLHeadingElement | null>;
 }
 
-const MultiStepFormContext = React.createContext<Ctx | null>(null);
+const MultiStepFormContext = /*#__PURE__*/ React.createContext<Ctx | null>(null);
 
 function useCtx(part: string): Ctx {
   const ctx = React.useContext(MultiStepFormContext);
@@ -365,7 +365,7 @@ function MultiStepFormInner<C>(props: MultiStepFormProps<C>, ref: React.Forwarde
  * </MultiStepForm>
  * ```
  */
-export const MultiStepForm = React.forwardRef(MultiStepFormInner) as <C = unknown>(
+export const MultiStepForm = /*#__PURE__*/ React.forwardRef(MultiStepFormInner) as <C = unknown>(
   props: MultiStepFormProps<C> & { ref?: React.Ref<HTMLFormElement> },
 ) => React.ReactElement;
 

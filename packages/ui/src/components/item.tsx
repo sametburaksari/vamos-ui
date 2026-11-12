@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import { Check } from "lucide-react";
 import { cva } from "class-variance-authority";
 import { cn } from "../lib/cn";
@@ -40,7 +40,7 @@ export interface ItemListProps extends Omit<React.HTMLAttributes<HTMLElement>, "
  * </ItemList>
  * ```
  */
-export const ItemList = React.forwardRef<HTMLElement, ItemListProps>(function ItemList(
+export const ItemList = /*#__PURE__*/ React.forwardRef<HTMLElement, ItemListProps>(function ItemList(
   { divided = true, inset, selectable, value, defaultValue, onValueChange, as = "ul", empty, className, children, ...props },
   ref,
 ) {
@@ -88,7 +88,7 @@ export const ItemList = React.forwardRef<HTMLElement, ItemListProps>(function It
 /* Item                                                                 */
 /* ------------------------------------------------------------------ */
 
-export const itemRowVariants = cva(
+export const itemRowVariants = /*#__PURE__*/ cva(
   [
     "group/item relative flex w-full min-w-0 gap-3 text-start text-[13px] text-fg outline-none",
     "px-(--card-p,1.25rem) group-data-inset/list:rounded-ui-sm group-data-inset/list:px-2",
@@ -141,7 +141,7 @@ export interface ItemProps extends Omit<React.HTMLAttributes<HTMLElement>, "valu
  * </Item>
  * ```
  */
-export const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
+export const Item = /*#__PURE__*/ React.forwardRef<HTMLElement, ItemProps>(function Item(
   { value, asChild, interactive, disabled, size, align, as = "li", className, children, ...props },
   ref,
 ) {

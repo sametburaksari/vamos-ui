@@ -4,7 +4,7 @@ import * as React from "react";
 import { useMediaAdapter } from "../lib/provider";
 import type { MediaAdapter, MediaAsset, MediaItem, MediaSource } from "./types";
 
-const MediaContext = React.createContext<MediaAdapter | undefined>(undefined);
+const MediaContext = /*#__PURE__*/ React.createContext<MediaAdapter | undefined>(undefined);
 
 /**
  * Provides the media adapter to Media library, Media picker, Image field, Gallery and the editor.

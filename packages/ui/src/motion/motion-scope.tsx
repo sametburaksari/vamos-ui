@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import type { MotionLevel } from "./core";
 
 export interface MotionScopeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,7 +17,7 @@ export interface MotionScopeProps extends React.HTMLAttributes<HTMLDivElement> {
  * <MotionScope level="full"><Stagger>…</Stagger></MotionScope>
  * ```
  */
-export const MotionScope = React.forwardRef<HTMLDivElement, MotionScopeProps>(function MotionScope({ level, asChild, ...props }, ref) {
+export const MotionScope = /*#__PURE__*/ React.forwardRef<HTMLDivElement, MotionScopeProps>(function MotionScope({ level, asChild, ...props }, ref) {
   const Comp = asChild ? Slot.Root : "div";
   return <Comp ref={ref} data-motion={level} {...props} />;
 });

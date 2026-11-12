@@ -143,7 +143,7 @@ interface RootContextValue {
   reducedMotion: boolean;
 }
 
-const SortableRootContext = React.createContext<RootContextValue | null>(null);
+const SortableRootContext = /*#__PURE__*/ React.createContext<RootContextValue | null>(null);
 
 function useSortableRoot(component: string): RootContextValue {
   const ctx = React.useContext(SortableRootContext);
@@ -633,7 +633,7 @@ export function useSortableItem(id: string, options: { disabled?: boolean } = {}
   };
 }
 
-const SortableItemContext = React.createContext<(UseSortableItemResult & { id: string }) | null>(null);
+const SortableItemContext = /*#__PURE__*/ React.createContext<(UseSortableItemResult & { id: string }) | null>(null);
 
 /** The current item (inside `SortableItem`). */
 export function useSortableItemContext() {
@@ -651,7 +651,7 @@ export interface SortableItemProps extends React.HTMLAttributes<HTMLElement> {
  * A sortable element. With `handle` (default) put a `SortableHandle` inside; with
  * `handle={false}` the whole item is the activator.
  */
-export const SortableItem = React.forwardRef<HTMLElement, SortableItemProps>(function SortableItem(
+export const SortableItem = /*#__PURE__*/ React.forwardRef<HTMLElement, SortableItemProps>(function SortableItem(
   { id, as: Comp = "div", disabled, className, style, children, ...props },
   ref,
 ) {
@@ -698,7 +698,7 @@ export interface SortableHandleProps extends React.ButtonHTMLAttributes<HTMLButt
 }
 
 /** The drag handle: a button named "Reorder {item}". Hidden for disabled items. */
-export const SortableHandle = React.forwardRef<HTMLButtonElement, SortableHandleProps>(function SortableHandle(
+export const SortableHandle = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, SortableHandleProps>(function SortableHandle(
   { id: _id, size = "md", className, children, ...props },
   ref,
 ) {

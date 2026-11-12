@@ -53,7 +53,7 @@ export function slaState({ due, start, completedAt, pausedAt, now, warnAt = 0.25
   return { state: remaining <= threshold ? "at-risk" : "on-track", remaining, used };
 }
 
-const slaTimerVariants = cva("inline-flex items-center gap-1.5 whitespace-nowrap font-medium tabular", {
+const slaTimerVariants = /*#__PURE__*/ cva("inline-flex items-center gap-1.5 whitespace-nowrap font-medium tabular", {
   variants: {
     variant: {
       /** Tinted pill — list rows, inbox items. */
@@ -159,7 +159,7 @@ export interface SlaTimerProps extends Omit<React.HTMLAttributes<HTMLSpanElement
  * <SlaTimer variant="bar" label="Resolution" start={t.createdAt} due={t.resolveDue} completedAt={t.solvedAt} />
  * ```
  */
-export const SlaTimer = React.forwardRef<HTMLSpanElement, SlaTimerProps>(function SlaTimer(
+export const SlaTimer = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, SlaTimerProps>(function SlaTimer(
   { due, start, completedAt, pausedAt, now: fixedNow, warnAt, warnMinutes, variant = "badge", label, seconds = true, hideIcon, labels, className, ...props },
   ref,
 ) {

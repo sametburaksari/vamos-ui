@@ -51,7 +51,7 @@ export interface ChipRemoveButtonProps extends Omit<React.ButtonHTMLAttributes<H
  * The remove (×) button of a chip — Badge `onRemove`, Tag input, Combobox multi, Filter bar.
  * Delete / Backspace on the focused button also remove.
  */
-export const ChipRemoveButton = React.forwardRef<HTMLButtonElement, ChipRemoveButtonProps>(function ChipRemoveButton(
+export const ChipRemoveButton = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, ChipRemoveButtonProps>(function ChipRemoveButton(
   { onRemove, itemLabel, removeLabel, labels, className, onKeyDown, disabled, ...props },
   ref,
 ) {

@@ -7,7 +7,7 @@ import { Button, IconButton, type ButtonProps } from "./button";
  * Merged-edge styling for any row of controls. Corner rounding is done with logical
  * properties (`rounded-s` / `rounded-e`), so the group is RTL-safe.
  */
-export const buttonGroupVariants = cva("relative isolate inline-flex w-fit max-w-full", {
+export const buttonGroupVariants = /*#__PURE__*/ cva("relative isolate inline-flex w-fit max-w-full", {
   variants: {
     orientation: {
       horizontal: "flex-row items-stretch",
@@ -63,7 +63,7 @@ export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement>, 
  * For a selected state (view switch, text alignment) use `ToggleGroup`; for a form value use
  * `RadioGroup variant="segmented"`.
  */
-export const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(function ButtonGroup(
+export const ButtonGroup = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ButtonGroupProps>(function ButtonGroup(
   { attached = true, orientation = "horizontal", variant, size, className, children, ...props },
   ref,
 ) {
@@ -104,7 +104,7 @@ export interface ButtonGroupSeparatorProps extends React.HTMLAttributes<HTMLDivE
  * Hairline between two attached buttons that share a fill (a primary split button), where
  * the merged border would otherwise disappear.
  */
-export const ButtonGroupSeparator = React.forwardRef<HTMLDivElement, ButtonGroupSeparatorProps>(function ButtonGroupSeparator(
+export const ButtonGroupSeparator = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ButtonGroupSeparatorProps>(function ButtonGroupSeparator(
   { orientation = "vertical", className, ...props },
   ref,
 ) {
@@ -128,7 +128,7 @@ export interface ButtonGroupTextProps extends React.HTMLAttributes<HTMLSpanEleme
 }
 
 /** A static segment inside a group: "21–40 of 340", a unit, a prefix. */
-export const ButtonGroupText = React.forwardRef<HTMLSpanElement, ButtonGroupTextProps>(function ButtonGroupText({ size = "md", className, ...props }, ref) {
+export const ButtonGroupText = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, ButtonGroupTextProps>(function ButtonGroupText({ size = "md", className, ...props }, ref) {
   return (
     <span
       ref={ref}

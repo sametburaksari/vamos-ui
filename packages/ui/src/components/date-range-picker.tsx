@@ -117,7 +117,7 @@ const sameRange = (a: IsoDateRange | null | undefined, b: IsoDateRange | null | 
  * <DateRangePicker commit="apply" maxDays={31} min={todayIso()} />
  * ```
  */
-export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps>(function DateRangePicker(rawProps, ref) {
+export const DateRangePicker = /*#__PURE__*/ React.forwardRef<HTMLButtonElement, DateRangePickerProps>(function DateRangePicker(rawProps, ref) {
   const {
     value: valueProp,
     defaultValue,

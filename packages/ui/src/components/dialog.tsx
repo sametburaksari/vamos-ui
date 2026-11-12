@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Dialog as DialogPrimitive } from "radix-ui";
+import * as DialogPrimitive from "radix-ui/dialog";
 import { X } from "lucide-react";
 import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
@@ -28,7 +28,7 @@ interface LayerParts {
 const PlainTitle: SlotComponent = ({ asChild: _a, ...props }) => <h2 {...props} />;
 const PlainDescription: SlotComponent = ({ asChild: _a, ...props }) => <p {...props} />;
 
-const LayerPartsContext = React.createContext<LayerParts>({ Title: PlainTitle, Description: PlainDescription });
+const LayerPartsContext = /*#__PURE__*/ React.createContext<LayerParts>({ Title: PlainTitle, Description: PlainDescription });
 
 /** Lets a layer (Dialog, Alert Dialog, Sheet…) plug its accessible Title/Description into the shared header. */
 export function LayerPartsProvider({ value, children }: { value: LayerParts; children: React.ReactNode }) {
@@ -57,7 +57,7 @@ export interface LayerHeaderProps extends Omit<React.HTMLAttributes<HTMLDivEleme
  * The fixed top of a layer: title, optional description, icon and action. Shared by Dialog,
  * Alert Dialog, Sheet and Drawer (exported under each name: `DialogHeader`, `SheetHeader`…).
  */
-export const LayerHeader = React.forwardRef<HTMLDivElement, LayerHeaderProps>(function LayerHeader(
+export const LayerHeader = /*#__PURE__*/ React.forwardRef<HTMLDivElement, LayerHeaderProps>(function LayerHeader(
   { title, description, icon, action, srOnly, className, children, ...props },
   ref,
 ) {
@@ -96,7 +96,7 @@ export interface LayerBodyProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** The scrolling middle of a layer. Header and footer stay fixed; only the body scrolls. */
-export const LayerBody = React.forwardRef<HTMLDivElement, LayerBodyProps>(function LayerBody({ flush, className, onScroll, ...props }, ref) {
+export const LayerBody = /*#__PURE__*/ React.forwardRef<HTMLDivElement, LayerBodyProps>(function LayerBody({ flush, className, onScroll, ...props }, ref) {
   const [scrolled, setScrolled] = React.useState(false);
   return (
     <div
@@ -119,7 +119,7 @@ export interface LayerFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** The fixed bottom of a layer: actions, primary last. Stacks (primary on top) inside a mobile sheet. */
-export const LayerFooter = React.forwardRef<HTMLDivElement, LayerFooterProps>(function LayerFooter({ align = "end", className, ...props }, ref) {
+export const LayerFooter = /*#__PURE__*/ React.forwardRef<HTMLDivElement, LayerFooterProps>(function LayerFooter({ align = "end", className, ...props }, ref) {
   return (
     <div
       ref={ref}
@@ -150,7 +150,7 @@ interface DialogRootContextValue {
   modal: boolean;
 }
 
-const DialogRootContext = React.createContext<DialogRootContextValue | null>(null);
+const DialogRootContext = /*#__PURE__*/ React.createContext<DialogRootContextValue | null>(null);
 
 /** Read the nearest Dialog/Sheet/Drawer root — e.g. to close it from custom code (`requestOpenChange(false)`). */
 export function useDialogRoot(): DialogRootContextValue {
@@ -224,7 +224,7 @@ export const DialogTitle = DialogPrimitive.Title;
 export const DialogDescription = DialogPrimitive.Description;
 
 /** The dimmed backdrop. `DialogContent` renders its own; export for custom layers. */
-export const DialogOverlay = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> & { blurred?: boolean }>(
+export const DialogOverlay = /*#__PURE__*/ React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> & { blurred?: boolean }>(
   function DialogOverlay({ className, blurred = true, ...props }, ref) {
     return (
       <DialogPrimitive.Overlay
@@ -263,7 +263,7 @@ export interface LayerContentShellProps extends React.ComponentPropsWithoutRef<t
  * Internal: portal + overlay + layer depth + close guard + × button around a Radix Dialog.Content.
  * Exported so other layers (Sheet, Drawer, Notification panel) share one implementation.
  */
-export const LayerContentShell = React.forwardRef<HTMLDivElement, LayerContentShellProps>(function LayerContentShell(
+export const LayerContentShell = /*#__PURE__*/ React.forwardRef<HTMLDivElement, LayerContentShellProps>(function LayerContentShell(
   {
     dismissible = true,
     onBeforeClose,
@@ -390,7 +390,7 @@ export interface DialogContentProps extends LayerContentShellProps {
  * The dialog panel. Renders its own portal and overlay, traps focus, closes on Esc, returns
  * focus to the trigger. Initial focus goes to `[data-autofocus]` if present, else the first field.
  */
-export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
+export const DialogContent = /*#__PURE__*/ React.forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
   { size = "md", mobile = "sheet", className, ...props },
   ref,
 ) {

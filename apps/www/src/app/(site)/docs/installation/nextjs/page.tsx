@@ -96,6 +96,12 @@ export default function NextInstallPage() {
             The npm package is compiled ESM with type declarations and keeps the <C>&quot;use client&quot;</C> directives,
             so no <C>transpilePackages</C> entry is needed.
           </P>
+          <P>
+            Building with webpack (the Next.js 15 default, or <C>next build --webpack</C>)? Add{" "}
+            <C>experimental: {"{"} optimizePackageImports: [&quot;@vamos-ui/react&quot;] {"}"}</C> to{" "}
+            <C>next.config.ts</C>. Without it, a Server Component that imports one component from the package root ships
+            every client component of the kit. Turbopack builds only ship what you import.
+          </P>
         </Step>
         <Step title="Import the styles">
           <Code lang="css" title="app/globals.css" code={cssImports} />

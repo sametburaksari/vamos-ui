@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Menubar as MenubarPrimitive } from "radix-ui";
+import * as MenubarPrimitive from "radix-ui/menubar";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { usePortalContainer } from "../lib/theme-scope";
@@ -27,7 +27,7 @@ import {
 /* Bar                                                                 */
 /* ------------------------------------------------------------------ */
 
-export const menubarVariants = cva("flex min-w-0 items-center gap-0.5 overflow-x-auto [scrollbar-width:none]", {
+export const menubarVariants = /*#__PURE__*/ cva("flex min-w-0 items-center gap-0.5 overflow-x-auto [scrollbar-width:none]", {
   variants: {
     variant: {
       /** A hairline surface strip — the top of an editor or a desktop-style app window. */
@@ -68,7 +68,7 @@ export interface MenubarProps extends React.ComponentPropsWithoutRef<typeof Menu
  * ]} />
  * ```
  */
-export const Menubar = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Root>, MenubarProps>(function Menubar(
+export const Menubar = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Root>, MenubarProps>(function Menubar(
   { className, variant, menus, size = "md", children, loop = true, ...props },
   ref,
 ) {
@@ -89,7 +89,7 @@ export const MenubarSub = MenubarPrimitive.Sub;
 export const MenubarRadioGroup = MenubarPrimitive.RadioGroup;
 
 /** The top-level button ("File"). */
-export const MenubarTrigger = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Trigger>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Trigger>>(
+export const MenubarTrigger = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Trigger>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Trigger>>(
   function MenubarTrigger({ className, ...props }, ref) {
     return (
       <MenubarPrimitive.Trigger
@@ -119,7 +119,7 @@ export interface MenubarContentProps extends React.ComponentPropsWithoutRef<type
 }
 
 /** A menu panel under its trigger. Portals into the nearest `ThemeScope`; only this first layer blurs in glass mode. */
-export const MenubarContent = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Content>, MenubarContentProps>(function MenubarContent(
+export const MenubarContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Content>, MenubarContentProps>(function MenubarContent(
   { className, size: sizeProp, sideOffset = 6, alignOffset = -4, collisionPadding = 12, align = "start", ...props },
   ref,
 ) {
@@ -166,7 +166,7 @@ export interface MenubarItemProps extends React.ComponentPropsWithoutRef<typeof 
 }
 
 /** One command. `onSelect` fires on click, Enter and Space, then the menu closes (`event.preventDefault()` keeps it open). */
-export const MenubarItem = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Item>, MenubarItemProps>(function MenubarItem(
+export const MenubarItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Item>, MenubarItemProps>(function MenubarItem(
   { className, icon, description, shortcut, badge, tone = "default", inset, asChild, children, ...props },
   ref,
 ) {
@@ -190,7 +190,7 @@ export interface MenubarCheckboxItemProps extends React.ComponentPropsWithoutRef
 }
 
 /** A toggle (`menuitemcheckbox`) — "Show ruler", "Word wrap". */
-export const MenubarCheckboxItem = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.CheckboxItem>, MenubarCheckboxItemProps>(function MenubarCheckboxItem(
+export const MenubarCheckboxItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.CheckboxItem>, MenubarCheckboxItemProps>(function MenubarCheckboxItem(
   { className, shortcut, description, children, ...props },
   ref,
 ) {
@@ -215,7 +215,7 @@ export interface MenubarRadioItemProps extends React.ComponentPropsWithoutRef<ty
 }
 
 /** One choice inside a `MenubarRadioGroup` (`menuitemradio`) — zoom level, sort order. */
-export const MenubarRadioItem = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.RadioItem>, MenubarRadioItemProps>(function MenubarRadioItem(
+export const MenubarRadioItem = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.RadioItem>, MenubarRadioItemProps>(function MenubarRadioItem(
   { className, shortcut, description, children, ...props },
   ref,
 ) {
@@ -234,13 +234,13 @@ export const MenubarRadioItem = React.forwardRef<React.ElementRef<typeof Menubar
   );
 });
 
-export const MenubarLabel = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Label>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Label> & { inset?: boolean }>(
+export const MenubarLabel = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Label>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Label> & { inset?: boolean }>(
   function MenubarLabel({ className, inset, ...props }, ref) {
     return <MenubarPrimitive.Label ref={ref} data-slot="menubar-label" className={cn(menuLabelClass, inset && "ps-8", className)} {...props} />;
   },
 );
 
-export const MenubarSeparator = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Separator>>(
+export const MenubarSeparator = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Separator>>(
   function MenubarSeparator({ className, ...props }, ref) {
     return <MenubarPrimitive.Separator ref={ref} data-slot="menubar-separator" className={cn(menuSeparatorClass, className)} {...props} />;
   },
@@ -257,7 +257,7 @@ export interface MenubarSubTriggerProps extends React.ComponentPropsWithoutRef<t
 }
 
 /** Opens a submenu on hover, Enter, Space or → (← in RTL). */
-export const MenubarSubTrigger = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.SubTrigger>, MenubarSubTriggerProps>(function MenubarSubTrigger(
+export const MenubarSubTrigger = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.SubTrigger>, MenubarSubTriggerProps>(function MenubarSubTrigger(
   { className, icon, inset, children, ...props },
   ref,
 ) {
@@ -277,7 +277,7 @@ export const MenubarSubTrigger = React.forwardRef<React.ElementRef<typeof Menuba
 });
 
 /** A submenu panel. One layer deeper, so it is opaque in glass mode. */
-export const MenubarSubContent = React.forwardRef<React.ElementRef<typeof MenubarPrimitive.SubContent>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubContent> & { size?: "sm" | "md" }>(
+export const MenubarSubContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof MenubarPrimitive.SubContent>, React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubContent> & { size?: "sm" | "md" }>(
   function MenubarSubContent({ className, size: sizeProp, sideOffset = 4, alignOffset = -5, collisionPadding = 12, ...props }, ref) {
     const container = usePortalContainer();
     const parentSize = React.useContext(MenuSizeContext);

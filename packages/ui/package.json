@@ -32,7 +32,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "size": "node scripts/size-check.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

@@ -161,7 +161,7 @@ interface KanbanContextValue {
   lanes: readonly KanbanLane[] | undefined;
 }
 
-const KanbanContext = React.createContext<KanbanContextValue | null>(null);
+const KanbanContext = /*#__PURE__*/ React.createContext<KanbanContextValue | null>(null);
 function useKanban(): KanbanContextValue {
   const ctx = React.useContext(KanbanContext);
   if (!ctx) throw new Error("Kanban parts must be used inside <Kanban>.");
@@ -175,7 +175,7 @@ const defaultGetLabel = (item: unknown): string | undefined => {
   return typeof v === "string" ? v : undefined;
 };
 
-export const kanbanColumnVariants = cva("vui-kanban-column relative flex min-h-0 shrink-0 flex-col rounded-ui-lg", {
+export const kanbanColumnVariants = /*#__PURE__*/ cva("vui-kanban-column relative flex min-h-0 shrink-0 flex-col rounded-ui-lg", {
   variants: {
     width: { sm: "w-[15.5rem]", md: "w-[18.5rem]", lg: "w-[22rem]" },
   },

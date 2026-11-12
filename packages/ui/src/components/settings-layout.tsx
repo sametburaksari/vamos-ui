@@ -35,7 +35,7 @@ interface SettingsLayoutContextValue {
   labels?: SettingsLayoutLabels;
 }
 
-const SettingsLayoutContext = React.createContext<SettingsLayoutContextValue>({ readOnly: false });
+const SettingsLayoutContext = /*#__PURE__*/ React.createContext<SettingsLayoutContextValue>({ readOnly: false });
 
 /* ------------------------------------------------------------------ */
 /* SettingsLayout                                                      */
@@ -70,7 +70,7 @@ export interface SettingsLayoutProps extends React.HTMLAttributes<HTMLDivElement
  * </SettingsLayout>
  * ```
  */
-export const SettingsLayout = React.forwardRef<HTMLDivElement, SettingsLayoutProps>(function SettingsLayout(
+export const SettingsLayout = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SettingsLayoutProps>(function SettingsLayout(
   { nav, width = "md", readOnly = false, notice, stickyTop, labels, className, style, children, ...props },
   ref,
 ) {
@@ -136,7 +136,7 @@ export interface SettingsNavProps extends Omit<React.HTMLAttributes<HTMLElement>
  * Section navigation: a `nav` with `aria-current`. Anchor items scroll to their section, move focus
  * to its heading, and follow the scroll (scroll-spy). Link items use the app's router.
  */
-export const SettingsNav = React.forwardRef<HTMLElement, SettingsNavProps>(function SettingsNav(
+export const SettingsNav = /*#__PURE__*/ React.forwardRef<HTMLElement, SettingsNavProps>(function SettingsNav(
   { items: itemsProp, value: valueProp, defaultValue, onValueChange, scrollSpy = true, labels, className, ...props },
   ref,
 ) {
@@ -273,7 +273,7 @@ export interface SettingsSectionProps extends Omit<React.HTMLAttributes<HTMLElem
 }
 
 /** A titled group of setting rows. `<section aria-labelledby>`. */
-export const SettingsSection = React.forwardRef<HTMLElement, SettingsSectionProps>(function SettingsSection(
+export const SettingsSection = /*#__PURE__*/ React.forwardRef<HTMLElement, SettingsSectionProps>(function SettingsSection(
   { id, title, description, layout = "stacked", tone = "default", footer, loading, headingLevel = 2, labels, className, children, ...props },
   ref,
 ) {
@@ -351,7 +351,7 @@ export interface SettingsRowProps extends Omit<React.HTMLAttributes<HTMLDivEleme
  * One setting: label + description | control. Acts like a `Field` for kit controls (Input,
  * Switch, Select…): the id, `aria-describedby` and disabled/invalid state are wired for you.
  */
-export const SettingsRow = React.forwardRef<HTMLDivElement, SettingsRowProps>(function SettingsRow(
+export const SettingsRow = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SettingsRowProps>(function SettingsRow(
   { label, description, htmlFor, layout = "split", badge, error, disabled, className, children, ...props },
   ref,
 ) {
@@ -446,7 +446,7 @@ export interface SettingsSaveBarProps extends Omit<React.HTMLAttributes<HTMLDivE
  * The sticky "Unsaved changes · Discard · Save" bar. It rises from the bottom of the content when
  * the form is dirty, announces itself politely, and `mod+s` saves.
  */
-export const SettingsSaveBar = React.forwardRef<HTMLDivElement, SettingsSaveBarProps>(function SettingsSaveBar(
+export const SettingsSaveBar = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SettingsSaveBarProps>(function SettingsSaveBar(
   { dirty, saving = false, onSave, onReset, message, error, blockNavigation = true, shortcuts = true, saveLabel, labels, className, ...props },
   ref,
 ) {

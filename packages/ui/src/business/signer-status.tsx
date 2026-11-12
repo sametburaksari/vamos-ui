@@ -79,7 +79,7 @@ const stateTone: Record<SignerState, string> = {
  * <SignerStatus sequential signers={contract.signers} onRemind={(s) => api.remind(s.id)} />
  * ```
  */
-export const SignerStatus = React.forwardRef<HTMLDivElement, SignerStatusProps>(function SignerStatus(
+export const SignerStatus = /*#__PURE__*/ React.forwardRef<HTMLDivElement, SignerStatusProps>(function SignerStatus(
   { signers, sequential, title, onRemind, now, labels, className, ...props },
   ref,
 ) {

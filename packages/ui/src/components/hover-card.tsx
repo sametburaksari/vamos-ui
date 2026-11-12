@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { HoverCard as HoverCardPrimitive } from "radix-ui";
+import * as HoverCardPrimitive from "radix-ui/hover-card";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 import { usePortalContainer } from "../lib/theme-scope";
@@ -21,7 +21,7 @@ export function HoverCard({ openDelay = 500, closeDelay = 150, ...props }: Hover
 
 export const HoverCardTrigger = HoverCardPrimitive.Trigger;
 
-export const hoverCardContentVariants = cva(
+export const hoverCardContentVariants = /*#__PURE__*/ cva(
   "surface-popover ui-pop z-(--z-popover) rounded-ui-lg p-[calc(var(--gap)*0.85)] outline-none max-w-[calc(100vw-1.5rem)]",
   {
     variants: {
@@ -40,7 +40,7 @@ export interface HoverCardContentProps extends React.ComponentPropsWithoutRef<ty
 }
 
 /** The preview panel. Portals into the nearest `ThemeScope` and follows the layer-depth glass rules. */
-export const HoverCardContent = React.forwardRef<React.ElementRef<typeof HoverCardPrimitive.Content>, HoverCardContentProps>(function HoverCardContent(
+export const HoverCardContent = /*#__PURE__*/ React.forwardRef<React.ElementRef<typeof HoverCardPrimitive.Content>, HoverCardContentProps>(function HoverCardContent(
   { className, size, arrow = false, sideOffset = 8, collisionPadding = 12, children, ...props },
   ref,
 ) {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Slot } from "radix-ui";
+import * as Slot from "radix-ui/slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 
@@ -8,7 +8,7 @@ import { cn } from "../lib/cn";
  * --display-weight / --display-tracking / --display-em, and scale with --display-scale.
  */
 
-export const headingVariants = cva("text-balance text-fg [overflow-wrap:break-word]", {
+export const headingVariants = /*#__PURE__*/ cva("text-balance text-fg [overflow-wrap:break-word]", {
   variants: {
     size: {
       /** 56px × display-scale (fluid down to 38px on phones). Hero / page title on websites. */
@@ -50,7 +50,7 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
  * <Heading level={2} size="md">Billing details</Heading>
  * ```
  */
-export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(function Heading({ level = 2, size, asChild, className, ...props }, ref) {
+export const Heading = /*#__PURE__*/ React.forwardRef<HTMLHeadingElement, HeadingProps>(function Heading({ level = 2, size, asChild, className, ...props }, ref) {
   const Comp = (asChild ? Slot.Root : `h${level}`) as "h2";
   return <Comp ref={ref} data-slot="heading" data-size={size ?? defaultSize[level]} className={cn(headingVariants({ size: size ?? defaultSize[level] }), className)} {...props} />;
 });
@@ -59,7 +59,7 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(functi
 /* Text                                                                */
 /* ------------------------------------------------------------------ */
 
-export const textVariants = cva("", {
+export const textVariants = /*#__PURE__*/ cva("", {
   variants: {
     size: {
       xs: "text-xs leading-[1.45]",
@@ -109,7 +109,7 @@ export interface TextProps extends Omit<React.HTMLAttributes<HTMLElement>, "colo
  * <Text truncate={2}>{post.excerpt}</Text>
  * ```
  */
-export const Text = React.forwardRef<HTMLElement, TextProps>(function Text(
+export const Text = /*#__PURE__*/ React.forwardRef<HTMLElement, TextProps>(function Text(
   { as = "p", size, tone, weight, truncate, tabular, asChild, className, style, title, children, ...props },
   ref,
 ) {
@@ -138,12 +138,12 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(function Text(
 });
 
 /** The opening paragraph under a page or article title. */
-export const Lead = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(function Lead({ className, ...props }, ref) {
+export const Lead = /*#__PURE__*/ React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(function Lead({ className, ...props }, ref) {
   return <p ref={ref} data-slot="lead" className={cn("text-pretty text-[length:var(--text-lead)] leading-[1.5] text-fg-muted", className)} {...props} />;
 });
 
 /** Inline code: `slug`, `npm run build`, a field key. */
-export const Code = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(function Code({ className, ...props }, ref) {
+export const Code = /*#__PURE__*/ React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(function Code({ className, ...props }, ref) {
   return (
     <code
       ref={ref}
@@ -161,7 +161,7 @@ export interface BlockquoteProps extends React.BlockquoteHTMLAttributes<HTMLQuot
 }
 
 /** A pulled quote or testimonial, set in the heading face. */
-export const Blockquote = React.forwardRef<HTMLQuoteElement, BlockquoteProps>(function Blockquote({ attribution, className, children, ...props }, ref) {
+export const Blockquote = /*#__PURE__*/ React.forwardRef<HTMLQuoteElement, BlockquoteProps>(function Blockquote({ attribution, className, children, ...props }, ref) {
   return (
     <figure data-slot="blockquote" className={cn("grid gap-2.5 border-s-2 border-accent-ink ps-5", className)}>
       <blockquote ref={ref} className="font-display text-[length:calc(22px*var(--display-scale))] leading-[1.4] text-fg [&_em]:[font-style:var(--display-em)]" {...props}>
@@ -188,7 +188,7 @@ export interface NumericProps extends React.HTMLAttributes<HTMLSpanElement> {
  * <Numeric signOf={-4.2}>−4.2%</Numeric>
  * ```
  */
-export const Numeric = React.forwardRef<HTMLSpanElement, NumericProps>(function Numeric({ mono, signOf, className, ...props }, ref) {
+export const Numeric = /*#__PURE__*/ React.forwardRef<HTMLSpanElement, NumericProps>(function Numeric({ mono, signOf, className, ...props }, ref) {
   return (
     <span
       ref={ref}
@@ -228,7 +228,7 @@ export interface ProseProps extends React.HTMLAttributes<HTMLDivElement> {
  * <Prose size="lg" lang="en"><h2>Opening hours</h2><p>…</p></Prose>
  * ```
  */
-export const Prose = React.forwardRef<HTMLDivElement, ProseProps>(function Prose({ size = "md", html, fullWidth, asChild, className, children, ...props }, ref) {
+export const Prose = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ProseProps>(function Prose({ size = "md", html, fullWidth, asChild, className, children, ...props }, ref) {
   const Comp = asChild ? Slot.Root : "div";
   return (
     <Comp
@@ -247,6 +247,6 @@ export interface ProseTableProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** Wraps a wide table inside Prose in a keyboard-scrollable region. */
-export const ProseTable = React.forwardRef<HTMLDivElement, ProseTableProps>(function ProseTable({ label, className, ...props }, ref) {
+export const ProseTable = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ProseTableProps>(function ProseTable({ label, className, ...props }, ref) {
   return <div ref={ref} role="region" aria-label={label} tabIndex={0} data-slot="prose-table" className={cn(className)} {...props} />;
 });
