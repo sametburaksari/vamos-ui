@@ -75,6 +75,20 @@ describe.skipIf(!hasAudit)("audit_site", () => {
   });
 });
 
+describe("decodeBody", () => {
+  it("decodes gzip, deflate and br, passes identity through", async () => {
+    const { decodeBody } = await import("../src/audit-tool");
+    const zlib = await import("node:zlib");
+    const { Readable } = await import("node:stream");
+    const html = "<title>Hello</title>".repeat(50);
+    const read = async (r: NodeJS.ReadableStream) => { let s = ""; for await (const c of r) s += c.toString(); return s; };
+    expect(await read(decodeBody(Readable.from([zlib.gzipSync(html)]), "gzip"))).toBe(html);
+    expect(await read(decodeBody(Readable.from([zlib.deflateSync(html)]), "deflate"))).toBe(html);
+    expect(await read(decodeBody(Readable.from([zlib.brotliCompressSync(html)]), "br"))).toBe(html);
+    expect(await read(decodeBody(Readable.from([Buffer.from(html)]), undefined))).toBe(html);
+  });
+});
+
 describe("pinnedFetch (hosted)", () => {
   it("refuses a host whose connect-time lookup returns a private address (DNS rebinding)", async () => {
     const { pinnedFetch } = await import("../src/audit-tool");
