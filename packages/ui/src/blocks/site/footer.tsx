@@ -3,6 +3,7 @@ import { cn2 as cn } from "./shared/kit-2";
 import { Section, Container } from "../section";
 import { BlockImage } from "../block-image";
 import { BlockLink } from "../block-link";
+import { JsonLd, type JsonLdNode } from "../json-ld";
 import type { BlockBaseProps } from "../types";
 import type { AddressValue, SocialNetwork } from "../schema/types";
 import { labelTemplates, site2Text, type Site2BlockLabels, type Site2Text } from "./shared/labels-2";
@@ -40,7 +41,36 @@ export interface FooterProps extends Omit<BlockBaseProps, "variant" | "labels" |
   newsletter?: { action?: SiteFormAction | string; title?: React.ReactNode; hint?: React.ReactNode };
   /** © year. Default: the render year. */
   year?: number;
+  /**
+   * Organization JSON-LD built from brand, company, contact and social. Default true. Pass an
+   * object to refine it (`{ "@type": "Dentist", url: "https://…" }`; a LocalBusiness subtype
+   * suits a shop or clinic), or false when the page already emits its own.
+   */
+  jsonLd?: boolean | JsonLdNode;
   labels?: Site2BlockLabels;
+}
+
+/** `Organization` JSON-LD from the footer's details (absolute brand href becomes `url`). */
+export function footerJsonLd(props: Pick<FooterProps, "brand" | "company" | "contact" | "social">): JsonLdNode {
+  const { brand, company, contact, social = [] } = props;
+  const address = contact?.address;
+  return {
+    "@type": "Organization",
+    name: brand.name,
+    ...(company?.legalName && company.legalName !== brand.name ? { legalName: company.legalName } : null),
+    ...(brand.href && /^https?:\/\//.test(brand.href) ? { url: brand.href } : null),
+    ...(contact?.phone ? { telephone: contact.phone } : null),
+    ...(contact?.email ? { email: contact.email } : null),
+    ...(address
+      ? {
+          address:
+            typeof address === "string"
+              ? address.replace(/\n/g, ", ")
+              : { "@type": "PostalAddress", streetAddress: address.line, addressLocality: address.district ? `${address.district}, ${address.city}` : address.city, ...(address.region ? { addressRegion: address.region } : null), ...(address.postalCode ? { postalCode: address.postalCode } : null), addressCountry: address.country },
+        }
+      : null),
+    ...(social.length ? { sameAs: social.map((s) => s.href) } : null),
+  };
 }
 
 const isImage = (v: unknown): v is SiteImage2 => !!v && typeof v === "object" && "src" in (v as object) && !React.isValidElement(v);
@@ -68,6 +98,7 @@ export function Footer({
   cookieSettings = true,
   newsletter,
   year,
+  jsonLd = true,
   id,
   anchor,
   theme,
@@ -82,6 +113,9 @@ export function Footer({
   const y = String(year ?? new Date().getFullYear());
   const ctx: Ctx = { t, locale, components, labels, editMode };
   const copyright = t("copyright", { year: y, name: company?.legalName ?? brand.name });
+  // The edit canvas skips it; the document renderer collects the definition's JSON-LD instead.
+  const structured =
+    jsonLd && !editMode ? <JsonLd data={{ ...footerJsonLd({ brand, company, contact, social }), ...(typeof jsonLd === "object" ? jsonLd : null) }} /> : null;
 
   const legalLine = (
     <div className="flex flex-col gap-3 text-small text-fg-muted @4xl:flex-row @4xl:items-center @4xl:justify-between @4xl:gap-8">
@@ -132,6 +166,7 @@ export function Footer({
   if (variant === "minimal") {
     return (
       <Section as="footer" theme={{ rhythm: "tight", ...theme }} anchor={anchor} blockId={id} blockType="footer" editMode={editMode} className={cn("vb-footer", className)} data-variant="minimal" aria-label={t("footer")}>
+        {structured}
         <Container className="flex flex-col gap-6 @4xl:flex-row @4xl:items-center @4xl:justify-between">
           <BrandMark brand={brand} ctx={ctx} />
           {columns[0]?.links.length ? (
@@ -212,6 +247,7 @@ export function Footer({
   if (variant === "wordmark") {
     return (
       <Section as="footer" theme={theme} anchor={anchor} blockId={id} blockType="footer" editMode={editMode} className={cn("vb-footer overflow-hidden pb-0!", className)} data-variant="wordmark" aria-label={t("footer")}>
+        {structured}
         <Container className="flex flex-col gap-12">
           <div className="grid gap-x-(--gutter) gap-y-10 @2xl:grid-cols-2 @4xl:grid-cols-12">
             <div className="flex flex-col gap-5 @4xl:col-span-4">
@@ -243,6 +279,7 @@ export function Footer({
 
   return (
     <Section as="footer" theme={theme} anchor={anchor} blockId={id} blockType="footer" editMode={editMode} className={cn("vb-footer", className)} data-variant="columns" aria-label={t("footer")}>
+      {structured}
       <Container className="flex flex-col gap-14">
         <div className="grid gap-x-(--gutter) gap-y-12 @4xl:grid-cols-12">
           <div className="flex flex-col gap-6 @4xl:col-span-4">

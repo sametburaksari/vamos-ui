@@ -4,7 +4,9 @@ import { searchItems } from "../core/registry";
 import { rewriteImports } from "../core/transform";
 import { CliError, type RegistryIndexItem, type ItemType } from "../core/types";
 import { out, p, pad, pc, printJson, unwrap, type Context } from "../ui";
+import { isSiteBlock } from "../core/site";
 import { fetchSpec, installItems, openSession } from "./shared";
+import { writeEssentials } from "./site";
 
 const TYPE_LABEL: Record<ItemType, string> = { component: "Components", block: "Blocks", lib: "Libraries", style: "Styles" };
 const TYPES = Object.keys(TYPE_LABEL) as ItemType[];
@@ -171,6 +173,12 @@ export async function add(ctx: Context, args: ParsedArgs): Promise<number> {
     install: bool(args.flags, "install", true),
   });
   if (!res) return 1;
+  // A website block links to /privacy, /kvkk, /terms …: write those pages, robots and sitemap too.
+  const siteBlocks = res.plan.items.filter((i) => i.type === "block" && isSiteBlock(i.name) && !i.source).map((i) => i.name);
+  if (siteBlocks.length && !bool(args.flags, "dry-run")) {
+    if (bool(args.flags, "essentials", true)) await writeEssentials(ctx, session, { dryRun: false, install: bool(args.flags, "install", true) });
+    else if (!ctx.json) p.log.info(`Next: ${pc.cyan("npx vamos-ui site essentials")} writes robots, sitemap and the legal pages ${siteBlocks.join(", ")} links to.`);
+  }
   if (!bool(args.flags, "dry-run")) {
     const conflicts = res.plan.files.filter((f) => f.action === "conflict").length;
     const alias = session.config.importAlias;
