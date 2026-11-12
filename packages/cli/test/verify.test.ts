@@ -263,3 +263,41 @@ export function Row({ name }: { name: string }) {
     expect(performance.now() - t).toBeLessThan(1500);
   });
 });
+
+describe("placeholder-content", () => {
+  it.each([
+    [`const PHONE = "+902160000000";`],
+    [`<a href="tel:0212 000 00 00">Call</a>`],
+    [`const phone = "555 55 55";`],
+    [`const wa = "https://wa.me/905000000000";`],
+    [`const EMAIL = "hello@studio.example.com";`],
+    [`const EMAIL = "info@kiyi.example";`],
+    [`<a href="mailto:help@example.com">Mail</a>`],
+    [`<a href="https://example.com/menu">Menu</a>`],
+    [`<a href="#">Read more</a>`],
+    [`const links = [{ href: "#", label: "Terms" }];`],
+    [`const map = "https://maps.app.goo.gl/kiyimeyhane";`],
+    [`const legal = "Run by [Company legal name], [Registered address].";`],
+  ])("flags %s", (code) => {
+    expect(has(code, "placeholder-content")).toBe(true);
+  });
+
+  it.each([
+    [`const PHONE = "+902163300412";`],
+    [`<a href="tel:+905321234560">Call</a>`],
+    [`<a href="#menu">Menu</a>`],
+    [`const id = "#";`],
+    [`const url = "https://examples.dev/docs";`],
+    [`const map = "https://maps.app.goo.gl/Xb3kP9qLm2Zt7Vw";`],
+    [`<div className="grid-cols-[minmax(0,1fr)_auto] [--scene:var(--surface)]" />`],
+    [`const year = "2026";`],
+  ])("allows %s", (code) => {
+    expect(has(code, "placeholder-content")).toBe(false);
+  });
+
+  it("reports [fill-in] fields once per file with a count", () => {
+    const issues = verifySource(`const a = "[Company name]";\nconst b = "[Adres]";\nconst c = "[Şirket unvanı] ve [Vergi no]";`, "x.ts").filter((i) => i.rule === "placeholder-content");
+    expect(issues).toHaveLength(1);
+    expect(issues[0]!.message).toContain("3 strings");
+  });
+});
