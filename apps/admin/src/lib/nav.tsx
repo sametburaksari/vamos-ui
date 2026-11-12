@@ -1,6 +1,7 @@
 import { LayoutDashboard, Users, CalendarDays, ListChecks, ClipboardList, Plus, Bus, Ticket, HandCoins } from "lucide-react";
 import type { AppDefinition, NavNode } from "@vamos-cms/ui";
 import { FIXTURE, MEMBERS } from "./no17-data";
+import { Logo } from "@/components/logo";
 
 const awayCount = FIXTURE.filter((f) => f.ha === "Dep").length;
 
@@ -10,7 +11,7 @@ export const apps: AppDefinition[] = [
     id: "no17",
     name: "NO:17",
     icon: Ticket,
-    logo: <img src="/logo-dark.png" alt="NO:17" className="h-7 w-auto" />,
+    logo: <Logo className="h-7 w-auto" />,
     href: "/no17",
     newMenu: [
       { id: "no17-new-list", label: "Yeni liste", icon: <Plus />, href: "/no17/listeler/yeni" },
