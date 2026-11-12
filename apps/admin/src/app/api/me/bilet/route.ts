@@ -7,8 +7,12 @@ import { TICKET_BY_DIGEST, TICKET_EVENT } from "@/lib/tickets.server";
 
 export const runtime = "nodejs";
 
-/** no17-fener bilet-indir ucu — aynı secret, aynı imza. */
-const DOWNLOAD_BASE = "https://no17-fener.vercel.app/api/bilet-indir";
+/**
+ * Bilet-indir ucu (eski no17-kombine projesi; PDF'ler orada) — aynı secret, aynı imza.
+ * no17-fener.vercel.app panele taşınınca da no17-kombine.vercel.app'ten servis edilir.
+ * Panele porter'lanınca `TICKET_DOWNLOAD_BASE` env'iyle değiştirilebilir.
+ */
+const DOWNLOAD_BASE = process.env.TICKET_DOWNLOAD_BASE || "https://no17-kombine.vercel.app/api/bilet-indir";
 
 const hmac = (value: string, secret: string) => createHmac("sha256", secret).update(value, "utf8").digest("hex");
 
