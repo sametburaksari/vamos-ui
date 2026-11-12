@@ -18,6 +18,15 @@ export function AdminShell({ defaultCollapsed, children }: { defaultCollapsed?: 
   const pathname = usePathname();
   const router = useRouter();
   const navigate = React.useCallback((href: string) => router.push(href), [router]);
+  const [userName, setUserName] = React.useState("NO:17");
+  React.useEffect(() => {
+    fetch("/api/me")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d?.profile?.name) setUserName(d.profile.name);
+      })
+      .catch(() => {});
+  }, []);
   return (
     <AppShellProvider
       apps={apps}
@@ -29,7 +38,7 @@ export function AdminShell({ defaultCollapsed, children }: { defaultCollapsed?: 
       locale="tr-TR"
       messages={tr}
     >
-      <AppShell badges={badges} user={{ name: "Samet Burak Sarı", items: account }}>
+      <AppShell badges={badges} user={{ name: userName, items: account }}>
         {children}
       </AppShell>
     </AppShellProvider>

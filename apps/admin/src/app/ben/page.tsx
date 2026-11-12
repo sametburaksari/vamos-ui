@@ -19,6 +19,7 @@ import {
 } from "@vamos-cms/ui";
 import { fmtPhone, bloodTone, hasBlood, fmtTL, campaignTone } from "@/lib/no17-helpers";
 import { FIXTURE, PREFILL } from "@/lib/no17-data";
+import { Logo } from "@/components/logo";
 
 const COMP: Record<string, string> = { SL: "Süper Lig", "ŞL": "Şampiyonlar Ligi", UWCL: "Kadın Ş. Ligi" };
 const compLabel = (c: string) => COMP[c] ?? c;
@@ -127,8 +128,7 @@ export default function BenPage() {
     <main className="mx-auto min-h-dvh max-w-[760px] px-4 py-6">
       <header className="mb-5 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <div className="grid size-8 place-items-center rounded-ui-sm bg-nav text-[color:var(--nav-fg-strong)] text-[13px] font-bold">17</div>
-          <span className="font-semibold">NO:17</span>
+          <Logo className="h-7 w-auto" />
         </div>
         <div className="flex items-center gap-2">
           {p.role === "admin" ? (
