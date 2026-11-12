@@ -152,6 +152,8 @@ npx vamos-ui search calendar # find components and blocks
 npx vamos-ui theme           # pick the six theme axes
 npx vamos-ui preset          # print the shareable preset code
 npx vamos-ui verify src      # lint for design-rule and accessibility issues
+npx vamos-ui new                         # plan a website: a few questions → vamos.project.json + vamos.site.json
+npx vamos-ui site import https://example.com   # read a current site: details, navigation, texts, images
 npx vamos-ui audit https://example.com   # audit a live site: SEO basics, broken links, placeholders
 npx vamos-ui brand import https://example.com  # turn a site into a brand profile
 npx vamos-ui site init       # empty vamos.site.json: the business info for a website

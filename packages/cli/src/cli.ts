@@ -6,6 +6,7 @@ import { brand } from "./commands/brand";
 import { create } from "./commands/create";
 import { init } from "./commands/init";
 import { mcp } from "./commands/mcp";
+import { newProject } from "./commands/new";
 import { preset } from "./commands/preset";
 import { registry } from "./commands/registry";
 import { site } from "./commands/site";
@@ -24,6 +25,9 @@ ${pc.bold("Usage")}
   npx vamos-ui <command> [options]
 
 ${pc.bold("Commands")}
+  new                  Plan a website by answering a few questions (domain, hosting, current
+                       site, pages, store/booking, forms, measurement, legal): writes
+                       vamos.project.json and vamos.site.json   --lang, --answers <file>
   create <dir>         Start a new app: --template next|vite, --preset <code>, --no-install
   init                 Set up vamos.json, styles and the base library   --preset <code>
   add <items...>       Add components or blocks (dependencies included). An item is a name,
@@ -34,6 +38,8 @@ ${pc.bold("Commands")}
   view <name>          Show usage, props, guidance and files   --files
   site init            Write an empty vamos.site.json (business details, legal ids, analytics ids,
                        AI settings) for the website files to read   --name, --url, --locale
+  site import <url>    Read a current website: business details, navigation, texts, images
+                       (--write fills the empty fields of vamos.site.json)
   site essentials      Website launch basics from vamos.site.json: robots, sitemap, llms.txt,
                        JSON-LD, legal pages for the footer links (legal-01), metadata hints.
                        Runs after \`add site-…\` too (--no-essentials)
@@ -81,6 +87,7 @@ const COMMANDS: Record<string, (ctx: Context, args: ReturnType<typeof parseArgs>
   theme,
   preset,
   create,
+  new: newProject,
   mcp,
   registry,
   brand,
@@ -104,7 +111,7 @@ export async function run(argv: string[], opts: RunOptions = {}): Promise<number
     out(VERSION);
     return 0;
   }
-  const ownHelp = ["brand", "update", "create", "mcp", "registry", "site", "audit"].includes(args.command ?? "");
+  const ownHelp = ["brand", "update", "create", "mcp", "registry", "site", "audit", "new"].includes(args.command ?? "");
   if (!args.command || (bool(args.flags, "help") && !ownHelp) || args.command === "help") {
     out(HELP);
     return args.command || bool(args.flags, "help") ? 0 : 1;

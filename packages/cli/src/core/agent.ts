@@ -35,6 +35,7 @@ This project uses Vamos UI (docs: https://ui.vamos.ist). Kit source lives in \`$
 - Clickable things are buttons or links, never \`<div onClick>\`. No positive \`tabIndex\`.
 
 **Websites** (projects with \`site-*\` / \`page-*\` blocks)
+- A new website starts with the plan: \`npx vamos-ui new\` (or the MCP tool \`start_project\`) asks about the business, domain, hosting, current site, pages, store or booking, forms, measurement and legal, and writes \`vamos.project.json\`. Build what its plan lists (pages, components, legal pages, tasks) and ask the user its open questions; with a current site, \`npx vamos-ui site import <url>\` / \`import_site\` reads its details, navigation and texts first.
 - Business details live in \`vamos.site.json\` (\`npx vamos-ui site init\`): name, contact, address, opening hours, legal ids, analytics ids. Read them from there; never invent a phone, email, address, map link or tracking id, and never leave a placeholder (\`000 00 00\`, \`example.com\`, \`href="#"\`, \`[fill-in]\`) in shipped code.
 - \`npx vamos-ui site essentials\` writes robots, sitemap, llms.txt, JSON-LD and the legal pages (legal-01). Legal presets are template text: the business or a lawyer reviews them.
 - One H1 per page, a title under 60 characters, a 120–160 character description, \`alternates.canonical\` and Open Graph on every page.
