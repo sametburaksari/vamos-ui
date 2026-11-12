@@ -29,6 +29,9 @@ const releases: Release[] = [
         "Preset codes keep the corner letter but map it to `data-radius` instead of the generated brand accent, so sharp or round corners combine with a named accent (`v1dgokgs` is dark · glass · ocean · compact · grotesk · sharp) and `theme --preset` works without a project. `vamos-ui theme --radius`, `theme.radius` in vamos.json, and `brand apply` saves `brand.theme.radius` there instead of writing `--radius` into brand.css.",
         "The /themes editor's corner control is independent of the accent; the generated brand accent is only used for a custom colour.",
       ],
+      Fixed: [
+        "MCP 0.2.10: the hosted `audit_site` decodes gzip, deflate and br responses. 0.2.9 read compressed pages as raw bytes and reported a missing title, description and sitemap on sites that have them.",
+      ],
     },
   },
   {
