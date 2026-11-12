@@ -19,7 +19,7 @@ import {
 } from "./tools.js";
 
 export const SERVER_NAME = "vamos-ui";
-export const SERVER_VERSION = "0.2.3";
+export const SERVER_VERSION = "0.2.4";
 
 const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 5 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
@@ -77,7 +77,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       title: "Design rules",
       description:
         "The design rules every screen built with Vamos UI must follow: tokens only, accent only for the one primary action/active state/data highlight, glass budget, density tokens, kit components over hand-rolled markup, no AI-looking patterns, realistic content, accessibility. Call this ONCE at the start of any UI task, before writing code.",
-      annotations: readOnly,
+      annotations: { title: "Design rules", ...readOnly },
     },
     () => run(getRules),
   );
@@ -91,7 +91,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       inputSchema: {
         include_tokens: z.boolean().optional().describe("Include the full token table (default true). Pass false for a shorter answer."),
       },
-      annotations: readOnly,
+      annotations: { title: "Theming guide", ...readOnly },
     },
     (args) => run(() => getTheming(registry, args)),
   );
@@ -108,7 +108,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         category: z.string().optional().describe('Block category, partial match, e.g. "Dashboards", "Authentication", "List pages".'),
         tag: z.string().optional().describe('Exact tag, e.g. "crm", "cms", "site".'),
       },
-      annotations: readOnly,
+      annotations: { title: "List registry items", ...readOnly },
     },
     (args) => run(() => listItems(registry, args)),
   );
@@ -124,7 +124,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         type: itemType.optional().describe("Restrict to one item type."),
         limit: z.number().int().min(1).max(50).optional().describe("Max results (default 10)."),
       },
-      annotations: readOnly,
+      annotations: { title: "Search components and blocks", ...readOnly },
     },
     (args) => run(() => search(registry, args)),
   );
@@ -143,7 +143,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
           .describe('Sections to include. Default ["examples","props","guidance"]; add "files" for full source.'),
         format: z.enum(["markdown", "json"]).optional().describe("markdown (default, readable) or json (the raw registry item)."),
       },
-      annotations: readOnly,
+      annotations: { title: "Get a component or item", ...readOnly },
     },
     (args) => run(() => getItem(registry, args)),
   );
@@ -157,7 +157,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       inputSchema: {
         name: z.string().min(1).describe('Block name, e.g. "dashboard-01", "settings-01".'),
       },
-      annotations: readOnly,
+      annotations: { title: "Get a block (whole screen)", ...readOnly },
     },
     (args) => run(() => getBlock(registry, args)),
   );
@@ -174,7 +174,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
           .min(3)
           .describe('The screen in a sentence or two: purpose, data, main action. E.g. "CRM invoices list with filters, status badges and bulk delete".'),
       },
-      annotations: readOnly,
+      annotations: { title: "Plan a screen", ...readOnly },
     },
     (args) => run(() => planScreen(registry, args)),
   );
@@ -189,7 +189,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         code: z.string().describe("The full file contents."),
         filename: z.string().min(1).describe('Path of the file, e.g. "app/invoices/page.tsx" (used for the "use client" rule and messages).'),
       },
-      annotations: { readOnlyHint: true, openWorldHint: false, idempotentHint: true },
+      annotations: { title: "Verify UI code", readOnlyHint: true, openWorldHint: false, idempotentHint: true },
     },
     (args) =>
       run(async () => {
@@ -210,7 +210,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       inputSchema: {
         names: z.array(z.string().min(1)).min(1).describe('Item names, e.g. ["dashboard-01", "date-range-picker"].'),
       },
-      annotations: readOnly,
+      annotations: { title: "Install command", ...readOnly },
     },
     (args) => run(() => installCommand(registry, args)),
   );
@@ -230,7 +230,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       description:
         "Reads the project's vamos.brand.json: brand name, accent (with the generated accent variables), fonts, theme defaults, voice (tone, copy rules, do/don't examples) and assets (logos with how-to-use notes), plus any problems. Call at the start of UI work in a project that may have a brand, and follow its voice in all copy.",
       inputSchema: { projectDir: projectDir.optional().describe("Project root (default: the server's working directory).") },
-      annotations: readOnly,
+      annotations: { title: "Get the brand profile", ...readOnly },
     },
     (args) => run(async () => answer(await getBrand(args))),
   )
@@ -241,7 +241,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Import a design system from a website",
       description:
-        "Reads a web page (url) or page source (html, optional css and base_url) and drafts a vamos.brand.json: accent from theme-color / CSS variables / most-used colours, fonts from font-family and Google Fonts links, logo and icon candidates, voice hints from title/description. Returns the draft, the evidence for each value, a contrast-checked accent and what is missing. Writes nothing. Always confirm the draft with the user before saving it.",
+        "Reads a web page (url) or page source (html, optional css and base_url) and drafts a vamos.brand.json: accent from theme-color / CSS variables / most-used colours, fonts from font-family and Google Fonts links, logo and icon candidates, voice hints from title/description. Returns the draft, the evidence for each value, a contrast-checked accent and what is missing. Writes nothing. Always confirm the draft with the user before saving it. Docs: https://ui.vamos.ist/docs/mcp/ and https://ui.vamos.ist/docs/theming/",
       inputSchema: {
         url: z.string().min(1).optional().describe("Page to read, e.g. https://example.com. http(s) only."),
         html: z.string().min(1).optional().describe("Page source, when the site cannot be fetched (login, bot protection) or you already have it."),
@@ -249,7 +249,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         base_url: z.string().optional().describe("Base URL to resolve relative links in html."),
         name: z.string().optional().describe("Brand name, if the user already told you."),
       },
-      annotations: { readOnlyHint: true, openWorldHint: true },
+      annotations: { title: "Import a design system from a website", readOnlyHint: true, openWorldHint: true },
     },
     (args) =>
       run(async () => {
@@ -268,7 +268,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         colour: z.string().min(1).describe('Any CSS colour: "#0f766e", "rgb(15 118 110)", "oklch(0.55 0.1 180)", "teal".'),
         dark: z.string().optional().describe("Optional dark-mode fill (colors.accentDark), when the brand has one."),
       },
-      annotations: { readOnlyHint: true, openWorldHint: false, idempotentHint: true },
+      annotations: { title: "Propose a brand accent", readOnlyHint: true, openWorldHint: false, idempotentHint: true },
     },
     (args) => run(async () => answer(await proposeAccent(args))),
   );
@@ -288,7 +288,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
           .describe("A confirmed brand profile (object or JSON string). Omit to use the project's vamos.brand.json."),
         write: z.boolean().optional().describe("Write the planned files inside projectDir (default false: only return the plan). Prefer running the CLI command."),
       },
-      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+      annotations: { title: "Apply the design system to a project", readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     },
     (args) => run(async () => answer(await applyDesignSystem(args))),
   )
@@ -306,7 +306,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         projectDir: projectDir.optional(),
         paths: z.array(z.string().min(1)).optional().describe("Project-relative files or folders to lint instead of the defaults (src, app, components, pages, lib)."),
       },
-      annotations: { readOnlyHint: true, openWorldHint: false, idempotentHint: true },
+      annotations: { title: "Verify the design system", readOnlyHint: true, openWorldHint: false, idempotentHint: true },
     },
     (args) =>
       run(async () => {
@@ -326,7 +326,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
         projectDir,
         paths: z.array(z.string().min(1)).optional().describe("Limit the code check to these project-relative paths."),
       },
-      annotations: readOnly,
+      annotations: { title: "Plan a design update", ...readOnly },
     },
     (args) => run(async () => answer(await updateDesign(args))),
   )
