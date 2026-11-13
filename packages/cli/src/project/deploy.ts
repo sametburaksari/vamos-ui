@@ -51,8 +51,13 @@ const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 /** Apache (cPanel / shared hosting) rules for a static export in public_html. */
 export function htaccess(o: DeployOptions): string {
   const { canonical, other } = hosts(o);
+  const bare = canonical?.replace(/^www\./, "");
+  // On cPanel, subdomain and addon-domain folders often live inside public_html and inherit this
+  // file, so the redirects and headers only apply to this site's own host names.
+  const hostRe = bare ? `^(www\\.)?${escapeRe(bare)}$` : null;
   const lines = [
     "# Written by vamos-ui site deploy. Copied into out/ by next build (static export).",
+    ...(hostRe ? ["# Rules are limited to this domain: subdomain folders inside public_html inherit this file."] : []),
     "Options -Indexes",
     "DirectoryIndex index.html index.php",
     "ErrorDocument 404 /404.html",
@@ -60,6 +65,7 @@ export function htaccess(o: DeployOptions): string {
     "<IfModule mod_rewrite.c>",
     "  RewriteEngine On",
     "  # One address: HTTPS" + (canonical ? ` on ${canonical}` : ""),
+    ...(hostRe ? [`  RewriteCond %{HTTP_HOST} ${hostRe} [NC]`] : []),
     "  RewriteCond %{HTTPS} !=on",
     "  RewriteCond %{HTTP:X-Forwarded-Proto} !https",
     canonical ? `  RewriteRule ^ https://${canonical}%{REQUEST_URI} [R=301,L]` : "  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]",
@@ -72,7 +78,9 @@ export function htaccess(o: DeployOptions): string {
     "</IfModule>",
     "",
     "<IfModule mod_headers.c>",
-    ...SECURITY_HEADERS.map(([k, v]) => `  Header always set ${k} "${v}"`),
+    ...(hostRe
+      ? [`  <If "%{HTTP_HOST} =~ /${hostRe}/i">`, ...SECURITY_HEADERS.map(([k, v]) => `    Header always set ${k} "${v}"`), "  </If>"]
+      : SECURITY_HEADERS.map(([k, v]) => `  Header always set ${k} "${v}"`)),
     '  <FilesMatch "\\.(html|php)$">',
     '    Header set Cache-Control "no-cache"',
     "  </FilesMatch>",
