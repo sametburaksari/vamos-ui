@@ -9,6 +9,7 @@ import { CliError } from "../core/types";
 import { SITE_FILE, missingSiteFields, siteTemplate } from "../site-info";
 import { out, p, pc, plural, printJson, type Context } from "../ui";
 import { siteImport } from "./new";
+import { siteDeploy } from "./site-deploy";
 import { siteForm } from "./site-form";
 import { installItems, openSession, type InstallOptions, type Session } from "./shared";
 
@@ -19,6 +20,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
   npx vamos-ui site form [--kind php-mail|resend|smtp] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
+  npx vamos-ui site deploy [--host vercel|netlify|cloudflare|cpanel|vps] [--domain <name>] [--www] [--dry-run]
 
 ${pc.bold("site init")} writes an empty ${SITE_FILE} at the project root (never over an existing one):
 the one source for the business name, contact, address, opening hours, legal ids (MERSİS, tax,
@@ -47,7 +49,17 @@ ${pc.bold("site form")} writes the sender behind ContactForm, never replacing a 
   smtp      the same with nodemailer and the business's own mailbox
 All three validate the same fields as the form, drop bot submits, rate-limit per IP and refuse
 cross-site posts. Default kind: the plan in vamos.project.json, else php-mail for a static site
-and smtp for a Next.js server. --to defaults to contact.email in ${SITE_FILE}.`;
+and smtp for a Next.js server. --to defaults to contact.email in ${SITE_FILE}.
+
+${pc.bold("site deploy")} writes the host's config, never replacing a file, and prints the publishing
+steps and the checks to run afterwards. It never publishes anything itself:
+  cpanel      public/.htaccess: http → https and one host name (301), security headers, cache
+              rules, the 404 page, project files denied
+  vercel      vercel.json: security headers, immutable cache for /_next/static, www redirect
+  netlify     public/_headers (+ public/_redirects for the other host name)
+  cloudflare  public/_headers (+ public/_redirects)
+  vps         deploy/nginx-<domain>.conf (TLS, redirects, headers, proxy) + deploy/ecosystem.config.cjs (pm2)
+Host: --host, else the plan in vamos.project.json. Domain: --domain, else the plan, else ${SITE_FILE} url.`;
 
 export interface EssentialsResult {
   written: string[];
@@ -124,6 +136,7 @@ export async function site(ctx: Context, args: ParsedArgs): Promise<number> {
   if (sub === "init") return siteInit(ctx, args);
   if (sub === "import") return siteImport(ctx, args);
   if (sub === "form") return siteForm(ctx, args);
+  if (sub === "deploy") return siteDeploy(ctx, args);
   if (sub !== "essentials") {
     out(`${pc.red("Unknown site command")} "${sub}".\n\n${SITE_HELP}`);
     return 1;
