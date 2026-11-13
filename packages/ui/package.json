@@ -1,6 +1,6 @@
 {
   "name": "@vamos-ui/react",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Themeable component kit for admin panels and websites — theme × material × accent × density × font.",
   "license": "MIT",
   "type": "module",
