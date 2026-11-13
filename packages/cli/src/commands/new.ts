@@ -20,6 +20,7 @@ import {
 import { SITE_FILE, parseSiteJson, type SiteInfo } from "../site-info";
 import { out, p, pc, printJson, spinner, unwrap, type Context } from "../ui";
 import { brand } from "./brand";
+import { writeOrchestrator } from "./task";
 
 const NEW_HELP = `${pc.bold("vamos-ui new")}  Plan a website by answering a few questions.
 
@@ -206,6 +207,7 @@ export async function newProject(ctx: Context, args: ParsedArgs): Promise<number
   const step = startProject(answers, {
     lang,
     existingSite,
+    previousPlan: previous?.plan,
     imported: imported ? { site: (imported as SiteImport).site, pages: (imported as SiteImport).navigation, url: (imported as SiteImport).finalUrl } : undefined,
   });
 
@@ -249,11 +251,15 @@ export async function newProject(ctx: Context, args: ParsedArgs): Promise<number
     else p.log.info(`${lang === "tr" ? "Marka için" : "For the brand"}: ${pc.cyan(`npx vamos-ui brand import ${(imported as SiteImport).finalUrl}`)}`);
   }
 
+  const agentFiles = await writeOrchestrator(root);
+  if (agentFiles.written.length) p.log.success(`${lang === "tr" ? "Orkestra şefi ve uzmanlar" : "Orchestrator and specialists"}: .claude/skills/vamos-site, .claude/agents/vamos-* ${pc.dim(`(${agentFiles.written.length})`)}`);
+  p.log.info(`${lang === "tr" ? "Görevler" : "Tasks"}: ${pc.cyan("npx vamos-ui task next")}`);
+
   const first = step.plan.templates[0];
   p.outro(
     lang === "tr"
-      ? `Sonraki adım: ${pc.cyan(`npx vamos-ui create site --template next`)} ve ${first ? pc.cyan(`npx vamos-ui add ${first}`) : "planlanan bileşenler"}; ya da bir yapay zeka asistanına "${PROJECT_FILE} planını uygula" deyin.`
-      : `Next: ${pc.cyan(`npx vamos-ui create site --template next`)} and ${first ? pc.cyan(`npx vamos-ui add ${first}`) : "the planned components"}; or ask an AI assistant to "build the plan in ${PROJECT_FILE}".`,
+      ? `Sonraki adım: ${pc.cyan(`npx vamos-ui create site --template next`)} ve ${first ? pc.cyan(`npx vamos-ui add ${first}`) : "planlanan bileşenler"}; ya da bir yapay zeka asistanına "vamos-site ile ${PROJECT_FILE} planını uygula" deyin.`
+      : `Next: ${pc.cyan(`npx vamos-ui create site --template next`)} and ${first ? pc.cyan(`npx vamos-ui add ${first}`) : "the planned components"}; or ask an AI assistant to "build the plan in ${PROJECT_FILE} with vamos-site".`,
   );
   return 0;
 }

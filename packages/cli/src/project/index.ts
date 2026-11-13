@@ -13,10 +13,14 @@
 import type { SiteInfo } from "../site-info";
 import { SITE_SCHEMA } from "../site-info";
 import { buildPlan, siteFromAnswers, type ImportedHints, type ProjectPlan } from "./plan";
+import { carryTaskState } from "./process";
 import { QUESTIONS, nextQuestions, validateAnswers, type Answers, type AnswerProblem, type Lang, type Question } from "./questions";
 
 export * from "./questions";
 export * from "./plan";
+export * from "./requirements";
+export * from "./deploy";
+export * from "./process";
 export { importSite, readPage, siteFromImport, type ImportOptions, type ImportedPage, type ImportedValue, type SiteImport } from "./import";
 
 export const PROJECT_FILE = "vamos.project.json";
@@ -142,6 +146,8 @@ export interface StartOptions {
   existingSite?: Partial<SiteInfo> | null;
   /** Result of importSite for the current site (site draft + navigation). */
   imported?: ImportedHints & { url?: string };
+  /** The plan already in vamos.project.json: task status and notes are kept when the plan is rebuilt. */
+  previousPlan?: ProjectPlan | null;
 }
 
 /** One step of the interview: validate, pick the next questions, build the plan and files. */
@@ -149,7 +155,7 @@ export function startProject(answers: Answers, opts: StartOptions = {}): Project
   const lang = opts.lang ?? "tr";
   const problems = validateAnswers(answers);
   const pending = nextQuestions(answers);
-  const plan = buildPlan(answers, opts.imported ?? {});
+  const plan = carryTaskState(opts.previousPlan, buildPlan(answers, opts.imported ?? {}));
   // Optional questions are still offered, but only required ones hold the plan back.
   const complete = pending.every((q) => q.optional) && problems.length === 0;
   const step: ProjectStep = {

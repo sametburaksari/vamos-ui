@@ -35,6 +35,30 @@ declare module "vamos-ui/project" {
   }
   export function startProject(answers: Answers, opts?: StartOptions): ProjectStep;
   export function formatPlan(plan: ProjectPlan, lang?: Lang): string;
+  export type TaskStatus = "todo" | "blocked" | "done";
+  export interface TaskView {
+    id: string;
+    agent: string;
+    title: string;
+    status: TaskStatus;
+    ready: boolean;
+    waitingFor: string[];
+    needs: string[];
+    note?: string;
+  }
+  export interface ProcessState {
+    tasks: TaskView[];
+    ready: TaskView[];
+    blocked: TaskView[];
+    done: number;
+    total: number;
+    finished: boolean;
+  }
+  export function processState(plan: ProjectPlan, lang?: Lang): ProcessState;
+  export function setTaskStatus(plan: ProjectPlan, id: string, status: TaskStatus, note?: string): ProjectPlan;
+  export function taskBrief(plan: ProjectPlan, id: string, lang?: Lang): string;
+  export function formatProcess(state: ProcessState, lang?: Lang): string;
+  export function orchestratorSkill(): string;
   export interface ImportedValue<T = string> {
     value: T;
     source: string;

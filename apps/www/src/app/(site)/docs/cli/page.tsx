@@ -154,6 +154,10 @@ npx vamos-ui preset          # print the shareable preset code
 npx vamos-ui verify src      # lint for design-rule and accessibility issues
 npx vamos-ui new                         # plan a website: a few questions → vamos.project.json + vamos.site.json
 npx vamos-ui site import https://example.com   # read a current site: details, navigation, texts, images
+npx vamos-ui task next                   # the plan's tasks that can start now, with a brief for each
+npx vamos-ui agents                      # orchestrator skill + nine specialist subagents for Claude Code
+npx vamos-ui site form                   # contact-form sender: contact.php, Resend or SMTP
+npx vamos-ui site deploy                 # host config (https, headers, cache) and publishing steps
 npx vamos-ui audit https://example.com   # audit a live site: SEO basics, broken links, placeholders
 npx vamos-ui brand import https://example.com  # turn a site into a brand profile
 npx vamos-ui site init       # empty vamos.site.json: the business info for a website
@@ -193,6 +197,50 @@ npx vamos-ui site essentials --dry-run  # show the plan`} />
         <C>vamos-ui verify</C> reports empty required fields (name, url, phone or email, city; MERSİS and ETBİS for a shop) and a
         website without llms.txt (rule <C>site-info</C>). The legal pages stay template text: the business or its lawyer reviews them.
       </P>
+
+      <H2 id="process">Website process: orchestrator and specialists</H2>
+      <P>
+        <C>vamos-ui new</C> writes the plan; the process walks it. Each task in <C>vamos.project.json</C> belongs to one
+        specialist and waits for the tasks before it: brand and content start together, the build follows the brand, legal pages,
+        SEO, forms and measurement follow the build, QA checks everything and deploy comes last. Status is kept in the file, so
+        another assistant (or you, next week) continues where the last one stopped, and rebuilding the plan from new answers keeps it.
+      </P>
+      <Code lang="bash" code={`npx vamos-ui task              # every task, its status and what it waits for
+npx vamos-ui task next         # what can start now (several = run them in parallel)
+npx vamos-ui task brief seo    # the brief for the SEO specialist
+npx vamos-ui task done brand --note "accent approved"
+npx vamos-ui task block content --note "photos from the owner"
+npx vamos-ui task reset forms  # QA found a problem: reopen it`} />
+      <P>
+        A brief has the goal, what to read, the part of the plan that matters for the task, the steps, the requirements the
+        specialist owns, the checks that prove it is done and a fixed report format (<C>STATUS / CHANGED / CHECKS / REQUIREMENTS /
+        FOLLOW-UPS</C>). The requirements come from a pack per site type on top of a shared baseline: a local business needs the
+        same name, address and phone as its Google profile and LocalBusiness JSON-LD; a shop needs Product JSON-LD, the distance
+        sales agreement at checkout and ETBİS in the footer; a booking site states its cancellation rules and asks separate explicit
+        consent for health data; an event has Event JSON-LD with a time zone. QA walks the whole list before deploy.
+      </P>
+      <P>
+        <C>vamos-ui agents</C> (also run by <C>new</C>) writes <C>.claude/skills/vamos-site/SKILL.md</C>, the orchestrator that
+        interviews the user, shows the plan, hands each brief to a subagent and reports progress, and nine subagents in{" "}
+        <C>.claude/agents/</C> (<C>vamos-brand</C>, <C>vamos-content</C>, <C>vamos-build</C>, <C>vamos-legal</C>, <C>vamos-seo</C>,{" "}
+        <C>vamos-tracking</C>, <C>vamos-forms</C>, <C>vamos-qa</C>, <C>vamos-deploy</C>). Delete the marker line in a file to keep
+        your own version. Codex, Cursor and Gemini follow the same process from <C>AGENTS.md</C>; chat clients use the MCP tools{" "}
+        <C>start_project</C> and <C>next_task</C>. Publishing, DNS changes and replacing a live site always wait for the user.
+      </P>
+      <H3 id="deploy">Hosting config</H3>
+      <P>
+        <C>vamos-ui site deploy</C> writes the config that makes the launch checks pass on the first deploy and prints the
+        publishing steps; it never publishes anything itself and never replaces a file.
+      </P>
+      <Table
+        head={["Host", "Files", "What they do"]}
+        rows={[
+          ["cPanel", <C key="c">public/.htaccess</C>, "http → https and one host name (301), /page → page.html, security headers, long cache for /_next/static, the 404 page, project files denied."],
+          ["Vercel", <C key="v">vercel.json</C>, "Security headers, immutable cache for /_next/static, the other host name redirected."],
+          ["Netlify, Cloudflare Pages", <C key="n">public/_headers, public/_redirects</C>, "The same headers and redirect in the host's own format."],
+          ["VPS", <C key="p">deploy/nginx-&lt;domain&gt;.conf, deploy/ecosystem.config.cjs</C>, "TLS server blocks with redirects and headers in front of Next.js on pm2 (standalone output)."],
+        ]}
+      />
 
       <H2 id="mcp">MCP server (AI agents)</H2>
       <P>

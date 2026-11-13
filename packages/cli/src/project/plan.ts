@@ -7,11 +7,13 @@
 
 import type { SiteInfo } from "../site-info";
 import { type Answers, type Lang, type SiteType, type Text, wantsTurkish } from "./questions";
+import { requirementsFor, taskDependencies, type Agent, type Requirement } from "./requirements";
+
+export type { Agent, Requirement } from "./requirements";
 
 export type Structure = "single" | "multi";
 export type Hosting = "vercel" | "netlify" | "cloudflare" | "cpanel" | "vps";
 export type FormDelivery = "smtp" | "resend" | "php-mail" | "whatsapp" | "none";
-export type Agent = "brand" | "content" | "build" | "legal" | "seo" | "tracking" | "forms" | "qa" | "deploy";
 
 export interface PlanPage {
   path: string;
@@ -25,10 +27,16 @@ export interface PlanTask {
   id: string;
   agent: Agent;
   title: Text;
-  status: "todo" | "blocked" | "done";
+  status: TaskStatus;
+  /** Task ids that must be done first (the process runs a task once all of them are done). */
+  after?: string[];
   /** What the user still has to provide before the task can finish. */
   needs?: Text[];
+  /** Last note from the specialist or the user (why it is blocked, what was done). */
+  note?: string;
 }
+
+export type TaskStatus = "todo" | "blocked" | "done";
 
 export interface Decision {
   value: string;
@@ -50,6 +58,8 @@ export interface ProjectPlan {
   /** Online store only: where products live, payments, shipping. */
   commerce?: { catalog: Decision; payments: string[]; shipping: string; einvoice: boolean };
   compliance: Text[];
+  /** What the site must have before launch (shared baseline + the site type's pack), per specialist. */
+  requirements: Requirement[];
   tasks: PlanTask[];
   openQuestions: Text[];
 }
@@ -414,6 +424,17 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     { id: "deploy", agent: "deploy", status: "todo", title: t(`Publish on ${hosting.value}, connect the domain, HTTPS, then submit the sitemap.`, `${hosting.value} üzerinde yayınla, alan adını bağla, HTTPS, ardından sitemap gönder.`), needs: domainName ? [] : [t("A domain name.", "Bir alan adı.")] },
   ];
   for (const task of tasks) if (task.needs && task.needs.length === 0) delete task.needs;
+  const deps = taskDependencies(tasks.map((x) => x.id));
+  for (const task of tasks) if (deps[task.id]?.length) task.after = deps[task.id];
+  const requirements = requirementsFor({
+    siteType: type,
+    tr,
+    forms: forms.value !== "none" && forms.value !== "whatsapp",
+    tracking: tracking.length > 0,
+    cookies: tracking.some((x) => x !== "gsc"),
+    multilingual: languages.length > 1,
+    company: one(a.legal_entity) === "company",
+  });
 
   return {
     siteType: type,
@@ -428,6 +449,7 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     domain: { name: domainName, ideas: domainName ? [] : domainIdeas(name, tr) },
     ...(commerce ? { commerce } : {}),
     compliance,
+    requirements,
     tasks,
     openQuestions,
   };

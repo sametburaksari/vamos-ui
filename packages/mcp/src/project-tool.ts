@@ -75,6 +75,47 @@ export async function startProjectTool(args: StartProjectArgs): Promise<ToolAnsw
   return { text: lines.join("\n"), data: step as unknown as Record<string, unknown> };
 }
 
+export interface NextTaskArgs {
+  project: Record<string, unknown>;
+  task?: string;
+  status?: "done" | "blocked" | "todo";
+  note?: string;
+  lang?: "tr" | "en";
+}
+
+/**
+ * next_task: the website process on a vamos.project.json the client hands in. Optionally sets
+ * one task's status first (the updated file comes back), then returns where every task stands,
+ * the tasks that can start now and the brief for the requested (or first ready) task.
+ */
+export async function nextTaskTool(args: NextTaskArgs): Promise<ToolAnswer> {
+  const mod = await lib();
+  const project = args.project as { plan?: ProjectStep["plan"] & { tasks?: unknown[] } };
+  if (!project?.plan || !Array.isArray(project.plan.tasks) || !project.plan.tasks.length) throw new ToolError("project must be the contents of vamos.project.json with a finished plan (run start_project until it returns the files).");
+  const lang = args.lang ?? "tr";
+  const tr = lang === "tr";
+  let plan = project.plan;
+  let updated: Record<string, unknown> | undefined;
+  try {
+    if (args.status) {
+      if (!args.task) throw new Error("status needs task (the task id).");
+      plan = mod.setTaskStatus(plan, args.task, args.status, args.note);
+      updated = { ...project, plan };
+    }
+    const state = mod.processState(plan, lang);
+    const target = args.status ? state.ready[0]?.id : (args.task ?? state.ready[0]?.id);
+    const brief = target ? mod.taskBrief(plan, target, lang) : undefined;
+    const lines = [mod.formatProcess(state, lang)];
+    if (updated) lines.push("", tr ? "Güncellenen vamos.project.json yapılandırılmış sonuçtaki project alanında; dosyaya yazın." : "The updated vamos.project.json is in project in the structured result; write it to the file.");
+    if (brief) lines.push("", tr ? `Sıradaki görevin özeti (uzman agent'a verin ya da kendiniz uygulayın; bittiğinde status: "done" ile tekrar çağırın):` : `Brief for the next task (hand it to a specialist or do it yourself; call again with status: "done" when finished):`, "", brief);
+    else if (!state.finished) lines.push("", tr ? "Başlayabilecek görev yok: engelli görevlerin eksiklerini kullanıcıdan isteyin." : "Nothing can start: ask the user for what the blocked tasks need.");
+    return { text: lines.join("\n"), data: { ...state, ...(target ? { task: target, brief } : {}), ...(updated ? { project: updated } : {}) } as unknown as Record<string, unknown> };
+  } catch (error) {
+    if (error instanceof ToolError) throw error;
+    throw new ToolError((error as Error).message);
+  }
+}
+
 export const IMPORT_LIMITS = {
   remote: { maxPages: 4, deadlineMs: 30_000, timeoutMs: 8_000, maxBytes: 2 * 1024 * 1024, maxStylesheets: 4 },
   local: { maxPages: 8, deadlineMs: 60_000, timeoutMs: 10_000, maxBytes: 4 * 1024 * 1024, maxStylesheets: 8 },

@@ -10,6 +10,7 @@ import { newProject } from "./commands/new";
 import { preset } from "./commands/preset";
 import { registry } from "./commands/registry";
 import { site } from "./commands/site";
+import { agents, task } from "./commands/task";
 import { diff, upgrade } from "./commands/sync";
 import { theme } from "./commands/theme";
 import { update } from "./commands/update";
@@ -28,6 +29,11 @@ ${pc.bold("Commands")}
   new                  Plan a website by answering a few questions (domain, hosting, current
                        site, pages, store/booking, forms, measurement, legal): writes
                        vamos.project.json and vamos.site.json   --lang, --answers <file>
+  task [next|brief|done|block|reset] [id]
+                       Walk the plan's tasks in order: what can start, the brief for its
+                       specialist, mark done / blocked   --note, --brief, --json
+  agents               Write the website orchestrator skill and its nine specialist subagents
+                       (.claude/skills/vamos-site, .claude/agents/vamos-*)   --dry-run, --force
   create <dir>         Start a new app: --template next|vite, --preset <code>, --no-install
   init                 Set up vamos.json, styles and the base library   --preset <code>
   add <items...>       Add components or blocks (dependencies included). An item is a name,
@@ -43,6 +49,9 @@ ${pc.bold("Commands")}
   site essentials      Website launch basics from vamos.site.json: robots, sitemap, llms.txt,
                        JSON-LD, legal pages for the footer links (legal-01), metadata hints.
                        Runs after \`add site-…\` too (--no-essentials)
+  site form            Contact-form sender: contact.php, Resend or SMTP   --kind, --to, --dry-run
+  site deploy          Host config (redirects, security headers, cache) and publishing steps
+                       --host vercel|netlify|cloudflare|cpanel|vps, --domain, --www, --dry-run
   diff [names...]      Compare installed files with the registry   --summary, --check
   upgrade [names...]   Update installed items, keeping your local edits
   theme                Pick the 6 theme axes and print the <html> attributes
@@ -88,6 +97,9 @@ const COMMANDS: Record<string, (ctx: Context, args: ReturnType<typeof parseArgs>
   preset,
   create,
   new: newProject,
+  task,
+  tasks: task,
+  agents,
   mcp,
   registry,
   brand,
@@ -111,7 +123,7 @@ export async function run(argv: string[], opts: RunOptions = {}): Promise<number
     out(VERSION);
     return 0;
   }
-  const ownHelp = ["brand", "update", "create", "mcp", "registry", "site", "audit", "new"].includes(args.command ?? "");
+  const ownHelp = ["brand", "update", "create", "mcp", "registry", "site", "audit", "new", "task", "tasks", "agents"].includes(args.command ?? "");
   if (!args.command || (bool(args.flags, "help") && !ownHelp) || args.command === "help") {
     out(HELP);
     return args.command || bool(args.flags, "help") ? 0 : 1;

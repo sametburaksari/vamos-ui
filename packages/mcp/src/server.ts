@@ -2,7 +2,7 @@ import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mc
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import { auditSite } from "./audit-tool.js";
-import { importSiteTool, startProjectTool } from "./project-tool.js";
+import { importSiteTool, nextTaskTool, startProjectTool } from "./project-tool.js";
 import { applyDesignSystem, getBrand, importDesignSystem, proposeAccent, updateDesign, verifyDesign, type ToolAnswer } from "./design-tools.js";
 import { RULES } from "./guidance.js";
 import { Registry, RegistryError, type RegistryOptions } from "./registry.js";
@@ -25,11 +25,11 @@ export const SERVER_VERSION = "0.2.12";
 
 const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
-Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped.`;
+Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped; next_task then walks the plan's tasks (brand, content, build, legal, SEO, forms, measurement, QA, deploy) and returns the brief for each.`;
 
 const REMOTE_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 This hosted server cannot see the user's files. Before building UI with it: call get_rules once per session. For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file.
-Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped. Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
+Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped; next_task then walks the plan's tasks (brand, content, build, legal, SEO, forms, measurement, QA, deploy) and returns the brief for each. Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
 
 const itemType = z.enum(["component", "block", "lib", "style"]);
 
@@ -379,6 +379,25 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
       annotations: { title: "Plan a new website", ...readOnly },
     },
     (args) => run(async () => answer(await startProjectTool(args))),
+  );
+
+  server.registerTool(
+    "next_task",
+    {
+      title: "Run the website process",
+      description:
+        "Walks the plan in vamos.project.json task by task: brand and content first, then the build, then legal pages, SEO, forms and measurement, then QA, then deploy. Returns where every task stands, the tasks that can start now and the brief for the next one (goal, plan context, steps, the requirements it owns from the site type's requirement pack, the checks that prove it is done and the report format), so an assistant can hand it to a specialist agent or do it itself. With task + status (done, blocked with a note, todo to reopen) it updates that task first and returns the updated vamos.project.json. Writes nothing itself." +
+        (remote ? " This hosted server cannot read or write files: pass the file contents and write the returned project back." : ""),
+      inputSchema: {
+        project: z.record(z.string(), z.unknown()).describe("The contents of vamos.project.json (as written by start_project or npx vamos-ui new)."),
+        task: z.string().optional().describe("A task id: the brief to return, or the task whose status to set."),
+        status: z.enum(["done", "blocked", "todo"]).optional().describe("Set the task's status first. done needs its dependencies done; blocked needs a note."),
+        note: z.string().optional().describe("One line: what was done, or what the blocked task is waiting for."),
+        lang: z.enum(["tr", "en"]).optional().describe("Language of titles and briefs (default tr)."),
+      },
+      annotations: { title: "Run the website process", ...readOnly },
+    },
+    (args) => run(async () => answer(await nextTaskTool(args))),
   );
 
   server.registerTool(
