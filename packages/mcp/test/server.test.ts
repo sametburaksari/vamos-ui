@@ -45,6 +45,7 @@ describe("MCP server over InMemoryTransport", () => {
         "list_items",
         "plan_screen",
         "start_project",
+        "next_task",
         "propose_accent",
         "search",
         "update_design",

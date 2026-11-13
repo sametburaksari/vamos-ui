@@ -2,7 +2,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { describe, expect, it } from "vitest";
 import type { Lookup } from "../src/audit-tool.js";
-import { importSiteTool, loadProject, startProjectTool } from "../src/project-tool.js";
+import { importSiteTool, loadProject, nextTaskTool, startProjectTool } from "../src/project-tool.js";
 import { createServer } from "../src/server.js";
 import { FIXTURE_DIR } from "./helpers.js";
 
@@ -36,6 +36,21 @@ describe.skipIf(!hasProject)("start_project", () => {
     expect(JSON.parse(step.files["vamos.project.json"]!).importedFrom).toBe("https://atolye.example");
   });
 
+  it("next_task: walks the tasks, updates status and returns briefs", async () => {
+    const answers = { business_name: "Kıyı Atölye", site_type: "local-business", languages: ["tr"], existing_site: "", domain: "no", hosting: "cpanel", structure: "single", sections: ["services"], contact_channels: ["form"], form_delivery: "recommend", tracking: ["gsc"], legal_entity: "sole" };
+    const step = (await startProjectTool({ answers })).data as { files: Record<string, string> };
+    const project = JSON.parse(step.files["vamos.project.json"]!);
+    const first = await nextTaskTool({ project, lang: "en" });
+    expect((first.data as { ready: { id: string }[] }).ready.map((t) => t.id)).toEqual(["brand", "content"]);
+    expect(first.text).toMatch(/# Task `brand`[\s\S]*STATUS: DONE brand/);
+    const after = await nextTaskTool({ project, task: "brand", status: "done", note: "ok", lang: "en" });
+    const data = after.data as { project: { plan: { tasks: { id: string; status: string }[] } }; task: string };
+    expect(data.project.plan.tasks.find((t) => t.id === "brand")!.status).toBe("done");
+    expect(data.task).toBe("content");
+    await expect(nextTaskTool({ project, task: "build", status: "done" })).rejects.toThrow(/waits for brand/);
+    await expect(nextTaskTool({ project: {} })).rejects.toThrow(/vamos.project.json/);
+  });
+
   it("reports invalid answers", async () => {
     const r = await startProjectTool({ answers: { site_type: "castle" }, lang: "en" });
     expect(r.text).toMatch(/Answers to fix[\s\S]*site_type/);
@@ -63,7 +78,7 @@ describe.skipIf(!hasProject)("import_site", () => {
     const client = new Client({ name: "t", version: "1" });
     await Promise.all([server.connect(b), client.connect(a)]);
     const tools = (await client.listTools()).tools;
-    for (const name of ["start_project", "import_site"]) {
+    for (const name of ["start_project", "import_site", "next_task"]) {
       const tool = tools.find((t) => t.name === name)!;
       expect(tool.annotations?.readOnlyHint).toBe(true);
       expect(tool.annotations?.title).toBeTruthy();
