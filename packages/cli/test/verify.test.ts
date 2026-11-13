@@ -301,3 +301,12 @@ describe("placeholder-content", () => {
     expect(issues[0]!.message).toContain("3 strings");
   });
 });
+
+describe("raw-tracking-script", () => {
+  it("flags gtag.js / GTM / Meta pixel loaded by hand, not the kit's Analytics", async () => {
+    const { verifySource } = await import("../src/verify");
+    expect(verifySource(`export const L = () => <script async src="https://www.googletagmanager.com/gtag/js?id=G-ABC123" />;`, "app/layout.tsx").map((i) => i.rule)).toContain("raw-tracking-script");
+    expect(verifySource(`const s = "https://connect.facebook.net/en_US/fbevents.js";`, "a.ts").map((i) => i.rule)).toContain("raw-tracking-script");
+    expect(verifySource(`import { Analytics } from "@vamos-ui/react/blocks"; export const A = () => <Analytics ga4="G-ABC123" />;`, "a.tsx").map((i) => i.rule)).not.toContain("raw-tracking-script");
+  });
+});

@@ -6,7 +6,7 @@ import { ConsentBanner, consentDefaultsScript } from "@vamos-ui/react/blocks";
 // app/layout.tsx
 //   <head>
 //     <script dangerouslySetInnerHTML={{ __html: consentDefaultsScript({ version: 2 }) }} />
-//     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX" />
+//     (then <Analytics … /> in <body> loads the Google tag after consent — see "Analytics after consent")
 //   </head>
 //   <body>{children}<ConsentBanner version={2} policyLink={{ href: "/cookies" }} /></body>
 export default function ConsentBannerConsentMode() {

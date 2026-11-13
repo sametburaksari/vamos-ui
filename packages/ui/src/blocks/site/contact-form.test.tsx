@@ -58,6 +58,42 @@ describe("ContactForm", () => {
     expect(action).toHaveBeenCalledOnce();
   });
 
+  it("URL action (PHP on static hosting): native POST before hydration, JSON fetch after; success fires the lead event", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.fn(async (_url: string, init: RequestInit) => {
+      const body = init.body as FormData;
+      expect(body.get("_form")).toBeTruthy();
+      expect((init.headers as Record<string, string>).Accept).toBe("application/json");
+      return new Response(JSON.stringify({ status: "success" }), { headers: { "content-type": "application/json" } });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const lead = vi.fn();
+    window.addEventListener("vb:lead", lead);
+    render(<ContactForm variant="minimal" action="/contact.php" />);
+    await user.type(screen.getByRole("textbox", { name: /Full name/ }), "Ayşe Demir");
+    await user.type(screen.getByRole("textbox", { name: /Email/ }), "ayse@example.com");
+    await user.type(screen.getByRole("textbox", { name: /Message/ }), "Hello there.");
+    await user.click(screen.getByRole("button", { name: /Send message/ }));
+    await screen.findByRole("status");
+    expect(fetchMock).toHaveBeenCalledWith("/contact.php", expect.objectContaining({ method: "POST" }));
+    expect(lead).toHaveBeenCalledOnce();
+    window.removeEventListener("vb:lead", lead);
+    vi.unstubAllGlobals();
+  });
+
+  it("URL action: server-side field errors come back into the form", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ status: "invalid", errors: { email: "This address bounced." } }))));
+    render(<ContactForm variant="minimal" action="/contact.php" />);
+    await user.type(screen.getByRole("textbox", { name: /Full name/ }), "Ayşe Demir");
+    await user.type(screen.getByRole("textbox", { name: /Email/ }), "ayse@example.com");
+    await user.type(screen.getByRole("textbox", { name: /Message/ }), "Hello there.");
+    await user.click(screen.getByRole("button", { name: /Send message/ }));
+    expect(await screen.findByRole("link", { name: "This address bounced." })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: /Full name/ })).toHaveValue("Ayşe Demir");
+    vi.unstubAllGlobals();
+  });
+
   it("server error shows the fallback phone; honeypot is hidden from people", async () => {
     const { container } = render(<ContactForm info={{ phone: "+902160000000" }} showInfo={false} initialState={{ status: "error", message: "Webhook timed out" }} />);
     expect(screen.getByRole("alert")).toHaveTextContent("We couldn’t send your message.");

@@ -9,6 +9,7 @@ import { CliError } from "../core/types";
 import { SITE_FILE, missingSiteFields, siteTemplate } from "../site-info";
 import { out, p, pc, plural, printJson, type Context } from "../ui";
 import { siteImport } from "./new";
+import { siteForm } from "./site-form";
 import { installItems, openSession, type InstallOptions, type Session } from "./shared";
 
 const SITE_HELP = `${pc.bold("vamos-ui site")}  Business info and launch basics for a website built from site-* blocks.
@@ -17,6 +18,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site init [--name <name>] [--url <https://…>] [--locale <tr-TR>]
   npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
+  npx vamos-ui site form [--kind php-mail|resend|smtp] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
 
 ${pc.bold("site init")} writes an empty ${SITE_FILE} at the project root (never over an existing one):
 the one source for the business name, contact, address, opening hours, legal ids (MERSİS, tax,
@@ -36,7 +38,16 @@ replacing a file that exists:
                          rendering the ${LEGAL_BLOCK} block (installed if missing); fields known
                          from ${SITE_FILE} are filled in
 Then prints the root-layout metadata and JSON-LD to add, and any internal links that still have
-no page.`;
+no page.
+
+${pc.bold("site form")} writes the sender behind ContactForm, never replacing a file:
+  php-mail  public/contact.php for static exports on shared hosting (cPanel): mail() through the
+            host, JSON for the form, a redirect when JavaScript is off
+  resend    app/actions/contact.ts + app/contact-fields.ts, a server action using the Resend API
+  smtp      the same with nodemailer and the business's own mailbox
+All three validate the same fields as the form, drop bot submits, rate-limit per IP and refuse
+cross-site posts. Default kind: the plan in vamos.project.json, else php-mail for a static site
+and smtp for a Next.js server. --to defaults to contact.email in ${SITE_FILE}.`;
 
 export interface EssentialsResult {
   written: string[];
@@ -112,6 +123,7 @@ export async function site(ctx: Context, args: ParsedArgs): Promise<number> {
   }
   if (sub === "init") return siteInit(ctx, args);
   if (sub === "import") return siteImport(ctx, args);
+  if (sub === "form") return siteForm(ctx, args);
   if (sub !== "essentials") {
     out(`${pc.red("Unknown site command")} "${sub}".\n\n${SITE_HELP}`);
     return 1;

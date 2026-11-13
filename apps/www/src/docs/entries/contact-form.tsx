@@ -40,7 +40,7 @@ async function sendLead(prev: SiteFormState, data: FormData): Promise<SiteFormSt
       props: [
         { name: "variant", type: '"split" | "stacked" | "minimal"', default: '"split"', description: "Layout." },
         { name: "fields", type: "ContactFieldConfig[]", default: "name, email, message", description: "2–8 of name · email · phone · company · subject · budget · message · date, each { required?, label?, options?, placeholder?, hint?, max? }." },
-        { name: "action", type: "(prev: SiteFormState, data: FormData) => Promise<SiteFormState> | string", description: "Your server action, or a URL for a plain POST. Without it the form only validates (previews)." },
+        { name: "action", type: "(prev: SiteFormState, data: FormData) => Promise<SiteFormState> | string", description: "Your server action, or a URL (e.g. /contact.php on static hosting): a plain POST without JS, a fetch with Accept: application/json once hydrated — the endpoint answers { status: \"success\" } or { status: \"invalid\", errors }. Without it the form only validates (previews). A success also fires the vb:lead event that Analytics measures." },
         { name: "successMessage", type: "ReactNode | RichDoc", description: "Replaces the form; focus moves to it." },
         { name: "privacyLink / privacyCheckbox", type: "{ href; label? } / boolean", description: "Linked notice; with privacyCheckbox a required, never pre-checked box." },
         { name: "marketingConsent", type: "boolean", default: "false", description: "A separate, optional marketing box." },
@@ -57,6 +57,15 @@ async function sendLead(prev: SiteFormState, data: FormData): Promise<SiteFormSt
       props: [
         { name: "opts", type: "{ privacyCheckbox?; labels?; locale?; spamMinMs? }", description: "spamMinMs: submits faster than this after render count as bots (default 2500)." },
         { name: "returns", type: "{ ok; spam; values; errors; privacy; marketing; state }", description: "state is ready to return from the action." },
+      ],
+    },
+    {
+      name: "Senders: npx vamos-ui site form",
+      props: [
+        { name: "--kind php-mail", type: "public/contact.php", description: "Static export on shared hosting (cPanel): PHP mail() through the host, the same fields, honeypot + time trap, rate limit per IP, cross-site posts refused, Reply-To only after checking the address. Set CONTACT_TO / CONTACT_FROM inside." },
+        { name: "--kind resend", type: "app/actions/contact.ts", description: "Server action calling the Resend API (RESEND_API_KEY, CONTACT_TO, CONTACT_FROM on a verified domain)." },
+        { name: "--kind smtp", type: "app/actions/contact.ts", description: "Server action with nodemailer and the business's own mailbox (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO)." },
+        { name: "app/contact-fields.ts", type: "ContactFieldConfig[]", description: "One field list for the page and the sender. --booking writes name, phone, date, message." },
       ],
     },
     { name: "contactFormSchema(fields, opts) — blocks/site/registry-2", props: [{ name: "returns", type: "z.ZodObject", description: "zod schema for Object.fromEntries(formData) (server only)." }] },
