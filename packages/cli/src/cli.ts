@@ -18,7 +18,7 @@ import { verify } from "./commands/verify";
 import { CliError } from "./core/types";
 import { out, p, pc, type Context } from "./ui";
 
-export const VERSION = "0.5.1";
+export const VERSION = "0.6.0";
 
 const HELP = `${pc.bold("vamos-ui")} ${pc.dim(VERSION)}  Add Vamos UI components, blocks and themes to your project.
 
