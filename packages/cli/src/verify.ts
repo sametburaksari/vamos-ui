@@ -41,6 +41,7 @@ export const VERIFY_RULES: readonly VerifyRule[] = [
   { id: "no-positive-tabindex", severity: "error", description: "Positive tabIndex breaks the natural focus order." },
   { id: "use-client", severity: "error", description: "Files under app/ that use React hooks need a \"use client\" directive." },
   { id: "z-index-token", severity: "warning", description: "Arbitrary z-index values. Use the z tokens (--z-sticky, --z-nav, --z-overlay, --z-popover, --z-toast, --z-tooltip)." },
+  { id: "raw-tracking-script", severity: "warning", description: "gtag.js, GTM or the Meta pixel loaded by hand (runs before consent). Use Analytics with ConsentBanner." },
   { id: "prefer-kit-component", severity: "warning", description: "Hand-rolled modal/dropdown/tooltip/select markup. Use the kit component." },
   { id: "placeholder-content", severity: "warning", description: "Placeholder contact data or links left in: dummy phone numbers (000 00 00, 555 55 55), example.com / .example emails and URLs, href=\"#\", invented map short links, [fill-in] fields." },
 ];
@@ -417,6 +418,12 @@ export function verifySource(code: string, filename: string): VerifyIssue[] {
   }
 
   checkPlaceholders(code, strings, push);
+
+  // --- tracking tags loaded by hand (they run before consent) -----------------
+  const tag = strings.find((x) => /googletagmanager\.com\/(gtag\/js|gtm\.js)|connect\.facebook\.net\/[^"'`]*fbevents\.js/.test(x.value));
+  if (tag) {
+    push("raw-tracking-script", tag.start, "A Google / Meta tag is loaded by hand, so it can run before the visitor's consent.", "Use <Analytics {...site.analytics} /> with <ConsentBanner /> and <ConsentDefaults /> (@vamos-ui/react/blocks): each tool loads only after its consent.");
+  }
 
   // --- "use client" -----------------------------------------------------------
   if (/(^|\/)app\//.test(file) && /\.(tsx|jsx|ts|js)$/.test(file) && !/(^|\/)(route|middleware|proxy)\.[jt]sx?$/.test(file)) {

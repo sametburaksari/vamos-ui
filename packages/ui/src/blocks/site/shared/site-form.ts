@@ -38,6 +38,9 @@ export type SiteFormAction = (prev: SiteFormState, data: FormData) => Promise<Si
 export const HONEYPOT_FIELD = "website";
 /** Hidden render timestamp for the time trap. */
 export const TIMESTAMP_FIELD = "_ts";
+/** Hidden field with the form's id; a URL action redirects back with `?vb_sent=<id>`. */
+export const FORM_FIELD = "_form";
+export const SENT_PARAM = "vb_sent";
 export const PRIVACY_FIELD = "privacy";
 export const MARKETING_FIELD = "marketing";
 

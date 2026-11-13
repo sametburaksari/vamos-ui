@@ -12,17 +12,25 @@ import {
   MARKETING_FIELD,
   PRIVACY_FIELD,
   TIMESTAMP_FIELD,
+  FORM_FIELD,
+  SENT_PARAM,
   fieldConstraints,
   validateContactForm,
   type ContactFieldConfig,
   type SiteFormAction,
   type SiteFormState,
 } from "./site-form";
+import { LEAD_EVENT } from "./analytics";
 
 import type { ContactIslandLabels } from "./island-keys";
 
 export interface ContactFormIslandProps {
-  /** The app's server action, or a URL for a plain POST. Without it the form validates in the browser only (previews). */
+  /**
+   * The app's server action, or a URL (a PHP mailer on static hosting). A URL gets a plain POST
+   * without JS, and a fetch with `Accept: application/json` once hydrated: the endpoint answers
+   * `{ "status": "success" }` or `{ "status": "invalid", "errors": {…} }` / `{ "status": "error" }`.
+   * Without it the form validates in the browser only (previews).
+   */
   action?: SiteFormAction | string;
   /** Field config; `label` already resolved. */
   fields: (ContactFieldConfig & { label: string })[];
@@ -80,6 +88,7 @@ export function ContactFormIsland({
           return { status: "error", message: e instanceof Error ? e.message : undefined, values: check.values, ts: Date.now() };
         }
       }
+      if (typeof action === "string") return postToUrl(action, data, check.values);
       return { status: "success", ts: Date.now() };
     },
     [action, fields, labels, locale, privacy?.checkbox],
@@ -90,22 +99,30 @@ export function ContactFormIsland({
   const summaryRef = React.useRef<HTMLDivElement>(null);
   const successRef = React.useRef<HTMLDivElement>(null);
   const firstRender = React.useRef(true);
+  // A no-JS POST to a URL action comes back as a redirect with ?vb_sent=<form id>.
+  const [sentByRedirect, setSentByRedirect] = React.useState(false);
 
   React.useEffect(() => {
     setHydrated(true);
     setTs(String(Date.now()));
-  }, []);
+    if (typeof location !== "undefined" && new URLSearchParams(location.search).get(SENT_PARAM) === idBase) {
+      setSentByRedirect(true);
+      announceLead(idBase);
+    }
+  }, [idBase]);
   React.useEffect(() => {
     // Never move focus on mount (a server-rendered result must not yank the page).
     if (firstRender.current) {
       firstRender.current = false;
       return;
     }
-    if (state.status === "success") successRef.current?.focus();
-    else if (state.status === "invalid" || state.status === "error") summaryRef.current?.focus();
-  }, [state]);
+    if (state.status === "success") {
+      announceLead(idBase);
+      successRef.current?.focus();
+    } else if (state.status === "invalid" || state.status === "error") summaryRef.current?.focus();
+  }, [state, idBase]);
 
-  if (state.status === "success") {
+  if (state.status === "success" || sentByRedirect) {
     return (
       <div ref={successRef} tabIndex={-1} role="status" data-form-state="success" className={cn("vb-form-success flex flex-col gap-3 rounded-ui py-2 outline-none", className)}>
         <span aria-hidden className="h-px w-10 bg-accent" />
@@ -126,9 +143,9 @@ export function ContactFormIsland({
   return (
     <form
       key={state.ts ?? 0}
-      action={urlAction ?? formAction}
-      method={urlAction ? "post" : undefined}
-      noValidate={hydrated && !urlAction}
+      action={urlAction && !hydrated ? urlAction : formAction}
+      method={urlAction && !hydrated ? "post" : undefined}
+      noValidate={hydrated}
       data-form-state={pending ? "submitting" : state.status}
       aria-busy={pending || undefined}
       className={cn("vb-form flex flex-col gap-6", className)}
@@ -205,6 +222,7 @@ export function ContactFormIsland({
           <input type="text" name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" defaultValue="" />
         </label>
         <input type="hidden" name={TIMESTAMP_FIELD} value={ts} readOnly />
+        <input type="hidden" name={FORM_FIELD} value={idBase} readOnly />
       </div>
 
       {privacy || marketingConsent ? (
@@ -278,4 +296,22 @@ function ConsentCheck({ id, name, required, error, children }: { id: string; nam
       ) : null}
     </div>
   );
+}
+
+/** Tells Analytics (and anything else listening) that a lead was sent. */
+function announceLead(form: string) {
+  if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent(LEAD_EVENT, { detail: { form } }));
+}
+
+/** POSTs to a URL action and reads its JSON answer; anything unexpected is a server error. */
+async function postToUrl(url: string, data: FormData, values: Record<string, string>): Promise<SiteFormState> {
+  try {
+    const res = await fetch(url, { method: "POST", body: data, headers: { Accept: "application/json" }, credentials: "same-origin" });
+    const body = (await res.json().catch(() => null)) as Partial<SiteFormState> | null;
+    if (body?.status === "success") return { status: "success", ts: Date.now() };
+    if (body?.status === "invalid" && body.errors) return { status: "invalid", errors: body.errors, values, ts: Date.now() };
+    return { status: "error", message: typeof body?.message === "string" ? body.message : undefined, values, ts: Date.now() };
+  } catch {
+    return { status: "error", values, ts: Date.now() };
+  }
 }

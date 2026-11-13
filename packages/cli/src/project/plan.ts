@@ -340,6 +340,13 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
   if (tracking.includes("google-ads")) steps.push(t("Google Ads: create conversions for form send, phone and WhatsApp clicks; put the AW- id in analytics.googleAds.", "Google Ads: form gönderimi, telefon ve WhatsApp tıklaması için dönüşüm oluşturun; AW- kimliğini analytics.googleAds'e yazın."));
   if (tracking.includes("meta")) steps.push(t("Meta: create a dataset (pixel) in Events Manager; put its id in analytics.metaPixel.", "Meta: Olay Yöneticisi'nde veri kümesi (piksel) oluşturun; kimliğini analytics.metaPixel'e yazın."));
   const consentMode = tracking.some((x) => x !== "gsc");
+  if (consentMode)
+    steps.push(
+      t(
+        "The kit's Analytics component loads each tool only after consent and sends: generate_lead (form), click_call, click_whatsapp, click_email, click_directions. Mark generate_lead (and calls if wanted) as key events in GA4.",
+        "Kitin Analytics bileşeni her aracı yalnızca onaydan sonra yükler ve şu olayları gönderir: generate_lead (form), click_call, click_whatsapp, click_email, click_directions. GA4'te generate_lead'i (isterseniz aramaları da) temel olay işaretleyin.",
+      ),
+    );
 
   // Compliance (Turkey first)
   const compliance: Text[] = [];
@@ -398,8 +405,11 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     ...commerceTasks,
     { id: "legal", agent: "legal", status: "todo", title: t(`Fill ${legal.length} legal pages from vamos.site.json.`, `${legal.length} yasal sayfayı vamos.site.json'dan doldur.`), needs: one(a.legal_entity) === "company" ? [t("Trade name, tax number, MERSIS.", "Unvan, vergi numarası, MERSIS.")] : [] },
     { id: "seo", agent: "seo", status: "todo", title: t("Metadata, sitemap, robots, llms.txt and JSON-LD for every page.", "Her sayfa için metadata, sitemap, robots, llms.txt ve JSON-LD.") },
-    ...(forms.value !== "none" ? [{ id: "forms", agent: "forms" as const, status: "todo" as const, title: t(`Contact form via ${forms.value} with spam protection and the KVKK notice.`, `İletişim formu (${forms.value}), spam koruması ve KVKK bilgilendirmesiyle.`), needs: forms.env.length ? [t(`Values for ${forms.env.join(", ")}.`, `${forms.env.join(", ")} değerleri.`)] : [] }] : []),
-    ...(tracking.length ? [{ id: "tracking", agent: "tracking" as const, status: "todo" as const, title: tracking.some((x) => x !== "gsc") ? t(`Consent banner and ${tracking.join(", ")}.`, `Çerez onay bandı ve ${tracking.join(", ")}.`) : t("Search Console verification and sitemap (no cookies, no banner needed).", "Search Console doğrulaması ve sitemap (çerez yok, onay bandı gerekmez)."), needs: tracking.includes("ga4") && !one(a.ga4_id) ? [t("GA4 measurement id.", "GA4 ölçüm kimliği.")] : [] }] : []),
+    ...(forms.value !== "none" ? [{ id: "forms", agent: "forms" as const, status: "todo" as const, title:
+          forms.value === "whatsapp"
+            ? t("Contact through WhatsApp: ContactDock with the business number, no form server.", "WhatsApp ile iletişim: işletme numarasıyla ContactDock, form sunucusu yok.")
+            : t(`Contact form via ${forms.value}: run \`npx vamos-ui site form --kind ${forms.value}\` (sender + field list), then <ContactForm action=…> with the KVKK notice.`, `İletişim formu (${forms.value}): \`npx vamos-ui site form --kind ${forms.value}\` çalıştırın (gönderici + alan listesi), sonra KVKK bilgilendirmeli <ContactForm action=…>.`), needs: forms.env.length ? [t(`Values for ${forms.env.join(", ")}.`, `${forms.env.join(", ")} değerleri.`)] : [] }] : []),
+    ...(tracking.length ? [{ id: "tracking", agent: "tracking" as const, status: "todo" as const, title: tracking.some((x) => x !== "gsc") ? t(`Consent and measurement: <ConsentDefaults /> in <head>, <ConsentBanner /> and <Analytics {...site.analytics} conversions={…} /> in the root layout (${tracking.join(", ")}).`, `Onay ve ölçüm: <head> içinde <ConsentDefaults />, kök layout'ta <ConsentBanner /> ve <Analytics {...site.analytics} conversions={…} /> (${tracking.join(", ")}).`) : t("Search Console verification and sitemap (no cookies, no banner needed).", "Search Console doğrulaması ve sitemap (çerez yok, onay bandı gerekmez)."), needs: tracking.includes("ga4") && !one(a.ga4_id) ? [t("GA4 measurement id.", "GA4 ölçüm kimliği.")] : [] }] : []),
     { id: "qa", agent: "qa", status: "todo", title: t("Run vamos-ui verify on the code and vamos-ui audit on the preview; fix what they find.", "Kodda vamos-ui verify, önizlemede vamos-ui audit çalıştır; bulunanları düzelt.") },
     { id: "deploy", agent: "deploy", status: "todo", title: t(`Publish on ${hosting.value}, connect the domain, HTTPS, then submit the sitemap.`, `${hosting.value} üzerinde yayınla, alan adını bağla, HTTPS, ardından sitemap gönder.`), needs: domainName ? [] : [t("A domain name.", "Bir alan adı.")] },
   ];
