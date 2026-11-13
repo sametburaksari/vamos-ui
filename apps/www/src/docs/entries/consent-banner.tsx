@@ -4,6 +4,7 @@ import Box from "../examples/consent-banner/box";
 import Preferences from "../examples/consent-banner/preferences";
 import ConsentMode from "../examples/consent-banner/consent-mode";
 import GateEmbed from "../examples/consent-banner/gate-embed";
+import AnalyticsExample from "../examples/consent-banner/analytics";
 
 const entry: DocEntry = {
   slug: "consent-banner",
@@ -11,7 +12,7 @@ const entry: DocEntry = {
   group: "Site blocks",
   description:
     "Cookie consent for GDPR / ePrivacy and Turkey's KVKK, wired to Google Consent Mode v2. Not a modal: a labelled region that never blocks the page or steals focus, with “Reject all” and “Accept all” at equal size and weight on the first layer. Preferences open in a Dialog with one Switch per category, none pre-checked. Choices live in a first-party vb_consent cookie (6 months, versioned); getConsent / onConsent let other code wait for a category, and ConsentGate keeps maps and videos behind a facade. Without JS nothing renders and no non-essential cookie is set. Default texts are neutral templates — review them with counsel.",
-  source: ["blocks/site/consent-banner.tsx", "blocks/site/shared/consent-island.tsx", "blocks/site/shared/consent.ts", "blocks/site/shared/consent-gate.tsx", "blocks/site/registry-2.ts", "styles/blocks.css"],
+  source: ["blocks/site/consent-banner.tsx", "blocks/site/shared/consent-island.tsx", "blocks/site/shared/consent.ts", "blocks/site/shared/consent-gate.tsx", "blocks/site/analytics.tsx", "blocks/site/shared/analytics.ts", "blocks/site/registry-2.ts", "styles/blocks.css"],
   basedOn: "Dialog + Switch",
   usage: `import { ConsentBanner, consentDefaultsScript, onConsent } from "@vamos-ui/react/blocks";
 
@@ -29,6 +30,7 @@ onConsent("analytics", () => loadAnalytics());`,
     ex("box", "Box (Turkish)", "consent-banner/box.tsx", Box, "A 360px panel for the bottom-start corner, buttons stacked; zorunlu / işlevsel / analitik / pazarlama."),
     ex("preferences", "Preferences", "consent-banner/preferences.tsx", Preferences, "Open “Preferences”: Switches with descriptions, Necessary locked on, Reject / Accept / Save."),
     ex("consent-mode", "Google Consent Mode v2", "consent-banner/consent-mode.tsx", ConsentMode, "The head snippet sets everything to denied, then replays a stored choice before any Google tag loads. Each choice calls gtag('consent','update')."),
+    ex("analytics", "Analytics after consent", "consent-banner/analytics.tsx", AnalyticsExample, "Analytics loads GA4 / GTM after analytics consent and Google Ads / the Meta pixel after marketing consent, then measures phone, WhatsApp, email and directions clicks and ContactForm leads (generate_lead + the Ads conversion + Meta Lead). The ids are the site owner's own."),
     ex("gate-embed", "ConsentGate for maps and video", "consent-banner/gate-embed.tsx", GateEmbed, "A static preview with one button; the iframe loads on click, or automatically once the category is granted. “Always load maps” grants functional for the site."),
   ],
   api: [
@@ -54,6 +56,17 @@ onConsent("analytics", () => loadAnalytics());`,
         { name: "writeConsent / readConsent / parseConsent(cookieHeader)", type: "functions", description: "The vb_consent record; parseConsent also works on the server." },
         { name: "openConsentPreferences()", type: "void", description: "Reopens the dialog (Footer's “Cookie settings” uses ConsentSettingsButton)." },
         { name: "consentDefaultsScript(opts) / <ConsentDefaults />", type: "string / element", description: "Consent Mode v2 defaults for <head>." },
+      ],
+    },
+    {
+      name: "Analytics",
+      props: [
+        { name: "ga4 / gtm / googleAds / metaPixel", type: "string", description: "The site owner's ids (vamos.site.json → analytics). Malformed ids are dropped with a console warning." },
+        { name: "conversions", type: "Partial<Record<SiteEvent, string>>", description: 'Google Ads "send_to" per event: { lead: "AW-…/label", call: "AW-…/label" }.' },
+        { name: "mode", type: '"basic" | "advanced"', default: '"basic"', description: "basic: no Google or Meta script before consent (KVKK strict). advanced: the Google tag loads at once with Consent Mode denied; Meta still waits." },
+        { name: "version", type: "number", description: "The ConsentBanner version." },
+        { name: "debug", type: "boolean", description: "Logs each event to the console." },
+        { name: "trackEvent(event, params?)", type: "void", description: 'Send a site event yourself: "lead" | "call" | "whatsapp" | "email" | "directions" | "book" | "social".' },
       ],
     },
     {

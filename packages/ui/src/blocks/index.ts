@@ -57,7 +57,9 @@ export { OpenNow, type OpenNowProps } from "./site/shared/open-now";
 export { ConsentGate, type ConsentGateProps } from "./site/shared/consent-gate";
 export { ConsentSettingsButton } from "./site/shared/consent-island";
 export { getConsent, onConsent, readConsent, writeConsent, parseConsent, openConsentPreferences, consentDefaultsScript, consentModeSignals, CONSENT_COOKIE, CONSENT_EVENT, CONSENT_OPEN_EVENT, CONSENT_CATEGORIES, type ConsentCategory, type ConsentRecord, type ConsentChoices } from "./site/shared/consent";
-export { validateContactForm, isSpam, contactFieldLabel, HONEYPOT_FIELD, type ContactFieldConfig, type ContactFieldName, type SiteFormState, type SiteFormAction, type ContactValidation } from "./site/shared/site-form";
+export { Analytics, type AnalyticsProps } from "./site/analytics";
+export { trackEvent, startAnalytics, checkAnalyticsConfig, parseTrack, LEAD_EVENT, type AnalyticsConfig, type SiteEvent } from "./site/shared/analytics";
+export { validateContactForm, isSpam, contactFieldLabel, HONEYPOT_FIELD, TIMESTAMP_FIELD, PRIVACY_FIELD, MARKETING_FIELD, FORM_FIELD, SENT_PARAM, type ContactFieldConfig, type ContactFieldName, type SiteFormState, type SiteFormAction, type ContactValidation } from "./site/shared/site-form";
 export { BrandIcon, BRAND_NAMES, type BrandName, type BrandIconProps } from "./site/shared/brand-icons";
 export { site2Labels, site2LabelsTr, site2LabelsDe, site2LabelsFr, site2LabelsEs, site2LabelsAr, type Site2Labels, type Site2BlockLabels } from "./site/shared/labels-2";
 
