@@ -237,6 +237,15 @@ describe("runAudit", () => {
     expect(report.files.robots?.blocksAll).toBe(true);
   });
 
+  it("one link can be the privacy policy and the KVKK notice", async () => {
+    const html = `<!doctype html><html lang="tr"><head><title>Ofis</title></head><body><main><h1>Ofis</h1><p>${words}</p></main><footer><a href="/gizlilik-politikasi/">Gizlilik ve KVKK Aydınlatma Metni</a></footer></body></html>`;
+    const report = await runAudit("https://ofis.test/", { fetch: fakeSite({ "https://ofis.test/": { body: html }, "https://ofis.test/gizlilik-politikasi/": { body: html } }), maxPages: 1, hostVariants: false });
+    const legal = report.issues.filter((i) => i.rule === "legal-links").map((i) => i.message);
+    expect(legal.some((m) => m.includes("KVKK"))).toBe(false);
+    expect(legal.some((m) => m.includes("privacy policy"))).toBe(false);
+    expect(report.legal).toEqual([expect.objectContaining({ kind: "privacy", url: "https://ofis.test/gizlilik-politikasi/" })]);
+  });
+
   it("reports a page that cannot be loaded", async () => {
     const report = await runAudit("https://yok.test", { fetch: async () => { throw Object.assign(new TypeError("fetch failed"), { cause: { code: "ENOTFOUND" } }); } });
     expect(report.issues).toEqual([expect.objectContaining({ rule: "fetch-failed", severity: "error", message: expect.stringContaining("ENOTFOUND") })]);

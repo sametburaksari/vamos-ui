@@ -186,17 +186,23 @@ const LEGAL: { kind: string; label: string; slug: RegExp; text: RegExp }[] = [
 ];
 
 function legalKind(link: { url: string | null; text: string }): string | null {
-  if (!link.url) return null;
+  return legalKinds(link)[0] ?? null;
+}
+
+/** Every legal page a link stands for: its address first, then its text ("Gizlilik ve KVKK" on /gizlilik is both). */
+function legalKinds(link: { url: string | null; text: string }): string[] {
+  if (!link.url) return [];
   let seg = "";
   try {
     seg = new URL(link.url).pathname.replace(/\/+$/, "").split("/").pop()!.replace(/\.(?:html?|php|aspx?)$/i, "").toLowerCase();
   } catch {
-    return null;
+    return [];
   }
-  for (const l of LEGAL) if (seg && l.slug.test(seg)) return l.kind;
+  const kinds: string[] = [];
+  for (const l of LEGAL) if (seg && l.slug.test(seg)) kinds.push(l.kind);
   const text = link.text.toLowerCase();
-  if (text.length <= 60) for (const l of LEGAL) if (l.text.test(text)) return l.kind;
-  return null;
+  if (text.length <= 60) for (const l of LEGAL) if (l.text.test(text) && !kinds.includes(l.kind)) kinds.push(l.kind);
+  return kinds;
 }
 
 const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -697,14 +703,16 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
   // --- legal links ----------------------------------------------------------------------
   const analyzed = [...new Set([...pages.values()].map((p) => p.facts).filter((f): f is PageFacts => !!f))];
   const legalSeen = new Map<string, { kind: string; url: string }>();
+  const kinds = new Set<string>();
   for (const f of analyzed) {
     for (const l of f.links) {
-      const kind = legalKind(l);
+      const found = legalKinds(l);
+      for (const k of found) kinds.add(k);
+      const kind = found[0];
       if (kind && l.url && !legalSeen.has(key(l.url))) legalSeen.set(key(l.url), { kind, url: key(l.url) });
     }
   }
   report.legal = [...legalSeen.values()].map((l) => ({ ...l, status: sameOrigin(l.url) ? (statusOf(l.url)?.status ?? null) : null }));
-  const kinds = new Set(report.legal.map((l) => l.kind));
   for (const l of report.legal) if (l.status && (l.status === 404 || l.status === 410 || l.status >= 500)) push("legal-broken", `The ${LEGAL.find((x) => x.kind === l.kind)!.label} link ${l.url} returns ${l.status}${where(l.url)}.`, l.url);
   if (startFacts) {
     const lang = (startFacts.lang ?? "").toLowerCase();

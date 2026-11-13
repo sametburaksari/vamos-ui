@@ -115,6 +115,8 @@ describe("deploy guides", () => {
     expect(conf).toContain("RewriteRule ^ https://www.ornek.com.tr%{REQUEST_URI} [R=301,L]");
     expect(conf).toContain("RewriteCond %{HTTP_HOST} ^ornek\\.com\\.tr$ [NC]");
     expect(conf).toContain('Header always set X-Content-Type-Options "nosniff"');
+    expect(conf).toContain("RewriteCond %{HTTP_HOST} ^(www\\.)?ornek\\.com\\.tr$ [NC]");
+    expect(conf).toContain('<If "%{HTTP_HOST} =~ /^(www\\.)?ornek\\.com\\.tr$/i">');
     expect(conf).toContain("ErrorDocument 404 /404.html");
     expect(conf).toMatch(/vamos\\\.\.\*\\\.json/);
   });
