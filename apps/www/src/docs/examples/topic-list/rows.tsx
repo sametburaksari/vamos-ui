@@ -1,3 +1,5 @@
+"use client";
+
 import { TopicRow } from "@vamos-ui/react";
 import { NOW } from "./data";
 
