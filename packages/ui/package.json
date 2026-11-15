@@ -39,7 +39,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "size": "node scripts/size-check.mjs"
+    "size": "node scripts/size-check.mjs",
+    "data:world": "node scripts/world-address.mjs --download"
   },
   "peerDependencies": {
     "react": "^19.0.0",

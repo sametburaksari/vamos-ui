@@ -26,8 +26,20 @@
 //   --raw DIR   where downloads live (default: <os tmpdir>/vamos-ui-world-address). Raw downloads are
 //               never written inside the repository; only the normalised output is.
 //
-// Refresh once a year (or when a country changes its postal system): run with --download, review
-// the diff (`git diff --stat`), run the tests, commit the output with the new `generated` dates.
+// Checks (the script writes nothing it has not validated): every format token is known and every
+// postal pattern accepts its own examples; subdivision rows are complete and unique; TR provinces
+// are the 81 of address-tr.json with CLDR's codes and names; city files point at existing
+// subdivision codes, all 81 TR provinces are matched and at least 90% of the 973 TR districts of
+// address-tr.json are GeoNames places of the same province. DEBUG_CITIES=XX lists the GeoNames
+// admin areas of XX that matched no subdivision.
+//
+// Yearly refresh (each January, or when a country changes its postal system; also bump
+// CLDR_VERSION to the newest release at https://unicode.org/Public/cldr/):
+//   1. pnpm --dir packages/ui data:world          (≈ 300 MB download into the temp dir, ~2 min)
+//   2. git diff --stat; skim the changed countries; a TR check failing means address-tr.json
+//      (and the neighbourhood files, scripts/tr-neighbourhoods.mjs) need a refresh first
+//   3. pnpm --dir packages/ui test, then commit the output (new `generated` dates) with a
+//      changeset; the docs site publishes the city files on its next deploy.
 import { execFileSync, spawn } from "node:child_process";
 import readline from "node:readline";
 import fs from "node:fs";
@@ -469,15 +481,45 @@ async function buildCities() {
     bytes += out.length;
     report.push({ cc, rows: rows.length, kb: out.length / 1024, subs: subs.length, matched: isoList.length, unmatched: rows.filter((r) => r[2] === -1).length });
   }
-  // TR: every province must be matched, or the district / city filter would silently break.
+  // TR: every province must be matched, or the city filter would silently break; and the
+  // districts of address-tr.json must still be places GeoNames knows in the same province (a
+  // renamed or new district shows up here first).
   const tr = report.find((r) => r.cc === "TR");
   if (!process.env.DEBUG_CITIES && (!tr || tr.matched !== 81)) throw new Error(`cities: TR matched ${tr?.matched} of 81 provinces`);
+  checkTrDistricts(places, adminKeys);
   fs.writeFileSync(path.join(CITIES_OUT, "index.json"), JSON.stringify({ source: "GeoNames", license: "CC BY 4.0", attribution: "City data © GeoNames (https://www.geonames.org), CC BY 4.0", generated, countries: Object.fromEntries(report.map((r) => [r.cc, r.rows])) }) + "\n");
   report.sort((a, b) => b.kb - a.kb);
   console.log(`✓ cities: ${report.length} countries, ${total} places, ${(bytes / 1024 / 1024).toFixed(2)} MB; largest ${report.slice(0, 5).map((r) => `${r.cc} ${r.kb.toFixed(0)} kB`).join(", ")}`);
   const weak = report.filter((r) => r.subs && r.matched < r.subs * 0.5).map((r) => `${r.cc} ${r.matched}/${r.subs}`);
   if (weak.length) console.log(`  subdivision match under 50%: ${weak.join(", ")}`);
   return report;
+}
+
+function checkTrDistricts(places, adminKeys) {
+  const trData = JSON.parse(fs.readFileSync(path.join(PKG, "src/locale-data/tr/address-tr.json"), "utf8"));
+  const fold = (x) => x.toLocaleLowerCase("tr").normalize("NFD").replace(/\p{M}/gu, "").replace(/ı/g, "i");
+  // GeoNames admin1 of each plate, by the province name.
+  const plateOf = new Map();
+  for (const [key, a] of adminKeys) {
+    if (!key.startsWith("TR.") || a.level !== 1) continue;
+    const names = new Set([...a.names].map(fold));
+    const row = trData.provinces.find(([, name]) => names.has(fold(name)));
+    if (row) plateOf.set(key.slice(3), row[0]);
+  }
+  const known = new Map();
+  for (const p of places) if (p.cc === "TR" && plateOf.has(p.a1)) (known.get(plateOf.get(p.a1)) ?? known.set(plateOf.get(p.a1), new Set()).get(plateOf.get(p.a1))).add(fold(p.name)).add(fold(p.ascii));
+  const missing = [];
+  let total = 0;
+  for (const [plate, province, districts] of trData.provinces) {
+    for (const [, d] of districts) {
+      total++;
+      // Central districts carry the province's name in GeoNames' "Merkez" seat.
+      if (!known.get(plate)?.has(fold(d)) && !(d === province || /merkez/i.test(d))) missing.push(`${province}/${d}`);
+    }
+  }
+  const share = 1 - missing.length / total;
+  console.log(`  TR: ${total - missing.length} of ${total} districts of address-tr.json found in GeoNames (${(share * 100).toFixed(1)}%)`);
+  if (share < 0.9) throw new Error(`cities: only ${(share * 100).toFixed(1)}% of TR districts found in GeoNames; check address-tr.json against the source:\n  ${missing.slice(0, 40).join(", ")}`);
 }
 
 /* ------------------------------------------------------------------ */
