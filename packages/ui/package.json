@@ -27,6 +27,8 @@
     "./locale-data": "./src/locale-data/index.ts",
     "./locale-data/tr-neighbourhoods": "./src/locale-data/tr/neighbourhoods-bundled.ts",
     "./locale-data/tr/neighbourhoods/*.json": "./src/locale-data/tr/neighbourhoods/*.json",
+    "./locale-data/world-subdivisions": "./src/locale-data/world/subdivisions-bundled.ts",
+    "./locale-data/world/subdivisions/*.json": "./src/locale-data/world/subdivisions/*.json",
     "./business": "./src/business/index.ts",
     "./compliance": "./src/compliance/index.ts",
     "./payments": "./src/payments/index.ts",

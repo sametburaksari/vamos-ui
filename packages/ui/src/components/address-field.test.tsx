@@ -177,7 +177,7 @@ describe("AddressField for every country", () => {
   it('required="auto" uses the country rules', () => {
     render(<AddressField legend="Address" defaultValue={{ country: "US" }} required="auto" />);
     expect(screen.getByRole("textbox", { name: /ZIP code/ })).toBeRequired();
-    expect(screen.getByRole("textbox", { name: /State/ })).toBeRequired();
+    expect(screen.getByRole("combobox", { name: /State/ })).toBeRequired();
     expect(screen.getByRole("textbox", { name: /Apartment/ })).not.toBeRequired();
   });
 
@@ -185,5 +185,57 @@ describe("AddressField for every country", () => {
     render(<AddressField legend="Office" readOnly value={{ country: "JP", postalCode: "154-0023", region1: "Tokyo", line1: "1-2-3 Wakabayashi" }} />);
     expect(screen.getByText("1-2-3 Wakabayashi, Tokyo")).toBeInTheDocument();
     expect(screen.getByText("154-0023")).toBeInTheDocument();
+  });
+});
+
+describe("subdivisions", () => {
+  it("lists a country's states with the values the post expects", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const { container } = render(<AddressField legend="Address" defaultValue={{ country: "US" }} onValueChange={onValueChange} />);
+    const state = screen.getByRole("combobox", { name: "State" });
+    await screen.findByRole("option", { name: "California" });
+    await user.selectOptions(state, "California");
+    expect(onValueChange).toHaveBeenLastCalledWith(expect.objectContaining({ region1: "CA" }));
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shows local names in the country's language and Latin ones elsewhere", async () => {
+    const { unmount } = render(<AddressField legend="Address" defaultValue={{ country: "JP" }} />);
+    expect(await screen.findByRole("option", { name: "Tokyo" })).toHaveAttribute("value", "Tokyo");
+    unmount();
+    render(
+      <LocaleProvider locale="ja-JP">
+        <AddressField legend="Address" defaultValue={{ country: "JP" }} />
+      </LocaleProvider>,
+    );
+    expect(await screen.findByRole("option", { name: "東京都" })).toHaveAttribute("value", "東京都");
+    // Source order (north to south) in Japanese.
+    expect(within(screen.getByRole("combobox", { name: "Prefecture" })).getAllByRole("option")[1]).toHaveTextContent("北海道");
+  });
+
+  it("selects a stored name or ISO code of a known subdivision, and keeps text for countries without a list", async () => {
+    render(
+      <>
+        <Field label="Region">
+          <RegionSelect country="US" defaultValue="US-CA" />
+        </Field>
+        <AddressField legend="Address" defaultValue={{ country: "AE" }} subdivisions={false} />
+      </>,
+    );
+    await screen.findByRole("option", { name: "California" });
+    expect(screen.getByRole("combobox", { name: "Region" })).toHaveValue("CA");
+    expect(screen.getByRole("textbox", { name: "Emirate" })).toBeInTheDocument();
+  });
+
+  it("uses a custom loader", async () => {
+    const loader = vi.fn(async () => ({ source: "fixture", license: "MIT", generated: "2026-11-15", country: "ZZ", lang: "en", from: "cldr", rows: [["N", "North", "", ""], ["S", "South", "", ""]] as [string, string, string, string][] }));
+    render(
+      <Field label="Area">
+        <RegionSelect country="ZZ" subdivisions={loader} />
+      </Field>,
+    );
+    expect(await screen.findByRole("option", { name: "South" })).toBeInTheDocument();
+    expect(loader).toHaveBeenCalledWith("ZZ");
   });
 });
