@@ -1,7 +1,10 @@
+"use client";
+
 import { CodeBlock, type CodeHighlighter } from "@vamos-ui/react";
 
 // Any highlighter fits: return one node per line (numbers and marked lines keep working) or an
 // HTML string such as Shiki's codeToHtml output (pass it through `html` when it is made on the server).
+// A function prop only crosses into CodeBlock from a client component, hence "use client" here.
 const diff: CodeHighlighter = (code) =>
   code.split("\n").map((line, i) => (
     <span key={i} className={line.startsWith("+") ? "text-success-ink" : line.startsWith("-") ? "text-danger-ink" : undefined}>
