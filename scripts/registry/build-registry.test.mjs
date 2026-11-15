@@ -336,9 +336,14 @@ describe("buildRegistry (this repository)", () => {
     const fg = tokens.find((/** @type {{ name: string }} */ t) => t.name === "--fg");
     assert.notEqual(fg.light, fg.dark);
     const { axes } = read("axes.json");
-    assert.deepEqual(axes.map((/** @type {{ name: string }} */ a) => a.name), ["theme", "material", "accent", "density", "font", "radius"]);
+    assert.deepEqual(axes.map((/** @type {{ name: string }} */ a) => a.name), ["theme", "material", "accent", "density", "font", "radius", "scene"]);
     const radius = tokens.find((/** @type {{ name: string }} */ t) => t.name === "--radius-scale");
     assert.ok(radius?.overrides.some((/** @type {{ selector: string }} */ o) => o.selector.includes('data-radius="sharp"')));
+    assert.ok(radius?.overrides.some((/** @type {{ selector: string }} */ o) => o.selector.includes('data-radius="none"')));
+    const scene = tokens.find((/** @type {{ name: string }} */ t) => t.name === "--scene");
+    assert.ok(scene?.overrides.some((/** @type {{ selector: string }} */ o) => o.selector.includes('data-scene="paper"')));
+    for (const name of ["--cat-1", "--accent-2", "--accent-gradient", "--control-radius", "--font-accent", "--display-case"]) assert.ok(tokens.some((/** @type {{ name: string }} */ t) => t.name === name), name);
+    assert.equal(axes.find((/** @type {{ name: string }} */ a) => a.name === "font").values.length, 24);
   });
 
   test("ships the kit barrels and the agent skill for the CLI", () => {

@@ -31,22 +31,29 @@ export const BUILTIN_AXES: Axis[] = [
   {
     name: "density",
     attribute: "data-density",
-    values: ["comfortable", "compact"],
+    values: ["comfortable", "compact", "spacious"],
     default: "comfortable",
     description: "Control height, radius, gaps and table row height. Compact for data-heavy back-office screens.",
   },
   {
     name: "font",
     attribute: "data-font",
-    values: ["editorial", "grotesk", "corporate", "system"],
+    values: ["editorial", "grotesk", "corporate", "system", "newsroom", "magazine", "bookish", "poster", "fintech", "friendly", "boutique", "luxe", "studio", "product", "bistro", "civic", "portal", "tabloid", "neon", "grove", "retail", "arcade", "naskh", "kufi"],
     default: "editorial",
     description: "Type pairing for UI text, headings and code. Display headings change weight, tracking and scale with it.",
   },  {
     name: "radius",
     attribute: "data-radius",
-    values: ["default", "sharp", "round"],
+    values: ["default", "sharp", "round", "none", "pill"],
     default: "default",
-    description: "Corners. Absent = default (14px, compact 10px); sharp = 6px (4px), round = 20px (14px). Scales --radius, so everything on rounded-ui / rounded-ui-sm / rounded-ui-lg or var(--radius) follows: buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. rounded-full shapes stay round on purpose: pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars (and small fixed details such as chart bars and event chips). Works with every accent, material and density.",
+    description: "Corners. Absent = default (14px, compact 10px); sharp = 6px (4px), round = 20px (14px), none = 0, pill = pill controls (buttons, inputs, select triggers via rounded-control / --control-radius) with default cards. Scales --radius, so everything on rounded-ui / rounded-ui-sm / rounded-ui-lg or var(--radius) follows: buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. rounded-full shapes stay round on purpose: pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars (and small fixed details such as chart bars and event chips). Works with every accent, material and density.",
+  },
+  {
+    name: "scene",
+    attribute: "data-scene",
+    values: ["neutral", "paper", "warm", "ink"],
+    default: "neutral",
+    description: "Backdrop and neutral tint. Absent = neutral; paper = parchment and sepia ink, warm = sand, ink = untinted greys, near-black in dark mode. Retints --scene, solid surfaces and --fg* together; text keeps 4.5:1. Glass keeps its translucent surfaces.",
   },
 ];
 
