@@ -24,7 +24,7 @@ export interface FontProviderProps {
   pairing?: FontPairing | string;
   defaultPairing?: FontPairing | string;
   onPairingChange?: (pairing: FontPairing) => void;
-  /** Presets offered to `useFontPairing().pairings` and resolvable by id. Default: the 16 built-ins. */
+  /** Presets offered to `useFontPairing().pairings` and resolvable by id. Default: the 24 built-ins. */
   pairings?: FontPairing[];
   /**
    * `"element"` (default) renders a wrapper `<div>` carrying the tokens, so only its subtree changes;

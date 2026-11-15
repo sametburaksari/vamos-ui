@@ -16,7 +16,7 @@ import { cva, type VariantProps } from "class-variance-authority";
  */
 export const controlVariants = /*#__PURE__*/ cva(
   [
-    "relative flex w-full min-w-0 items-center rounded-ui border text-fg",
+    "relative flex w-full min-w-0 items-center rounded-control border text-fg",
     "transition-[border-color,box-shadow,background-color] duration-150",
     // focus on self (trigger) or on a child (input group)
     "focus-visible:outline-none focus-visible:border-ring focus-visible:shadow-[0_0_0_3px_var(--accent-soft)]",
@@ -51,8 +51,8 @@ export const controlVariants = /*#__PURE__*/ cva(
         nav: "border-nav-line bg-nav-hover text-nav-fg-strong hover:border-[color-mix(in_srgb,var(--nav-fg)_30%,transparent)]",
       },
       pill: { true: "rounded-full" },
-      /** Auto height for multi-line content (Textarea, Tag input). */
-      multiline: { true: "h-auto items-start py-2" },
+      /** Auto height for multi-line content (Textarea, Tag input). Keeps card corners under `data-radius="pill"`. */
+      multiline: { true: "h-auto items-start py-2 [--control-radius:initial]" },
     },
     defaultVariants: { size: "md", variant: "default" },
   },

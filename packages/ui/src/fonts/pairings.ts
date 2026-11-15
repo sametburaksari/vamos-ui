@@ -11,6 +11,13 @@ export interface FontDisplayTokens {
   em: "italic" | "normal";
   /** `--display-scale`: multiplier on the display sizes (wide faces want < 1). */
   scale: number;
+  /** `--display-case`: `"uppercase"` sets display headings in capitals (tabloid, poster). Default `"none"`. */
+  case?: "none" | "uppercase";
+  /**
+   * `--display-case-tracking`: letter-spacing added on top of `tracking` (capitals want air,
+   * e.g. `"0.02em"`). Default `"0em"`. Keep it `0em` for Arabic: tracking breaks joined letters.
+   */
+  caseTracking?: string;
 }
 
 export interface FontPairing {
@@ -24,17 +31,32 @@ export interface FontPairing {
   body: string;
   /** Code, IDs and numbers. */
   mono: string;
+  /**
+   * `--font-accent`: an accent face for one word or a signature (script, handwriting, pixel), used
+   * with the `font-accent` class. Defaults to the heading family. Never for body text.
+   */
+  accent?: string;
+  /** The script the pairing is made for. `"arabic"` pairings need `dir="rtl"` and no letter-spacing. */
+  script?: "latin" | "arabic";
   display: FontDisplayTokens;
-  /** The preset also exists as a `[data-font="<id>"]` block in styles.css. */
+  /**
+   * The app is expected to load these families itself (next/font `--ff-*` variables, as the docs
+   * layout does), so the `[data-font="<id>"]` block in styles.css is all it needs and the boot script
+   * skips loading. Every built-in pairing has a styles.css block; only these four set this flag.
+   */
   css?: boolean;
 }
 
 const SYSTEM_SANS = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
 const SYSTEM_MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
-const d = (weight: number, tracking: string, em: "italic" | "normal", scale: number): FontDisplayTokens => ({ weight, tracking, em, scale });
+const d = (weight: number, tracking: string, em: "italic" | "normal", scale: number, upper?: { caseTracking: string }): FontDisplayTokens =>
+  upper ? { weight, tracking, em, scale, case: "uppercase", caseTracking: upper.caseTracking } : { weight, tracking, em, scale };
 
-/** 16 curated pairings. The first four match the `data-font` presets in styles.css (same ids). */
+/**
+ * 24 curated pairings, each with a `[data-font="<id>"]` block in styles.css (same ids) and a preset
+ * letter. The first four are the classic presets whose files the app loads with next/font.
+ */
 export const fontPairings: FontPairing[] = [
   { id: "editorial", label: "Editorial", description: "Condensed serif headlines over a warm sans. The house style.", heading: "Instrument Serif", body: "Onest", mono: "JetBrains Mono", display: d(400, "-0.01em", "italic", 1), css: true },
   { id: "grotesk", label: "Grotesk", description: "Expressive grotesque headlines; neutral text. Product and agency sites.", heading: "Bricolage Grotesque", body: "Hanken Grotesk", mono: "Geist Mono", display: d(640, "-0.035em", "normal", 0.86), css: true },
@@ -43,15 +65,23 @@ export const fontPairings: FontPairing[] = [
   { id: "newsroom", label: "Newsroom", description: "Optical-size text serif headlines with a calm sans. Blogs and magazines.", heading: "Newsreader", body: "Source Sans 3", mono: "IBM Plex Mono", display: d(500, "-0.02em", "italic", 0.94) },
   { id: "product", label: "Product", description: "Tight Swiss-style grotesk throughout. Developer tools and dashboards.", heading: "Geist", body: "Geist", mono: "Geist Mono", display: d(600, "-0.045em", "normal", 0.82) },
   { id: "fintech", label: "Fintech", description: "Wide geometric headlines, compact text, clear numerals. Banking and SaaS.", heading: "Sora", body: "Manrope", mono: "JetBrains Mono", display: d(600, "-0.035em", "normal", 0.8) },
-  { id: "boutique", label: "Boutique", description: "Soft, wonky serif over a friendly sans. Spas, food and hospitality.", heading: "Fraunces", body: "Figtree", mono: "DM Mono", display: d(420, "-0.02em", "italic", 0.92) },
+  { id: "boutique", label: "Boutique", description: "Soft, wonky serif over a friendly sans. Spas, food and hospitality.", heading: "Fraunces", body: "Figtree", mono: "DM Mono", accent: "Sacramento", display: d(420, "-0.02em", "italic", 0.92) },
   { id: "luxe", label: "Luxe", description: "Razor-thin Didone with an airy geometric. Fashion and beauty.", heading: "Bodoni Moda", body: "Urbanist", mono: "DM Mono", display: d(500, "-0.015em", "italic", 0.96) },
   { id: "magazine", label: "Magazine", description: "High-contrast display serif over its sans sibling. Features and lookbooks.", heading: "DM Serif Display", body: "DM Sans", mono: "DM Mono", display: d(400, "-0.015em", "italic", 0.94) },
-  { id: "studio", label: "Studio", description: "Extended avant-garde headlines, precise text, retro mono. Art and culture.", heading: "Syne", body: "Instrument Sans", mono: "Space Mono", display: d(700, "-0.03em", "normal", 0.8) },
+  { id: "studio", label: "Studio", description: "Extended avant-garde headlines, precise text, retro mono. Art and culture.", heading: "Syne", body: "Instrument Sans", mono: "Space Mono", accent: "Kalam", display: d(700, "-0.03em", "normal", 0.8) },
   { id: "bistro", label: "Bistro", description: "Chunky warm serif with a modern sans. Cafes, bakeries, restaurants.", heading: "Young Serif", body: "Plus Jakarta Sans", mono: "JetBrains Mono", display: d(400, "-0.02em", "normal", 0.9) },
-  { id: "friendly", label: "Friendly", description: "Rounded throughout. Education, health and consumer apps.", heading: "Fredoka", body: "Nunito", mono: "DM Mono", display: d(600, "-0.02em", "normal", 0.86) },
+  { id: "friendly", label: "Friendly", description: "Rounded throughout. Education, health and consumer apps.", heading: "Fredoka", body: "Nunito", mono: "DM Mono", accent: "Caveat", display: d(600, "-0.02em", "normal", 0.86) },
   { id: "poster", label: "Poster", description: "Condensed sports-poster headlines over a sturdy grotesk. Events and transport.", heading: "Barlow Condensed", body: "Archivo", mono: "Martian Mono", display: d(700, "-0.005em", "normal", 1.08) },
   { id: "bookish", label: "Bookish", description: "Classic Garamond headings with a screen-reading serif. Long reads and archives.", heading: "EB Garamond", body: "Literata", mono: "Fira Code", display: d(500, "-0.01em", "italic", 0.96) },
   { id: "civic", label: "Civic", description: "Open, sturdy and neutral. Public sector, HR and non-profits.", heading: "Commissioner", body: "Commissioner", mono: "IBM Plex Mono", display: d(620, "-0.025em", "normal", 0.82) },
+  { id: "portal", label: "Portal", description: "Bold, tight grotesk headlines over a readable humanist sans. News portals and dense homepages.", heading: "Archivo", body: "Source Sans 3", mono: "IBM Plex Mono", display: d(760, "-0.025em", "normal", 0.84) },
+  { id: "tabloid", label: "Tabloid", description: "Heavy condensed capitals over a sturdy grotesk. Breaking news, sport and nightlife.", heading: "Anton", body: "Work Sans", mono: "JetBrains Mono", display: d(400, "0em", "normal", 1.04, { caseTracking: "0.01em" }) },
+  { id: "neon", label: "Neon", description: "Wide rounded-square display with a neutral grotesk and a retro mono. Gaming, music, dark media.", heading: "Unbounded", body: "Hanken Grotesk", mono: "Space Mono", display: d(600, "-0.03em", "normal", 0.72) },
+  { id: "grove", label: "Grove", description: "Soft, sturdy serif headlines over an open grotesk. Nature, food, gardens and travel.", heading: "Fraunces", body: "Work Sans", mono: "DM Mono", display: d(600, "-0.02em", "normal", 0.9) },
+  { id: "retail", label: "Retail", description: "One tight neutral grotesk; the product does the talking. Shops and catalogues.", heading: "Inter Tight", body: "Inter Tight", mono: "DM Mono", display: d(600, "-0.04em", "normal", 0.84) },
+  { id: "arcade", label: "Arcade", description: "Pixel display caps with a clean grotesk for text. Retro, gaming and event accents.", heading: "Silkscreen", body: "Host Grotesk", mono: "Space Mono", accent: "Silkscreen", display: d(400, "0em", "normal", 0.6) },
+  { id: "naskh", label: "Naskh", description: "Naskh Arabic headlines over IBM Plex Sans Arabic (with matching Plex Latin). RTL news and long reads.", heading: "Noto Naskh Arabic", body: "IBM Plex Sans Arabic", mono: "IBM Plex Mono", script: "arabic", display: d(700, "0em", "normal", 0.9) },
+  { id: "kufi", label: "Kufi", description: "Geometric Kufi Arabic headlines over Readex Pro. RTL apps, portals and product pages.", heading: "Noto Kufi Arabic", body: "Readex Pro", mono: "IBM Plex Mono", script: "arabic", display: d(700, "0em", "normal", 0.8) },
 ];
 
 /** Find a pairing by id. */
@@ -89,7 +119,7 @@ function clampWeight(f: GoogleFont, target: number): number {
 }
 
 /** Build a pairing from any three families; display tokens follow the heading family. */
-export function createFontPairing(input: { heading: string; body: string; mono?: string; id?: string; label?: string; description?: string; display?: Partial<FontDisplayTokens> }): FontPairing {
+export function createFontPairing(input: { heading: string; body: string; mono?: string; accent?: string; id?: string; label?: string; description?: string; display?: Partial<FontDisplayTokens> }): FontPairing {
   return {
     id: input.id ?? "custom",
     label: input.label ?? "Custom",
@@ -97,6 +127,7 @@ export function createFontPairing(input: { heading: string; body: string; mono?:
     heading: input.heading,
     body: input.body,
     mono: input.mono ?? "JetBrains Mono",
+    ...(input.accent ? { accent: input.accent } : {}),
     display: { ...displayTokensFor(input.heading), ...input.display },
   };
 }
@@ -104,7 +135,7 @@ export function createFontPairing(input: { heading: string; body: string; mono?:
 /** The Google Fonts families a pairing needs (skips raw CSS stacks). */
 export function pairingFamilies(pairing: FontPairing): FontRequest[] {
   const out: FontRequest[] = [];
-  for (const fam of [pairing.heading, pairing.body, pairing.mono]) {
+  for (const fam of [pairing.heading, pairing.body, pairing.mono, ...(pairing.accent ? [pairing.accent] : [])]) {
     const f = getFont(fam);
     if (f && !out.some((r) => r.family === f.family)) out.push({ family: f.family });
   }
@@ -117,7 +148,18 @@ export function pairingUrl(pairing: FontPairing, options?: Parameters<typeof goo
   return fams.length ? googleFontsUrl(fams, options) : null;
 }
 
-export const FONT_PAIRING_VARS = ["--font-ui", "--font-heading", "--font-code", "--display-weight", "--display-tracking", "--display-em", "--display-scale"] as const;
+export const FONT_PAIRING_VARS = [
+  "--font-ui",
+  "--font-heading",
+  "--font-code",
+  "--font-accent",
+  "--display-weight",
+  "--display-tracking",
+  "--display-em",
+  "--display-scale",
+  "--display-case",
+  "--display-case-tracking",
+] as const;
 
 /** The CSS custom properties a pairing sets, ready for `style` or `setProperty`. */
 export function pairingVars(pairing: FontPairing): Record<(typeof FONT_PAIRING_VARS)[number], string> {
@@ -125,11 +167,64 @@ export function pairingVars(pairing: FontPairing): Record<(typeof FONT_PAIRING_V
     "--font-ui": fontStack(pairing.body),
     "--font-heading": fontStack(pairing.heading),
     "--font-code": fontStack(pairing.mono),
+    "--font-accent": fontStack(pairing.accent ?? pairing.heading),
     "--display-weight": String(pairing.display.weight),
     "--display-tracking": pairing.display.tracking,
     "--display-em": pairing.display.em,
     "--display-scale": String(pairing.display.scale),
+    "--display-case": pairing.display.case ?? "none",
+    "--display-case-tracking": pairing.display.caseTracking ?? "0em",
   };
+}
+
+/** next/font variable names the classic four blocks have always used (kept so existing apps keep working). */
+const LEGACY_FONT_VARS: Record<string, string> = {
+  Onest: "--ff-onest",
+  "Instrument Serif": "--ff-instrument",
+  "JetBrains Mono": "--ff-jetbrains",
+  "Hanken Grotesk": "--ff-hanken",
+  "Bricolage Grotesque": "--ff-bricolage",
+  "Geist Mono": "--ff-geist-mono",
+  "IBM Plex Sans": "--ff-plex",
+  "IBM Plex Mono": "--ff-plex-mono",
+};
+
+/**
+ * The next/font variable a `[data-font]` block reads for a family: `--ff-<catalog id>`
+ * (e.g. `--ff-newsreader`), or the short legacy name for the families of the classic four
+ * (`--ff-onest`, `--ff-plex` …). `null` for a raw CSS stack (System).
+ */
+export function fontVar(family: string): string | null {
+  const f = getFont(family);
+  if (!f) return null;
+  return LEGACY_FONT_VARS[f.family] ?? `--ff-${f.id}`;
+}
+
+/**
+ * The `[data-font="<id>"]` block for a pairing, exactly as styles.css has it. Each family reads its
+ * next/font variable first and falls back to the Google Fonts family name, so the block works with
+ * next/font or with the `<link>` from `pairingUrl`.
+ */
+export function pairingCss(pairing: FontPairing, selector = `[data-font="${pairing.id}"]`): string {
+  const fam = (family: string) => {
+    const v = fontVar(family);
+    return v ? `var(${v}, "${getFont(family)!.family}")` : family;
+  };
+  const t = pairing.display;
+  return [
+    `${selector} {`,
+    `  --font-ui: ${fam(pairing.body)};`,
+    `  --font-heading: ${fam(pairing.heading)};`,
+    `  --font-code: ${fam(pairing.mono)};`,
+    `  --font-accent: ${pairing.accent ? fam(pairing.accent) : "var(--font-heading)"};`,
+    `  --display-weight: ${t.weight};`,
+    `  --display-tracking: ${t.tracking};`,
+    `  --display-em: ${t.em};`,
+    `  --display-scale: ${t.scale};`,
+    `  --display-case: ${t.case ?? "none"};`,
+    `  --display-case-tracking: ${t.caseTracking ?? "0em"};`,
+    `}`,
+  ].join("\n");
 }
 
 export interface ApplyFontPairingOptions extends LoadGoogleFontsOptions {
@@ -162,6 +257,7 @@ export interface StoredFontPairing {
   heading: string;
   body: string;
   mono: string;
+  accent?: string;
   display: FontDisplayTokens;
   css?: boolean;
   /** Google Fonts stylesheet, `null` when none is needed. */
@@ -178,6 +274,7 @@ export function serializeFontPairing(pairing: FontPairing): StoredFontPairing {
     heading: pairing.heading,
     body: pairing.body,
     mono: pairing.mono,
+    ...(pairing.accent ? { accent: pairing.accent } : {}),
     display: pairing.display,
     css: pairing.css,
     href: pairingUrl(pairing),
@@ -192,8 +289,8 @@ export function parseFontPairing(value: unknown): FontPairing | undefined {
   const v = value as Partial<StoredFontPairing>;
   if (typeof v.id !== "string" || typeof v.heading !== "string" || typeof v.body !== "string") return undefined;
   const preset = getFontPairing(v.id);
-  if (preset && preset.heading === v.heading && preset.body === v.body && preset.mono === v.mono) return preset;
-  return createFontPairing({ id: v.id, label: v.label ?? "Custom", heading: v.heading, body: v.body, mono: typeof v.mono === "string" ? v.mono : undefined, display: v.display });
+  if (preset && preset.heading === v.heading && preset.body === v.body && preset.mono === v.mono && (preset.accent ?? undefined) === (typeof v.accent === "string" ? v.accent : undefined)) return preset;
+  return createFontPairing({ id: v.id, label: v.label ?? "Custom", heading: v.heading, body: v.body, mono: typeof v.mono === "string" ? v.mono : undefined, accent: typeof v.accent === "string" ? v.accent : undefined, display: v.display });
 }
 
 /**
