@@ -1,0 +1,184 @@
+{
+  "id": "wedding",
+  "title": { "en": "Wedding or private celebration", "tr": "Düğün veya özel kutlama" },
+  "summary": "An invitation site for a wedding, engagement or other private celebration: the invitation itself, the couple's story, the programme and practical details (map, travel, where to stay, dress code, gifts, FAQ) and a per-guest RSVP flow.",
+  "match": {
+    "siteTypes": ["event", "portfolio"],
+    "signals": [
+      "wedding", "marriage", "engagement", "save the date", "rsvp", "bride", "groom",
+      "dugun", "nikah", "nisan", "kina", "davetiye", "lcv", "gelin", "damat", "evleniyoruz"
+    ],
+    "features": ["channel:map", "booking:form", "section:faq"],
+    "fallback": false
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "The invitation: who is getting married, when and where, the story, the weekend at a glance and the call to reply.",
+      "sections": [
+        {
+          "id": "invitation",
+          "purpose": "An arched or framed photo beside a typeset invitation card: hosts, names, day, date, time, place and the reply action.",
+          "use": ["hero"],
+          "alternatives": ["media-text: photo and invitation text side by side when no full hero is wanted"],
+          "fields": ["Names of the couple", "Hosting line (with their families …)", "Day, date and time", "Place and town", "Photo with alt text", "Reply-by date"],
+          "notes": "Primary action 'Reply to the invitation', secondary 'The weekend'. A countdown to the day is optional and must not be the only place the date appears."
+        },
+        {
+          "id": "countdown",
+          "purpose": "Days left until the celebration.",
+          "use": ["countdown"],
+          "fields": ["Date and time of the ceremony with time zone"],
+          "optional": true
+        },
+        {
+          "id": "story",
+          "purpose": "How the couple got here, in a few dated moments.",
+          "use": ["activity-timeline"],
+          "alternatives": ["media-text: one paragraph beside a photo"],
+          "fields": ["Year and title per moment", "One short paragraph per moment", "Optional photo"],
+          "optional": true
+        },
+        {
+          "id": "weekend",
+          "purpose": "The days of the celebration at a glance (welcome evening, ceremony, brunch), linking to details.",
+          "use": ["feature-grid"],
+          "fields": ["Each day: name, theme, time, place"]
+        },
+        {
+          "id": "venue",
+          "purpose": "The venue in a picture and a few lines, linking to the map and travel.",
+          "use": ["media-text"],
+          "fields": ["Venue name", "What it is like and how far from town", "Photo with alt text"]
+        },
+        {
+          "id": "gifts-note",
+          "purpose": "A short, warm note on gifts, so guests do not have to ask.",
+          "use": ["cta"],
+          "fields": ["Gift wishes (registry, fund, or none)"],
+          "optional": true
+        },
+        {
+          "id": "reply",
+          "purpose": "A closing band with the reply-by date and the RSVP action.",
+          "use": ["cta"],
+          "fields": ["Reply-by date"]
+        }
+      ]
+    },
+    {
+      "id": "details",
+      "path": { "en": "/details", "tr": "/detaylar" },
+      "title": { "en": "Details", "tr": "Detaylar" },
+      "purpose": "Everything a guest needs: the full programme, the map, getting there, where to stay, what to wear, gifts and questions.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Key facts at the top: ceremony date and time, place, dress code, reply-by.",
+          "use": ["page-intro"],
+          "fields": ["Ceremony date and time", "Place", "Dress code name", "Reply-by date", "Who to ask with questions"]
+        },
+        {
+          "id": "schedule",
+          "purpose": "The programme per day with times and an icon per event, key moments marked.",
+          "use": ["activity-timeline"],
+          "fields": ["Per event: day, start time, title, place, short note (transport, what to bring)"]
+        },
+        {
+          "id": "map",
+          "purpose": "Where the venue is, with directions.",
+          "use": ["map-hours"],
+          "alternatives": ["pin-map: when several places matter (venue, hotels, shuttle stops)"],
+          "fields": ["Venue address", "Coordinates or map link", "Parking and access notes"]
+        },
+        {
+          "id": "travel-stay",
+          "purpose": "How to get there (airport, transfer, shuttle) and hotels with room-block codes.",
+          "use": ["feature-grid"],
+          "fields": ["Nearest airport or station and travel time", "Shuttle times and pick-up points", "Hotels: name, distance, price per night, room-block code, booking deadline"]
+        },
+        {
+          "id": "dress",
+          "purpose": "The dress code with do's and don'ts (ground, weather, colours to avoid).",
+          "use": ["feature-grid"],
+          "fields": ["Dress code name and description", "Please do list", "Please don't list"],
+          "optional": true
+        },
+        {
+          "id": "gifts",
+          "purpose": "Gift wishes in detail.",
+          "use": ["rich-text-section"],
+          "fields": ["Registry link, fund description or 'no gifts'", "How to ask for transfer details"],
+          "optional": true
+        },
+        {
+          "id": "faq",
+          "purpose": "Children, plus-ones, accessibility, weather plan, photography, deadlines.",
+          "use": ["faq"],
+          "fields": ["Questions and answers"]
+        }
+      ]
+    },
+    {
+      "id": "rsvp",
+      "path": { "en": "/rsvp", "tr": "/lcv" },
+      "title": { "en": "RSVP", "tr": "LCV" },
+      "purpose": "Reply per guest: find the invitation by name, accept or decline for each person, add a plus-one when allowed, choose meals and note dietary needs, then extras.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Reply-by date and what the form will ask.",
+          "use": ["page-intro"],
+          "fields": ["Reply-by date", "Contact for problems"]
+        },
+        {
+          "id": "reply-flow",
+          "purpose": "A stepped reply: find invitation → who is coming → dinner → extras and a note, with a reply card filling in beside it.",
+          "use": ["multi-step-form", "stepper", "radio-group", "checkbox"],
+          "fields": ["Guest list grouped by invitation, with plus-one allowance and children", "Meal choices with short descriptions", "Dietary options (vegetarian, vegan, allergies) and a free-text field", "Extras to ask about (shuttle, welcome evening, brunch, song request)", "Note to the couple (max length)"],
+          "notes": "Group each guest's fields in a fieldset with the guest's name as legend. Skip the dinner step when nobody is coming. Gentle hints when a meal clashes with a dietary choice. The live reply card is a role=\"status\" region. On submit, confirm in a status region and offer 'Add to calendar' (an .ics download) and 'change my reply'."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Names of the couple and hosts",
+    "Date, time and time zone of each event across the days",
+    "Venue name, address, map location, parking and access",
+    "Photos of the couple and the venue, with alt text",
+    "Story moments (optional)",
+    "Travel: nearest airport / station, shuttle times and stops",
+    "Hotels with distance, price range, room-block codes and deadlines",
+    "Dress code and do's and don'ts",
+    "Gift wishes",
+    "Guest list by invitation, with plus-one allowance and children",
+    "Meal choices and dietary options; RSVP deadline",
+    "A named contact for guest questions"
+  ],
+  "styles": [
+    {
+      "name": "stationery serif",
+      "axes": { "theme": "light", "material": "solid", "density": "comfortable", "font": "editorial", "accent": "lime", "radius": "round" },
+      "motion": "full",
+      "why": "Ivory page, a script-free serif, hairline small caps and one muted green; arched photo frames and pill buttons; the invitation is set line by line. Suits a garden or countryside wedding."
+    },
+    {
+      "name": "modern minimal",
+      "axes": { "theme": "light", "material": "solid", "density": "comfortable", "font": "grotesk", "accent": "graphite", "radius": "default" },
+      "motion": "subtle",
+      "why": "Clean grotesk, lots of white and black-and-white photos; for a city ceremony or a small celebration."
+    }
+  ],
+  "pitfalls": [
+    "Guest names and dietary or health details are personal data: keep the RSVP behind the invitation lookup, collect only what is needed and say how long it is kept.",
+    "Letting anyone browse the guest list: the lookup should match one invitation, never list names.",
+    "Dates and times without the day of the week or time zone for travelling guests; the date shown only inside a countdown.",
+    "Plus-ones offered to everyone because the form does not know each invitation's allowance.",
+    "RSVP fields not grouped per guest, so screen-reader users cannot tell whose meal they are choosing.",
+    "Hotel room-block codes and deadlines missing or out of date.",
+    "Heavy animations with no reduced-motion fallback on a site older relatives will open on old phones."
+  ]
+}

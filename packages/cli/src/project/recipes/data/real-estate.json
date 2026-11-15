@@ -1,0 +1,263 @@
+{
+  "id": "real-estate",
+  "title": { "en": "Real estate agency", "tr": "Emlak ofisi" },
+  "summary": "An estate agency or private property office: search and browse homes for sale or rent, a page per listing with gallery, facts, location and an enquiry, plus the agents, local area guides and a valuation request for sellers. Covers an everyday city agency with a list/map search and a luxury office that shows a small collection as large photographs and floor plans.",
+  "match": {
+    "siteTypes": ["corporate", "local-business"],
+    "signals": ["real estate", "estate agent", "realtor", "property", "properties", "homes for sale", "to let", "rental", "apartments", "residences", "villa", "emlak", "gayrimenkul", "satilik", "kiralik", "konut", "daire", "emlak ofisi", "rezidans"],
+    "features": ["section:team", "channel:whatsapp", "channel:phone", "channel:map", "channel:form"],
+    "fallback": false
+  },
+  "showcase": ["site-estate-01"],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Let buyers and renters start searching at once, show the best current homes, and give sellers a reason to request a valuation.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "A large photograph of a real home with a search panel (sale or rent, rooms, area, price range) that opens the filtered listings.",
+          "use": ["hero"],
+          "alternatives": ["carousel: a luxury office showing a slow film of a few residences instead of search"],
+          "fields": ["Hero photograph with alt text", "Headline", "Deal types offered (sale, rent)", "Areas covered", "Room-count options", "Price range bounds"],
+          "notes": "City agency: photo surface with a glass search panel (segmented sale/rent, room and area selects, price slider); the submit shows the live result count and is disabled at zero. Luxury office: full-bleed slow crossfade of residences with a chapter list, a pause button (WCAG 2.2.2) and arrow keys; no autoplay or drift under reduced motion."
+        },
+        {
+          "id": "figures",
+          "purpose": "A few facts that make the agency checkable: areas covered, homes sold, typical time to offer, commission.",
+          "use": ["stats-band"],
+          "fields": ["Three or four figures with label", "Commission terms, if published"],
+          "notes": "Inline variant, tight rhythm. A luxury office uses the ledger variant lower on the page."
+        },
+        {
+          "id": "intro",
+          "purpose": "For a private office: who it is and how it works, in one paragraph.",
+          "use": ["rich-text-section"],
+          "fields": ["One-paragraph introduction of the office"],
+          "optional": true
+        },
+        {
+          "id": "featured",
+          "purpose": "A handful of hand-picked current listings, linking to all listings.",
+          "use": ["entity-card"],
+          "alternatives": ["gallery-section: a luxury office showing each house as one edge-to-edge photograph with an editorial caption, no cards"],
+          "fields": ["Listing photo", "Price or 'price on request'", "Rooms, size and floor", "Area", "Listing reference", "Link to all listings"],
+          "notes": "Cards with photo, price, rooms · m² · floor and a save button whose label names the home."
+        },
+        {
+          "id": "guides",
+          "purpose": "Neighbourhood guides: one row per area with its numbers; selecting one opens the listings filtered to it.",
+          "use": ["list-layout"],
+          "alternatives": ["feature-grid: guides as short cards"],
+          "fields": ["Area name", "Average asking price and period", "Number of current listings", "Short character description", "Data source and period"],
+          "optional": true
+        },
+        {
+          "id": "off-market",
+          "purpose": "For exclusive offices: invite qualified buyers to a private register of homes not published online.",
+          "use": ["cta"],
+          "fields": ["What the register offers", "Who it is for", "Register action label", "Background photograph"],
+          "optional": true,
+          "notes": "Dark band over a still photograph."
+        },
+        {
+          "id": "mortgage",
+          "purpose": "Price, down payment, interest rate and term give a monthly payment with a principal/interest split.",
+          "use": ["form-01"],
+          "fields": ["Default price", "Down-payment range", "Indicative interest rate and its date", "Term options in months", "Disclaimer text"],
+          "optional": true,
+          "notes": "Currency input, slider, number input with stepper and a term select; the result panel is a polite live region. Annuity formula. Clearly say it is indicative, not a credit offer."
+        },
+        {
+          "id": "agents",
+          "purpose": "The agents, the areas they cover and the languages they speak.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Areas", "Languages", "Portrait", "Direct phone or messaging link"],
+          "when": { "any": ["section:team"] },
+          "notes": "List variant on a surface-2 band."
+        },
+        {
+          "id": "testimonial",
+          "purpose": "One client's words, given room.",
+          "use": ["testimonials"],
+          "fields": ["Quote", "Name or initials", "Context (bought, sold, let)"],
+          "when": { "any": ["section:testimonials"] },
+          "notes": "Feature variant."
+        },
+        {
+          "id": "valuation",
+          "purpose": "Sellers and landlords ask for a valuation or a private conversation.",
+          "use": ["contact-form"],
+          "fields": ["Name, email, phone", "Property address", "Sell or let", "Preferred visit time", "Reply time", "Privacy notice link", "Office address and phone"],
+          "notes": "Split variant with the office info shown."
+        }
+      ]
+    },
+    {
+      "id": "listings",
+      "path": { "en": "/listings", "tr": "/ilanlar" },
+      "title": { "en": "Listings", "tr": "İlanlar" },
+      "purpose": "Search and browse every current home with filters, sort and a list / map view.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title, breadcrumb and how listings are verified.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead on how homes are checked and photographed"],
+          "notes": "Simple variant. A luxury office uses a dark photographic header instead."
+        },
+        {
+          "id": "results",
+          "purpose": "Filters, a live result count, sort, and a list / split / map toggle where hovering a card lights its pin and the other way round.",
+          "use": ["filter-bar", "pin-map"],
+          "alternatives": ["list-layout: a small collection filtered only by setting, shown as alternating photo rows"],
+          "fields": ["Every listing: reference, title, deal type, area, rooms, net size, floor, build year, price, photos, map position, agent, listed date, features", "Sort options (newest, price)"],
+          "notes": "Filters persist between home search and this page. Result count in a polite live region; empty state offers to reset filters. Map pins are real buttons whose name starts with the visible price. Re-lay the cards quickly when filters change; no motion under reduced motion."
+        }
+      ]
+    },
+    {
+      "id": "listing",
+      "path": { "en": "/listings/[slug]", "tr": "/ilanlar/[slug]" },
+      "title": { "en": "Listing", "tr": "İlan" },
+      "purpose": "Everything about one home and the quickest way to ask about or view it.",
+      "sections": [
+        {
+          "id": "gallery",
+          "purpose": "Breadcrumb, title, price and a photo gallery that opens in a lightbox.",
+          "use": ["lightbox"],
+          "alternatives": ["gallery-section: filmstrip with lightbox for a luxury residence"],
+          "fields": ["Photos with real alt text", "Title", "Price or 'price on request'", "Reference", "Breadcrumb"]
+        },
+        {
+          "id": "facts",
+          "purpose": "Key facts at a glance.",
+          "use": ["description-list"],
+          "fields": ["Rooms", "Net and gross size", "Floor", "Build year", "Heating", "Dues", "Title deed status", "Features list"]
+        },
+        {
+          "id": "story",
+          "purpose": "The description of the home and its setting.",
+          "use": ["rich-text-section"],
+          "fields": ["Description"]
+        },
+        {
+          "id": "floor-plan",
+          "purpose": "Walk the plan: rooms on the floor plan drive a photograph of that room with its size.",
+          "use": ["image-hotspots"],
+          "fields": ["Floor plan drawing", "Per room: name, size, one line, photo"],
+          "optional": true,
+          "notes": "Rooms are real buttons; pointer, focus or arrow keys change the room; the caption is a polite live region; the crossfade stops under reduced motion."
+        },
+        {
+          "id": "location",
+          "purpose": "Where the home is, without giving the exact address before a viewing if the seller prefers.",
+          "use": ["pin-map"],
+          "fields": ["Approximate map position", "Nearby transport and amenities"]
+        },
+        {
+          "id": "mortgage",
+          "purpose": "The monthly payment for this price.",
+          "use": ["form-01"],
+          "fields": ["Indicative rate and date", "Term options"],
+          "optional": true,
+          "notes": "Same calculator as home, preset with the listing price."
+        },
+        {
+          "id": "agent",
+          "purpose": "The agent for this home with a direct message, call and save actions, or a private-viewing request.",
+          "use": ["entity-card"],
+          "alternatives": ["contact-form: a private-viewing request with preferred date, time of day and phone"],
+          "fields": ["Agent name, photo, phone", "Messaging link with the listing reference prefilled", "Viewing request fields: name, phone, preferred date, time of day"],
+          "notes": "Save toggles aria-pressed. Prefill the listing reference in the WhatsApp message when that channel is on."
+        },
+        {
+          "id": "others",
+          "purpose": "Similar homes to keep browsing.",
+          "use": ["entity-card"],
+          "fields": ["Two or three related listings"]
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "path": { "en": "/team", "tr": "/ekip" },
+      "title": { "en": "Agents", "tr": "Danışmanlar" },
+      "purpose": "All agents with their areas, languages and direct contact.",
+      "when": { "any": ["section:team"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and how the team works.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead"]
+        },
+        {
+          "id": "agents",
+          "purpose": "Each agent.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Areas", "Languages", "Portrait", "Licence number if required"]
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "path": { "en": "/contact", "tr": "/iletisim" },
+      "title": { "en": "Contact", "tr": "İletişim" },
+      "purpose": "Office location and hours, and a general enquiry or valuation form.",
+      "sections": [
+        {
+          "id": "form",
+          "purpose": "General enquiry, valuation or private-conversation request.",
+          "use": ["contact-form"],
+          "fields": ["Name, email, phone", "Enquiry type (buy, sell, rent, let)", "Message", "Privacy notice link"]
+        },
+        {
+          "id": "office",
+          "purpose": "Where to find the office.",
+          "use": ["map-hours"],
+          "fields": ["Address", "Opening hours", "Map"],
+          "when": { "any": ["channel:map", "section:location"] }
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Every listing: reference, deal type, area, rooms, net/gross size, floor, build year, price or 'on request', description, features, daylight photos with alt text, map position, responsible agent, listed date",
+    "Areas covered, with average asking prices and their source and period (for guides)",
+    "Agents: name, role, areas, languages, portrait, direct phone",
+    "Commission terms and who pays them, if published",
+    "Agency licence or authorisation number and legal company name for the footer",
+    "Indicative mortgage rate with its date and a disclaimer (if the calculator is used)",
+    "Floor plans and room photos for premium listings (optional)",
+    "Valuation process and reply time",
+    "Office address, hours, phone, messaging number",
+    "One or two client quotes with permission"
+  ],
+  "styles": [
+    {
+      "name": "bright city agency",
+      "axes": { "theme": "light", "material": "glass", "accent": "ember", "font": "corporate", "density": "comfortable", "radius": "default" },
+      "motion": "subtle",
+      "why": "An everyday agency: a corporate sans for the interface with an italic serif for headings, warm amber accent, a glass search panel over photography."
+    },
+    {
+      "name": "private office",
+      "axes": { "theme": "light", "material": "glass", "accent": "brand", "font": "editorial", "density": "comfortable", "radius": "round" },
+      "motion": "full",
+      "why": "A luxury or off-market office: high-contrast didone headlines over a light geometric text face, deep muted accent, edge-to-edge photographs and dark photographic bands; motion is full but slow (long crossfades, curtain reveals, one scroll drift)."
+    }
+  ],
+  "pitfalls": [
+    "Listings without the legally required details (agency authorisation number, the owner's written authorisation to advertise, accurate size and price); some markets fine misleading listings.",
+    "Stale listings: sold or let homes left online; every listing needs a status and a listed date.",
+    "Empty or generic photo alt text; describe each room.",
+    "Showing the exact address or unit of an occupied home without the owner's consent.",
+    "A mortgage calculator that reads like a credit offer; label it indicative and date the rate.",
+    "Map-only interfaces: pins must be keyboard buttons and every listing also reachable in the list.",
+    "Autoplaying hero films without a pause control and without a reduced-motion fallback.",
+    "Area price figures without a source and period."
+  ]
+}

@@ -1,0 +1,448 @@
+{
+  "id": "school",
+  "title": {
+    "en": "School & training provider",
+    "tr": "Okul ve kurs"
+  },
+  "summary": "A school or training provider (preschool, nursery, driving school, language or skills course) with programmes or courses, a schedule, fees, teachers and an enrolment or sign-up flow.",
+  "match": {
+    "siteTypes": [
+      "local-business",
+      "nonprofit",
+      "booking"
+    ],
+    "signals": [
+      "preschool",
+      "nursery",
+      "kindergarten",
+      "school",
+      "driving school",
+      "academy",
+      "tutoring",
+      "lessons",
+      "anaokulu",
+      "kres",
+      "okul",
+      "surucu kursu",
+      "kurs",
+      "etut",
+      "dershane",
+      "egitim merkezi",
+      "kayit"
+    ],
+    "features": [
+      "children",
+      "booking:form",
+      "section:pricing",
+      "section:team",
+      "section:faq",
+      "channel:map"
+    ]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Show what learners get, how a day or a course runs, who teaches, what it costs and how to start, ending at a visit or sign-up.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Headline promise with photos of the setting and the next concrete step (next open morning, next course start).",
+          "use": [
+            "hero"
+          ],
+          "fields": [
+            "Headline and one-line promise",
+            "Photos of the setting or lessons",
+            "Next open day / course start date",
+            "Primary action: apply or sign up; secondary: visit or see courses"
+          ],
+          "notes": "For a driving school the hero card can show a test route with its stops; for an early-years setting, the next open morning with date and time."
+        },
+        {
+          "id": "figures",
+          "purpose": "Results and facts: pass rate, group sizes, teacher ratio, years open.",
+          "use": [
+            "stats-band"
+          ],
+          "fields": [
+            "Figures with label, period and source"
+          ]
+        },
+        {
+          "id": "rhythm",
+          "purpose": "How a day (or a course) runs, per age group or course, as a proportional timeline.",
+          "use": [
+            "tabs",
+            "activity-timeline"
+          ],
+          "alternatives": [
+            "steps: a course shown as stages to the exam",
+            "scheduler: a weekly timetable"
+          ],
+          "fields": [
+            "Age groups or courses",
+            "Blocks of the day with start/end time and what happens",
+            "School hours"
+          ],
+          "notes": "Group switch as a keyboard-operable tablist. A live 'now' marker and a 'play the day' walk-through are optional extras; honour reduced motion and keep the day readable as a static list on phones.",
+          "when": {
+            "any": [
+              "children"
+            ]
+          }
+        },
+        {
+          "id": "programmes",
+          "purpose": "The age groups, programmes or courses with the key facts of each.",
+          "use": [
+            "feature-grid"
+          ],
+          "alternatives": [
+            "comparison-table: courses that differ by many attributes",
+            "entity-card: few programmes shown large"
+          ],
+          "fields": [
+            "Group/course name",
+            "Age range or licence/level",
+            "Group size or lessons included",
+            "Duration or days per week",
+            "Starting price"
+          ],
+          "notes": "For courses, a bar per course sized by weeks to completion makes duration easy to compare."
+        },
+        {
+          "id": "how",
+          "purpose": "How we work, or the steps from first lesson to exam.",
+          "use": [
+            "steps"
+          ],
+          "alternatives": [
+            "feature-grid: an approach described as principles"
+          ],
+          "fields": [
+            "Steps or principles"
+          ]
+        },
+        {
+          "id": "team",
+          "purpose": "Teachers or instructors with their qualifications.",
+          "use": [
+            "team"
+          ],
+          "fields": [
+            "Name",
+            "Role",
+            "Qualifications/experience",
+            "Languages",
+            "Photo"
+          ],
+          "when": {
+            "any": [
+              "section:team"
+            ]
+          }
+        },
+        {
+          "id": "testimonials",
+          "purpose": "Words from parents or former learners.",
+          "use": [
+            "testimonials"
+          ],
+          "fields": [
+            "Quote",
+            "Who (parent of…, passed in…)",
+            "Source if from a review site"
+          ],
+          "when": {
+            "any": [
+              "section:testimonials"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "id": "fees",
+          "purpose": "A fee summary with what is included.",
+          "use": [
+            "pricing-table"
+          ],
+          "fields": [
+            "Fee per plan (monthly or per course) with currency and tax",
+            "What is included (meals, materials, exam fees)",
+            "Discounts (siblings, instalments)"
+          ],
+          "when": {
+            "any": [
+              "section:pricing"
+            ]
+          }
+        },
+        {
+          "id": "visit",
+          "purpose": "Address, map, office hours and how to visit.",
+          "use": [
+            "map-hours"
+          ],
+          "fields": [
+            "Address and map",
+            "Office or school hours",
+            "Phone and email"
+          ]
+        },
+        {
+          "id": "faq",
+          "purpose": "Age requirements, settling in, payment, failing an exam, switching course.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Questions and answers"
+          ],
+          "when": {
+            "any": [
+              "section:faq"
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "purpose": "Close with the enrolment/sign-up action.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Enrolment action and what happens next"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "programme",
+      "path": {
+        "en": "/programmes",
+        "tr": "/programlar"
+      },
+      "title": {
+        "en": "Programmes & courses",
+        "tr": "Programlar ve kurslar"
+      },
+      "purpose": "Everything about each programme or course: groups, the full day or the course comparison, term dates, what to bring, fees.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Breadcrumb, title and lead.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Page lead"
+          ]
+        },
+        {
+          "id": "compare",
+          "purpose": "Compare courses side by side: a licence/level switch re-prices the columns, a pace slider recomputes weeks to completion, 'only differences' hides identical rows, and the chosen column carries to sign-up.",
+          "use": [
+            "comparison-table",
+            "slider",
+            "radio-group"
+          ],
+          "alternatives": [
+            "pricing-table: two or three simple packages"
+          ],
+          "fields": [
+            "Courses with price per licence/level",
+            "Lessons and theory hours included",
+            "Lessons per week options",
+            "Exam fees and extras"
+          ],
+          "notes": "Announce changed prices and weeks in a status region.",
+          "when": {
+            "not": [
+              "children"
+            ]
+          }
+        },
+        {
+          "id": "groups",
+          "purpose": "Each age group in detail with the full day.",
+          "use": [
+            "tabs",
+            "activity-timeline"
+          ],
+          "fields": [
+            "Group details",
+            "Daily schedule per group"
+          ],
+          "when": {
+            "any": [
+              "children"
+            ]
+          }
+        },
+        {
+          "id": "terms",
+          "purpose": "Term dates, holidays and start dates.",
+          "use": [
+            "table"
+          ],
+          "alternatives": [
+            "calendar: many start dates through the year"
+          ],
+          "fields": [
+            "Term/course start and end dates",
+            "Holidays and closures"
+          ]
+        },
+        {
+          "id": "bring",
+          "purpose": "What to pack or bring (documents, clothing, equipment).",
+          "use": [
+            "feature-grid"
+          ],
+          "fields": [
+            "Items or documents to bring"
+          ],
+          "optional": true
+        },
+        {
+          "id": "fees",
+          "purpose": "Full fee table.",
+          "use": [
+            "pricing-table"
+          ],
+          "fields": [
+            "Fees and inclusions"
+          ],
+          "when": {
+            "any": [
+              "section:pricing"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "enrol",
+      "path": {
+        "en": "/enrol",
+        "tr": "/kayit"
+      },
+      "title": {
+        "en": "Enrol",
+        "tr": "Kayıt"
+      },
+      "purpose": "Apply or sign up in a few short steps with a live fee or total, and a clear 'what happens next'.",
+      "when": {
+        "any": [
+          "booking",
+          "channel:form",
+          "booking:form"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "How many steps, whether applying commits you, how places are offered.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "How applications are handled and places offered"
+          ]
+        },
+        {
+          "id": "form",
+          "purpose": "Steps: learner (child's details, start month) → days or course and pace with a live monthly fee/total → visit or start week → parent or learner contact and consent.",
+          "use": [
+            "multi-step-form",
+            "stepper"
+          ],
+          "alternatives": [
+            "form-01: a single-page sign-up for adult courses"
+          ],
+          "fields": [
+            "Start months or start weeks offered",
+            "Day/session options and their prices",
+            "Payment options (full, instalments)",
+            "Visit slots",
+            "Consent texts",
+            "Minimum age rules"
+          ],
+          "notes": "The running fee is a role=status aria-live region. Validate per step with errors next to their fields; an age check error stays visible beside the birth-date field. Carry the course chosen on the programmes page into the form. Collect only what is needed about a child."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "School/provider name, address, map, hours and contact",
+    "Programmes, age groups or courses with what each includes",
+    "Daily schedule per group, or lessons and pace per course",
+    "Fees per programme with inclusions, discounts and payment options",
+    "Term dates, holidays, start dates",
+    "Teachers/instructors with qualifications",
+    "Licences/accreditation and inspection results",
+    "Figures: pass rate, group sizes, ratios (with period and source)",
+    "Enrolment steps, minimum age, documents required",
+    "What to bring",
+    "Open day/visit times",
+    "Parent or learner testimonials (optional)"
+  ],
+  "styles": [
+    {
+      "name": "soft playful",
+      "axes": {
+        "theme": "light",
+        "material": "glass",
+        "accent": "ocean",
+        "density": "comfortable",
+        "font": "grotesk",
+        "radius": "round"
+      },
+      "motion": "full",
+      "why": "Rounded display type over a very legible text face, soft glass surfaces and springy but short motion; for preschools and children's activities."
+    },
+    {
+      "name": "signal grotesk",
+      "axes": {
+        "theme": "light",
+        "material": "glass",
+        "accent": "ember",
+        "density": "comfortable",
+        "font": "grotesk",
+        "radius": "default"
+      },
+      "motion": "subtle",
+      "why": "Heavy grotesk headings and a strong signal accent; suits driving schools and skills courses that sell on results."
+    },
+    {
+      "name": "calm institutional",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "graphite",
+        "density": "comfortable",
+        "font": "corporate"
+      },
+      "motion": "subtle",
+      "why": "Quiet, trustworthy look for private schools and tutoring centres."
+    }
+  ],
+  "pitfalls": [
+    "Photos of children without parental consent, or identifiable faces and names.",
+    "Collecting more child data than needed, or without a privacy notice for parents.",
+    "Fees shown without what is included, the billing period, tax or extra exam fees.",
+    "Pass rates or results without period and source.",
+    "Timelines and live markers that only work with animation or as a wide graphic; keep a static text version.",
+    "Age and licence requirements only checked after submission; state them up front and next to the field.",
+    "Choices made on the course comparison lost on the way to the sign-up form."
+  ]
+}

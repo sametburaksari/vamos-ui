@@ -1,0 +1,252 @@
+{
+  "id": "online-store",
+  "title": { "en": "Online store", "tr": "Online magaza" },
+  "summary": "A brand selling its own physical products online: a home page that sells one hero product and the range, a filterable product listing, product detail with variants, cart and checkout. Also covers shops that sell in timed, limited drops (countdown, locked previews, stock against the run).",
+  "match": {
+    "siteTypes": ["ecommerce"],
+    "signals": ["shop", "store", "boutique", "collection", "handmade", "ceramics", "apparel", "streetwear", "drop", "limited edition", "magaza", "butik", "koleksiyon", "el yapimi", "giyim", "seramik", "aksesuar", "sinirli seri"],
+    "features": ["shop", "shipping:yes", "newsletter", "section:testimonials"],
+    "fallback": true
+  },
+  "showcase": ["site-store-01"],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Sell one product immediately, then route visitors into the range by category, show what is new, explain who makes it and why to trust it, and capture an email for the next release.",
+      "sections": [
+        {
+          "id": "shipping-notice",
+          "purpose": "One line at the top with the delivery promise (free-delivery threshold, dispatch time) and a link to delivery and returns.",
+          "use": ["announcement-bar"],
+          "fields": ["Free-delivery threshold per market", "Link to the delivery and returns information"],
+          "notes": "Keep it to one fact. For drop shops this can be a running strip of drop facts (time, run size, rules) using the motion Ticker, which must pause on hover/focus and be static for reduced motion.",
+          "optional": true
+        },
+        {
+          "id": "hero",
+          "purpose": "Editorial hero: headline and short pitch on one side, one featured product on the other with its variant swatches and a direct add-to-cart.",
+          "use": ["hero"],
+          "alternatives": ["countdown: the shop sells in timed drops — the next drop's countdown is the hero, with an email/SMS reminder sign-up and an add-to-calendar file", "media-text: no single hero product, a brand photo leads"],
+          "fields": ["Headline and one-sentence pitch", "Featured product: photo per variant, name, price", "Primary call to action (shop the range)"],
+          "notes": "Variant swatches on the hero product should swap the photo, as on the product cards. For a drop hero, render dashes on the server and start ticking after hydration; announce the remaining time as text about once a minute, never every second."
+        },
+        {
+          "id": "locked-preview",
+          "purpose": "For drop shops: the pieces in the next drop shown locked (desaturated photo, price, run size) with a per-piece reminder toggle.",
+          "use": ["entity-card", "feature-grid"],
+          "fields": ["Upcoming pieces: photo, name, price, run size", "Drop date and time with time zone"],
+          "notes": "Reminder toggles are buttons with aria-pressed. Unlock the grid when the countdown reaches zero.",
+          "optional": true
+        },
+        {
+          "id": "categories",
+          "purpose": "Category tiles (one large, a few small) that open the product listing with that category already filtered.",
+          "use": ["feature-grid"],
+          "alternatives": ["gallery-section: a very photo-led range with few categories"],
+          "fields": ["Categories: name, photo, item count"],
+          "notes": "Each tile links to the listing with the category preset, so keep the filter state shared between pages."
+        },
+        {
+          "id": "new-in",
+          "purpose": "A horizontal rail of the newest products (or, for drop shops, the still-live drop in a dense grid with quick-add sizes and stock left against the run).",
+          "use": ["carousel"],
+          "alternatives": ["feature-grid: show new products as a static grid", "entity-card: dense live-drop grid with stock meters and size quick-add"],
+          "fields": ["Newest products: photos, name, price, variants", "Stock per variant (for limited runs)"],
+          "notes": "The rail scrolls inside itself (snap scrolling), never the page. Sold-out sizes are struck through and disabled, with the reason in the accessible name."
+        },
+        {
+          "id": "maker-story",
+          "purpose": "Who makes the products and how: workshop photo, short story, three concrete proof points (materials, process, guarantees).",
+          "use": ["media-text"],
+          "fields": ["Maker or brand story (2 short paragraphs)", "Workshop or team photo with alt text", "Three concrete facts about materials or process"],
+          "when": { "any": ["section:about"] },
+          "optional": true
+        },
+        {
+          "id": "lookbook",
+          "purpose": "For fashion and drop shops: styled photos of the pieces worn or in use.",
+          "use": ["gallery-section"],
+          "alternatives": ["image-hotspots: tag the products inside each styled photo"],
+          "fields": ["Styled photos with alt text", "Products shown in each photo"],
+          "when": { "any": ["section:gallery"] },
+          "optional": true
+        },
+        {
+          "id": "drop-rules",
+          "purpose": "For drop shops: how a drop works — limit per customer, how long items are held in the bag, restocks, returns.",
+          "use": ["steps"],
+          "alternatives": ["feature-grid: rules as short tiles"],
+          "fields": ["Purchase limit per customer", "Bag hold time", "Restock and returns policy for drops"],
+          "optional": true
+        },
+        {
+          "id": "reviews",
+          "purpose": "Customer reviews taken from orders, with rating, place and date.",
+          "use": ["testimonials"],
+          "fields": ["Real customer reviews with rating, source and date", "Permission to publish each name"],
+          "when": { "any": ["section:testimonials"] },
+          "optional": true
+        },
+        {
+          "id": "faq",
+          "purpose": "Answers about sizing, delivery, returns and drops before people ask.",
+          "use": ["faq"],
+          "fields": ["Questions and answers on delivery, returns, sizing and payment"],
+          "when": { "any": ["section:faq"] },
+          "optional": true
+        },
+        {
+          "id": "newsletter",
+          "purpose": "Email sign-up for new releases, with how often you write and the delivery/returns summary.",
+          "use": ["cta"],
+          "fields": ["What subscribers get and how often", "Consent text and unsubscribe promise"],
+          "when": { "any": ["newsletter"] },
+          "notes": "Use the newsletter variant of cta; consent text sits under the field."
+        }
+      ]
+    },
+    {
+      "id": "products",
+      "path": { "en": "/products", "tr": "/urunler" },
+      "title": { "en": "Shop", "tr": "Magaza" },
+      "purpose": "Browse the whole range: filter by category, stock and (for apparel) size; sort; paginate.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Page title and one line about the range.",
+          "use": ["page-intro"],
+          "fields": ["Range description in one sentence"]
+        },
+        {
+          "id": "listing",
+          "purpose": "Filter bar (category, in stock only, size, sort, currency where several markets) over a product grid with pagination.",
+          "use": ["filter-bar", "pagination"],
+          "alternatives": ["list-layout: a large catalogue that needs a sidebar of filters"],
+          "fields": ["All products: photos per variant, name, price, category, stock per variant, size range"],
+          "notes": "Product cards carry variant swatches as a keyboard-operable radiogroup that preview and keep the variant photo; the card link and quick-add follow the chosen variant. Announce the result count in an aria-live region. An archive of past drops is the same page with an extra drop filter."
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "path": { "en": "/products/[slug]", "tr": "/urun/[slug]" },
+      "title": { "en": "Product", "tr": "Urun" },
+      "purpose": "Everything needed to buy one product: gallery per variant, variant and size picker, quantity, add to cart, details, delivery promise, reviews and related products.",
+      "sections": [
+        {
+          "id": "product",
+          "purpose": "Gallery, variant picker, price, quantity, add to cart, specs, delivery and care notes.",
+          "use": ["product-01"],
+          "fields": ["Photos per variant with alt text", "Name, price, variants", "Materials, dimensions or size chart", "Care instructions", "Delivery time and breakage/returns promise"],
+          "notes": "For apparel put the size chart in an accordion with a table; show how many are left per size in a polite live region."
+        },
+        {
+          "id": "reviews",
+          "purpose": "Reviews of this product.",
+          "use": ["testimonials"],
+          "fields": ["Reviews for the product with rating and date"],
+          "when": { "any": ["section:testimonials"] },
+          "optional": true
+        },
+        {
+          "id": "related",
+          "purpose": "A few more products from the same category.",
+          "use": ["feature-grid"],
+          "alternatives": ["carousel: many related products"],
+          "fields": ["Related products"],
+          "notes": "Choosing a related product scrolls back to the top of the new product."
+        }
+      ]
+    },
+    {
+      "id": "cart",
+      "path": { "en": "/cart", "tr": "/sepet" },
+      "title": { "en": "Cart", "tr": "Sepet" },
+      "purpose": "Review the bag: quantities, remove, free-delivery progress, totals. Usually also a drawer opened from the navbar cart link.",
+      "sections": [
+        {
+          "id": "cart",
+          "purpose": "Cart lines with quantity steppers, free-delivery meter, subtotal, shipping and total.",
+          "use": ["cart-01"],
+          "alternatives": ["sheet: the cart as a drawer from the navbar (trap focus, return it to the cart button)"],
+          "fields": ["Free-delivery threshold", "Shipping prices", "Discount code rules"],
+          "notes": "Keep the cart in a provider above the language switch so switching language keeps it. Announce changes via role=status."
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "path": { "en": "/checkout", "tr": "/odeme" },
+      "title": { "en": "Checkout", "tr": "Odeme" },
+      "purpose": "Collect contact, delivery address and method, and payment beside a sticky order summary.",
+      "sections": [
+        {
+          "id": "checkout",
+          "purpose": "Stepped checkout: contact, delivery details and method, payment, agreement; order summary on the side.",
+          "use": ["checkout-01"],
+          "alternatives": ["multi-step-form: a custom flow with more steps"],
+          "fields": ["Delivery methods with prices and times", "Payment methods offered", "Distance-sales contract and pre-information texts", "Invoice options (personal / company)"]
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "path": { "en": "/order/[id]", "tr": "/siparis/[id]" },
+      "title": { "en": "Order confirmation", "tr": "Siparis onayi" },
+      "purpose": "Confirm the order, show what happens next and repeat the summary.",
+      "sections": [
+        {
+          "id": "confirmation",
+          "purpose": "Order number, timeline, next steps and the order summary with VAT.",
+          "use": ["order-confirmation-01"],
+          "fields": ["Dispatch and delivery timeline", "Support contact for order questions"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Product list: name, category, price, variants (colour/finish/size), stock per variant",
+    "Photos for every variant of every product, with alt text",
+    "Materials, dimensions or size chart and care notes per product",
+    "Delivery zones, prices, free-delivery threshold and dispatch time",
+    "Returns policy (window, who pays, condition)",
+    "Payment methods and the payment provider",
+    "Maker or brand story and a workshop/team photo",
+    "Real customer reviews with permission to publish",
+    "Currencies and markets sold to",
+    "For drops: drop date/time and time zone, pieces, run sizes, per-customer limits",
+    "Newsletter promise: what is sent and how often"
+  ],
+  "styles": [
+    {
+      "name": "warm editorial craft",
+      "axes": { "theme": "light", "material": "solid", "accent": "ember", "density": "comfortable", "font": "editorial", "radius": "default" },
+      "motion": "subtle",
+      "why": "Serif headlines, warm earthy accent and calm spacing suit small-batch makers selling handmade goods with a story."
+    },
+    {
+      "name": "dark dense drop",
+      "axes": { "theme": "dark", "material": "solid", "accent": "rose", "density": "compact", "font": "grotesk", "radius": "sharp" },
+      "motion": "full",
+      "why": "Heavy tight grotesk caps, one loud accent, dense grids and hard cuts for streetwear and limited-edition brands selling in timed drops."
+    },
+    {
+      "name": "clean neutral retail",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "density": "comfortable", "font": "system", "radius": "default" },
+      "motion": "subtle",
+      "why": "Lets product photos carry the colour; suits brands with a wide, colourful range."
+    }
+  ],
+  "pitfalls": [
+    "Missing distance-sales contract, pre-information form and returns policy at checkout (legally required for consumer sales in many markets).",
+    "Only one photo per product while variant swatches promise more; every swatch must swap to a real photo of that variant.",
+    "Prices shown without VAT or shipping until the last step; show the free-delivery threshold and shipping early.",
+    "Cart lost on language or currency switch; keep it in a store above the locale switch.",
+    "Swatches and size buttons that are colour-only or mouse-only; use labelled radiogroups / aria-pressed and name sold-out sizes.",
+    "Countdowns that announce every second to screen readers or animate without honouring reduced motion.",
+    "Cart drawer that does not trap focus or return it to the cart button when closed.",
+    "Stock numbers that are not real; fake scarcity erodes trust and can breach consumer law."
+  ]
+}

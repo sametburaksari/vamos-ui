@@ -1,0 +1,253 @@
+{
+  "id": "contractor",
+  "title": { "en": "Contractor or builder", "tr": "Müteahhit veya inşaat firması" },
+  "summary": "A building contractor, developer or construction firm: completed and ongoing projects with their progress, the services and sectors it builds for, safety record, how it runs a site, the people, and a tender or project enquiry.",
+  "match": {
+    "siteTypes": ["corporate", "local-business"],
+    "signals": ["construction", "contractor", "builder", "building", "developer", "civil engineering", "renovation", "general contractor", "tender", "insaat", "muteahhit", "yuklenici", "yapi", "taahhut", "santiye", "tadilat", "proje gelistirme"],
+    "features": ["section:gallery", "section:services", "section:team", "section:faq", "channel:form", "channel:map"],
+    "fallback": false
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show scale and reliability: what the firm builds, live and finished projects, safety and how to send a project or tender enquiry.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "A huge signage-style headline beside a real site photo, with a small live board of current sites and their progress.",
+          "use": ["hero"],
+          "fields": ["Headline", "Lead: sectors and regions", "Site photo with alt text", "Current sites with name and percent complete", "Primary action (enquire / tender)", "Secondary action (projects)"],
+          "notes": "The site board is a short list of ongoing projects with progress bars (build from hero + progress). A thin hazard-tape rule (accent and ink stripes) can separate the hero; it is decorative and its motion stops under reduced motion."
+        },
+        {
+          "id": "figures",
+          "purpose": "Scale in a few figures: years, area built, projects delivered, safety record.",
+          "use": ["stats-band"],
+          "fields": ["Three or four figures with label", "Source or as-of date for safety figures"],
+          "notes": "Inline variant with count-up."
+        },
+        {
+          "id": "projects",
+          "purpose": "Featured projects as cards with status, type and place, linking to all projects.",
+          "use": ["entity-card"],
+          "alternatives": ["gallery-section: photo-led grid of finished buildings"],
+          "fields": ["Project name", "Place", "Type", "Status (planning, construction, completed)", "Photo", "Short summary"],
+          "when": { "any": ["section:gallery"] }
+        },
+        {
+          "id": "services",
+          "purpose": "What the firm builds and offers (residential, commercial, public tender, renovation, design and build).",
+          "use": ["feature-grid"],
+          "fields": ["Service or sector name", "What it covers"],
+          "notes": "List variant."
+        },
+        {
+          "id": "safety",
+          "purpose": "The safety record and approach, with certifications.",
+          "use": ["media-text"],
+          "fields": ["Safety approach", "Certifications (e.g. management system standards) with issuer", "Lost-time incident figure with period", "Site photo"],
+          "notes": "Overlap variant."
+        },
+        {
+          "id": "method",
+          "purpose": "How a site is run: a few concrete promises (reporting, cleanliness, schedule, neighbours).",
+          "use": ["steps"],
+          "fields": ["Three to five promises or stages with title and sentence"],
+          "notes": "Split variant."
+        },
+        {
+          "id": "people",
+          "purpose": "Directors and site leads.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Qualifications", "Portrait"],
+          "when": { "any": ["section:team"] },
+          "notes": "Portrait variant."
+        },
+        {
+          "id": "clients",
+          "purpose": "What clients and employers say, with their logos if permitted.",
+          "use": ["testimonials"],
+          "alternatives": ["logo-strip: a list of public and private employers"],
+          "fields": ["Quote", "Name, role, organisation", "Project referenced"],
+          "when": { "any": ["section:testimonials"] },
+          "notes": "Feature variant."
+        },
+        {
+          "id": "faq",
+          "purpose": "Questions about tenders, contracts, warranties and timing.",
+          "use": ["faq"],
+          "fields": ["Question and answer pairs"],
+          "when": { "any": ["section:faq"] },
+          "notes": "Split variant."
+        },
+        {
+          "id": "enquiry",
+          "purpose": "Project or tender enquiry with type, budget band and site details.",
+          "use": ["contact-form"],
+          "fields": ["Name, organisation, email, phone", "Project type options", "Budget band options", "Message: site, size and timing", "Privacy notice link"],
+          "notes": "Split variant."
+        },
+        {
+          "id": "offices",
+          "purpose": "Offices and yards with hours.",
+          "use": ["map-hours"],
+          "fields": ["Each office: address, phone, hours, map"],
+          "when": { "any": ["channel:map", "section:location"] },
+          "notes": "Branches variant for more than one office."
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "path": { "en": "/projects", "tr": "/projeler" },
+      "title": { "en": "Projects", "tr": "Projeler" },
+      "purpose": "Every project, filterable by status and type.",
+      "when": { "any": ["section:gallery"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title, breadcrumb and a line on the portfolio.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead"],
+          "notes": "Ruled variant."
+        },
+        {
+          "id": "list",
+          "purpose": "Status and type toggles with a live count over the project cards.",
+          "use": ["filter-bar", "entity-card"],
+          "fields": ["Every project: name, place, type, status, client, value band, area, photo, summary"],
+          "notes": "Count in a polite live region; empty state offers to clear filters."
+        }
+      ]
+    },
+    {
+      "id": "project",
+      "path": { "en": "/projects/[slug]", "tr": "/projeler/[slug]" },
+      "title": { "en": "Project", "tr": "Proje" },
+      "purpose": "One project with facts and its progress over time.",
+      "when": { "any": ["section:gallery"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Name, place, status and a photo.",
+          "use": ["page-intro"],
+          "fields": ["Project name", "Place", "Status", "Photo"],
+          "notes": "With-media variant."
+        },
+        {
+          "id": "facts",
+          "purpose": "Key facts: client, value band, area, dates, type.",
+          "use": ["description-list"],
+          "fields": ["Client", "Contract value band", "Area", "Start and handover dates", "Type"]
+        },
+        {
+          "id": "timeline",
+          "purpose": "Drag through the build month by month: planned phases fill against the site diary; months after today show as a hatched forecast.",
+          "use": ["gantt"],
+          "alternatives": ["activity-timeline: a simple diary of milestones"],
+          "fields": ["Phases with name, planned start and end", "Site diary entries with date and text", "Photos per milestone (optional)"],
+          "notes": "A month slider with previous / next / today buttons drives the Gantt and the diary quote; the read-out and diary are polite live regions; the month must be reachable by arrow keys and buttons, not only by dragging."
+        },
+        {
+          "id": "gallery",
+          "purpose": "Site and finished photos.",
+          "use": ["gallery-section"],
+          "fields": ["Photos with alt text and date"],
+          "optional": true
+        },
+        {
+          "id": "more",
+          "purpose": "Two other projects to continue browsing.",
+          "use": ["entity-card"],
+          "fields": ["Related projects"]
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "path": { "en": "/services", "tr": "/hizmetler" },
+      "title": { "en": "Services", "tr": "Hizmetler" },
+      "purpose": "Each service or sector in more detail.",
+      "when": { "any": ["section:services"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and lead.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead"]
+        },
+        {
+          "id": "list",
+          "purpose": "Services with scope and example projects.",
+          "use": ["media-text"],
+          "alternatives": ["feature-grid: short service list"],
+          "fields": ["Service name", "Scope", "Example project", "Photo"]
+        },
+        {
+          "id": "cta",
+          "purpose": "Ask for a site visit or tender documents.",
+          "use": ["cta"],
+          "fields": ["Action label", "Reply time"]
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "path": { "en": "/contact", "tr": "/iletisim" },
+      "title": { "en": "Contact", "tr": "İletişim" },
+      "purpose": "Enquiry and offices.",
+      "sections": [
+        {
+          "id": "form",
+          "purpose": "Project or tender enquiry.",
+          "use": ["contact-form"],
+          "fields": ["Name, organisation, email, phone", "Project type", "Budget band", "Message", "Privacy notice link"]
+        },
+        {
+          "id": "offices",
+          "purpose": "Offices and hours.",
+          "use": ["map-hours"],
+          "fields": ["Addresses", "Hours", "Phones"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Projects: name, place, type, status, client (with permission), value band, area, dates, summary, photos",
+    "Phase plans and site diary entries for ongoing projects (for the progress timeline)",
+    "Services and sectors served",
+    "Safety record with period and source, and certifications with issuer",
+    "How the firm runs a site: concrete promises",
+    "Directors and site leads with qualifications and portraits",
+    "Client quotes and employer logos with permission",
+    "Project types and budget bands for the enquiry form",
+    "Offices and yards: addresses, hours, phones",
+    "Company registration, contractor licence or classification details for the footer"
+  ],
+  "styles": [
+    {
+      "name": "site hoarding",
+      "axes": { "theme": "light", "material": "glass", "accent": "ember", "font": "grotesk", "density": "comfortable", "radius": "sharp" },
+      "motion": "full",
+      "why": "Concrete grey with amber, tall condensed signage capitals for headlines, mono for dates and figures, a faint concrete-grain background; unhurried motion (headline wipe, one scroll drift, bars pouring in)."
+    },
+    {
+      "name": "engineering dark",
+      "axes": { "theme": "dark", "material": "solid", "accent": "graphite", "font": "corporate", "density": "compact" },
+      "motion": "subtle",
+      "why": "An engineering or infrastructure firm that wants a technical, dense, report-like look."
+    }
+  ],
+  "pitfalls": [
+    "Safety figures without period and source, or certifications that have expired.",
+    "Naming clients or showing their logos without permission, especially on public tenders with disclosure rules.",
+    "Progress timelines left stale; if the diary is not updated, hide the timeline rather than show old progress as current.",
+    "Draggable timelines that only work with a mouse; provide buttons and arrow keys.",
+    "Hazard-tape and pouring animations that ignore reduced motion.",
+    "Photos of other firms' buildings or generic stock cranes; use the firm's own sites.",
+    "Missing contractor registration or licence details where the market requires them."
+  ]
+}

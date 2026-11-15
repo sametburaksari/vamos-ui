@@ -1,0 +1,173 @@
+{
+  "id": "digital-products",
+  "title": { "en": "Digital products shop", "tr": "Dijital urun magazasi" },
+  "summary": "A shop selling downloadable products such as templates, themes, UI kits, presets, fonts, e-books or courses: a shelf with live or real previews, licence tiers, a product page with preview and changelog, and a checkout that ends in a download and licence key.",
+  "match": {
+    "siteTypes": ["ecommerce"],
+    "signals": ["template", "theme", "ui kit", "preset", "font", "e-book", "ebook", "download", "licence", "license", "digital product", "sablon", "tema", "indir", "lisans", "dijital urun", "e-kitap"],
+    "features": ["shop", "shipping:digital", "newsletter", "section:faq"],
+    "fallback": false
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show the product working, let visitors browse the shelf by type, explain what is in the file and which licence to buy, and answer pre-download questions.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Headline, one-line pitch and the best seller shown working (a live or real preview), with figures such as number of products, buyers and update count.",
+          "use": ["hero"],
+          "alternatives": ["video-player: a screen recording shows the product better than a live preview", "stats-band: figures as their own band"],
+          "fields": ["Headline and pitch", "Best-selling product and its preview", "Figures: products, buyers, updates shipped (real numbers)"],
+          "notes": "A preview of the real product beats a screenshot: render it at a simulated device width inside its own theme scope. Count-up figures must respect reduced motion."
+        },
+        {
+          "id": "shelf",
+          "purpose": "All products as cards whose thumbnail is the product itself, with a filter by type and price/licence from.",
+          "use": ["filter-bar", "feature-grid"],
+          "alternatives": ["entity-card: cards with badges (new, updated) and rating"],
+          "fields": ["Products: name, type, short description, price from, thumbnail or preview", "Product types for the filter"],
+          "notes": "Describe what each thumbnail shows in text for people who cannot see it. New cards rise in after filtering (reduced motion: instant)."
+        },
+        {
+          "id": "whats-inside",
+          "purpose": "What every purchase contains: file formats, components/pages, documentation, compatibility, updates.",
+          "use": ["feature-grid"],
+          "fields": ["File formats and tools supported", "What is included (pages, components, assets, documentation)", "Update and support policy"]
+        },
+        {
+          "id": "licences",
+          "purpose": "Licence tiers compared side by side (personal / team / commercial or extended): seats, projects, client work, resale, updates.",
+          "use": ["comparison-table"],
+          "alternatives": ["pricing-table: two or three simple tiers without many rows"],
+          "fields": ["Licence tiers with price", "What each tier allows: seats, projects, client work, products for sale", "Update and support duration per tier"],
+          "when": { "any": ["section:pricing"] }
+        },
+        {
+          "id": "reviews",
+          "purpose": "What buyers built with it.",
+          "use": ["testimonials"],
+          "fields": ["Buyer quotes with role and source"],
+          "when": { "any": ["section:testimonials"] },
+          "optional": true
+        },
+        {
+          "id": "faq",
+          "purpose": "Before-you-download questions: refunds on digital goods, licence transfer, updates, tax invoices, file access.",
+          "use": ["faq"],
+          "fields": ["Refund policy for digital goods", "Licence transfer and upgrade rules", "How downloads and updates are delivered"],
+          "when": { "any": ["section:faq"] }
+        },
+        {
+          "id": "newsletter",
+          "purpose": "Sign-up for new releases and updates.",
+          "use": ["cta"],
+          "fields": ["What is sent and how often", "Consent text"],
+          "when": { "any": ["newsletter"] }
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "path": { "en": "/products/[slug]", "tr": "/urun/[slug]" },
+      "title": { "en": "Product", "tr": "Urun" },
+      "purpose": "Try before buying: interactive preview, licence picker, details of the file and the changelog.",
+      "sections": [
+        {
+          "id": "preview",
+          "purpose": "The product previewed with switches that matter for it (page, device width, light/dark, colour, font), next to the licence picker and buy button.",
+          "use": ["product-01"],
+          "alternatives": ["video-player: video walkthrough for courses or plugins", "gallery: still screenshots when a live preview is impossible"],
+          "fields": ["Preview (live build, screenshots or video)", "Licence tiers with prices", "Short description"],
+          "notes": "Licence choice is a radio group. Inside a live preview there are no headings or landmarks; it is a picture made of live parts, with a text description."
+        },
+        {
+          "id": "details",
+          "purpose": "Facts about the file: version, formats, size, requirements, last update, licence summary.",
+          "use": ["description-list"],
+          "fields": ["Current version and release date", "Formats, file size, requirements/compatibility"]
+        },
+        {
+          "id": "changelog",
+          "purpose": "Version history so buyers see the product is maintained.",
+          "use": ["release-notes"],
+          "alternatives": ["activity-timeline: short history without categories"],
+          "fields": ["Versions with date and changes"]
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "path": { "en": "/checkout", "tr": "/odeme" },
+      "title": { "en": "Checkout", "tr": "Odeme" },
+      "purpose": "Pay for one product and licence: optional lifetime-updates add-on, discount code, tax by country, then a download state with the licence key.",
+      "sections": [
+        {
+          "id": "checkout",
+          "purpose": "Summary of product and licence, add-ons, discount code, billing country with tax, email for delivery, payment.",
+          "use": ["checkout-01"],
+          "fields": ["Add-ons (e.g. lifetime updates) with price", "Discount code rules", "Tax rules by country (VAT/sales tax, reverse charge for businesses)", "Payment provider"],
+          "notes": "No shipping address for digital goods. Ask for the billing country before showing the total; show tax as its own line."
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "path": { "en": "/order/[id]", "tr": "/siparis/[id]" },
+      "title": { "en": "Download", "tr": "Indir" },
+      "purpose": "Deliver the purchase: download button, licence key, invoice, how updates arrive.",
+      "sections": [
+        {
+          "id": "confirmation",
+          "purpose": "Order number, download links, licence key with copy, invoice and next steps.",
+          "use": ["order-confirmation-01"],
+          "fields": ["Download delivery method (link, account, email)", "Licence key format", "How long download links stay valid"],
+          "notes": "Copy feedback for the licence key uses role=status."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Product list: name, type, description, version, formats, requirements",
+    "Preview for each product (live build, screenshots or walkthrough video)",
+    "Licence tiers with prices and exactly what each allows",
+    "What every download contains and documentation",
+    "Update and support policy (duration, channel)",
+    "Changelog per product",
+    "Refund policy for digital goods and the right-of-withdrawal waiver text",
+    "Tax handling by country and the payment provider",
+    "Download delivery method and licence key system",
+    "Real buyer quotes and real figures"
+  ],
+  "styles": [
+    {
+      "name": "precise tool",
+      "axes": { "theme": "light", "material": "glass", "accent": "lime", "density": "comfortable", "font": "grotesk", "radius": "default" },
+      "motion": "subtle",
+      "why": "Grotesk type, a fresh green accent, glass panels and snappy motion feel like a tool, not a show reel — suits template and UI kit sellers."
+    },
+    {
+      "name": "dark studio",
+      "axes": { "theme": "dark", "material": "solid", "accent": "ocean", "density": "compact", "font": "grotesk", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Lets bright previews pop; suits presets, plugins and developer products."
+    },
+    {
+      "name": "quiet editorial",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "density": "comfortable", "font": "editorial", "radius": "default" },
+      "motion": "off",
+      "why": "For e-books, fonts and writing-led products."
+    }
+  ],
+  "pitfalls": [
+    "Licence terms vague ('commercial use allowed') instead of concrete rows: seats, projects, client work, resale.",
+    "Right of withdrawal not handled: consumers must explicitly agree that the download starts immediately and waives withdrawal.",
+    "Total changes at the last step because tax by country is added late; ask the billing country early.",
+    "Previews that are only images with no text description, or live previews full of headings and landmarks that confuse screen readers.",
+    "Download links that expire without a way to get them again.",
+    "Changelog missing or stale, which makes buyers doubt the product is maintained.",
+    "Live previews that load a whole app on the home page and slow it down; freeze thumbnails, run the live one only on demand."
+  ]
+}

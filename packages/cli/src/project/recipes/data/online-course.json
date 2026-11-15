@@ -1,0 +1,374 @@
+{
+  "id": "online-course",
+  "title": {
+    "en": "Online course",
+    "tr": "Online kurs"
+  },
+  "summary": "An online course, bootcamp or cohort programme: outcome-first home, who it is for, a curriculum map with weekly pace, student projects, instructor, cohort dates, pricing and an enrol form.",
+  "match": {
+    "siteTypes": [
+      "saas",
+      "ecommerce",
+      "event"
+    ],
+    "signals": [
+      "course",
+      "bootcamp",
+      "cohort",
+      "curriculum",
+      "masterclass",
+      "academy",
+      "workshop series",
+      "e-learning",
+      "kurs",
+      "egitim",
+      "sertifika programi",
+      "mufredat",
+      "uzaktan egitim",
+      "atolye"
+    ],
+    "features": [
+      "shipping:digital",
+      "section:pricing",
+      "section:faq",
+      "newsletter"
+    ]
+  },
+  "showcase": [
+    "site-saas-01"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Sell the outcome: what you will be able to do, who it is for, how the weeks run, proof from students, who teaches, when it starts and what it costs.",
+      "sections": [
+        {
+          "id": "announcement",
+          "purpose": "Next cohort start and seats left.",
+          "use": [
+            "announcement-bar"
+          ],
+          "fields": [
+            "Next cohort date",
+            "Seats left or enrolment deadline"
+          ],
+          "optional": true
+        },
+        {
+          "id": "hero",
+          "purpose": "Outcome-first headline with a concrete sample of what a student produces mid-course.",
+          "use": [
+            "hero"
+          ],
+          "alternatives": [
+            "typing-demo: a text or code skill shown being done"
+          ],
+          "fields": [
+            "Outcome headline",
+            "Duration and format (weeks, hours per week, live/self-paced)",
+            "A sample of student work at a given week",
+            "Enrol and curriculum actions"
+          ]
+        },
+        {
+          "id": "fit",
+          "purpose": "Who it is for and who it is not for.",
+          "use": [
+            "feature-grid"
+          ],
+          "fields": [
+            "Who the course suits",
+            "Prerequisites",
+            "Who should not take it"
+          ]
+        },
+        {
+          "id": "map",
+          "purpose": "The curriculum as a progress-style map: lessons sized by length; pick a weekly pace and drag through the weeks to see what is done, what you are on and the finish date.",
+          "use": [
+            "progress",
+            "slider",
+            "button-group"
+          ],
+          "alternatives": [
+            "accordion: modules and lessons as a plain list",
+            "steps: a short course with a few stages"
+          ],
+          "fields": [
+            "Modules and lessons with study hours",
+            "Pace options (hours per week)"
+          ],
+          "notes": "Announce the selected week via aria-live; honour reduced motion."
+        },
+        {
+          "id": "projects",
+          "purpose": "Student capstones as proof.",
+          "use": [
+            "card"
+          ],
+          "alternatives": [
+            "testimonials: quotes instead of projects",
+            "gallery-section: visual work"
+          ],
+          "fields": [
+            "Project title",
+            "Student (with consent)",
+            "Question answered or result",
+            "Image or small chart"
+          ],
+          "optional": true,
+          "when": {
+            "any": [
+              "section:testimonials",
+              "section:gallery"
+            ]
+          }
+        },
+        {
+          "id": "instructor",
+          "purpose": "Who teaches and why they are credible.",
+          "use": [
+            "media-text"
+          ],
+          "fields": [
+            "Instructor name, photo, background, link to their work"
+          ]
+        },
+        {
+          "id": "dates",
+          "purpose": "Cohort picker beside a calendar of the chosen cohort's live sessions.",
+          "use": [
+            "calendar",
+            "radio-group"
+          ],
+          "alternatives": [
+            "table: a list of cohorts with dates"
+          ],
+          "fields": [
+            "Cohorts with start/end date and seats",
+            "Live session weekdays and times with time zone"
+          ]
+        },
+        {
+          "id": "pricing",
+          "purpose": "Plans (self-paced, cohort, with mentoring) with what is included.",
+          "use": [
+            "pricing-table"
+          ],
+          "fields": [
+            "Plan name",
+            "Price and payment options (instalments)",
+            "What is included",
+            "Refund guarantee"
+          ],
+          "when": {
+            "any": [
+              "section:pricing",
+              "shop"
+            ]
+          }
+        },
+        {
+          "id": "faq",
+          "purpose": "Time commitment, recordings, certificate, refunds, invoices.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Questions and answers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "curriculum",
+      "path": {
+        "en": "/curriculum",
+        "tr": "/mufredat"
+      },
+      "title": {
+        "en": "Curriculum",
+        "tr": "Müfredat"
+      },
+      "purpose": "The full lesson map and every module with its lessons and lengths.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Total hours, modules and format.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Total study hours",
+            "Number of modules and lessons"
+          ]
+        },
+        {
+          "id": "map",
+          "purpose": "The lesson map at full width.",
+          "use": [
+            "progress",
+            "slider"
+          ],
+          "fields": [
+            "Modules and lessons with hours"
+          ]
+        },
+        {
+          "id": "modules",
+          "purpose": "Every module with its lessons, lengths and outcomes.",
+          "use": [
+            "accordion"
+          ],
+          "fields": [
+            "Module title and outcome",
+            "Lessons with type (video, live, project) and length"
+          ]
+        },
+        {
+          "id": "cta",
+          "purpose": "Go to enrol.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Enrol link"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "enrol",
+      "path": {
+        "en": "/enrol",
+        "tr": "/kayit"
+      },
+      "title": {
+        "en": "Instructor & enrol",
+        "tr": "Eğitmen ve kayıt"
+      },
+      "purpose": "Meet the instructor and mentors, see how enrolment works and hold a seat.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Page title and lead.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Lead"
+          ]
+        },
+        {
+          "id": "story",
+          "purpose": "The instructor's story in more depth.",
+          "use": [
+            "media-text"
+          ],
+          "fields": [
+            "Instructor story and photo"
+          ]
+        },
+        {
+          "id": "mentors",
+          "purpose": "Mentors or teaching assistants.",
+          "use": [
+            "team"
+          ],
+          "fields": [
+            "Mentor name, role, photo"
+          ],
+          "optional": true,
+          "when": {
+            "any": [
+              "section:team"
+            ]
+          }
+        },
+        {
+          "id": "how",
+          "purpose": "How enrolment works: seat hold, payment, onboarding.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Enrolment steps and seat-hold period"
+          ]
+        },
+        {
+          "id": "form",
+          "purpose": "Cohort (with its live-session calendar), payment option, name, email and a line about the learner; holds the seat.",
+          "use": [
+            "form-01",
+            "calendar",
+            "radio-group"
+          ],
+          "alternatives": [
+            "checkout-01: payment taken immediately"
+          ],
+          "fields": [
+            "Cohorts",
+            "Payment options",
+            "Seat-hold rules"
+          ],
+          "notes": "Validation messages next to fields; success state names the held seat and the next step."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Course name, outcome and format (weeks, hours per week, live/self-paced)",
+    "Who it is for and prerequisites",
+    "Modules and lessons with study hours",
+    "Cohort dates, live session times and time zone, seats",
+    "Plans, prices, payment options and refund policy",
+    "Instructor and mentor bios and photos",
+    "Student projects or testimonials with consent",
+    "Certificate details (issuer, accreditation, if any)",
+    "Learning platform used after enrolment",
+    "FAQ answers"
+  ],
+  "styles": [
+    {
+      "name": "ink and mustard",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ember",
+        "density": "compact",
+        "font": "editorial",
+        "radius": "sharp"
+      },
+      "motion": "subtle",
+      "why": "An ink hero, serif headlines and a mono for data bits over a precise sans; suits analytical and professional courses."
+    },
+    {
+      "name": "dark bootcamp",
+      "axes": {
+        "theme": "dark",
+        "material": "glass",
+        "accent": "lime",
+        "density": "compact",
+        "font": "grotesk"
+      },
+      "motion": "full",
+      "why": "Energetic dark look for tech bootcamps and creator courses."
+    }
+  ],
+  "pitfalls": [
+    "Outcome or salary claims without evidence.",
+    "Live session times without a time zone.",
+    "Refund, cancellation and withdrawal rights missing near the price.",
+    "A curriculum map that only works by dragging; keep the module list as text.",
+    "Student projects or quotes published without consent.",
+    "'Certificate' implied to be accredited when it is not."
+  ]
+}

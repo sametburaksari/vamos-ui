@@ -1,0 +1,394 @@
+{
+  "id": "nonprofit",
+  "title": {
+    "en": "Non-profit",
+    "tr": "Sivil toplum kuruluşu"
+  },
+  "summary": "A charity, foundation or community project that raises one-off and monthly donations: mission and current campaign, what each gift buys, programmes, stories, a donate page and a transparency report.",
+  "match": {
+    "siteTypes": [
+      "nonprofit"
+    ],
+    "signals": [
+      "charity",
+      "foundation",
+      "donate",
+      "donation",
+      "volunteer",
+      "fundraising",
+      "nonprofit",
+      "ngo",
+      "vakif",
+      "dernek",
+      "bagis",
+      "gonullu",
+      "yardim",
+      "hayir",
+      "kampanya",
+      "stk"
+    ],
+    "features": [
+      "newsletter",
+      "section:about",
+      "section:team"
+    ],
+    "fallback": true
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "State the mission, show the current campaign and its progress, prove impact, and turn interest into a gift or a volunteer sign-up.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "The mission in one line, a photo of the work, and the current campaign meter.",
+          "use": [
+            "hero",
+            "progress"
+          ],
+          "fields": [
+            "Mission statement",
+            "Photo of the work in the field",
+            "Campaign name and promise",
+            "Amount raised, goal, number of donors, end date",
+            "Donate action"
+          ],
+          "notes": "The campaign meter shows raised vs goal as text as well as a bar."
+        },
+        {
+          "id": "impact",
+          "purpose": "A few hard figures with their source and year.",
+          "use": [
+            "stats-band"
+          ],
+          "fields": [
+            "Impact figures with label, year and source"
+          ]
+        },
+        {
+          "id": "give",
+          "purpose": "Pick an amount (one-off or monthly, presets or own) and see itemised what it buys.",
+          "use": [
+            "button-group",
+            "card"
+          ],
+          "alternatives": [
+            "pricing-table: a few fixed giving levels",
+            "cta: when donating happens on a provider's page only"
+          ],
+          "fields": [
+            "Preset amounts for one-off and monthly",
+            "Unit costs: what one item costs (a kit, a session, a month of support)",
+            "Minimum amount"
+          ],
+          "notes": "The slip next to the controls lists what the amount buys in plain text; the total updates in an aria-live region. Any drawing that visualises the gift is decorative (aria-hidden). The chosen amount carries to the donate page."
+        },
+        {
+          "id": "programmes",
+          "purpose": "What the organisation actually does: each programme with one measurable fact.",
+          "use": [
+            "feature-grid"
+          ],
+          "alternatives": [
+            "media-text: two or three programmes with photos"
+          ],
+          "fields": [
+            "Programme name",
+            "What it does and for whom",
+            "One fact (reach, sessions, places)"
+          ]
+        },
+        {
+          "id": "stories",
+          "purpose": "Short stories from beneficiaries and partners.",
+          "use": [
+            "testimonials"
+          ],
+          "fields": [
+            "Quote",
+            "Person's role or relationship (with consent)",
+            "Photo with consent"
+          ],
+          "optional": true,
+          "when": {
+            "any": [
+              "section:testimonials"
+            ]
+          }
+        },
+        {
+          "id": "how-it-works",
+          "purpose": "How a gift becomes the work on the ground, in steps.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Steps from donation to delivery"
+          ]
+        },
+        {
+          "id": "volunteer",
+          "purpose": "Call for volunteers or partners.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "What volunteers do and the time asked",
+            "Sign-up link or contact"
+          ]
+        },
+        {
+          "id": "newsletter",
+          "purpose": "Updates on the campaign and the year's report.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "What subscribers receive and how often"
+          ],
+          "when": {
+            "any": [
+              "newsletter"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "donate",
+      "path": {
+        "en": "/donate",
+        "tr": "/bagis"
+      },
+      "title": {
+        "en": "Donate",
+        "tr": "Bağış yap"
+      },
+      "purpose": "Complete a gift in two steps: amount and frequency, then donor details, then what happens next.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Why give now, with the campaign meter in compact form.",
+          "use": [
+            "page-intro",
+            "progress"
+          ],
+          "fields": [
+            "Donate page lead",
+            "Campaign figures"
+          ]
+        },
+        {
+          "id": "amount",
+          "purpose": "Step 1: the same gift builder as the home page.",
+          "use": [
+            "button-group",
+            "card"
+          ],
+          "fields": [
+            "Preset amounts",
+            "Unit costs"
+          ]
+        },
+        {
+          "id": "details",
+          "purpose": "Step 2: donor name, email for the receipt, optional dedication and consent, then hand-off to the payment provider.",
+          "use": [
+            "form-01"
+          ],
+          "alternatives": [
+            "checkout-01: the payment is taken on the site"
+          ],
+          "fields": [
+            "Payment provider",
+            "Receipt and tax-deduction rules",
+            "Dedication option (in honour/memory of)",
+            "Consent texts for receipts and updates"
+          ],
+          "notes": "Validate on submit; show the pledge with a reference after submitting. Say what the email is used for next to the field."
+        },
+        {
+          "id": "next",
+          "purpose": "What happens after the gift: receipt, updates, how to cancel a monthly gift.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Receipt timing",
+            "Update cadence",
+            "How to change or cancel a monthly gift"
+          ]
+        },
+        {
+          "id": "faq",
+          "purpose": "Tax, security, bank transfer, corporate giving.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Donation questions and answers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "path": {
+        "en": "/transparency",
+        "tr": "/seffaflik"
+      },
+      "title": {
+        "en": "Transparency report",
+        "tr": "Şeffaflık raporu"
+      },
+      "purpose": "Show where the money went: the year in figures, the spending split, the ledger, downloadable files and the board.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Report year, audit status and publication date.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Report year",
+            "Auditor and audit status",
+            "Publication date"
+          ]
+        },
+        {
+          "id": "figures",
+          "purpose": "Income, spending and reach for the year.",
+          "use": [
+            "stats-band"
+          ],
+          "fields": [
+            "Total income",
+            "Total spending",
+            "Reach figures"
+          ]
+        },
+        {
+          "id": "split",
+          "purpose": "Of every 100 given, how much went to each kind of spending.",
+          "use": [
+            "donut-chart"
+          ],
+          "alternatives": [
+            "bar-chart: many categories",
+            "progress: four or fewer shares as bars"
+          ],
+          "fields": [
+            "Spending shares by category (programmes, operations, fundraising…)"
+          ],
+          "notes": "Print the shares as text too; do not rely on chart colours."
+        },
+        {
+          "id": "ledger",
+          "purpose": "Income and spending tables with totals.",
+          "use": [
+            "table"
+          ],
+          "fields": [
+            "Income lines with amounts",
+            "Spending lines with amounts"
+          ],
+          "notes": "Use captions and a footer row with the total; right-align amounts with tabular numerals."
+        },
+        {
+          "id": "files",
+          "purpose": "Audited accounts, annual report and registration documents to download.",
+          "use": [
+            "attachment-list"
+          ],
+          "fields": [
+            "Files with title, year, format and size"
+          ]
+        },
+        {
+          "id": "board",
+          "purpose": "Who governs the organisation.",
+          "use": [
+            "team"
+          ],
+          "fields": [
+            "Board member name and role"
+          ],
+          "when": {
+            "any": [
+              "section:team"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "id": "cta",
+          "purpose": "Return to giving.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Donate link"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Mission statement and registration details (legal name, registration number)",
+    "Current campaign: name, goal, raised so far, donor count, end date",
+    "Preset amounts and what one unit of the work costs",
+    "Programmes with one measurable fact each",
+    "Impact figures with year and source",
+    "Payment provider and receipt/tax rules",
+    "Stories and photos with consent from the people shown",
+    "Annual figures: income and spending lines, spending split",
+    "Audited accounts and annual report files",
+    "Board members and roles",
+    "Volunteer roles and time commitment"
+  ],
+  "styles": [
+    {
+      "name": "warm report",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "rose",
+        "density": "comfortable",
+        "font": "editorial",
+        "radius": "sharp"
+      },
+      "motion": "subtle",
+      "why": "Serif headings over a sober report body and mono figures: earnest and accountable, suits foundations and community charities."
+    },
+    {
+      "name": "plain civic",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ocean",
+        "density": "comfortable",
+        "font": "system"
+      },
+      "motion": "off",
+      "why": "Lightweight and highly legible for small associations and volunteer groups."
+    }
+  ],
+  "pitfalls": [
+    "Impact numbers without a year or source read as marketing; always date and source them.",
+    "The gift visualisation carries the meaning; keep the itemised amounts as text and mark drawings decorative.",
+    "Tax-deduction or receipt claims that do not match the organisation's legal status.",
+    "Photos of children or vulnerable people without consent, or with identifying details.",
+    "Monthly gifts without a clear way to change or cancel.",
+    "No transparency report or files, or figures that do not add up to the totals.",
+    "Marketing consent bundled into the donation; keep updates opt-in."
+  ]
+}
