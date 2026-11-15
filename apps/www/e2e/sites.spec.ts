@@ -16,7 +16,6 @@ const SITES: Record<string, string[]> = {
   "site-portfolio-01": ["home", "work-fog-studies", "about"],
   "site-blog-01": ["home", "article", "archive"],
   "site-app-01": ["home", "pricing", "download"],
-  "site-clinic-01": ["home", "doctors", "appointment"],
   "site-estate-01": ["home", "listings", "listing"],
   "site-event-01": ["home", "schedule", "tickets"],
   "site-course-01": ["home", "curriculum", "enrol"],
@@ -41,7 +40,6 @@ const SITES: Record<string, string[]> = {
   "site-wedding-01": ["home", "details", "rsvp"],
   // Batch D (1–8)
   "site-autoservice-01": ["home", "services", "booking"],
-  "site-vet-01": ["home", "services", "team"],
   "site-preschool-01": ["home", "programme", "enrol"],
   "site-driving-01": ["home", "courses", "signup"],
   "site-movers-01": ["home", "quote", "faq"],
@@ -49,9 +47,6 @@ const SITES: Record<string, string[]> = {
   "site-studio-01": ["home", "packages", "booking"],
   "site-venue-01": ["home", "spaces", "enquiry"],
   // Batch D (9–12) + E
-  "site-therapy-01": ["home", "approach", "contact"],
-  "site-dietitian-01": ["home", "programmes", "booking"],
-  "site-physio-01": ["home", "treatments", "booking"],
   "site-accounting-01": ["home", "services", "contact"],
   "site-factory-01": ["home", "products", "quality"],
   "site-construction-01": ["home", "projects", "project-kuzey-yaka", "project-liman-library", "project-degirmen-workshops", "project-ardic-terraces"],
@@ -68,7 +63,6 @@ const SITES: Record<string, string[]> = {
   "site-community-01": ["home", "topics", "thread"],
   "site-game-01": ["home", "media", "press"],
   // Batch G (5–8)
-  "site-clinic-02": ["home", "visit", "book"],
   "site-estate-02": ["home", "collection", "residence"],
   "site-saas-02": ["home", "pricing", "connectors"],
   "site-agency-02": ["home", "case", "contact"],
@@ -249,30 +243,6 @@ test.describe("sites — signature interaction + EN/TR", () => {
     await expect.poll(() => phone.getAttribute("data-active-screen")).not.toBe(first);
     await expect(rail.getByRole("button").nth(2)).toHaveAttribute("aria-current", "step");
     await page.evaluate(() => window.scrollTo(0, 0));
-    await switchToTurkish(page);
-    expect(errors).toEqual([]);
-  });
-
-  test("site-clinic-01: service → clinician → day → slot → details with validation → confirmed; TR", async ({ page }) => {
-    const errors = await openSite(page, "site-clinic-01", "appointment");
-    const next = page.getByRole("button", { name: "Continue" });
-    await expect(next).toBeDisabled();
-    await page.getByRole("radio", { name: /General consultation/ }).click();
-    await next.click();
-    await page.getByRole("radio", { name: /First available/ }).click();
-    await next.click();
-    await page.locator("[role=gridcell] button:not([disabled]), button[name=day]:not([disabled])").first().click();
-    await next.click();
-    await page.locator('[role=radio]:not([disabled]):not([aria-disabled="true"])').first().click();
-    await next.click();
-    await page.getByRole("button", { name: "Confirm appointment" }).click();
-    await expect(page.getByText("A few fields need a look.")).toBeVisible();
-    await page.getByLabel(/Full name/).fill("Ayla Demir");
-    await page.getByLabel(/Date of birth/).fill("1990-04-12");
-    await page.getByLabel(/Mobile/).fill("5321234567");
-    await page.getByRole("checkbox").first().check();
-    await page.getByRole("button", { name: "Confirm appointment" }).click();
-    await expect(page.getByText("You’re booked")).toBeVisible();
     await switchToTurkish(page);
     expect(errors).toEqual([]);
   });
@@ -641,23 +611,6 @@ test.describe("sites — signature interaction + EN/TR", () => {
     expect(errors).toEqual([]);
   });
 
-  test("site-vet-01: the pet switch swaps the service list and survives a page change; TR", async ({ page }) => {
-    const errors = await openSite(page, "site-vet-01");
-    const hero = page.locator("section[aria-labelledby=pb-hero-title]");
-    await expect(hero.getByText("Puppy course (3 visits)")).toBeVisible();
-    await hero.getByRole("radio", { name: "Cat" }).click();
-    await expect(hero.getByText("Cat-friendly consultation")).toBeVisible();
-    await page.locator("header").getByRole("link", { name: "Services & fees" }).first().click();
-    await expect(page).toHaveURL(/page=services/);
-    await expect(page.getByText("8 services for cats")).toBeVisible();
-    await page.locator("main").getByRole("radio", { name: "Bird" }).first().click();
-    await expect(page.getByRole("heading", { name: "Avian consultation" })).toBeVisible();
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await switchToTurkish(page);
-    await expect(page.getByRole("heading", { name: "Kuş muayenesi" })).toBeVisible();
-    expect(errors).toEqual([]);
-  });
-
   test("site-preschool-01: the daily rhythm timeline answers clicks, arrows and a group switch; TR", async ({ page }) => {
     const errors = await openSite(page, "site-preschool-01");
     const tabs = page.locator("[role=tablist]:visible").first().getByRole("tab");
@@ -777,82 +730,6 @@ test.describe("sites — signature interaction + EN/TR", () => {
     await switchToTurkish(page);
     expect(errors).toEqual([]);
   });
-  test("site-therapy-01: the receipt panel follows the form, voicemail only for phone, in-person hides the message, send and clear; TR", async ({ page }) => {
-    const errors = await openSite(page, "site-therapy-01", "contact");
-    const receipt = page.locator("[data-qh-receipt]");
-    await page.locator("#qh-name").fill("Deniz");
-    await expect(receipt).toContainText("Deniz");
-    await expect(page.getByRole("switch", { name: /voicemail/ })).toHaveCount(0);
-    await page.getByRole("radio", { name: "Phone call" }).click();
-    await expect(page.getByRole("switch", { name: /voicemail/ })).toBeVisible();
-    await page.getByRole("radio", { name: "Email" }).click();
-    await page.locator("#qh-contact").fill("deniz@example.com");
-    await expect(receipt).toContainText("deniz@example.com");
-    await expect(page.getByRole("textbox", { name: /A few words/ })).toBeVisible();
-    await page.getByRole("switch", { name: /explain in person/ }).click();
-    await expect(page.getByRole("textbox", { name: /A few words/ })).toHaveCount(0);
-    await page.getByRole("checkbox", { name: /Use these details/ }).click();
-    await page.getByRole("button", { name: "Send privately" }).click();
-    await expect(page.locator("main [role=status]").first()).toBeVisible();
-    await page.getByRole("button", { name: /Clear this page/ }).first().click();
-    await expect(page.locator("#qh-name")).toHaveValue("");
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await switchToTurkish(page);
-    expect(errors).toEqual([]);
-  });
-
-  test("site-dietitian-01: goal, support and place re-price the recommendation, booking is pre-filled; TR keeps the pick", async ({ page }) => {
-    const errors = await openSite(page, "site-dietitian-01");
-    const result = page.locator("[data-gp-result]").first();
-    await result.scrollIntoViewIfNeeded();
-    const text = () => result.innerText();
-    const r0 = await text();
-    await page.getByRole("radio", { name: /Fuel training and races/ }).first().click();
-    await expect(result).toHaveAttribute("data-gp-result", "performance");
-    await expect.poll(text).not.toBe(r0);
-    const r1 = await text();
-    await page.getByRole("radio", { name: "Close", exact: true }).first().click();
-    await expect.poll(text).not.toBe(r1);
-    const r2 = await text();
-    await page.getByRole("radio", { name: /Online/ }).first().click();
-    await expect.poll(text).not.toBe(r2);
-    await result.getByRole("link", { name: "Book this programme" }).click();
-    await expect(page).toHaveURL(/page=booking/);
-    await expect(page.locator("main").getByRole("combobox").first()).toContainText("Performance");
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await switchToTurkish(page);
-    await expect(page.locator("main").getByRole("combobox").first()).toContainText("Performans");
-    expect(errors).toEqual([]);
-  });
-
-  test("site-physio-01: chips and figure hotspots pick the area, the area carries into booking and a slot books; TR", async ({ page }) => {
-    const errors = await openSite(page, "site-physio-01");
-    const main = page.locator("main");
-    await main.getByRole("radio", { name: "Knee", exact: true }).first().click();
-    await expect(main.getByRole("link", { name: "Book for knee" }).first()).toBeVisible();
-    // The lower back only has a hotspot on the back of the figure: choosing it turns the figure round.
-    await main.getByRole("radio", { name: "Lower back", exact: true }).first().click();
-    await expect(main.getByRole("radio", { name: "Back", exact: true }).first()).toHaveAttribute("aria-checked", "true");
-    await expect(main.locator('button[data-area="back"]')).toHaveCount(1);
-    // A hotspot is the pointer shortcut: knee on the back view, then back to the lower back.
-    await main.locator('button[data-area="knee"]').first().click();
-    await expect(main.getByRole("radio", { name: "Knee", exact: true }).first()).toHaveAttribute("aria-checked", "true");
-    await main.locator('button[data-area="back"]').first().click();
-    await expect(main.getByRole("link", { name: "Book for lower back" }).first()).toBeVisible();
-    await main.getByRole("link", { name: "Book for lower back" }).first().click();
-    await expect(page).toHaveURL(/page=booking/);
-    await expect(main.getByRole("radio", { name: "Lower back", exact: true })).toHaveAttribute("aria-checked", "true");
-    await main.locator("button[data-slot-free]").first().click();
-    await page.locator("#ml-name").fill("Ece Yalın");
-    await main.getByRole("textbox", { name: /Mobile/ }).fill("5320000000");
-    await page.getByRole("checkbox", { name: /KVKK/ }).click();
-    await page.getByRole("button", { name: "Book this slot" }).click();
-    await expect(main.locator("[role=status]").first()).toContainText(/lower back/);
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await switchToTurkish(page);
-    expect(errors).toEqual([]);
-  });
-
   test("site-accounting-01: company type, invoices, payroll and an extra move the fee statement; TR", async ({ page }) => {
     const errors = await openSite(page, "site-accounting-01", "services");
     const total = () => page.getByTestId("lg-total").textContent();
@@ -1038,19 +915,6 @@ test.describe("sites — signature interaction + EN/TR", () => {
     expect(download.suggestedFilename()).toBe("ember-atlas-logo-on-dark.svg");
     const svg = await (await import("node:fs/promises")).readFile((await download.path())!, "utf8");
     expect(svg).toContain("<svg");
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await switchToTurkish(page);
-    expect(errors).toEqual([]);
-  });
-
-  test("site-clinic-02: a birth date lights the check-up path and Book carries the visit to the booking page; TR", async ({ page }) => {
-    const errors = await openSite(page, "site-clinic-02");
-    await page.getByRole("button", { name: "Try a 7-month-old" }).click();
-    const board = page.getByRole("list", { name: /Check-ups from two weeks/ });
-    await expect(board.locator('button[aria-current="step"]')).toHaveCount(1);
-    await page.getByRole("button", { name: /^Book the .+ check-up/ }).click();
-    await expect(page).toHaveURL(/page=book/);
-    await expect(page.getByRole("complementary", { name: "Your visit" })).toContainText("Ada");
     await page.evaluate(() => window.scrollTo(0, 0));
     await switchToTurkish(page);
     expect(errors).toEqual([]);

@@ -10,8 +10,7 @@
   "related": [
     "cta",
     "map-hours",
-    "contact-form",
-    "site-restaurant-01"
+    "contact-form"
   ],
   "a11y": [
     "Each action is a labelled link (tel:, maps, wa.me) with text, not icon-only.",

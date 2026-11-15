@@ -3,7 +3,7 @@
     "An agency or studio website: statement hero, clients, case study, services, team, journal, contact."
   ],
   "avoidWhen": [
-    "Local businesses with bookings — use site-spa-01 or site-restaurant-01."
+    "A whole website for another kind of business — run `npx vamos-ui new`; its recipe lists the components per section."
   ],
   "related": [
     "hero",
