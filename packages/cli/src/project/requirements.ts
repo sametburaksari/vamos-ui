@@ -4,7 +4,9 @@
  * lists its own, and QA walks the whole list before deploy. Pure and deterministic.
  */
 
+import { jurisdictionOf, type Jurisdiction } from "./jurisdiction";
 import type { SiteType, Text } from "./questions";
+import { regimeRequirements } from "./regimes";
 
 /** Specialist roles (kept here so requirements, plan and process share one list). */
 export const AGENTS = ["brand", "content", "build", "legal", "seo", "tracking", "forms", "qa", "deploy"] as const;
@@ -16,26 +18,54 @@ export interface Requirement {
   text: Text;
   /** A command that checks it, when one exists. */
   check?: string;
+  /** Where the rule comes from (the law or the regulator's guidance), so QA can check it. */
+  source?: string;
+  /** The rule depends on facts a template cannot know (thresholds, transposition, scope): verify with counsel. */
+  counsel?: boolean;
 }
 
 export interface RequirementContext {
   siteType: SiteType;
-  tr: boolean;
+  /** Where the business is and whom it serves. Without it, `tr` decides (Türkiye or the generic pack). */
+  jurisdiction?: Jurisdiction;
+  /** @deprecated Use `jurisdiction`. True means a business in Türkiye. */
+  tr?: boolean;
   forms: boolean;
   tracking: boolean;
   /** Analytics / ads tools that set cookies (anything but Search Console). */
   cookies: boolean;
   multilingual: boolean;
   company: boolean;
+  /** Who runs the site: company, sole, person, association. */
+  legalEntity?: string;
+  /** Ad tools (Google Ads, Meta pixel) that share data for advertising. */
+  ads?: boolean;
+  /** Newsletter / marketing email. */
+  newsletter?: boolean;
+  /** The site is aimed at children. */
+  children?: boolean;
+  /** The site asks for health or other sensitive data. */
+  sensitive?: boolean;
+}
+
+/** The context with its jurisdiction resolved (old callers pass only `tr`). */
+export type ResolvedContext = RequirementContext & { jurisdiction: Jurisdiction; tr: boolean };
+
+export function resolveContext(c: RequirementContext): ResolvedContext {
+  const jurisdiction = c.jurisdiction ?? jurisdictionOf(c.tr ? "TR" : null);
+  return { ...c, jurisdiction, tr: jurisdiction.regimes.includes("TR") };
 }
 
 const t = (en: string, tr: string): Text => ({ en, tr });
-const r = (id: string, agent: Agent, text: Text, check?: string): Requirement => ({ id, agent, text, ...(check ? { check } : {}) });
+const r = (id: string, agent: Agent, text: Text, check?: string, source?: string): Requirement => ({ id, agent, text, ...(check ? { check } : {}), ...(source ? { source } : {}) });
+
+const LAW_6563 = "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=6563&MevzuatTur=1&MevzuatTertip=5";
+const ETBIS = "https://www.eticaret.gov.tr/";
 
 const VERIFY = "npx vamos-ui verify";
 const AUDIT = "npx vamos-ui audit <preview-url>";
 
-function base(c: RequirementContext): Requirement[] {
+function base(c: ResolvedContext): Requirement[] {
   const out: Requirement[] = [
     r("brand-tokens", "brand", t("The accent and fonts come from vamos.brand.json / theme tokens; no colour literals in the code.", "Vurgu rengi ve yazı tipleri vamos.brand.json / tema token'larından gelir; kodda renk değeri yazılmaz."), VERIFY),
     r("brand-contrast", "brand", t("Text on the accent and on every surface passes WCAG AA contrast in light and dark.", "Vurgu rengi ve tüm yüzeylerdeki metin açık ve koyu temada WCAG AA kontrastını geçer."), "npx vamos-ui brand check"),
@@ -79,11 +109,14 @@ function base(c: RequirementContext): Requirement[] {
       r("seo-hreflang", "seo", t("Each language version has its own URL with hreflang alternates and an x-default.", "Her dil sürümünün kendi adresi, hreflang alternatifleri ve x-default'u var."), AUDIT),
       r("content-languages", "content", t("Every language is a real translation reviewed by a speaker, not a machine draft left as is.", "Her dil, bir konuşucunun gözden geçirdiği gerçek bir çeviri; olduğu gibi bırakılmış makine taslağı değil."), undefined),
     );
-  if (c.company && c.tr) out.push(r("legal-company", "legal", t("Trade name, tax office and number and MERSIS number appear in the footer or the legal notice.", "Unvan, vergi dairesi ve numarası ile MERSİS numarası footer'da ya da yasal uyarıda yer alır."), VERIFY));
+  if (c.company && c.tr) out.push(r("legal-company", "legal", t("Trade name, tax office and number and MERSIS number appear in the footer or the legal notice.", "Unvan, vergi dairesi ve numarası ile MERSİS numarası footer'da ya da yasal uyarıda yer alır."), VERIFY, LAW_6563));
   return out;
 }
 
-const PACKS: Record<SiteType, (c: RequirementContext) => Requirement[]> = {
+/** Regimes whose consumer law has a 14-day right of withdrawal for online sales. */
+const withdrawal14 = (c: ResolvedContext) => c.tr || c.jurisdiction.regimes.some((x) => x === "EU" || x === "UK") || !c.jurisdiction.country;
+
+const PACKS: Record<SiteType, (c: ResolvedContext) => Requirement[]> = {
   "local-business": () => [
     r("local-nap", "content", t("Name, address and phone are written exactly as on the Google Business Profile, on every page that shows them.", "Ad, adres ve telefon, gösterildiği her sayfada Google İşletme Profili'ndekiyle birebir aynı."), undefined),
     r("local-hours", "content", t("Opening hours (and holiday hours) are in vamos.site.json and shown with an open-now status.", "Çalışma saatleri (ve tatil saatleri) vamos.site.json'da ve açık/kapalı durumuyla gösteriliyor."), undefined),
@@ -100,9 +133,13 @@ const PACKS: Record<SiteType, (c: RequirementContext) => Requirement[]> = {
   ecommerce: (c) => [
     r("shop-product-schema", "seo", t("Product JSON-LD with price, currency, availability and reviews on every product page.", "Her ürün sayfasında fiyat, para birimi, stok durumu ve yorumlarla Product JSON-LD."), VERIFY),
     r("shop-price", "content", c.tr ? t("Prices include VAT and say so; shipping cost and delivery time are on the product page.", "Fiyatlar KDV dahil ve bu yazıyor; kargo ücreti ve teslim süresi ürün sayfasında.") : t("Prices show tax as required; shipping cost and delivery time are on the product page.", "Fiyatlar gerektiği gibi vergiyi gösterir; kargo ücreti ve teslim süresi ürün sayfasında."), undefined),
-    r("shop-checkout-legal", "legal", t("Checkout shows the pre-contract information and the distance sales agreement and needs an explicit tick before paying.", "Ödeme adımı ön bilgilendirme formunu ve mesafeli satış sözleşmesini gösterir, ödemeden önce açık onay ister."), undefined),
-    r("shop-returns", "legal", t("The returns page states the 14-day right of withdrawal and how to use it.", "İade sayfası 14 günlük cayma hakkını ve nasıl kullanılacağını anlatır."), undefined),
-    ...(c.tr ? [r("shop-etbis", "legal", t("ETBİS registration and MERSIS number are in the footer.", "ETBİS kaydı ve MERSİS numarası footer'da."), VERIFY)] : []),
+    c.tr || !c.jurisdiction.country
+      ? r("shop-checkout-legal", "legal", t("Checkout shows the pre-contract information and the distance sales agreement and needs an explicit tick before paying.", "Ödeme adımı ön bilgilendirme formunu ve mesafeli satış sözleşmesini gösterir, ödemeden önce açık onay ister."), undefined)
+      : r("shop-checkout-legal", "legal", t("Before payment the checkout shows the seller, the main characteristics, the total price with taxes and delivery, and links the terms and the returns policy.", "Ödemeden önce satıcıyı, ürünün temel özelliklerini, vergi ve teslimat dahil toplam fiyatı gösterir; koşullara ve iade politikasına bağlantı verir."), undefined),
+    withdrawal14(c)
+      ? r("shop-returns", "legal", t("The returns page states the 14-day right of withdrawal and how to use it.", "İade sayfası 14 günlük cayma hakkını ve nasıl kullanılacağını anlatır."), undefined)
+      : r("shop-returns", "legal", t("The returns page states the return and refund policy (period, condition, who pays shipping) and how to start a return.", "İade sayfası iade ve geri ödeme politikasını (süre, koşul, kargoyu kim öder) ve iadenin nasıl başlatılacağını anlatır."), undefined),
+    ...(c.tr ? [r("shop-etbis", "legal", t("ETBİS registration and MERSIS number are in the footer.", "ETBİS kaydı ve MERSİS numarası footer'da."), VERIFY, ETBIS)] : []),
     r("shop-payment-test", "build", t("A full order with the payment provider's test card succeeds, the callback is verified on the server, and a failed payment shows a clear error.", "Ödeme sağlayıcının test kartıyla tam bir sipariş başarılı olur, geri dönüş sunucuda doğrulanır, başarısız ödeme net bir hata gösterir."), undefined),
     r("shop-emails", "build", t("Order confirmation and shipping emails reach the customer, with the order and the seller's details.", "Sipariş onayı ve kargo e-postaları müşteriye, sipariş ve satıcı bilgileriyle ulaşır."), undefined),
     r("shop-tracking", "tracking", t("view_item, add_to_cart, begin_checkout and purchase (with value and currency) are measured.", "view_item, add_to_cart, begin_checkout ve purchase (tutar ve para birimiyle) ölçülür."), undefined),
@@ -116,7 +153,9 @@ const PACKS: Record<SiteType, (c: RequirementContext) => Requirement[]> = {
       "legal",
       c.tr
         ? t("If health or other special-category data is asked, it is kept to the minimum and asked with a separate explicit consent (KVKK art. 6).", "Sağlık ya da başka özel nitelikli veri soruluyorsa en azda tutulur ve ayrı açık rızayla istenir (KVKK md. 6).")
-        : t("If health or other special-category data is asked, it is kept to the minimum and asked with a separate explicit consent.", "Sağlık ya da başka özel nitelikli veri soruluyorsa en azda tutulur ve ayrı açık rızayla istenir."),
+        : c.jurisdiction.regimes.includes("EU") || c.jurisdiction.regimes.includes("UK")
+          ? t("If health or other special-category data is asked, it is kept to the minimum and needs explicit consent or another Art. 9 GDPR condition.", "Sağlık ya da başka özel nitelikli veri soruluyorsa en azda tutulur ve açık rıza ya da GDPR md. 9'daki başka bir koşul gerekir.")
+          : t("If health or other special-category data is asked, it is kept to the minimum and asked with a separate explicit consent.", "Sağlık ya da başka özel nitelikli veri soruluyorsa en azda tutulur ve ayrı açık rızayla istenir."),
       undefined,
     ),
     r("book-tracking", "tracking", t("Booking clicks and completed bookings are separate events; the completed one is the conversion.", "Randevu tıklaması ve tamamlanan randevu ayrı olaylar; dönüşüm tamamlanan randevudur."), undefined),
@@ -152,8 +191,9 @@ const PACKS: Record<SiteType, (c: RequirementContext) => Requirement[]> = {
 };
 
 /** The requirement pack for a site: the shared baseline plus the site type's own items. */
-export function requirementsFor(c: RequirementContext): Requirement[] {
-  const all = [...base(c), ...(PACKS[c.siteType]?.(c) ?? [])];
+export function requirementsFor(context: RequirementContext): Requirement[] {
+  const c = resolveContext(context);
+  const all = [...base(c), ...(PACKS[c.siteType]?.(c) ?? []), ...regimeRequirements(c)];
   const order = new Map(AGENTS.map((a, i) => [a, i]));
   return all.sort((a, b) => order.get(a.agent)! - order.get(b.agent)!);
 }
