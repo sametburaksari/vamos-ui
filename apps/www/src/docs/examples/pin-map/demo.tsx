@@ -8,7 +8,7 @@ const stores: MapPin[] = [
   { id: "bebek", lat: 41.077, lng: 29.043, label: "Bebek", description: "21 orders today · open until 20:00" },
   { id: "atasehir", lat: 40.992, lng: 29.124, label: "Ataşehir", description: "Closed for refurbishment", tone: "neutral" },
   { id: "bakirkoy", lat: 40.98, lng: 28.872, label: "Bakırköy", description: "29 orders today · open until 21:00" },
-  { id: "tuzla", lat: 40.83, lng: 29.3, label: "Tuzla cross-dock", description: "Warehouse · 140 parcels out", tone: "info" },
+  { id: "yelken", lat: 40.83, lng: 29.3, label: "Tuzla cross-dock", description: "Warehouse · 140 parcels out", tone: "info" },
 ];
 
 export default function PinMapDemo() {

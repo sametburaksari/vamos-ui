@@ -7,7 +7,7 @@ import { crmApp, DemoPage, ShellFrame, siteApp, useMemoryRouter } from "./demo-k
 const workspaces = [
   { id: "northwind", name: "Northwind Traders" },
   { id: "defne", name: "Defne Spa" },
-  { id: "tuzla", name: "Yelken Atölye" },
+  { id: "yelken", name: "Yelken Atölye" },
 ];
 
 /** A tenant switcher shares the app switcher's panel. */

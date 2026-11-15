@@ -23,7 +23,7 @@ const branch: Branch = {
   phone: "+902160000000",
   hours,
   mapImage: { src: "/maps/cevizli.png", alt: "", width: 1200, height: 900 },
-  notes: "Parking on level −2 of Atlas, three hours free.",
+  notes: "Parking on level −2 of the Atlas garage, three hours free.",
 };
 // Tuesday 2026-11-10, 22:15 in Istanbul.
 const NOW = "2026-11-10T22:15:00+03:00";
