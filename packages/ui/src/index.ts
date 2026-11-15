@@ -144,8 +144,10 @@ export { PLACEHOLDER_ART_PATTERNS, PlaceholderArt, hashSeed, placeholderArtRecip
 export type { PlaceholderArtPattern, PlaceholderArtProps, PlaceholderArtRecipe } from "./components/placeholder-art";
 export { Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverDescription, PopoverFooter, PopoverHeader, PopoverTitle, PopoverTrigger, popoverContentVariants } from "./components/popover";
 export type { PopoverContentProps, PopoverHeaderProps } from "./components/popover";
-export { PrintButton, PrintStyles, printButtonLabels, printStyles } from "./components/print-button";
-export type { PrintButtonLabels, PrintButtonProps, PrintStylesOptions, PrintStylesProps } from "./components/print-button";
+export { PrintButton, printButtonLabels } from "./components/print-button";
+export type { PrintButtonLabels, PrintButtonProps } from "./components/print-button";
+export { PrintStyles, printStyles } from "./components/print-styles";
+export type { PrintStylesOptions, PrintStylesProps } from "./components/print-styles";
 export { Progress, ProgressCircle, progressTrackVariants } from "./components/progress";
 export type { ProgressCircleProps, ProgressProps, ProgressTone } from "./components/progress";
 export { QrCode, encodeQr, qrPath } from "./components/qr-code";

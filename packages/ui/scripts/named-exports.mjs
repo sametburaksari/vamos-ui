@@ -28,13 +28,15 @@ export function moduleExports(files) {
     const values = [];
     const types = [];
     const targets = new Map();
+    const aliased = new Set();
     for (const ex of sym ? checker.getExportsOfModule(sym) : []) {
       if (ex.name === "default") continue; // `export *` never re-exported defaults either
       const target = ex.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(ex) : ex;
+      if (ex.flags & ts.SymbolFlags.Alias) aliased.add(ex.name);
       (target.flags & ts.SymbolFlags.Value ? values : types).push(ex.name);
       targets.set(ex.name, target);
     }
-    return { values: values.sort(), types: types.sort(), targets };
+    return { values: values.sort(), types: types.sort(), targets, aliased };
   });
 }
 
@@ -46,11 +48,17 @@ export function namedReExports(dir, specs, starred = []) {
   const all = [...starred, ...specs];
   const exportsOf = moduleExports(all.map((s) => resolveFile(dir, s)));
   const seen = new Map();
+  // A name a module merely re-exports belongs to the module that declares it, when both are listed
+  // (so a "use client" module re-exporting a server-safe helper does not claim it).
+  const home = new Map();
+  exportsOf.forEach((m, i) => { for (const n of [...m.values, ...m.types]) if (!m.aliased.has(n) && !home.has(n)) home.set(n, i); });
   let out = "";
   all.forEach((spec, i) => {
     const { targets } = exportsOf[i];
     // The same declaration reached through two modules is exported once (as `export *` did).
     const own = (n) => {
+      const h = home.get(n);
+      if (h !== undefined && h !== i && exportsOf[h].targets.get(n) === targets.get(n)) return false;
       const prev = seen.get(n);
       if (!prev) return seen.set(n, { spec, target: targets.get(n) }), true;
       if (prev.target === targets.get(n)) return false;

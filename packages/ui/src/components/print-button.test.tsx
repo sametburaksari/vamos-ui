@@ -1,6 +1,7 @@
 import * as React from "react";
 import { screen } from "@testing-library/react";
-import { PrintButton, PrintStyles, printStyles } from "./print-button";
+import { PrintButton } from "./print-button";
+import { PrintStyles, printStyles } from "./print-styles";
 import { tr } from "../locales/tr";
 import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 
