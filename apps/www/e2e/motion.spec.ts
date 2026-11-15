@@ -20,13 +20,8 @@ type Site = {
 };
 
 const SITES: Site[] = [
-  { name: "site-ai-01", pages: ["home", "pricing", "security"], to: { page: "security" } },
-  { name: "site-community-01", pages: ["home", "topics", "thread"], to: { page: "topics" } },
-  { name: "site-factory-01", pages: ["home", "products", "quality"], to: { page: "quality" } },
-  { name: "site-portfolio-02", pages: ["home", "project-kara", "studio"], to: { page: "studio" } },
-  { name: "site-store-02", pages: ["home", "archive", "product"], to: { page: "archive" } },
-  { name: "site-waitlist-01", pages: ["home", "joined"], to: { lang: "tr" } },
-  { name: "site-blog-02", pages: ["home", "post", "archive"], to: { page: "archive" } },
+  { name: "site-store-01", pages: ["home", "shop", "product", "checkout"], to: { page: "shop" } },
+  { name: "site-estate-01", pages: ["home", "listings", "listing"], to: { page: "listings" } },
 ];
 
 const HYDRATION = /Hydration failed|didn't match the client|hydration mismatch/i;

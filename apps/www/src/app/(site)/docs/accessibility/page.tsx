@@ -182,7 +182,6 @@ export default function AccessibilityPage() {
           that ui.vamos.ist serves. While it happens, an <C>aria-labelledby</C> can point at a stale id until React re-renders.
         </li>
         <li><strong className="text-fg">Unlabelled tables</strong> in two blocks (a detail block and an app shell) log a console warning; they need a caption or <C>aria-label</C>.</li>
-        <li><strong className="text-fg">Floating contact dock</strong> can overlap the booking bar on the restaurant and spa example sites at phone width.</li>
         <li><strong className="text-fg">Charts</strong> are images to assistive technology. Each chart frame has a table view and a text summary; the plot itself is not navigable.</li>
         <li><strong className="text-fg">Hover cards</strong> do not open from the keyboard or on touch, by design. Their content must be reachable on the link target.</li>
         <li>No manual screen-reader pass (VoiceOver, NVDA, JAWS) has been recorded for every component yet. That is the next step before 1.0.</li>

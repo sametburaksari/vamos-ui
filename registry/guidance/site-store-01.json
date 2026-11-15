@@ -4,13 +4,13 @@
     "Craft brands that pair a catalogue with a maker story and newsletter."
   ],
   "avoidWhen": [
-    "Timed drops and limited runs — use site-store-02.",
-    "Many independent sellers — use site-market-01."
+    "A whole website to build for a business — run `npx vamos-ui new`; its recipe lists the components per section and this block is only a finished reference."
   ],
   "related": [
-    "site-store-02",
-    "site-market-01",
-    "site-subbox-01"
+    "product-01",
+    "cart-01",
+    "checkout-01",
+    "order-confirmation-01"
   ],
   "a11y": [
     "Glaze swatches are a keyboard-operable radiogroup; cart updates announce through role=\"status\".",

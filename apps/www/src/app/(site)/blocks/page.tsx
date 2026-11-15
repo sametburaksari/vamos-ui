@@ -29,7 +29,7 @@ export default function BlocksPage() {
           Built only from kit components, so they follow your theme, material, accent, density and font.
         </p>
         <Link href="/websites" className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-accent-ink underline-offset-4 hover:underline focus-ring rounded-ui-sm">
-          Looking for websites? See {siteCount} example sites <ArrowRight className="size-4" aria-hidden />
+          Looking for websites? See {siteCount} showcase sites <ArrowRight className="size-4" aria-hidden />
         </Link>
       </div>
       <BlocksBrowser blocks={withFiles} categories={blockCategories.filter((c) => c !== "Website pages")} />

@@ -99,55 +99,10 @@ import metaShell10 from "./shell-10/meta";
 import metaShell11 from "./shell-11/meta";
 import metaShell12 from "./shell-12/meta";
 import metaSignup01 from "./signup-01/meta";
-import metaSiteAccounting01 from "./site-accounting-01/meta";
 import metaSiteAgency01 from "./site-agency-01/meta";
-import metaSiteAgency02 from "./site-agency-02/meta";
-import metaSiteAi01 from "./site-ai-01/meta";
-import metaSiteApp01 from "./site-app-01/meta";
-import metaSiteApp02 from "./site-app-02/meta";
-import metaSiteArtist01 from "./site-artist-01/meta";
-import metaSiteAutoservice01 from "./site-autoservice-01/meta";
-import metaSiteBlog01 from "./site-blog-01/meta";
-import metaSiteBlog02 from "./site-blog-02/meta";
-import metaSiteCareers01 from "./site-careers-01/meta";
-import metaSiteChangelog01 from "./site-changelog-01/meta";
-import metaSiteClub01 from "./site-club-01/meta";
-import metaSiteCommunity01 from "./site-community-01/meta";
-import metaSiteConstruction01 from "./site-construction-01/meta";
-import metaSiteCourse01 from "./site-course-01/meta";
-import metaSiteCv01 from "./site-cv-01/meta";
-import metaSiteDepartment01 from "./site-department-01/meta";
-import metaSiteDevtool01 from "./site-devtool-01/meta";
-import metaSiteDigital01 from "./site-digital-01/meta";
-import metaSiteDriving01 from "./site-driving-01/meta";
 import metaSiteEstate01 from "./site-estate-01/meta";
-import metaSiteEstate02 from "./site-estate-02/meta";
-import metaSiteEvent01 from "./site-event-01/meta";
-import metaSiteFactory01 from "./site-factory-01/meta";
-import metaSiteFlorist01 from "./site-florist-01/meta";
-import metaSiteGame01 from "./site-game-01/meta";
-import metaSiteHelp01 from "./site-help-01/meta";
-import metaSiteLaw01 from "./site-law-01/meta";
-import metaSiteMarket01 from "./site-market-01/meta";
-import metaSiteMovers01 from "./site-movers-01/meta";
-import metaSiteNewsletter01 from "./site-newsletter-01/meta";
-import metaSiteNonprofit01 from "./site-nonprofit-01/meta";
-import metaSitePodcast01 from "./site-podcast-01/meta";
-import metaSitePortfolio01 from "./site-portfolio-01/meta";
-import metaSitePortfolio02 from "./site-portfolio-02/meta";
-import metaSitePreschool01 from "./site-preschool-01/meta";
-import metaSitePublic01 from "./site-public-01/meta";
 import metaSiteSaas01 from "./site-saas-01/meta";
-import metaSiteSaas02 from "./site-saas-02/meta";
-import metaSiteStatus01 from "./site-status-01/meta";
 import metaSiteStore01 from "./site-store-01/meta";
-import metaSiteStore02 from "./site-store-02/meta";
-import metaSiteStudio01 from "./site-studio-01/meta";
-import metaSiteSubbox01 from "./site-subbox-01/meta";
-import metaSiteVenue01 from "./site-venue-01/meta";
-import metaSiteWaitlist01 from "./site-waitlist-01/meta";
-import metaSiteWedding01 from "./site-wedding-01/meta";
-import metaSiteWholesale01 from "./site-wholesale-01/meta";
 import metaUsersRoles01 from "./users-roles-01/meta";
 
 export const blocks: BlockEntry[] = [
@@ -250,55 +205,10 @@ export const blocks: BlockEntry[] = [
   { ...metaShell11, name: "shell-11", load: () => import("./shell-11/page") },
   { ...metaShell12, name: "shell-12", load: () => import("./shell-12/page") },
   { ...metaSignup01, name: "signup-01", load: () => import("./signup-01/page") },
-  { ...metaSiteAccounting01, name: "site-accounting-01", load: () => import("./site-accounting-01/page") },
   { ...metaSiteAgency01, name: "site-agency-01", load: () => import("./site-agency-01/page") },
-  { ...metaSiteAgency02, name: "site-agency-02", load: () => import("./site-agency-02/page") },
-  { ...metaSiteAi01, name: "site-ai-01", load: () => import("./site-ai-01/page") },
-  { ...metaSiteApp01, name: "site-app-01", load: () => import("./site-app-01/page") },
-  { ...metaSiteApp02, name: "site-app-02", load: () => import("./site-app-02/page") },
-  { ...metaSiteArtist01, name: "site-artist-01", load: () => import("./site-artist-01/page") },
-  { ...metaSiteAutoservice01, name: "site-autoservice-01", load: () => import("./site-autoservice-01/page") },
-  { ...metaSiteBlog01, name: "site-blog-01", load: () => import("./site-blog-01/page") },
-  { ...metaSiteBlog02, name: "site-blog-02", load: () => import("./site-blog-02/page") },
-  { ...metaSiteCareers01, name: "site-careers-01", load: () => import("./site-careers-01/page") },
-  { ...metaSiteChangelog01, name: "site-changelog-01", load: () => import("./site-changelog-01/page") },
-  { ...metaSiteClub01, name: "site-club-01", load: () => import("./site-club-01/page") },
-  { ...metaSiteCommunity01, name: "site-community-01", load: () => import("./site-community-01/page") },
-  { ...metaSiteConstruction01, name: "site-construction-01", load: () => import("./site-construction-01/page") },
-  { ...metaSiteCourse01, name: "site-course-01", load: () => import("./site-course-01/page") },
-  { ...metaSiteCv01, name: "site-cv-01", load: () => import("./site-cv-01/page") },
-  { ...metaSiteDepartment01, name: "site-department-01", load: () => import("./site-department-01/page") },
-  { ...metaSiteDevtool01, name: "site-devtool-01", load: () => import("./site-devtool-01/page") },
-  { ...metaSiteDigital01, name: "site-digital-01", load: () => import("./site-digital-01/page") },
-  { ...metaSiteDriving01, name: "site-driving-01", load: () => import("./site-driving-01/page") },
   { ...metaSiteEstate01, name: "site-estate-01", load: () => import("./site-estate-01/page") },
-  { ...metaSiteEstate02, name: "site-estate-02", load: () => import("./site-estate-02/page") },
-  { ...metaSiteEvent01, name: "site-event-01", load: () => import("./site-event-01/page") },
-  { ...metaSiteFactory01, name: "site-factory-01", load: () => import("./site-factory-01/page") },
-  { ...metaSiteFlorist01, name: "site-florist-01", load: () => import("./site-florist-01/page") },
-  { ...metaSiteGame01, name: "site-game-01", load: () => import("./site-game-01/page") },
-  { ...metaSiteHelp01, name: "site-help-01", load: () => import("./site-help-01/page") },
-  { ...metaSiteLaw01, name: "site-law-01", load: () => import("./site-law-01/page") },
-  { ...metaSiteMarket01, name: "site-market-01", load: () => import("./site-market-01/page") },
-  { ...metaSiteMovers01, name: "site-movers-01", load: () => import("./site-movers-01/page") },
-  { ...metaSiteNewsletter01, name: "site-newsletter-01", load: () => import("./site-newsletter-01/page") },
-  { ...metaSiteNonprofit01, name: "site-nonprofit-01", load: () => import("./site-nonprofit-01/page") },
-  { ...metaSitePodcast01, name: "site-podcast-01", load: () => import("./site-podcast-01/page") },
-  { ...metaSitePortfolio01, name: "site-portfolio-01", load: () => import("./site-portfolio-01/page") },
-  { ...metaSitePortfolio02, name: "site-portfolio-02", load: () => import("./site-portfolio-02/page") },
-  { ...metaSitePreschool01, name: "site-preschool-01", load: () => import("./site-preschool-01/page") },
-  { ...metaSitePublic01, name: "site-public-01", load: () => import("./site-public-01/page") },
   { ...metaSiteSaas01, name: "site-saas-01", load: () => import("./site-saas-01/page") },
-  { ...metaSiteSaas02, name: "site-saas-02", load: () => import("./site-saas-02/page") },
-  { ...metaSiteStatus01, name: "site-status-01", load: () => import("./site-status-01/page") },
   { ...metaSiteStore01, name: "site-store-01", load: () => import("./site-store-01/page") },
-  { ...metaSiteStore02, name: "site-store-02", load: () => import("./site-store-02/page") },
-  { ...metaSiteStudio01, name: "site-studio-01", load: () => import("./site-studio-01/page") },
-  { ...metaSiteSubbox01, name: "site-subbox-01", load: () => import("./site-subbox-01/page") },
-  { ...metaSiteVenue01, name: "site-venue-01", load: () => import("./site-venue-01/page") },
-  { ...metaSiteWaitlist01, name: "site-waitlist-01", load: () => import("./site-waitlist-01/page") },
-  { ...metaSiteWedding01, name: "site-wedding-01", load: () => import("./site-wedding-01/page") },
-  { ...metaSiteWholesale01, name: "site-wholesale-01", load: () => import("./site-wholesale-01/page") },
   { ...metaUsersRoles01, name: "users-roles-01", load: () => import("./users-roles-01/page") },
 ].sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.name.localeCompare(b.name));
 
