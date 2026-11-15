@@ -1,5 +1,7 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { bool, str, type ParsedArgs } from "../args";
-import { AUDIT_DEFAULTS, AUDIT_RULES, normalizeAuditUrl, runAudit, type AuditIssue, type AuditReport, type AuditSeverity } from "../audit";
+import { AUDIT_DEFAULTS, AUDIT_RULES, normalizeAuditUrl, runAudit, type AuditIssue, type AuditOptions, type AuditReport, type AuditSeverity } from "../audit";
 import { CliError } from "../core/types";
 import { out, pc, plural, printJson, spinner, type Context } from "../ui";
 
@@ -7,13 +9,18 @@ const HELP = `${pc.bold("vamos-ui audit")} <url>  Check a live website over HTTP
 
   Fetch and redirects, head metadata (title, description, canonical, Open Graph, JSON-LD),
   robots.txt / sitemap.xml / llms.txt and the AI crawler policy, placeholder content, legal
-  links, broken internal links and heavy images. Works for any site.
+  links (per country: Impressum in DE/AT, mentions légales in FR, KVKK in Türkiye, "Do Not
+  Sell or Share" with ad tags in the US, trackers before consent in the EU/UK), broken internal
+  links and heavy images. Works for any site.
 
 ${pc.bold("Options")}
   --max-pages <n>     HTML pages to crawl, start page included (default ${AUDIT_DEFAULTS.maxPages}, max ${AUDIT_DEFAULTS.maxPagesCap})
   --external          Also check external links (HEAD, fallback GET)
   --timeout <s>       Per-request timeout in seconds (default ${AUDIT_DEFAULTS.timeoutMs / 1000})
   --concurrency <n>   Requests in flight (default ${AUDIT_DEFAULTS.concurrency})
+  --country <code>    The business's country (ISO code, e.g. DE, FR, GB, US) for the legal checks.
+                      Default: vamos.site.json in this folder (address.country, locale, url),
+                      else the domain's ccTLD, else the region of <html lang> (de-AT → AT)
   --strict            Exit 1 on warnings too
   --verbose           Show every finding (default: the first 5 per rule)
   --json              Machine-readable report
@@ -54,6 +61,7 @@ export function formatAuditReport(report: AuditReport, verbose = false): string 
   }
   if (report.localPreview) lines.push(pc.dim(`local preview: https, security headers and URLs on the live host are info here; ${pc.cyan("vamos-ui site check")} checks them after deploy`));
   if (report.legal.length) lines.push(pc.dim(`legal: ${report.legal.map((l) => `${l.kind} ${l.status ?? "ext"}`).join(", ")}`));
+  if (report.jurisdiction?.country) lines.push(pc.dim(`country ${report.jurisdiction.country} (from ${report.jurisdiction.from}) · regimes ${report.jurisdiction.regimes.join(", ") || "—"}${report.trackers?.length ? ` · trackers on load: ${report.trackers.join(", ")}` : ""}`));
   const max = verbose ? Infinity : 5;
   for (const sev of ["error", "warning", "info"] as const) {
     const group = report.issues.filter((i) => i.severity === sev);
@@ -85,6 +93,15 @@ export async function audit(ctx: Context, args: ParsedArgs): Promise<number> {
   }
   const { VERSION } = await import("../cli");
   const timeout = int(args.flags, "timeout", 1, 120);
+  const country = str(args.flags, "country");
+  if (country !== undefined && !/^[A-Za-z]{2}$/.test(country.trim())) throw new CliError(`--country must be a two-letter ISO code (e.g. DE, GB, US), not "${country}".`);
+  let site: AuditOptions["site"] = null;
+  try {
+    const file = path.join(ctx.cwd, "vamos.site.json");
+    if (existsSync(file)) site = JSON.parse(readFileSync(file, "utf8"));
+  } catch {
+    site = null;
+  }
   const s = ctx.json ? null : spinner();
   s?.start(`Auditing ${url}`);
   const report = await runAudit(url, {
@@ -92,6 +109,8 @@ export async function audit(ctx: Context, args: ParsedArgs): Promise<number> {
     concurrency: int(args.flags, "concurrency", 1, 16),
     timeoutMs: timeout ? timeout * 1000 : undefined,
     external: bool(args.flags, "external"),
+    country,
+    site,
     userAgent: `vamos-ui-audit/${VERSION} (+https://ui.vamos.ist/docs/cli)`,
   });
   s?.stop(`Audited ${plural(report.crawl.pages.length, "page")} in ${(report.durationMs / 1000).toFixed(1)} s`);
