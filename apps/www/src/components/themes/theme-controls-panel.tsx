@@ -2,22 +2,14 @@
 
 import * as React from "react";
 import { ColorPicker, RadioGroup, cn } from "@vamos-ui/react";
-import { KIT_ACCENT_BASE, isNamedAccent, PRESET_AXES, type Preset, type PresetAccentName, type PresetFont } from "@/lib/theme-codec";
+import { fontPairings, loadFontPreviews } from "@vamos-ui/react/fonts";
+import { KIT_ACCENT_BASE, isNamedAccent, PRESET_AXES, RADIUS, type Preset, type PresetAccentName, type PresetFont } from "@/lib/theme-codec";
 import { AccentPalette } from "./accent-palette";
 
-const fonts: Record<PresetFont, { label: string; faces: string }> = {
-  editorial: { label: "Editorial", faces: "Instrument Serif · Onest" },
-  grotesk: { label: "Grotesk", faces: "Bricolage · Hanken" },
-  corporate: { label: "Corporate", faces: "IBM Plex Sans" },
-  system: { label: "System", faces: "Platform UI font" },
-};
-
-/** --radius per corner setting and density (styles.css: --radius-base × --radius-scale). */
-const CORNER_PX: Record<Preset["radius"], Record<Preset["density"], string>> = {
-  default: { comfortable: "14px", compact: "10px" },
-  sharp: { comfortable: "6px", compact: "4px" },
-  round: { comfortable: "20px", compact: "14px" },
-};
+/** Label and faces for each font tile, from the kit's pairings (same ids as the preset letters). */
+const fonts = Object.fromEntries(
+  fontPairings.map((p) => [p.id, { label: p.label, faces: p.id === "system" ? "Platform UI font" : p.heading === p.body ? p.heading : `${p.heading} · ${p.body}`, heading: p.heading, css: !!p.css }]),
+) as Record<PresetFont, { label: string; faces: string; heading: string; css: boolean }>;
 
 const cap = (s: string) => s[0]!.toUpperCase() + s.slice(1);
 
@@ -55,7 +47,11 @@ function Tile({ name, value, checked, onSelect, children, className, label }: { 
 export function ThemeControlsPanel({ preset, onChange, customColour, onCustomColour }: { preset: Preset; onChange: (next: Partial<Preset>) => void; customColour: string; onCustomColour: (hex: string) => void }) {
   const id = React.useId();
   const custom = !isNamedAccent(preset.accent);
-  const segmented = <K extends "theme" | "material" | "density" | "radius">(axis: K, label: string, extra?: { hint?: React.ReactNode; help?: React.ReactNode }) => (
+  // Tiny glyph subsets so each tile shows its own heading face (the classic four are loaded by the layout).
+  React.useEffect(() => {
+    void loadFontPreviews(PRESET_AXES.font.filter((f) => !fonts[f].css).map((f) => fonts[f].heading), { extraText: "Ag" });
+  }, []);
+  const segmented = <K extends "theme" | "material" | "density" | "radius" | "scene">(axis: K, label: string, extra?: { hint?: React.ReactNode; help?: React.ReactNode }) => (
     <Row label={label} id={`${id}-${axis}`} hint={extra?.hint}>
       <RadioGroup
         variant="segmented"
@@ -127,12 +123,17 @@ export function ThemeControlsPanel({ preset, onChange, customColour, onCustomCol
       </Row>
 
       {segmented("radius", "Corners", {
-        hint: `data-radius · ${CORNER_PX[preset.radius][preset.density]}`,
+        hint: `data-radius · ${RADIUS[preset.radius][preset.density]}`,
         help: (
           <>
-            Its own axis, so it works with every accent. Buttons, fields, cards, dialogs, menus and tables follow it; pills, avatars, switches and progress bars stay round.
+            Its own axis, so it works with every accent. Buttons, fields, cards, dialogs, menus and tables follow it; pills, avatars, switches and progress bars stay round. Pill makes only the controls pills.
           </>
         ),
+      })}
+
+      {segmented("scene", "Scene", {
+        hint: "data-scene",
+        help: <>The backdrop, surfaces and neutral text together: paper for broadsheets, warm for food and nature, ink for neon and shops.</>,
       })}
     </div>
   );
