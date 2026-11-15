@@ -5,6 +5,19 @@ import { axe } from "vitest-axe";
 import { AddressField, RegionSelect, formatAddress, type Address } from "./address-field";
 import { Field } from "./input";
 import { trAddress } from "../locale-data/tr/address";
+import { createTrNeighbourhoodLoader, withNeighbourhoods, type TrNeighbourhoodFile } from "../locale-data/tr/neighbourhoods";
+
+// A small fixture in the shape of the bundled province files (Kadıköy is district 1421).
+const fixtureSource = withNeighbourhoods(
+  trAddress,
+  createTrNeighbourhoodLoader(async (plate): Promise<TrNeighbourhoodFile> => ({
+    source: "fixture",
+    license: "MIT",
+    generated: "2026-11-15",
+    plate,
+    districts: plate === 34 ? { "1421": [["Caferağa", "34710"], ["Rasimpaşa", "34716"]] } : ({} as TrNeighbourhoodFile["districts"]),
+  })),
+);
 
 describe("formatAddress", () => {
   it("follows country conventions", () => {
@@ -58,6 +71,45 @@ describe("AddressField", () => {
   it("read-only renders a formatted address", () => {
     render(<AddressField legend="Head office" readOnly value={{ country: "TR", region1: "İstanbul", region2: "Maltepe", line1: "Rasimpaşa Mah. Rıhtım Cad. No: 14", postalCode: "34844" }} />);
     expect(screen.getByText("34844 Maltepe/İstanbul")).toBeInTheDocument();
+  });
+});
+
+describe("AddressField neighbourhoods", () => {
+  it("adds a neighbourhood picker for a source with a neighbourhood level and fills the postal code", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const { container } = render(<AddressField legend="Delivery address" sources={{ TR: fixtureSource }} defaultValue={{ country: "TR" }} onValueChange={onValueChange} />);
+    const neighbourhood = await screen.findByRole("combobox", { name: "Neighbourhood" });
+    expect(neighbourhood).toBeDisabled();
+    await screen.findByRole("option", { name: "İstanbul" });
+    await user.selectOptions(screen.getByRole("combobox", { name: "Province" }), "İstanbul");
+    await screen.findByRole("option", { name: "Kadıköy" });
+    await user.selectOptions(screen.getByRole("combobox", { name: "District" }), "Kadıköy");
+    await screen.findByRole("option", { name: "Caferağa Mah." });
+    await user.selectOptions(neighbourhood, "Caferağa Mah.");
+    expect(onValueChange).toHaveBeenLastCalledWith(expect.objectContaining({ region2: "Kadıköy", region3: "Caferağa Mah.", postalCode: "34710" }));
+    // A code the visitor typed is never overwritten; an auto-filled one follows the neighbourhood.
+    await user.selectOptions(neighbourhood, "Rasimpaşa Mah.");
+    expect(onValueChange).toHaveBeenLastCalledWith(expect.objectContaining({ region3: "Rasimpaşa Mah.", postalCode: "34716" }));
+    const postal = screen.getByRole("textbox", { name: "Postal code" });
+    await user.clear(postal);
+    await user.type(postal, "34000");
+    await user.selectOptions(neighbourhood, "Caferağa Mah.");
+    expect(onValueChange).toHaveBeenLastCalledWith(expect.objectContaining({ region3: "Caferağa Mah.", postalCode: "34000" }));
+    await user.selectOptions(screen.getByRole("combobox", { name: "District" }), "Üsküdar");
+    expect(onValueChange).toHaveBeenLastCalledWith(expect.objectContaining({ region2: "Üsküdar", region3: undefined }));
+    expect(screen.getByText("Neighbourhood cleared")).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("keeps the free-text neighbourhood for the default source and formats it in front of the street", () => {
+    render(<AddressField legend="Address" fields={["region3"]} defaultValue={{ country: "TR" }} />);
+    expect(screen.getByRole("textbox", { name: "Neighbourhood" })).toBeInTheDocument();
+    expect(formatAddress({ country: "TR", region3: "Caferağa Mah.", line1: "Moda Cad. No: 12", region2: "Kadıköy", region1: "İstanbul" }, { includeCountry: false })).toEqual([
+      "Caferağa Mah. Moda Cad. No: 12",
+      "Kadıköy/İstanbul",
+    ]);
+    expect(formatAddress({ country: "TR", region3: "Caferağa Mah.", line1: "Caferağa Mahallesi Moda Cad. No: 12" }, { includeCountry: false })).toEqual(["Caferağa Mahallesi Moda Cad. No: 12"]);
   });
 });
 

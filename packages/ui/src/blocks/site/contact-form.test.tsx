@@ -109,4 +109,8 @@ describe("ContactForm", () => {
     expect(s.safeParse({ name: "", email: "x", message: "Hi" }).success).toBe(false);
     expect(contactFormBlock.schema.safeParse(contactFormBlock.sample()).success).toBe(true);
   });
+  it("posts the privacy notice version in a hidden field", () => {
+    const { container } = render(<ContactForm fields={fields} privacyLink={{ href: "/kvkk", version: "2026-11-01" }} privacyCheckbox />);
+    expect(container.querySelector('input[type="hidden"][name="_notice"]')).toHaveValue("2026-11-01");
+  });
 });

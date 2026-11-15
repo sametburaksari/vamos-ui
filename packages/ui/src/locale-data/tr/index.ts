@@ -28,6 +28,17 @@ export {
   type KdvBreakdown,
   type KdvOptions,
 } from "./kdv";
+export {
+  trNeighbourhoodLabel,
+  parseTrNeighbourhoods,
+  createTrNeighbourhoodLoader,
+  trNeighbourhoodsFromUrl,
+  withNeighbourhoods,
+  type TrNeighbourhoodRow,
+  type TrNeighbourhoodFile,
+  type NeighbourhoodLoader,
+  type TrNeighbourhoodsFromUrlOptions,
+} from "./neighbourhoods";
 export { loadTrAddressData, trProvinces, trDistricts, findTrProvince, checkTrPostalCode, trAddress, type TrAddressData, type TrAddressRow } from "./address";
 
 /** Monday start, Saturday–Sunday weekend, minimal days 1 (CLDR "TR"). */

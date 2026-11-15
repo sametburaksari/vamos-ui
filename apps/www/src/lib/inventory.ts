@@ -23,7 +23,7 @@ export const inventory: InvGroup[] = [
     r("Input", "input"), r("Textarea", "input#textarea"), r("Field", "input#field"),
     n("Select"), n("Combobox"), n("Checkbox"), n("Radio Group"), n("Switch"), n("Slider (range)"),
     p("Input OTP"), p("Tag input", true), p("Color picker", true), p("Slug input", true),
-    p("Formatted inputs (currency · phone · IBAN · ID)", true), p("Address field", true),
+    p("Formatted inputs (currency · phone · IBAN · ID)", true), p("Address field", true), p("Billing details (e-Fatura / e-Arşiv)", true),
     p("Line items", true), p("File upload", true), p("Signature pad", true), p("Font picker", true),
   ] },
   { group: "Pickers", items: [

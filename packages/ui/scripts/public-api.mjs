@@ -18,7 +18,7 @@ export function entryPoints(pkgDir = PKG) {
   const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir, "package.json"), "utf8"));
   const out = {};
   for (const [key, target] of Object.entries(pkg.exports)) {
-    if (typeof target !== "string" || target.endsWith(".css")) continue;
+    if (typeof target !== "string" || target.endsWith(".css") || target.endsWith(".json")) continue;
     if (key.includes("*")) {
       const [dir, ext] = target.split("*");
       const abs = path.join(pkgDir, dir);

@@ -17,6 +17,7 @@ import docAvatar from "./avatar";
 import docBackupCodes from "./backup-codes";
 import docBadge from "./badge";
 import docBarChart from "./bar-chart";
+import docBillingDetails from "./billing-details";
 import docBlockEditor from "./block-editor";
 import docBlocksApi from "./blocks-api";
 import docBlogList from "./blog-list";
@@ -173,6 +174,7 @@ export const entries: DocEntry[] = [
   docBackupCodes,
   docBadge,
   docBarChart,
+  docBillingDetails,
   docBlockEditor,
   docBlocksApi,
   docBlogList,
