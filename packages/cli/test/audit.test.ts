@@ -248,6 +248,61 @@ describe("runAudit", () => {
     expect(report.legal).toEqual([expect.objectContaining({ kind: "privacy", url: "https://ofis.test/gizlilik-politikasi/" })]);
   });
 
+  describe("country legal checks", () => {
+    const shop = (lang: string, footerLinks: string, head = "") =>
+      `<!doctype html><html lang="${lang}"><head><title>Werkstatt</title>${head}</head><body><main><h1>Werkstatt</h1><p>${words}</p></main><footer>${footerLinks}</footer></body></html>`;
+    const audit = (origin: string, html: string, opts: Parameters<typeof runAudit>[1] = {}) => runAudit(`${origin}/`, { fetch: fakeSite({ [`${origin}/`]: { body: html } }), maxPages: 1, hostVariants: false, ...opts });
+    const rules = (r: Awaited<ReturnType<typeof runAudit>>) => r.issues.map((i) => `${i.rule}:${i.severity}`);
+
+    it("a German site (.de) without an Impressum link is an error; with one it passes", async () => {
+      const none = await audit("https://ornek.de", shop("de", `<a href="/datenschutz">Datenschutz</a>`));
+      expect(none.jurisdiction).toMatchObject({ country: "DE", from: "domain" });
+      expect(rules(none)).toContain("legal-imprint:error");
+      const ok = await audit("https://ornek.de", shop("de", `<a href="/datenschutz">Datenschutz</a> <a href="/impressum">Impressum</a>`));
+      expect(rules(ok)).not.toContain("legal-imprint:error");
+      expect(ok.legal.map((l) => l.kind).sort()).toEqual(["imprint", "privacy"]);
+    });
+
+    it("the country comes from --country, vamos.site.json or <html lang> region when the domain says nothing", async () => {
+      const html = shop("de-AT", `<a href="/datenschutz">Datenschutz</a>`);
+      expect((await audit("https://werkstatt.test", html)).jurisdiction).toMatchObject({ country: "AT", from: "lang" });
+      expect((await audit("https://werkstatt.test", html, { site: { address: { country: "FR" } } })).jurisdiction).toMatchObject({ country: "FR", from: "site" });
+      const forced = await audit("https://werkstatt.test", html, { country: "gb" });
+      expect(forced.jurisdiction).toMatchObject({ country: "GB", from: "option", regimes: ["UK"] });
+      expect(rules(forced)).not.toContain("legal-imprint:error");
+    });
+
+    it("US site with ad tags and no Do Not Sell or Share link → warning", async () => {
+      const pixel = `<script>!function(f,b,e,v,n,t,s){}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','123456789');</script>`;
+      const us = await audit("https://spokes.test", shop("en-US", `<a href="/privacy-policy">Privacy</a>`, pixel));
+      expect(us.trackers).toEqual(["meta"]);
+      expect(rules(us)).toContain("legal-do-not-sell:warning");
+      const linked = await audit("https://spokes.test", shop("en-US", `<a href="/privacy-policy">Privacy</a> <a href="/do-not-sell-or-share">Do Not Sell or Share My Personal Information</a>`, pixel));
+      expect(rules(linked)).not.toContain("legal-do-not-sell:warning");
+    });
+
+    it("EU site with a tag on load and no consent default → warning; Consent Mode defaults or a held-back tag pass", async () => {
+      const gtag = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-ABC1234"></script><script>gtag('config','G-ABC1234')</script>`;
+      expect(rules(await audit("https://polder.test", shop("nl-NL", `<a href="/privacy-policy">Privacy</a>`, gtag)))).toContain("consent-before-tracking:warning");
+      const withDefault = `<script>gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied'})</script>${gtag}`;
+      expect(rules(await audit("https://polder.test", shop("nl-NL", `<a href="/privacy-policy">Privacy</a>`, withDefault)))).not.toContain("consent-before-tracking:warning");
+      const heldBack = `<script type="text/plain" data-category="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-ABC1234"></script>`;
+      expect((await audit("https://polder.test", shop("nl-NL", `<a href="/privacy-policy">Privacy</a>`, heldBack))).trackers).toEqual([]);
+    });
+
+    it("flags a leftover link to the closed EU ODR platform", async () => {
+      const r = await audit("https://ornek.de", shop("de", `<a href="/impressum">Impressum</a> <a href="/datenschutz">Datenschutz</a> <a href="https://ec.europa.eu/consumers/odr/">OS-Plattform</a>`));
+      expect(rules(r)).toContain("odr-link:info");
+    });
+
+    it("Turkish sites keep their KVKK check and get no Impressum error", async () => {
+      const r = await audit("https://ornek.com.tr", shop("tr", `<a href="/gizlilik">Gizlilik</a>`));
+      expect(r.jurisdiction.country).toBe("TR");
+      expect(r.issues.some((i) => i.rule === "legal-links" && i.message.includes("KVKK"))).toBe(true);
+      expect(rules(r)).not.toContain("legal-imprint:error");
+    });
+  });
+
   it("reports a page that cannot be loaded", async () => {
     const report = await runAudit("https://yok.test", { fetch: async () => { throw Object.assign(new TypeError("fetch failed"), { cause: { code: "ENOTFOUND" } }); } });
     expect(report.issues).toEqual([expect.objectContaining({ rule: "fetch-failed", severity: "error", message: expect.stringContaining("ENOTFOUND") })]);

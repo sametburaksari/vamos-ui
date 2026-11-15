@@ -27,6 +27,7 @@ ${pc.bold("Options")}
   --max-pages <n>     HTML pages to crawl (default ${AUDIT_DEFAULTS.maxPages})
   --timeout <s>       Per-request timeout in seconds (default ${AUDIT_DEFAULTS.timeoutMs / 1000})
   --lang tr|en        Text of the deploy checks (default: the site locale, else tr)
+  --country <code>    Country for the legal checks (default: the plan, else ${SITE_FILE}, else the domain)
   --verbose           Show every audit finding
   --ci                Print a GitHub Actions workflow that runs this check after each deploy
   --json              Machine-readable result
@@ -85,7 +86,14 @@ export async function siteCheck(ctx: Context, args: ParsedArgs): Promise<number>
   const s = ctx.json ? null : spinner();
   s?.start(lang === "tr" ? `${url} kontrol ediliyor` : `Checking ${url}`);
   const [audit, deploy] = await Promise.all([
-    runAudit(url, { maxPages: int(args.flags, "max-pages", 1, AUDIT_DEFAULTS.maxPagesCap), timeoutMs, userAgent, localPreview: false }),
+    runAudit(url, {
+      maxPages: int(args.flags, "max-pages", 1, AUDIT_DEFAULTS.maxPagesCap),
+      timeoutMs,
+      userAgent,
+      localPreview: false,
+      country: str(args.flags, "country") ?? (typeof project?.plan?.jurisdiction?.country === "string" ? project.plan.jurisdiction.country : undefined),
+      site: site && typeof site === "object" ? site : null,
+    }),
     runDeployChecks(url, { timeoutMs, userAgent }),
   ]);
   const verdict = siteCheckVerdict(audit, deploy.checks, minScore);

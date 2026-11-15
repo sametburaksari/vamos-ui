@@ -36,6 +36,34 @@ export interface PageFacts {
   unnamedButtons: number;
   text: string;
   scripts: number;
+  /** Tracking tags in the HTML that run on load: "ga4", "gtm", "google-ads", "meta", "tiktok", "linkedin", "hotjar", "clarity". */
+  trackers: string[];
+  /** A consent default (Consent Mode `gtag('consent','default',…)`) or a consent manager script is on the page. */
+  consentDefault: boolean;
+}
+
+/** Script URL or inline code → tracker name. Ad tools (shared for advertising) are marked. */
+const TRACKERS: { name: string; ads: boolean; src?: RegExp; inline?: RegExp }[] = [
+  { name: "google-ads", ads: true, src: /googleadservices\.com|googletagmanager\.com\/gtag\/js\?[^"']*id=AW-|doubleclick\.net/i, inline: /['"]AW-\d{6,}/ },
+  { name: "ga4", ads: false, src: /googletagmanager\.com\/gtag\/js\?[^"']*id=G-|google-analytics\.com\/(?:analytics|ga)\.js/i, inline: /gtag\(\s*['"]config['"]\s*,\s*['"]G-/ },
+  { name: "gtm", ads: false, src: /googletagmanager\.com\/gtm\.js/i, inline: /googletagmanager\.com\/gtm\.js/ },
+  { name: "meta", ads: true, src: /connect\.facebook\.net\/[^"']*fbevents\.js/i, inline: /fbq\(\s*['"]init['"]|connect\.facebook\.net\/[^"']*fbevents\.js/ },
+  { name: "tiktok", ads: true, src: /analytics\.tiktok\.com/i, inline: /analytics\.tiktok\.com|ttq\.load\(/ },
+  { name: "linkedin", ads: true, src: /snap\.licdn\.com/i, inline: /snap\.licdn\.com|_linkedin_partner_id/ },
+  { name: "hotjar", ads: false, src: /static\.hotjar\.com/i, inline: /static\.hotjar\.com/ },
+  { name: "clarity", ads: false, src: /clarity\.ms\/tag/i, inline: /clarity\.ms\/tag/ },
+];
+
+/** Tracker names used for advertising (cross-context behavioural advertising). */
+export const AD_TRACKERS = new Set(TRACKERS.filter((x) => x.ads).map((x) => x.name));
+
+const CONSENT_DEFAULT = /gtag\(\s*['"]consent['"]\s*,\s*['"]default['"]|consent\s*['"]?\s*,\s*['"]default['"]/;
+const CONSENT_MANAGER = /cookiebot\.com|usercentrics\.eu|cookielaw\.org|onetrust\.com|didomi\.io|iubenda\.com|cookieyes\.com|klaro|axeptio|termly\.io|osano\.com/i;
+
+function trackersOf(src: string, inline: string): string[] {
+  const found: string[] = [];
+  for (const tr of TRACKERS) if ((src && tr.src?.test(src)) || (inline && tr.inline?.test(inline))) found.push(tr.name);
+  return found;
 }
 
 const resolve = (href: string, base: string): string | null => {
@@ -92,6 +120,8 @@ export function analyzePage(html: string, pageUrl: string): PageFacts {
     unnamedButtons: 0,
     text: "",
     scripts: 0,
+    trackers: [],
+    consentDefault: false,
   };
   const text: string[] = [];
   const open: Collector[] = [];
@@ -128,6 +158,12 @@ export function analyzePage(html: string, pageUrl: string): PageFacts {
         else if (facts.title === null) facts.title = collapse(t.text);
       } else if (t.name === "script") {
         facts.scripts++;
+        const type = (t.attrs.type ?? "").toLowerCase().trim();
+        const src = t.attrs.src ?? "";
+        // type="text/plain" (and similar) is how consent managers hold a tag back until consent.
+        const runs = !type || type === "module" || /javascript|ecmascript/.test(type);
+        if (CONSENT_DEFAULT.test(t.text) || CONSENT_MANAGER.test(src)) facts.consentDefault = true;
+        if (runs) for (const name of trackersOf(src, t.text)) if (!facts.trackers.includes(name)) facts.trackers.push(name);
         if ((t.attrs.type ?? "").toLowerCase().trim() === "application/ld+json") {
           const src = t.text.trim().replace(/^<!\[CDATA\[|\]\]>$/g, "");
           try {

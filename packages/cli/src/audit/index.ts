@@ -12,7 +12,8 @@ import { AuditRefusedError, pool, probe, request, type FetchLike, type Fetched, 
 import { AI_CRAWLERS, aiCrawlerPolicy, isAllowed, parseRobots, parseSitemap, type CrawlerAccess, type Robots } from "./files";
 
 const AI_CRAWLER_COUNT = AI_CRAWLERS.length;
-import { analyzePage, type PageFacts } from "./page";
+import { countryFromHost, countryFromLocale, countryOfSite, jurisdictionOf, normalizeCode } from "../project/jurisdiction";
+import { AD_TRACKERS, analyzePage, type PageFacts } from "./page";
 import { alternateHost } from "./live";
 
 export { AuditRefusedError, type FetchLike } from "./fetch";
@@ -78,6 +79,14 @@ export interface AuditOptions {
    * live host are info: they depend on the hosting and are checked again after deploy.
    */
   localPreview?: boolean;
+  /**
+   * ISO country code of the business, for the country's legal-link checks (Impressum in DE/AT,
+   * mentions légales in FR, "Do Not Sell or Share" in the US …). Default: from `site`
+   * (vamos.site.json), else the domain's ccTLD, else the region of <html lang>.
+   */
+  country?: string;
+  /** vamos.site.json of the project, when the audit runs inside it (address.country, locale, url). */
+  site?: { address?: { country?: string }; locale?: string; url?: string } | null;
 }
 
 /** Appended to findings that a local preview cannot pass and the deployed site is checked for. */
@@ -127,6 +136,10 @@ export interface AuditReport {
     aiCrawlers: { agent: string; owner: string; access: CrawlerAccess }[];
   };
   legal: { kind: string; url: string; status: number | null }[];
+  /** The country the legal checks used, how it was found, and its legal regimes. */
+  jurisdiction: { country: string | null; from: "option" | "site" | "domain" | "lang" | "none"; regimes: string[] };
+  /** Tracking tags found in the HTML that run on load (no consent manager holding them back). */
+  trackers: string[];
   crawl: {
     pages: { url: string; status: number; title: string | null }[];
     linksChecked: number;
@@ -186,6 +199,10 @@ export const AUDIT_RULES: Record<string, { severity: AuditSeverity; title: strin
   "client-rendered": { severity: "warning", title: "Little server-rendered content", fix: "Render the main content on the server (SSR/SSG) so crawlers and link previews see it." },
   "legal-links": { severity: "warning", title: "Legal pages", fix: "Link the privacy policy (and KVKK notice / cookie policy where they apply) from the footer." },
   "legal-broken": { severity: "error", title: "Legal page link is broken" },
+  "legal-imprint": { severity: "error", title: "No imprint (Impressum / mentions légales)", fix: "Link the imprint from every page (footer): DDG § 5 in Germany, ECG § 5 in Austria, LCEN art. 1-1 in France. `npx vamos-ui site essentials` writes the page." },
+  "legal-do-not-sell": { severity: "warning", title: "No \"Do Not Sell or Share\" link", fix: "Ad pixels count as sharing under the CCPA: when the law applies, link \"Do Not Sell or Share My Personal Information\" (or \"Your Privacy Choices\") from every page and honour Global Privacy Control." },
+  "consent-before-tracking": { severity: "warning", title: "Tracking loads before consent", fix: "Load analytics and ad tags only after consent (Analytics + ConsentBanner + ConsentDefaults), with Reject as easy as Accept." },
+  "odr-link": { severity: "info", title: "Link to the closed EU ODR platform", fix: "The EU ODR platform closed on 20 July 2025 (Regulation (EU) 2024/3228); remove the link." },
   "broken-link": { severity: "error", title: "Broken internal link" },
   "link-unreachable": { severity: "warning", title: "Link could not be checked" },
   "redirecting-link": { severity: "info", title: "Internal links that redirect", fix: "Link to the final URL directly." },
@@ -211,11 +228,13 @@ export function isPlaceholderPhone(digits: string): boolean {
 }
 
 const LEGAL: { kind: string; label: string; slug: RegExp; text: RegExp }[] = [
-  { kind: "privacy", label: "privacy policy", slug: /^(?:privacy(?:-policy|-notice)?|gizlilik(?:-politikasi|-sozlesmesi|-bildirimi)?|datenschutz(?:erklarung)?)$/, text: /\bprivacy\b|gizlilik|datenschutz/i },
+  { kind: "privacy", label: "privacy policy", slug: /^(?:privacy(?:-policy|-notice)?|gizlilik(?:-politikasi|-sozlesmesi|-bildirimi)?|datenschutz(?:erklarung|erklaerung)?|politique-de-confidentialite|confidentialite|privacidade|politica-de-privacidade)$/, text: /\bprivacy\b|gizlilik|datenschutz|confidentialité|privacidade/i },
   { kind: "kvkk", label: "KVKK notice", slug: /^(?:kvkk(?:-[\w-]+)?|aydinlatma-metni|kisisel-veriler(?:in-korunmasi)?(?:-[\w-]+)?)$/, text: /\bkvkk\b|aydınlatma metni|kişisel verilerin korunması/i },
-  { kind: "cookies", label: "cookie policy", slug: /^(?:cookies?(?:-policy)?|cerez(?:ler|-politikasi)?)$/, text: /\bcookie|çerez/i },
-  { kind: "terms", label: "terms", slug: /^(?:terms(?:-of-(?:service|use))?|terms-and-conditions|tos|kullanim-(?:kosullari|sartlari)|yasal-uyari|legal(?:-notice)?|imprint|impressum)$/, text: /\bterms\b|kullanım koşulları|kullanım şartları|yasal uyarı|\bimprint\b|impressum/i },
-  { kind: "sales", label: "returns / distance sales", slug: /^(?:iade(?:-[\w-]+)?|returns?(?:-policy)?|refunds?(?:-policy)?|mesafeli-satis(?:-sozlesmesi)?|on-bilgilendirme(?:-formu)?)$/, text: /\biade\b|mesafeli satış|ön bilgilendirme|\brefund|\breturns? policy/i },
+  { kind: "cookies", label: "cookie policy", slug: /^(?:cookies?(?:-policy)?|cerez(?:ler|-politikasi)?|cookie-richtlinie|gestion-des-cookies|politique-cookies)$/, text: /\bcookie|çerez/i },
+  { kind: "imprint", label: "imprint", slug: /^(?:imprint|impressum|legal-notice|mentions-legales|yasal-uyari|legal)$/, text: /\bimprint\b|impressum|mentions légales|legal notice|yasal uyarı/i },
+  { kind: "terms", label: "terms", slug: /^(?:terms(?:-of-(?:service|use))?|terms-and-conditions|tos|kullanim-(?:kosullari|sartlari)|agb|cgv|conditions-generales(?:-de-vente)?)$/, text: /\bterms\b|kullanım koşulları|kullanım şartları|\bagb\b|conditions générales/i },
+  { kind: "do-not-sell", label: "Do Not Sell or Share", slug: /^(?:do-not-sell(?:-or-share)?(?:-my-personal-information)?|your-privacy-choices|privacy-choices)$/, text: /do not sell|your privacy choices/i },
+  { kind: "sales", label: "returns / distance sales", slug: /^(?:iade(?:-[\w-]+)?|returns?(?:-policy)?|refunds?(?:-policy)?|mesafeli-satis(?:-sozlesmesi)?|on-bilgilendirme(?:-formu)?|withdrawal|right-of-withdrawal|cancellation-rights|widerruf(?:sbelehrung)?|droit-de-retractation|retractation)$/, text: /\biade\b|mesafeli satış|ön bilgilendirme|\brefund|\breturns? policy|widerruf|rétractation|right of withdrawal/i },
 ];
 
 function legalKind(link: { url: string | null; text: string }): string | null {
@@ -434,6 +453,8 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
     head: null,
     files: { robots: null, sitemap: null, llmsTxt: null, aiCrawlers: [] },
     legal: [],
+    jurisdiction: { country: null, from: "none", regimes: [] },
+    trackers: [],
     crawl: { pages: [], linksChecked: 0, externalChecked: 0, imagesChecked: 0, skippedByRobots: 0, truncated: false },
     issues,
   };
@@ -766,6 +787,29 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
     if (!kinds.has("privacy") && !kinds.has("kvkk")) push("legal-links", "No link to a privacy policy found on the crawled pages.", finalUrl);
     if (turkish && !kinds.has("kvkk")) push("legal-links", "No KVKK notice (aydınlatma metni) link found; Turkish sites that collect personal data need one.", finalUrl);
     if (!kinds.has("cookies")) push("legal-links", "No cookie policy link found (needed if the site sets non-essential cookies).", finalUrl, "info");
+
+    // Country rules: the option, else vamos.site.json, else the ccTLD, else the <html lang> region.
+    const host = new URL(origin).hostname;
+    const opt = options.country ? normalizeCode(options.country) : null;
+    const fromSite = options.site ? countryOfSite(options.site) : null;
+    const byHost = countryFromHost(host);
+    const byLang = startFacts.lang && /[-_][A-Za-z]{2}$/.test(startFacts.lang) ? countryFromLocale(startFacts.lang) : null;
+    const country = (opt && opt !== "EU" ? opt.slice(0, 2) : null) ?? fromSite ?? byHost ?? byLang;
+    const from: AuditReport["jurisdiction"]["from"] = opt ? "option" : fromSite ? "site" : byHost ? "domain" : byLang ? "lang" : "none";
+    const j = jurisdictionOf(country);
+    report.jurisdiction = { country, from, regimes: j.regimes };
+    const trackers = [...new Set(analyzed.flatMap((f) => f.trackers))];
+    const consentDefault = analyzed.some((f) => f.consentDefault);
+    report.trackers = trackers;
+    const imprintCountry = country === "DE" || country === "AT" ? `${country} (${country === "DE" ? "DDG § 5" : "ECG § 5"})` : country === "FR" ? "FR (LCEN art. 1-1)" : null;
+    if (imprintCountry && !kinds.has("imprint")) push("legal-imprint", `No imprint link (${country === "FR" ? "mentions légales" : "Impressum"}) found on the crawled pages; a site run from ${imprintCountry} must link one from every page.`, finalUrl);
+    const ads = trackers.filter((x) => AD_TRACKERS.has(x));
+    if (j.regimes.includes("US-CA") && ads.length && !kinds.has("do-not-sell"))
+      push("legal-do-not-sell", `Ad tags (${ads.join(", ")}) run on the site and no "Do Not Sell or Share" / "Your Privacy Choices" link was found; needed when the CCPA applies to the business.`, finalUrl);
+    if (j.regimes.some((x) => x === "EU" || x === "UK") && trackers.length && !consentDefault)
+      push("consent-before-tracking", `${trackers.join(", ")} load${trackers.length === 1 ? "s" : ""} with the page and no consent default or consent manager was found; in the ${j.regimes.includes("EU") ? "EU" : "UK"} non-essential trackers need prior consent.`, finalUrl);
+    const odr = analyzed.flatMap((f) => f.links).find((l) => l.url && /ec\.europa\.eu\/consumers\/odr/i.test(l.url));
+    if (odr) push("odr-link", `A link to the EU ODR platform (${odr.url}) is still on the site; the platform closed on 20 July 2025.`, finalUrl);
   }
 
   // --- duplicate titles -----------------------------------------------------------------
