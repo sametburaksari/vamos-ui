@@ -13,11 +13,27 @@ import { AI_CRAWLERS, aiCrawlerPolicy, isAllowed, parseRobots, parseSitemap, typ
 
 const AI_CRAWLER_COUNT = AI_CRAWLERS.length;
 import { analyzePage, type PageFacts } from "./page";
+import { alternateHost } from "./live";
 
 export { AuditRefusedError, type FetchLike } from "./fetch";
 export { analyzePage, type PageFacts, type PageLink } from "./page";
 export { aiCrawlerPolicy, isAllowed, parseRobots, parseSitemap, AI_CRAWLERS } from "./files";
 export { tokenize, parseAttrs, decodeEntities } from "./html";
+export {
+  DEPLOY_CHECK_TITLES,
+  RECOMMENDED_HEADERS,
+  REQUIRED_HEADERS,
+  alternateHost,
+  runDeployChecks,
+  siteCheckVerdict,
+  siteCheckWorkflow,
+  type CheckText,
+  type DeployCheck,
+  type DeployCheckId,
+  type DeployCheckOptions,
+  type DeployCheckStatus,
+  type SiteCheckVerdict,
+} from "./live";
 
 export type AuditSeverity = "error" | "warning" | "info";
 
@@ -488,8 +504,9 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
       if (report.fetch.httpRedirectsToHttps === false) push("http-not-redirected", `${plain.href} ${r.status ? `answers ${r.status} without redirecting` : "does not redirect"} to https.`, plain.href);
     }
     const alt = new URL(finalUrl);
-    if (/^\d+\.\d+\.\d+\.\d+$|^\[/.test(alt.hostname) || alt.hostname === "localhost" || alt.hostname.split(".").length > (alt.hostname.startsWith("www.") ? 3 : 2)) return;
-    alt.hostname = alt.hostname.startsWith("www.") ? alt.hostname.slice(4) : `www.${alt.hostname}`;
+    const twin = alternateHost(alt.hostname);
+    if (!twin) return;
+    alt.hostname = twin;
     alt.pathname = "/";
     alt.search = "";
     const r = await request(alt.href, "HEAD", { ...http, maxRedirects: 0, timeoutMs: Math.min(http.timeoutMs, 6000) });

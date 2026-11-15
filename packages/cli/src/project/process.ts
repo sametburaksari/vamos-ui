@@ -228,7 +228,7 @@ export const ROLES: Record<Agent, Role> = {
     steps: [
       "`npx vamos-ui site deploy` writes the host's config files (never overwrites) and prints the steps.",
       "Prepare everything, then ask the user (through the orchestrator) before the publish itself, DNS changes or anything that replaces a live site. Publishing is the user's call.",
-      "After the deploy run the checks the guide lists (audit on the live URL, http → https 301, a test form message).",
+      "After the deploy run `npx vamos-ui site check <live-url>` (audit score 90+ with no errors, http → https 301, one host name, security headers, a real 404, robots.txt and sitemap.xml) and send a test form message. Mark the task done only when the check passes.",
       "Report the live URL, what was checked and anything left for the user (Search Console, Google Business Profile link).",
     ],
     rules: ["Never enter passwords, API keys or payment details; the user does that.", "Keep a way back: note the previous version or backup before replacing a live site."],

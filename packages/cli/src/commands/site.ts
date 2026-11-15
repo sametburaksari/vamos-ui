@@ -9,6 +9,7 @@ import { CliError } from "../core/types";
 import { SITE_FILE, missingSiteFields, siteTemplate } from "../site-info";
 import { out, p, pc, plural, printJson, type Context } from "../ui";
 import { siteImport } from "./new";
+import { siteCheck } from "./site-check";
 import { siteDeploy } from "./site-deploy";
 import { siteForm } from "./site-form";
 import { installItems, openSession, type InstallOptions, type Session } from "./shared";
@@ -21,6 +22,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site essentials [--dry-run] [--no-install]
   npx vamos-ui site form [--kind php-mail|resend|smtp] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
   npx vamos-ui site deploy [--host vercel|netlify|cloudflare|cpanel|vps] [--domain <name>] [--www] [--dry-run]
+  npx vamos-ui site check [url] [--min-score 90] [--ci] [--json]
 
 ${pc.bold("site init")} writes an empty ${SITE_FILE} at the project root (never over an existing one):
 the one source for the business name, contact, address, opening hours, legal ids (MERSİS, tax,
@@ -59,7 +61,13 @@ steps and the checks to run afterwards. It never publishes anything itself:
   netlify     public/_headers (+ public/_redirects for the other host name)
   cloudflare  public/_headers (+ public/_redirects)
   vps         deploy/nginx-<domain>.conf (TLS, redirects, headers, proxy) + deploy/ecosystem.config.cjs (pm2)
-Host: --host, else the plan in vamos.project.json. Domain: --domain, else the plan, else ${SITE_FILE} url.`;
+Host: --host, else the plan in vamos.project.json. Domain: --domain, else the plan, else ${SITE_FILE} url.
+
+${pc.bold("site check")} runs after you publish: the audit on the live URL plus the deploy checks (http → https
+301, one host name, security headers, a real 404, robots.txt and sitemap.xml). Exit code 1 when the
+score is below --min-score (default 90) or anything is an error, so it can gate CI; --ci prints a
+GitHub Actions workflow. Only reads the public site. URL: the argument, else ${SITE_FILE} url, else
+the plan's domain. ${pc.cyan("vamos-ui site check --help")} for every option.`;
 
 export interface EssentialsResult {
   written: string[];
@@ -129,6 +137,7 @@ export async function writeEssentials(ctx: Context, session: Session, opts: Pick
 
 export async function site(ctx: Context, args: ParsedArgs): Promise<number> {
   const sub = args.positionals[0];
+  if (sub === "check") return siteCheck(ctx, args);
   if (bool(args.flags, "help") || !sub || sub === "help") {
     out(SITE_HELP);
     return sub || bool(args.flags, "help") ? 0 : 1;

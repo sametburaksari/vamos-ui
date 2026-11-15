@@ -20,7 +20,7 @@ ${pc.bold("Options")}
 
 Exit code 1 when there are errors (or warnings with --strict). Respects robots.txt Disallow.`;
 
-function int(flags: ParsedArgs["flags"], name: string, min: number, max: number): number | undefined {
+export function int(flags: ParsedArgs["flags"], name: string, min: number, max: number): number | undefined {
   const raw = str(flags, name);
   if (raw === undefined) return undefined;
   const n = Number(raw);
