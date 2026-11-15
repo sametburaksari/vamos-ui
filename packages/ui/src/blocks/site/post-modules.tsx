@@ -185,21 +185,25 @@ export function PostBlock({
   );
 }
 
-interface LayoutProps {
+export interface PostLayoutProps {
   layout: PostBlockLayout;
   posts: NewsPost[];
-  columns: 2 | 3;
+  /** grid: 2 or 3 columns. Default 2. */
+  columns?: 2 | 3;
   excerpts?: boolean;
-  level: 2 | 3 | 4;
-  common: NewsCommonProps;
-  empty: string;
+  /** Card title level. Default 3. */
+  level?: 2 | 3 | 4;
+  /** locale / labels / components passed to every card. */
+  common?: NewsCommonProps;
+  /** Text when `posts` is empty. Default "No stories here yet." */
+  empty?: string;
 }
 
 const key = (p: NewsPost, i: number) => (p.id ?? p.href) + i;
 
 /** The post arrangement of a PostBlock — exported for tabbed panels (`PostTabs`). Server component. */
-export function PostLayout({ layout, posts, columns, excerpts, level, common, empty }: LayoutProps) {
-  if (!posts.length) return <p className="border-t border-line py-6 text-fg-muted">{empty}</p>;
+export function PostLayout({ layout, posts, columns = 2, excerpts, level = 3, common = {}, empty }: PostLayoutProps) {
+  if (!posts.length) return <p className="border-t border-line py-6 text-fg-muted">{empty ?? newsText(common.labels, common.locale)("emptyModule")}</p>;
   const [lead, ...rest] = posts;
   const rows = (list: NewsPost[], cls?: string) => (
     <ul className={cn("flex flex-col gap-5", cls)}>

@@ -78,6 +78,8 @@ export const inventory: InvGroup[] = [
     p("Article layout", true), p("Page intro", true), p("Rich text section", true), p("Media + text", true), p("Contact form", true), p("Map & opening hours", true),
     p("Menu / price list", true), p("Gallery section", true), p("Announcement bar", true),
     p("Cookie / consent banner", true), p("Contact dock (WhatsApp · call)", true), p("Footer", true), p("404", true),
+    p("Post card", true), p("Post modules (featured grid, category blocks)", true), p("Post tabs (tabbed category block)", true), p("News ticker", true),
+    p("Ad slot", true), p("Sidebar widgets (follow counts, popular, comments, categories)", true), p("News masthead (top bar, mega menu, auth dialog)", true),
   ] },
 ];
 

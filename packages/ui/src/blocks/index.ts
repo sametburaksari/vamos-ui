@@ -65,7 +65,7 @@ export { site2Labels, site2LabelsTr, site2LabelsDe, site2LabelsFr, site2LabelsEs
 
 // News / magazine blocks: post cards, lead grid, category modules, tabs, ticker, ads, sidebar, masthead
 export { PostCard, type PostCardProps, type PostCardVariant, type PostCardSize } from "./site/post-card";
-export { FeaturedPosts, PostBlock, PostLayout, type FeaturedPostsProps, type FeaturedPostsLayout, type PostBlockProps, type PostBlockLayout } from "./site/post-modules";
+export { FeaturedPosts, PostBlock, PostLayout, type PostLayoutProps, type FeaturedPostsProps, type FeaturedPostsLayout, type PostBlockProps, type PostBlockLayout } from "./site/post-modules";
 export { PostTabs, type PostTabsProps, type PostTab } from "./site/post-tabs";
 export { NewsTicker, type NewsTickerProps, type NewsTickerItem } from "./site/news-ticker";
 export { NewsPagination, newsPageHref, type NewsPaginationProps } from "./site/news-pagination";

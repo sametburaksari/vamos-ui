@@ -2,6 +2,7 @@
 import type { DocEntry } from "../types";
 import docAccordion from "./accordion";
 import docActivityTimeline from "./activity-timeline";
+import docAdSlot from "./ad-slot";
 import docAddressField from "./address-field";
 import docAlertDialog from "./alert-dialog";
 import docAlert from "./alert";
@@ -93,6 +94,9 @@ import docMotion from "./motion";
 import docMultiStepForm from "./multi-step-form";
 import docNavbar from "./navbar";
 import docNavigationMenu from "./navigation-menu";
+import docNewsMasthead from "./news-masthead";
+import docNewsTicker from "./news-ticker";
+import docNewsWidgets from "./news-widgets";
 import docNotFound from "./not-found";
 import docNotificationCenter from "./notification-center";
 import docPageHeader from "./page-header";
@@ -102,6 +106,9 @@ import docPermissionMatrix from "./permission-matrix";
 import docPinMap from "./pin-map";
 import docPlaceholderArt from "./placeholder-art";
 import docPopover from "./popover";
+import docPostCard from "./post-card";
+import docPostModules from "./post-modules";
+import docPostTabs from "./post-tabs";
 import docPricingTable from "./pricing-table";
 import docProgress from "./progress";
 import docQrCode from "./qr-code";
@@ -159,6 +166,7 @@ import docVideoPlayer from "./video-player";
 export const entries: DocEntry[] = [
   docAccordion,
   docActivityTimeline,
+  docAdSlot,
   docAddressField,
   docAlertDialog,
   docAlert,
@@ -250,6 +258,9 @@ export const entries: DocEntry[] = [
   docMultiStepForm,
   docNavbar,
   docNavigationMenu,
+  docNewsMasthead,
+  docNewsTicker,
+  docNewsWidgets,
   docNotFound,
   docNotificationCenter,
   docPageHeader,
@@ -259,6 +270,9 @@ export const entries: DocEntry[] = [
   docPinMap,
   docPlaceholderArt,
   docPopover,
+  docPostCard,
+  docPostModules,
+  docPostTabs,
   docPricingTable,
   docProgress,
   docQrCode,

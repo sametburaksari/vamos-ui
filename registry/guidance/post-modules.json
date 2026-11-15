@@ -1,0 +1,15 @@
+{
+  "whenToUse": [
+    "News or magazine front pages and section fronts: a lead grid, then category modules in a main column.",
+    "Any feed mapped to NewsPost (a superset of BlogList's PostSummary)."
+  ],
+  "avoidWhen": [
+    "A calm blog index with few posts — use Blog list.",
+    "A single article — use Article layout."
+  ],
+  "related": ["post-card", "post-tabs", "news-widgets", "blog-list", "site-news-01"],
+  "a11y": [
+    "Modules are sections named by their headings; card titles sit one level below.",
+    "Slider pages stay in the DOM (hidden); the counter is announced politely."
+  ]
+}

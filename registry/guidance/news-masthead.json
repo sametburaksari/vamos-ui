@@ -1,0 +1,15 @@
+{
+  "whenToUse": [
+    "The header of a news or magazine site with many sections, where each section needs a preview of its latest stories.",
+    "Sites that need a date / weather strip and reader sign-in with password recovery in a dialog."
+  ],
+  "avoidWhen": [
+    "Small business or SaaS sites — use Navbar.",
+    "Admin panels — use App shell and Sidebar."
+  ],
+  "related": ["navigation-menu", "post-card", "ad-slot", "site-news-01"],
+  "a11y": [
+    "Mega panels open on hover and on focus or Enter; sub-sections swap their stories on focus; Escape closes.",
+    "The search form is a search landmark; Escape closes it and returns focus to its button."
+  ]
+}
