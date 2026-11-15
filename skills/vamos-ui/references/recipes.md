@@ -126,8 +126,8 @@ Pitfalls:
 
 **Community forum** — A forum or community home: live counters, the latest discussions with activity, categories, meetups and top helpers, a topics list with sorting and paging, and solved threads with replies.
 
-- `/` **Home**: header (`page-header` + `stat`) → latest (`list-01` + `sparkline` + `avatar`) → categories (`list-01`) → meetups (`list-01`, optional) → helpers (`avatar` + `list-01`, optional)
-- `/topics` **All topics**: list (`list-01` + `sparkline` + `pagination`)
+- `/` **Home**: header (`page-header` + `stat`) → latest (`topic-list` + `sparkline` + `avatar`) → categories (`list-01`) → meetups (`list-01`, optional) → helpers (`avatar` + `list-01`, optional)
+- `/topics` **All topics**: list (`topic-list` + `pagination`)
 - `/t/[slug]` **Thread**: title (`page-header`) → posts (`comment-thread`) → pulse (`description-list` + `avatar`)
 
 Looks: dense workshop (theme light, material solid, accent ember, density compact, font system, radius default); dark developer (theme dark, material solid, accent lime, density compact, font grotesk).
@@ -265,8 +265,8 @@ Pitfalls:
 
 **Launch waitlist** — A pre-launch page for a product (or event) that is not live yet: one promise, one validated email form, a countdown to the opening, a few proof points and a 'you're on the list' state with a referral link that moves the person up the line.
 
-- `/` **Home**: hero (`hero` + `countdown`) → why (`feature-grid`) → faq (`faq`, optional)
-- `/joined` **You're on the list**: position (`stat` + `progress`, optional) → share (`input` + `button`, optional) → next (`steps`)
+- `/` **Home**: hero (`hero` + `email-capture` + `countdown`) → why (`feature-grid`) → faq (`faq`, optional)
+- `/joined` **You're on the list**: position (`referral-panel`, optional) → share (`referral-panel`, optional) → next (`steps`)
 
 Looks: soft editorial glass (theme light, material glass, accent brand, density comfortable, font editorial, radius round); dark launch countdown (theme dark, material glass, accent ember, density comfortable, font grotesk).
 
@@ -366,9 +366,9 @@ Pitfalls:
 
 **Writer's newsletter** — An email-first publication by one writer or a small desk: the subscribe form is the hero, the latest letter proves the voice, a searchable archive and single-issue pages do the rest.
 
-- `/` **Home**: nameplate (`hero` + `form-01`) → recent (`list-layout`) → about (`media-text`) → readers (`testimonials`, optional, conditional) → faq (`faq`, conditional)
-- `/archive` **Archive**: intro (`page-intro`) → search (`filter-bar` + `input` + `list-layout`) → subscribe (`form-01`)
-- `/archive/[slug]` **Letter**: letter (`article-layout`) → subscribe (`form-01`) → neighbours (`pagination`)
+- `/` **Home**: nameplate (`hero` + `email-capture`) → recent (`list-layout`) → about (`media-text`) → readers (`testimonials`, optional, conditional) → faq (`faq`, conditional)
+- `/archive` **Archive**: intro (`page-intro`) → search (`filter-bar` + `input` + `list-layout`) → subscribe (`email-capture`)
+- `/archive/[slug]` **Letter**: letter (`article-layout`) → subscribe (`email-capture`) → neighbours (`pagination`)
 
 Looks: slow desk (theme light, material solid, density comfortable, font editorial, accent ember, radius sharp); briefing (theme light, material solid, density compact, font grotesk, accent ocean, radius default).
 
@@ -445,7 +445,7 @@ Pitfalls:
 **Personal site and CV** — A one-page personal site for an engineer, designer, consultant or freelancer, with numbered sections and a sticky identity column, plus the same content as a print-perfect A4 CV that saves as PDF.
 
 - `/` **Home**: identity (`section-nav` + `badge` + `button`) → about (`typography`) → experience (`activity-timeline`) → projects (`list-layout` + `badge`, optional) → writing (`blog-list`, optional, conditional) → skills (`description-list`) → contact (`description-list` + `button`)
-- `/cv` **CV**: toolbar (`button`) → sheet (`description-list` + `typography`)
+- `/cv` **CV**: toolbar (`print-button` + `button`) → sheet (`description-list` + `typography` + `print-button`)
 
 Looks: plain engineer (theme light, material solid, density compact, font system, accent ocean, radius default); editorial profile (theme light, material solid, density comfortable, font editorial, accent graphite, radius sharp).
 
@@ -462,9 +462,9 @@ Pitfalls:
 
 **Podcast** — A site for a podcast or audio show: the newest episode in a player on the home page, a searchable episode archive, the hosts, follow links and guest suggestions, and an episode page with chapters, a synced transcript and show notes.
 
-- `/` **Home**: hero (`hero` + `audio-player`) → episodes (`accordion` + `filter-bar` + `input`) → hosts (`team`) → how-made (`media-text`, optional) → follow (`cta`) → suggest (`contact-form`, optional, conditional)
+- `/` **Home**: hero (`hero` + `audio-player`) → episodes (`accordion` + `filter-bar` + `input`) → hosts (`team`) → how-made (`media-text`, optional) → follow (`subscribe-links` + `email-capture`) → suggest (`contact-form`, optional, conditional)
 - `/episodes` **Episodes** (conditional): intro (`page-intro`) → list (`accordion` + `filter-bar` + `pagination`)
-- `/episodes/[slug]` **Episode**: intro (`page-intro`) → player (`audio-player`) → notes (`tabs` + `accordion` + `description-list`) → more (`blog-list`)
+- `/episodes/[slug]` **Episode**: intro (`page-intro`) → player (`audio-player` + `subscribe-links`) → notes (`tabs` + `accordion` + `description-list`) → more (`blog-list`)
 
 Looks: late-night studio (theme dark, material glass, density comfortable, font grotesk, accent ember, radius round); radio bulletin (theme light, material solid, density compact, font corporate, accent ocean, radius default).
 
@@ -573,7 +573,7 @@ Pitfalls:
 
 - `/` **Home**: masthead (`page-header`) → lead-story (`media-text`, optional) → latest (`blog-list`) → topics-authors (`feature-grid` + `avatar`, optional) → most-read-letter (`list-layout` + `rich-text-section`, optional) → newsletter (`cta`, conditional)
 - `/blog` **Archive**: intro (`page-intro`) → filters (`filter-bar` + `input`) → results (`blog-list` + `pagination`)
-- `/blog/[slug]` **Article**: header (`article-layout`) → progress (`reading-progress`, optional) → body (`article-layout` + `rich-text-section` + `code-block`) → author (`avatar` + `card`) → related (`blog-list`) → newsletter (`cta`, conditional)
+- `/blog/[slug]` **Article**: header (`article-layout`) → progress (`reading-progress`, optional) → body (`article-layout` + `rich-text-section` + `code-block`) → author (`avatar` + `card`) → related (`blog-list`) → newsletter (`email-capture`, conditional)
 - `/about` **About** (conditional): intro (`page-intro`) → team (`team`, conditional) → policy (`rich-text-section`, optional) → contact (`contact-form`, conditional)
 
 Looks: bookish magazine (theme light, material solid, density comfortable, font editorial, accent ocean, radius default); terminal log (theme dark, material solid, density compact, font system, accent ember, radius sharp); clean newsroom (theme light, material solid, density compact, font grotesk, accent brand, radius default).

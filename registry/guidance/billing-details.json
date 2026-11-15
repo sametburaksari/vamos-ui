@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Checkout or account forms that collect the buyer for a Turkish e-Fatura / e-Arşiv invoice: individual or company, TCKN or VKN, tax office and address.",
+    "Server-side validation of the same party with validateBillingDetails."
+  ],
+  "avoidWhen": [
+    "Shipping-only addresses — use address-field.",
+    "Sending the invoice itself — that is the e-invoice provider's job, not a form."
+  ],
+  "related": [
+    "address-field",
+    "formatted-input",
+    "checkout-01",
+    "line-items"
+  ],
+  "a11y": [
+    "The individual / company switch is a labelled segmented radio group; fields that change with it keep their labels.",
+    "ID numbers are validated with a message tied to the field, not only a red border."
+  ]
+}

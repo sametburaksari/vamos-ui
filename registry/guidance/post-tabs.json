@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A tabbed category module on a news front (\"Don't miss\") with one tab per section.",
+    "Section tabs that must fold into a More menu when the column is narrow."
+  ],
+  "avoidWhen": [
+    "Navigation between pages — use navbar or section-nav.",
+    "App settings tabs — use tabs."
+  ],
+  "related": [
+    "post-modules",
+    "post-card",
+    "tabs",
+    "news-widgets"
+  ],
+  "a11y": [
+    "WAI-ARIA tabs: arrow keys, Home and End; the selected tab always stays in the visible row.",
+    "Panels loaded on first open show a loading state and are cached per tab."
+  ]
+}

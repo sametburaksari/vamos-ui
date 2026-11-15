@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "\"Listen on\" / \"Follow on\" links for a podcast, a video channel, a newsletter or a blog.",
+    "Offering an RSS or Atom feed with a copy button and the address visible."
+  ],
+  "avoidWhen": [
+    "Social profile links in the site footer — use the footer's social list.",
+    "Share buttons for one article — use the article layout's share actions."
+  ],
+  "related": [
+    "audio-player",
+    "email-capture",
+    "footer",
+    "blog-list"
+  ],
+  "a11y": [
+    "The links form a named group (the title, or \"Follow\"); links that open a new tab say so to screen readers.",
+    "No logos are bundled; icons are aria-hidden, so the visible text is the name. The feed copy result is announced."
+  ]
+}

@@ -50,7 +50,8 @@
         {
           "id": "follow",
           "purpose": "Ways to follow: copy the RSS feed, open a podcast app, get episodes by email.",
-          "use": ["cta"],
+          "use": ["subscribe-links", "email-capture"],
+          "alternatives": ["cta: a single band with one action"],
           "fields": ["RSS feed URL", "Podcast app links", "Email signup or link"],
           "notes": "Copying the feed confirms in a status message. Prefer generic labels and the feed URL over a row of third-party logos."
         },
@@ -101,7 +102,7 @@
         {
           "id": "player",
           "purpose": "The full player: chapter markers on the scrubber, a chapter list, speed and skip controls, and the transcript that follows playback.",
-          "use": ["audio-player"],
+          "use": ["audio-player", "subscribe-links"],
           "fields": ["Audio file", "Chapter titles with start times", "Transcript with speaker and start time per line"],
           "notes": "Clicking a chapter or a transcript line jumps there; the current line is marked with aria-current; 'follow along' can be turned off. The scrubber is a keyboard-operable slider with an accessible name and a value in minutes and seconds."
         },

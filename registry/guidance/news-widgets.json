@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The sidebar of a news, magazine or blog site: popular posts, recent comments, categories with counts, follower counts.",
+    "A main column + sidebar grid with a sticky tail (NewsColumns)."
+  ],
+  "avoidWhen": [
+    "App dashboards — use card and stat.",
+    "A single list of articles — use blog-list."
+  ],
+  "related": [
+    "post-card",
+    "ad-slot",
+    "post-tabs",
+    "news-masthead"
+  ],
+  "a11y": [
+    "Each widget is a labelled section; counts are announced in full, not as compact \"12K\".",
+    "The sidebar stacks under the main column on narrow screens, keeping reading order."
+  ]
+}
