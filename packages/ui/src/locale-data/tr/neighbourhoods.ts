@@ -14,6 +14,7 @@
  * Source and licence are stamped in every file (`source`, `license`).
  */
 import { compareText } from "../../lib/text";
+import { createCachedLoader, fetchJsonLoader, type FetchJsonOptions } from "../core/loader";
 import type { AddressDataSource, AddressNeighbourhood } from "../core/types";
 
 /**
@@ -66,24 +67,14 @@ export function parseTrNeighbourhoods(rows: readonly TrNeighbourhoodRow[]): Addr
  * for concurrent calls). A failed load is not cached, so the next call retries.
  */
 export function createTrNeighbourhoodLoader(load: (plate: number) => Promise<TrNeighbourhoodFile>): NeighbourhoodLoader {
-  const files = new Map<number, Promise<TrNeighbourhoodFile>>();
+  const file = createCachedLoader(load);
   return async (plate, districtCode) => {
-    let file = files.get(plate);
-    if (!file) {
-      file = load(plate);
-      files.set(plate, file);
-      file.catch(() => files.delete(plate));
-    }
-    const rows = (await file).districts[String(districtCode)];
+    const rows = (await file(plate)).districts[String(districtCode)];
     return rows ? parseTrNeighbourhoods(rows) : [];
   };
 }
 
-export interface TrNeighbourhoodsFromUrlOptions {
-  /** Defaults to the global `fetch`. */
-  fetch?: (url: string, init?: RequestInit) => Promise<Response>;
-  init?: RequestInit;
-}
+export type TrNeighbourhoodsFromUrlOptions = FetchJsonOptions;
 
 /**
  * A loader that fetches province files from the app. `url` is a template (`{plate}` → `34`,
@@ -95,15 +86,9 @@ export interface TrNeighbourhoodsFromUrlOptions {
  * ```
  */
 export function trNeighbourhoodsFromUrl(url: string | ((plate: number) => string), opts: TrNeighbourhoodsFromUrlOptions = {}): NeighbourhoodLoader {
-  const href = (plate: number) =>
-    typeof url === "function" ? url(plate) : url.replaceAll("{plate2}", String(plate).padStart(2, "0")).replaceAll("{plate}", String(plate));
-  return createTrNeighbourhoodLoader(async (plate) => {
-    const f = opts.fetch ?? globalThis.fetch;
-    if (!f) throw new Error("trNeighbourhoodsFromUrl: no fetch available");
-    const res = await f(href(plate), opts.init);
-    if (!res.ok) throw new Error(`trNeighbourhoodsFromUrl: ${res.status} for plate ${plate}`);
-    return (await res.json()) as TrNeighbourhoodFile;
-  });
+  return createTrNeighbourhoodLoader(
+    fetchJsonLoader<number, TrNeighbourhoodFile>(url, (plate) => ({ plate, plate2: String(plate).padStart(2, "0") }), { ...opts, name: "trNeighbourhoodsFromUrl" }),
+  );
 }
 
 /** An address source with a neighbourhood level added (`trAddress` has none by default). */

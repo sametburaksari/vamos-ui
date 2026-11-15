@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "vitest-axe";
 import { AddressField, RegionSelect, formatAddress, type Address } from "./address-field";
 import { Field } from "./input";
+import { LocaleProvider } from "../lib/locale";
+import { loadAddressFormats } from "../locale-data/world/formats";
 import { trAddress } from "../locale-data/tr/address";
 import { createTrNeighbourhoodLoader, withNeighbourhoods, type TrNeighbourhoodFile } from "../locale-data/tr/neighbourhoods";
 
@@ -52,7 +54,7 @@ describe("AddressField", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
-  it("falls back to free text for countries without data and warns on a mismatched TR postal code", async () => {
+  it("follows the chosen country's format and warns on a mismatched TR postal code", async () => {
     const user = userEvent.setup();
     function Demo() {
       const [a, setA] = React.useState<Address>({ country: "TR", region1: "Ankara" });
@@ -65,7 +67,8 @@ describe("AddressField", () => {
     expect(screen.getByText("Postal codes in Ankara start with 06")).toBeInTheDocument();
     await user.selectOptions(screen.getByRole("combobox", { name: "Country" }), "DE");
     expect(screen.getByRole("textbox", { name: "City" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "State / Province" })).toBeInTheDocument();
+    // German addresses have no state line.
+    expect(screen.queryByRole("textbox", { name: /State/ })).toBeNull();
   });
 
   it("read-only renders a formatted address", () => {
@@ -127,5 +130,150 @@ describe("RegionSelect", () => {
     await user.selectOptions(select, "Antalya");
     expect(onValueChange).toHaveBeenCalledWith("Antalya");
     expect(await axe(container)).toHaveNoViolations();
+  });
+});
+
+describe("AddressField for every country", () => {
+  beforeAll(() => loadAddressFormats());
+  const labelsOf = (container: HTMLElement) => [...container.querySelectorAll("label")].map((l) => l.textContent?.replace(/\s*\*$/, "").trim());
+
+  it("lays out and names the parts the way the country writes them", async () => {
+    const { container, rerender } = render(<AddressField legend="Address" defaultValue={{ country: "US" }} />);
+    expect(labelsOf(container)).toEqual(["Country", "Street address", "Apartment, suite, building(optional)", "City", "State", "ZIP code"]);
+    rerender(<AddressField key="de" legend="Address" defaultValue={{ country: "DE" }} />);
+    expect(labelsOf(container)).toEqual(["Country", "Street address", "Apartment, suite, building(optional)", "Postal code", "City"]);
+    rerender(<AddressField key="ae" legend="Address" defaultValue={{ country: "AE" }} />);
+    expect(labelsOf(container)).toEqual(["Country", "Street address", "Apartment, suite, building(optional)", "Emirate"]);
+    rerender(<AddressField key="in" legend="Address" defaultValue={{ country: "IN" }} />);
+    expect(labelsOf(container)).toContain("PIN code");
+    rerender(<AddressField key="jp" legend="Address" defaultValue={{ country: "JP" }} />);
+    expect(labelsOf(container)).toEqual(["Country", "Street address", "Apartment, suite, building(optional)", "Prefecture", "Postal code"]);
+    rerender(
+      <LocaleProvider locale="ja-JP">
+        <AddressField key="jp-ja" legend="Address" defaultValue={{ country: "JP" }} />
+      </LocaleProvider>,
+    );
+    // In Japanese the local order: postal code, prefecture, then the street.
+    expect(labelsOf(container)).toEqual(["Country", "Postal code", "Prefecture", "Street address", "Apartment, suite, building(optional)"]);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("checks and normalises postal codes against the country pattern", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<AddressField legend="Address" defaultValue={{ country: "GB" }} onValueChange={onValueChange} />);
+    const postal = screen.getByRole("textbox", { name: "Postal code" });
+    expect(postal).toHaveAttribute("placeholder", "EC1Y 8SY");
+    expect(postal).not.toHaveAttribute("inputmode");
+    await user.type(postal, "ec1y 8sy");
+    await user.tab();
+    expect(onValueChange).toHaveBeenLastCalledWith(expect.objectContaining({ postalCode: "EC1Y 8SY" }));
+    await user.clear(postal);
+    await user.type(postal, "12345");
+    await user.tab();
+    expect(screen.getByText("Expected a code like EC1Y 8SY")).toBeInTheDocument();
+  });
+
+  it('required="auto" uses the country rules', () => {
+    render(<AddressField legend="Address" defaultValue={{ country: "US" }} required="auto" />);
+    expect(screen.getByRole("textbox", { name: /ZIP code/ })).toBeRequired();
+    expect(screen.getByRole("combobox", { name: /State/ })).toBeRequired();
+    expect(screen.getByRole("textbox", { name: /Apartment/ })).not.toBeRequired();
+  });
+
+  it("read-only prints the country's format", () => {
+    render(<AddressField legend="Office" readOnly value={{ country: "JP", postalCode: "154-0023", region1: "Tokyo", line1: "1-2-3 Wakabayashi" }} />);
+    expect(screen.getByText("1-2-3 Wakabayashi, Tokyo")).toBeInTheDocument();
+    expect(screen.getByText("154-0023")).toBeInTheDocument();
+  });
+});
+
+describe("subdivisions", () => {
+  it("lists a country's states with the values the post expects", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const { container } = render(<AddressField legend="Address" defaultValue={{ country: "US" }} onValueChange={onValueChange} />);
+    const state = screen.getByRole("combobox", { name: "State" });
+    await screen.findByRole("option", { name: "California" });
+    await user.selectOptions(state, "California");
+    expect(onValueChange).toHaveBeenLastCalledWith(expect.objectContaining({ region1: "CA" }));
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shows local names in the country's language and Latin ones elsewhere", async () => {
+    const { unmount } = render(<AddressField legend="Address" defaultValue={{ country: "JP" }} />);
+    expect(await screen.findByRole("option", { name: "Tokyo" })).toHaveAttribute("value", "Tokyo");
+    unmount();
+    render(
+      <LocaleProvider locale="ja-JP">
+        <AddressField legend="Address" defaultValue={{ country: "JP" }} />
+      </LocaleProvider>,
+    );
+    expect(await screen.findByRole("option", { name: "東京都" })).toHaveAttribute("value", "東京都");
+    // Source order (north to south) in Japanese.
+    expect(within(screen.getByRole("combobox", { name: "Prefecture" })).getAllByRole("option")[1]).toHaveTextContent("北海道");
+  });
+
+  it("selects a stored name or ISO code of a known subdivision, and keeps text for countries without a list", async () => {
+    render(
+      <>
+        <Field label="Region">
+          <RegionSelect country="US" defaultValue="US-CA" />
+        </Field>
+        <AddressField legend="Address" defaultValue={{ country: "AE" }} subdivisions={false} />
+      </>,
+    );
+    await screen.findByRole("option", { name: "California" });
+    expect(screen.getByRole("combobox", { name: "Region" })).toHaveValue("CA");
+    expect(screen.getByRole("textbox", { name: "Emirate" })).toBeInTheDocument();
+  });
+
+  it("uses a custom loader", async () => {
+    const loader = vi.fn(async () => ({ source: "fixture", license: "MIT", generated: "2026-11-15", country: "ZZ", lang: "en", from: "cldr", rows: [["N", "North", "", ""], ["S", "South", "", ""]] as [string, string, string, string][] }));
+    render(
+      <Field label="Area">
+        <RegionSelect country="ZZ" subdivisions={loader} />
+      </Field>,
+    );
+    expect(await screen.findByRole("option", { name: "South" })).toBeInTheDocument();
+    expect(loader).toHaveBeenCalledWith("ZZ");
+  });
+});
+
+describe("city suggestions", () => {
+  it("loads a country's cities on first focus and narrows them to the chosen state", async () => {
+    const user = userEvent.setup();
+    const cities = vi.fn(async () => ({
+      source: "fixture",
+      license: "CC BY 4.0",
+      attribution: "City data © GeoNames (https://www.geonames.org), CC BY 4.0",
+      generated: "2026-11-15",
+      country: "US",
+      lang: "en",
+      subdivisions: ["CA", "NY"],
+      rows: [["New York City", "", 1], ["Los Angeles", "", 0], ["San Diego", "", 0]] as [string, string, number][],
+    }));
+    function Demo() {
+      const [a, setA] = React.useState<Address>({ country: "US" });
+      return <AddressField legend="Address" value={a} onValueChange={setA} cities={cities} />;
+    }
+    const { container } = render(<Demo />);
+    const city = screen.getByLabelText("City");
+    expect(cities).not.toHaveBeenCalled();
+    await user.click(city);
+    await vi.waitFor(() => expect(container.querySelectorAll("datalist option")).toHaveLength(3));
+    expect(city).toHaveAttribute("list", container.querySelector("datalist")!.id);
+    await screen.findByRole("option", { name: "California" });
+    await user.selectOptions(screen.getByRole("combobox", { name: "State" }), "California");
+    await vi.waitFor(() => expect([...container.querySelectorAll("datalist option")].map((o) => o.getAttribute("value"))).toEqual(["Los Angeles", "San Diego"]));
+    await user.type(city, "Smallville");
+    expect(city).toHaveValue("Smallville");
+    expect(cities).toHaveBeenCalledTimes(1);
+  });
+
+  it("makes no request without a cities loader", () => {
+    const { container } = render(<AddressField legend="Address" defaultValue={{ country: "US" }} />);
+    expect(container.querySelector("datalist")).toBeNull();
+    expect(screen.getByRole("textbox", { name: "City" })).not.toHaveAttribute("list");
   });
 });
