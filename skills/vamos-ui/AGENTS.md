@@ -4,7 +4,7 @@
 This project builds its interface with Vamos UI (https://ui.vamos.ist). `vamos.json` at the root says where the kit lives (`uiDir`, `blocksDir`) and how to import it (`importAlias`). Import kit code from that alias, never from a hand-written copy.
 
 ### Workflow for every screen
-1. **Start from a block.** Find the closest whole screen: MCP `plan_screen` / `search`, or `npx vamos-ui search "<need>"` and `npx vamos-ui list --type block`. Install with `npx vamos-ui add <block>`.
+1. **Start from a block.** Find the closest whole screen: MCP `plan_screen` / `search`, or `npx vamos-ui search "<need>"` and `npx vamos-ui list --type block`. Install with `npx vamos-ui add <block>`. A whole website is not copied from an example site: `npx vamos-ui new` (MCP `start_project`) picks a recipe and lists each page's sections with the kit components to use.
 2. **Add components** with `npx vamos-ui add <name...>`. Before using one you have not used yet, read its API with MCP `get_item` or `npx vamos-ui view <name>`; do not guess props.
 3. **Compose with tokens only** and real content (realistic names, amounts, dates; empty, loading and error states).
 4. **Verify:** `npx vamos-ui verify <changed files>` must report no errors. Fix warnings or suppress them with `// vamos-ui-ignore <reason>`.

@@ -15,6 +15,7 @@ const missing = fileURLToPath(new URL("./test/stubs/missing-module.ts", import.m
 alias["vamos-ui/verify"] = verifySrc ?? missing;
 alias["vamos-ui/brand"] = brandSrc ?? missing;
 alias["vamos-ui/audit"] = resolveFirst("../cli/src/audit/index.ts") ?? missing;
+alias["vamos-ui/project"] = resolveFirst("../cli/src/project/index.ts") ?? missing;
 
 export default defineConfig({
   test: {
