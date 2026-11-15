@@ -79,6 +79,9 @@ export const inventory: InvGroup[] = [
     p("Menu / price list", true), p("Gallery section", true), p("Announcement bar", true),
     p("Cookie / consent banner", true), p("Contact dock (WhatsApp · call)", true), p("Footer", true), p("404", true),
   ] },
+  { group: "Commerce & reviews", items: [
+    p("Star rating", true), p("Review score box", true), p("Product card & grid", true),
+  ] },
 ];
 
 /** Recipes: domain screens built from the kit. */

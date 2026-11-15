@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Showing an average rating on product cards, listings and review summaries.",
+    "Asking for a rating in a review or feedback form (StarRatingInput)."
+  ],
+  "avoidWhen": [
+    "Ratings without a source or count — say where the number comes from.",
+    "Satisfaction surveys with labelled answers — use a Radio group."
+  ],
+  "related": [
+    "review-score",
+    "product-card",
+    "testimonials"
+  ],
+  "a11y": [
+    "Display is one role=\"img\" named “Rated 4.5 out of 5”.",
+    "Input is a native radio group in a fieldset with a legend; every radio is named (“4 stars”)."
+  ]
+}
