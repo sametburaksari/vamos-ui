@@ -4,10 +4,10 @@ import { bool, str, type ParsedArgs } from "../args";
 import { writeAgentFiles } from "../core/agent";
 import { DEFAULT_CONFIG, findProjectRoot, readConfig, validateConfig, writeConfig, CONFIG_FILE } from "../core/config";
 import { detectProject, suggestPaths } from "../core/project";
-import { DEFAULT_REGISTRY, Registry, resolveRegistryLocation } from "../core/registry";
+import { DEFAULT_REGISTRY, resolveRegistryLocation } from "../core/registry";
 import { CliError, type RegistryIndex, type VamosConfig } from "../core/types";
 import { p, pc, type Context } from "../ui";
-import { installItems } from "./shared";
+import { installItems, openRegistry } from "./shared";
 import { htmlSnippet } from "./theme";
 import { applyPreset, parsePresetFlag } from "./preset";
 import { describePreset, encodePreset } from "../preset";
@@ -86,7 +86,7 @@ export async function init(ctx: Context, args: ParsedArgs): Promise<number> {
   if (!config.tsx) p.log.warn("vamos-ui ships TypeScript sources; tsx: false is not supported yet, files are written as .tsx.");
 
   const location = resolveRegistryLocation({ flag: ctx.registryFlag, config: config.registry, cwd: root, env: ctx.env });
-  const registry = new Registry(location);
+  const registry = openRegistry(ctx, location);
   const index = await registry.index();
   const base = baseItems(index);
   const session = { root, config, registry };

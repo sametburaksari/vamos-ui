@@ -21,7 +21,17 @@ export async function openSession(ctx: Context, opts: { config: "required" | "op
   const found = opts.config === "required" ? await requireConfig(root) : await readConfig(root);
   const config = found ?? DEFAULT_CONFIG;
   const location = resolveRegistryLocation({ flag: ctx.registryFlag, config: found?.registry, cwd: root, env: ctx.env });
-  return { root, config, registry: new Registry(location), hasConfig: !!found };
+  return { root, config, registry: openRegistry(ctx, location), hasConfig: !!found };
+}
+
+/** The registry at `location`, with the bundled copy as fallback (or as the only source with --offline). */
+export function openRegistry(ctx: Context, location: string): Registry {
+  return new Registry(location, {
+    offline: ctx.offline,
+    env: ctx.env,
+    // --json keeps stdout machine-readable, so the notice goes to stderr there.
+    notice: (m) => (ctx.json ? process.stderr.write(`${m}\n`) : p.log.warn(m)),
+  });
 }
 
 export function sourceOptions(session: Pick<Session, "root" | "config">): SourceOptions {
@@ -32,7 +42,7 @@ export function sourceOptions(session: Pick<Session, "root" | "config">): Source
 export function fetchSpec(session: Session, spec: string): Promise<RegistryItem> {
   const opts = sourceOptions(session);
   const source = parseItemSpec(spec, opts);
-  return source ? fetchExternalItem(source, opts) : session.registry.item(spec);
+  return source ? fetchExternalItem(source, { ...opts, offline: session.registry.offline }) : session.registry.item(spec);
 }
 
 /** Says where third-party items come from, before anything is written. */
