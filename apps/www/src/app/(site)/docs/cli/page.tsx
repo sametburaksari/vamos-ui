@@ -158,6 +158,7 @@ npx vamos-ui task next                   # the plan's tasks that can start now, 
 npx vamos-ui agents                      # orchestrator skill + nine specialist subagents for Claude Code
 npx vamos-ui site form                   # contact-form sender: contact.php, Resend or SMTP
 npx vamos-ui site deploy                 # host config (https, headers, cache) and publishing steps
+npx vamos-ui site check                  # after publishing: audit + redirects, headers, 404, sitemap; exit 1 below 90
 npx vamos-ui audit https://example.com   # audit a live site: SEO basics, broken links, placeholders
 npx vamos-ui brand import https://example.com  # turn a site into a brand profile
 npx vamos-ui site init       # empty vamos.site.json: the business info for a website
@@ -241,6 +242,31 @@ npx vamos-ui task reset forms  # QA found a problem: reopen it`} />
           ["VPS", <C key="p">deploy/nginx-&lt;domain&gt;.conf, deploy/ecosystem.config.cjs</C>, "TLS server blocks with redirects and headers in front of Next.js on pm2 (standalone output)."],
         ]}
       />
+      <H3 id="site-check">After the deploy</H3>
+      <P>
+        Once the site is live, <C>vamos-ui site check</C> closes the loop: it runs the audit on the live URL and checks that the
+        host config took effect. It only reads the public site. The URL comes from <C>vamos.site.json</C>, else the plan&apos;s
+        domain; pass one to check another address.
+      </P>
+      <Table
+        head={["Check", "Passes when"]}
+        rows={[
+          ["http → https", <span key="h"><C>http://</C> answers 301 (or 308) to <C>https://</C>.</span>],
+          ["One host name", "The www or bare twin 301s to the address the site is served on (skipped for subdomains)."],
+          ["Security headers", <span key="s"><C>Strict-Transport-Security</C>, <C>X-Content-Type-Options</C> and <C>Referrer-Policy</C> are sent; <C>X-Frame-Options</C> and <C>Permissions-Policy</C> are recommended.</span>],
+          ["404", "An unknown path answers 404, not 200 or a redirect to the home page (a soft 404)."],
+          ["robots.txt, sitemap.xml", "Both answer, parse, and robots.txt does not block the site."],
+          ["Audit", <span key="a">Score at least <C>--min-score</C> (default 90) and no errors.</span>],
+        ]}
+      />
+      <P>
+        It exits 1 when anything fails, so it can gate CI; <C>--json</C> gives the result as data. In a planned project a pass
+        ends with the command that closes the deploy task (<C>npx vamos-ui task done deploy</C>); the task is never marked for you.{" "}
+        <C>--ci</C> prints a GitHub Actions workflow that runs the check after each production deploy, by hand and weekly:
+      </P>
+      <Code lang="bash" code={`npx vamos-ui site check                          # URL from vamos.site.json
+npx vamos-ui site check https://ornek.com.tr --min-score 85 --lang en
+npx vamos-ui site check --ci > .github/workflows/site-check.yml`} />
 
       <H2 id="mcp">MCP server (AI agents)</H2>
       <P>

@@ -16,6 +16,12 @@ function readJson(file: string): Record<string, any> | null {
   }
 }
 
+/** The host the site is served on: www.<domain> with --www, else the domain as given. */
+function hostName(domain: string, www: boolean): string {
+  const bare = domain.replace(/^https?:\/\//, "").replace(/\/.*$/, "").replace(/^www\./i, "").toLowerCase();
+  return www ? `www.${bare}` : bare;
+}
+
 /**
  * `site deploy`: the host's config files (one HTTPS address, security headers, cache rules) and
  * the publishing steps. Host: --host, else the plan in vamos.project.json. Never replaces a file
@@ -51,8 +57,9 @@ export async function siteDeploy(ctx: Context, args: ParsedArgs): Promise<number
   }
   const steps = guide.steps.map((s) => s[lang]);
   const checks = guide.checks.map((s) => s[lang]);
+  const checkCommand = `npx vamos-ui site check${domain ? ` https://${hostName(domain, www)}` : ""}`;
   if (ctx.json) {
-    printJson({ host, domain, output: guide.output, written: dryRun ? [] : written, planned: written, kept, steps, checks, files: guide.files });
+    printJson({ host, domain, output: guide.output, written: dryRun ? [] : written, planned: written, kept, steps, checks, files: guide.files, next: checkCommand });
     return 0;
   }
   p.intro(pc.bold("vamos-ui site deploy"));
@@ -61,6 +68,11 @@ export async function siteDeploy(ctx: Context, args: ParsedArgs): Promise<number
   if (lines.length) p.note(lines.join("\n"), dryRun ? "Config (dry run)" : "Config");
   p.note(steps.map((s, i) => `${i + 1}. ${s}`).join("\n"), lang === "tr" ? "Yayın adımları" : "Steps");
   p.note(checks.map((s) => `- ${s}`).join("\n"), lang === "tr" ? "Yayından sonra" : "After the deploy");
+  p.log.step(
+    lang === "tr"
+      ? `Yayınladıktan sonra hepsini tek komutla kontrol edin (denetim + yönlendirmeler, başlıklar, 404, sitemap; eşiğin altında 1 ile çıkar): ${pc.cyan(checkCommand)}`
+      : `Once it is live, check it all in one go (audit + redirects, headers, 404, sitemap; exits 1 below the bar): ${pc.cyan(checkCommand)}`,
+  );
   p.outro(dryRun ? "Dry run: nothing was written." : written.length ? `Wrote ${plural(written.length, "file")}. Nothing was published; that step is yours.` : "Nothing to write. Nothing was published.");
   return 0;
 }

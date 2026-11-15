@@ -52,6 +52,9 @@ ${pc.bold("Commands")}
   site form            Contact-form sender: contact.php, Resend or SMTP   --kind, --to, --dry-run
   site deploy          Host config (redirects, security headers, cache) and publishing steps
                        --host vercel|netlify|cloudflare|cpanel|vps, --domain, --www, --dry-run
+  site check [url]     After publishing: audit the live URL + deploy checks (http → https 301,
+                       one host name, security headers, 404, robots/sitemap); exit 1 below
+                       --min-score (default 90) or on errors   --ci (GitHub Actions), --json
   diff [names...]      Compare installed files with the registry   --summary, --check
   upgrade [names...]   Update installed items, keeping your local edits
   theme                Pick the 6 theme axes and print the <html> attributes
