@@ -7,6 +7,7 @@ import docAdSlot from "./ad-slot";
 import docAddressField from "./address-field";
 import docAlertDialog from "./alert-dialog";
 import docAlert from "./alert";
+import docAmountPicker from "./amount-picker";
 import docAnnouncementBar from "./announcement-bar";
 import docAppShell from "./app-shell";
 import docApprovalFlow from "./approval-flow";
@@ -33,6 +34,7 @@ import docCard from "./card";
 import docCarousel from "./carousel";
 import docChart from "./chart";
 import docCheckbox from "./checkbox";
+import docChoiceGrid from "./choice-grid";
 import docCollapsible from "./collapsible";
 import docColorPicker from "./color-picker";
 import docComboChart from "./combo-chart";
@@ -56,6 +58,7 @@ import docDropdownMenu from "./dropdown-menu";
 import docEditorLayout from "./editor-layout";
 import docEmptyState from "./empty-state";
 import docEntityCard from "./entity-card";
+import docEstimator from "./estimator";
 import docExport from "./export";
 import docFaq from "./faq";
 import docFeatureGrid from "./feature-grid";
@@ -71,6 +74,7 @@ import docGallerySection from "./gallery-section";
 import docGallery from "./gallery";
 import docGantt from "./gantt";
 import docGauge from "./gauge";
+import docGoalMeter from "./goal-meter";
 import docHeatmap from "./heatmap";
 import docHero from "./hero";
 import docHierarchyChart from "./hierarchy-chart";
@@ -165,6 +169,7 @@ import docTagInput from "./tag-input";
 import docTaskList from "./task-list";
 import docTeam from "./team";
 import docTestimonials from "./testimonials";
+import docTierPricing from "./tier-pricing";
 import docTimePicker from "./time-picker";
 import docTimeTracker from "./time-tracker";
 import docToast from "./toast";
@@ -188,6 +193,7 @@ export const entries: DocEntry[] = [
   docAddressField,
   docAlertDialog,
   docAlert,
+  docAmountPicker,
   docAnnouncementBar,
   docAppShell,
   docApprovalFlow,
@@ -214,6 +220,7 @@ export const entries: DocEntry[] = [
   docCarousel,
   docChart,
   docCheckbox,
+  docChoiceGrid,
   docCollapsible,
   docColorPicker,
   docComboChart,
@@ -237,6 +244,7 @@ export const entries: DocEntry[] = [
   docEditorLayout,
   docEmptyState,
   docEntityCard,
+  docEstimator,
   docExport,
   docFaq,
   docFeatureGrid,
@@ -252,6 +260,7 @@ export const entries: DocEntry[] = [
   docGallery,
   docGantt,
   docGauge,
+  docGoalMeter,
   docHeatmap,
   docHero,
   docHierarchyChart,
@@ -346,6 +355,7 @@ export const entries: DocEntry[] = [
   docTaskList,
   docTeam,
   docTestimonials,
+  docTierPricing,
   docTimePicker,
   docTimeTracker,
   docToast,
