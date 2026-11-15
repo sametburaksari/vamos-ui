@@ -11,8 +11,8 @@ const entry: DocEntry = {
   title: "Address field",
   group: "Forms & inputs",
   description:
-    "A structured postal address in one fieldset: country, then province and district pickers for countries with region data (Türkiye's 81 provinces and 973 districts ship built in, loaded on demand), free text everywhere else. An optional neighbourhood (mahalle / köy) level adds about 50 000 Turkish neighbourhoods and villages, one small file per province, loaded only when that province is picked. Changing a parent clears its children; read-only prints the address the way the country writes it.",
-  source: ["components/address-field.tsx", "locale-data/tr/address.ts", "locale-data/tr/neighbourhoods.ts", "locale-data/core/types.ts"],
+    "A structured postal address in one fieldset, laid out the way each country writes addresses: Germany gets street, PLZ and city; the US street, city, state and ZIP code; Japan postal code, prefecture and street; the Emirates no postal code at all. Labels follow the country (Prefecture, Emirate, PIN code, Eircode) and postal codes are checked against its pattern; the formats for 250 countries load as one 5.5 kB chunk on first use. Türkiye's 81 provinces and 973 districts are cascading pickers (built in, loaded on demand), with an optional neighbourhood level of about 50 000 neighbourhoods and villages, one small file per province. Changing a parent clears its children; read-only prints the address the way the country writes it.",
+  source: ["components/address-field.tsx", "locale-data/world/formats.ts", "locale-data/world/format-address.ts", "locale-data/tr/address.ts", "locale-data/tr/neighbourhoods.ts", "locale-data/core/types.ts"],
   basedOn: "Fieldset · Field · native select",
   usage: `import { AddressField } from "@vamos-ui/react";
 
@@ -26,7 +26,7 @@ const entry: DocEntry = {
   demo: ex("demo", "Demo", "address-field/demo.tsx", AddressFieldDemo),
   examples: [
     ex("neighbourhoods", "Neighbourhoods (mahalle)", "address-field/neighbourhoods.tsx", AddressNeighbourhoods, "sources={{ TR: trAddressWithNeighbourhoods }} adds a third picker. Values are labels such as \"Caferağa Mah.\" or \"Akören Köyü\" (a town's neighbourhood carries the town: \"Cami Mah. (Pınarbaşı)\"), so every option in a district is unique. Picking one fills the postal code unless the visitor typed their own."),
-    ex("multi-country", "Several countries", "address-field/multi-country.tsx", AddressMultiCountry, "Countries without a data source get free-text State / Province and City fields; US gets a ZIP code label. formatAddress() orders the lines per country."),
+    ex("multi-country", "Every country", "address-field/multi-country.tsx", AddressMultiCountry, "Switch the country: the parts, their order and their names change with it (US: City · State · ZIP code; JP: Postal code · Prefecture; AE: Emirate, no postal code). A postal code that does not fit the country's pattern gets a hint with an example; one that fits once upper-cased is normalised on blur. formatAddress() prints the lines in the same order."),
     ex("compact", "Summary + edit in a dialog", "address-field/compact.tsx", AddressCompact, "For record pages: show the formatted line, edit in a Dialog, save on confirm."),
     ex("region-select", "Region pickers alone", "address-field/region-select.tsx", RegionSelectExample, "RegionSelect works without the fieldset — location filters, branch pickers."),
     ex("read-only", "Read-only", "address-field/read-only.tsx", AddressReadOnly, "A semantic <address> block in the country's order: \"34844 Maltepe/İstanbul\", \"San Francisco, CA 94104\"."),
@@ -38,10 +38,10 @@ const entry: DocEntry = {
       { name: "sources", type: "Record<string, AddressDataSource>", default: "{ TR: trAddress }", description: "Region data per country (provinces(), districts(code), optional neighbourhoods(province, district); all async). trAddressWithNeighbourhoods adds the mahalle level." },
       { name: "countries", type: "string[]", default: "all", description: "Country list (names via Intl.DisplayNames in the provider locale)." },
       { name: "defaultCountry", type: "string", default: "TR for tr locales, else the locale region", description: "Initial country when there is no value." },
-      { name: "fields", type: "AddressPart[]", default: "all; region3 only with a neighbourhood source", description: "Parts to render. region3 without a neighbourhood source is a text input." },
-      { name: "required", type: "AddressPart[]", description: "Required parts (asterisk + native required)." },
+      { name: "fields", type: "AddressPart[]", default: "the country's parts", description: "Parts to render. Default: the parts the country's addresses use, in its order (no state for DE, no postal code for AE); with a cascading source all parts, region3 only with neighbourhoods." },
+      { name: "required", type: 'AddressPart[] | "auto"', description: "Required parts (asterisk + native required). \"auto\" uses the country's rules (US: street, city, state, ZIP)." },
       { name: "errors", type: "Partial<Record<AddressPart, ReactNode>>", description: "Per-part error messages from your validation." },
-      { name: "layout", type: '"grid" | "stack"', default: '"grid"', description: "Two columns from sm, or one." },
+      { name: "layout", type: '"grid" | "stack"', default: '"grid"', description: "Rows as the country writes them, side by side from sm (City · State · ZIP on one row for the US), or one column." },
       { name: "name", type: "string", description: "Form name prefix: billing → billing[country], billing[region1]…" },
       { name: "legend / hint", type: "ReactNode", description: "Fieldset legend and helper text." },
       { name: "readOnly · disabled · size", type: "boolean · boolean · sm | md | lg", description: "Read-only renders a formatted <address>." },
@@ -62,10 +62,16 @@ const entry: DocEntry = {
       { name: "withNeighbourhoods(source, loader)", type: "AddressDataSource", description: "Adds the level to a source; trAddress itself stays two levels." },
     ] },
     { name: "formatAddress", props: [
-      { name: "formatAddress(address, { locale?, includeCountry? })", type: "string[]", description: "Lines in the country's convention (TR, US/CA/AU, GB/IE, others)." },
+      { name: "formatAddress(address, { locale?, includeCountry?, format?, postal?, latin? })", type: "string[]", description: "Lines in the country's convention. format: pass await loadAddressFormat(cc) to be exact before the data has loaded (otherwise built-in rules for TR, US, CA, AU, GB, DE). postal: capitals where the country wants them (GB town and postcode). latin: the Latin-script order for JP, CN, KR… (default: when the address is in Latin script)." },
+    ] },
+    { name: "Address formats (locale-data)", props: [
+      { name: "loadAddressFormat(country)", type: "Promise<AddressFormat>", description: "{ fields, required, upper, kinds: { region1: \"state\" | \"prefecture\" | \"emirate\" …, postalCode: \"zip\" | \"pin\" … }, postalCode?: { pattern, examples, prefix? }, lines, latinLines? }. One lazy chunk for all countries, cached." },
+      { name: "checkPostalCode(code, format)", type: "{ status, value }", description: "status ok | format | empty | none (no postal codes); value is trimmed and upper-cased, the printed prefix (CH-) removed." },
+      { name: "validateAddress(address, format, { required? })", type: "Partial<Record<AddressPart, \"required\" | \"format\">>", description: "The same rules on the server: required parts and the postal code pattern." },
     ] },
   ],
   notes: [
+    "Address formats (field order, required fields, upper-casing, field names, postal code patterns and examples) come from Google's Address Data Service, the metadata behind libaddressinput and Chromium autofill, licensed CC BY 4.0 (© Google LLC). packages/ui/scripts/world-address.mjs regenerates locale-data/world/address-formats.json and stamps the source, licence and date in it.",
     "Turkish postal codes start with the plate code; a mismatch with the chosen province shows a hint, not an error.",
     "Neighbourhood data: github.com/ubeydeozdmr/turkiye-api (MIT), names from TÜİK MEDAS, postal codes from PTT (official codes only), 32 279 neighbourhoods and 18 183 villages. Every province file carries its source, licence and generation date; district codes are checked against the province / district list when the files are regenerated (packages/ui/scripts/tr-neighbourhoods.mjs).",
     "trAddress alone never loads neighbourhood data; only a source built with withNeighbourhoods does, and only for the province being edited.",

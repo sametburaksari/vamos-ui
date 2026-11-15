@@ -13,6 +13,8 @@ export type {
   IbanCountryRule,
   TaxRate,
   TaxScheme,
+  Address,
+  AddressPart,
   AddressProvince,
   AddressDistrict,
   AddressNeighbourhood,
@@ -25,3 +27,4 @@ export { createHolidayProvider, combineHolidayProviders, isRangeCovered, holiday
 export { workingValue, isWorkingDay, countWorkingDays, addWorkingDays, nextWorkingDay } from "./working-days";
 export { IBAN_LENGTHS, normalizeIban, ibanCheckDigits, buildIban, validateIban, isValidIban, formatIban, electronicIban } from "./iban";
 export { toUnits, fromUnits, mulDivRound, roundHalfUp, addDecimal, subtractDecimal, multiplyDecimal, divideDecimal, compareDecimal } from "./decimal";
+export { createCachedLoader, fillUrlTemplate, fetchJsonLoader, type FetchJsonOptions } from "./loader";

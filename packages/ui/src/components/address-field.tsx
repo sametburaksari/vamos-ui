@@ -9,33 +9,29 @@ import { useLocale } from "../lib/locale";
 import { compareText, foldText } from "../lib/text";
 import { useControllableState, useLatest } from "../lib/use-controllable-state";
 import { controlVariants } from "../lib/variants";
-import type { AddressDataSource, AddressNeighbourhood, AddressProvince } from "../locale-data/core/types";
+import type { Address, AddressDataSource, AddressNeighbourhood, AddressPart, AddressProvince } from "../locale-data/core/types";
 import { checkTrPostalCode, trAddress } from "../locale-data/tr/address";
+import {
+  addressFormatFallback,
+  checkPostalCode,
+  loadAddressFormats,
+  peekAddressFormat,
+  subscribeAddressFormats,
+  type AddressFormat,
+  type CityKind,
+  type PostalCodeKind,
+  type RegionKind,
+  type SublocalityKind,
+} from "../locale-data/world/formats";
+import { formatAddress } from "../locale-data/world/format-address";
 import { Field, Fieldset, Input } from "./input";
+
+export { formatAddress };
+export type { Address, AddressPart };
 
 /* ------------------------------------------------------------------ */
 /* Types & data                                                        */
 /* ------------------------------------------------------------------ */
-
-/**
- * A structured postal address. Region names are stored as text (official spelling), because
- * invoices (UBL-TR `CityName` / `CitySubdivisionName`) and labels need names, not codes.
- */
-export interface Address {
-  /** ISO 3166-1 alpha-2. */
-  country: string;
-  /** Province / state ("İstanbul", "California"). */
-  region1?: string;
-  /** District / city ("Kadıköy", "San Francisco"). */
-  region2?: string;
-  /** Neighbourhood / village ("Caferağa Mah."), from a source with a `neighbourhoods` level or typed. */
-  region3?: string;
-  line1?: string;
-  line2?: string;
-  postalCode?: string;
-}
-
-export type AddressPart = keyof Address;
 
 /** ISO 3166-1 alpha-2 codes (names come from `Intl.DisplayNames`). */
 const COUNTRY_CODES =
@@ -65,10 +61,49 @@ const addressLabels = {
   districtCleared: "District cleared",
   neighbourhoodCleared: "Neighbourhood cleared",
   postalMismatch: "Postal codes in {province} start with {prefix}",
+  postalFormat: "Expected a code like {example}",
+  stateName: "State",
+  area: "Area",
+  county: "County",
+  department: "Department",
+  doSi: "Province / city",
+  emirate: "Emirate",
+  island: "Island",
+  oblast: "Region",
+  parish: "Parish",
+  prefecture: "Prefecture",
+  postTown: "Post town",
+  suburb: "Suburb",
+  townland: "Townland",
+  villageTownship: "Village / township",
+  pin: "PIN code",
+  eircode: "Eircode",
 };
 export type AddressFieldLabels = typeof addressLabels;
 
-const US_LIKE = new Set(["US", "CA", "AU"]);
+const REGION_LABEL: Record<RegionKind, keyof AddressFieldLabels> = {
+  area: "area",
+  county: "county",
+  department: "department",
+  district: "district",
+  do_si: "doSi",
+  emirate: "emirate",
+  island: "island",
+  oblast: "oblast",
+  parish: "parish",
+  prefecture: "prefecture",
+  province: "province",
+  state: "stateName",
+};
+const CITY_LABEL: Record<CityKind, keyof AddressFieldLabels> = { city: "city", district: "district", post_town: "postTown", suburb: "suburb" };
+const SUBLOCALITY_LABEL: Record<SublocalityKind, keyof AddressFieldLabels> = {
+  district: "district",
+  neighborhood: "neighbourhood",
+  suburb: "suburb",
+  townland: "townland",
+  village_township: "villageTownship",
+};
+const POSTAL_LABEL: Record<PostalCodeKind, keyof AddressFieldLabels> = { postal: "postalCode", zip: "zip", pin: "pin", eircode: "eircode" };
 
 function displayNames(locale: string) {
   try {
@@ -79,36 +114,21 @@ function displayNames(locale: string) {
 }
 
 /**
- * Formats an address as lines in the country's convention.
- *
- * ```ts
- * formatAddress({ country: "TR", region1: "İstanbul", region2: "Kadıköy", region3: "Caferağa Mah.", line1: "Moda Cad. No: 12", postalCode: "34710" }, { locale: "en-US" });
- * // ["Caferağa Mah. Moda Cad. No: 12", "34710 Kadıköy/İstanbul", "Türkiye"]
- * ```
- *
- * Turkish addresses put the neighbourhood in front of the street; when `line1` already names it,
- * it is not repeated.
+ * The country's address format: the built-in rules on the first render (and on the server), the
+ * full data once `address-formats.json` has loaded (one lazy chunk shared by every field).
  */
-export function formatAddress(a: Address, opts: { locale?: string; includeCountry?: boolean } = {}): string[] {
-  const { locale = "en-US", includeCountry = true } = opts;
-  const c = a.country?.toUpperCase();
-  const join = (...xs: (string | undefined)[]) => xs.filter(Boolean).join(" ");
-  let lines: (string | undefined)[];
-  if (c === "TR") lines = [trStreetLine(a.region3, a.line1), a.line2, join(a.postalCode, [a.region2, a.region1].filter(Boolean).join("/"))];
-  else if (US_LIKE.has(c)) lines = [a.line1, a.line2, [a.region2, join(a.region1, a.postalCode)].filter(Boolean).join(", ")];
-  else if (c === "GB" || c === "IE") lines = [a.line1, a.line2, a.region2, a.region1, a.postalCode];
-  else lines = [a.line1, a.line2, join(a.postalCode, a.region2), a.region1];
-  if (includeCountry && c) lines.push(displayNames(locale)?.of(c) ?? c);
-  return lines.map((l) => l?.trim()).filter((l): l is string => !!l);
-}
-
-/** "Caferağa Mah." + "Moda Cad. No: 12", skipping the neighbourhood when the street line already has it. */
-function trStreetLine(region3: string | undefined, line1: string | undefined): string | undefined {
-  const n = region3?.trim();
-  if (!n) return line1;
-  if (!line1?.trim()) return n;
-  const bare = n.replace(/\s+(Mah\.?|Mahallesi|Köyü)(\s*\(.*\))?\s*$/iu, "");
-  return foldText(line1, "tr").includes(foldText(bare, "tr")) ? line1 : `${n} ${line1}`;
+function useAddressFormat(country: string): AddressFormat {
+  const cc = country.toUpperCase();
+  const loaded = React.useSyncExternalStore(
+    subscribeAddressFormats,
+    () => peekAddressFormat(cc),
+    () => undefined,
+  );
+  React.useEffect(() => {
+    loadAddressFormats().catch(() => {});
+  }, []);
+  const fallback = React.useMemo(() => addressFormatFallback(cc), [cc]);
+  return loaded ?? fallback;
 }
 
 /* ------------------------------------------------------------------ */
@@ -280,19 +300,24 @@ export interface AddressFieldProps extends Omit<React.FieldsetHTMLAttributes<HTM
   defaultValue?: Address | null;
   onValueChange?: (address: Address) => void;
   /**
-   * Region data per country. Default `{ TR: trAddress }` (81 provinces, 973 districts, lazy). A source
-   * with a `neighbourhoods` level (`trAddressWithNeighbourhoods`) adds a neighbourhood picker.
+   * Cascading region data per country. Default `{ TR: trAddress }` (81 provinces, 973 districts,
+   * lazy). A source with a `neighbourhoods` level (`trAddressWithNeighbourhoods`) adds a
+   * neighbourhood picker. Other countries follow their address format.
    */
   sources?: Record<string, AddressDataSource>;
   /** Country list. Default: every country. */
   countries?: string[];
   /** Initial country when there is no value. Default `"TR"` for Turkish locales, else the locale's region. */
   defaultCountry?: string;
-  /** Parts to show, in any order of preference. Default: all; `region3` only when the source has neighbourhoods. */
+  /**
+   * Parts to show. Default: the parts the country's addresses use, in the country's order (a
+   * country without postal codes gets none; Germany gets no state); for a country with a
+   * cascading source, all parts (`region3` only when the source has neighbourhoods).
+   */
   fields?: AddressPart[];
-  /** Parts that are required. */
-  required?: AddressPart[];
-  /** `"grid"` (two columns from `sm`, default) or `"stack"`. */
+  /** Required parts, or `"auto"` for the country's own rules (e.g. US: street, city, state, ZIP). */
+  required?: AddressPart[] | "auto";
+  /** `"grid"` (rows as the country writes them, side by side from `sm`, default) or `"stack"`. */
   layout?: "grid" | "stack";
   /** Prefix for form names: `billing` → `billing[country]`, `billing[region1]`… */
   name?: string;
@@ -307,10 +332,36 @@ export interface AddressFieldProps extends Omit<React.FieldsetHTMLAttributes<HTM
 
 const DEFAULT_FIELDS: AddressPart[] = ["country", "region1", "region2", "line1", "line2", "postalCode"];
 const DEFAULT_FIELDS_WITH_NEIGHBOURHOOD: AddressPart[] = ["country", "region1", "region2", "region3", "line1", "line2", "postalCode"];
+/** Order of the parts for countries with a cascading source (pickers top-down) and for leftovers. */
+const CASCADE_ORDER: AddressPart[] = ["country", "postalCode", "region1", "region2", "region3", "line1", "line2"];
+const ROW_COLS = ["", "", "sm:grid-cols-2", "sm:grid-cols-3", "sm:grid-cols-4"];
+
+const sameLanguage = (locale: string, lang: string | undefined) => !!lang && locale.toLowerCase().split(/[-_]/)[0] === lang.toLowerCase().split(/[-_]/)[0];
+
+/** Rows of parts as the country writes them: one row per format line, street lines on their own. */
+function formatRows(format: AddressFormat, latin: boolean): AddressPart[][] {
+  const rows: AddressPart[][] = [["country"]];
+  for (const line of latin && format.latinLines ? format.latinLines : format.lines) {
+    let row: AddressPart[] = [];
+    for (const t of line) {
+      if (!("part" in t)) continue;
+      if (t.part === "street") {
+        if (row.length) rows.push(row);
+        rows.push(["line1"], ["line2"]);
+        row = [];
+      } else if (!row.includes(t.part)) row.push(t.part);
+    }
+    if (row.length) rows.push(row);
+  }
+  return rows;
+}
 
 /**
- * Structured postal address in a fieldset: country → province → district cascading pickers for
- * countries with a data source (Türkiye ships built in, loaded lazily), free text elsewhere.
+ * Structured postal address in a fieldset, laid out the way each country writes addresses: Germany
+ * gets street, PLZ and city; the US street, city, state and ZIP code; Japan postal code,
+ * prefecture and street; the Emirates no postal code at all. Field names follow the country
+ * ("Prefecture", "Emirate", "PIN code", "Eircode"), postal codes are checked against the country's
+ * pattern. Türkiye gets cascading province → district pickers (built in, loaded lazily).
  * Changing a parent clears its children (and says so to screen readers). Read-only shows the
  * address formatted the way the country writes it.
  *
@@ -327,7 +378,7 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
     countries,
     defaultCountry,
     fields: fieldsProp,
-    required = [],
+    required: requiredProp = [],
     layout = "grid",
     name,
     legend,
@@ -351,7 +402,11 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
   });
   const a: Address = { ...address, country: (address?.country || fallbackCountry).toUpperCase() };
   const source = sources[a.country];
-  const fields = fieldsProp ?? (source?.neighbourhoods ? DEFAULT_FIELDS_WITH_NEIGHBOURHOOD : DEFAULT_FIELDS);
+  const format = useAddressFormat(a.country);
+  const latin = !!format.latinLines && !sameLanguage(locale, format.language);
+  const formatFields = latin && format.latinFields ? format.latinFields : format.fields;
+  const fields = fieldsProp ?? (source ? (source.neighbourhoods ? DEFAULT_FIELDS_WITH_NEIGHBOURHOOD : DEFAULT_FIELDS) : ["country", ...formatFields]);
+  const required = requiredProp === "auto" ? ["country", ...format.required] : requiredProp;
   const autoPostal = React.useRef<string | undefined>(undefined);
   const [announce, setAnnounce] = React.useState("");
   const [postalWarning, setPostalWarning] = React.useState<string | null>(null);
@@ -371,10 +426,9 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
   const show = (p: AddressPart) => fields.includes(p);
   const req = (p: AddressPart) => required.includes(p);
   const fname = (p: AddressPart) => (name ? `${name}[${p}]` : undefined);
-  const usLike = US_LIKE.has(a.country);
 
   if (readOnly) {
-    const lines = formatAddress(a, { locale });
+    const lines = formatAddress(a, { locale, format });
     return (
       <fieldset ref={ref} {...rest} data-slot="address-field" data-readonly="" className={cn("grid min-w-0 gap-1.5 border-0 p-0", className)}>
         {legend ? <legend className="mb-1.5 p-0 text-sm font-semibold text-fg">{legend}</legend> : null}
@@ -390,12 +444,27 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
     );
   }
 
-  const checkPostal = (code: string) => {
-    if (a.country !== "TR" || !code) return setPostalWarning(null);
-    const plate = provinces?.find((p) => p.name === a.region1)?.code;
-    const r = checkTrPostalCode(code, plate);
-    setPostalWarning(r === "province" && plate ? t("postalMismatch", { province: a.region1, prefix: String(plate).padStart(2, "0") }) : null);
+  const checkPostal = (raw: string) => {
+    const code = raw.trim();
+    if (!code) return setPostalWarning(null);
+    const r = checkPostalCode(code, format);
+    const example = format.postalCode?.examples[0];
+    if (r.status === "format") return setPostalWarning(example ? t("postalFormat", { example }) : null);
+    // Normalise what the pattern accepts once upper-cased ("ec1y 8sy" → "EC1Y 8SY").
+    if (r.status === "ok" && r.value !== code) set({ postalCode: r.value });
+    if (a.country === "TR") {
+      const plate = provinces?.find((p) => p.name === a.region1)?.code;
+      const tr = checkTrPostalCode(r.value, plate);
+      return setPostalWarning(tr === "province" && plate ? t("postalMismatch", { province: a.region1, prefix: String(plate).padStart(2, "0") }) : null);
+    }
+    setPostalWarning(null);
   };
+
+  const region1Label = source ? t("province") : t(REGION_LABEL[format.kinds.region1]);
+  const region2Label = source ? t("district") : t(CITY_LABEL[format.kinds.region2]);
+  const region3Label = source || a.country === "TR" ? t("neighbourhood") : t(SUBLOCALITY_LABEL[format.kinds.region3]);
+  const pc = format.postalCode;
+  const wide = (p: AddressPart) => source && layout === "grid" && (p === "line1" || p === "line2") ? "sm:col-span-2" : undefined;
 
   const parts: Record<AddressPart, React.ReactNode> = {
     country: show("country") ? (
@@ -421,7 +490,7 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
       </Field>
     ) : null,
     region1: show("region1") ? (
-      <Field key="region1" label={source ? t("province") : usLike ? t("state") : t("state")} name={fname("region1")} required={req("region1")} error={errors?.region1}>
+      <Field key="region1" label={region1Label} name={fname("region1")} required={req("region1")} error={errors?.region1}>
         {source ? (
           <RegionSelect
             size={size}
@@ -442,7 +511,7 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
       </Field>
     ) : null,
     region2: show("region2") ? (
-      <Field key="region2" label={source ? t("district") : t("city")} name={fname("region2")} required={req("region2")} error={errors?.region2}>
+      <Field key="region2" label={region2Label} name={fname("region2")} required={req("region2")} error={errors?.region2}>
         {source ? (
           <RegionSelect
             size={size}
@@ -464,7 +533,7 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
       </Field>
     ) : null,
     region3: show("region3") ? (
-      <Field key="region3" label={source || a.country === "TR" ? t("neighbourhood") : t("city")} name={fname("region3")} required={req("region3")} error={errors?.region3}>
+      <Field key="region3" label={region3Label} name={fname("region3")} required={req("region3")} error={errors?.region3}>
         {source?.neighbourhoods ? (
           <RegionSelect
             size={size}
@@ -492,39 +561,63 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
       </Field>
     ) : null,
     line1: show("line1") ? (
-      <Field key="line1" label={t("line1")} name={fname("line1")} required={req("line1")} error={errors?.line1} className={layout === "grid" ? "sm:col-span-2" : undefined}>
+      <Field key="line1" label={t("line1")} name={fname("line1")} required={req("line1")} error={errors?.line1} className={wide("line1")}>
         <Input size={size} value={a.line1 ?? ""} autoComplete="address-line1" onChange={(e) => set({ line1: e.currentTarget.value || undefined })} />
       </Field>
     ) : null,
     line2: show("line2") ? (
-      <Field key="line2" label={t("line2")} optional={!req("line2")} name={fname("line2")} required={req("line2")} error={errors?.line2} className={layout === "grid" ? "sm:col-span-2" : undefined}>
+      <Field key="line2" label={t("line2")} optional={!req("line2")} name={fname("line2")} required={req("line2")} error={errors?.line2} className={wide("line2")}>
         <Input size={size} value={a.line2 ?? ""} autoComplete="address-line2" onChange={(e) => set({ line2: e.currentTarget.value || undefined })} />
       </Field>
     ) : null,
     postalCode: show("postalCode") ? (
-      <Field key="postalCode" label={usLike && a.country === "US" ? t("zip") : t("postalCode")} name={fname("postalCode")} required={req("postalCode")} error={errors?.postalCode} hint={postalWarning ?? undefined}>
+      <Field key="postalCode" label={t(POSTAL_LABEL[format.kinds.postalCode])} name={fname("postalCode")} required={req("postalCode")} error={errors?.postalCode} hint={postalWarning ?? undefined}>
         <Input
           size={size}
           value={a.postalCode ?? ""}
           autoComplete="postal-code"
-          inputMode={a.country === "TR" || a.country === "US" || a.country === "DE" ? "numeric" : undefined}
+          inputMode={pc?.numeric ? "numeric" : undefined}
+          placeholder={pc?.examples[0]}
           dir="ltr"
           className="tabular"
           onChange={(e) => set({ postalCode: e.currentTarget.value || undefined })}
-          onBlur={(e) => checkPostal(e.currentTarget.value.trim())}
+          onBlur={(e) => checkPostal(e.currentTarget.value)}
         />
       </Field>
     ) : null,
   };
 
-  const order: AddressPart[] = ["country", "postalCode", "region1", "region2", "region3", "line1", "line2"];
+  const live = (
+    <span className="sr-only" aria-live="polite">
+      {announce}
+    </span>
+  );
 
+  if (source) {
+    // Cascading pickers: province before district before neighbourhood, two columns.
+    return (
+      <Fieldset ref={ref} {...rest} legend={legend} hint={hint} disabled={disabled} data-slot="address-field" data-country={a.country} className={className}>
+        <div className={cn("grid min-w-0 gap-x-4 gap-y-3.5", layout === "grid" && "sm:grid-cols-2")}>{CASCADE_ORDER.map((p) => parts[p])}</div>
+        {live}
+      </Fieldset>
+    );
+  }
+
+  const rows = formatRows(format, latin);
+  const placed = new Set(rows.flat());
+  const extra = CASCADE_ORDER.filter((p) => !placed.has(p) && show(p));
+  if (extra.length) rows.push(extra);
+  const visible = rows.map((r) => r.filter(show)).filter((r) => r.length);
   return (
     <Fieldset ref={ref} {...rest} legend={legend} hint={hint} disabled={disabled} data-slot="address-field" data-country={a.country} className={className}>
-      <div className={cn("grid min-w-0 gap-x-4 gap-y-3.5", layout === "grid" && "sm:grid-cols-2")}>{order.map((p) => parts[p])}</div>
-      <span className="sr-only" aria-live="polite">
-        {announce}
-      </span>
+      <div className="grid min-w-0 gap-y-3.5">
+        {visible.map((row) => (
+          <div key={row.join()} className={cn("grid min-w-0 gap-x-4 gap-y-3.5", layout === "grid" && ROW_COLS[row[0] === "country" ? 2 : Math.min(row.length, 4)])}>
+            {row.map((p) => parts[p])}
+          </div>
+        ))}
+      </div>
+      {live}
     </Fieldset>
   );
 });
