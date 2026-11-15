@@ -8,9 +8,12 @@ export type LegalKind =
   | "returns"
   | "distance-sales"
   | "pre-information"
-  | "legal-notice";
+  | "legal-notice"
+  | "withdrawal"
+  | "do-not-sell";
 
-export type LegalLocale = "en" | "tr";
+/** Languages the presets are written in. German and French cover the pages those countries require (Impressum, Datenschutz, Widerruf; mentions légales, rétractation). */
+export type LegalLocale = "en" | "tr" | "de" | "fr";
 
 /**
  * One block of a section body: a paragraph, a bullet list, or a small table (e.g. the cookie list).
@@ -46,9 +49,11 @@ export const legalRoutes: Record<LegalKind, string> = {
   "distance-sales": "/distance-sales",
   "pre-information": "/pre-information",
   "legal-notice": "/legal-notice",
+  withdrawal: "/withdrawal",
+  "do-not-sell": "/do-not-sell-or-share",
 };
 
-/** Common slugs (English and Turkish) → the preset that fits, with the language to start from. */
+/** Common slugs (English, Turkish, German, French) → the preset that fits, with the language to start from. */
 export const legalSlugs: Record<string, { kind: LegalKind; locale: LegalLocale }> = {
   privacy: { kind: "privacy", locale: "en" },
   "privacy-policy": { kind: "privacy", locale: "en" },
@@ -80,8 +85,29 @@ export const legalSlugs: Record<string, { kind: LegalKind; locale: LegalLocale }
   "on-bilgilendirme-formu": { kind: "pre-information", locale: "tr" },
   "legal-notice": { kind: "legal-notice", locale: "en" },
   imprint: { kind: "legal-notice", locale: "en" },
-  impressum: { kind: "legal-notice", locale: "en" },
+  impressum: { kind: "legal-notice", locale: "de" },
   "yasal-uyari": { kind: "legal-notice", locale: "tr" },
+  datenschutz: { kind: "privacy", locale: "de" },
+  datenschutzerklaerung: { kind: "privacy", locale: "de" },
+  "cookie-richtlinie": { kind: "cookies", locale: "de" },
+  agb: { kind: "terms", locale: "de" },
+  widerrufsbelehrung: { kind: "withdrawal", locale: "de" },
+  widerruf: { kind: "withdrawal", locale: "de" },
+  "mentions-legales": { kind: "legal-notice", locale: "fr" },
+  "politique-de-confidentialite": { kind: "privacy", locale: "fr" },
+  confidentialite: { kind: "privacy", locale: "fr" },
+  "gestion-des-cookies": { kind: "cookies", locale: "fr" },
+  "politique-cookies": { kind: "cookies", locale: "fr" },
+  "conditions-generales-de-vente": { kind: "terms", locale: "fr" },
+  cgv: { kind: "terms", locale: "fr" },
+  "droit-de-retractation": { kind: "withdrawal", locale: "fr" },
+  retractation: { kind: "withdrawal", locale: "fr" },
+  withdrawal: { kind: "withdrawal", locale: "en" },
+  "right-of-withdrawal": { kind: "withdrawal", locale: "en" },
+  "cancellation-rights": { kind: "withdrawal", locale: "en" },
+  "do-not-sell-or-share": { kind: "do-not-sell", locale: "en" },
+  "do-not-sell": { kind: "do-not-sell", locale: "en" },
+  "your-privacy-choices": { kind: "do-not-sell", locale: "en" },
 };
 
 /**
@@ -117,6 +143,10 @@ export interface LegalValues {
   /** ETBİS registration number or verification link. */
   etbis?: string;
   kep?: string;
+  /** VAT identification number (USt-IdNr., numéro de TVA intracommunautaire). */
+  vatId?: string;
+  /** Person who represents the company (Vertretungsberechtigter, directeur de la publication). */
+  representative?: string;
   /** Last-updated date, `YYYY-MM-DD`; replaces a placeholder date. */
   updated?: string;
 }

@@ -85,6 +85,10 @@ export interface EssentialsResult {
   layout?: "patched" | "manual" | null;
   /** A KVKK notice route nothing links to yet. */
   kvkkUnlinked?: string | null;
+  /** Legal routes the plan or the country requires that nothing links to yet. */
+  requiredUnlinked?: string[];
+  /** The country the legal pages were chosen for. */
+  country?: string | null;
 }
 
 /**
@@ -132,7 +136,7 @@ export async function writeEssentials(ctx: Context, session: Session, opts: Pick
   const jsonLdInLayout = patch ? false : plan.jsonLdInLayout || (!!plan.layoutPatch && !opts.patchLayout);
   const layoutState: EssentialsResult["layout"] = patch ? "patched" : layoutMissing.length || jsonLdInLayout ? "manual" : null;
 
-  if (ctx.json) return { written, unmatched: plan.unmatched, skipped: false, layout: layoutState, kvkkUnlinked: plan.kvkkUnlinked };
+  if (ctx.json) return { written, unmatched: plan.unmatched, skipped: false, layout: layoutState, kvkkUnlinked: plan.kvkkUnlinked, requiredUnlinked: plan.requiredUnlinked, country: plan.country };
   const lines = plan.files.map((f) => `${opts.dryRun ? pc.dim("+") : pc.green("+")} ${f.path} ${pc.dim(f.reason)}`);
   p.note(lines.length ? lines.join("\n") : pc.dim("Robots, sitemap and the legal pages are already there."), opts.dryRun ? "Site essentials (dry run)" : "Site essentials");
   if (plan.siteError) p.log.error(`${plan.siteError} It was ignored; fix it and run again.`);
@@ -173,6 +177,11 @@ export async function writeEssentials(ctx: Context, session: Session, opts: Pick
     const route = plan.kvkkUnlinked;
     p.log.warn(
       `The site collects personal data (contact form / newsletter) and is Turkish, so it needs a KVKK aydınlatma metni linked where the data is collected. Nothing links ${route} yet; add it to the footer and the form:\n${pc.dim(`<Footer … legalLinks={[{ href: "${route}", label: "KVKK Aydınlatma Metni" }]} />\n<ContactForm … privacyLink={{ href: "${route}", label: "KVKK Aydınlatma Metni" }} privacyCheckbox />`)}`,
+    );
+  }
+  if (plan.requiredUnlinked.length) {
+    p.log.warn(
+      `${plan.country ? `For a site in ${plan.country}, the` : "The"} required ${plural(plan.requiredUnlinked.length, "legal page")} must be reachable from every page, and nothing links ${plan.requiredUnlinked.join(", ")} yet. Add ${plan.requiredUnlinked.length === 1 ? "it" : "them"} to the footer:\n${pc.dim(`<Footer … legalLinks={[${plan.requiredUnlinked.map((r) => `{ href: "${r}", label: "…" }`).join(", ")}]} />`)}`,
     );
   }
   if (plan.unmatched.length) {

@@ -27,6 +27,8 @@ export interface SiteInfo {
     etbis?: string;
     dataController?: string;
     privacyEmail?: string;
+    vatId?: string;
+    representative?: string;
   };
   analytics?: { ga4?: string; gtm?: string; googleAds?: string };
   ai?: {
@@ -83,4 +85,6 @@ export const LEGAL_VALUES = {
   tradeRegistry: filled(site.legal?.tradeRegistry),
   etbis: filled(site.legal?.etbis),
   kep: filled(site.legal?.kep),
+  vatId: filled(site.legal?.vatId),
+  representative: filled(site.legal?.representative),
 };

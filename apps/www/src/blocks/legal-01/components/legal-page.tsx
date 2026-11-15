@@ -18,6 +18,20 @@ const copy = {
     noticeTitle: "Şablon metin: yayından önce gözden geçirin",
     notice: "Köşeli parantez içindeki her şeyi işletmenin gerçek bilgileriyle değiştirin; her bölümü işletme sahibine veya bir avukata, sitenin gerçekte yaptıklarıyla karşılaştırarak kontrol ettirin. Ardından bu uyarıyı kaldırın.",
   },
+  de: {
+    home: "Startseite",
+    updated: "Stand",
+    toc: "Auf dieser Seite",
+    noticeTitle: "Vorlage: vor der Veröffentlichung prüfen",
+    notice: "Ersetzen Sie alles in [eckigen Klammern] durch die echten Angaben des Unternehmens und lassen Sie jeden Abschnitt vom Inhaber oder einer Anwältin bzw. einem Anwalt mit dem tatsächlichen Betrieb der Website abgleichen. Dies ist keine Rechtsberatung. Entfernen Sie diesen Hinweis danach.",
+  },
+  fr: {
+    home: "Accueil",
+    updated: "Dernière mise à jour",
+    toc: "Sur cette page",
+    noticeTitle: "Modèle : à vérifier avant publication",
+    notice: "Remplacez tout ce qui figure [entre crochets] par les informations réelles de l’entreprise et faites vérifier chaque section par le responsable ou un avocat au regard du fonctionnement réel du site. Ceci n’est pas un conseil juridique. Supprimez ensuite cet avertissement.",
+  },
 } as const;
 
 /** Highlights [fill-in] fields so nothing ships half-edited. */
@@ -105,7 +119,7 @@ export interface LegalPageProps {
  */
 export function LegalPage({ doc, locale = "en", notice = true, homeHref = "/" }: LegalPageProps) {
   const t = copy[locale];
-  const intl = locale === "tr" ? "tr-TR" : "en-GB";
+  const intl = ({ tr: "tr-TR", de: "de-DE", fr: "fr-FR", en: "en-GB" } as const)[locale];
   const labels = locale === "tr" ? { ...blockLabelsTr, ...site1LabelsTr } : undefined;
 
   return (

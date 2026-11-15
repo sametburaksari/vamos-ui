@@ -5,6 +5,8 @@
  * Pure: no Node built-ins. Nothing here has a default value that belongs to a real business.
  */
 
+import { countryOfSite } from "./project/jurisdiction";
+
 export const SITE_FILE = "vamos.site.json";
 export const SITE_SCHEMA = "https://ui.vamos.ist/r/site-schema.json";
 
@@ -71,6 +73,10 @@ export interface SiteInfo {
     /** Data controller (veri sorumlusu) when it differs from the legal name. */
     dataController?: string;
     privacyEmail?: string;
+    /** VAT identification number (USt-IdNr., UID, numéro de TVA). */
+    vatId?: string;
+    /** Person who represents the company (Vertretungsberechtigter, directeur de la publication). */
+    representative?: string;
   };
   /** Measurement ids only; nothing is set unless you set it. */
   analytics?: { ga4?: string; gtm?: string; googleAds?: string; metaPixel?: string };
@@ -143,6 +149,8 @@ export const SITE_JSON_SCHEMA = {
         etbis: str("ETBİS registration number or verification link (required for online sales in Turkey)."),
         dataController: str("Data controller (veri sorumlusu) when it differs from the legal name."),
         privacyEmail: str("Email for privacy / KVKK requests."),
+        vatId: str("VAT identification number (EU: USt-IdNr., UID, numéro de TVA intracommunautaire)."),
+        representative: str("Person who represents the company (Impressum: Vertretungsberechtigter; mentions légales: directeur de la publication)."),
       },
     },
     analytics: {
@@ -225,14 +233,15 @@ export function parseSiteJson(text: string): { site: SiteInfo | null; error?: st
 
 const filled = (v: unknown) => typeof v === "string" && v.trim() !== "" && !/^\[.*\]$/.test(v.trim());
 
-/** Required fields that are still empty (dotted paths). `ecommerce` adds the Turkish online-sales identifiers. */
+/** Required fields that are still empty (dotted paths). `ecommerce` adds the Turkish online-sales identifiers for a shop in Türkiye (or of unknown country). */
 export function missingSiteFields(site: SiteInfo, opts: { ecommerce?: boolean } = {}): string[] {
   const missing: string[] = [];
   if (!filled(site.name)) missing.push("name");
   if (!filled(site.url)) missing.push("url");
   if (!filled(site.contact?.phone) && !filled(site.contact?.email)) missing.push("contact.phone or contact.email");
   if (!filled(site.address?.city)) missing.push("address.city");
-  if (opts.ecommerce) {
+  const country = countryOfSite(site);
+  if (opts.ecommerce && (!country || country === "TR")) {
     if (!filled(site.legal?.mersis)) missing.push("legal.mersis");
     if (!filled(site.legal?.etbis)) missing.push("legal.etbis");
   }
