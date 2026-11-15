@@ -53,7 +53,7 @@
           "purpose": "The mission in one line, a photo of the work, and the current campaign meter.",
           "use": [
             "hero",
-            "progress"
+            "goal-meter"
           ],
           "fields": [
             "Mission statement",
@@ -62,7 +62,7 @@
             "Amount raised, goal, number of donors, end date",
             "Donate action"
           ],
-          "notes": "The campaign meter shows raised vs goal as text as well as a bar."
+          "notes": "The campaign GoalMeter shows raised against the goal, backers and days left as text as well as a bar."
         },
         {
           "id": "impact",
@@ -78,10 +78,10 @@
           "id": "give",
           "purpose": "Pick an amount (one-off or monthly, presets or own) and see itemised what it buys.",
           "use": [
-            "button-group",
-            "card"
+            "amount-picker"
           ],
           "alternatives": [
+            "card: a hand-built gift slip beside button-group presets",
             "pricing-table: a few fixed giving levels",
             "cta: when donating happens on a provider's page only"
           ],
@@ -90,7 +90,7 @@
             "Unit costs: what one item costs (a kit, a session, a month of support)",
             "Minimum amount"
           ],
-          "notes": "The slip next to the controls lists what the amount buys in plain text; the total updates in an aria-live region. Any drawing that visualises the gift is decorative (aria-hidden). The chosen amount carries to the donate page."
+          "notes": "AmountPicker with one-off and monthly presets (a function swaps them per frequency), an own amount with a minimum and an impact line per amount. A slip next to it can list what the amount buys in plain text; the summary updates in an aria-live region. Any drawing that visualises the gift is decorative (aria-hidden). The chosen amount carries to the donate page."
         },
         {
           "id": "programmes",
@@ -180,7 +180,7 @@
           "purpose": "Why give now, with the campaign meter in compact form.",
           "use": [
             "page-intro",
-            "progress"
+            "goal-meter"
           ],
           "fields": [
             "Donate page lead",
@@ -191,8 +191,7 @@
           "id": "amount",
           "purpose": "Step 1: the same gift builder as the home page.",
           "use": [
-            "button-group",
-            "card"
+            "amount-picker"
           ],
           "fields": [
             "Preset amounts",

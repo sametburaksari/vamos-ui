@@ -42,7 +42,7 @@
           "id": "fee-preview",
           "purpose": "A quick indication of the monthly fee by client type, linking to the full estimate.",
           "use": ["pricing-table"],
-          "alternatives": ["radio-group: a segmented choice of client type that swaps the figure and what is included"],
+          "alternatives": ["radio-group: a segmented choice of client type that swaps the figure and what is included", "estimator: a compact estimator with only the client-type question, linking to the full one"],
           "fields": ["Client or company types", "Base monthly fee per type", "What is included per type", "VAT note"],
           "when": { "any": ["section:pricing"] },
           "notes": "Segmented radio of company type; the figure and included list update in a polite live region."
@@ -126,11 +126,11 @@
         {
           "id": "fee-estimate",
           "purpose": "Turn the client's situation into an indicative monthly fee statement.",
-          "use": ["form-01"],
-          "alternatives": ["multi-step-form: more than four questions"],
+          "use": ["estimator"],
+          "alternatives": ["form-01: a fully custom statement layout", "multi-step-form: more than four questions"],
           "fields": ["Client types with base fee and inclusions", "Per-employee payroll fee", "Volume bands with surcharges", "Optional extras with prices and which client types they apply to", "VAT rate", "Year-end or one-off lines"],
           "when": { "any": ["section:pricing"] },
-          "notes": "Card radio for client type, slider for headcount, segmented radio for volume band, card checkboxes for extras; beside it a printed-invoice style statement (dotted leaders, double rules) with monthly subtotal, VAT and year-end lines in a polite live region. Offer 'copy estimate' and 'send this to us'. State that it is an estimate."
+          "notes": "Estimator with option cards for client type, a slider for headcount, segmented options for the volume band and add-on cards for extras (hidden with `when` where they do not apply). Its summary panel is the statement: line items, a monthly subtotal and tax line, once-a-year items, and the total in a polite live region. Hand the selection to the contact form (name + form posts it as a hidden field) and offer 'send this to us'. State that it is an estimate."
         },
         {
           "id": "faq",

@@ -255,6 +255,7 @@
             "radio-group"
           ],
           "alternatives": [
+            "estimator: the running estimate as a summary panel beside the form, posted with it as a hidden field",
             "multi-step-form: long enquiries split into steps",
             "contact-form: a simple venue without pricing"
           ],

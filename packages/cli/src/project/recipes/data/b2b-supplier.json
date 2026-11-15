@@ -19,8 +19,9 @@
           "id": "hero",
           "purpose": "Headline with what you make or supply and for whom, plus one working proof: a price check of a best seller with its quantity tiers, or the product drawn as a technical sheet with key specs.",
           "use": ["hero"],
+          "alternatives": ["tier-pricing: the price check of a best seller with a quantity field"],
           "fields": ["Headline: what you supply and to which industries", "Best-selling product with its tier prices or key specs", "Primary action: browse catalogue or request a quote"],
-          "notes": "A price-check hero lets the buyer type or slide a quantity and see the tier it falls in and how far the next break is. Give every drawn tier chart its prices as a text table too."
+          "notes": "A price-check hero lets the buyer type or slide a quantity and see the tier it falls in and how far the next break is (TierPricing with quantityInput). Give every drawn tier chart its prices as a text table too."
         },
         {
           "id": "figures",
@@ -39,8 +40,9 @@
         {
           "id": "tiers",
           "purpose": "How bulk pricing works: tier thresholds and the average saving at each tier, minimum order.",
-          "use": ["pricing-table"],
-          "alternatives": ["table: tiers as a plain table", "comparison-table: trade account levels"],
+          "use": ["tier-pricing"],
+          "notes": "TierPricing table (range, unit price, saving) for a representative product, with the minimum order stated.",
+          "alternatives": ["pricing-table: trade account levels with what each includes", "table: tiers as a plain table", "comparison-table: trade account levels"],
           "fields": ["Quantity tiers and thresholds (cases, units, pallets)", "Saving per tier", "Minimum order quantity"],
           "when": { "any": ["shop", "section:pricing"] }
         },
@@ -117,10 +119,10 @@
         {
           "id": "catalogue",
           "purpose": "Search, category, in-stock switch and sort over product rows; each row has SKU, pack size, stock and its quantity tiers with an add-to-quote field.",
-          "use": ["filter-bar", "data-table"],
+          "use": ["filter-bar", "data-table", "tier-pricing"],
           "alternatives": ["list-layout: a catalogue browsed by category tree", "empty-state: no matching items"],
           "fields": ["Products: SKU, name, pack size, stock status, tier prices", "Categories"],
-          "notes": "The case count field lights the matching tier and says how far the next break is and what it saves; announce the totals in role=status.",
+          "notes": "Each row expands to its TierPricing: the case count field lights the matching tier and says how far the next break is and what it saves; announce the totals in role=status.",
           "when": { "any": ["shop", "section:pricing"] }
         },
         {
@@ -159,7 +161,7 @@
           "use": ["line-items"],
           "alternatives": ["cart-01: when the shop takes direct online orders"],
           "fields": ["Delivery options with cost", "VAT rate", "Validity period of a quote"],
-          "notes": "The navbar shows the live number of quote lines. Keep the list above the language switch."
+          "notes": "Each line's tier, saving and next break come from tierQuote (the same tiers as the catalogue). The navbar shows the live number of quote lines. Keep the list above the language switch."
         },
         {
           "id": "company-form",

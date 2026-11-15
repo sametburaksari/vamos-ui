@@ -52,9 +52,9 @@
           "id": "new-in",
           "purpose": "A horizontal rail of the newest products (or, for drop shops, the still-live drop in a dense grid with quick-add sizes and stock left against the run).",
           "use": ["carousel"],
-          "alternatives": ["feature-grid: show new products as a static grid", "entity-card: dense live-drop grid with stock meters and size quick-add"],
+          "alternatives": ["feature-grid: show new products as a static grid", "entity-card: dense live-drop grid with a stock goal-meter per item and size quick-add"],
           "fields": ["Newest products: photos, name, price, variants", "Stock per variant (for limited runs)"],
-          "notes": "The rail scrolls inside itself (snap scrolling), never the page. Sold-out sizes are struck through and disabled, with the reason in the accessible name."
+          "notes": "The rail scrolls inside itself (snap scrolling), never the page. For drops, show stock left against the run with GoalMeter (stock variant, compact). Sold-out sizes are struck through and disabled, with the reason in the accessible name."
         },
         {
           "id": "maker-story",

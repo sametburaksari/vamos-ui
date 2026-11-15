@@ -32,10 +32,10 @@
         {
           "id": "plans",
           "purpose": "The price grid: box size by delivery frequency, every cell a plan; choosing one carries the choice to the plans page.",
-          "use": ["pricing-table"],
-          "alternatives": ["comparison-table: few plans with many differing features"],
+          "use": ["choice-grid"],
+          "alternatives": ["pricing-table: one axis of fixed plans", "comparison-table: few plans with many differing features"],
           "fields": ["Box sizes", "Frequencies", "Price per cell", "What is included in every box (shipping, extras)"],
-          "notes": "Build the size x frequency grid as one radio group (one tab stop, arrow keys move between cells); highlight the chosen cell's row and column headers so it reads as coordinates. Keep the choice in a shared store.",
+          "notes": "ChoiceGrid with box sizes as rows and frequencies as columns: one radio group with one tab stop, arrow keys in both axes, the chosen cell's row and column headers highlighted so it reads as coordinates, price and per-unit price in each cell. Keep the choice in a shared store.",
           "when": { "any": ["section:pricing"] }
         },
         {
@@ -91,8 +91,8 @@
         {
           "id": "builder",
           "purpose": "Size x frequency grid, option choices (e.g. variety, preparation), a picture of the box as it will arrive, and the receipt with the order button.",
-          "use": ["pricing-table", "radio-group"],
-          "alternatives": ["multi-step-form: many options that need one step each"],
+          "use": ["choice-grid", "radio-group"],
+          "alternatives": ["estimator: options that change the price, with the grid's choice fed into its formula", "multi-step-form: many options that need one step each"],
           "fields": ["Options per product (e.g. variety, preparation/grind, flavour)", "Shipping days and cut-off for the next box", "Price per delivery, per unit and per month"],
           "notes": "The receipt updates in a role=status live region. Show the next few shipping dates computed from the shipping weekday. A drawn picture of the box is decorative; the receipt carries the same facts as text. End with an order reference after subscribing."
         }

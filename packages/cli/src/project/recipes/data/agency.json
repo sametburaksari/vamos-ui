@@ -265,7 +265,7 @@
           "id": "brief",
           "purpose": "Pick services, budget and start date; a side panel adds up an indicative duration and starting figure live.",
           "use": ["contact-form"],
-          "alternatives": ["multi-step-form: longer briefs split into steps", "form-01: a fully custom brief layout"],
+          "alternatives": ["estimator: services as add-on cards and budget and timing as options, the indicative duration and figure in its summary panel handed to the brief form", "multi-step-form: longer briefs split into steps", "form-01: a fully custom brief layout"],
           "fields": ["Selectable services with typical weeks and starting figure", "Budget bands", "Start-time options", "Name, email, company, short message"],
           "notes": "Services as a multi-select button group, budget and timing as card radio groups, then name/email/company/message. The live total sits beside the form in a polite live region; overlapping services should not simply add up weeks (longest runs in full, others add part). Validate on submit, focus the first error, end with a reference number. Label the figure as indicative, not a quote."
         },

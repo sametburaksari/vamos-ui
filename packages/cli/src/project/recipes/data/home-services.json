@@ -72,7 +72,10 @@
             "'From' price per combination and the assumptions behind it",
             "Primary action (get a quote / book)"
           ],
-          "notes": "Segmented radio groups and a polite live region for the figure. A memorable version draws the job: a measured floor plan like a survey sheet that fills with the load as the home size changes, or a board of today's bays as a departures board (decorative; the text carries the meaning)."
+          "notes": "Segmented radio groups and a polite live region for the figure. A memorable version draws the job: a measured floor plan like a survey sheet that fills with the load as the home size changes, or a board of today's bays as a departures board (decorative; the text carries the meaning).",
+          "alternatives": [
+            "estimator: the quick estimate as a two-question estimator beside the headline, its CTA opening the full calculator prefilled"
+          ]
         },
         {
           "id": "proof",
@@ -92,7 +95,7 @@
           "id": "picker",
           "purpose": "Build the job: pick the vehicle or home size and the jobs; see the price and the time it will be ready, live, and go to booking with the job kept.",
           "use": [
-            "capacity-finder"
+            "estimator"
           ],
           "alternatives": [
             "checkbox: card checkboxes of the most-booked jobs beside a live job card"
@@ -107,7 +110,7 @@
               "booking"
             ]
           },
-          "notes": "Compact mode on home (most-booked jobs), full mode on the services page. The live card shows a two-lane timeline when two teams work in parallel, the ready-by time and the total, all in polite live regions; the chosen job survives page changes and a language switch."
+          "notes": "Estimator with the vehicle or home size as option cards and the jobs as add-on cards (price and duration in each card's meta); the formula returns the total, the ready-by time and the duration as facts, and summaryExtra draws a two-lane timeline when two teams work in parallel. Compact on home (most-booked jobs), full on the services page. Keep the selection in a shared store (controlled values) so it survives page changes and a language switch; the CTA goes to booking with the job kept."
         },
         {
           "id": "services",
@@ -279,7 +282,7 @@
             "menu-list"
           ],
           "alternatives": [
-            "capacity-finder: the full picker for booking businesses",
+            "estimator: the full job picker for booking businesses",
             "comparison-table: prices across three or four sizes"
           ],
           "fields": [
@@ -324,7 +327,8 @@
           "id": "calculator",
           "purpose": "Five steps (service, job size and access, extras, date, contact) with a live estimate panel: a range, crew, vehicle or equipment, time and line items.",
           "use": [
-            "multi-step-form"
+            "multi-step-form",
+            "estimator"
           ],
           "alternatives": [
             "stepper: build the steps by hand around custom fields"
@@ -338,7 +342,7 @@
             "Deposit terms",
             "Contact fields: name, phone, email, addresses, note"
           ],
-          "notes": "Stepper navigable to completed steps; card radios, segmented radios, sliders, switches and a calendar that marks busy and discounted days. The estimate is a range in a role=\"status\" live region with the line items; announce step changes. Submitting gives a reference and says when the office calls back."
+          "notes": "Stepper navigable to completed steps; card radios, segmented radios, sliders, switches and a calendar that marks busy and discounted days. Beside the steps, the Estimator's summary panel (or the same formula) shows the range, crew, vehicle or equipment and time as facts, and the line items, in a polite live region; announce step changes. Submitting gives a reference and says when the office calls back."
         }
       ]
     },

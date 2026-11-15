@@ -50,7 +50,7 @@
           "id": "try-it",
           "purpose": "A hands-on piece: plan tabs with a synced phone screen (one tab per programme / plan), or a planner where sliders change a live projection chart.",
           "use": ["tabs"],
-          "alternatives": ["area-chart: a goal or savings planner (pick a goal, set an amount and a horizon, see the projection month by month and the month the goal is reached)", "line-chart: a projection with a target line"],
+          "alternatives": ["estimator: a goal or savings planner (pick a goal, set an amount and a horizon) with the balance, deposits and interest in the summary and the projection chart in summaryExtra", "area-chart: the projection month by month with the goal as a reference line", "line-chart: a projection with a target line"],
           "fields": ["Plans / programmes with phases and a week-by-week overview", "Or: planner inputs, ranges, formula and an illustrative rate with its disclaimer"],
           "optional": true,
           "notes": "Planner result in an aria-live region with a text summary of the final amount; rates shown as illustrative and dated."
