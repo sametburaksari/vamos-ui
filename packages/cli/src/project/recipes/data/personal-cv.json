@@ -79,16 +79,16 @@
         {
           "id": "toolbar",
           "purpose": "A slim bar with a link back to the site and 'Download PDF'.",
-          "use": ["button"],
+          "use": ["print-button", "button"],
           "fields": ["Suggested PDF file name"],
-          "notes": "'Download PDF' opens the print dialog; swap the document title for the file name while it is open so 'Save as PDF' suggests a sensible name. Say in the button hint that it opens the print dialog."
+          "notes": "'Download PDF' opens the print dialog; swap the document title for the file name while it is open so 'Save as PDF' suggests a sensible name. Say in the button hint that it opens the print dialog. PrintButton does both: fileName swaps the title while the dialog is open and the hint is built in."
         },
         {
           "id": "sheet",
           "purpose": "The CV sheet: name and contact header, experience, selected projects, skills, languages, education.",
-          "use": ["description-list", "typography"],
+          "use": ["description-list", "typography", "print-button"],
           "fields": ["Everything from the home page, in short form", "A last-updated line"],
-          "notes": "Always light (paper is paper, also in dark mode); two columns that collapse on narrow screens; an @page rule for A4 with about 12 mm margins; break-inside: avoid on every entry; links printed as their visible address. The home page also carries a print-only copy so printing either page prints only the sheet."
+          "notes": "Always light (paper is paper, also in dark mode); two columns that collapse on narrow screens; an @page rule for A4 with about 12 mm margins; break-inside: avoid on every entry; links printed as their visible address. The home page also carries a print-only copy so printing either page prints only the sheet. PrintStyles (from print-button) supplies the @page rule, hides the site chrome, keeps blocks together and prints link addresses; data-print=\"only\" marks the print-only copy."
         }
       ]
     }

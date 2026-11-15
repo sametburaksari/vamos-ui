@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A breaking-news or \"Trending now\" strip under a news masthead.",
+    "A short rotating list of headlines that must pause on hover, focus and reduced motion."
+  ],
+  "avoidWhen": [
+    "One site-wide message — use announcement-bar.",
+    "Long lists of stories — use post-card or post-modules."
+  ],
+  "related": [
+    "news-masthead",
+    "announcement-bar",
+    "post-card"
+  ],
+  "a11y": [
+    "Has a pause button and pauses on hover and focus; never starts under prefers-reduced-motion (WCAG 2.2.2).",
+    "Headlines are announced only while paused, so it never chatters."
+  ]
+}

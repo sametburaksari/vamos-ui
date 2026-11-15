@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Pages people keep on paper or as a PDF: a CV, an invoice, a recipe, a ticket, a programme.",
+    "Any page that should print without the navigation, footer and banners (PrintStyles)."
+  ],
+  "avoidWhen": [
+    "Generating a real PDF file on the server (invoices with a legal layout) — render the PDF in the app and link to it.",
+    "Exporting data — use export."
+  ],
+  "related": [
+    "button",
+    "export",
+    "article-layout"
+  ],
+  "a11y": [
+    "A real button with a description of what happens (\"Opens the print dialog…\"); the button itself never prints.",
+    "The print stylesheet prints link addresses, so the paper copy keeps where links pointed."
+  ]
+}

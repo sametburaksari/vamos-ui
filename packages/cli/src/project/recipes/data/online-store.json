@@ -101,6 +101,7 @@
           "id": "newsletter",
           "purpose": "Email sign-up for new releases, with how often you write and the delivery/returns summary.",
           "use": ["cta"],
+          "alternatives": ["email-capture: a compact signup inside another section or the footer area"],
           "fields": ["What subscribers get and how often", "Consent text and unsubscribe promise"],
           "when": { "any": ["newsletter"] },
           "notes": "Use the newsletter variant of cta; consent text sits under the field."

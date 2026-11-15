@@ -18,9 +18,9 @@
         {
           "id": "hero",
           "purpose": "One-line promise and the email form in a card over a soft photo, with the countdown to the first wave.",
-          "use": ["hero", "countdown"],
+          "use": ["hero", "email-capture", "countdown"],
           "fields": ["Headline", "One-sentence lead", "Background photo or key art", "Launch / first-wave date and time with time zone", "What happens after sign-up (when they hear from you)", "Consent text", "Number already waiting (only if real)"],
-          "notes": "The only form on the page: email validated on submit, then live once it has been wrong, error tied to the input; on success a toast and the joined state. Wash the photo so text sits on calm ground. Countdown renders placeholders on the server, ticks after hydration, hides the digits from screen readers and reads one sentence with the day count; honour reduced motion."
+          "notes": "The only form on the page: email validated on submit (EmailCapture), error tied to the input; on success a toast and the joined state. Wash the photo so text sits on calm ground. Countdown renders placeholders on the server, ticks after hydration, hides the digits from screen readers and reads one sentence with the day count; honour reduced motion. EmailCapture gives the validated field, consent line and success state with the same server contract as ContactForm."
         },
         {
           "id": "why",
@@ -47,19 +47,20 @@
         {
           "id": "position",
           "purpose": "Place in line counting in after sign-up; each friend who joins with the link moves them up a fixed number of places, with a progress bar to the first wave.",
-          "use": ["stat", "progress"],
+          "use": ["referral-panel"],
+          "alternatives": ["stat: the position as a plain figure with progress, when the layout needs its own design", "empty-state: a plain confirmation when there is no referral programme"],
           "fields": ["Queue position logic (start position, places gained per referral)", "Size of the first wave", "What the person gets at the front"],
           "optional": true,
-          "notes": "Counter eases to the new number (instant under reduced motion) and is announced via aria-live. Without a referral programme show a plain confirmation instead."
+          "notes": "The new position is announced via aria-live. Without a referral programme show a plain confirmation instead. ReferralPanel takes the position, the real total, referrals and the goal; the app owns the rules."
         },
         {
           "id": "share",
           "purpose": "Personal invite link with a copy button and share options.",
-          "use": ["input", "button"],
-          "alternatives": ["qr-code: when the link is shared in person"],
+          "use": ["referral-panel"],
+          "alternatives": ["qr-code: when the link is shared in person", "input: a read-only link field with a copy button, when the share row stands alone"],
           "fields": ["Invite link format", "Share channels"],
           "optional": true,
-          "notes": "Copy result announced with a toast."
+          "notes": "Copy result announced with a toast. ReferralPanel includes the read-only link, copy (announced) and the device share sheet where there is one."
         },
         {
           "id": "next",
