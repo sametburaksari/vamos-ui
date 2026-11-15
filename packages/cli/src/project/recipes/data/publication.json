@@ -116,7 +116,7 @@
         {
           "id": "body",
           "purpose": "The text, with footnotes as side notes on wide screens (endnotes on narrow), figures, call-outs, tables and code samples.",
-          "use": ["article-layout", "rich-text-section"],
+          "use": ["article-layout", "rich-text-section", "code-block"],
           "alternatives": ["tabs: code samples in several languages that switch together across the page", "table: benchmark or data tables with a caption", "alert: an aside or warning call-out", "section-nav: margin contents for a long technical post"],
           "fields": ["Body text with headings", "Footnotes", "Figures with captions and alt text", "Code samples per language", "Data tables with captions"],
           "notes": "Footnote numbers jump to the side note when visible, else the endnote; both link back; notes use role=\"note\". Code blocks scroll sideways inside their own box, have a copy button with a status message, and a language choice that is one setting for the page."

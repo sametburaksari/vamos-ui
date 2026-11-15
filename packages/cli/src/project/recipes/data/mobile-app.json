@@ -18,10 +18,10 @@
         {
           "id": "hero",
           "purpose": "Promise, store badges and one or two phones showing the main screen.",
-          "use": ["hero"],
+          "use": ["hero", "device-frame", "store-badges"],
           "alternatives": ["media-text: a calm split hero (promise, two actions, store rating) beside the app shown as stacked glass panes, for trust-first apps"],
           "fields": ["Headline", "Lead", "Store links (App Store, Google Play)", "Store rating with source and review count", "Main app screens (real screenshots or token-drawn screens)", "Up to three headline figures with source"],
-          "notes": "Phones can be drawn from tokens (rounded body, status bar, screen slot) so screens re-theme; phone art is role=img with a label describing the screen. Use official store badge artwork and follow its usage rules."
+          "notes": "Phones can be drawn from tokens (rounded body, status bar, screen slot) so screens re-theme; phone art is role=img with a label describing the screen. store-badges draws generic, unbranded badges (with a QR for desktop); swap in the stores' official artwork only under their usage rules."
         },
         {
           "id": "trust",
@@ -34,10 +34,10 @@
         {
           "id": "features",
           "purpose": "Feature chapters beside a sticky phone whose screen swaps as each chapter crosses the middle of the viewport; a numbered rail jumps to a chapter.",
-          "use": ["section-nav", "media-text"],
+          "use": ["section-nav", "media-text", "device-frame"],
           "alternatives": ["feature-grid: a simpler grid of features when there are no distinct screens per feature", "tabs: screens switched by tabs instead of scroll"],
           "fields": ["Per feature: title, two or three points, the matching app screen"],
-          "notes": "Under about 64rem repeat the phone inside each chapter instead of sticking. Reduced motion: screens swap without sliding."
+          "notes": "One sticky device-frame with DeviceScreens whose active screen follows the chapter in view. Under about 64rem repeat the phone inside each chapter instead of sticking. Reduced motion: screens swap without sliding."
         },
         {
           "id": "numbers",
@@ -72,7 +72,7 @@
         {
           "id": "closing-cta",
           "purpose": "Download band with store links.",
-          "use": ["cta"],
+          "use": ["cta", "store-badges"],
           "alternatives": ["qr-code: a QR to the store page for desktop visitors"],
           "fields": ["Closing line", "Store links", "Trial or free-plan fine print"]
         }
@@ -120,7 +120,7 @@
         {
           "id": "get",
           "purpose": "Store badges and requirements per platform.",
-          "use": ["media-text", "qr-code"],
+          "use": ["store-badges", "media-text"],
           "fields": ["Store links", "Minimum OS version and download size per platform", "Supported wearables / devices"]
         },
         {

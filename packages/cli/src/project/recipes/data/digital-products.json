@@ -18,7 +18,7 @@
         {
           "id": "hero",
           "purpose": "Headline, one-line pitch and the best seller shown working (a live or real preview), with figures such as number of products, buyers and update count.",
-          "use": ["hero"],
+          "use": ["hero", "device-frame"],
           "alternatives": ["video-player: a screen recording shows the product better than a live preview", "stats-band: figures as their own band"],
           "fields": ["Headline and pitch", "Best-selling product and its preview", "Figures: products, buyers, updates shipped (real numbers)"],
           "notes": "A preview of the real product beats a screenshot: render it at a simulated device width inside its own theme scope. Count-up figures must respect reduced motion."
@@ -78,7 +78,7 @@
         {
           "id": "preview",
           "purpose": "The product previewed with switches that matter for it (page, device width, light/dark, colour, font), next to the licence picker and buy button.",
-          "use": ["product-01"],
+          "use": ["product-01", "device-frame"],
           "alternatives": ["video-player: video walkthrough for courses or plugins", "gallery: still screenshots when a live preview is impossible"],
           "fields": ["Preview (live build, screenshots or video)", "Licence tiers with prices", "Short description"],
           "notes": "Licence choice is a radio group. Inside a live preview there are no headings or landmarks; it is a picture made of live parts, with a text description."
@@ -122,7 +122,7 @@
         {
           "id": "confirmation",
           "purpose": "Order number, download links, licence key with copy, invoice and next steps.",
-          "use": ["order-confirmation-01"],
+          "use": ["order-confirmation-01", "download-kit"],
           "fields": ["Download delivery method (link, account, email)", "Licence key format", "How long download links stay valid"],
           "notes": "Copy feedback for the licence key uses role=status."
         }
