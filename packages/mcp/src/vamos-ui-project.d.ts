@@ -34,6 +34,30 @@ declare module "vamos-ui/project" {
     imported?: { url?: string; pages?: { path: string; label: string }[]; site?: Record<string, unknown> };
   }
   export function startProject(answers: Answers, opts?: StartOptions): ProjectStep;
+  export interface RecipeSection {
+    id: string;
+    purpose: string;
+    use: string[];
+    alternatives?: string[];
+    fields: string[];
+    optional?: boolean;
+    when?: { any?: string[]; all?: string[]; not?: string[] };
+    notes?: string;
+  }
+  export interface Recipe {
+    id: string;
+    title: { en: string; tr: string };
+    summary: string;
+    match: { siteTypes: string[]; signals: string[]; features?: string[]; markets?: string[]; fallback?: boolean };
+    showcase?: string[];
+    pages: { id: string; path: { en: string; tr: string }; title: { en: string; tr: string }; purpose: string; when?: RecipeSection["when"]; sections: RecipeSection[] }[];
+    content: string[];
+    styles: { name: string; axes: Record<string, string>; motion?: string; why: string }[];
+    pitfalls: string[];
+  }
+  export const RECIPES: readonly Recipe[];
+  export function recipeById(id: string): Recipe | undefined;
+  export function matchRecipes(description: string, recipes: readonly Recipe[], limit?: number): { recipe: Recipe; signals: string[] }[];
   export function formatPlan(plan: ProjectPlan, lang?: Lang): string;
   export type TaskStatus = "todo" | "blocked" | "done";
   export interface TaskView {

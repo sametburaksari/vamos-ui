@@ -8,7 +8,6 @@
     "Generic on/off settings — use switch or toggle."
   ],
   "related": [
-    "toggle",
     "site-shell",
     "navbar",
     "switch"

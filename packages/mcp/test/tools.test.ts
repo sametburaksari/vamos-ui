@@ -157,7 +157,10 @@ describe("plan_screen", () => {
   });
 
   it("adds the website launch checklist for website screens only", async () => {
-    const site = await planScreen(registry, { description: "Restaurant website landing page with menu and reservations" });
+    const site = await planScreen(registry, { description: "Podcast website with episode pages and a newsletter" });
+    expect(site).toMatch(/## Recipe: Podcast \(`podcast`\)/);
+    expect(site).toMatch(/start_project/);
+    expect(site).not.toMatch(/\*\*`site-/);
     expect(site).toMatch(/## Website launch checklist/);
     expect(site).toMatch(/legal-01/);
     expect(site).toMatch(/vamos-ui site essentials/);
