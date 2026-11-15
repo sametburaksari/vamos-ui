@@ -9,7 +9,7 @@ describe("Hero", () => {
     const { container } = render(
       <main>
         <Hero
-          eyebrow="Studio Arda · Maltepe"
+          eyebrow="Studio Arda · Moda"
           title="Websites for places people *actually* visit."
           lead="We design and run sites for restaurants, clinics and hotels."
           actions={[{ link: { href: "/work", label: "See the work" }, style: "link" }, { link: { href: "/contact", label: "Contact" }, style: "primary" }]}

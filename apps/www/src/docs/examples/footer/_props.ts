@@ -2,7 +2,7 @@ import type { FooterProps } from "@vamos-ui/react/blocks";
 
 export const studioFooter: FooterProps = {
   brand: { name: "Vamos", href: "/" },
-  about: "A small studio in Maltepe building websites, booking systems and ad campaigns for restaurants, spas and clinics.",
+  about: "A small studio in Moda designing books, posters and shop signs for publishers and makers.",
   columns: [
     { title: "Studio", links: [{ href: "/work", label: "Work" }, { href: "/services", label: "Services" }, { href: "/journal", label: "Journal" }, { href: "/about", label: "About" }] },
     { title: "Products", links: [{ href: "/tapcard", label: "Tapcard" }, { href: "/tablekit", label: "Tablekit" }, { href: "/appkit", label: "Appkit" }] },

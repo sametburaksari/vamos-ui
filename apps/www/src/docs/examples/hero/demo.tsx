@@ -8,7 +8,7 @@ export default function HeroDemo() {
   return (
     <SiteFrame>
       <Hero
-        eyebrow="Studio Arda · Maltepe, Istanbul"
+        eyebrow="Studio Arda · Moda, Istanbul"
         title="Websites for places people *actually* visit."
         lead="We design and run sites for restaurants, clinics and hotels on the Asian side — menus your staff can edit and booking that lands on WhatsApp."
         actions={[{ link: { href: "/work", label: "See the work" }, style: "link" }]}

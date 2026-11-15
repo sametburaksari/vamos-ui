@@ -7,7 +7,7 @@ import { footerBlock } from "./registry-2";
 
 const props: FooterProps = {
   brand: { name: "Vamos", href: "/" },
-  about: "A small studio in Maltepe building websites and booking systems for restaurants, spas and clinics.",
+  about: "A small studio in Moda designing books, posters and shop signs.",
   columns: [
     { title: "Studio", links: [{ href: "/work", label: "Work" }, { href: "/services", label: "Services" }, { href: "/journal", label: "Journal" }] },
     { title: "Products", links: [{ href: "/tapcard", label: "Tapcard" }, { href: "/tablekit", label: "Tablekit" }] },
