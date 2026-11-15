@@ -18,6 +18,10 @@ ${pc.bold("Options")}
   --verbose           Show every finding (default: the first 5 per rule)
   --json              Machine-readable report
 
+On a local preview (localhost, 127.0.0.1, *.localhost, *.test) https, the security headers and
+canonical / sitemap URLs on the live host are reported as info, so the score reflects the site and
+not the dev server; ${pc.cyan("vamos-ui site check")} checks them on the deployed site.
+
 Exit code 1 when there are errors (or warnings with --strict). Respects robots.txt Disallow.`;
 
 export function int(flags: ParsedArgs["flags"], name: string, min: number, max: number): number | undefined {
@@ -48,6 +52,7 @@ export function formatAuditReport(report: AuditReport, verbose = false): string 
     const h = report.head;
     lines.push(pc.dim(`title ${h.title ? `"${h.title}"` : "—"} · lang ${h.lang ?? "—"} · JSON-LD ${h.jsonLdTypes.length ? h.jsonLdTypes.join(", ") : "—"} · sitemap ${report.files.sitemap?.found ? `${report.files.sitemap.urls} URLs` : "—"} · llms.txt ${report.files.llmsTxt ? "yes" : "no"}`));
   }
+  if (report.localPreview) lines.push(pc.dim(`local preview: https, security headers and URLs on the live host are info here; ${pc.cyan("vamos-ui site check")} checks them after deploy`));
   if (report.legal.length) lines.push(pc.dim(`legal: ${report.legal.map((l) => `${l.kind} ${l.status ?? "ext"}`).join(", ")}`));
   const max = verbose ? Infinity : 5;
   for (const sev of ["error", "warning", "info"] as const) {

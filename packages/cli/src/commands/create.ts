@@ -7,6 +7,7 @@ import { DEFAULT_CONFIG, validateConfig, writeConfig } from "../core/config";
 import { projectInstallCommand, runCommand } from "../core/pm";
 import { detectPackageManager, detectProject, suggestPaths } from "../core/project";
 import { DEFAULT_REGISTRY } from "../core/registry";
+import { appTitle } from "../core/site-layout";
 import { CliError, type ThemeConfig } from "../core/types";
 import { encodePreset } from "../preset";
 import { p, pc, spinner, unwrap, type Context } from "../ui";
@@ -47,9 +48,6 @@ export function packageNameFor(dir: string): string {
   return name || "vamos-app";
 }
 
-function titleFor(name: string): string {
-  return name.replace(/[-_.]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
 
 function attrsFor(theme: ThemeConfig, kind: "jsx" | "html"): string {
   return Object.entries(htmlAttributes(theme))
@@ -71,6 +69,18 @@ export interface ScaffoldOptions {
   template: Template;
   name: string;
   theme: ThemeConfig;
+  /** <html lang>, a BCP 47 tag such as tr-TR. Default "en". */
+  lang?: string;
+}
+
+/** A BCP 47 language tag as written in <html lang> ("tr", "tr-TR", "zh-Hant-TW"), or null. */
+export function langFromLocale(locale: string | undefined): string | null {
+  const v = locale?.trim().replace(/_/g, "-");
+  if (!v || !/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/i.test(v)) return null;
+  return v
+    .split("-")
+    .map((part, i) => (i === 0 ? part.toLowerCase() : part.length === 2 ? part.toUpperCase() : part.length === 4 ? part[0]!.toUpperCase() + part.slice(1).toLowerCase() : part))
+    .join("-");
 }
 
 /** Writes the template files (no install, no kit). Returns project-relative paths. */
@@ -80,7 +90,8 @@ export async function scaffold(target: string, opts: ScaffoldOptions): Promise<s
   const replace = (text: string) =>
     text
       .replace(/__APP_NAME__/g, opts.name)
-      .replace(/__APP_TITLE__/g, titleFor(opts.name))
+      .replace(/__APP_TITLE__/g, appTitle(opts.name))
+      .replace(/__LANG__/g, opts.lang ?? "en")
       .replace(/__HTML_ATTRS_JSX__/g, attrsFor(opts.theme, "jsx"))
       .replace(/__HTML_ATTRS__/g, attrsFor(opts.theme, "html"));
   const files: [string, string][] = walk(path.join(root, opts.template)).map((rel) => [path.join(root, opts.template, rel), rel.split(path.sep).join("/").replace(/(^|\/)_gitignore$/, "$1.gitignore")]);
@@ -104,10 +115,12 @@ function isEmptyDir(dir: string): boolean {
 const HELP = `${pc.bold("vamos-ui create")} <dir>  Start a new app with Vamos UI
 
 ${pc.bold("Usage")}
-  npx vamos-ui create <dir> [--template next|vite] [--preset <code>] [--yes] [--no-install]
+  npx vamos-ui create <dir> [--template next|vite] [--preset <code>] [--locale <tr-TR>] [--yes] [--no-install]
 
 Writes a minimal Next.js (App Router) or Vite + React app with Tailwind CSS v4, installs it with your
-package manager, runs ${pc.cyan("vamos-ui init")} (with the preset, if given) and adds a starter screen.`;
+package manager, runs ${pc.cyan("vamos-ui init")} (with the preset, if given) and adds a starter screen.
+--locale sets <html lang> (default en). For a website, ${pc.cyan("vamos-ui site init")} and
+${pc.cyan("vamos-ui site essentials")} later fill the untouched root layout in from vamos.site.json.`;
 
 export async function create(ctx: Context, args: ParsedArgs): Promise<number> {
   if (bool(args.flags, "help")) {
@@ -129,13 +142,16 @@ export async function create(ctx: Context, args: ParsedArgs): Promise<number> {
       ? (unwrap(await p.select({ message: "Template", initialValue: "next", options: TEMPLATES.map((t) => ({ value: t, label: TEMPLATE_INFO[t].label })) })) as Template)
       : "next";
   }
+  const localeFlag = str(args.flags, "locale");
+  const lang = localeFlag === undefined ? undefined : langFromLocale(localeFlag);
+  if (lang === null) throw new CliError(`--locale must be a language tag such as tr-TR or en, got "${localeFlag}".`);
   const presetCode = str(args.flags, "preset");
   const preset = presetCode ? parsePresetFlag(presetCode) : null;
   const install = bool(args.flags, "install", true);
   const name = packageNameFor(target);
 
   p.intro(pc.bold(`Vamos UI · create ${name}`));
-  const files = await scaffold(target, { template, name, theme: preset ? presetTheme(preset) : {} });
+  const files = await scaffold(target, { template, name, theme: preset ? presetTheme(preset) : {}, lang });
   p.log.step(`Wrote the ${TEMPLATE_INFO[template].label} template (${files.length} files) to ${pc.dim(path.relative(ctx.cwd, target) || ".")}`);
 
   // vamos.json first, so init and add use this folder even inside another Vamos UI project.

@@ -5,7 +5,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { run } from "../src/cli";
-import { packageNameFor, STARTER_ITEMS } from "../src/commands/create";
+import { langFromLocale, packageNameFor, STARTER_ITEMS } from "../src/commands/create";
+import { CREATE_LAYOUT_MARKER, isCreatedLayout } from "../src/core/site-layout";
 import { verifySource } from "../src/verify";
 import { fixtureItems, writeFixtureRegistry } from "./fixtures/registry";
 
@@ -77,6 +78,21 @@ describe("vamos-ui create", () => {
     expect(read("src/index.css")).toContain(`@import "./components/vamos/styles.css";`);
     expect(JSON.parse(read("vamos.json")).css).toBe("src/index.css");
     expect(existsSync(path.join(app, "src/components/vamos/components/card.tsx"))).toBe(true);
+  });
+
+  it("--locale sets <html lang>; the layout carries the marker site essentials looks for", async () => {
+    const { code, out } = await cli(tmp, fixtureRegistry, "create", "kuzey", "--template", "next", "--locale", "tr_tr", "--no-install", "--yes");
+    expect(code, out).toBe(0);
+    const layout = readFileSync(path.join(tmp, "kuzey/src/app/layout.tsx"), "utf8");
+    expect(layout).toContain(`<html lang="tr-TR" data-material="solid"`);
+    expect(layout.startsWith(CREATE_LAYOUT_MARKER)).toBe(true);
+    expect(isCreatedLayout(layout, "kuzey")).toBe(true);
+    expect(isCreatedLayout(layout, "other-name")).toBe(false);
+    const vite = await cli(tmp, fixtureRegistry, "create", "kuzey-vite", "--template", "vite", "--locale", "de", "--no-install");
+    expect(vite.code, vite.out).toBe(0);
+    expect(readFileSync(path.join(tmp, "kuzey-vite/index.html"), "utf8")).toContain(`<html lang="de" `);
+    expect((await cli(tmp, fixtureRegistry, "create", "bad-locale", "--locale", "Türkçe!", "--no-install")).code).toBe(1);
+    expect([langFromLocale("en"), langFromLocale("zh-hant-tw"), langFromLocale("tr_TR"), langFromLocale("x"), langFromLocale("")]).toEqual(["en", "zh-Hant-TW", "tr-TR", null, null]);
   });
 
   it("refuses a folder that is not empty and an unknown template", async () => {
