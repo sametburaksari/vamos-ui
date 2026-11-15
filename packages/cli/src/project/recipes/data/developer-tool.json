@@ -46,10 +46,10 @@
         {
           "id": "pricing",
           "purpose": "Plans plus a volume slider that shows the price of each plan at that volume and lights up the cheapest.",
-          "use": ["pricing-table", "slider"],
+          "use": ["pricing-table", "estimator"],
           "fields": ["Plans: name, included volume, price per period, overage price, limits", "Free tier limits", "Volume slider range and unit", "Tax note"],
           "when": { "any": ["section:pricing"] },
-          "notes": "Estimator result announced via aria-live."
+          "notes": "Plans in a pricing table, then an Estimator with the volume slider whose lines compare the plans at that volume and highlight the cheapest; the result is announced via aria-live."
         },
         {
           "id": "faq",
