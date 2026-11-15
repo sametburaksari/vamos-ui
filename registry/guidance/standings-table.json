@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A league table, ladder or leaderboard ranked by points — sports, esports, quiz or debating leagues, sales contests.",
+    "A compact top-N table that always includes the viewer's own side."
+  ],
+  "avoidWhen": [
+    "Sortable, filterable business data — use data-table.",
+    "A single score or KPI — use stat."
+  ],
+  "related": [
+    "fixture-list",
+    "table",
+    "data-table"
+  ],
+  "a11y": [
+    "A captioned table with row headers; short headers (P, W, Pts) are announced by their full names.",
+    "The highlighted side has aria-current and a spoken suffix; the form guide is role=\"img\" with a full name and visible letters, so colour is never the only signal."
+  ]
+}

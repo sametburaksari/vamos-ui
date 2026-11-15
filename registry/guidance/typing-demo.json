@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A scripted product demo in a hero or feature section: text that is typed, held, deleted and rewritten (draft to rewrite, prompt to answer, command to output).",
+    "A looping hero phrase that cycles through a few words."
+  ],
+  "avoidWhen": [
+    "Real streamed output from a model or server — render the text as it arrives instead.",
+    "Admin screens, forms and anything the user must read to act.",
+    "Headings that only need an entrance — use TextReveal from motion."
+  ],
+  "related": [
+    "motion",
+    "hero",
+    "button"
+  ],
+  "a11y": [
+    "Screen readers get the final text once; the animated copy is aria-hidden, so keystrokes are never announced.",
+    "Play / pause / replay button (keep it when looping, WCAG 2.2.2); reduced motion and data-motion=\"off\" show the final text with no controls.",
+    "The space for the longest text is reserved, so content below never shifts while it types."
+  ]
+}

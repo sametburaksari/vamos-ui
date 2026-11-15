@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Counting down to a launch, a registration opening, an event start or a sale ending.",
+    "Marketing pages and banners that switch to other content once the time is up."
+  ],
+  "avoidWhen": [
+    "A service-level deadline with at-risk and breached states — use sla-timer.",
+    "Logging elapsed work time — use time-tracker.",
+    "A date that is far away or does not need a ticking clock — show a formatted date."
+  ],
+  "related": [
+    "sla-timer",
+    "time-tracker",
+    "badge"
+  ],
+  "a11y": [
+    "role=\"timer\" with one aria-label sentence at minute precision (seconds only in the last minute); the digits are aria-hidden, so the ticking never floods a screen reader.",
+    "Completed content renders as role=\"status\"."
+  ]
+}

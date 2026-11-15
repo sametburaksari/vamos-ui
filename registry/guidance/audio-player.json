@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Playing spoken audio such as episodes, talks, lessons or voice notes from your own files.",
+    "Long recordings that need chapters, skip buttons, playback speed and transcript or download links."
+  ],
+  "avoidWhen": [
+    "Video, or audio that needs a picture — use video-player.",
+    "Short UI sounds or decorative background audio — use a plain audio element with no controls."
+  ],
+  "related": [
+    "video-player",
+    "slider",
+    "progress"
+  ],
+  "a11y": [
+    "A named group with labelled buttons and a seek slider whose value reads as \"1:05 of 45:10\"; the current chapter has aria-current.",
+    "Keyboard: Space / K play, arrow keys seek 5 s, J / L skip; no autoplay."
+  ]
+}
