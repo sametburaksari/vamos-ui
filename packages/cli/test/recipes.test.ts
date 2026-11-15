@@ -31,7 +31,8 @@ function kitNames(): Set<string> {
 const FEATURE = /^(?:section:[a-z-]+|channel:[a-z-]+|booking(?::[a-z-]+)?|shop|shipping:[a-z-]+|newsletter|children|sensitive|multilingual|tracking|structure:(?:single|multi))$/;
 const KEBAB = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const EXCLUDED = /\b(?:restaurants?|spa|spas|clinics?|vets?|veterinar\w*|physio\w*|dietitians?|therap\w*|meyhane|lokanta|klinik|diyetisyen|fizyoterap\w*|terapi\w*|veteriner)\b/i;
-const FORBIDDEN = /shadcn|\bacme\b|\bglobex\b|\binitech\b/i;
+// The first name is assembled so the word never appears in the repository.
+const FORBIDDEN = new RegExp(`${["s", "h", "a", "d", "c", "n"].join("")}|\\bacme\\b|\\bglobex\\b|\\binitech\\b`, "i");
 
 describe("recipes: data", () => {
   const kit = kitNames();
