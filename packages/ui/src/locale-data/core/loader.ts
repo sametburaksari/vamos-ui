@@ -36,6 +36,13 @@ export interface FetchJsonOptions {
   init?: RequestInit;
 }
 
+export interface FetchJsonLoaderOptions extends FetchJsonOptions {
+  /** Name in error messages. */
+  name?: string;
+  /** Resolve a 404 to `null` ("no data for this key") instead of rejecting. */
+  notFoundAsNull?: boolean;
+}
+
 /**
  * A loader that fetches one JSON document per key. `url` is a template filled from `vars(key)`
  * or a function of the key. Not cached by itself; wrap it in `createCachedLoader`.
@@ -43,7 +50,7 @@ export interface FetchJsonOptions {
 export function fetchJsonLoader<K, V>(
   url: string | ((key: K) => string),
   vars: (key: K) => Record<string, string | number>,
-  opts: FetchJsonOptions & { name?: string } = {},
+  opts: FetchJsonLoaderOptions = {},
 ): (key: K) => Promise<V> {
   const name = opts.name ?? "fetchJsonLoader";
   return async (key) => {
@@ -51,7 +58,11 @@ export function fetchJsonLoader<K, V>(
     if (!f) throw new Error(`${name}: no fetch available`);
     const href = typeof url === "function" ? url(key) : fillUrlTemplate(url, vars(key));
     const res = await f(href, opts.init);
+    if (res.status === 404 && opts.notFoundAsNull) return null as V;
     if (!res.ok) throw new Error(`${name}: ${res.status} for ${String(key)}`);
     return (await res.json()) as V;
   };
 }
+
+/** Template variables for a per-country file: `{cc}` → "US", `{cc_lower}` → "us". */
+export const countryVars = (cc: string): Record<string, string> => ({ cc, cc_lower: cc.toLowerCase() });

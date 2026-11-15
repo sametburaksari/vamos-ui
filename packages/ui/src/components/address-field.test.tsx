@@ -239,3 +239,41 @@ describe("subdivisions", () => {
     expect(loader).toHaveBeenCalledWith("ZZ");
   });
 });
+
+describe("city suggestions", () => {
+  it("loads a country's cities on first focus and narrows them to the chosen state", async () => {
+    const user = userEvent.setup();
+    const cities = vi.fn(async () => ({
+      source: "fixture",
+      license: "CC BY 4.0",
+      attribution: "City data © GeoNames (https://www.geonames.org), CC BY 4.0",
+      generated: "2026-11-15",
+      country: "US",
+      lang: "en",
+      subdivisions: ["CA", "NY"],
+      rows: [["New York City", "", 1], ["Los Angeles", "", 0], ["San Diego", "", 0]] as [string, string, number][],
+    }));
+    function Demo() {
+      const [a, setA] = React.useState<Address>({ country: "US" });
+      return <AddressField legend="Address" value={a} onValueChange={setA} cities={cities} />;
+    }
+    const { container } = render(<Demo />);
+    const city = screen.getByLabelText("City");
+    expect(cities).not.toHaveBeenCalled();
+    await user.click(city);
+    await vi.waitFor(() => expect(container.querySelectorAll("datalist option")).toHaveLength(3));
+    expect(city).toHaveAttribute("list", container.querySelector("datalist")!.id);
+    await screen.findByRole("option", { name: "California" });
+    await user.selectOptions(screen.getByRole("combobox", { name: "State" }), "California");
+    await vi.waitFor(() => expect([...container.querySelectorAll("datalist option")].map((o) => o.getAttribute("value"))).toEqual(["Los Angeles", "San Diego"]));
+    await user.type(city, "Smallville");
+    expect(city).toHaveValue("Smallville");
+    expect(cities).toHaveBeenCalledTimes(1);
+  });
+
+  it("makes no request without a cities loader", () => {
+    const { container } = render(<AddressField legend="Address" defaultValue={{ country: "US" }} />);
+    expect(container.querySelector("datalist")).toBeNull();
+    expect(screen.getByRole("textbox", { name: "City" })).not.toHaveAttribute("list");
+  });
+});

@@ -13,7 +13,7 @@
  * Unicode CLDR level-1 subdivisions elsewhere (Unicode License v3); stamped in every file.
  */
 import { compareText } from "../../lib/text";
-import { createCachedLoader, fillUrlTemplate, type FetchJsonOptions } from "../core/loader";
+import { countryVars, createCachedLoader, fetchJsonLoader, type FetchJsonOptions } from "../core/loader";
 
 /** `[iso, value, name, local]`: name / local are `""` when they equal the value. */
 export type SubdivisionRow = [iso: string, value: string, name: string, local: string];
@@ -98,14 +98,7 @@ export function createSubdivisionLoader(load: (country: string) => Promise<Subdi
  * ```
  */
 export function subdivisionsFromUrl(url: string | ((country: string) => string), opts: FetchJsonOptions = {}): SubdivisionLoader {
-  return createSubdivisionLoader(async (cc) => {
-    const f = opts.fetch ?? globalThis.fetch;
-    if (!f) throw new Error("subdivisionsFromUrl: no fetch available");
-    const res = await f(typeof url === "function" ? url(cc) : fillUrlTemplate(url, { cc, cc_lower: cc.toLowerCase() }), opts.init);
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error(`subdivisionsFromUrl: ${res.status} for ${cc}`);
-    return (await res.json()) as SubdivisionFile;
-  });
+  return createSubdivisionLoader(fetchJsonLoader<string, SubdivisionFile | null>(url, countryVars, { ...opts, name: "subdivisionsFromUrl", notFoundAsNull: true }));
 }
 
 /** Entries of one country for `locale` (`[]` when it has none). */

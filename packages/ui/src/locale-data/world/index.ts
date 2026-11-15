@@ -34,3 +34,15 @@ export {
   type SubdivisionLoader,
   type SubdivisionRow,
 } from "./subdivisions";
+export {
+  parseCities,
+  sortCities,
+  createCityLoader,
+  citiesFromUrl,
+  DEFAULT_CITIES_URL,
+  type City,
+  type CityFile,
+  type CityLoader,
+  type CityRow,
+  type ParseCitiesOptions,
+} from "./cities";

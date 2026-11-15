@@ -13,6 +13,13 @@
 //                 local-language names. TR comes from address-tr.json (official names) and is
 //                 checked against CLDR's codes and Turkish names.
 //
+//   cities        apps/www/public/data/cities/<CC>.json (published at https://ui.vamos.ist/data/cities/)
+//                 GeoNames (CC BY 4.0): places with 5 000+ inhabitants or an administrative seat
+//                 (1 000+ for countries with fewer than 50 such places), most populous first, with
+//                 the local-language name and the subdivision (ISO 3166-2 suffix, matched to the
+//                 subdivision files) each lies in. Not part of the npm package: apps load them with
+//                 citiesFromUrl(). Needs alternateNamesV2.zip (~200 MB download, ~1 min to scan).
+//
 //   node packages/ui/scripts/world-address.mjs --download       fetch the sources, then build
 //   node packages/ui/scripts/world-address.mjs                  build from an earlier download
 //   node packages/ui/scripts/world-address.mjs --only formats   one step
@@ -21,7 +28,8 @@
 //
 // Refresh once a year (or when a country changes its postal system): run with --download, review
 // the diff (`git diff --stat`), run the tests, commit the output with the new `generated` dates.
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
+import readline from "node:readline";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -30,7 +38,8 @@ import { fileURLToPath } from "node:url";
 
 const PKG = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WORLD = path.join(PKG, "src/locale-data/world");
-const STEPS = ["formats", "subdivisions"];
+const STEPS = ["formats", "subdivisions", "cities"];
+const CITIES_OUT = path.resolve(PKG, "../../apps/www/public/data/cities");
 const CLDR_VERSION = process.env.CLDR_VERSION ?? "49";
 
 const { values } = parseArgs({
@@ -293,11 +302,192 @@ export const bundledSubdivisions = /*#__PURE__*/ createSubdivisionLoader(loadSub
 }
 
 /* ------------------------------------------------------------------ */
+/* Step: cities                                                        */
+/* ------------------------------------------------------------------ */
+
+const GEONAMES = "https://download.geonames.org/export/dump";
+const GEONAMES_FILES = ["cities1000.zip", "admin1CodesASCII.txt", "admin2Codes.txt", "alternateNamesV2.zip"];
+/** Populated-place codes that are not a place to live at an address today. */
+const SKIP_FEATURES = new Set(["PPLX", "PPLH", "PPLQ", "PPLW", "PPLCH"]);
+/** Countries whose cities are named in several languages: only restore diacritics there ("Zurich" → "Zürich"), never translate ("Geneva" ≠ "Genf"). */
+const MULTILINGUAL = new Set(["BE", "CA", "CH", "LU"]);
+const MIN_POP = 5000;
+const MIN_POP_SMALL = 1000;
+const SMALL_COUNTRY = 50;
+
+async function downloadGeonames() {
+  const dir = path.join(RAW, "geonames");
+  fs.mkdirSync(dir, { recursive: true });
+  for (const f of GEONAMES_FILES) {
+    const res = await get(`${GEONAMES}/${f}`);
+    // Stream to disk: alternateNamesV2.zip is ~200 MB.
+    const out = fs.createWriteStream(path.join(dir, f));
+    for await (const chunk of res.body) out.write(chunk);
+    await new Promise((r) => out.end(r));
+    console.log(`↓ GeoNames ${f}`);
+  }
+  fs.writeFileSync(path.join(dir, "version.json"), JSON.stringify({ fetched: generated }));
+}
+
+/** Lines of a text file inside a zip, streamed (the alternate names do not fit in a string). */
+async function* zipLines(zip, entry) {
+  const child = spawn("unzip", ["-p", zip, entry], { stdio: ["ignore", "pipe", "inherit"] });
+  yield* readline.createInterface({ input: child.stdout, crlfDelay: Infinity });
+}
+
+/** Lower case, no accents, no punctuation, no generic words: "Provincia de Madrid" ≈ "Madrid". */
+const GENERIC = /\b(province|provincia|provinz|state|region|regione|prefecture|county|governorate|oblast|oblast'|kray|krai|municipality|district|department|departamento|emirate|of|de|di|del|la|el|the|city|metropolitan|citta|metropolitana|capital|special|autonomous)\b/g;
+const foldName = (s) =>
+  s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").replace(GENERIC, " ").replace(/\s+/g, " ").trim();
+
+async function buildCities() {
+  const dir = path.join(RAW, "geonames");
+  if (!fs.existsSync(path.join(dir, "version.json"))) throw new Error(`no GeoNames data in ${dir}; run with --download`);
+  const { fetched } = JSON.parse(fs.readFileSync(path.join(dir, "version.json"), "utf8"));
+  const g = readGoogle();
+  const cldr = readCldr();
+
+  // 1. Places.
+  const places = [];
+  for await (const line of zipLines(path.join(dir, "cities1000.zip"), "cities1000.txt")) {
+    const c = line.split("\t");
+    if (c.length < 15 || SKIP_FEATURES.has(c[7])) continue;
+    places.push({ id: c[0], name: c[1], ascii: c[2], cc: c[8], a1: c[10], a2: c[11], pop: Number(c[14]) || 0, seat: c[7] === "PPLA" || c[7] === "PPLC" });
+  }
+  const byCountry = new Map();
+  for (const p of places) (byCountry.get(p.cc) ?? byCountry.set(p.cc, []).get(p.cc)).push(p);
+  for (const [cc, list] of byCountry) {
+    const big = list.filter((p) => p.pop >= MIN_POP || p.seat);
+    const keep = big.length >= SMALL_COUNTRY ? big : list.filter((p) => p.pop >= MIN_POP_SMALL || p.seat);
+    keep.sort((a, b) => b.pop - a.pop || byText(a.name, b.name));
+    byCountry.set(cc, keep);
+  }
+
+  // 2. Admin areas (level 1 and 2) of GeoNames, to be matched to the subdivision files.
+  const admins = new Map(); // geonameid → { key: "US.CA" | "IT.07.RM", names: Set }
+  const adminKeys = new Map(); // "US.CA" → admin
+  for (const [file, level] of [["admin1CodesASCII.txt", 1], ["admin2Codes.txt", 2]]) {
+    for (const line of fs.readFileSync(path.join(dir, file), "utf8").split("\n")) {
+      const [key, name, ascii, id] = line.split("\t");
+      if (!id) continue;
+      const a = { key, level, code: key.split(".").pop(), names: new Set([name, ascii]), abbr: new Set() };
+      admins.set(id, a);
+      adminKeys.set(key, a);
+    }
+  }
+
+  // 3. One pass over the alternate names: local names of the kept places, every name and
+  //    abbreviation of the admin areas.
+  const langOf = (cc) => (g.byCountry.get(cc)?.lang ?? cldr.likely.get(cc) ?? "en").split("-")[0];
+  const placeById = new Map();
+  for (const list of byCountry.values()) for (const p of list) placeById.set(p.id, p);
+  for await (const line of zipLines(path.join(dir, "alternateNamesV2.zip"), "alternateNamesV2.txt")) {
+    const c = line.split("\t");
+    const id = c[1];
+    const a = admins.get(id);
+    if (a) {
+      if (c[2] === "abbr") a.abbr.add(c[3]);
+      else if (!["link", "wkdt", "post", "iata", "icao", "faac", "unlc", "nuts"].includes(c[2]) && c[7] !== "1") a.names.add(c[3]);
+      continue;
+    }
+    const p = placeById.get(id);
+    if (!p || c[6] === "1" || c[7] === "1") continue; // colloquial / historic
+    const lang = langOf(p.cc);
+    // English-speaking countries: GeoNames' own name is already the local one.
+    if (lang === "en" || c[2] !== lang) continue;
+    // Short and preferred > short > preferred > first seen ("Queens", not "Borough of Queens").
+    const rank = (c[5] === "1" ? 2 : 0) + (c[4] === "1" ? 1 : 0) + 1;
+    if (!p.local || rank > p.localRank) {
+      p.local = c[3];
+      p.localRank = rank;
+    }
+  }
+
+  // 4. Write one file per country.
+  fs.rmSync(CITIES_OUT, { recursive: true, force: true });
+  fs.mkdirSync(CITIES_OUT, { recursive: true });
+  const report = [];
+  let total = 0;
+  let bytes = 0;
+  for (const [cc, list] of [...byCountry].sort((a, b) => byText(a[0], b[0]))) {
+    if (!list.length) continue;
+    const subFile = path.join(WORLD, "subdivisions", `${cc}.json`);
+    const subs = fs.existsSync(subFile) ? JSON.parse(fs.readFileSync(subFile, "utf8")).rows : [];
+    // Match GeoNames admin areas (level 1 or 2, whichever covers more of the list) to the rows.
+    const rowKeys = subs.map(([iso, key, name, local]) => ({ iso, keys: new Set([iso, key].filter(Boolean).map((x) => x.toUpperCase())), names: new Set([key, name, local].filter(Boolean).map(foldName)) }));
+    const matchArea = (a) => {
+      // Codes count only when they are letters: GeoNames' numeric admin codes are FIPS codes
+      // ("TR.68" is Ankara, plate 06), its letter codes are the post's ("US.CA", "IT.07.RM").
+      const codes = [a.code, ...a.abbr].filter((x) => /^[A-Za-z]{1,3}$/.test(x)).map((x) => x.toUpperCase());
+      const hit = rowKeys.filter((r) => r.iso && codes.some((x) => r.keys.has(x)));
+      if (hit.length === 1) return hit[0].iso;
+      const folded = new Set([...a.names].map(foldName).filter(Boolean));
+      const byName = rowKeys.filter((r) => r.iso && [...r.names].some((n) => folded.has(n)));
+      return byName.length === 1 ? byName[0].iso : "";
+    };
+    let best = { level: 0, map: new Map(), covered: 0 };
+    for (const level of [1, 2]) {
+      const map = new Map();
+      for (const p of list) {
+        const key = level === 1 ? `${cc}.${p.a1}` : `${cc}.${p.a1}.${p.a2}`;
+        if (map.has(key)) continue;
+        const a = adminKeys.get(key);
+        map.set(key, a ? matchArea(a) : "");
+      }
+      const covered = new Set([...map.values()].filter(Boolean)).size;
+      if (covered > best.covered) best = { level, map, covered };
+    }
+    if (process.env.DEBUG_CITIES === cc) for (const [k, v] of best.map) if (!v) console.log("unmatched", k, adminKeys.get(k) ? [...adminKeys.get(k).names].slice(0, 6) : "no admin", adminKeys.get(k) ? [...adminKeys.get(k).abbr] : "");
+    const isoList = [...new Set([...best.map.values()].filter(Boolean))].sort();
+    const isoIndex = new Map(isoList.map((x, i) => [x, i]));
+    const lang = langOf(cc);
+    const seen = new Set();
+    const rows = [];
+    for (const p of list) {
+      let local = p.local && p.local !== p.name ? p.local : "";
+      if (local && MULTILINGUAL.has(cc) && foldName(local) !== foldName(p.ascii)) local = "";
+      const sub = best.level ? best.map.get(best.level === 1 ? `${cc}.${p.a1}` : `${cc}.${p.a1}.${p.a2}`) : "";
+      const idx = sub ? isoIndex.get(sub) : -1;
+      const id = `${p.name}|${idx}`;
+      if (seen.has(id)) continue; // same name twice in one subdivision: keep the bigger place
+      seen.add(id);
+      rows.push(local ? [p.name, local, idx] : [p.name, "", idx]);
+    }
+    const file = {
+      source: `GeoNames cities1000 dump (${GEONAMES}, fetched ${fetched}): places with ${MIN_POP}+ inhabitants or an administrative seat${list.some((p) => p.pop < MIN_POP && !p.seat) ? ` (${MIN_POP_SMALL}+ here: fewer than ${SMALL_COUNTRY} such places)` : ""}, most populous first; local names from GeoNames alternate names; subdivisions matched to the subdivision files (GeoNames admin level ${best.level || "-"})`,
+      license: "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)",
+      attribution: "City data © GeoNames (https://www.geonames.org), CC BY 4.0",
+      generated,
+      country: cc,
+      lang,
+      subdivisions: isoList,
+      rows,
+    };
+    const out = JSON.stringify(file) + "\n";
+    fs.writeFileSync(path.join(CITIES_OUT, `${cc}.json`), out);
+    total += rows.length;
+    bytes += out.length;
+    report.push({ cc, rows: rows.length, kb: out.length / 1024, subs: subs.length, matched: isoList.length, unmatched: rows.filter((r) => r[2] === -1).length });
+  }
+  // TR: every province must be matched, or the district / city filter would silently break.
+  const tr = report.find((r) => r.cc === "TR");
+  if (!process.env.DEBUG_CITIES && (!tr || tr.matched !== 81)) throw new Error(`cities: TR matched ${tr?.matched} of 81 provinces`);
+  fs.writeFileSync(path.join(CITIES_OUT, "index.json"), JSON.stringify({ source: "GeoNames", license: "CC BY 4.0", attribution: "City data © GeoNames (https://www.geonames.org), CC BY 4.0", generated, countries: Object.fromEntries(report.map((r) => [r.cc, r.rows])) }) + "\n");
+  report.sort((a, b) => b.kb - a.kb);
+  console.log(`✓ cities: ${report.length} countries, ${total} places, ${(bytes / 1024 / 1024).toFixed(2)} MB; largest ${report.slice(0, 5).map((r) => `${r.cc} ${r.kb.toFixed(0)} kB`).join(", ")}`);
+  const weak = report.filter((r) => r.subs && r.matched < r.subs * 0.5).map((r) => `${r.cc} ${r.matched}/${r.subs}`);
+  if (weak.length) console.log(`  subdivision match under 50%: ${weak.join(", ")}`);
+  return report;
+}
+
+/* ------------------------------------------------------------------ */
 
 if (values.download) {
   fs.mkdirSync(RAW, { recursive: true });
   if (only.includes("formats") || only.includes("subdivisions")) await downloadGoogle();
-  if (only.includes("subdivisions")) await downloadCldr();
+  if (only.includes("subdivisions") || only.includes("cities")) await downloadCldr();
+  if (only.includes("cities")) await downloadGeonames();
 }
 if (only.includes("formats")) buildFormats();
 if (only.includes("subdivisions")) buildSubdivisions();
+if (only.includes("cities")) await buildCities();
