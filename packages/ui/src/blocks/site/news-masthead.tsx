@@ -131,8 +131,9 @@ export function NewsTopBar({ date, timeZone, weather: weatherProp, loadWeather, 
             <ul className="flex items-center gap-0.5 border-s border-line ps-3 @max-xl:hidden">
               {social.map((s) => (
                 <li key={s.network}>
-                  <BlockLink href={s.href} newTab components={components} locale={locale} aria-label={BRAND_NAMES[s.network]} className="flex size-7 items-center justify-center rounded-ui-sm text-fg-muted hover:bg-hover hover:text-fg focus-ring">
+                  <BlockLink href={s.href} newTab components={components} locale={locale} className="flex size-7 items-center justify-center rounded-ui-sm text-fg-muted hover:bg-hover hover:text-fg focus-ring">
                     <BrandIcon name={s.network} className="size-[15px]" />
+                    <span className="sr-only">{BRAND_NAMES[s.network]}</span>
                   </BlockLink>
                 </li>
               ))}

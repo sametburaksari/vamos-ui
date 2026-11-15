@@ -89,10 +89,10 @@ export function PostMeta({ post, show, tone = "default", locale = "en-US", label
         </React.Fragment>
       ))}
       {comments ? (
-        <span className="ms-auto inline-flex items-center gap-1 tabular" title={t("comments", { count: post.commentCount })}>
+        <span className="ms-auto inline-flex items-center gap-1 tabular">
           <MessageSquare aria-hidden strokeWidth={1.75} className="size-3.5" />
-          <span aria-hidden>{t("commentsShort", { count: post.commentCount })}</span>
-          <span className="sr-only">{t("comments", { count: post.commentCount })}</span>
+          {post.commentCount}
+          <span className="sr-only"> {t("commentsWord", { count: post.commentCount })}</span>
         </span>
       ) : null}
     </p>

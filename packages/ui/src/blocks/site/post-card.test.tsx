@@ -23,7 +23,7 @@ describe("PostCard", () => {
     expect(links.map((l) => l.getAttribute("href"))).toEqual(["/city/transport", "/city/night-tram"]);
     expect(within(card).getByRole("heading", { level: 3 })).toHaveTextContent("The night tram returns");
     expect(card.querySelector("time")).toHaveAttribute("datetime", "2026-11-15T07:40:00+03:00");
-    expect(screen.getByText("48 comments")).toBeInTheDocument();
+    expect(card.querySelector(".vb-news-meta")).toHaveTextContent("48 comments");
     expect(screen.getByText("6 min read")).toBeInTheDocument();
     expect(screen.getByText("A twelve-month trial starts in March.")).toBeInTheDocument();
     expect(await axe(container)).toHaveNoViolations();
@@ -36,7 +36,7 @@ describe("PostCard", () => {
     expect(screen.queryByText("Transport")).toBeNull(); // rows drop the badge by default
     expect(screen.getByRole("article")).toHaveAttribute("data-variant", "row");
     rerender(<PostCard post={newsPosts[1]!} variant="list" locale="tr-TR" labels={newsLabelsTr} />);
-    expect(screen.getByText("Yorum yok")).toBeInTheDocument();
+    expect(screen.getByRole("article").querySelector(".vb-news-meta")).toHaveTextContent("0 yorum");
     rerender(<PostCard post={newsPosts[0]!} variant="text" meta={false} rank={2} />);
     expect(screen.queryByText(/Ayla/)).toBeNull();
     expect(screen.getByText("2")).toHaveAttribute("aria-hidden");
