@@ -2576,6 +2576,7 @@
    "createAddressFormat",
    "createCachedLoader",
    "createHolidayProvider",
+   "createSubdivisionLoader",
    "createTrNeighbourhoodLoader",
    "daysInMonth",
    "defaultWorkDays",
@@ -2585,6 +2586,7 @@
    "electronicIban",
    "fetchJsonLoader",
    "fillUrlTemplate",
+   "findSubdivision",
    "findTrProvince",
    "formatAddress",
    "formatIban",
@@ -2605,6 +2607,7 @@
    "isoWeekday",
    "loadAddressFormat",
    "loadAddressFormats",
+   "loadSubdivisions",
    "loadTrAddressData",
    "maskTrId",
    "mulDivRound",
@@ -2614,10 +2617,12 @@
    "nextWorkingDay",
    "normalizeIban",
    "parseAddressFormat",
+   "parseSubdivisions",
    "parseTrNeighbourhoods",
    "peekAddressFormat",
    "regionOf",
    "roundHalfUp",
+   "subdivisionsFromUrl",
    "subscribeAddressFormats",
    "subtractDecimal",
    "tcknCheckDigits",
@@ -2691,6 +2696,10 @@
    "PostalCodeCheck",
    "PostalCodeKind",
    "RegionKind",
+   "Subdivision",
+   "SubdivisionFile",
+   "SubdivisionLoader",
+   "SubdivisionRow",
    "SublocalityKind",
    "TaxRate",
    "TaxScheme",
@@ -2708,6 +2717,14 @@
    "loadTrNeighbourhoodFile",
    "trAddressWithNeighbourhoods",
    "trNeighbourhoods"
+  ],
+  "types": []
+ },
+ "./locale-data/world-subdivisions": {
+  "values": [
+   "SUBDIVISION_COUNTRIES",
+   "bundledSubdivisions",
+   "loadSubdivisionFile"
   ],
   "types": []
  },

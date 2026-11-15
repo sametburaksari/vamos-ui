@@ -24,6 +24,8 @@ import {
   type SublocalityKind,
 } from "../locale-data/world/formats";
 import { formatAddress } from "../locale-data/world/format-address";
+import { findSubdivision, parseSubdivisions, type Subdivision, type SubdivisionLoader } from "../locale-data/world/subdivisions";
+import { bundledSubdivisions, SUBDIVISION_COUNTRIES } from "../locale-data/world/subdivisions-bundled";
 import { Field, Fieldset, Input } from "./input";
 
 export { formatAddress };
@@ -166,7 +168,11 @@ const NativeSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, NativeSel
 /** One option of a RegionSelect: the stored text, plus the neighbourhood when it is one. */
 export interface RegionOption {
   value: string;
+  /** Shown text when it differs from the value ("California" for "CA"). */
+  label?: string;
   neighbourhood?: AddressNeighbourhood;
+  /** For a country's subdivisions: ISO 3166-2 code and names. */
+  subdivision?: Subdivision;
 }
 
 type RegionLevel = "province" | "district" | "neighbourhood";
@@ -218,11 +224,37 @@ function useRegions(source: AddressDataSource | undefined, level: RegionLevel, p
   return { items: current?.items ?? null, failed: !!current?.failed, provinces };
 }
 
+/** A country's subdivisions for `locale`, loaded lazily (`null` while loading). */
+function useSubdivisions(loader: SubdivisionLoader | undefined, country: string | undefined, locale: string) {
+  const key = `${country ?? ""}|${locale}`;
+  const [state, setState] = React.useState<{ key: string; items: Subdivision[] | null; failed?: boolean }>({ key: "", items: null });
+  React.useEffect(() => {
+    if (!loader || !country) return;
+    let alive = true;
+    loader(country).then(
+      (file) => alive && setState({ key, items: file ? parseSubdivisions(file, locale) : [] }),
+      () => alive && setState({ key, items: [], failed: true }),
+    );
+    return () => {
+      alive = false;
+    };
+  }, [loader, country, locale, key]);
+  const current = state.key === key ? state : null;
+  // The bundled loader knows synchronously which countries have a file: no select flashes in
+  // for a country without subdivisions.
+  const none = loader === bundledSubdivisions && !!country && !SUBDIVISION_COUNTRIES.includes(country.toUpperCase());
+  return { items: none ? [] : (current?.items ?? null), failed: !!current?.failed };
+}
+
 export interface RegionSelectProps extends Omit<NativeSelectProps, "value" | "defaultValue" | "onChange"> {
-  /** Region data (e.g. `trAddress` from `@vamos-ui/react/locale-data`). */
-  source: AddressDataSource;
-  /** `"neighbourhood"` needs a source with a `neighbourhoods` level (`trAddressWithNeighbourhoods`). */
-  level: RegionLevel;
+  /** Cascading region data (e.g. `trAddress` from `@vamos-ui/react/locale-data`). Without it, `country` lists that country's subdivisions. */
+  source?: AddressDataSource;
+  /** ISO 3166-1 alpha-2: lists its states / provinces / prefectures (when there is no `source`). */
+  country?: string;
+  /** Where subdivision files come from. Default: the files in the package, one lazy chunk per country. */
+  subdivisions?: SubdivisionLoader;
+  /** With a `source`: which list. `"neighbourhood"` needs a source with a `neighbourhoods` level (`trAddressWithNeighbourhoods`). Default `"province"`. */
+  level?: RegionLevel;
   /** Parent province name, for `level="district"` and `"neighbourhood"`. */
   province?: string;
   /** Parent district name, for `level="neighbourhood"`. */
@@ -230,7 +262,7 @@ export interface RegionSelectProps extends Omit<NativeSelectProps, "value" | "de
   value?: string;
   defaultValue?: string;
   onValueChange?: (name: string) => void;
-  /** Like `onValueChange`, with the picked option (a neighbourhood carries its postal code). */
+  /** Like `onValueChange`, with the picked option (a neighbourhood carries its postal code, a subdivision its ISO code). */
   onOptionChange?: (option: RegionOption | null) => void;
   /** First option text. */
   placeholder?: string;
@@ -238,25 +270,38 @@ export interface RegionSelectProps extends Omit<NativeSelectProps, "value" | "de
 }
 
 /**
- * Province or district picker over an address data source, loaded lazily. Values are official
- * names. Use alone in filter bars ("Branches in İzmir") or inside AddressField.
+ * Region picker, loaded lazily: a country's subdivisions (`country="US"` → states, values as
+ * the post writes them: "CA"), or province / district / neighbourhood over a cascading source
+ * (`trAddress`). Use alone in filter bars ("Branches in İzmir") or inside AddressField.
  *
  * ```tsx
+ * <Field label="State"><RegionSelect country="US" /></Field>
  * <Field label="Province"><RegionSelect source={trAddress} level="province" /></Field>
  * ```
  */
 export const RegionSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, RegionSelectProps>(function RegionSelect(
-  { source, level, province, district, value, defaultValue, onValueChange, onOptionChange, placeholder, labels, disabled, ...rest },
+  { source, country, subdivisions = bundledSubdivisions, level = "province", province, district, value, defaultValue, onValueChange, onOptionChange, placeholder, labels, disabled, ...rest },
   ref,
 ) {
   const t = useLabels("address", addressLabels, labels);
+  const { locale } = useLocale();
   const [current, setCurrent] = useControllableState<string>({ value, defaultValue: defaultValue ?? "", onChange: onValueChange, name: "RegionSelect" });
-  const { items, failed } = useRegions(source, level, province, district);
-  const needsProvince = level !== "province" && !province;
-  const needsDistrict = level === "neighbourhood" && !!province && !district;
+  const regions = useRegions(source, level, province, district);
+  const subs = useSubdivisions(source ? undefined : subdivisions, source ? undefined : country, locale);
+  const world = !source;
+  const items: RegionOption[] | null = world
+    ? (subs.items?.map((x) => ({ value: x.value, label: x.label, subdivision: x })) ?? null)
+    : regions.items;
+  const failed = world ? subs.failed : regions.failed;
+  const needsProvince = !world && level !== "province" && !province;
+  const needsDistrict = !world && level === "neighbourhood" && !!province && !district;
   const needsParent = needsProvince || needsDistrict;
-  const loading = !needsParent && items === null;
+  const loading = !needsParent && items === null && (!world || !!country);
+  let shown = current;
   const known = items?.some((x) => x.value === current);
+  // A stored name or code of a known subdivision ("California" or "US-CA" for "CA") selects it.
+  if (world && current && !known && subs.items) shown = findSubdivision(subs.items, current)?.value ?? current;
+  const matched = shown !== current || known;
   const first = loading
     ? t("loading")
     : needsProvince
@@ -265,15 +310,15 @@ export const RegionSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, Re
         ? t("districtFirst")
         : failed
           ? t("loadFailed")
-          : placeholder ?? (level === "province" ? t("selectProvince") : level === "district" ? t("selectDistrict") : t("selectNeighbourhood"));
+          : placeholder ?? (world ? t("select") : level === "province" ? t("selectProvince") : level === "district" ? t("selectDistrict") : t("selectNeighbourhood"));
   return (
     <NativeSelect
       ref={ref}
       {...rest}
-      value={current}
+      value={shown}
       disabled={disabled || needsParent || loading}
       aria-busy={loading || undefined}
-      data-level={level}
+      data-level={world ? "subdivision" : level}
       onChange={(e) => {
         const v = e.currentTarget.value;
         setCurrent(v);
@@ -281,10 +326,10 @@ export const RegionSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, Re
       }}
     >
       <option value="">{first}</option>
-      {current && !known && !loading ? <option value={current}>{current}</option> : null}
+      {current && !matched && !loading ? <option value={current}>{current}</option> : null}
       {items?.map((x) => (
         <option key={x.value} value={x.value}>
-          {x.value}
+          {x.label ?? x.value}
         </option>
       ))}
     </NativeSelect>
@@ -305,6 +350,12 @@ export interface AddressFieldProps extends Omit<React.FieldsetHTMLAttributes<HTM
    * neighbourhood picker. Other countries follow their address format.
    */
   sources?: Record<string, AddressDataSource>;
+  /**
+   * Subdivision lists (states, provinces, prefectures, emirates) for countries without a cascading
+   * source. Default: the files in the package, one lazy chunk per country (202 countries). `false`
+   * keeps a text field.
+   */
+  subdivisions?: SubdivisionLoader | false;
   /** Country list. Default: every country. */
   countries?: string[];
   /** Initial country when there is no value. Default `"TR"` for Turkish locales, else the locale's region. */
@@ -375,6 +426,7 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
     defaultValue,
     onValueChange,
     sources = { TR: trAddress },
+    subdivisions = bundledSubdivisions,
     countries,
     defaultCountry,
     fields: fieldsProp,
@@ -411,6 +463,11 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
   const [announce, setAnnounce] = React.useState("");
   const [postalWarning, setPostalWarning] = React.useState<string | null>(null);
   const { provinces } = useRegions(source, "province", undefined);
+  const subs = useSubdivisions(!source && subdivisions ? subdivisions : undefined, a.country, locale);
+  // A picker once the country has a list; a text field for countries without one (and while a
+  // custom loader answers).
+  const subdivisionPicker =
+    !source && !!subdivisions && (subs.items ? subs.items.length > 0 : subdivisions === bundledSubdivisions && SUBDIVISION_COUNTRIES.includes(a.country));
   const latest = useLatest(a);
 
   const set = (patch: Partial<Address>) => setAddress({ ...latest.current!, ...patch });
@@ -504,6 +561,16 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
               set({ region1: region1 || undefined, region2: undefined, region3: undefined });
               if (hadChild) setAnnounce(t("districtCleared"));
             }}
+          />
+        ) : subdivisionPicker ? (
+          <RegionSelect
+            size={size}
+            country={a.country}
+            subdivisions={subdivisions || undefined}
+            value={a.region1 ?? ""}
+            labels={labels}
+            autoComplete="address-level1"
+            onValueChange={(region1) => set({ region1: region1 || undefined })}
           />
         ) : (
           <Input size={size} value={a.region1 ?? ""} autoComplete="address-level1" onChange={(e) => set({ region1: e.currentTarget.value || undefined })} />

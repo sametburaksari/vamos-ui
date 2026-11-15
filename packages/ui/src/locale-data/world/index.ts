@@ -1,4 +1,5 @@
-// World address data: formats for every country (lazy, ~5.5 kB gzip), formatAddress. React-free.
+// World address data: formats for every country (lazy, ~5.5 kB gzip), formatAddress, subdivision
+// loaders (the bundled files: @vamos-ui/react/locale-data/world-subdivisions). React-free.
 export {
   parseAddressFormat,
   createAddressFormat,
@@ -22,3 +23,14 @@ export {
   type SublocalityKind,
 } from "./formats";
 export { formatAddress, isLatinText, type FormatAddressOptions } from "./format-address";
+export {
+  parseSubdivisions,
+  createSubdivisionLoader,
+  subdivisionsFromUrl,
+  loadSubdivisions,
+  findSubdivision,
+  type Subdivision,
+  type SubdivisionFile,
+  type SubdivisionLoader,
+  type SubdivisionRow,
+} from "./subdivisions";
