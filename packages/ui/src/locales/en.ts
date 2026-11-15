@@ -2134,6 +2134,42 @@ export const en = {
     empty: "—",
     selectHint: "Select two versions to compare.",
   },
+  codeBlock: {
+    copy: "Copy code",
+    copied: "Copied",
+    copyFailed: "Couldn't copy. Select the code and copy it by hand.",
+    codeIn: "{language} code",
+    code: "Code",
+    languages: "Language",
+  },
+  storeBadges: {
+    label: "Get the app",
+    appStoreLead: "Download on the",
+    appStoreName: "App Store",
+    googlePlayLead: "Get it on",
+    googlePlayName: "Google Play",
+    qr: "QR code to open the app download page on your phone",
+    qrCaption: "Scan with your phone camera",
+  },
+  videoPlaylist: {
+    list: "Videos",
+    nowShowing: "Now showing: {title}",
+    duration: "Length {time}",
+  },
+  downloadKit: {
+    selectAll: "Select all",
+    selected: "{count} of {total} selected",
+    selectedSize: "{size} in total",
+    downloadSelected: "{count, plural, =0 {Download as ZIP} one {Download # file as ZIP} other {Download # files as ZIP}}",
+    download: "Download",
+    downloadOne: "Download {name}",
+    select: "Select {name}",
+    preparing: "Preparing {file}…",
+    saved: "Saved {file} ({size})",
+    failed: "Couldn't download {file}. Try again.",
+    partial: "Saved {file} without {count, plural, one {# file} other {# files}} that could not be fetched",
+    missingNote: "These files could not be fetched and are not in this archive:",
+  },
 };
 
 type Widen<T> = { [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };

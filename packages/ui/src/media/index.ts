@@ -42,6 +42,13 @@ export {
   type VideoPlayerLabels,
 } from "./video-player";
 export {
+  VideoPlaylist,
+  videoPlaylistLabels,
+  type VideoPlaylistProps,
+  type VideoPlaylistItem,
+  type VideoPlaylistLabels,
+} from "./video-playlist";
+export {
   SearchPreview,
   SocialCardPreview,
   LengthMeter,
