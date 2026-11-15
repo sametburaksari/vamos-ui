@@ -1,14 +1,28 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { fontGroups, getFont, googleFonts, fontStack } from "./catalog";
+import { fontGroups, fontLicenses, fontSubsets, getFont, googleFonts, fontStack } from "./catalog";
 import { familySpec, googleFontsUrl, loadGoogleFonts, loadFontPreviews } from "./loader";
-import { applyFontPairing, clearFontPairing, createFontPairing, fontBootScript, fontPairings, pairingUrl, parseFontPairing, serializeFontPairing } from "./pairings";
+import { applyFontPairing, clearFontPairing, createFontPairing, fontBootScript, fontPairings, fontVar, pairingCss, pairingUrl, pairingVars, parseFontPairing, serializeFontPairing } from "./pairings";
 
 describe("catalog", () => {
-  it("has 55–60 unique families, all with latin-ext", () => {
-    expect(googleFonts.length).toBeGreaterThanOrEqual(55);
-    expect(googleFonts.length).toBeLessThanOrEqual(60);
+  it("has 60–72 unique families, all with latin-ext", () => {
+    expect(googleFonts.length).toBeGreaterThanOrEqual(60);
+    expect(googleFonts.length).toBeLessThanOrEqual(72);
     expect(new Set(googleFonts.map((f) => f.family)).size).toBe(googleFonts.length);
     for (const f of googleFonts) expect(f.subsets, f.family).toContain("latin-ext");
+  });
+
+  it("records an open licence for every family", () => {
+    for (const f of googleFonts) {
+      expect(fontLicenses[f.license], f.family).toBeDefined();
+      expect(f.license, f.family).toBe("OFL-1.1");
+    }
+  });
+
+  it("has Arabic families and asks next/font for the arabic subset only where it exists", () => {
+    const arabic = googleFonts.filter((f) => f.subsets.includes("arabic")).map((f) => f.family);
+    expect(arabic).toEqual(expect.arrayContaining(["IBM Plex Sans Arabic", "Noto Naskh Arabic", "Noto Kufi Arabic", "Readex Pro", "Amiri"]));
+    expect(fontSubsets(getFont("Noto Naskh Arabic")!)).toEqual(["latin", "latin-ext", "arabic"]);
+    expect(fontSubsets(getFont("Onest")!)).toEqual(["latin", "latin-ext"]);
   });
 
   it("puts every family in a group, max 4 handwriting", () => {
@@ -68,15 +82,43 @@ describe("loadGoogleFonts", () => {
 });
 
 describe("pairings", () => {
-  it("ships 14–16 presets including the four CSS presets", () => {
-    expect(fontPairings.length).toBeGreaterThanOrEqual(14);
-    expect(fontPairings.length).toBeLessThanOrEqual(16);
+  it("ships 24 presets; the classic four are app-loaded", () => {
+    expect(fontPairings).toHaveLength(24);
+    expect(new Set(fontPairings.map((p) => p.id)).size).toBe(24);
     expect(fontPairings.filter((p) => p.css).map((p) => p.id)).toEqual(["editorial", "grotesk", "corporate", "system"]);
     for (const p of fontPairings) {
       if (p.id === "system") continue;
-      for (const fam of [p.heading, p.body, p.mono]) expect(getFont(fam), `${p.id}: ${fam}`).toBeDefined();
+      for (const fam of [p.heading, p.body, p.mono, ...(p.accent ? [p.accent] : [])]) expect(getFont(fam), `${p.id}: ${fam}`).toBeDefined();
     }
     expect(pairingUrl(fontPairings.find((p) => p.id === "system")!)).toBeNull();
+  });
+
+  it("Arabic pairings use Arabic families and never track letters", () => {
+    for (const id of ["naskh", "kufi"]) {
+      const p = fontPairings.find((x) => x.id === id)!;
+      expect(p.script).toBe("arabic");
+      for (const fam of [p.heading, p.body]) expect(getFont(fam)!.subsets, `${id}: ${fam}`).toContain("arabic");
+      expect(p.display.tracking).toBe("0em");
+      expect(p.display.case ?? "none").toBe("none");
+      expect(p.display.caseTracking ?? "0em").toBe("0em");
+    }
+  });
+
+  it("carries display case and the accent face in its tokens", () => {
+    const tabloid = fontPairings.find((p) => p.id === "tabloid")!;
+    expect(pairingVars(tabloid)).toMatchObject({ "--display-case": "uppercase", "--display-case-tracking": "0.01em", "--font-heading": expect.stringMatching(/^"Anton"/) });
+    const friendly = fontPairings.find((p) => p.id === "friendly")!;
+    expect(pairingVars(friendly)["--font-accent"]).toMatch(/^"Caveat", cursive/);
+    expect(pairingVars(fontPairings[0]!)["--font-accent"]).toBe(pairingVars(fontPairings[0]!)["--font-heading"]);
+    expect(pairingUrl(friendly)).toContain("family=Caveat");
+  });
+
+  it("names next/font variables, keeping the classic short names", () => {
+    expect(fontVar("Onest")).toBe("--ff-onest");
+    expect(fontVar("IBM Plex Mono")).toBe("--ff-plex-mono");
+    expect(fontVar("Noto Naskh Arabic")).toBe("--ff-noto-naskh-arabic");
+    expect(fontVar("ui-sans-serif, system-ui")).toBeNull();
+    expect(pairingCss(fontPairings.find((p) => p.id === "newsroom")!)).toContain(`--font-heading: var(--ff-newsreader, "Newsreader");`);
   });
 
   it("applies and clears the tokens on an element", () => {

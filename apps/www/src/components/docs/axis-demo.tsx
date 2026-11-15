@@ -2,7 +2,7 @@
 
 import { Badge, Button, Card, CardBody, CardHeader, Input, cn } from "@vamos-ui/react";
 
-type Axis = "theme" | "material" | "accent" | "density" | "font" | "radius";
+type Axis = "theme" | "material" | "accent" | "density" | "font" | "radius" | "scene";
 
 const values: Record<Axis, { label: string; props: Record<string, string> }[]> = {
   theme: [
@@ -17,12 +17,21 @@ const values: Record<Axis, { label: string; props: Record<string, string> }[]> =
   density: [
     { label: "comfortable", props: { "data-density": "comfortable" } },
     { label: "compact", props: { "data-density": "compact" } },
+    { label: "spacious", props: { "data-density": "spacious" } },
   ],
   font: ["editorial", "grotesk", "corporate", "system"].map((f) => ({ label: f, props: { "data-font": f } })),
   radius: [
     { label: "default", props: {} },
     { label: "sharp", props: { "data-radius": "sharp" } },
     { label: "round", props: { "data-radius": "round" } },
+    { label: "none", props: { "data-radius": "none" } },
+    { label: "pill", props: { "data-radius": "pill" } },
+  ],
+  scene: [
+    { label: "neutral", props: {} },
+    { label: "paper", props: { "data-scene": "paper" } },
+    { label: "warm", props: { "data-scene": "warm" } },
+    { label: "ink", props: { "data-scene": "ink" } },
   ],
 };
 
@@ -50,7 +59,7 @@ export function AxisDemo({ axis }: { axis: Axis }) {
         const { className, ...data } = v.props;
         return (
           <div key={v.label} className="grid gap-1.5">
-            <code className="font-mono text-[11.5px] text-fg-subtle">{axis === "theme" ? `class="${className}"` : Object.keys(data).length ? `${Object.keys(data)[0]}="${v.label}"` : "no data-radius (default)"}</code>
+            <code className="font-mono text-[11.5px] text-fg-subtle">{axis === "theme" ? `class="${className}"` : Object.keys(data).length ? `${Object.keys(data)[0]}="${v.label}"` : `no data-${axis} (default)`}</code>
             <div
               {...data}
               className={cn("preview-stage relative overflow-hidden rounded-ui-lg border border-line bg-scene p-4 text-fg", className)}

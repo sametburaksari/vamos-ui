@@ -1,8 +1,18 @@
+import { fontLicenses, fontPairings, getFont } from "@vamos-ui/react/fonts";
 import { AxisDemo } from "@/components/docs/axis-demo";
+import { FamilyGallery } from "@/components/docs/family-gallery";
 import { C, Callout, Code, DocPage, H2, H3, P, Table } from "@/components/docs/prose";
+import { PRESET_FAMILIES } from "@/lib/theme-codec";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({ title: "Theming", description: "Six independent theme axes — light/dark, glass/solid material, accent, density, font and corners — set with HTML attributes on any subtree.", path: "/docs/theming/" });
+export const metadata = pageMeta({ title: "Theming", description: "Seven independent theme axes — light/dark, glass/solid material, accent, density, font, corners and scene — set with HTML attributes on any subtree, and thirteen named style families.", path: "/docs/theming/" });
+
+/** Preset letter of each font pairing (packages/cli/src/preset.ts). */
+const FONT_LETTER: Record<string, string> = {
+  system: "s", editorial: "e", grotesk: "g", corporate: "c", newsroom: "n", magazine: "m", bookish: "b", poster: "p", fintech: "f", friendly: "r", boutique: "q", luxe: "u", studio: "y",
+  product: "d", bistro: "i", civic: "v", portal: "o", tabloid: "t", neon: "z", grove: "w", retail: "h", arcade: "l", naskh: "a", kufi: "k",
+};
+const face = (family: string) => (getFont(family) ? family : "System");
 
 const tokens: [string, string][] = [
   ["scene", "Page background behind every surface"],
@@ -16,6 +26,8 @@ const tokens: [string, string][] = [
   ["nav / nav-fg / nav-fg-strong / nav-hover / nav-active / nav-line / nav-sub", "Sidebar (dark in both themes)"],
   ["nav-popover / nav-popover-border", "Sidebar flyouts"],
   ["accent / accent-fg / accent-soft / accent-ink", "Accent fill, text on accent, tinted background, readable accent text"],
+  ["accent-2 / accent-2-ink / accent-gradient", "Second accent for gradients and highlights (bg-accent-gradient); never a second brand colour on chrome"],
+  ["cat-1 … cat-6 / cat-fg", "Category colours: bg-cat-N fill with text-cat-fg, or text-cat-N (text-safe ink, lighter in dark mode)"],
   ["ring", "Focus ring"],
   ["success / warning / danger / info", "Semantic status colours"],
   ["chart-1 … chart-6", "Chart series"],
@@ -26,15 +38,17 @@ export default function ThemingPage() {
     <DocPage
       eyebrow="Docs"
       title="Theming"
-      description="Six independent axes, set as attributes. Change any of them on <html> or on a single section."
+      description="Seven independent axes, set as attributes. Change any of them on <html> or on a single section, or start from a named style family."
       toc={[
-        { id: "axes", title: "The six axes" },
+        { id: "families", title: "Style families" },
+        { id: "axes", title: "The seven axes" },
         { id: "theme", title: "Theme", sub: true },
         { id: "material", title: "Material", sub: true },
         { id: "accent", title: "Accent", sub: true },
         { id: "density", title: "Density", sub: true },
         { id: "font", title: "Font", sub: true },
         { id: "corners", title: "Corners", sub: true },
+        { id: "scene", title: "Scene", sub: true },
         { id: "tokens", title: "Token reference" },
         { id: "custom-accent", title: "Custom accent" },
         { id: "sections", title: "Per-section theming" },
@@ -43,16 +57,33 @@ export default function ThemingPage() {
       prev={{ href: "/docs/installation", title: "Installation" }}
       next={{ href: "/docs/localization", title: "Localization" }}
     >
-      <H2 id="axes">The six axes</H2>
+      <H2 id="families">Style families</H2>
+      <P>
+        Thirteen named looks, each one preset code. Pick one by name with <C>npx vamos-ui theme --family newsroom</C> (it also writes the family&apos;s second
+        accent, sets <C>dir=&quot;rtl&quot;</C> for Arabic and prints how to load the fonts), or share the code. Every tile below is the same markup; only the
+        attributes on its wrapper change.
+      </P>
+      <FamilyGallery />
+      <Table
+        head={["Family", "--family", "Code", "Hold the look"]}
+        rows={PRESET_FAMILIES.map((f) => [f.label, <C key={f.id}>{f.id}</C>, <C key={f.code}>{f.code}</C>, f.notes])}
+      />
+      <P>
+        <C>npx vamos-ui theme --families</C> lists them; <C>PRESET_FAMILIES</C> and <C>getPresetFamily()</C> come from <C>vamos-ui/preset</C> for tools and
+        recipes.
+      </P>
+
+      <H2 id="axes">The seven axes</H2>
       <Table
         head={["Axis", "Attribute", "Values"]}
         rows={[
           ["Theme", <C key="a">class</C>, "light · dark"],
           ["Material", <C key="b">data-material</C>, "solid · glass"],
           ["Accent", <C key="c">data-accent</C>, "lime · ocean · ember · rose · graphite (or your own)"],
-          ["Density", <C key="d">data-density</C>, "comfortable · compact"],
-          ["Font", <C key="e">data-font</C>, "editorial · grotesk · corporate · system"],
-          ["Corners", <C key="f">data-radius</C>, "default (no attribute) · sharp · round"],
+          ["Density", <C key="d">data-density</C>, "comfortable · compact · spacious"],
+          ["Font", <C key="e">data-font</C>, `${fontPairings.length} pairings (see Font)`],
+          ["Corners", <C key="f">data-radius</C>, "default (no attribute) · sharp · round · none · pill"],
+          ["Scene", <C key="g">data-scene</C>, "neutral (no attribute) · paper · warm · ink"],
         ]}
       />
       <P>Every demo below is the same markup. Only the attribute on the wrapper changes.</P>
@@ -69,20 +100,26 @@ export default function ThemingPage() {
       <AxisDemo axis="accent" />
 
       <H3 id="density">Density</H3>
-      <P>Changes <C>--control-h</C>, <C>--gap</C>, table rows and the corner base (<C>--radius</C> 14px → 10px). Compact suits data-heavy screens.</P>
+      <P>
+        Changes <C>--control-h</C>, <C>--gap</C>, table rows and the corner base (<C>--radius</C> 14px → 10px). Compact suits data-heavy screens; spacious
+        (2.75rem controls, larger gaps and sections, 16px corners) suits luxury and editorial pages. On a <C>Table</C> or <C>DataTable</C>, spacious still
+        only changes rows and cells.
+      </P>
       <AxisDemo axis="density" />
 
       <H3 id="font">Font</H3>
       <Table
-        head={["Preset", "UI", "Headings", "Numbers"]}
-        rows={[
-          ["editorial", "Onest", "Instrument Serif", "JetBrains Mono"],
-          ["grotesk", "Hanken Grotesk", "Bricolage Grotesque", "Geist Mono"],
-          ["corporate", "IBM Plex Sans", "IBM Plex Sans", "IBM Plex Mono"],
-          ["system", "System UI", "System UI", "System mono"],
-        ]}
+        head={["Preset", "Letter", "Headings", "UI", "Numbers", "Accent"]}
+        rows={fontPairings.map((p) => [<C key={p.id}>{p.id}</C>, <C key="l">{FONT_LETTER[p.id]}</C>, face(p.heading), face(p.body), face(p.mono), p.accent ?? "—"])}
       />
-      <P>Heading weight, tracking, size scale and the style of <C>&lt;em&gt;</C> change with the preset.</P>
+      <P>
+        Heading weight, tracking, size scale, case (<C>--display-case</C>, uppercase for tabloid, with <C>--display-case-tracking</C>) and the style of{" "}
+        <C>&lt;em&gt;</C> change with the preset. <C>font-accent</C> sets one word in the pairing&apos;s accent face (<C>--font-accent</C>: a script, a hand or
+        pixels), and falls back to the heading face. Every block reads the next/font variable first (<C>--ff-newsreader</C>, <C>--ff-anton</C> …) and then the
+        Google Fonts family, so a <C>&lt;link&gt;</C> from <C>pairingUrl()</C> works too. <C>naskh</C> and <C>kufi</C> are Arabic pairings for{" "}
+        <C>dir=&quot;rtl&quot;</C>: no letter-spacing, no uppercase. All catalog families are under the {fontLicenses["OFL-1.1"].name}; the catalog records the
+        licence per family.
+      </P>
       <AxisDemo axis="font" />
 
       <H3 id="corners">Corners</H3>
@@ -96,8 +133,15 @@ export default function ThemingPage() {
           ["default (no attribute)", "14px", "10px"],
           [<C key="s">sharp</C>, "6px", "4px"],
           [<C key="r">round</C>, "20px", "14px"],
+          [<C key="n">none</C>, "0", "0"],
+          [<C key="p">pill</C>, "14px, pill controls", "10px, pill controls"],
         ]}
       />
+      <P>
+        Controls (buttons, inputs, select and picker triggers) use <C>rounded-control</C>, which reads <C>--control-radius</C> and falls back to{" "}
+        <C>--radius</C>. <C>pill</C> sets it to 9999px and leaves cards at the default; set <C>--control-radius</C> yourself for any other control shape.
+        Multi-line fields keep card corners.
+      </P>
       <Table
         head={["", "What"]}
         rows={[
@@ -107,6 +151,13 @@ export default function ThemingPage() {
       />
       <P>Give your own elements <C>rounded-ui*</C> classes so they follow too; never hard-code a corner radius.</P>
       <AxisDemo axis="radius" />
+
+      <H3 id="scene">Scene</H3>
+      <P>
+        <C>data-scene</C> retints the backdrop, solid surfaces and neutral text together: <C>paper</C> (parchment and sepia ink), <C>warm</C> (sand),{" "}
+        <C>ink</C> (untinted greys, near-black in dark mode). Text keeps 4.5:1 on every scene. Glass keeps its translucent surfaces.
+      </P>
+      <AxisDemo axis="scene" />
 
       <H2 id="tokens">Token reference</H2>
       <P>Components read only these semantic tokens. Each is available as a Tailwind colour, e.g. <C>bg-surface</C>, <C>text-fg-muted</C>, <C>border-line</C>.</P>

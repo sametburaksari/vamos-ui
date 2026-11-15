@@ -12,8 +12,8 @@ const COLOURS = ["#4f46e5", "#ffffff", "#000000", "#fafafa", "#d4f520", "#0f8a5f
 function* allPresets() {
   const A = www.PRESET_AXES;
   const accents = [...A.accent, "#4f46e5", "#0a0a23", "#ffd400"];
-  for (const theme of A.theme) for (const material of A.material) for (const accent of accents) for (const density of A.density) for (const font of A.font) for (const radius of A.radius)
-    yield { theme, material, accent, density, font, radius };
+  for (const theme of A.theme) for (const material of A.material) for (const accent of accents) for (const density of A.density) for (const font of A.font) for (const radius of A.radius) for (const scene of A.scene)
+    yield { theme, material, accent, density, font, radius, scene };
 }
 
 test("axes and defaults match", () => {
@@ -33,7 +33,7 @@ test("encode / decode / attributes match for every preset", () => {
 });
 
 test("decode errors match", () => {
-  for (const bad of ["", "v2dgokg", "hello", "v1dz", "v1dgx12", "v1dgokgsq", "v1d"]) {
+  for (const bad of ["", "v2dgokg", "hello", "v1dz", "v1dgx12", "v1dgokgsq", "v1dgokgsnq", "v1lsecj", "v1d"]) {
     const a = www.tryDecodePreset(bad);
     let b;
     try {
@@ -44,6 +44,24 @@ test("decode errors match", () => {
     }
     assert.equal(a.ok, b.ok, bad);
     if (!a.ok) assert.equal(a.error, b.error);
+  }
+});
+
+test("style families match", () => {
+  assert.deepEqual(JSON.parse(JSON.stringify(www.PRESET_FAMILIES)), JSON.parse(JSON.stringify(cliPreset.PRESET_FAMILIES)));
+  for (const f of www.PRESET_FAMILIES) assert.deepEqual(www.getPresetFamily(f.label), cliPreset.getPresetFamily(f.label));
+});
+
+test("brand.css matches for every family (with its second accent)", () => {
+  for (const f of www.PRESET_FAMILIES) {
+    const p = www.decodePreset(f.code);
+    const css = www.presetBrandCss(p, "my-app", f.accent2);
+    if (!cliPreset.presetNeedsBrand(p)) {
+      assert.equal(css, null, f.id);
+      continue;
+    }
+    const brand = { ...cliBrand.emptyBrand("my-app"), colors: { accent: www.presetAccentSource(p), ...(f.accent2 ? { accent2: f.accent2 } : {}) } };
+    assert.equal(css, cliBrand.brandCss(brand), f.id);
   }
 });
 

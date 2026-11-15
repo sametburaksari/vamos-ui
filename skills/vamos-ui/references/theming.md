@@ -1,6 +1,6 @@
 # Vamos UI — theming
 
-Vamos UI is themed by six independent axes (mode, material, accent, density, font, corners), set as attributes on `<html>` or on any element; a subtree can differ from the page. Components only read CSS variables, so switching an axis is one attribute: no rebuild and no `dark:` classes. The live token list is `https://ui.vamos.ist/r/tokens.json` (MCP: `get_theming`); the axes are in `r/axes.json`.
+Vamos UI is themed by seven independent axes (mode, material, accent, density, font, corners, scene), set as attributes on `<html>` or on any element; a subtree can differ from the page. Components only read CSS variables, so switching an axis is one attribute: no rebuild and no `dark:` classes. The live token list is `https://ui.vamos.ist/r/tokens.json` (MCP: `get_theming`); the axes are in `r/axes.json`.
 
 ## Axes
 
@@ -9,15 +9,38 @@ Vamos UI is themed by six independent axes (mode, material, accent, density, fon
 | Theme | `class="dark"` | light (no class), `dark` | Every colour token: scene, surfaces, text, lines, status, charts |
 | Material | `data-material` | `solid`, `glass` | Surfaces become translucent with blur over a soft colour scene |
 | Accent | `data-accent` | `lime`, `ocean`, `ember`, `rose`, `graphite` | The one accent colour and everything derived from it |
-| Density | `data-density` | `comfortable`, `compact` | Control height, radius, gaps, row height, cell padding, top bar |
-| Type | `data-font` | `editorial`, `grotesk`, `corporate`, `system` | UI, heading and code font families plus display weight, tracking and scale |
-| Corners | `data-radius` | default (no attribute), `sharp`, `round` | `--radius` scale: 14/10px, sharp 6/4px, round 20/14px (comfortable/compact) |
+| Density | `data-density` | `comfortable`, `compact`, `spacious` | Control height, radius, gaps, row height, cell padding, top bar, section spacing (spacious stays row-only on tables) |
+| Type | `data-font` | 24 pairings: `system`, `editorial`, `grotesk`, `corporate`, `newsroom`, `magazine`, `bookish`, `poster`, `fintech`, `friendly`, `boutique`, `luxe`, `studio`, `product`, `bistro`, `civic`, `portal`, `tabloid`, `neon`, `grove`, `retail`, `arcade`, `naskh` (Arabic), `kufi` (Arabic) | UI, heading, code and accent font families plus display weight, tracking, case and scale |
+| Corners | `data-radius` | default (no attribute), `sharp`, `round`, `none`, `pill` | `--radius` scale: 14/10px, sharp 6/4px, round 20/14px, none 0 (comfortable/compact); pill = pill controls, default cards |
+| Scene | `data-scene` | neutral (no attribute), `paper`, `warm`, `ink` | Backdrop, solid surfaces and neutral text: parchment, sand, untinted near-black |
+
+## Style families
+
+Thirteen named looks, one preset code each. `npx vamos-ui theme --family <id>` applies one (preset, the family's second accent in vamos.brand.json, `dir="rtl"` for Arabic, a `data-motion` hint and the font loading snippet); `npx vamos-ui theme --families` lists the codes; `PRESET_FAMILIES` / `getPresetFamily()` in `vamos-ui/preset`.
+
+| `--family` | Look | Code |
+|---|---|---|
+| `portal` | Classic Portal: white, cobalt, bold grotesk, category chips, compact, sharp | `v1lsx2448c8kos` |
+| `tabloid` | Black, white and hot red, condensed uppercase (Anton), no corners | `v1lsxe23b2ektn` |
+| `newsroom` | Editorial Serif: Newsreader on warm white, oxblood | `v1lsx7a1f2bcnsw` |
+| `broadsheet` | Parchment scene, Garamond, rust, no corners | `v1lsx9a3b16kbnp` |
+| `neon` | Near-black, electric teal, Unbounded, pill controls | `v1dsx19e3c4kzpi` |
+| `web3` | Dark glass, indigo → fuchsia gradient, round | `v1dgx6d4affcfr` |
+| `saas` | Cool grey, indigo, Geist | `v1lsx4a3fd6cd` |
+| `pastel` | Cream, coral and mint, Fredoka + Caveat accent, round | `v1lsxf2665acrrw` |
+| `luxury` | Near-black, brass, Bodoni Moda, spacious, no corners | `v1dsxb8955apuni` |
+| `earthy` | Sand, moss, Fraunces + Work Sans | `v1lsx4f6b2acwdw` |
+| `agency` | Fuchsia and mint, Syne + Kalam accent, round | `v1lsxd6249fcyr` |
+| `commerce` | Untinted white, graphite, Inter Tight, pill buttons | `v1lsgchpi` |
+| `arabic` | RTL: Noto Naskh Arabic + IBM Plex Sans Arabic, `dir="rtl"` | `v1lsocas` |
+
+Pick the family from the brief's mood, then change only what the brand dictates (usually the accent). Do not mix two families' type.
 
 ```html
 <html lang="en" class="dark" data-material="solid" data-accent="lime" data-density="comfortable" data-font="editorial">
 ```
 
-Corners: `data-radius="sharp"` or `"round"` (absent = default) works with every accent, material and density. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips. Give custom elements `rounded-ui*` so they follow; never hard-code a corner radius.
+Corners: `data-radius="sharp"`, `"round"`, `"none"` or `"pill"` (absent = default) works with every accent, material and density. Controls use `rounded-control` (`--control-radius`, falls back to `--radius`), so `pill` rounds only buttons, inputs and triggers. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips. Give custom elements `rounded-ui*` so they follow; never hard-code a corner radius.
 
 Subtrees: `<section class="light">` inside a dark page, `<aside data-density="compact">`, `<div data-accent="ocean">` for a preview. In copy mode `npx vamos-ui theme` writes the axes to vamos.json and prints these attributes. Components use `ThemeScope` for live previews (see settings-02).
 
@@ -31,7 +54,7 @@ Subtrees: `<section class="light">` inside a dark page, `<aside data-density="co
 
 ## Fonts
 
-The app loads the font files and provides `--ff-*` variables; the `data-font` axis maps them to `--font-ui`, `--font-heading` and `--font-code`. `data-font="system"` needs no font files. `@vamos-ui/react/fonts` has the catalog, pairings, `FontProvider` and pickers.
+The app loads the font files and provides `--ff-*` variables; the `data-font` axis maps them to `--font-ui`, `--font-heading`, `--font-code` and `--font-accent`. Each block falls back to the Google Fonts family name, so the `<link>` from `pairingUrl()` (or the snippet `vamos-ui theme --font <id>` prints) also works. Pairings beyond the classic four read `--ff-<catalog id>` (`--ff-newsreader`, `--ff-anton`, `--ff-noto-naskh-arabic`). `data-font="system"` needs no font files. `@vamos-ui/react/fonts` has the catalog (with a licence per family; all SIL OFL 1.1), pairings, `FontProvider` and pickers. Arabic pairings (`naskh`, `kufi`) need `dir="rtl"`; never add letter-spacing, italics or uppercase to Arabic. `--display-case` (uppercase for `tabloid`) with `--display-case-tracking` sets heading case; `font-accent` is for one word only.
 
 | `data-font` | UI | Headings | Code | Variables to provide |
 |---|---|---|---|---|
@@ -53,7 +76,8 @@ Use these, never palette colours.
 - **Status:** `text-success`, `text-warning`, `text-danger`, `text-info`, `bg-danger-solid`; tone utilities `tone-neutral | accent | success | warning | danger | info` set `--tone` for components that tint by tone.
 - **Navigation (dark in both themes):** `bg-nav`, `text-nav-fg`, `text-nav-fg-strong`, `bg-nav-hover`, `bg-nav-active`, `border-nav-line`.
 - **Charts:** `chart-1 … chart-6` (categorical; `chart-1` is the accent ink), `chart-seq-0 … chart-seq-4` (sequential, derived from `chart-1`), `chart-grid`, `chart-axis`, `chart-cursor`, `chart-tooltip`.
-- **Shape and type:** `rounded-ui`, `rounded-ui-sm`, `rounded-ui-lg`; `font-sans`, `font-display`, `font-mono`; `text-display-2xl | xl | l | m`, `text-h3`, `text-lead`, `text-body`, `text-small`, `text-eyebrow`; `tabular` for tabular digits.
+- **Categories and second accent:** `bg-cat-1 … bg-cat-6` with `text-cat-fg` (chips), `text-cat-1 … text-cat-6` (text-safe inks, lighter in dark mode); `bg-accent-2`, `text-accent-2`, `bg-accent-gradient`.
+- **Shape and type:** `rounded-ui`, `rounded-ui-sm`, `rounded-ui-lg`, `rounded-control`, `rounded-control-sm`; `font-sans`, `font-display`, `font-mono`, `font-accent`; `text-display-2xl | xl | l | m`, `text-h3`, `text-lead`, `text-body`, `text-small`, `text-eyebrow`; `tabular` for tabular digits.
 - **Motion:** `ui-pop`, `ui-fade`, `ui-dialog`, `ui-sheet-*`, `ui-collapse` (all respect reduced motion).
 
 ## Token summary

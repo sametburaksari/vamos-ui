@@ -11,6 +11,9 @@ exports[`brandCss > matches the snapshot 1`] = `
   --accent-fg: #fff; /* 6.27:1 on the fill */
   --accent-ink-light: oklch(0.511 0.23 277); /* 5.46:1 on light surfaces */
   --accent-ink-dark: oklch(0.7 0.158 277); /* 6.11:1 on dark surfaces */
+  --accent-2-base: oklch(0.511 0.225 337); /* derived from the accent */
+  --accent-2-ink-light: oklch(0.511 0.225 337);
+  --accent-2-ink-dark: oklch(0.7 0.169 337);
   --scene: oklch(0.95 0.014 277);
 }
 .dark[data-accent="brand"],

@@ -32,7 +32,8 @@ import {
   ThemeScope,
 } from "@vamos-ui/react";
 import { Hero } from "@vamos-ui/react/blocks";
-import { describePreset, generateAccent, isNamedAccent, type Preset } from "@/lib/theme-codec";
+import { getFontPairing, loadGoogleFonts, pairingFamilies } from "@vamos-ui/react/fonts";
+import { accent2Source, describePreset, generateAccent, isNamedAccent, type Preset } from "@/lib/theme-codec";
 
 /**
  * Scope attributes + inline variables for the preview. Only a custom accent colour has no kit CSS
@@ -49,6 +50,10 @@ export function previewScope(preset: Preset): { accent: string; style: React.CSS
     style["--accent-fg"] = dark ? p.dark!.fg : p.fg;
     style["--accent-ink-light"] = p.inkLight;
     style["--accent-ink-dark"] = p.inkDark;
+    const second = generateAccent(accent2Source({ accent: preset.accent }));
+    style["--accent-2-base"] = second.base;
+    style["--accent-2-ink-light"] = second.inkLight;
+    style["--accent-2-ink-dark"] = second.inkDark;
   }
   return { accent, style: style as React.CSSProperties };
 }
@@ -68,6 +73,11 @@ function Label({ children }: { children: React.ReactNode }) {
 
 export function ThemePreview({ preset }: { preset: Preset }) {
   const { accent, style } = previewScope(preset);
+  // Pairings beyond the classic four are not in the docs layout: load their families on demand.
+  React.useEffect(() => {
+    const pairing = getFontPairing(preset.font);
+    if (pairing && !pairing.css) void loadGoogleFonts(pairingFamilies(pairing));
+  }, [preset.font]);
   return (
     <section aria-label="Live preview" className="min-w-0">
       {/* Material on a wrapper, theme on the scope: the kit's "[data-material=glass] .light" and
@@ -79,6 +89,7 @@ export function ThemePreview({ preset }: { preset: Preset }) {
         density={preset.density}
         font={preset.font}
         radius={preset.radius}
+        scene={preset.scene}
         style={style}
         data-testid="theme-preview"
         className="preview-stage relative overflow-hidden rounded-ui-lg border border-line bg-scene font-sans text-fg"

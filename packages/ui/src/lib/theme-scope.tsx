@@ -6,7 +6,7 @@ import * as Slot from "radix-ui/slot";
 import { cn } from "./cn";
 import { useComposedRefs } from "./compose-refs";
 
-/** The six theme axes (plus direction) that can be set on any subtree. */
+/** The seven theme axes (plus direction) that can be set on any subtree. */
 export interface ThemeAxes {
   /** `"light"` | `"dark"` → class. */
   theme?: "light" | "dark";
@@ -16,13 +16,16 @@ export interface ThemeAxes {
   accent?: string;
   /** → `data-density`. */
   density?: "comfortable" | "compact" | "spacious";
-  /** → `data-font` (editorial, grotesk, corporate, system or your own preset). */
+  /** → `data-font`: one of the 24 pairings in `@vamos-ui/react/fonts` (editorial, newsroom, tabloid, naskh …) or your own. */
   font?: string;
   /**
    * → `data-radius` (corners). `"default"` leaves the attribute out. Scales `--radius`, so every
    * `rounded-ui*` surface follows; `rounded-full` pills, avatars and switches stay round.
+   * `"none"` is square everywhere; `"pill"` keeps cards at the default and makes controls pills.
    */
-  radius?: "default" | "sharp" | "round";
+  radius?: "default" | "sharp" | "round" | "none" | "pill";
+  /** → `data-scene`: backdrop and neutral tint. `"neutral"` (default) leaves the attribute out. */
+  scene?: "neutral" | "paper" | "warm" | "ink";
   /** → `dir` + Radix DirectionProvider. */
   dir?: "ltr" | "rtl";
   /** → `data-glass-quality="low"` disables blur for low-power devices. */
@@ -44,6 +47,7 @@ export function themeAttributes(axes: ThemeAxes): { className?: string } & Recor
     "data-density": axes.density,
     "data-font": axes.font,
     "data-radius": axes.radius && axes.radius !== "default" ? axes.radius : undefined,
+    "data-scene": axes.scene && axes.scene !== "neutral" ? axes.scene : undefined,
     "data-glass-quality": axes.glassQuality === "low" ? "low" : undefined,
     dir: axes.dir,
   };
@@ -85,12 +89,12 @@ export interface ThemeScopeProps extends ThemeAxes, Omit<React.HTMLAttributes<HT
  * those turn it into the containing block for the fixed-position overlays inside it.
  */
 export const ThemeScope = /*#__PURE__*/ React.forwardRef<HTMLDivElement, ThemeScopeProps>(function ThemeScope(
-  { theme, material, accent, density, font, radius, dir, glassQuality, asChild, portal = true, className, children, ...props },
+  { theme, material, accent, density, font, radius, scene, dir, glassQuality, asChild, portal = true, className, children, ...props },
   ref,
 ) {
   const [node, setNode] = React.useState<HTMLElement | null>(null);
   const composed = useComposedRefs<HTMLDivElement>(ref, setNode);
-  const { className: themeClass, ...attrs } = themeAttributes({ theme, material, accent, density, font, radius, dir, glassQuality });
+  const { className: themeClass, ...attrs } = themeAttributes({ theme, material, accent, density, font, radius, scene, dir, glassQuality });
   const Comp = asChild ? Slot.Root : "div";
   let content = (
     <Comp ref={composed} data-slot="theme-scope" className={cn(themeClass, className)} {...attrs} {...props}>

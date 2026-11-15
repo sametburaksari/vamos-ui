@@ -1,7 +1,7 @@
 /** brandCss: vamos.brand.json → brand.css. Pure and deterministic (snapshot-safe). */
 import { generateAccent, type AccentPalette } from "./accent";
-import { formatOklch, parseColor } from "./color";
-import { displayTokens, FONT_ROLE_VARS, isGenericFamily, roleStack } from "./fonts";
+import { formatOklch, gamutMap, parseColor } from "./color";
+import { displayTokens, FONT_ROLE_VARS, FONT_ROLES, isGenericFamily, roleStack } from "./fonts";
 import { BRAND_AXIS_VALUE, type Brand } from "./types";
 
 export const BRAND_CSS_FILE = "brand.css";
@@ -13,8 +13,26 @@ export interface BrandCssOptions {
 }
 
 /** Does the brand define any fonts (and so a `data-font="brand"` block)? */
-export const brandHasFonts = (brand: Pick<Brand, "fonts">) =>
-  (["display", "body", "mono"] as const).some((r) => !!brand.fonts?.[r] && !isGenericFamily(brand.fonts[r]!));
+export const brandHasFonts = (brand: Pick<Brand, "fonts">) => FONT_ROLES.some((r) => !!brand.fonts?.[r] && !isGenericFamily(brand.fonts[r]!));
+
+/** Hue turn for a derived second accent: far enough to read as a gradient, close enough to stay one family. */
+export const ACCENT2_HUE_TURN = 60;
+
+/**
+ * The colour the second accent is generated from: brand.colors.accent2, or the accent turned
+ * ACCENT2_HUE_TURN degrees round the oklch hue wheel (a grey accent stays grey). Throws a
+ * TypeError on an unreadable colour.
+ */
+export function accent2Source(brand: Pick<Brand, "colors">): string {
+  if (brand.colors.accent2) {
+    if (!parseColor(brand.colors.accent2)) throw new TypeError(`"${brand.colors.accent2}" (accent2) is not a colour.`);
+    return brand.colors.accent2;
+  }
+  const a = parseColor(brand.colors.accent);
+  if (!a) throw new TypeError(`"${brand.colors.accent}" is not a colour.`);
+  if (a.c < 0.035) return formatOklch({ ...a, alpha: 1 });
+  return formatOklch(gamutMap({ ...a, h: (a.h + ACCENT2_HUE_TURN) % 360, alpha: 1 }));
+}
 
 /**
  * The stylesheet for a brand: `[data-accent="brand"]` with the four accent variables (plus a
@@ -37,6 +55,10 @@ export function brandCss(brand: Brand, options: BrandCssOptions = {}): string {
   out.push(`  --accent-fg: ${palette.fg}; /* ${palette.contrast.fgOnBase}:1 on the fill */`);
   out.push(`  --accent-ink-light: ${palette.inkLight}; /* ${palette.contrast.inkLightOnLight}:1 on light surfaces */`);
   out.push(`  --accent-ink-dark: ${palette.inkDark}; /* ${palette.contrast.inkDarkOnDark}:1 on dark surfaces */`);
+  const second = generateAccent(accent2Source(brand));
+  out.push(`  --accent-2-base: ${second.base}; /* ${brand.colors.accent2 ? `accent2 ${brand.colors.accent2.replace(/\*\//g, "")}` : "derived from the accent"} */`);
+  out.push(`  --accent-2-ink-light: ${second.inkLight};`);
+  out.push(`  --accent-2-ink-dark: ${second.inkDark};`);
 
   const tint = brand.colors.neutralTint ? parseColor(brand.colors.neutralTint) : null;
   if (brand.colors.neutralTint && !tint) throw new TypeError(`"${brand.colors.neutralTint}" (neutralTint) is not a colour.`);
@@ -67,7 +89,7 @@ export function brandCss(brand: Brand, options: BrandCssOptions = {}): string {
   if (brandHasFonts(brand)) {
     out.push("");
     out.push(`[data-font="${BRAND_AXIS_VALUE}"] {`);
-    for (const role of ["body", "display", "mono"] as const) {
+    for (const role of ["body", "display", "mono", "accent"] as const) {
       const family = brand.fonts[role];
       if (!family || isGenericFamily(family)) continue;
       out.push(`  ${FONT_ROLE_VARS[role].token}: ${roleStack(role, family)};`);
@@ -93,7 +115,7 @@ export function readBrandCssVars(css: string): { light: Record<string, string>; 
     const selector = m[1]!.trim();
     if (!/\[data-accent=["']?brand["']?\]/.test(selector) || /\.light/.test(selector)) continue;
     const target = /\.dark/.test(selector) ? dark : light;
-    for (const d of m[2]!.matchAll(/(--accent-[\w-]+)\s*:\s*([^;]+);?/g)) target[d[1]!] = d[2]!.trim();
+    for (const d of m[2]!.matchAll(/(--accent-(?:base|fg|ink-light|ink-dark))\s*:\s*([^;]+);?/g)) target[d[1]!] = d[2]!.trim();
   }
   return { light, dark };
 }
