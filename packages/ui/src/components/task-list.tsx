@@ -356,13 +356,13 @@ function TaskItem({ task, ctx, depth, parentId, onMove }: { task: TaskData; ctx:
               label={t("edit", { title: task.title })}
               onCancel={() => {
                 setEditing(false);
-                requestAnimationFrame(() => editBtn.current?.focus());
+                restoreFocus(editBtn);
               }}
               onSave={async (title) => {
                 try {
                   await ctx.onEdit!(task.id, { title });
                   setEditing(false);
-                  requestAnimationFrame(() => editBtn.current?.focus());
+                  restoreFocus(editBtn);
                 } catch {
                   toast.danger(t("saveError"));
                 }
@@ -490,6 +490,18 @@ function TaskTitleEditor({ initial, label, onSave, onCancel }: { initial: string
   );
 }
 
+/**
+ * Puts focus back on `ref` after the editor that held it unmounts, unless the user has
+ * already moved on (clicked "Add subtask", another task …) in the meantime.
+ */
+function restoreFocus(ref: React.RefObject<HTMLElement | null>) {
+  requestAnimationFrame(() => {
+    const active = document.activeElement as HTMLElement | null;
+    const lost = !active || active === document.body || active === ref.current || (active as HTMLInputElement).disabled === true;
+    if (lost) ref.current?.focus();
+  });
+}
+
 function TaskAdd({ onAdd, onCancel, t, placeholder, autoFocus, compact }: { onAdd: (v: string) => void | Promise<void>; onCancel?: () => void; t: T; placeholder?: string; autoFocus?: boolean; compact?: boolean }) {
   const [v, setV] = React.useState("");
   const [busy, setBusy] = React.useState(false);
@@ -502,7 +514,8 @@ function TaskAdd({ onAdd, onCancel, t, placeholder, autoFocus, compact }: { onAd
         autoFocus={autoFocus}
         value={v}
         dir="auto"
-        disabled={busy}
+        readOnly={busy}
+        aria-busy={busy || undefined}
         placeholder={placeholder ?? t("add")}
         aria-label={placeholder ?? t("add")}
         onChange={(e) => setV(e.target.value)}
@@ -514,6 +527,8 @@ function TaskAdd({ onAdd, onCancel, t, placeholder, autoFocus, compact }: { onAd
           }
           if (e.key !== "Enter") return;
           e.preventDefault();
+          // Read-only (not disabled) while saving, so focus stays put; ignore a second Enter.
+          if (busy) return;
           const title = v.trim();
           if (!title) return;
           setBusy(true);
@@ -524,7 +539,7 @@ function TaskAdd({ onAdd, onCancel, t, placeholder, autoFocus, compact }: { onAd
             toast.danger(t("saveError"));
           } finally {
             setBusy(false);
-            requestAnimationFrame(() => ref.current?.focus());
+            restoreFocus(ref);
           }
         }}
         className="h-7 min-w-0 flex-1 bg-transparent text-[13.5px] text-fg outline-none placeholder:text-fg-subtle"
