@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/tabs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../components/dropdown-menu";
 import { cn2 as cn } from "./shared/kit-2";
+import { useInheritedDir } from "./shared/use-dir";
 import { newsText, type NewsBlockLabels } from "./shared/labels-news";
 
 export interface PostTab {
@@ -130,6 +131,10 @@ export function PostTabs({ title, headingLevel = 2, tabs, defaultTab, value: val
     return () => ro.disconnect();
   }, [tabs]);
 
+  // Radix Tabs default to ltr (and set dir on their root); follow the page's direction instead.
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const dir = useInheritedDir(sectionRef);
+
   const selectedIndex = Math.max(0, tabs.findIndex((x) => x.id === value));
   let visible = tabs.slice(0, fit);
   if (selectedIndex >= fit) visible = [...tabs.slice(0, Math.max(0, fit - 1)), tabs[selectedIndex]!];
@@ -138,8 +143,8 @@ export function PostTabs({ title, headingLevel = 2, tabs, defaultTab, value: val
   const triggerCls = "h-8 text-[0.8125rem]";
 
   return (
-    <section aria-labelledby={headingId} className={cn("vb-news-tabs @container flex flex-col gap-5", className)}>
-      <Tabs value={value} onValueChange={setValue} className="gap-5">
+    <section ref={sectionRef} aria-labelledby={headingId} className={cn("vb-news-tabs @container flex flex-col gap-5", className)}>
+      <Tabs value={value} onValueChange={setValue} dir={dir} className="gap-5">
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1 border-t-[3px] border-fg pt-2">
           <H id={headingId} className="shrink-0 font-display text-[1.5rem] leading-tight tracking-[-0.01em] text-fg">
             {title}

@@ -9,6 +9,7 @@ import { AuthDialog, type AuthDialogProps } from "./auth-dialog";
 import { PostCard } from "./post-card";
 import { BrandIcon, BRAND_NAMES, type BrandName } from "./shared/brand-icons";
 import { cn2 as cn } from "./shared/kit-2";
+import { useInheritedDir } from "./shared/use-dir";
 import { newsText, type NewsBlockLabels } from "./shared/labels-news";
 import type { NewsPost } from "./shared/news";
 
@@ -260,6 +261,9 @@ export function NewsHeader({ brand, brandLabel, homeHref = "/", tagline, aside, 
     setSearching(false);
     requestAnimationFrame(() => searchBtn.current?.focus());
   };
+  // Radix navigation defaults to ltr; follow the page's direction (RTL sites).
+  const barRef = React.useRef<HTMLDivElement>(null);
+  const dir = useInheritedDir(barRef);
   const isCurrent = (href: string) => !!currentPath && (currentPath === href || (href !== "/" && currentPath.startsWith(`${href}/`)));
 
   const mobileItems: SiteNavItem[] = [
@@ -282,13 +286,13 @@ export function NewsHeader({ brand, brandLabel, homeHref = "/", tagline, aside, 
             {aside ? <div className="min-w-0 flex-1 @max-5xl:hidden">{aside}</div> : null}
           </div>
         </div>
-        <div className={cn("vb-news-navbar @container z-(--z-nav) border-y border-fg bg-scene", sticky && "sticky top-0")}>
+        <div ref={barRef} className={cn("vb-news-navbar @container z-(--z-nav) border-y border-fg bg-scene", sticky && "sticky top-0")}>
           <div className="vb-container relative flex h-12 items-center justify-between gap-2">
             <MobileNav items={mobileItems} title={t("sections")} className="-ms-2 @4xl:hidden" footer={mobileFooter} labels={{ label: t("mainNav"), title: t("sections") }} />
             <BlockLink href={homeHref} components={components} locale={locale} aria-label={brandLabel} className="me-auto truncate rounded-[2px] font-display text-[1.25rem] text-fg focus-ring @4xl:hidden">
               {brand}
             </BlockLink>
-            <NavigationMenu className="static max-w-none flex-none justify-start @max-4xl:hidden" labels={{ label: t("mainNav") }}>
+            <NavigationMenu dir={dir} className="static max-w-none flex-none justify-start @max-4xl:hidden" labels={{ label: t("mainNav") }}>
               <NavigationMenuList className="justify-start gap-0">
                 {nav.map((item) => (
                   <NavigationMenuItem key={item.href} className="static">
