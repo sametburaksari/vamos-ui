@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { bundledSnapshotPath, describeSnapshot, loadSnapshot, snapshotText, type Snapshot, type SnapshotMeta } from "./snapshot";
 import { CliError, type RegistryIndex, type RegistryIndexItem, type RegistryItem } from "./types";
 
 export const DEFAULT_REGISTRY = "https://ui.vamos.ist/r";
@@ -21,24 +22,133 @@ export function isRemote(location: string): boolean {
   return /^https?:\/\//i.test(location);
 }
 
+/** Network timeout for the default registry before the bundled copy is used (VAMOS_REGISTRY_TIMEOUT, ms). */
+export const DEFAULT_TIMEOUT_MS = 5000;
+
+/** --offline / --no-offline win over VAMOS_OFFLINE=1. */
+export function isOffline(flag: boolean | undefined, env: NodeJS.ProcessEnv = process.env): boolean {
+  if (flag !== undefined) return flag;
+  return /^(1|true|yes|on)$/i.test(env.VAMOS_OFFLINE ?? "");
+}
+
+export interface RegistryOptions {
+  /** Never use the network: read the bundled snapshot (only for the default registry). */
+  offline?: boolean;
+  /** Snapshot file; defaults to the one bundled with the package. */
+  snapshot?: string | null;
+  /** Network timeout in ms for the default registry. */
+  timeoutMs?: number;
+  /** Where the one-line "using the bundled copy" notice goes. */
+  notice?: (message: string) => void;
+  env?: NodeJS.ProcessEnv;
+}
+
+/** Why the network attempt failed, when the snapshot is allowed to take over. */
+class NetworkFailure extends Error {}
+
 export class Registry {
   private cache = new Map<string, Promise<unknown>>();
+  private snapshotPromise: Promise<Snapshot> | null = null;
+  private readonly opts: RegistryOptions;
+  /** Set once the bundled snapshot is in use (offline, or after a network failure). */
+  bundled: SnapshotMeta | null = null;
 
-  constructor(public readonly location: string) {}
+  constructor(
+    public readonly location: string,
+    opts: RegistryOptions = {},
+  ) {
+    this.opts = opts;
+    if (opts.offline && isRemote(location) && !this.hasFallback) {
+      throw new CliError(`--offline: the registry is ${location}, which needs the network.`, "Offline mode bundles a copy of the Vamos UI registry only. Point to a local copy with --registry <dir> or VAMOS_REGISTRY (export one with `vamos-ui registry export <dir>`).");
+    }
+  }
+
+  /** The bundled snapshot is a copy of the default registry, so only that one falls back to it. */
+  get hasFallback(): boolean {
+    return this.location === DEFAULT_REGISTRY;
+  }
+
+  get offline(): boolean {
+    return !!this.opts.offline;
+  }
+
+  private get waited(): string {
+    const ms = this.timeoutMs;
+    return `no answer in ${ms < 1000 ? `${ms} ms` : `${Math.round(ms / 100) / 10} s`}`;
+  }
+
+  private get timeoutMs(): number {
+    const env = Number((this.opts.env ?? process.env).VAMOS_REGISTRY_TIMEOUT);
+    return this.opts.timeoutMs ?? (Number.isFinite(env) && env > 0 ? env : DEFAULT_TIMEOUT_MS);
+  }
+
+  /** Loads the snapshot and prints the notice once. */
+  private useSnapshot(reason: string | null): Promise<Snapshot> {
+    if (!this.snapshotPromise) {
+      const file = this.opts.snapshot === undefined ? bundledSnapshotPath() : this.opts.snapshot;
+      if (!file) {
+        const why = reason ? `Could not reach the registry at ${this.location} (${reason}), and` : "Offline mode needs the bundled registry, but";
+        this.snapshotPromise = Promise.reject(new CliError(`${why} this copy of vamos-ui has no bundled registry.`, "Point to a local copy with --registry <dir> or VAMOS_REGISTRY. (In the repo, build it with `pnpm --dir packages/cli build`.)"));
+      } else {
+        this.snapshotPromise = loadSnapshot(file).then((snap) => {
+          this.bundled = snap.meta;
+          const which = `the bundled registry (${describeSnapshot(snap.meta)})`;
+          const msg = reason ? `Could not reach ${new URL(this.location).host} (${reason}); using ${which}.` : `Offline: using ${which}.`;
+          (this.opts.notice ?? ((m: string) => process.stderr.write(`${m}\n`)))(msg);
+          return snap;
+        });
+      }
+    }
+    return this.snapshotPromise;
+  }
+
+  private async fromSnapshot(rel: string, reason: string | null): Promise<string> {
+    const snap = await this.useSnapshot(reason);
+    const text = snapshotText(snap, rel);
+    if (text === undefined) throw new NotFound(rel);
+    return text;
+  }
+
+  private async fetchText(url: string, rel: string): Promise<string> {
+    const signal = this.hasFallback ? AbortSignal.timeout(this.timeoutMs) : undefined;
+    let res: Response;
+    try {
+      res = await fetch(url, { headers: { accept: "application/json, text/plain" }, signal });
+    } catch (err) {
+      const e = err as Error;
+      const reason = e.name === "TimeoutError" || e.name === "AbortError" ? this.waited : e.message;
+      if (this.hasFallback) throw new NetworkFailure(reason);
+      throw new CliError(`Could not reach the registry at ${url}.`, `Check your connection, or point to a local copy with --registry <dir> or VAMOS_REGISTRY. (${e.message})`);
+    }
+    if (res.status === 404) throw new NotFound(rel);
+    if (!res.ok) {
+      // A proxy or firewall answering instead of the site (403, 407, 5xx …).
+      if (this.hasFallback) throw new NetworkFailure(`${res.status} ${res.statusText}`.trim());
+      throw new CliError(`Registry request failed: ${res.status} ${res.statusText} (${url}).`);
+    }
+    try {
+      const text = await res.text();
+      // A captive portal or proxy page instead of registry JSON.
+      if (this.hasFallback && rel.endsWith(".json") && !/^\s*[[{]/.test(text)) throw new NetworkFailure("the answer was not registry JSON");
+      return text;
+    } catch (err) {
+      if (err instanceof NetworkFailure || !this.hasFallback) throw err;
+      throw new NetworkFailure((err as Error).name === "TimeoutError" ? this.waited : (err as Error).message);
+    }
+  }
 
   /** Reads a registry file by its path relative to the registry root. */
   async text(rel: string): Promise<string> {
     if (isRemote(this.location)) {
-      const url = `${this.location}/${rel}`;
-      let res: Response;
+      if (this.opts.offline) return this.fromSnapshot(rel, null);
+      // After one network failure the whole run uses the snapshot (no waiting on every item).
+      if (this.snapshotPromise) return this.fromSnapshot(rel, "");
       try {
-        res = await fetch(url, { headers: { accept: "application/json, text/plain" } });
+        return await this.fetchText(`${this.location}/${rel}`, rel);
       } catch (err) {
-        throw new CliError(`Could not reach the registry at ${url}.`, `Check your connection, or point to a local copy with --registry <dir> or VAMOS_REGISTRY. (${(err as Error).message})`);
+        if (err instanceof NetworkFailure) return this.fromSnapshot(rel, err.message);
+        throw err;
       }
-      if (res.status === 404) throw new NotFound(rel);
-      if (!res.ok) throw new CliError(`Registry request failed: ${res.status} ${res.statusText} (${url}).`);
-      return res.text();
     }
     const file = path.join(this.location, rel);
     try {

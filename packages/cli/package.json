@@ -49,6 +49,7 @@
   "files": [
     "dist",
     "templates",
+    "snapshot",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
@@ -57,7 +58,8 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/snapshot-registry.mjs",
+    "build:snapshot": "node scripts/snapshot-registry.mjs",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
