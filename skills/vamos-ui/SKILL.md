@@ -24,6 +24,7 @@ Follow these steps for every screen you build or change.
 - With MCP: call `plan_screen` with a one-line description ("CRM contacts list with bulk assign"). It returns the block to start from and the components to use.
 - Without MCP: `npx vamos-ui search "<what you need>"` and `npx vamos-ui list --type block`, or read [references/blocks.md](references/blocks.md) and [references/patterns.md](references/patterns.md).
 - Start from the closest block even if it is only 60% right. Do not compose a whole screen from scratch when a block fits.
+- Websites are the exception: there are no example sites to copy. Run `npx vamos-ui new` (MCP `start_project`); the interview picks a recipe ([references/recipes.md](references/recipes.md)) and the plan lists every page's sections with their purpose, the kit components to use (with alternatives) and the facts the business has to supply. Build each section from those components with the business's own content.
 
 ### 3. Add what you need
 - `npx vamos-ui add <block> <component...>` installs files, their registry dependencies and npm packages (`--dry-run` to preview, `--yes` in non-interactive runs, `--no-install` to skip npm).
@@ -136,7 +137,7 @@ Regenerate the catalogs after adding components, blocks or guidance: `node skill
 |---|---|
 | `start_project(answers?)` | Plan a new website: the next questions, then the plan and `vamos.project.json` / `vamos.site.json` |
 | `import_site(url)` | Read a current website: details with sources, brand candidates, navigation, texts, images |
-| `plan_screen(description)` | Get the block to start from and the components to use |
+| `plan_screen(description)` | Get the block to start from and the components to use (for a website: the matching recipe) |
 | `search(query)` | Find items by name, purpose or guidance (English or Turkish) |
 | `list_items(type?, group?, category?, tag?)` | Browse the registry |
 | `get_item(name, include?)` / `get_block(name)` | Read usage, props, examples, guidance (and files) |

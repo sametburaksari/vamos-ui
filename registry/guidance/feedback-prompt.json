@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "\"Was this helpful?\" at the end of a help article, docs page or guide.",
+    "Collecting a yes/no vote with optional reasons and a short comment, sent through one callback."
+  ],
+  "avoidWhen": [
+    "Rating on a scale such as stars or NPS — use a radio group or slider.",
+    "A full contact or support form — compose Field, Input and Textarea."
+  ],
+  "related": [
+    "button-group",
+    "input",
+    "button",
+    "toast"
+  ],
+  "a11y": [
+    "The section is labelled by the question; vote buttons use aria-pressed and the thank-you and error messages are announced in a polite live region.",
+    "Reason chips are a labelled toggle group with roving focus; the comment field has a real label."
+  ]
+}

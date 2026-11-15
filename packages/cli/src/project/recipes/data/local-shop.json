@@ -1,0 +1,342 @@
+{
+  "id": "local-shop",
+  "title": {
+    "en": "Local made-to-order shop",
+    "tr": "Yerel siparis dukkani"
+  },
+  "summary": "A local shop that makes goods to order and delivers them the same or next day in its area: a seasonal catalogue, delivery areas with fees and cut-off times, and an order form whose delivery date follows the area and the clock. Fits florists, gift shops, cake and made-to-order bakery shops and similar.",
+  "match": {
+    "siteTypes": [
+      "local-business",
+      "ecommerce"
+    ],
+    "signals": [
+      "florist",
+      "flowers",
+      "bouquet",
+      "gift shop",
+      "same-day delivery",
+      "made to order",
+      "cake shop",
+      "gift basket",
+      "cicekci",
+      "cicek",
+      "buket",
+      "hediyelik",
+      "ayni gun teslimat",
+      "siparis uzerine",
+      "pasta",
+      "hediye sepeti"
+    ],
+    "features": [
+      "shop",
+      "shipping:yes",
+      "shipping:pickup",
+      "channel:map",
+      "channel:phone",
+      "section:faq"
+    ],
+    "fallback": true
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Tell the visitor at once whether an order today still arrives today, show this season's pieces, and answer delivery area and price before they ask.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Masthead with the season or week's edition, a featured piece with its price, and a live same-day status (time left before the cut-off, or when the next delivery is).",
+          "use": [
+            "hero"
+          ],
+          "alternatives": [
+            "countdown: the cut-off is the main message — count down to today's order deadline"
+          ],
+          "fields": [
+            "Headline and one-line pitch",
+            "Featured piece: photo, name, starting price",
+            "Same-day order cut-off time and time zone",
+            "Delivery days (closed days)"
+          ],
+          "notes": "The status depends on the clock: render it after mount. State the remaining time as text ('order within N h for delivery this evening'), not only as a ticking clock, and update it in a polite live region."
+        },
+        {
+          "id": "seasonal-edit",
+          "purpose": "This week's or season's selection as a feature spread: photo, name, what is in it, price from, 'order this' button that opens the order page with the item chosen.",
+          "use": [
+            "feature-grid"
+          ],
+          "alternatives": [
+            "gallery-section: a very photo-led edit",
+            "carousel: many pieces in the edit"
+          ],
+          "fields": [
+            "Seasonal pieces: photo, name, contents/ingredients, sizes with prices",
+            "How often the selection changes"
+          ]
+        },
+        {
+          "id": "principles",
+          "purpose": "Three short promises or refusals that set the shop apart (sourcing, freshness, packaging).",
+          "use": [
+            "feature-grid"
+          ],
+          "fields": [
+            "Three concrete promises about sourcing, freshness or packaging"
+          ],
+          "optional": true
+        },
+        {
+          "id": "subscriptions",
+          "purpose": "Recurring orders (weekly or monthly deliveries) for homes or offices, with plans and prices.",
+          "use": [
+            "pricing-table"
+          ],
+          "fields": [
+            "Subscription plans: frequency, size, price per delivery",
+            "Pause and cancel terms"
+          ],
+          "when": {
+            "any": [
+              "section:pricing"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "id": "delivery-areas",
+          "purpose": "Delivery areas with fee, earliest delivery (same day / next day) and time windows.",
+          "use": [
+            "table"
+          ],
+          "alternatives": [
+            "pin-map: areas are easier to grasp on a map (keep the table as the text equivalent)"
+          ],
+          "fields": [
+            "Delivery areas or districts",
+            "Fee per area",
+            "Same-day availability per area",
+            "Delivery time windows"
+          ],
+          "notes": "A wide table goes in a focusable, labelled scroll region on phones."
+        },
+        {
+          "id": "shop",
+          "purpose": "The physical shop for walk-ins and pick-up: map, address, opening hours.",
+          "use": [
+            "map-hours"
+          ],
+          "fields": [
+            "Shop address",
+            "Opening hours and exceptions",
+            "Phone"
+          ],
+          "when": {
+            "any": [
+              "channel:map",
+              "shipping:pickup",
+              "section:location"
+            ]
+          }
+        },
+        {
+          "id": "faq",
+          "purpose": "Freshness, care, substitutions when an item is out of season, cut-offs, anonymous gifts, refunds.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Questions and answers on substitutions, care, delivery failures and refunds"
+          ],
+          "when": {
+            "any": [
+              "section:faq"
+            ]
+          },
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "products",
+      "path": {
+        "en": "/products",
+        "tr": "/urunler"
+      },
+      "title": {
+        "en": "Catalogue",
+        "tr": "Katalog"
+      },
+      "purpose": "The whole current catalogue with a simple filter and a size switch that updates every price.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and a line on what is in season.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "One sentence on the current season"
+          ]
+        },
+        {
+          "id": "catalogue",
+          "purpose": "Filter (this week's edit / long-lasting / budget or occasion) and a size switch (small / medium / large) over a grid; each card has 'order this'.",
+          "use": [
+            "filter-bar",
+            "feature-grid"
+          ],
+          "alternatives": [
+            "empty-state: shown when a filter matches nothing"
+          ],
+          "fields": [
+            "All pieces: photo, name, occasion/category, price per size"
+          ],
+          "notes": "Prices follow the chosen size; announce the result count in an aria-live region. The chosen piece and size are kept across pages and language switches."
+        }
+      ]
+    },
+    {
+      "id": "place-order",
+      "path": {
+        "en": "/place-order",
+        "tr": "/siparis-ver"
+      },
+      "title": {
+        "en": "Order",
+        "tr": "Siparis ver"
+      },
+      "purpose": "Place an order for a delivery date: piece and size, area, date and time window, gift card message, recipient and sender.",
+      "sections": [
+        {
+          "id": "order-form",
+          "purpose": "A sectioned order form: 1 piece and size, 2 area + date + time window, 3 card style and message, 4 recipient and sender; a sticky summary with the card previewed as written.",
+          "use": [
+            "multi-step-form",
+            "calendar"
+          ],
+          "alternatives": [
+            "form-02: a single long form without steps",
+            "checkout-01: when payment is taken on the same page"
+          ],
+          "fields": [
+            "Pieces with sizes and prices",
+            "Delivery areas with fees",
+            "Cut-off time, closed days, how many days ahead orders are taken",
+            "Time windows",
+            "Card styles with any extra price and the message character limit",
+            "Payment method or 'pay on confirmation' rule"
+          ],
+          "notes": "The calendar's earliest day and the time windows follow the chosen area and the cut-off; keep the chosen day and window valid when either changes. Allow an anonymous sender. The live card preview is decorative; the summary carries the same facts as text in a polite live region. End with an order reference."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "path": {
+        "en": "/contact",
+        "tr": "/iletisim"
+      },
+      "title": {
+        "en": "Contact",
+        "tr": "Iletisim"
+      },
+      "purpose": "For special and large orders (events, corporate gifting) that do not fit the order form.",
+      "when": {
+        "any": [
+          "channel:form",
+          "channel:whatsapp",
+          "channel:phone"
+        ]
+      },
+      "sections": [
+        {
+          "id": "contact",
+          "purpose": "Contact form for custom orders with date, budget and occasion, plus phone and messaging.",
+          "use": [
+            "contact-form"
+          ],
+          "alternatives": [
+            "page-contact-01: a full contact page with map and branches"
+          ],
+          "fields": [
+            "Phone and messaging number",
+            "Email",
+            "Lead time for custom and event orders"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Current catalogue: piece name, photo, contents, sizes and price per size",
+    "How often the selection changes (weekly, seasonal)",
+    "Same-day order cut-off time, time zone and closed days",
+    "Delivery areas with fee, same-day availability and time windows",
+    "Card message options (styles, extra price, character limit)",
+    "Substitution policy when an item is unavailable",
+    "Payment methods and when payment is taken",
+    "Shop address, opening hours and phone",
+    "Subscription plans, if offered",
+    "Refund and failed-delivery policy",
+    "Good photos of real products with alt text"
+  ],
+  "styles": [
+    {
+      "name": "soft magazine",
+      "axes": {
+        "theme": "light",
+        "material": "glass",
+        "accent": "rose",
+        "density": "comfortable",
+        "font": "editorial",
+        "radius": "round"
+      },
+      "motion": "full",
+      "why": "Magazine serif headlines with italic emphasis, a warm coral-pink accent and soft blurred motion suit florists and gift shops selling an emotional purchase."
+    },
+    {
+      "name": "warm bakery counter",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ember",
+        "density": "comfortable",
+        "font": "editorial",
+        "radius": "default"
+      },
+      "motion": "subtle",
+      "why": "Warm accent and calm solid surfaces for made-to-order food gifts and cake shops."
+    },
+    {
+      "name": "fresh local",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "lime",
+        "density": "comfortable",
+        "font": "system",
+        "radius": "round"
+      },
+      "motion": "subtle",
+      "why": "Plain, bright and fast for a shop whose customers mostly order on the phone."
+    }
+  ],
+  "pitfalls": [
+    "Cut-off shown only as a ticking clock; screen readers and quick readers need it as text, and it must use the shop's time zone, not the visitor's.",
+    "Calendar allowing dates the shop cannot deliver (closed days, past cut-off, too far ahead, areas without same-day delivery).",
+    "Delivery fees hidden until checkout; show the area table on the home page.",
+    "No substitution policy for seasonal items that run out, leading to disputes.",
+    "Recipient phone and address collected without saying why or how long they are kept (privacy notice required).",
+    "Card message preview with no character limit or one that differs from the printed card.",
+    "Motion (swinging tags, blurred fades) not stopped for reduced motion."
+  ]
+}

@@ -1,0 +1,259 @@
+{
+  "id": "b2b-supplier",
+  "title": { "en": "B2B supplier", "tr": "B2B tedarikci" },
+  "summary": "A wholesaler, distributor or manufacturer selling to businesses: a catalogue with bulk price tiers or full spec tables, what the plant or warehouse can do, quality and certifications, delivery terms, and a quote request (a quote list with editable lines, or an RFQ form with drawings).",
+  "match": {
+    "siteTypes": ["corporate", "ecommerce"],
+    "signals": ["wholesale", "wholesaler", "distributor", "supplier", "manufacturer", "factory", "machining", "packaging", "industrial", "bulk", "rfq", "toptan", "toptanci", "tedarikci", "uretici", "fabrika", "imalat", "ambalaj", "endustriyel", "teklif iste"],
+    "features": ["channel:form", "section:faq", "section:about", "channel:map"],
+    "fallback": false
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show trade buyers within seconds what you supply, at what volume and terms, prove capacity and quality, and get a quote request.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Headline with what you make or supply and for whom, plus one working proof: a price check of a best seller with its quantity tiers, or the product drawn as a technical sheet with key specs.",
+          "use": ["hero"],
+          "fields": ["Headline: what you supply and to which industries", "Best-selling product with its tier prices or key specs", "Primary action: browse catalogue or request a quote"],
+          "notes": "A price-check hero lets the buyer type or slide a quantity and see the tier it falls in and how far the next break is. Give every drawn tier chart its prices as a text table too."
+        },
+        {
+          "id": "figures",
+          "purpose": "Capacity in numbers: years, machines or stock lines, annual output, on-time delivery, countries served.",
+          "use": ["stats-band"],
+          "fields": ["Real figures with units and the period measured"],
+          "optional": true
+        },
+        {
+          "id": "catalogue-index",
+          "purpose": "Numbered index of product categories or families; each opens the catalogue with that category preset.",
+          "use": ["feature-grid"],
+          "alternatives": ["list-01: long category list as rows"],
+          "fields": ["Categories or product families with a short description and number of items"]
+        },
+        {
+          "id": "tiers",
+          "purpose": "How bulk pricing works: tier thresholds and the average saving at each tier, minimum order.",
+          "use": ["pricing-table"],
+          "alternatives": ["table: tiers as a plain table", "comparison-table: trade account levels"],
+          "fields": ["Quantity tiers and thresholds (cases, units, pallets)", "Saving per tier", "Minimum order quantity"],
+          "when": { "any": ["shop", "section:pricing"] }
+        },
+        {
+          "id": "capabilities",
+          "purpose": "What the plant or warehouse can do: processes, machines, materials, tolerances, stock held, lead times.",
+          "use": ["media-text", "feature-grid"],
+          "fields": ["Processes and machines, or warehouse size and stock lines", "Materials and tolerance ranges", "Standard lead times", "Plant or warehouse photo"]
+        },
+        {
+          "id": "industries",
+          "purpose": "Industries or buyer types served, so a visitor recognises their sector.",
+          "use": ["feature-grid"],
+          "alternatives": ["logo-strip: named customers who agreed to be shown"],
+          "fields": ["Industries served with typical parts or products"],
+          "optional": true
+        },
+        {
+          "id": "process",
+          "purpose": "From first contact to repeat orders: open a trade account (or send a drawing), quote, sample/first article, series or regular delivery.",
+          "use": ["steps"],
+          "fields": ["Steps with typical duration", "Documents needed to open a trade account"]
+        },
+        {
+          "id": "buyers",
+          "purpose": "Quotes from trade buyers about reliability and terms.",
+          "use": ["testimonials"],
+          "fields": ["Buyer quotes with company type and role (with permission)"],
+          "when": { "any": ["section:testimonials"] },
+          "optional": true
+        },
+        {
+          "id": "delivery",
+          "purpose": "Delivery zones or Incoterms with lead time, minimum for free delivery and pallet/case rules.",
+          "use": ["table"],
+          "fields": ["Delivery zones with lead time and cost or free-delivery minimum", "Incoterms offered for export"]
+        },
+        {
+          "id": "rfq",
+          "purpose": "Request a quote: company, contact, product family, annual quantity, part numbers or description, with reply time stated.",
+          "use": ["contact-form"],
+          "alternatives": ["form-02: a longer RFQ with drawing upload (use file-upload)"],
+          "fields": ["Product families for the select", "Annual quantity bands", "Reply time promise", "Privacy notice link"],
+          "when": { "any": ["channel:form"] }
+        },
+        {
+          "id": "plant",
+          "purpose": "Where the plant or warehouse is, with gate, goods-in hours and pick-up information.",
+          "use": ["map-hours"],
+          "fields": ["Address and gate", "Goods-in / pick-up hours", "Phone"],
+          "when": { "any": ["channel:map", "section:location"] }
+        },
+        {
+          "id": "faq",
+          "purpose": "Trade questions: minimum order, payment terms, samples, custom printing or parts, returns.",
+          "use": ["faq"],
+          "fields": ["Questions and answers on MOQ, payment terms, samples and lead times"],
+          "when": { "any": ["section:faq"] }
+        }
+      ]
+    },
+    {
+      "id": "products",
+      "path": { "en": "/products", "tr": "/urunler" },
+      "title": { "en": "Catalogue", "tr": "Katalog" },
+      "purpose": "Find the right item: search, category, stock and sort over product rows, each with its tier prices or its spec table and datasheet.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and a line on the range and how prices are shown (excl. VAT, per case or unit).",
+          "use": ["page-intro"],
+          "fields": ["Price basis (excl. VAT, per unit/case/pallet)"]
+        },
+        {
+          "id": "catalogue",
+          "purpose": "Search, category, in-stock switch and sort over product rows; each row has SKU, pack size, stock and its quantity tiers with an add-to-quote field.",
+          "use": ["filter-bar", "data-table"],
+          "alternatives": ["list-layout: a catalogue browsed by category tree", "empty-state: no matching items"],
+          "fields": ["Products: SKU, name, pack size, stock status, tier prices", "Categories"],
+          "notes": "The case count field lights the matching tier and says how far the next break is and what it saves; announce the totals in role=status.",
+          "when": { "any": ["shop", "section:pricing"] }
+        },
+        {
+          "id": "specs",
+          "purpose": "For manufactured parts: product index on one side, the selected family's spec table on the other with a metric/imperial switch, a drawing that follows the selected size and a datasheet download.",
+          "use": ["table", "tabs"],
+          "alternatives": ["attachment-list: many datasheets and CAD files per product"],
+          "fields": ["Spec tables per family (sizes, dimensions, tolerances, materials)", "Technical drawings with a text description", "Datasheet files (PDF/CSV) and CAD files"],
+          "notes": "Use a compact table with a sticky first column and a caption; announce unit switches via aria-live. Give drawings a text description of the selected size.",
+          "when": { "not": ["shop"] }
+        },
+        {
+          "id": "quote-cta",
+          "purpose": "A band for custom items or volumes outside the catalogue.",
+          "use": ["cta"],
+          "fields": ["What can be made or sourced to order"]
+        }
+      ]
+    },
+    {
+      "id": "quote",
+      "path": { "en": "/quote", "tr": "/teklif" },
+      "title": { "en": "Quote", "tr": "Teklif" },
+      "purpose": "Turn a list of products into a quote request: editable lines with live tiers, delivery choice, totals with VAT, company details.",
+      "when": { "any": ["shop", "section:pricing"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and when the quote is answered.",
+          "use": ["page-intro"],
+          "fields": ["Quote reply time"]
+        },
+        {
+          "id": "quote-lines",
+          "purpose": "Lines with quantity steppers and the tier each falls in, delivery method, subtotal, tier savings, shipping, VAT, total.",
+          "use": ["line-items"],
+          "alternatives": ["cart-01: when the shop takes direct online orders"],
+          "fields": ["Delivery options with cost", "VAT rate", "Validity period of a quote"],
+          "notes": "The navbar shows the live number of quote lines. Keep the list above the language switch."
+        },
+        {
+          "id": "company-form",
+          "purpose": "Company name, tax number, contact person, email, phone, desired delivery date, notes.",
+          "use": ["form-01"],
+          "fields": ["Required company data (tax number/VAT ID format)", "Privacy notice"],
+          "notes": "Move focus to the first invalid field on submit; end with a quote reference."
+        }
+      ]
+    },
+    {
+      "id": "quality",
+      "path": { "en": "/quality", "tr": "/kalite" },
+      "title": { "en": "Quality", "tr": "Kalite" },
+      "purpose": "Prove quality: measured process data, quality gates from raw material to dispatch, certificates with validity.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and the quality promise in one line.",
+          "use": ["page-intro"],
+          "fields": ["Quality promise (e.g. defect rate, inspection level)"]
+        },
+        {
+          "id": "process-data",
+          "purpose": "A real measurement chart (e.g. control chart of a key dimension) with the capability index and what was measured.",
+          "use": ["line-chart", "stat"],
+          "fields": ["A measured characteristic with tolerance, sample size and period", "Control limits and capability index"],
+          "notes": "Caption the chart with what, where and when; give the key numbers as text; status updates via aria-live.",
+          "optional": true
+        },
+        {
+          "id": "quality-gates",
+          "purpose": "Inspection stages from incoming material to final inspection and traceability.",
+          "use": ["steps"],
+          "fields": ["Inspection stages and what each checks", "Measuring equipment", "Traceability method"]
+        },
+        {
+          "id": "certificates",
+          "purpose": "Certificates with issuer, scope and valid-until date, each downloadable as PDF.",
+          "use": ["attachment-list"],
+          "alternatives": ["feature-grid: certificate tiles with logos"],
+          "fields": ["Certificates: name, issuing body, scope, valid until, PDF"]
+        },
+        {
+          "id": "faq",
+          "purpose": "Quality questions: reports supplied with deliveries, PPAP/first article, audits.",
+          "use": ["faq"],
+          "fields": ["Questions and answers on inspection reports and audits"],
+          "when": { "any": ["section:faq"] },
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Product catalogue: SKU, name, pack size, specs, stock status",
+    "Quantity tiers and prices, minimum order quantity (if prices are public)",
+    "Spec tables, technical drawings and datasheet/CAD files (for manufacturers)",
+    "Capabilities: processes, machines, materials, tolerances, capacity",
+    "Delivery zones, lead times, Incoterms and free-delivery minimum",
+    "Trade account requirements and payment terms",
+    "Quality process, measuring equipment and certificates with validity dates",
+    "Industries served and buyer references with permission",
+    "Plant or warehouse address, gate and goods-in hours",
+    "Quote reply time and who answers",
+    "Real company figures"
+  ],
+  "styles": [
+    {
+      "name": "delivery-note utility",
+      "axes": { "theme": "light", "material": "solid", "accent": "ocean", "density": "compact", "font": "grotesk", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Square corners, grotesk headings, a cobalt accent and dense rows read like a delivery note; suits wholesalers and distributors with public tier prices."
+    },
+    {
+      "name": "industrial drawing sheet",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "density": "compact", "font": "corporate", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Steel grey with one signal colour, condensed headlines and mono spec values evoke engineering drawings; suits manufacturers and machining plants."
+    },
+    {
+      "name": "dark plant",
+      "axes": { "theme": "dark", "material": "solid", "accent": "ember", "density": "compact", "font": "corporate", "radius": "default" },
+      "motion": "off",
+      "why": "For heavy industry brands that want a strong, serious look with a hot accent."
+    }
+  ],
+  "pitfalls": [
+    "Prices shown without saying whether VAT, shipping and pack size are included.",
+    "Tier charts or drawings with no text equivalent; provide tier prices as a table and drawings with a description.",
+    "Certificates listed without issuing body, scope or valid-until date, or expired ones left online.",
+    "RFQ forms that ask for everything up front; ask for the minimum and say when and who replies.",
+    "Spec tables that overflow on phones without a labelled scroll region or sticky first column.",
+    "Customer logos and quotes used without written permission (common with industrial buyers).",
+    "Privacy notice missing on quote and RFQ forms that collect personal contact data."
+  ]
+}

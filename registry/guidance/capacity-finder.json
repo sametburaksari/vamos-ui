@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Choosing between rooms, spaces, tables or vehicles whose capacity depends on a layout or arrangement.",
+    "Showing at a glance which options fit a head count, and why the others do not."
+  ],
+  "avoidWhen": [
+    "Capacity does not vary by layout and there are only a few options — a filter on a plain list is enough.",
+    "Booking a time slot — use scheduler or calendar components."
+  ],
+  "related": [
+    "slider",
+    "entity-card",
+    "list-layout"
+  ],
+  "a11y": [
+    "The layout switch is a toggle group with roving focus; the count is a slider with a synced, labelled number field.",
+    "The summary is a polite live region and each option states its status in text, not only colour."
+  ]
+}

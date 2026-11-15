@@ -308,7 +308,7 @@ const CATEGORY_HINTS: { category: string; words: string[]; density: "compact" | 
   { category: "Onboarding", words: ["onboarding", "wizard", "setup", "getting started", "welcome", "karsilama"], density: "comfortable" },
   { category: "Empty & error states", words: ["empty", "404", "500", "error", "not found", "maintenance", "no access", "forbidden", "bos", "hata", "bakim"], density: "comfortable" },
   { category: "App shells", words: ["shell", "layout", "sidebar", "navigation", "app frame", "admin layout"], density: "compact" },
-  { category: "Website pages", words: ["website", "landing", "homepage", "home page", "pricing", "contact", "restaurant", "spa", "agency", "saas site", "site"], density: "comfortable" },
+  { category: "Website pages", words: ["website", "landing", "homepage", "home page", "pricing", "contact", "agency", "saas site", "site", "web sitesi", "portfolio", "online store"], density: "comfortable" },
   { category: "Marketing sections", words: ["hero", "features", "testimonials", "faq", "cta", "section", "footer", "logos"], density: "comfortable" },
 ];
 
@@ -347,6 +347,39 @@ function containsWord(haystack: string, word: string): boolean {
   return new RegExp(`(^|[^a-z0-9])${fold(word).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^a-z0-9]|$)`).test(haystack);
 }
 
+type RecipeLib = Pick<typeof import("vamos-ui/project"), "RECIPES" | "matchRecipes">;
+let recipeLib: Promise<RecipeLib | null> | undefined;
+
+/** Site recipes from the CLI's project library (null when it cannot be loaded). */
+function loadRecipes(): Promise<RecipeLib | null> {
+  recipeLib ??= import("vamos-ui/project").then(
+    (mod) => (Array.isArray((mod as Partial<RecipeLib>).RECIPES) && typeof mod.matchRecipes === "function" ? mod : null),
+    () => null,
+  );
+  return recipeLib;
+}
+
+/** The recipe section of a website plan: pages and, per section, the kit items and the facts to supply. */
+function recipeLines(recipe: import("vamos-ui/project").Recipe, others: string[]): string[] {
+  const out = [`## Recipe: ${recipe.title.en} (\`${recipe.id}\`)`, "", recipe.summary, "", "Build the site from kit components in this order; no example site is copied. Sections marked optional or with a condition depend on the business (e.g. a newsletter, bookings, a shop)."];
+  for (const page of recipe.pages) {
+    out.push("", `### \`${page.path.en}\` ${page.title.en}${page.when ? " (conditional)" : ""}`, page.purpose);
+    for (const sec of page.sections) {
+      const flags = [sec.optional ? "optional" : "", sec.when ? `when ${[...(sec.when.any ?? []), ...(sec.when.all ?? [])].join(" / ")}` : ""].filter(Boolean).join(", ");
+      out.push(`- **${sec.id}**${flags ? ` (${flags})` : ""}: ${sec.purpose} → ${sec.use.map((u) => `\`${u}\``).join(" + ")}${sec.alternatives?.length ? `; or ${sec.alternatives.join("; ")}` : ""}. Needs: ${sec.fields.join("; ") || "—"}.`);
+    }
+  }
+  if (recipe.styles.length) {
+    out.push("", "Looks that suit it:");
+    for (const st of recipe.styles) out.push(`- ${st.name}: ${Object.entries(st.axes).map(([k, v]) => `${k} ${v}`).join(", ")}${st.motion ? `, motion ${st.motion}` : ""} — ${st.why}`);
+  }
+  if (recipe.pitfalls.length) out.push("", "Pitfalls:", ...recipe.pitfalls.map((x) => `- ${x}`));
+  if (recipe.showcase?.length) out.push("", `Finished example of a related site to look at (not to copy): ${recipe.showcase.map((x) => `\`${x}\``).join(", ")}.`);
+  if (others.length) out.push("", `Other recipes that may fit: ${others.map((x) => `\`${x}\``).join(", ")}.`);
+  out.push("", "For a whole website run `start_project` (or `npx vamos-ui new`): the interview picks the recipe and keeps only the sections that apply.");
+  return out;
+}
+
 export async function planScreen(registry: Registry, args: { description: string }, detailTimeoutMs = 4000): Promise<string> {
   const description = args.description.trim();
   if (!description) throw new ToolError("description is empty. Describe the screen: who uses it, what data it shows, the main action.");
@@ -361,7 +394,12 @@ export async function planScreen(registry: Registry, args: { description: string
   }
   const topCategory = [...categoryScores].sort((a, b) => b[1] - a[1])[0]?.[0];
 
-  const blocks = items.filter((item) => item.type === "block");
+  // Example websites (site-*) are showcases, not starting points: websites come from a recipe.
+  const blocks = items.filter((item) => item.type === "block" && !/^site-/.test(item.name));
+  const recipes = await loadRecipes();
+  const recipeHits = recipes ? recipes.matchRecipes(description, recipes.RECIPES) : [];
+  const siteLike = topCategory === "Website pages" || topCategory === "Marketing sections" || (!topCategory && recipeHits.length > 0);
+  const recipe = siteLike ? recipeHits[0]?.recipe : undefined;
   const blockHits = new Map(rankItems(description, blocks, details, "any").map((hit) => [hit.item.name, hit.score]));
   const rankedBlocks = blocks
     .map((block) => ({
@@ -372,7 +410,8 @@ export async function planScreen(registry: Registry, args: { description: string
     .sort((a, b) => b.score - a.score || a.block.name.localeCompare(b.block.name));
 
   const out: string[] = [`# Plan: ${truncate(description, 120)}`, ""];
-  const chosen = rankedBlocks[0]?.block;
+  // With a recipe, a page block is the start only when the description names it (a pricing page, a contact page).
+  const chosen = recipe ? rankedBlocks.find((entry) => (blockHits.get(entry.block.name) ?? 0) >= 20)?.block : rankedBlocks[0]?.block;
   let blockComponents: string[] = [];
   const includedWithBlock = new Set<string>();
   const kinds = new Map(items.map((entry) => [entry.name, entry.type]));
@@ -402,13 +441,16 @@ export async function planScreen(registry: Registry, args: { description: string
       out.push("", "Alternatives:");
       for (const alt of alternatives) out.push(oneLine(alt));
     }
-  } else {
+  } else if (!recipe) {
     out.push(
       "## Start from this block",
       "",
-      "No block matches closely. Compose the screen from an app shell block (list_items({ type: \"block\", category: \"App shells\" })) plus the components below.",
+      siteLike
+        ? "No block matches closely. Compose the page from the website sections (list_items({ group: \"Site blocks\" })) plus the components below; for a whole website run start_project."
+        : "No block matches closely. Compose the screen from an app shell block (list_items({ type: \"block\", category: \"App shells\" })) plus the components below.",
     );
   }
+  if (recipe) out.push("", ...recipeLines(recipe, recipeHits.slice(1).map((h) => h.recipe.id)));
 
   // Components: explicit hints first, then free-text ranking.
   const components = items.filter((item) => item.type === "component");
@@ -443,7 +485,9 @@ export async function planScreen(registry: Registry, args: { description: string
     }
   }
 
-  const install = [...(chosen ? [chosen.name] : []), ...picked.map(([name]) => name)];
+  const known = new Set(items.map((entry) => entry.name));
+  const recipeHome = recipe ? (recipe.pages.find((p) => p.id === "home") ?? recipe.pages[0])?.sections.filter((sec) => !sec.optional && !sec.when).map((sec) => sec.use[0]!).filter((n) => known.has(n)) ?? [] : [];
+  const install = [...new Set([...(chosen ? [chosen.name] : []), ...picked.map(([name]) => name), ...recipeHome])];
   if (install.length) out.push("", "## Install", "", "```sh", buildInstallCommand(registry, install), "```");
 
   const density = CATEGORY_HINTS.find((hint) => hint.category === (chosen?.category ?? topCategory))?.density ?? "comfortable";
@@ -470,7 +514,7 @@ export async function planScreen(registry: Registry, args: { description: string
       : []),
     "",
     "## Next",
-    chosen ? `1. get_block("${chosen.name}") for the full source.` : "1. get_item(name) for each component above.",
+    chosen ? `1. get_block("${chosen.name}") for the full source.` : recipe ? "1. get_item(name) for the kit items of each section above." : "1. get_item(name) for each component above.",
     "2. Adapt it; get_item(name) for props of any component you add.",
     "3. verify_code on every file you write.",
   );

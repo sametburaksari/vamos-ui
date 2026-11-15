@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Letting visitors or users switch between light and dark (and optionally system) themes on a site or app.",
+    "Driving SiteShell's theme prop or a ThemeScope from a reader-controlled switch (target={null} with onValueChange)."
+  ],
+  "avoidWhen": [
+    "A section or block that should always be dark — set the theme on Section, ThemeScope or SiteShell instead.",
+    "Generic on/off settings — use switch or toggle."
+  ],
+  "related": [
+    "site-shell",
+    "navbar",
+    "switch"
+  ],
+  "a11y": [
+    "With two modes it is one toggle button named \"Dark mode\" with aria-pressed; with three it names the current mode (\"Theme: System\"); the segmented variant is a labelled radio group.",
+    "Icon-only buttons get an accessible name and a title; with showLabel the visible text starts the accessible name.",
+    "Use modeToggleScript in the document head so a stored dark choice never flashes light on reload."
+  ]
+}

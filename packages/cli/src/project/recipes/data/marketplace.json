@@ -1,0 +1,211 @@
+{
+  "id": "marketplace",
+  "title": { "en": "Marketplace", "tr": "Pazaryeri" },
+  "summary": "A multi-seller marketplace where buyers search listings from many independent sellers and choose by seller reputation: search-first home, results with filters (seller rating, category, price, dispatch time), seller pages with ratings and reviews, and a call for new sellers.",
+  "match": {
+    "siteTypes": ["ecommerce"],
+    "signals": ["marketplace", "sellers", "makers market", "vendors", "listings", "second hand", "artisans", "pazaryeri", "pazar", "saticilar", "ilan", "ikinci el", "zanaatkar", "ureticiler"],
+    "features": ["shop", "section:faq", "section:testimonials"],
+    "fallback": false
+  },
+  "showcase": ["site-store-01"],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Get buyers searching at once, show the categories and the best-rated sellers, explain how buying from independent sellers works, and recruit sellers.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Search-first hero: headline, a search field with popular terms, and a collage of listings each with its seller's rating chip.",
+          "use": ["hero"],
+          "fields": ["Headline and pitch", "Popular search terms", "Featured listings with seller and rating"],
+          "notes": "Submitting the search (or a popular term) opens the results page with the query set."
+        },
+        {
+          "id": "categories",
+          "purpose": "A row of categories that open results with the category preset.",
+          "use": ["feature-grid"],
+          "fields": ["Categories with icon or photo and listing count"]
+        },
+        {
+          "id": "top-sellers",
+          "purpose": "Top-rated sellers: rating first, then the evidence (reviews, on-time dispatch, reply time), then a few of their listings.",
+          "use": ["entity-card"],
+          "alternatives": ["feature-grid: simpler seller tiles"],
+          "fields": ["Sellers: shop name, avatar, rating, review count, on-time share, reply time, three listings", "Rule for the top-seller badge"]
+        },
+        {
+          "id": "new-listings",
+          "purpose": "The newest listings.",
+          "use": ["feature-grid"],
+          "alternatives": ["carousel: many new listings"],
+          "fields": ["Newest listings: photo, title, price, dispatch time, seller with rating"],
+          "notes": "Every listing card carries the seller chip with rating; the rating button opens a popover with the breakdown (distribution, on-time share, reply time, badge rule) and a link to the shop. Saving a listing is an icon button with an accessible name."
+        },
+        {
+          "id": "how-buying-works",
+          "purpose": "How buying from many sellers works: one checkout, who ships, buyer protection, disputes.",
+          "use": ["steps"],
+          "fields": ["Purchase flow steps", "Buyer protection and dispute process"]
+        },
+        {
+          "id": "figures",
+          "purpose": "Scale and trust in numbers: sellers, listings, orders, average rating.",
+          "use": ["stats-band"],
+          "fields": ["Real figures with the date they were measured"],
+          "optional": true
+        },
+        {
+          "id": "sell-cta",
+          "purpose": "Invite sellers: fees, payout timing, how to apply.",
+          "use": ["cta"],
+          "fields": ["Commission and fees", "Payout schedule", "Seller application link or requirements"]
+        },
+        {
+          "id": "faq",
+          "purpose": "Buyer and seller questions: returns across sellers, shipping from several sellers, fees.",
+          "use": ["faq"],
+          "fields": ["Questions and answers for buyers and sellers"],
+          "when": { "any": ["section:faq"] }
+        }
+      ]
+    },
+    {
+      "id": "products",
+      "path": { "en": "/search", "tr": "/ara" },
+      "title": { "en": "Search results", "tr": "Arama sonuclari" },
+      "purpose": "Search and narrow listings by seller rating, top-seller badge, category, price range and dispatch time; sort.",
+      "sections": [
+        {
+          "id": "results",
+          "purpose": "Query, sort, removable active-filter chips, a filter panel (sidebar on wide screens, sheet on phones) and the results grid.",
+          "use": ["filter-bar", "list-layout"],
+          "alternatives": ["sheet: the filter panel on phones", "pagination: long result sets", "empty-state: no results, with a suggestion to clear filters"],
+          "fields": ["Listings with category, price, dispatch time, seller and rating", "Price range limits", "Dispatch time options"],
+          "notes": "Each seller-rating filter option shows the live count of results it would give (count with every other filter applied). Announce the result count via aria-live; toggles expose aria-pressed; the phone sheet returns focus to its trigger."
+        }
+      ]
+    },
+    {
+      "id": "seller",
+      "path": { "en": "/sellers/[slug]", "tr": "/saticilar/[slug]" },
+      "title": { "en": "Seller", "tr": "Satici" },
+      "purpose": "One seller's shop: header with rating card, then shop, reviews and about tabs; clicking a rating bar filters the reviews.",
+      "sections": [
+        {
+          "id": "seller-header",
+          "purpose": "Shop name, avatar, location, member since, top-seller badge and the rating card (5 to 1 star bars, on-time share, reply time).",
+          "use": ["page-header"],
+          "alternatives": ["record-detail-layout: a seller page with many facts"],
+          "fields": ["Seller name, avatar, location, joining date", "Rating distribution, on-time dispatch share, average reply time"],
+          "notes": "Rating bars are buttons that filter the reviews tab; give each a name like '5 stars, 82% of reviews'."
+        },
+        {
+          "id": "seller-tabs",
+          "purpose": "Shop (the seller's listings), Reviews (filterable) and About (story, policies).",
+          "use": ["tabs", "feature-grid", "testimonials"],
+          "fields": ["Seller listings", "Reviews with rating, date and listing", "Seller story, shipping and returns policy"]
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "path": { "en": "/products/[slug]", "tr": "/urun/[slug]" },
+      "title": { "en": "Listing", "tr": "Ilan" },
+      "purpose": "One listing with the seller's reputation beside the buy button.",
+      "sections": [
+        {
+          "id": "product",
+          "purpose": "Gallery, options, price, dispatch time, add to cart and the seller chip with rating.",
+          "use": ["product-01"],
+          "fields": ["Listing photos, title, description, options, price", "Dispatch time and shipping from", "Seller and rating"]
+        },
+        {
+          "id": "more-from-seller",
+          "purpose": "More listings from the same seller.",
+          "use": ["feature-grid"],
+          "fields": ["Other listings of the seller"]
+        }
+      ]
+    },
+    {
+      "id": "cart",
+      "path": { "en": "/cart", "tr": "/sepet" },
+      "title": { "en": "Cart", "tr": "Sepet" },
+      "purpose": "Cart grouped by seller, each group with its own shipping.",
+      "sections": [
+        {
+          "id": "cart",
+          "purpose": "Lines grouped by seller with shipping per seller and the total.",
+          "use": ["cart-01"],
+          "fields": ["Shipping rules per seller"]
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "path": { "en": "/checkout", "tr": "/odeme" },
+      "title": { "en": "Checkout", "tr": "Odeme" },
+      "purpose": "One payment for items from several sellers.",
+      "sections": [
+        {
+          "id": "checkout",
+          "purpose": "Contact, address, payment and agreements, with the seller of each line visible.",
+          "use": ["checkout-01"],
+          "fields": ["Marketplace terms and each seller's legal identity", "Payment provider with split payouts"]
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "path": { "en": "/order/[id]", "tr": "/siparis/[id]" },
+      "title": { "en": "Order confirmation", "tr": "Siparis onayi" },
+      "purpose": "Confirm the order, with one shipment per seller.",
+      "sections": [
+        {
+          "id": "confirmation",
+          "purpose": "Order number, per-seller shipments and how to contact each seller.",
+          "use": ["order-confirmation-01"],
+          "fields": ["How buyers contact sellers and open a dispute"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Categories and the listing data model (title, photos, price, options, dispatch time)",
+    "Seller profiles: name, avatar, location, story, policies",
+    "Rating and review system, and the rule for a top-seller badge",
+    "Seller metrics: on-time dispatch share, reply time",
+    "Commission, fees and payout schedule for sellers",
+    "Seller application requirements",
+    "Buyer protection, returns and dispute process across sellers",
+    "Marketplace terms, and each seller's legal identity shown to buyers",
+    "Payment provider supporting split payouts",
+    "Real platform figures"
+  ],
+  "styles": [
+    {
+      "name": "trustworthy marketplace",
+      "axes": { "theme": "light", "material": "glass", "accent": "ocean", "density": "comfortable", "font": "system", "radius": "default" },
+      "motion": "subtle",
+      "why": "System fonts and a deep blue accent stay neutral so many sellers' photos sit well together and the platform reads as reliable."
+    },
+    {
+      "name": "dense catalogue",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "density": "compact", "font": "system", "radius": "sharp" },
+      "motion": "off",
+      "why": "For large marketplaces where results density and speed matter more than atmosphere."
+    }
+  ],
+  "pitfalls": [
+    "Buyers cannot see who the actual seller is (name, legal identity, location) before paying — required for consumer protection and trust.",
+    "Ratings without the evidence behind them (count, recency, on-time share) or badges whose rule is not explained.",
+    "Filter counts that do not match the results, or filters lost when the language changes.",
+    "Phone filter sheet that does not return focus to its trigger, and toggles without aria-pressed.",
+    "Shipping and returns unclear when one order has items from several sellers.",
+    "Fake or seeded reviews; only show reviews from completed orders.",
+    "Seller onboarding page missing fees and payout timing."
+  ]
+}

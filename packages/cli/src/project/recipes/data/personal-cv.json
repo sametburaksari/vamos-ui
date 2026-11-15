@@ -1,0 +1,132 @@
+{
+  "id": "personal-cv",
+  "title": { "en": "Personal site and CV", "tr": "Kişisel site ve özgeçmiş" },
+  "summary": "A one-page personal site for an engineer, designer, consultant or freelancer, with numbered sections and a sticky identity column, plus the same content as a print-perfect A4 CV that saves as PDF.",
+  "match": {
+    "siteTypes": ["portfolio"],
+    "signals": [
+      "cv", "resume", "curriculum vitae", "personal site", "freelancer", "freelance", "developer", "engineer", "consultant",
+      "ozgecmis", "kisisel site", "serbest calisan", "yazilimci", "gelistirici", "muhendis", "danisman"
+    ],
+    "features": ["structure:single", "section:about", "section:blog"],
+    "fallback": false
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Everything on one page: who the person is, what they have done, what they have made and written, what they know and how to reach them.",
+      "sections": [
+        {
+          "id": "identity",
+          "purpose": "A sticky identity column on wide screens: name, role and location, current status, section links, 'Download PDF', profile links and language switch.",
+          "use": ["section-nav", "badge", "button"],
+          "fields": ["Full name", "Role or title", "Location", "Availability status (open to work / booked until)", "Profile links (code host, professional network)", "CV file name for the PDF"],
+          "notes": "The section links work as a table of contents: the item for the section being read gets aria-current=\"location\"; without JavaScript they are plain in-page anchors. On narrow screens the column sits above the content and is not sticky. Number the sections (01, 02 …) in the accent."
+        },
+        {
+          "id": "about",
+          "purpose": "A two-or-three sentence introduction and what the person is doing right now.",
+          "use": ["typography"],
+          "fields": ["Introduction in the person's own voice", "Current focus"]
+        },
+        {
+          "id": "experience",
+          "purpose": "Jobs as a timeline, newest first, the current one marked.",
+          "use": ["activity-timeline"],
+          "fields": ["Role", "Employer", "Start and end month (or present)", "What the employer does and where", "Three or four achievement bullets with numbers where possible", "Tools or stack used"]
+        },
+        {
+          "id": "projects",
+          "purpose": "Selected projects with an outcome each, linking out.",
+          "use": ["list-layout", "badge"],
+          "alternatives": ["entity-card: card grid when projects have images"],
+          "fields": ["Project title", "Year", "One-line description", "Outcome or metric", "Tags", "Link"],
+          "optional": true
+        },
+        {
+          "id": "writing",
+          "purpose": "Articles and talks: dated list with reading time, plus talks with event name.",
+          "use": ["blog-list"],
+          "alternatives": ["list-layout: a plain dated list of links to posts hosted elsewhere"],
+          "fields": ["Post title, date, reading time, link", "Talk title, event, date"],
+          "optional": true,
+          "when": { "any": ["section:blog"] }
+        },
+        {
+          "id": "skills",
+          "purpose": "Skills grouped by area, then languages spoken and education.",
+          "use": ["description-list"],
+          "fields": ["Skill groups and their items", "Languages spoken and level", "Education: degree, school, years"]
+        },
+        {
+          "id": "contact",
+          "purpose": "What kind of work the person is open to and how to reach them, with the CV download again.",
+          "use": ["description-list", "button"],
+          "alternatives": ["contact-form: when the person prefers a form to a public email address"],
+          "fields": ["What they are open to", "Email", "Phone (optional)", "Profile links"]
+        }
+      ]
+    },
+    {
+      "id": "cv",
+      "path": { "en": "/cv", "tr": "/ozgecmis" },
+      "title": { "en": "CV", "tr": "Özgeçmiş" },
+      "purpose": "The same content as one sheet of A4 paper on screen, printing or saving as PDF without any site chrome.",
+      "sections": [
+        {
+          "id": "toolbar",
+          "purpose": "A slim bar with a link back to the site and 'Download PDF'.",
+          "use": ["button"],
+          "fields": ["Suggested PDF file name"],
+          "notes": "'Download PDF' opens the print dialog; swap the document title for the file name while it is open so 'Save as PDF' suggests a sensible name. Say in the button hint that it opens the print dialog."
+        },
+        {
+          "id": "sheet",
+          "purpose": "The CV sheet: name and contact header, experience, selected projects, skills, languages, education.",
+          "use": ["description-list", "typography"],
+          "fields": ["Everything from the home page, in short form", "A last-updated line"],
+          "notes": "Always light (paper is paper, also in dark mode); two columns that collapse on narrow screens; an @page rule for A4 with about 12 mm margins; break-inside: avoid on every entry; links printed as their visible address. The home page also carries a print-only copy so printing either page prints only the sheet."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Full name, role and location",
+    "Availability status and what kind of work is wanted",
+    "Short introduction and current focus",
+    "Work history: role, employer, dates, place, achievement bullets, tools",
+    "Selected projects with year, outcome and link",
+    "Articles and talks with dates (optional)",
+    "Skills grouped by area",
+    "Languages spoken and education",
+    "Contact email, optional phone and profile links",
+    "Preferred PDF file name",
+    "Optional portrait photo"
+  ],
+  "styles": [
+    {
+      "name": "plain engineer",
+      "axes": { "theme": "light", "material": "solid", "density": "compact", "font": "system", "accent": "ocean", "radius": "default" },
+      "motion": "subtle",
+      "why": "System type, mono dates and section numbers, one cool accent and almost no decoration: reads like well-kept documentation. Suits engineers and technical consultants."
+    },
+    {
+      "name": "editorial profile",
+      "axes": { "theme": "light", "material": "solid", "density": "comfortable", "font": "editorial", "accent": "graphite", "radius": "sharp" },
+      "motion": "off",
+      "why": "Serif headings and generous measure for writers, researchers and designers who want the CV to feel like a printed page."
+    }
+  ],
+  "pitfalls": [
+    "Printing the whole site instead of the CV: hide site chrome in print and print only the sheet, on A4 with real margins.",
+    "Dark mode leaking into the printed or on-screen CV sheet; keep the paper light and check it reads without colour.",
+    "Content that breaks across pages mid-entry; avoid breaks inside entries and keep the reading order logical when printed.",
+    "Publishing a full home address, date of birth, ID number or a personal phone number the person did not mean to make public.",
+    "Links that print as 'here': print the address itself so the PDF stays useful on paper.",
+    "The sticky identity column taking the whole screen on phones; it should stack above the content there.",
+    "Section navigation without aria-current, or scroll effects that ignore reduced motion."
+  ]
+}

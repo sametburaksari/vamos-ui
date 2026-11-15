@@ -23,6 +23,7 @@ export * from "./jurisdiction";
 export { regimeRequirements, SOURCES as LEGAL_SOURCES } from "./regimes";
 export * from "./deploy";
 export * from "./process";
+export { RECIPES, recipeById, pickRecipe, matchRecipes, resolveRecipe, projectFeatures, conditionHolds, foldText, type Recipe, type RecipePage, type SectionPattern, type StyleFamily, type Condition, type Feature, type RecipeMatch, type RecipeChoice, type BlueprintPage, type BlueprintSection, type PlanRecipe } from "./recipes";
 export { importSite, readPage, siteFromImport, type ImportOptions, type ImportedPage, type ImportedValue, type SiteImport } from "./import";
 
 export const PROJECT_FILE = "vamos.project.json";
@@ -204,7 +205,7 @@ export function formatPlan(plan: ProjectPlan, lang: Lang = "tr"): string {
     out.push(`- ${tr ? "Ürün kataloğu" : "Catalogue"}: **${plan.commerce.catalog.value}**. ${L(plan.commerce.catalog.reason)}`);
     out.push(`- ${tr ? "Ödeme" : "Payments"}: ${plan.commerce.payments.join(", ") || "—"} · ${tr ? "Teslimat" : "Delivery"}: ${({ yes: tr ? "kargo" : "shipping", digital: tr ? "dijital" : "digital", pickup: tr ? "mağazadan teslim" : "pickup" } as Record<string, string>)[plan.commerce.shipping] ?? plan.commerce.shipping}${plan.commerce.einvoice ? " · e-Arşiv" : ""}`);
   }
-  out.push(`- ${tr ? "Başlangıç şablonu" : "Starting template"}: ${plan.templates.join(", ")}`);
+  if (plan.recipe) out.push(`- ${tr ? "Tarif" : "Recipe"}: **${plan.recipe.title[lang]}** (\`${plan.recipe.id}\`) — ${plan.recipe.summary}${plan.recipe.alternatives.length ? ` ${tr ? "Diğer uygun tarifler" : "Also fits"}: ${plan.recipe.alternatives.join(", ")}.` : ""}`);
   out.push("", `### ${tr ? "Sayfalar" : "Pages"}`);
   for (const p of plan.pages) out.push(`- \`${p.path}\` ${L(p.title)}: ${p.sections.join(" → ")}`);
   if (plan.legalPages.length) {

@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "The per-day (or per-week) uptime row of a service on a status page or health dashboard.",
+    "Showing at a glance which periods had outages, degradation or maintenance, with details on hover and focus."
+  ],
+  "avoidWhen": [
+    "A continuous metric over time such as latency or error rate — use a bar or line chart.",
+    "A single current state — use a badge or alert."
+  ],
+  "related": [
+    "activity-timeline",
+    "sparkline",
+    "badge",
+    "tooltip"
+  ],
+  "a11y": [
+    "One tab stop per row with arrow, Home and End keys (RTL aware); every bar's accessible name holds its date, state, uptime and note, so the tooltip is never the only source.",
+    "State is not colour-only: bars dip in height by severity, maintenance is hatched, no data is dashed, and UptimeLegend names each state in text."
+  ]
+}

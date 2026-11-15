@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "A season or event schedule of head-to-head matches with upcoming and past results — sports clubs, esports series, chess or debating leagues.",
+    "A team or player page that needs home/away and competition filters and marks the next match."
+  ],
+  "avoidWhen": [
+    "A generic agenda of sessions or events without two opposing sides — use calendar or a list.",
+    "A ranking of sides — use standings-table."
+  ],
+  "related": [
+    "standings-table",
+    "table",
+    "tabs"
+  ],
+  "a11y": [
+    "Upcoming and Results are WAI-ARIA tabs with counts; each view is a captioned table with month row headers.",
+    "Scores are read as sentences (\"Northgate 2, Riverside 1\"), home/away tags and outcome squares have spoken names, and the filtered count is announced politely."
+  ]
+}

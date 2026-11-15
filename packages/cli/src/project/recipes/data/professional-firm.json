@@ -1,0 +1,332 @@
+{
+  "id": "professional-firm",
+  "title": { "en": "Professional firm", "tr": "Profesyonel hizmet bürosu" },
+  "summary": "A law, accounting, tax, audit or advisory practice: sober and trustworthy, organised around practice areas or service packages run by named partners, with credentials, an approach, insights, transparent fees where the profession allows, and an enquiry that respects confidentiality.",
+  "match": {
+    "siteTypes": ["corporate"],
+    "signals": ["law firm", "lawyer", "attorney", "legal", "accounting", "accountant", "bookkeeping", "tax advisor", "audit", "chartered", "advisory", "hukuk burosu", "avukat", "avukatlik", "mali musavir", "muhasebe", "smmm", "vergi", "denetim", "danismanlik"],
+    "features": ["section:services", "section:team", "section:blog", "section:pricing", "section:faq", "channel:form", "channel:map"],
+    "fallback": false
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Establish credibility fast: what the firm handles, who runs it, how it works and how to get in touch.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "A sober statement of what the firm does and for whom, with two actions (enquire, see practice areas or fees).",
+          "use": ["hero"],
+          "fields": ["One-sentence positioning", "Lead: client type and location", "Primary action label", "Secondary action label", "Photo of the real office or work (optional)"],
+          "notes": "Split-media variant for a law-style firm. An accounting practice can draw the hero as a ruled ledger page listing the month's closing entries or filing deadlines as real text (build from hero + description-list) with hairline rules every row."
+        },
+        {
+          "id": "figures",
+          "purpose": "The firm's year in a few checkable figures.",
+          "use": ["stats-band"],
+          "fields": ["Three or four figures with label", "Source or as-of date"],
+          "optional": true,
+          "notes": "Ledger variant. Avoid success-rate claims the profession's rules forbid."
+        },
+        {
+          "id": "practices",
+          "purpose": "The practice areas or service lines, each with the partner who runs it, linking to its own page.",
+          "use": ["feature-grid"],
+          "alternatives": ["list-layout: a numbered index with large numerals and a preview panel", "menu-list: services with monthly fees"],
+          "fields": ["Practice or service name", "Number or order", "Short description", "Lead partner name and photo", "Two or three recent matters or typical engagements (anonymised)", "Team size and working languages"],
+          "notes": "Signature pattern for a law firm: one row per practice with a large outlined serif numeral; the active row's numeral fills with the accent and a side panel (wide screens only, decorative) previews its lead, partner and recent matters. Hover or focus selects a row; every row is a real link carrying the same text. Cross-fade respects reduced motion."
+        },
+        {
+          "id": "fee-preview",
+          "purpose": "A quick indication of the monthly fee by client type, linking to the full estimate.",
+          "use": ["pricing-table"],
+          "alternatives": ["radio-group: a segmented choice of client type that swaps the figure and what is included"],
+          "fields": ["Client or company types", "Base monthly fee per type", "What is included per type", "VAT note"],
+          "when": { "any": ["section:pricing"] },
+          "notes": "Segmented radio of company type; the figure and included list update in a polite live region."
+        },
+        {
+          "id": "approach",
+          "purpose": "How an engagement or a month of work runs, so clients know what to expect and what to send when.",
+          "use": ["steps"],
+          "fields": ["Three to five stages or calendar dates with title and one sentence"],
+          "notes": "Horizontal variant. An accounting practice can show the monthly filing calendar here; keep dates as real text so they read in order."
+        },
+        {
+          "id": "partners",
+          "purpose": "The partners with their credentials.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Professional admissions or licences with year", "Practice focus", "Portrait"],
+          "when": { "any": ["section:team"] },
+          "notes": "Portrait variant. Alt text is the person's name."
+        },
+        {
+          "id": "switching",
+          "purpose": "Reassure clients who would move from another adviser mid-year: what the handover involves.",
+          "use": ["media-text"],
+          "fields": ["Handover steps", "What the client needs to provide", "Photo"],
+          "optional": true
+        },
+        {
+          "id": "reviews",
+          "purpose": "Client words about working with the firm.",
+          "use": ["testimonials"],
+          "fields": ["Quote", "Name or initials", "Role and company", "Permission"],
+          "when": { "any": ["section:testimonials"] },
+          "notes": "Feature variant. Some professions restrict testimonials; check before publishing."
+        },
+        {
+          "id": "insights",
+          "purpose": "Recent articles or legal and tax updates.",
+          "use": ["blog-list"],
+          "fields": ["Title", "Excerpt", "Date", "Category", "Reading time"],
+          "when": { "any": ["section:blog"] },
+          "notes": "List variant."
+        },
+        {
+          "id": "faq",
+          "purpose": "Questions clients ask before engaging.",
+          "use": ["faq"],
+          "fields": ["Question and answer pairs"],
+          "when": { "any": ["section:faq"] },
+          "notes": "Split variant."
+        },
+        {
+          "id": "enquiry",
+          "purpose": "A short, confidential first enquiry routed to the right practice.",
+          "use": ["contact-form"],
+          "fields": ["Name, company, email, phone", "Practice area select (including 'not sure')", "Message: what happened and any deadline", "Office address, phone, email, hours", "Privacy notice link"],
+          "notes": "Split variant with an info column and a privacy checkbox. Lead must warn not to send confidential documents before a conflict check; success message says who calls back and when."
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "path": { "en": "/services", "tr": "/hizmetler" },
+      "title": { "en": "Practice areas", "tr": "Çalışma alanları" },
+      "purpose": "All practice areas or service lines, with prices where the firm publishes them.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title, breadcrumb and one-line scope.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead"],
+          "notes": "Ruled variant."
+        },
+        {
+          "id": "list",
+          "purpose": "Every service with what it includes and its fee.",
+          "use": ["menu-list"],
+          "alternatives": ["feature-grid: practice areas without published fees"],
+          "fields": ["Service name", "What is included", "Fee and billing period, or 'on request'", "VAT note"],
+          "notes": "Service-list variant."
+        },
+        {
+          "id": "fee-estimate",
+          "purpose": "Turn the client's situation into an indicative monthly fee statement.",
+          "use": ["form-01"],
+          "alternatives": ["multi-step-form: more than four questions"],
+          "fields": ["Client types with base fee and inclusions", "Per-employee payroll fee", "Volume bands with surcharges", "Optional extras with prices and which client types they apply to", "VAT rate", "Year-end or one-off lines"],
+          "when": { "any": ["section:pricing"] },
+          "notes": "Card radio for client type, slider for headcount, segmented radio for volume band, card checkboxes for extras; beside it a printed-invoice style statement (dotted leaders, double rules) with monthly subtotal, VAT and year-end lines in a polite live region. Offer 'copy estimate' and 'send this to us'. State that it is an estimate."
+        },
+        {
+          "id": "faq",
+          "purpose": "Billing and scope questions.",
+          "use": ["faq"],
+          "fields": ["Question and answer pairs"],
+          "when": { "any": ["section:faq"] },
+          "notes": "Stacked variant."
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "path": { "en": "/services/[slug]", "tr": "/hizmetler/[slug]" },
+      "title": { "en": "Practice area", "tr": "Çalışma alanı" },
+      "purpose": "One practice area in depth: scope, recent matters, the responsible partner and its FAQ.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Breadcrumb, the practice's number and title, and a lead.",
+          "use": ["page-intro"],
+          "fields": ["Practice title", "Number", "Lead"],
+          "notes": "Ruled variant."
+        },
+        {
+          "id": "scope",
+          "purpose": "What the practice covers, as a numbered list.",
+          "use": ["feature-grid"],
+          "fields": ["Scope items with title and one sentence"],
+          "notes": "List variant."
+        },
+        {
+          "id": "matters",
+          "purpose": "Recent matters, anonymised, with year and optional value.",
+          "use": ["description-list"],
+          "alternatives": ["activity-timeline: many matters over several years"],
+          "fields": ["Year", "Anonymised description", "Value or size (optional, only if allowed)"]
+        },
+        {
+          "id": "lead",
+          "purpose": "The partner who runs the practice, with photo and admissions.",
+          "use": ["media-text"],
+          "fields": ["Partner name", "Role", "Admissions", "Short bio", "Portrait"]
+        },
+        {
+          "id": "faq",
+          "purpose": "Questions specific to this practice.",
+          "use": ["faq"],
+          "fields": ["Question and answer pairs"],
+          "notes": "Split variant."
+        },
+        {
+          "id": "others",
+          "purpose": "Links to the other practices.",
+          "use": ["list-layout"],
+          "fields": ["Other practice titles and links"]
+        },
+        {
+          "id": "cta",
+          "purpose": "Ask for a first conversation about this kind of matter.",
+          "use": ["cta"],
+          "fields": ["Action label", "Reply time"],
+          "notes": "Band variant."
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "path": { "en": "/team", "tr": "/ekip" },
+      "title": { "en": "Team", "tr": "Ekip" },
+      "purpose": "Everyone at the firm, by seniority, with credentials.",
+      "when": { "any": ["section:team"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and a line on how the team is organised.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead"]
+        },
+        {
+          "id": "managing",
+          "purpose": "The managing partner as a feature.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Admissions", "Bio", "Portrait"],
+          "notes": "Feature variant."
+        },
+        {
+          "id": "partners",
+          "purpose": "Partners and counsel with admissions.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Admissions", "Portrait"],
+          "notes": "Portrait variant."
+        },
+        {
+          "id": "associates",
+          "purpose": "Associates and staff as a compact list.",
+          "use": ["team"],
+          "fields": ["Name", "Role and practice", "Admission year"],
+          "notes": "List variant, no photos needed."
+        },
+        {
+          "id": "join",
+          "purpose": "Invite candidates or clients to get in touch.",
+          "use": ["cta"],
+          "fields": ["Action label and target"],
+          "notes": "Split variant."
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "path": { "en": "/blog", "tr": "/blog" },
+      "title": { "en": "Insights", "tr": "Yazılar" },
+      "purpose": "Legal, tax or regulatory updates and guides.",
+      "when": { "any": ["section:blog"] },
+      "sections": [
+        {
+          "id": "list",
+          "purpose": "All insights with date, category and reading time.",
+          "use": ["blog-list"],
+          "fields": ["Title", "Excerpt", "Date", "Category", "Author", "Reading time"]
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "path": { "en": "/contact", "tr": "/iletisim" },
+      "title": { "en": "Contact", "tr": "İletişim" },
+      "purpose": "Enquiry form, office location and opening hours.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "How enquiries are handled and how fast.",
+          "use": ["page-intro"],
+          "fields": ["Reply time", "What to include"],
+          "notes": "Simple variant."
+        },
+        {
+          "id": "form",
+          "purpose": "Enquiry routed by practice or service.",
+          "use": ["contact-form"],
+          "fields": ["Name, company, email, phone", "Practice or service select", "Message", "Privacy notice link"],
+          "notes": "Split variant with privacy checkbox."
+        },
+        {
+          "id": "office",
+          "purpose": "Where the office is and when it is open.",
+          "use": ["map-hours"],
+          "fields": ["Address with floor", "Opening hours per weekday", "Map image or embed", "Additional offices"],
+          "when": { "any": ["channel:map", "section:location"] },
+          "notes": "Map-split variant; branches variant for several offices."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Positioning: the type of clients and matters the firm handles",
+    "Practice areas or service lines, each with scope items, lead partner and typical engagements",
+    "Anonymised recent matters with year (only those the firm may disclose)",
+    "Partners and staff: names, roles, professional admissions or licences with years, portraits",
+    "How an engagement or the monthly cycle runs, with key filing dates if relevant",
+    "Fee list per service and the inputs for the fee estimate (client types, per-employee fee, volume bands, extras, VAT), or the decision not to publish fees",
+    "Insights or updates with author and date",
+    "FAQ: before engaging, switching advisers, billing",
+    "Office address, opening hours, phone, email",
+    "Registration details the profession requires in the footer (bar or chamber registration, tax office, licence number)",
+    "Client quotes, only where the profession allows them"
+  ],
+  "styles": [
+    {
+      "name": "sober serif",
+      "axes": { "theme": "light", "material": "solid", "accent": "brand", "font": "corporate", "density": "comfortable", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "A law firm: deep green or similar dark brand accent on warm paper, a serif display pairing, slow and short motion (titles set word by word, rows laid down one by one). Signals a firm that does not hurry."
+    },
+    {
+      "name": "ledger navy",
+      "axes": { "theme": "light", "material": "solid", "accent": "ocean", "font": "editorial", "density": "comfortable", "radius": "default" },
+      "motion": "subtle",
+      "why": "An accounting or tax practice: navy, a book serif with mono figures, hairline ledger rules, tabular numerals in the fee statement."
+    },
+    {
+      "name": "modern advisory",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "font": "grotesk", "density": "compact" },
+      "motion": "off",
+      "why": "A young advisory or compliance boutique that wants a crisp, product-like site with dense information and no flourish."
+    }
+  ],
+  "pitfalls": [
+    "Professional advertising rules: many bar associations forbid or restrict advertising, success rates, client lists and testimonials; check the local rules before writing claims or quotes.",
+    "The enquiry form inviting confidential documents before a conflict check; say clearly not to send them yet.",
+    "Matters described so precisely that the client can be identified; anonymise and get consent.",
+    "A fee estimate that reads as a binding offer; label it an estimate, show VAT separately and say what is excluded.",
+    "Missing mandatory registration details (registration number, chamber, tax office) in the footer.",
+    "Partner photos with empty alt text; use each person's name.",
+    "Filing calendars drawn as images; keep dates as real text in reading order.",
+    "Motion in the practice preview that ignores reduced-motion settings."
+  ]
+}

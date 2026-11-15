@@ -1,0 +1,323 @@
+{
+  "id": "sports-club",
+  "title": {
+    "en": "Sports club",
+    "tr": "Spor kulübü"
+  },
+  "summary": "A sports club or amateur team: next match and recent results, league standings, a filterable fixtures and results page with 'Add to calendar', club news, the ground, and memberships.",
+  "match": {
+    "siteTypes": [
+      "nonprofit",
+      "event"
+    ],
+    "signals": [
+      "club",
+      "fc",
+      "football",
+      "basketball",
+      "volleyball",
+      "league",
+      "fixtures",
+      "kulup",
+      "spor kulubu",
+      "futbol",
+      "basketbol",
+      "voleybol",
+      "lig",
+      "fikstur",
+      "mac",
+      "taraftar"
+    ],
+    "features": [
+      "section:blog",
+      "section:pricing",
+      "section:faq",
+      "channel:map"
+    ]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Matchday first: the next game, the latest results and where the club stands, then news, the ground and joining.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Club name and crest, the next fixture as a ticket stub (opponent, competition, date, kick-off, venue) and the last three results.",
+          "use": [
+            "hero",
+            "fixture-list"
+          ],
+          "fields": [
+            "Club name, nickname and crest",
+            "Hero photo (ground, team)",
+            "Next fixture: opponent, competition, date, kick-off time, home/away, venue, ticket link",
+            "Last three results with scores"
+          ]
+        },
+        {
+          "id": "standings",
+          "purpose": "A league snapshot (top of the table plus the club) and top scorers.",
+          "use": [
+            "standings-table"
+          ],
+          "alternatives": [
+            "table: a sport without a league table, e.g. rankings or personal bests"
+          ],
+          "fields": [
+            "League name and matchday",
+            "Table rows: position, team, played, points, form",
+            "Top scorers with goals"
+          ],
+          "notes": "Compact on the home page: top rows plus the club if lower, with a link to the full table."
+        },
+        {
+          "id": "news",
+          "purpose": "Latest club news: match reports, signings, community.",
+          "use": [
+            "blog-list"
+          ],
+          "fields": [
+            "News title, date, category, image, summary"
+          ],
+          "when": {
+            "any": [
+              "section:blog"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "id": "ground",
+          "purpose": "The home ground: photo, address, capacity, getting there.",
+          "use": [
+            "media-text"
+          ],
+          "alternatives": [
+            "map-hours: the ground with a map and ticket office hours"
+          ],
+          "fields": [
+            "Ground name and address",
+            "Photo",
+            "Capacity",
+            "Transport and parking",
+            "Accessibility"
+          ]
+        },
+        {
+          "id": "membership-cta",
+          "purpose": "Invite visitors to become members or buy a season ticket.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "What membership gives",
+            "Link to membership"
+          ],
+          "when": {
+            "any": [
+              "section:pricing"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixtures",
+      "path": {
+        "en": "/fixtures",
+        "tr": "/fikstur"
+      },
+      "title": {
+        "en": "Fixtures & results",
+        "tr": "Fikstür ve sonuçlar"
+      },
+      "purpose": "Every fixture and result of the season, filterable, with the full league table.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Season, competitions and a note on kick-off times.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Season",
+            "Competitions"
+          ]
+        },
+        {
+          "id": "board",
+          "purpose": "Fixtures/Results tabs, a team switch (first team, women, youth), competition filter and home/away; results add a record and a five-game form guide; fixtures get 'Add to calendar'.",
+          "use": [
+            "fixture-list",
+            "tabs",
+            "filter-bar"
+          ],
+          "alternatives": [
+            "table: a short season shown as one table"
+          ],
+          "fields": [
+            "Fixture: date, kick-off, opponent, competition, home/away, venue",
+            "Result: score, scorers (optional), match report link",
+            "Teams/squads the club runs"
+          ],
+          "notes": "Group by month; mark the next game. 'Add to calendar' downloads a real .ics file with the right time zone and duration. Form guide shows W/D/L letters with spoken names, never colour alone. Announce the filtered count via aria-live."
+        },
+        {
+          "id": "table",
+          "purpose": "The full league table with promotion and relegation lines.",
+          "use": [
+            "standings-table"
+          ],
+          "fields": [
+            "Full table: played, won, drawn, lost, goals for/against, goal difference, points",
+            "Promotion/relegation places"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "membership",
+      "path": {
+        "en": "/membership",
+        "tr": "/uyelik"
+      },
+      "title": {
+        "en": "Membership",
+        "tr": "Üyelik"
+      },
+      "purpose": "Choose a membership or season ticket, see how joining works and where you sit.",
+      "when": {
+        "any": [
+          "section:pricing"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Why become a member (ownership, votes, priority).",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Membership lead"
+          ]
+        },
+        {
+          "id": "plans",
+          "purpose": "Membership tiers with price and what each includes.",
+          "use": [
+            "pricing-table"
+          ],
+          "fields": [
+            "Tier name",
+            "Price and period",
+            "Included games/competitions",
+            "Benefits (voting rights, discounts)",
+            "Instalment option"
+          ]
+        },
+        {
+          "id": "join",
+          "purpose": "How joining works, step by step.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Joining steps and documents"
+          ]
+        },
+        {
+          "id": "stands",
+          "purpose": "The stands or seating areas and which memberships they suit.",
+          "use": [
+            "feature-grid"
+          ],
+          "alternatives": [
+            "image-hotspots: a ground plan with selectable stands"
+          ],
+          "fields": [
+            "Stand name",
+            "Character (family, standing, covered)",
+            "Accessible seating"
+          ],
+          "optional": true
+        },
+        {
+          "id": "faq",
+          "purpose": "Instalments, missed games, cup games, accessibility.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Membership questions and answers"
+          ]
+        },
+        {
+          "id": "ticket-office",
+          "purpose": "Ticket office contact and hours.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Ticket office hours, phone and email"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Club name, crest, colours and founding year",
+    "Season fixtures with dates, kick-off times, competitions, venues",
+    "Results with scores (kept up to date after every game)",
+    "League table and top scorers (source and update routine)",
+    "Teams/squads the club runs",
+    "Ground name, address, capacity, transport, accessible seating",
+    "Membership tiers, prices, benefits and joining steps",
+    "Ticket office hours and contact",
+    "News posts and match photos (optional)"
+  ],
+  "styles": [
+    {
+      "name": "matchday poster",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "brand",
+        "density": "compact",
+        "font": "grotesk",
+        "radius": "sharp"
+      },
+      "motion": "subtle",
+      "why": "Condensed poster headlines, the club colour as accent and dense tables; suits football and most team sports."
+    },
+    {
+      "name": "floodlights",
+      "axes": {
+        "theme": "dark",
+        "material": "solid",
+        "accent": "lime",
+        "density": "compact",
+        "font": "grotesk"
+      },
+      "motion": "full",
+      "why": "Dark, high-energy look for clubs with a strong matchday and media presence."
+    }
+  ],
+  "pitfalls": [
+    "Results and the table go stale after a match; agree who updates them and show the matchday they reflect.",
+    "Win/draw/loss shown only by colour; add W/D/L letters.",
+    "Kick-off times without the time zone, and .ics files with the wrong zone or duration.",
+    "Photos of youth players published without guardian consent.",
+    "Membership prices without saying what is included (cup games, away games) or the instalment terms.",
+    "Huge unfiltered fixture tables on phones; use filters and month groups."
+  ]
+}

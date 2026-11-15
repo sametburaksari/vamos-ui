@@ -1,0 +1,181 @@
+{
+  "id": "game",
+  "title": { "en": "Game", "tr": "Oyun" },
+  "summary": "Site for a video game (often from a small studio): key art and a click-to-load trailer, press quotes, game pillars, a facts ledger, screenshots, a dev diary and a launch email; a media page with every trailer and a screenshot mosaic; and a press kit with a fact sheet, copy-ready texts and downloads.",
+  "match": {
+    "siteTypes": ["saas", "portfolio"],
+    "signals": ["game", "video game", "indie game", "game studio", "steam", "console", "trailer", "press kit", "gamedev", "oyun", "oyun studyosu", "bagimsiz oyun", "fragman", "basin kiti"],
+    "features": ["newsletter", "section:blog", "section:team"]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Make a player want it in one screen (key art, title, trailer), say what kind of game it is, show it, and collect wishlists or launch emails.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Title over key art with the trailer facade, the release window and the main action (wishlist / store page).",
+          "use": ["hero", "video-player"],
+          "fields": ["Game title / logo", "Key art", "One-line pitch", "Release date or window", "Platforms", "Store / wishlist links", "Reveal trailer (video URL, poster still, duration)"],
+          "notes": "The trailer is a facade: a still with a play button; the video and its network requests load only on press, and focus moves into the player. Key art can be generated from tokens (decorative, aria-hidden) when no artwork exists yet."
+        },
+        {
+          "id": "press-quotes",
+          "purpose": "Short press quotes and awards / festival laurels.",
+          "use": ["testimonials"],
+          "fields": ["Quotes with outlet and link", "Awards or festival selections"],
+          "optional": true
+        },
+        {
+          "id": "pillars",
+          "purpose": "Three numbered pillars of the game (what you do, the feel, the hook), each with a still, alternating sides.",
+          "use": ["media-text"],
+          "alternatives": ["feature-grid: more than three pillars, shorter text"],
+          "fields": ["Per pillar: title, two sentences, screenshot with alt text"]
+        },
+        {
+          "id": "facts",
+          "purpose": "Facts ledger: genre, platforms, players, length, languages, price window, release.",
+          "use": ["description-list"],
+          "fields": ["Genre", "Platforms", "Player count / modes", "Typical playtime", "Languages (interface, audio, subtitles)", "Age rating", "Release date"]
+        },
+        {
+          "id": "screens",
+          "purpose": "Screenshot filmstrip that opens in a lightbox.",
+          "use": ["gallery-section", "lightbox"],
+          "fields": ["Screenshots with descriptive alt text"]
+        },
+        {
+          "id": "diary",
+          "purpose": "Latest dev-diary entries.",
+          "use": ["blog-list"],
+          "fields": ["Entries: title, excerpt, date, reading time, author"],
+          "when": { "any": ["section:blog"] }
+        },
+        {
+          "id": "wishlist",
+          "purpose": "One launch email (or newsletter) and the store wishlist.",
+          "use": ["cta"],
+          "fields": ["What and when the email is sent", "Consent text", "Store wishlist links"],
+          "when": { "any": ["newsletter"] },
+          "notes": "Newsletter variant of cta. Say clearly if it is only the launch email."
+        }
+      ]
+    },
+    {
+      "id": "media",
+      "path": { "en": "/media", "tr": "/medya" },
+      "title": { "en": "Media", "tr": "Medya" },
+      "purpose": "All trailers and screenshots in one place.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Page title.",
+          "use": ["page-intro"],
+          "fields": ["Media page lead"]
+        },
+        {
+          "id": "trailers",
+          "purpose": "Every trailer as a click-to-load facade, newest one large.",
+          "use": ["video-player"],
+          "fields": ["Per trailer: title, date, duration, poster still, video URL, captions file"]
+        },
+        {
+          "id": "screenshots",
+          "purpose": "Screenshot mosaic with a lightbox.",
+          "use": ["gallery-section", "lightbox"],
+          "alternatives": ["gallery: a plain grid without mosaic layout"],
+          "fields": ["Screenshots with alt text and full-size files"]
+        }
+      ]
+    },
+    {
+      "id": "press",
+      "path": { "en": "/press", "tr": "/basin" },
+      "title": { "en": "Press kit", "tr": "Basin kiti" },
+      "purpose": "Everything a journalist or creator needs without emailing: facts, copy-ready texts, assets, team, review keys and embargo rules.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What is here and the press contact.",
+          "use": ["page-intro"],
+          "fields": ["Press contact email"]
+        },
+        {
+          "id": "fact-sheet",
+          "purpose": "Fact sheet plus copy-ready short and long descriptions and studio boilerplate, each with a copy button.",
+          "use": ["description-list", "rich-text-section"],
+          "fields": ["Developer, publisher, release date, platforms, price, website", "Short description", "Long description", "Studio boilerplate"],
+          "notes": "Copy results announced via aria-live."
+        },
+        {
+          "id": "downloads",
+          "purpose": "Logos, key art, screenshots and texts, each downloadable on its own or ticked and bundled into one archive.",
+          "use": ["attachment-list", "checkbox"],
+          "alternatives": ["export: when the bundle is generated on the server"],
+          "fields": ["Per asset: name, format, size, file", "Logo variants (light / dark)", "Key art at print resolution"],
+          "notes": "Selection count and download result in a status region."
+        },
+        {
+          "id": "team",
+          "purpose": "Who made it and their roles.",
+          "use": ["team"],
+          "fields": ["Names and roles (with consent)", "Photos optional"],
+          "when": { "any": ["section:team"] }
+        },
+        {
+          "id": "keys",
+          "purpose": "How to request a review or streaming key.",
+          "use": ["contact-form"],
+          "alternatives": ["cta: a mailto action when there is no form"],
+          "fields": ["Key request process and what to include", "Embargo date"]
+        },
+        {
+          "id": "press-faq",
+          "purpose": "Embargo, usage rights for footage and streaming / monetisation policy.",
+          "use": ["faq"],
+          "fields": ["Embargo and usage questions with answers"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Game title, logo variants and key art",
+    "One-line pitch and short / long descriptions",
+    "Trailers (files or hosted URLs), posters, durations and captions",
+    "Screenshots with descriptions",
+    "Pillars of the game",
+    "Facts: genre, platforms, modes, playtime, languages, age rating, release date",
+    "Store and wishlist links per platform",
+    "Press quotes and awards with sources",
+    "Dev-diary entries",
+    "Studio boilerplate, team and press contact",
+    "Review key process, embargo date and footage usage policy"
+  ],
+  "styles": [
+    {
+      "name": "dark heavy display",
+      "axes": { "theme": "dark", "material": "glass", "accent": "ember", "density": "comfortable", "font": "grotesk", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Most games: dark, an extended heavy display face and one accent taken from the key art; the art and trailer do the talking."
+    },
+    {
+      "name": "bright playful",
+      "axes": { "theme": "light", "material": "solid", "accent": "rose", "density": "comfortable", "font": "grotesk", "radius": "round" },
+      "motion": "full",
+      "why": "Cosy, family or puzzle games whose art is bright; rounder shapes and livelier motion match the tone."
+    }
+  ],
+  "pitfalls": [
+    "Autoplaying or eagerly embedded trailers that load third-party players and cookies before the visitor presses play.",
+    "Trailers without captions, and screenshots with empty alt text.",
+    "Age rating, platforms or release date missing or out of date across pages.",
+    "A press kit that needs an email to get assets; journalists leave.",
+    "Store badges and platform logos used against the platform's brand rules.",
+    "Launch email signups without consent text or with a newsletter the visitor did not ask for.",
+    "Flashing effects in key art or trailers without a warning; respect reduced motion."
+  ]
+}

@@ -256,11 +256,12 @@ export async function newProject(ctx: Context, args: ParsedArgs): Promise<number
   if (agentFiles.written.length) p.log.success(`${lang === "tr" ? "Orkestra şefi ve uzmanlar" : "Orchestrator and specialists"}: .claude/skills/vamos-site, .claude/agents/vamos-* ${pc.dim(`(${agentFiles.written.length})`)}`);
   p.log.info(`${lang === "tr" ? "Görevler" : "Tasks"}: ${pc.cyan("npx vamos-ui task next")}`);
 
-  const first = step.plan.templates[0];
+  const recipe = step.plan.recipe;
+  if (recipe) p.log.info(`${lang === "tr" ? "Tarif" : "Recipe"}: ${recipe.title[lang]} ${pc.dim(`(${recipe.id})`)}`);
   p.outro(
     lang === "tr"
-      ? `Sonraki adım: ${pc.cyan(`npx vamos-ui create site --template next`)} ve ${first ? pc.cyan(`npx vamos-ui add ${first}`) : "planlanan bileşenler"}; ya da bir yapay zeka asistanına "vamos-site ile ${PROJECT_FILE} planını uygula" deyin.`
-      : `Next: ${pc.cyan(`npx vamos-ui create site --template next`)} and ${first ? pc.cyan(`npx vamos-ui add ${first}`) : "the planned components"}; or ask an AI assistant to "build the plan in ${PROJECT_FILE} with vamos-site".`,
+      ? `Sonraki adım: ${pc.cyan(`npx vamos-ui create site --template next`)}, sonra planlanan bileşenleri ${pc.cyan("npx vamos-ui add <ad>")} ile ekleyin; ya da bir yapay zeka asistanına "vamos-site ile ${PROJECT_FILE} planını uygula" deyin.`
+      : `Next: ${pc.cyan(`npx vamos-ui create site --template next`)}, then add the planned components with ${pc.cyan("npx vamos-ui add <name>")}; or ask an AI assistant to "build the plan in ${PROJECT_FILE} with vamos-site".`,
   );
   return 0;
 }

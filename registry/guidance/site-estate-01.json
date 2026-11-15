@@ -4,8 +4,7 @@
     "Agencies that take valuation requests online."
   ],
   "avoidWhen": [
-    "Luxury or off-market homes — use site-estate-02.",
-    "A contractor or developer — use site-construction-01."
+    "A whole website to build for a business — run `npx vamos-ui new`; its recipe lists the components per section and this block is only a finished reference."
   ],
   "related": [
     "pin-map",

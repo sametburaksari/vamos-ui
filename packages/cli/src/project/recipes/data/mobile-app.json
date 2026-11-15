@@ -1,0 +1,215 @@
+{
+  "id": "mobile-app",
+  "title": { "en": "Mobile app", "tr": "Mobil uygulama" },
+  "summary": "Landing site for a launched iOS / Android app: phone mockups in the hero, a feature walkthrough where the phone screen changes as you scroll, a hands-on planner or plan tabs, store reviews, pricing for in-app plans, a download page and, for apps that hold money or personal data, a security page. Works for playful consumer apps and calm, trust-first finance or utility apps.",
+  "match": {
+    "siteTypes": ["saas"],
+    "signals": ["app", "mobile app", "ios", "android", "app store", "google play", "iphone", "fitness app", "finance app", "savings", "uygulama", "mobil uygulama", "mobil", "uygulamasi", "indir", "birikim"],
+    "features": ["section:pricing", "section:faq", "section:testimonials"]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show the app on a phone, what it does in a few screens, that people rate it well, and get a download.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Promise, store badges and one or two phones showing the main screen.",
+          "use": ["hero"],
+          "alternatives": ["media-text: a calm split hero (promise, two actions, store rating) beside the app shown as stacked glass panes, for trust-first apps"],
+          "fields": ["Headline", "Lead", "Store links (App Store, Google Play)", "Store rating with source and review count", "Main app screens (real screenshots or token-drawn screens)", "Up to three headline figures with source"],
+          "notes": "Phones can be drawn from tokens (rounded body, status bar, screen slot) so screens re-theme; phone art is role=img with a label describing the screen. Use official store badge artwork and follow its usage rules."
+        },
+        {
+          "id": "trust",
+          "purpose": "Text-only trust seals right under the hero: licence, protection, ratings, each claim with its proof.",
+          "use": ["feature-grid"],
+          "fields": ["Per seal: claim and proof underneath (licence number, regulator, audit, rating source)"],
+          "optional": true,
+          "notes": "Use for finance, health-data or security-sensitive apps. No third-party logos unless licensed; each line must stand on its own."
+        },
+        {
+          "id": "features",
+          "purpose": "Feature chapters beside a sticky phone whose screen swaps as each chapter crosses the middle of the viewport; a numbered rail jumps to a chapter.",
+          "use": ["section-nav", "media-text"],
+          "alternatives": ["feature-grid: a simpler grid of features when there are no distinct screens per feature", "tabs: screens switched by tabs instead of scroll"],
+          "fields": ["Per feature: title, two or three points, the matching app screen"],
+          "notes": "Under about 64rem repeat the phone inside each chapter instead of sticking. Reduced motion: screens swap without sliding."
+        },
+        {
+          "id": "numbers",
+          "purpose": "Measured results or usage figures.",
+          "use": ["stats-band"],
+          "fields": ["Per figure: value, unit, label, source and period"],
+          "optional": true
+        },
+        {
+          "id": "try-it",
+          "purpose": "A hands-on piece: plan tabs with a synced phone screen (one tab per programme / plan), or a planner where sliders change a live projection chart.",
+          "use": ["tabs"],
+          "alternatives": ["area-chart: a goal or savings planner (pick a goal, set an amount and a horizon, see the projection month by month and the month the goal is reached)", "line-chart: a projection with a target line"],
+          "fields": ["Plans / programmes with phases and a week-by-week overview", "Or: planner inputs, ranges, formula and an illustrative rate with its disclaimer"],
+          "optional": true,
+          "notes": "Planner result in an aria-live region with a text summary of the final amount; rates shown as illustrative and dated."
+        },
+        {
+          "id": "reviews",
+          "purpose": "Store reviews or one customer story.",
+          "use": ["testimonials"],
+          "fields": ["Reviews with author name, store and rating (with permission)", "Overall rating and count with source"],
+          "when": { "any": ["section:testimonials"] }
+        },
+        {
+          "id": "faq",
+          "purpose": "Short FAQ on the home page (fees, devices, data).",
+          "use": ["faq"],
+          "fields": ["Questions and answers"],
+          "when": { "any": ["section:faq"] }
+        },
+        {
+          "id": "closing-cta",
+          "purpose": "Download band with store links.",
+          "use": ["cta"],
+          "alternatives": ["qr-code: a QR to the store page for desktop visitors"],
+          "fields": ["Closing line", "Store links", "Trial or free-plan fine print"]
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "path": { "en": "/pricing", "tr": "/fiyatlar" },
+      "title": { "en": "Pricing", "tr": "Fiyatlar" },
+      "purpose": "In-app plans with a monthly / yearly switch, the comparison and billing or fee questions.",
+      "when": { "any": ["section:pricing"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Pricing headline and what the free plan includes.",
+          "use": ["page-intro"],
+          "fields": ["Headline", "Free plan summary"]
+        },
+        {
+          "id": "plans",
+          "purpose": "Plans with monthly / yearly prices.",
+          "use": ["pricing-table"],
+          "fields": ["Plan names, prices per period, features, highlighted plan", "Trial length", "Tax note", "How to cancel through the store"]
+        },
+        {
+          "id": "compare",
+          "purpose": "Feature-by-feature comparison.",
+          "use": ["comparison-table"],
+          "fields": ["Feature rows and value per plan"]
+        },
+        {
+          "id": "billing-faq",
+          "purpose": "Billing, store subscriptions, fees and limits.",
+          "use": ["faq"],
+          "fields": ["Billing / fee questions and answers"]
+        }
+      ]
+    },
+    {
+      "id": "download",
+      "path": { "en": "/download", "tr": "/indir" },
+      "title": { "en": "Download", "tr": "Indir" },
+      "purpose": "Get the app: store links, device requirements, first-run steps and the full FAQ.",
+      "sections": [
+        {
+          "id": "get",
+          "purpose": "Store badges and requirements per platform.",
+          "use": ["media-text", "qr-code"],
+          "fields": ["Store links", "Minimum OS version and download size per platform", "Supported wearables / devices"]
+        },
+        {
+          "id": "setup",
+          "purpose": "Three setup steps after installing.",
+          "use": ["steps"],
+          "fields": ["Per step: title and one sentence"]
+        },
+        {
+          "id": "faq",
+          "purpose": "The full FAQ.",
+          "use": ["faq"],
+          "fields": ["Questions and answers"]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "path": { "en": "/security", "tr": "/guvenlik" },
+      "title": { "en": "Security", "tr": "Guvenlik" },
+      "purpose": "For apps holding money or personal data: layers of protection with proofs, recent service health, what to do when a phone is lost, how to report a vulnerability.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Security promise.",
+          "use": ["page-intro"],
+          "fields": ["Headline and key facts"]
+        },
+        {
+          "id": "layers",
+          "purpose": "Layers of protection, each with its proof.",
+          "use": ["feature-grid"],
+          "fields": ["Per layer: what protects the user and the proof (licence, audit, standard)"]
+        },
+        {
+          "id": "health",
+          "purpose": "Recent service health per part of the app.",
+          "use": ["uptime-bars"],
+          "fields": ["Services and their uptime over recent days", "Link to the status page"],
+          "optional": true
+        },
+        {
+          "id": "lost-phone",
+          "purpose": "Steps to take when the phone is lost or stolen.",
+          "use": ["steps"],
+          "fields": ["Steps and the support line to call"]
+        },
+        {
+          "id": "report",
+          "purpose": "Vulnerability reporting.",
+          "use": ["rich-text-section"],
+          "fields": ["Security contact", "Response time", "Disclosure policy"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "App Store and Google Play links, ratings and review counts",
+    "Real app screenshots for the hero and each feature",
+    "Feature list grouped into chapters with one screen each",
+    "Plans / programmes or planner inputs and formula (with illustrative-rate disclaimer)",
+    "Store reviews with permission",
+    "In-app plan prices, trial length and cancellation path",
+    "Device requirements and download sizes",
+    "For regulated apps: licence, regulator, protection scheme and the required legal notes for the footer",
+    "Security measures with proofs and a vulnerability contact",
+    "FAQ answers"
+  ],
+  "styles": [
+    {
+      "name": "dark energetic glass",
+      "axes": { "theme": "dark", "material": "glass", "accent": "lime", "density": "comfortable", "font": "grotesk", "radius": "round" },
+      "motion": "full",
+      "why": "Sport, habit and lifestyle apps: near-black, an electric accent, a hero that draws itself, quick on its feet."
+    },
+    {
+      "name": "calm trusted light",
+      "axes": { "theme": "light", "material": "glass", "accent": "ocean", "density": "comfortable", "font": "corporate", "radius": "default" },
+      "motion": "subtle",
+      "why": "Finance, savings and utility apps: light glass over a soft tinted scene, mono figures, spacious; trust before excitement."
+    }
+  ],
+  "pitfalls": [
+    "Fake or unlicensed store badges and device frames; use the official artwork and its rules.",
+    "Phone screens as unlabelled images; label each with what the screen shows.",
+    "Scroll-driven phones that break on small screens or under reduced motion; repeat screens inline and swap without animation.",
+    "Projections and interest rates presented as promises; label them illustrative, date them and add the regulatory disclaimer.",
+    "Regulated apps missing licence / regulator details or deposit-protection wording in the footer.",
+    "Ratings and review quotes without source, count and date.",
+    "Prices that differ from the in-store price or omit how to cancel a store subscription."
+  ]
+}

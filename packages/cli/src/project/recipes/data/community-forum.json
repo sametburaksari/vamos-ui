@@ -1,0 +1,257 @@
+{
+  "id": "community-forum",
+  "title": {
+    "en": "Community forum",
+    "tr": "Topluluk forumu"
+  },
+  "summary": "A forum or community home: live counters, the latest discussions with activity, categories, meetups and top helpers, a topics list with sorting and paging, and solved threads with replies.",
+  "match": {
+    "siteTypes": [
+      "nonprofit",
+      "saas"
+    ],
+    "signals": [
+      "forum",
+      "community",
+      "discussion",
+      "makers",
+      "user group",
+      "q&a",
+      "meetup",
+      "topluluk",
+      "tartisma",
+      "soru cevap",
+      "kullanici grubu",
+      "bulusma",
+      "uretici"
+    ],
+    "features": [
+      "newsletter",
+      "multilingual"
+    ]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Show the community is alive and useful: what it is, the pulse right now, the latest discussions and the ways in.",
+      "sections": [
+        {
+          "id": "header",
+          "purpose": "A compact header: what the community is for, who it is for, live counters (members, topics, online now) and the join/ask actions.",
+          "use": [
+            "page-header",
+            "stat"
+          ],
+          "alternatives": [
+            "hero: a newer community that needs to explain itself more"
+          ],
+          "fields": [
+            "One-line description of the community",
+            "Who it is for",
+            "Counters: members, topics, solved share, online now",
+            "Join and 'ask a question' actions"
+          ],
+          "notes": "Keep it short so the discussions are above the fold; an 'online now' dot may pulse but respects reduced motion."
+        },
+        {
+          "id": "latest",
+          "purpose": "The latest topics, each row with participants, replies, views, a 14-day activity sparkline and time since the last post.",
+          "use": [
+            "list-01",
+            "sparkline",
+            "avatar"
+          ],
+          "alternatives": [
+            "data-table: a staff-facing moderation view"
+          ],
+          "fields": [
+            "Topic title",
+            "Category",
+            "Tags",
+            "Participants",
+            "Reply and view counts",
+            "Last activity time",
+            "Solved state"
+          ],
+          "notes": "Sort by latest, hot (most posts in 7 days), top (most liked) or unanswered. Each sparkline needs a text equivalent (e.g. the reply count); every cell carries its own label for screen readers."
+        },
+        {
+          "id": "categories",
+          "purpose": "Sidebar of categories with topic counts.",
+          "use": [
+            "list-01"
+          ],
+          "fields": [
+            "Category name, description and topic count"
+          ]
+        },
+        {
+          "id": "meetups",
+          "purpose": "Upcoming meetups or events.",
+          "use": [
+            "list-01"
+          ],
+          "alternatives": [
+            "calendar: many events per month"
+          ],
+          "fields": [
+            "Meetup title, date, time, place or online link"
+          ],
+          "optional": true
+        },
+        {
+          "id": "helpers",
+          "purpose": "Top helpers this month, to reward contribution.",
+          "use": [
+            "avatar",
+            "list-01"
+          ],
+          "fields": [
+            "Member display name, avatar and accepted answers"
+          ],
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "topics",
+      "path": {
+        "en": "/topics",
+        "tr": "/konular"
+      },
+      "title": {
+        "en": "All topics",
+        "tr": "Tüm konular"
+      },
+      "purpose": "Browse every topic by category, sort and page through them.",
+      "sections": [
+        {
+          "id": "list",
+          "purpose": "The topic list with a category rail (deep-linkable), the four sort orders and pagination.",
+          "use": [
+            "list-01",
+            "sparkline",
+            "pagination"
+          ],
+          "alternatives": [
+            "filter-bar: many tags and filters beyond categories"
+          ],
+          "fields": [
+            "Categories",
+            "Topics with the activity fields"
+          ],
+          "notes": "Category links are anchors (#cat-id) so a filtered view can be shared."
+        }
+      ]
+    },
+    {
+      "id": "thread",
+      "path": {
+        "en": "/t/[slug]",
+        "tr": "/konu/[slug]"
+      },
+      "title": {
+        "en": "Thread",
+        "tr": "Konu"
+      },
+      "purpose": "One discussion: the question, the accepted answer marked, replies with likes and quoting, and a reply box.",
+      "sections": [
+        {
+          "id": "title",
+          "purpose": "Topic title, category, tags and solved state.",
+          "use": [
+            "page-header"
+          ],
+          "fields": [
+            "Topic title",
+            "Category",
+            "Tags",
+            "Solved state"
+          ]
+        },
+        {
+          "id": "posts",
+          "purpose": "The posts with author card, relative time, quoted text, accepted answer and a like toggle per post, then the reply box.",
+          "use": [
+            "comment-thread"
+          ],
+          "fields": [
+            "Post author display name and avatar",
+            "Post body",
+            "Posted time",
+            "Accepted answer"
+          ],
+          "notes": "Like and reply results are reported through a status region. Show the accepted answer near the top as well as in place."
+        },
+        {
+          "id": "pulse",
+          "purpose": "Sidebar with the thread's pulse: participants, views, created and last-reply times, related topics.",
+          "use": [
+            "description-list",
+            "avatar"
+          ],
+          "fields": [
+            "Participants",
+            "Views",
+            "Created and last reply time",
+            "Related topics"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Community name, purpose and who it is for",
+    "Categories with descriptions",
+    "Community guidelines and moderation policy",
+    "Forum software or data source the pages read from",
+    "Sign-up/login method and what membership requires",
+    "Meetups or events (optional)",
+    "Rules for showing member names and avatars",
+    "Seed topics and accepted answers for launch"
+  ],
+  "styles": [
+    {
+      "name": "dense workshop",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ember",
+        "density": "compact",
+        "font": "system",
+        "radius": "default"
+      },
+      "motion": "subtle",
+      "why": "System fonts, compact rows and a warm accent; fast to read for maker, user and open-source communities."
+    },
+    {
+      "name": "dark developer",
+      "axes": {
+        "theme": "dark",
+        "material": "solid",
+        "accent": "lime",
+        "density": "compact",
+        "font": "grotesk"
+      },
+      "motion": "subtle",
+      "why": "Dark, code-friendly look for developer and product communities."
+    }
+  ],
+  "pitfalls": [
+    "Sparklines and counters without text equivalents.",
+    "Heavy motion on a reading-heavy site; keep transitions quick and honour reduced motion.",
+    "No visible guidelines, reporting or moderation path.",
+    "Showing members' real names, emails or locations without consent.",
+    "An empty-looking launch; seed real topics and answers before going live.",
+    "Live counters ('online now') that are fake or never update."
+  ]
+}
