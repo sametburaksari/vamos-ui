@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Showing code a reader will copy: install commands, API requests, config files, snippets in docs, blog posts and developer-tool sites.",
+    "The same snippet in several languages (CodeTabs), where one language choice should follow the reader across every block on the page."
+  ],
+  "avoidWhen": [
+    "Inline code in a sentence — use a <code> element styled by typography.",
+    "Editable code — use a code editor, not a display block.",
+    "Comparing two versions of a text — use version-history."
+  ],
+  "related": [
+    "tabs",
+    "kbd",
+    "release-notes",
+    "typing-demo"
+  ],
+  "a11y": [
+    "The scrollable code area is a focusable, named group (title or \"<language> code\"); line numbers are aria-hidden and not selectable.",
+    "Copy announces \"Copied\" (or a failure with a manual fallback) through a polite status; CodeTabs uses the WAI-ARIA Tabs keyboard pattern."
+  ]
+}

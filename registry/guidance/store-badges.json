@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Mobile app download links in a hero, footer or closing call to action.",
+    "A desktop visitor should be able to get the app on their phone (qr)."
+  ],
+  "avoidWhen": [
+    "The brand guidelines require the stores' official badge artwork — use those files as images with links.",
+    "A web app with no store listing — use a button."
+  ],
+  "related": [
+    "qr-code",
+    "cta",
+    "device-frame",
+    "button"
+  ],
+  "a11y": [
+    "Plain links named by their visible text (\"Get it on Google Play\") in a list named \"Get the app\"; icons are aria-hidden.",
+    "The QR code has a name that says what scanning does and is hidden on small screens."
+  ]
+}
