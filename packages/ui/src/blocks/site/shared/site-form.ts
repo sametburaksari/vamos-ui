@@ -42,6 +42,8 @@ export const TIMESTAMP_FIELD = "_ts";
 export const FORM_FIELD = "_form";
 export const SENT_PARAM = "vb_sent";
 export const PRIVACY_FIELD = "privacy";
+/** Hidden field with the privacy notice version the page showed (`privacyLink.version`). */
+export const NOTICE_FIELD = "_notice";
 export const MARKETING_FIELD = "marketing";
 
 const LABEL_KEY: Record<ContactFieldName, keyof typeof site2Labels> = {
@@ -80,6 +82,10 @@ export interface ContactValidation {
   errors: Partial<Record<string, string>>;
   privacy: boolean;
   marketing: boolean;
+  /** The notice version the page showed (hidden `_notice` field), unverified: check it with `resolveNotice`. */
+  noticeVersion?: string;
+  /** The form's id (hidden `_form` field). */
+  formId?: string;
   /** A ready state for `useActionState` (invalid with errors, or success for spam). */
   state: SiteFormState;
 }
@@ -130,12 +136,16 @@ export function validateContactForm(
   }
   const privacy = data.get(PRIVACY_FIELD) === "on" || data.get(PRIVACY_FIELD) === "true";
   const marketing = data.get(MARKETING_FIELD) === "on" || data.get(MARKETING_FIELD) === "true";
+  const notice = data.get(NOTICE_FIELD);
+  const noticeVersion = typeof notice === "string" && notice.trim() ? notice.trim().slice(0, 64) : undefined;
+  const formRaw = data.get(FORM_FIELD);
+  const formId = typeof formRaw === "string" && formRaw.trim() ? formRaw.trim().slice(0, 64) : undefined;
   if (opts.privacyCheckbox && !privacy) errors[PRIVACY_FIELD] = t("privacyRequired");
 
   const spam = isSpam(data, { minMs: opts.spamMinMs });
   const ok = Object.keys(errors).length === 0;
   const state: SiteFormState = spam ? { status: "success", ts: Date.now() } : ok ? { status: "success", ts: Date.now() } : { status: "invalid", errors, values, ts: Date.now() };
-  return { ok, spam, values, errors, privacy, marketing, state };
+  return { ok, spam, values, errors, privacy, marketing, noticeVersion, formId, state };
 }
 
 /** HTML constraints for a field (the no-JS path relies on these). */

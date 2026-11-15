@@ -2064,6 +2064,7 @@
    "MapHours",
    "MediaText",
    "MenuList",
+   "NOTICE_FIELD",
    "Navbar",
    "NotFound",
    "OpenNow",
@@ -2834,6 +2835,29 @@
    "SignerStatusProps",
    "StepDef",
    "ValidateImportOptions"
+  ]
+ },
+ "./compliance": {
+  "values": [
+   "buildConsentRecord",
+   "canonicalJson",
+   "contactConsentInput",
+   "memoryConsentStore",
+   "recordConsent",
+   "resolveNotice",
+   "sha256Hex",
+   "verifyConsentChain",
+   "verifyConsentRecord"
+  ],
+  "types": [
+   "ConsentNotice",
+   "ConsentPurpose",
+   "ConsentRecord",
+   "ConsentRecordInput",
+   "ConsentRecordStore",
+   "ConsentVerifyResult",
+   "ContactConsentFields",
+   "ContactConsentOptions"
   ]
  },
  "./locale/ar": {

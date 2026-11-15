@@ -28,6 +28,7 @@
     "./locale-data/tr-neighbourhoods": "./src/locale-data/tr/neighbourhoods-bundled.ts",
     "./locale-data/tr/neighbourhoods/*.json": "./src/locale-data/tr/neighbourhoods/*.json",
     "./business": "./src/business/index.ts",
+    "./compliance": "./src/compliance/index.ts",
     "./locale/*": "./src/locales/*.ts",
     "./fonts": "./src/fonts/index.ts"
   },
