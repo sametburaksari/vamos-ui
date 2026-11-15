@@ -18,15 +18,15 @@
         {
           "id": "hero",
           "purpose": "One-line promise, install command and a code window with the minimal call, plus what happened to it (a log of the result).",
-          "use": ["hero", "tabs", "kbd"],
+          "use": ["hero", "code-block", "kbd"],
           "alternatives": ["media-text: a CLI or desktop tool better shown as a terminal recording"],
           "fields": ["Headline and one-line lead", "Install command per language / package manager", "Minimal code sample per supported language", "Result of the sample as a short log or response", "Primary action (get API key / sign up) and docs link"],
-          "notes": "Code window: dark scope, language tabs, a copy button with a polite 'copied' announcement and a clipboard fallback. Code stays selectable text, never an image. A small highlighter is enough (comments, strings, numbers, keywords). Picking a language in any code window switches every sample, the install line and the SDK table site-wide, and is remembered per browser. A live result log should update in an aria-live region."
+          "notes": "Code window: CodeTabs (code-block) with scheme dark and persist, language tabs, a copy button with a polite 'copied' announcement and a clipboard fallback. Code stays selectable text, never an image. A small highlighter is enough (comments, strings, numbers, keywords). Picking a language in any code window switches every sample, the install line and the SDK table site-wide, and is remembered per browser. A live result log should update in an aria-live region."
         },
         {
           "id": "quickstart",
           "purpose": "Three or four steps from zero to the first working call, each step carrying its own code.",
-          "use": ["steps", "tabs"],
+          "use": ["steps", "code-block"],
           "fields": ["Per step: title, one sentence, code per language", "Time to first call"],
           "notes": "Steps follow the site-wide language choice."
         },
@@ -90,7 +90,7 @@
         {
           "id": "first-request",
           "purpose": "The first request in the chosen language, copyable.",
-          "use": ["tabs"],
+          "use": ["code-block"],
           "fields": ["First request sample per language", "Expected response"]
         },
         {
@@ -98,7 +98,7 @@
           "purpose": "Every official SDK with its install line, version and status.",
           "use": ["table"],
           "fields": ["Per SDK: language, package name, install command, latest version, maintenance status, repository link"],
-          "notes": "The row for the chosen language is highlighted."
+          "notes": "The row for the chosen language is highlighted (read it with useCodeLanguage)."
         }
       ]
     },

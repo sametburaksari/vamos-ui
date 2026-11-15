@@ -44,7 +44,7 @@
         {
           "id": "videos",
           "purpose": "Music videos and live sessions: one player and a list that swaps which video plays.",
-          "use": ["video-player"],
+          "use": ["video-playlist", "video-player"],
           "alternatives": ["media-text: a single featured video beside its description"],
           "fields": ["Video titles", "Video URLs or files", "Poster images", "Year or context (official video, live session)"],
           "notes": "Click-to-load facade: nothing loads from the video host until play is pressed (privacy and speed).",
@@ -141,7 +141,7 @@
         {
           "id": "press-kit",
           "purpose": "Downloadable press photos and bio.",
-          "use": ["attachment-list"],
+          "use": ["download-kit"],
           "fields": ["Press photos with credits", "Short and long bio", "Technical rider (optional)"],
           "optional": true
         },

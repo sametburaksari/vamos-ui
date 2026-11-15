@@ -80,7 +80,7 @@
         {
           "id": "trailers",
           "purpose": "Every trailer as a click-to-load facade, newest one large.",
-          "use": ["video-player"],
+          "use": ["video-playlist"],
           "fields": ["Per trailer: title, date, duration, poster still, video URL, captions file"]
         },
         {
@@ -114,7 +114,7 @@
         {
           "id": "downloads",
           "purpose": "Logos, key art, screenshots and texts, each downloadable on its own or ticked and bundled into one archive.",
-          "use": ["attachment-list", "checkbox"],
+          "use": ["download-kit"],
           "alternatives": ["export: when the bundle is generated on the server"],
           "fields": ["Per asset: name, format, size, file", "Logo variants (light / dark)", "Key art at print resolution"],
           "notes": "Selection count and download result in a status region."

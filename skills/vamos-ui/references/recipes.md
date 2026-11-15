@@ -184,8 +184,8 @@ Pitfalls:
 
 **Developer tool / API** — Site for an API, SDK, CLI or other developer product: a code-first hero, a quick start with code per step, measured reliability, usage-based pricing with an estimator, a docs landing with search and SDKs, and a changelog. Code samples follow one language choice across the whole site.
 
-- `/` **Home**: hero (`hero` + `tabs` + `kbd`) → quickstart (`steps` + `tabs`) → features (`feature-grid`) → reliability (`stats-band`) → pricing (`pricing-table` + `slider`, conditional) → faq (`faq`, conditional) → closing-cta (`cta`)
-- `/docs` **Docs**: intro (`page-intro` + `command`) → guides (`feature-grid`) → first-request (`tabs`) → sdks (`table`)
+- `/` **Home**: hero (`hero` + `code-block` + `kbd`) → quickstart (`steps` + `code-block`) → features (`feature-grid`) → reliability (`stats-band`) → pricing (`pricing-table` + `slider`, conditional) → faq (`faq`, conditional) → closing-cta (`cta`)
+- `/docs` **Docs**: intro (`page-intro` + `command`) → guides (`feature-grid`) → first-request (`code-block`) → sdks (`table`)
 - `/changelog` **Changelog**: intro (`page-intro`) → recent (`release-notes`) → full-log (`cta`, optional)
 
 Looks: graphite compact code (theme light, material solid, accent graphite, density compact, font grotesk, radius sharp); dark terminal (theme dark, material solid, accent ocean, density compact, font system).
@@ -203,10 +203,10 @@ Pitfalls:
 
 **Digital products shop** — A shop selling downloadable products such as templates, themes, UI kits, presets, fonts, e-books or courses: a shelf with live or real previews, licence tiers, a product page with preview and changelog, and a checkout that ends in a download and licence key.
 
-- `/` **Home**: hero (`hero`) → shelf (`filter-bar` + `feature-grid`) → whats-inside (`feature-grid`) → licences (`comparison-table`, conditional) → reviews (`testimonials`, optional, conditional) → faq (`faq`, conditional) → newsletter (`cta`, conditional)
-- `/products/[slug]` **Product**: preview (`product-01`) → details (`description-list`) → changelog (`release-notes`)
+- `/` **Home**: hero (`hero` + `device-frame`) → shelf (`filter-bar` + `feature-grid`) → whats-inside (`feature-grid`) → licences (`comparison-table`, conditional) → reviews (`testimonials`, optional, conditional) → faq (`faq`, conditional) → newsletter (`cta`, conditional)
+- `/products/[slug]` **Product**: preview (`product-01` + `device-frame`) → details (`description-list`) → changelog (`release-notes`)
 - `/checkout` **Checkout**: checkout (`checkout-01`)
-- `/order/[id]` **Download**: confirmation (`order-confirmation-01`)
+- `/order/[id]` **Download**: confirmation (`order-confirmation-01` + `download-kit`)
 
 Looks: precise tool (theme light, material glass, accent lime, density comfortable, font grotesk, radius default); dark studio (theme dark, material solid, accent ocean, density compact, font grotesk, radius sharp); quiet editorial (theme light, material solid, accent graphite, density comfortable, font editorial, radius default).
 
@@ -224,8 +224,8 @@ Pitfalls:
 **Game** — Site for a video game (often from a small studio): key art and a click-to-load trailer, press quotes, game pillars, a facts ledger, screenshots, a dev diary and a launch email; a media page with every trailer and a screenshot mosaic; and a press kit with a fact sheet, copy-ready texts and downloads.
 
 - `/` **Home**: hero (`hero` + `video-player`) → press-quotes (`testimonials`, optional) → pillars (`media-text`) → facts (`description-list`) → screens (`gallery-section` + `lightbox`) → diary (`blog-list`, conditional) → wishlist (`cta`, conditional)
-- `/media` **Media**: intro (`page-intro`) → trailers (`video-player`) → screenshots (`gallery-section` + `lightbox`)
-- `/press` **Press kit**: intro (`page-intro`) → fact-sheet (`description-list` + `rich-text-section`) → downloads (`attachment-list` + `checkbox`) → team (`team`, conditional) → keys (`contact-form`) → press-faq (`faq`)
+- `/media` **Media**: intro (`page-intro`) → trailers (`video-playlist`) → screenshots (`gallery-section` + `lightbox`)
+- `/press` **Press kit**: intro (`page-intro`) → fact-sheet (`description-list` + `rich-text-section`) → downloads (`download-kit`) → team (`team`, conditional) → keys (`contact-form`) → press-faq (`faq`)
 
 Looks: dark heavy display (theme dark, material glass, accent ember, density comfortable, font grotesk, radius sharp); bright playful (theme light, material solid, accent rose, density comfortable, font grotesk, radius round).
 
@@ -326,9 +326,9 @@ Pitfalls:
 
 **Mobile app** — Landing site for a launched iOS / Android app: phone mockups in the hero, a feature walkthrough where the phone screen changes as you scroll, a hands-on planner or plan tabs, store reviews, pricing for in-app plans, a download page and, for apps that hold money or personal data, a security page. Works for playful consumer apps and calm, trust-first finance or utility apps.
 
-- `/` **Home**: hero (`hero`) → trust (`feature-grid`, optional) → features (`section-nav` + `media-text`) → numbers (`stats-band`, optional) → try-it (`tabs`, optional) → reviews (`testimonials`, conditional) → faq (`faq`, conditional) → closing-cta (`cta`)
+- `/` **Home**: hero (`hero` + `device-frame` + `store-badges`) → trust (`feature-grid`, optional) → features (`section-nav` + `media-text` + `device-frame`) → numbers (`stats-band`, optional) → try-it (`tabs`, optional) → reviews (`testimonials`, conditional) → faq (`faq`, conditional) → closing-cta (`cta` + `store-badges`)
 - `/pricing` **Pricing** (conditional): intro (`page-intro`) → plans (`pricing-table`) → compare (`comparison-table`) → billing-faq (`faq`)
-- `/download` **Download**: get (`media-text` + `qr-code`) → setup (`steps`) → faq (`faq`)
+- `/download` **Download**: get (`store-badges` + `media-text`) → setup (`steps`) → faq (`faq`)
 - `/security` **Security**: intro (`page-intro`) → layers (`feature-grid`) → health (`uptime-bars`, optional) → lost-phone (`steps`) → report (`rich-text-section`)
 
 Looks: dark energetic glass (theme dark, material glass, accent lime, density comfortable, font grotesk, radius round); calm trusted light (theme light, material glass, accent ocean, density comfortable, font corporate, radius default).
@@ -346,10 +346,10 @@ Pitfalls:
 
 **Musician or band** — A site for a band, musician, DJ or performer built around the new release and the tour: tour dates with ticket states, a discography with tracklists, videos, merch and a mailing list for presale codes.
 
-- `/` **Home**: hero (`hero`) → release (`media-text` + `table`) → tour-preview (`fixture-list` + `badge`) → videos (`video-player`, optional) → merch (`entity-card`, optional, conditional) → mailing-list (`form-01`, conditional)
+- `/` **Home**: hero (`hero`) → release (`media-text` + `table`) → tour-preview (`fixture-list` + `badge`) → videos (`video-playlist` + `video-player`, optional) → merch (`entity-card`, optional, conditional) → mailing-list (`form-01`, conditional)
 - `/tour` **Tour**: intro (`page-intro`) → dates (`fixture-list` + `filter-bar` + `switch`) → faq (`faq`)
 - `/music` **Music**: intro (`page-intro`) → discography (`gallery` + `filter-bar` + `table`) → band (`team`, optional)
-- `/contact` **Contact** (conditional): contacts (`description-list`) → press-kit (`attachment-list`, optional) → form (`contact-form`, conditional)
+- `/contact` **Contact** (conditional): contacts (`description-list`) → press-kit (`download-kit`, optional) → form (`contact-form`, conditional)
 
 Looks: loud poster (theme dark, material solid, density compact, font grotesk, accent rose, radius sharp); quiet record sleeve (theme light, material solid, density comfortable, font editorial, accent graphite, radius sharp).
 
@@ -573,7 +573,7 @@ Pitfalls:
 
 - `/` **Home**: masthead (`page-header`) → lead-story (`media-text`, optional) → latest (`blog-list`) → topics-authors (`feature-grid` + `avatar`, optional) → most-read-letter (`list-layout` + `rich-text-section`, optional) → newsletter (`cta`, conditional)
 - `/blog` **Archive**: intro (`page-intro`) → filters (`filter-bar` + `input`) → results (`blog-list` + `pagination`)
-- `/blog/[slug]` **Article**: header (`article-layout`) → progress (`reading-progress`, optional) → body (`article-layout` + `rich-text-section`) → author (`avatar` + `card`) → related (`blog-list`) → newsletter (`cta`, conditional)
+- `/blog/[slug]` **Article**: header (`article-layout`) → progress (`reading-progress`, optional) → body (`article-layout` + `rich-text-section` + `code-block`) → author (`avatar` + `card`) → related (`blog-list`) → newsletter (`cta`, conditional)
 - `/about` **About** (conditional): intro (`page-intro`) → team (`team`, conditional) → policy (`rich-text-section`, optional) → contact (`contact-form`, conditional)
 
 Looks: bookish magazine (theme light, material solid, density comfortable, font editorial, accent ocean, radius default); terminal log (theme dark, material solid, density compact, font system, accent ember, radius sharp); clean newsroom (theme light, material solid, density compact, font grotesk, accent brand, radius default).
