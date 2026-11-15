@@ -135,6 +135,26 @@ export interface TaxScheme {
   priceEntry: ("net" | "gross")[];
 }
 
+/**
+ * A structured postal address. Region names are stored as text (official spelling), because
+ * invoices (UBL-TR `CityName` / `CitySubdivisionName`) and labels need names, not codes.
+ */
+export interface Address {
+  /** ISO 3166-1 alpha-2. */
+  country: string;
+  /** Province / state ("İstanbul", "California" or the code the country writes, "CA"). */
+  region1?: string;
+  /** District / city ("Kadıköy", "San Francisco"). */
+  region2?: string;
+  /** Neighbourhood / village / dependent locality ("Caferağa Mah.", "Jardim Paulista"). */
+  region3?: string;
+  line1?: string;
+  line2?: string;
+  postalCode?: string;
+}
+
+export type AddressPart = keyof Address;
+
 export interface AddressDistrict {
   /** Official district code (NVİ for `tr`). */
   code: number;
