@@ -34,7 +34,7 @@ export interface Branch {
   placeUrl?: string;
   /** Custom embed URL; default: a keyless Google Maps or OpenStreetMap embed built from the address. */
   mapEmbedUrl?: string;
-  /** "Parking on level −2 of Atlas." */
+  /** "Parking on level −2 of the Atlas garage." */
   notes?: React.ReactNode;
 }
 
