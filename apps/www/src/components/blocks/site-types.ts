@@ -3,12 +3,10 @@
  * of its name (`site-store-01` → "store"); unknown types fall into "Other" until listed here.
  */
 export const siteTypeGroups = [
-  { id: "software", label: "Software & apps", types: ["saas", "app", "ai", "devtool", "changelog", "status", "waitlist", "help"] },
-  { id: "commerce", label: "Shops & commerce", types: ["store", "digital", "subbox", "market", "wholesale"] },
-  { id: "business", label: "Business & B2B", types: ["agency", "law", "accounting", "factory", "construction", "careers", "estate"] },
-  { id: "local", label: "Local & health", types: ["autoservice", "preschool", "driving", "movers", "florist", "studio", "venue"] },
-  { id: "creative", label: "Creative & personal", types: ["portfolio", "cv", "artist", "wedding", "blog", "newsletter", "podcast", "game"] },
-  { id: "community", label: "Events & community", types: ["event", "course", "nonprofit", "public", "department", "club", "community"] },
+  { id: "software", label: "Software & apps", types: ["saas"] },
+  { id: "commerce", label: "Shops & commerce", types: ["store"] },
+  { id: "business", label: "Business & B2B", types: ["agency", "estate"] },
+  { id: "media", label: "News & publishing", types: ["news"] },
 ] as const;
 
 /** Website pages that are not whole sites (a pricing page, a contact page). */
