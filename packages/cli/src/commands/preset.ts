@@ -30,6 +30,7 @@ export function presetTheme(preset: Preset): ThemeConfig {
     density: preset.density,
     font: preset.font,
     ...(preset.radius !== PRESET_DEFAULTS.radius ? { radius: preset.radius } : {}),
+    ...(preset.scene !== PRESET_DEFAULTS.scene ? { scene: preset.scene } : {}),
   };
 }
 
@@ -53,7 +54,7 @@ export interface PresetApplyResult {
  * Applies a preset to a configured project: the theme in vamos.json (corners as theme.radius →
  * data-radius) and, for a custom accent, vamos.brand.json + brand.css (same path as `brand apply`).
  */
-export async function applyPreset(root: string, config: VamosConfig, preset: Preset, opts: { dryRun?: boolean } = {}): Promise<PresetApplyResult> {
+export async function applyPreset(root: string, config: VamosConfig, preset: Preset, opts: { dryRun?: boolean; accent2?: string } = {}): Promise<PresetApplyResult> {
   const theme = presetTheme(preset);
   if (!presetNeedsBrand(preset)) {
     if (!opts.dryRun) await writeConfig(root, { ...config, theme });
@@ -62,6 +63,8 @@ export async function applyPreset(root: string, config: VamosConfig, preset: Pre
   const loaded = await loadBrand(root);
   const brand: Brand = loaded?.brand ? structuredClone(loaded.brand) : emptyBrand(projectName(root));
   brand.colors = { ...brand.colors, accent: preset.accent };
+  // A family's second accent; otherwise brand.css derives one from the accent.
+  if (opts.accent2) brand.colors.accent2 = opts.accent2;
   brand.theme = { ...brand.theme, dark: preset.theme === "dark", material: preset.material, density: preset.density };
   if (preset.radius === "default") delete brand.theme.radius;
   else brand.theme.radius = preset.radius;
@@ -77,7 +80,7 @@ export async function applyPreset(root: string, config: VamosConfig, preset: Pre
 export async function currentPreset(root: string, config: VamosConfig): Promise<{ preset: Preset; notes: string[] }> {
   const t = config.theme ?? {};
   const notes: string[] = [];
-  const input: Partial<Record<keyof Preset, string>> = { theme: t.theme, material: t.material, density: t.density, font: t.font, radius: t.radius };
+  const input: Partial<Record<keyof Preset, string>> = { theme: t.theme, material: t.material, density: t.density, font: t.font, radius: t.radius, scene: t.scene };
   if (t.font === BRAND_AXIS_VALUE) {
     input.font = PRESET_DEFAULTS.font;
     notes.push("Brand fonts are not part of a preset code; the code uses the default font pairing.");

@@ -5,7 +5,7 @@ description: Build interfaces with Vamos UI, the token-based design layer and Re
 
 # Vamos UI
 
-Vamos UI is a framework-neutral design layer: CSS tokens, six theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 150 components) and 150+ blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
+Vamos UI is a framework-neutral design layer: CSS tokens, seven theme axes and semantic Tailwind classes, plus a React kit (`@vamos-ui/react`, 150 components) and 150+ blocks (whole screens). Docs: https://ui.vamos.ist. The CLI is `npx vamos-ui`. The MCP server `vamos-ui-mcp` exposes the same registry to agents.
 
 Whole screens come from blocks. Components come from the kit. Colours, spacing, radius, type and z-index come from tokens. You choose content, structure and states.
 
@@ -79,18 +79,19 @@ The full rules are in [references/rules.md](references/rules.md) (the same text 
 
 ## Theming and brand accents
 
-Six axes on `<html>` or any subtree; components only read variables, so a subtree can differ (`<aside data-density="compact">`, `<section class="light">`).
+Seven axes on `<html>` or any subtree; components only read variables, so a subtree can differ (`<aside data-density="compact">`, `<section class="light">`). For a website, start from a named style family instead of picking axes one by one: `npx vamos-ui theme --family <id>` with `portal` (Classic Portal), `tabloid`, `newsroom` (Editorial Serif), `broadsheet`, `neon` (Dark Neon), `web3` (Gradient Glass), `saas`, `pastel`, `luxury`, `earthy`, `agency` (Playful Agency), `commerce` (Minimal Commerce), `arabic` (RTL) (`--families` lists their preset codes).
 
 | Axis | Attribute | Values |
 |---|---|---|
 | Theme | `class="dark"` | light (no class), `dark` |
 | Material | `data-material` | `solid`, `glass` |
 | Accent | `data-accent` | `lime`, `ocean`, `ember`, `rose`, `graphite` (or your own) |
-| Density | `data-density` | `comfortable`, `compact` |
-| Type | `data-font` | `editorial`, `grotesk`, `corporate`, `system` |
-| Corners | `data-radius` | default (no attribute), `sharp`, `round` |
+| Density | `data-density` | `comfortable`, `compact`, `spacious` |
+| Type | `data-font` | 24 pairings: `system`, `editorial`, `grotesk`, `corporate`, `newsroom`, `magazine`, `bookish`, `poster`, `fintech`, `friendly`, `boutique`, `luxe`, `studio`, `product`, `bistro`, `civic`, `portal`, `tabloid`, `neon`, `grove`, `retail`, `arcade`, `naskh` (Arabic), `kufi` (Arabic) |
+| Corners | `data-radius` | default (no attribute), `sharp`, `round`, `none`, `pill` |
+| Scene | `data-scene` | neutral (no attribute), `paper`, `warm`, `ink` |
 
-Corners work with every accent. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips.
+Corners work with every accent; `pill` makes only controls (`rounded-control`: buttons, inputs, select triggers) pills and keeps cards at the default, `none` is square everywhere. Category colours for sections and tags: `bg-cat-1…6` with `text-cat-fg`, or `text-cat-N` as text. `bg-accent-gradient` (accent → accent-2) for one gradient band or button, `font-accent` for one script word. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips.
 
 A brand colour is a new accent value with four variables, selected with `data-accent="brand"`. `npx vamos-ui brand apply` generates it (contrast-checked) from vamos.brand.json into `<uiDir>/brand.css`; written by hand it looks like this:
 

@@ -58,10 +58,12 @@ ${pc.bold("Commands")}
                        --min-score (default 90) or on errors   --ci (GitHub Actions), --json
   diff [names...]      Compare installed files with the registry   --summary, --check
   upgrade [names...]   Update installed items, keeping your local edits
-  theme                Pick the 6 theme axes and print the <html> attributes
-                       --dark, --material, --accent, --density, --font, --radius, --preset <code>
-                       --radius sharp|round sets data-radius (corners of controls, cards and
-                       overlays; pills, avatars and switches stay round)
+  theme                Pick the 7 theme axes and print the <html> attributes
+                       --dark, --material, --accent, --density, --font, --radius, --scene,
+                       --preset <code>, --family <name> (a named style family: newsroom,
+                       tabloid, luxury, arabic …; --families lists the 13 with their codes)
+                       --radius none|sharp|round|pill sets data-radius (pill: pill controls,
+                       default cards); --scene paper|warm|ink retints the backdrop
   preset [code]        Print this project's shareable preset code, or explain a code
   verify [paths...]    Lint for design-rule and accessibility issues   --quiet
   audit <url>          Check a live website: SEO and launch basics, broken links, heavy images

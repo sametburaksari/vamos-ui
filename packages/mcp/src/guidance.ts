@@ -99,6 +99,23 @@ Use it when the screen is a public website (\`site-*\`, \`page-*\`, \`legal-01\`
 4. \`verify_code\` on every file you wrote; fix all errors, review warnings. Before you finish, \`verify_design({ projectDir })\` for the project and brand.
 `;
 
+/** The style families (packages/cli/src/preset.ts PRESET_FAMILIES): id, look, preset code. */
+const STYLE_FAMILIES: [string, string, string][] = [
+  ["portal", "Classic Portal: white, cobalt, bold grotesk, category chips, compact, sharp", "v1lsx2448c8kos"],
+  ["tabloid", "Black, white and hot red, condensed uppercase, no corners", "v1lsxe23b2ektn"],
+  ["newsroom", "Editorial Serif: optical-size serif on warm white, oxblood", "v1lsx7a1f2bcnsw"],
+  ["broadsheet", "Parchment scene, Garamond, rust, no corners", "v1lsx9a3b16kbnp"],
+  ["neon", "Dark Neon: near-black, electric teal, wide display, pill controls", "v1dsx19e3c4kzpi"],
+  ["web3", "Gradient Glass: dark glass, indigo to fuchsia, round", "v1dgx6d4affcfr"],
+  ["saas", "SaaS Clean: cool grey, indigo, tight grotesk", "v1lsx4a3fd6cd"],
+  ["pastel", "Soft Pastel: cream, coral and mint, rounded type, script accent", "v1lsxf2665acrrw"],
+  ["luxury", "Luxury Boutique: near-black, brass, Didone, spacious, no corners", "v1dsxb8955apuni"],
+  ["earthy", "Earthy Nature: sand, moss, soft serif", "v1lsx4f6b2acwdw"],
+  ["agency", "Playful Agency: fuchsia and mint, avant-garde display, hand-drawn accent", "v1lsxd6249fcyr"],
+  ["commerce", "Minimal Commerce: untinted white, graphite, pill buttons", "v1lsgchpi"],
+  ["arabic", "Arabic RTL: Naskh headlines over IBM Plex Sans Arabic, dir=rtl", "v1lsocas"],
+];
+
 const CLASS_GROUPS: { title: string; classes: string[] }[] = [
   { title: "Page & surfaces", classes: ["bg-scene", "surface", "surface-2", "surface-popover", "surface-nav", "surface-bar", "bg-surface", "bg-surface-2"] },
   { title: "Text", classes: ["text-fg", "text-fg-muted", "text-fg-subtle", "text-accent-ink", "text-accent-fg"] },
@@ -106,12 +123,13 @@ const CLASS_GROUPS: { title: string; classes: string[] }[] = [
   { title: "States", classes: ["bg-hover", "bg-selected", "bg-accent", "bg-accent-soft", "ring-ring", "focus-ring"] },
   { title: "Status", classes: ["text-success", "text-warning", "text-danger", "bg-danger-solid", "text-info"] },
   { title: "Charts", classes: ["chart-1 … chart-6 (categorical)", "chart-seq-0 … chart-seq-4 (sequential)", "chart-grid", "chart-axis"] },
-  { title: "Shape & type", classes: ["rounded-ui", "rounded-ui-sm", "rounded-ui-lg", "font-sans", "font-display", "font-mono", "text-display-m", "text-h3", "text-body", "text-small", "text-eyebrow"] },
+  { title: "Categories & second accent", classes: ["bg-cat-1 … bg-cat-6 + text-cat-fg (chips)", "text-cat-1 … text-cat-6 (text-safe inks)", "bg-accent-2", "text-accent-2", "bg-accent-gradient"] },
+  { title: "Shape & type", classes: ["rounded-ui", "rounded-ui-sm", "rounded-ui-lg", "rounded-control", "rounded-control-sm", "font-sans", "font-display", "font-mono", "font-accent", "text-display-m", "text-h3", "text-body", "text-small", "text-eyebrow"] },
 ];
 
 function htmlFor(axes: Axis[]): string {
   const attrs = axes
-    .filter((axis) => axis.attribute !== "class" && axis.default !== "default")
+    .filter((axis) => axis.attribute !== "class" && axis.default !== "default" && axis.default !== "neutral")
     .map((axis) => `${axis.attribute}="${axis.default}"`)
     .join(" ");
   return `<html lang="en" class="dark" ${attrs}>`;
@@ -127,7 +145,7 @@ export function buildTheming(axes: Axis[], tokens: Token[], options: ThemingOpti
   lines.push("# Vamos UI — theming");
   lines.push("");
   lines.push(
-    "Vamos UI is themed by six independent axes (mode, material, accent, density, font, corners), set as attributes on `<html>` or on any element (a subtree can differ from the page). Components only read CSS variables, so switching an axis is one attribute — no rebuild, no `dark:` classes.",
+    "Vamos UI is themed by seven independent axes (mode, material, accent, density, font, corners, scene), set as attributes on `<html>` or on any element (a subtree can differ from the page). Components only read CSS variables, so switching an axis is one attribute — no rebuild, no `dark:` classes.",
   );
   lines.push("");
   lines.push("## Axes");
@@ -150,6 +168,16 @@ export function buildTheming(axes: Axis[], tokens: Token[], options: ThemingOpti
     'Subtrees: `<section class="light">` inside a dark page, `<aside data-density="compact">`, `<div data-accent="ocean">` for a preview. In copy mode, `npx vamos-ui theme` writes the axes to vamos.json and prints these attributes.',
   );
   lines.push("");
+  lines.push("## Style families");
+  lines.push("");
+  lines.push(
+    "For a website, start from a named family instead of picking axes one by one: `npx vamos-ui theme --family <id>` applies its preset code, writes its second accent to vamos.brand.json, sets `dir=\"rtl\"` for Arabic and prints how to load the fonts (`--families` lists the codes). Pick the family from the brief's mood, then change only what the brand dictates, usually the accent. Never mix two families' type.",
+  );
+  lines.push("");
+  lines.push("| `--family` | Look | Preset code |");
+  lines.push("|---|---|---|");
+  for (const [id, look, code] of STYLE_FAMILIES) lines.push(`| \`${id}\` | ${look} | \`${code}\` |`);
+  lines.push("");
   lines.push("## Setup");
   lines.push("");
   lines.push("```css");
@@ -159,7 +187,7 @@ export function buildTheming(axes: Axis[], tokens: Token[], options: ThemingOpti
   lines.push("```");
   lines.push("");
   lines.push(
-    "Fonts: the app loads the font files and provides `--ff-*` variables (e.g. `--ff-onest`, `--ff-instrument`, `--ff-jetbrains` for `editorial`); `@vamos-ui/react/fonts` has the font catalog, pairings and a provider. `data-font=\"system\"` needs no font files.",
+    "Fonts: the app loads the font files and provides `--ff-*` variables (e.g. `--ff-onest`, `--ff-instrument`, `--ff-jetbrains` for `editorial`; `--ff-<catalog id>` such as `--ff-newsreader` for the other pairings); each `[data-font]` block falls back to the Google Fonts family name, so the `<link>` from `pairingUrl()` works too. `@vamos-ui/react/fonts` has the font catalog (licence per family, all SIL OFL 1.1), 24 pairings and a provider. `data-font=\"system\"` needs no font files. `naskh` and `kufi` are Arabic pairings for `dir=\"rtl\"`: no letter-spacing, italics or uppercase on Arabic. `--display-case` (uppercase in `tabloid`) and `--display-case-tracking` set heading case; `font-accent` (`--font-accent`) is for one script word, never body text.",
   );
   lines.push("");
   lines.push("## Semantic classes (use these, never palette colours)");
@@ -223,13 +251,19 @@ export function buildTheming(axes: Axis[], tokens: Token[], options: ThemingOpti
   lines.push("## Density");
   lines.push("");
   lines.push(
-    "`data-density=\"compact\"` shrinks `--control-h` (2.5rem → 2.125rem), `--radius` (14px → 10px), `--gap`, `--row-h`, `--cell-px` and `--topbar-h`. Size custom elements from these variables so they follow.",
+    "`data-density=\"compact\"` shrinks `--control-h` (2.5rem → 2.125rem), `--radius` (14px → 10px), `--gap`, `--row-h`, `--cell-px` and `--topbar-h`; `\"spacious\"` grows them (2.75rem controls, 16px corners, larger gaps and sections; on Table / DataTable it changes rows and cells only). Size custom elements from these variables so they follow.",
   );
   lines.push("");
   lines.push("## Corners");
   lines.push("");
   lines.push(
-    "`data-radius=\"sharp\"` or `\"round\"` (absent = default) scales `--radius`: default 14px (compact 10px), sharp 6px (4px), round 20px (14px). It is its own axis, so it works with every accent, material and density, and on any subtree. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips. Give custom elements `rounded-ui*` so they follow; never hard-code a corner radius.",
+    "`data-radius=\"sharp\"` or `\"round\"` (absent = default) scales `--radius`: default 14px (compact 10px), sharp 6px (4px), round 20px (14px). It is its own axis, so it works with every accent, material and density, and on any subtree. Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks. Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips. Give custom elements `rounded-ui*` so they follow; never hard-code a corner radius. `\"none\"` is 0 everywhere (large radius too). `\"pill\"` keeps cards at the default and makes controls pills: buttons, inputs and select/picker triggers use `rounded-control`, which reads `--control-radius` and falls back to `--radius`.",
+  );
+  lines.push("");
+  lines.push("## Scene and colour extras");
+  lines.push("");
+  lines.push(
+    "`data-scene=\"paper|warm|ink\"` (absent = neutral) retints the backdrop, solid surfaces and neutral text together: parchment and sepia ink, sand, or untinted greys with a near-black dark mode. Text keeps 4.5:1 on every scene; glass keeps its translucent surfaces. `--accent-2` (with `--accent-2-ink` and `--accent-gradient`, class `bg-accent-gradient`) is a second accent for one gradient band or highlight per screen, never a second brand colour on chrome; brand.css derives it from the accent unless `colors.accent2` is set. Category colours `--cat-1…6` are for news sections, tags and legends: `bg-cat-N text-cat-fg` chips (white text >= 5.3:1) or `text-cat-N` inks (>= 4.5:1 on every scene, lighter in dark mode).",
   );
 
   if (options.includeTokens !== false) {

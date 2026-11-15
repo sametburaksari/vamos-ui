@@ -5,7 +5,7 @@ export const BRAND_SCHEMA = "https://ui.vamos.ist/r/brand-schema.json";
 /** The accent / font axis value the generated brand.css defines. */
 export const BRAND_AXIS_VALUE = "brand";
 
-export type BrandRadius = "sharp" | "default" | "round";
+export type BrandRadius = "sharp" | "default" | "round" | "none" | "pill";
 
 export interface BrandColors {
   /** Primary brand colour, any CSS colour. Becomes the accent. */
@@ -14,6 +14,8 @@ export interface BrandColors {
   accentDark?: string;
   /** Optional hue for the page backdrop (--scene); kept very subtle. */
   neutralTint?: string;
+  /** Optional second accent for gradients and highlights (--accent-2, --accent-gradient). Derived from the accent when absent. */
+  accent2?: string;
 }
 
 export interface BrandFonts {
@@ -23,12 +25,14 @@ export interface BrandFonts {
   body?: string;
   /** Code, IDs, numbers. */
   mono?: string;
+  /** Accent face for a single word or a signature (script, handwriting): --font-accent, the font-accent class. */
+  accent?: string;
 }
 
 export interface BrandTheme {
   dark?: boolean;
   material?: "glass" | "solid";
-  density?: "comfortable" | "compact";
+  density?: "comfortable" | "compact" | "spacious";
   radius?: BrandRadius;
 }
 
@@ -69,8 +73,8 @@ export interface BrandIssue {
 
 export const THEME_VALUES = {
   material: ["solid", "glass"],
-  density: ["comfortable", "compact"],
-  radius: ["default", "sharp", "round"],
+  density: ["comfortable", "compact", "spacious"],
+  radius: ["default", "sharp", "round", "none", "pill"],
 } as const;
 
 /** A brand with every container present, for code that fills one in step by step. */
@@ -93,8 +97,8 @@ export function serializeBrand(brand: Brand): string {
   const ordered = {
     $schema: brand.$schema ?? BRAND_SCHEMA,
     name: brand.name,
-    colors: prune({ accent: brand.colors.accent, accentDark: brand.colors.accentDark, neutralTint: brand.colors.neutralTint }) ?? { accent: brand.colors.accent },
-    fonts: prune({ display: brand.fonts?.display, body: brand.fonts?.body, mono: brand.fonts?.mono }) ?? {},
+    colors: prune({ accent: brand.colors.accent, accentDark: brand.colors.accentDark, neutralTint: brand.colors.neutralTint, accent2: brand.colors.accent2 }) ?? { accent: brand.colors.accent },
+    fonts: prune({ display: brand.fonts?.display, body: brand.fonts?.body, mono: brand.fonts?.mono, accent: brand.fonts?.accent }) ?? {},
     theme: prune({ dark: brand.theme?.dark, material: brand.theme?.material, density: brand.theme?.density, radius: brand.theme?.radius }) ?? {},
     voice: voice ?? {},
     assets: (brand.assets ?? []).map((a) => ({ path: a.path, use: a.use })),
@@ -127,7 +131,7 @@ export function parseBrand(raw: unknown): { brand: Brand | null; issues: BrandIs
   else {
     brand.colors.accent = str(raw.colors.accent) ?? "";
     if (!brand.colors.accent) err("colors.accent", "colors.accent is required.");
-    for (const k of ["accentDark", "neutralTint"] as const) {
+    for (const k of ["accentDark", "neutralTint", "accent2"] as const) {
       const v = raw.colors[k];
       if (v === undefined) continue;
       if (typeof v !== "string") err(`colors.${k}`, `colors.${k} must be a CSS colour string.`);
@@ -138,7 +142,7 @@ export function parseBrand(raw: unknown): { brand: Brand | null; issues: BrandIs
   if (raw.fonts !== undefined) {
     if (!isObj(raw.fonts)) err("fonts", "fonts must be an object.");
     else
-      for (const k of ["display", "body", "mono"] as const) {
+      for (const k of ["display", "body", "mono", "accent"] as const) {
         const v = raw.fonts[k];
         if (v === undefined) continue;
         if (typeof v !== "string") err(`fonts.${k}`, `fonts.${k} must be a font family name.`);
@@ -233,6 +237,7 @@ export const BRAND_JSON_SCHEMA = {
         accent: { type: "string", description: "Primary brand colour (hex, rgb(), hsl(), oklch() or a CSS name). Becomes the accent." },
         accentDark: { type: "string", description: "Fill colour for dark mode. Derived when omitted." },
         neutralTint: { type: "string", description: "Hue for the page backdrop (--scene); kept very subtle." },
+        accent2: { type: "string", description: "Second accent for gradients and highlights (--accent-2, --accent-gradient). Derived from the accent when omitted." },
       },
     },
     fonts: {
@@ -242,6 +247,7 @@ export const BRAND_JSON_SCHEMA = {
         display: { type: "string", description: "Heading family (Google Fonts name, ideally from the kit catalog)." },
         body: { type: "string", description: "UI and body family." },
         mono: { type: "string", description: "Code and numbers family." },
+        accent: { type: "string", description: "Accent face for one word or a signature (script, handwriting); --font-accent." },
       },
     },
     theme: {

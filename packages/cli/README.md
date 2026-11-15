@@ -28,7 +28,7 @@ Every file the CLI writes is recorded with its sha256 in `<uiDir>/.vamos-lock.js
 | `view <name>` | Usage, props, guidance, dependencies and files. `--files` prints the source, `--json` gives the raw item. |
 | `diff [names...]` | Unified diff of your installed copy against the registry. `--summary` lists files only, `--check` exits 1 when anything differs (for CI). |
 | `upgrade [names...]` | Files you never touched are replaced. For files you edited that also changed upstream, it shows the diff and asks (non-interactive runs keep your version unless you pass `--overwrite`). Installs new dependencies. |
-| `theme` | Picks the six axes (`--theme`, `--material`, `--accent`, `--density`, `--font`, `--radius`, or `--preset <code>`), saves them in `vamos.json` and prints the `<html>` attributes. `--radius sharp|round` sets `data-radius` (see [Corners](#corners)). |
+| `theme` | Picks the seven axes (`--theme`, `--material`, `--accent`, `--density`, `--font`, `--radius`, `--scene`, or `--preset <code>`), saves them in `vamos.json` and prints the `<html>` attributes. `--family <name>` applies a named style family (see [Style families](#style-families)); `--families` lists them. `--radius none|sharp|round|pill` sets `data-radius` (see [Corners](#corners)). For a font pairing beyond the classic four it also prints how to load the families (next/font or a `<link>`). |
 | `preset [code]` | Prints the project's shareable preset code, or explains a code. See [Preset codes](#preset-codes). |
 | `registry export <dir>` | Writes the Vamos UI registry bundled with the CLI (the same files `https://ui.vamos.ist/r` serves) to `<dir>`, to host or vendor it. `--force` writes into a folder that is not empty. `registry info` prints the bundled copy's version and build date. |
 | `registry build [dir]` | Builds a third-party registry (`<item>.json` + `index.json`) from `components/`, `lib/` and `blocks/<name>/`, with an optional `registry.json`. `--out` (default `<dir>/r`), `--homepage`, `--name`, `--dry-run`, `--strict`. |
@@ -113,7 +113,21 @@ Third-party items are validated against the registry item schema (`registryDepen
 
 ## Preset codes
 
-A preset code holds the theme axes in a short string: `v1` + one letter per axis (theme `l|d`, material `s|g`, accent `l|o|e|r|g` or `x` + 6 hex digits, density `c|k`, font `s|e|g|c`, then optionally corners `s|r`). `v1dgokg` is dark, glass, ocean, compact, grotesk; `v1dgokgs` adds sharp corners; `v1lsx4f46e5ce` is a custom `#4f46e5` accent. Only a custom accent is applied through `vamos.brand.json` and `brand.css`; corners map to `data-radius` (saved as `theme.radius` in `vamos.json`), so they combine with any accent and `theme --preset` works without a project.
+A preset code holds the theme axes in a short string: `v1` + one letter per axis in this order:
+
+| Axis | Letters |
+| --- | --- |
+| theme | `l` light, `d` dark |
+| material | `s` solid, `g` glass |
+| accent | `l` lime, `o` ocean, `e` ember, `r` rose, `g` graphite, or `x` + 6 hex digits |
+| density | `c` comfortable, `k` compact, `p` spacious |
+| font | `s` system, `e` editorial, `g` grotesk, `c` corporate, `n` newsroom, `m` magazine, `b` bookish, `p` poster, `f` fintech, `r` friendly, `q` boutique, `u` luxe, `y` studio, `d` product, `i` bistro, `v` civic, `o` portal, `t` tabloid, `z` neon, `w` grove, `h` retail, `l` arcade, `a` naskh, `k` kufi |
+| corners (optional) | `d` default, `s` sharp, `r` round, `n` none, `p` pill |
+| scene (optional) | `n` neutral, `p` paper, `w` warm, `i` ink |
+
+`v1dgokg` is dark, glass, ocean, compact, grotesk; `v1dgokgs` adds sharp corners; `v1lsx4f46e5ce` is a custom `#4f46e5` accent; `v1lsx9a3b16kbnp` is a rust accent, compact, bookish, no corners, paper scene. Corners and scene are left out at their defaults; a code with a scene spells its corners out (`d` for the default). Only a custom accent is applied through `vamos.brand.json` and `brand.css`; corners and scene map to `data-radius` and `data-scene` (saved as `theme.radius` / `theme.scene` in `vamos.json`), so they combine with any accent and `theme --preset` works without a project.
+
+Compatibility: the axes only gained letters, so every code an older version wrote decodes to the same preset. An older CLI rejects a code with a new letter ("is not a font letter") instead of guessing.
 
 ```ts
 import { encodePreset, decodePreset, presetAttributes } from "vamos-ui/preset";
@@ -124,9 +138,29 @@ decodePreset("v1lsx4f46e5ces"); // { theme: "light", …, accent: "#4f46e5", rad
 
 Pure, no dependencies; throws `PresetError` with the position that is wrong.
 
+### Style families
+
+Thirteen named starting points, one preset code each (`PRESET_FAMILIES` and `getPresetFamily` in `vamos-ui/preset`). `npx vamos-ui theme --family <id>` applies one, adds the family's second accent to `vamos.brand.json` (`colors.accent2`), prints `dir="rtl"` for the Arabic family, the suggested `data-motion` and how to load the fonts.
+
+| Family | `--family` | Code |
+| --- | --- | --- |
+| Classic Portal | `portal` | `v1lsx2448c8kos` |
+| Tabloid | `tabloid` | `v1lsxe23b2ektn` |
+| Editorial Serif | `newsroom` | `v1lsx7a1f2bcnsw` |
+| Broadsheet | `broadsheet` | `v1lsx9a3b16kbnp` |
+| Dark Neon | `neon` | `v1dsx19e3c4kzpi` |
+| Gradient Glass | `web3` | `v1dgx6d4affcfr` |
+| SaaS Clean | `saas` | `v1lsx4a3fd6cd` |
+| Soft Pastel | `pastel` | `v1lsxf2665acrrw` |
+| Luxury Boutique | `luxury` | `v1dsxb8955apuni` |
+| Earthy Nature | `earthy` | `v1lsx4f6b2acwdw` |
+| Playful Agency | `agency` | `v1lsxd6249fcyr` |
+| Minimal Commerce | `commerce` | `v1lsgchpi` |
+| Arabic RTL | `arabic` | `v1lsocas` |
+
 ## Theming
 
-Six attributes on `<html>` (or any element) control the look: mode, material, accent, density, font and corners.
+Seven attributes on `<html>` (or any element) control the look: mode, material, accent, density, font, corners and scene.
 
 ```html
 <html class="dark" data-material="glass" data-accent="ocean" data-density="compact" data-font="grotesk" data-radius="sharp">
@@ -137,13 +171,14 @@ Six attributes on `<html>` (or any element) control the look: mode, material, ac
 | theme | `class="dark"` or nothing |
 | `data-material` | `solid`, `glass` |
 | `data-accent` | `lime`, `ocean`, `ember`, `rose`, `graphite`, or `brand` after `vamos-ui brand apply` |
-| `data-density` | `comfortable`, `compact` |
-| `data-font` | `system`, `editorial`, `grotesk`, `corporate`, or `brand` when the brand defines fonts |
-| `data-radius` | nothing (default), `sharp`, `round` |
+| `data-density` | `comfortable`, `compact`, `spacious` |
+| `data-font` | one of the 24 pairings (letters above), or `brand` when the brand defines fonts |
+| `data-radius` | nothing (default), `sharp`, `round`, `none`, `pill` |
+| `data-scene` | nothing (neutral), `paper`, `warm`, `ink` |
 
 ### Corners
 
-`data-radius="sharp"` or `"round"` (absent = default) scales `--radius`: default 14px (compact 10px), sharp 6px (4px), round 20px (14px). It works with every accent, material and density.
+`data-radius="sharp"` or `"round"` (absent = default) scales `--radius`: default 14px (compact 10px), sharp 6px (4px), round 20px (14px); `none` is 0 everywhere. `pill` keeps cards at the default and makes controls (buttons, inputs, select and picker triggers, which use `rounded-control`) pills through `--control-radius`. It works with every accent, material and density.
 
 - Follows the setting: everything on `rounded-ui` / `rounded-ui-sm` / `rounded-ui-lg` or `var(--radius)` — buttons, inputs, selects, checkboxes, cards, dialogs, sheets, popovers, menus, tooltips, toasts, tabs, tables, square badges, calendars, chart tooltips and site blocks.
 - Stays round on purpose: `rounded-full` shapes — pill badges and buttons, avatars, switches, radio dots, slider thumbs and progress bars — and small fixed details such as chart bars and event chips.
@@ -162,7 +197,7 @@ Six attributes on `<html>` (or any element) control the look: mode, material, ac
 }
 ```
 
-One colour becomes the four accent variables. The fill keeps the brand colour where it can; text on it is white or a dark ink, whichever reaches 4.5:1. Ink shades for light and dark surfaces are derived in OKLCH (same hue) until they reach 4.5:1 against the hardest surface of each theme. When the brand colour itself cannot carry text (a mid-tone), or would vanish on white or dark surfaces (near-white, navy, black), the lightness is adjusted and the reason is reported. `neutralTint` gives the page backdrop a faint hue. `theme.radius` (sharp or round corners) is not written to brand.css: `brand apply` saves it as `theme.radius` in `vamos.json` and the `<html>` snippet gets `data-radius`.
+One colour becomes the four accent variables. The fill keeps the brand colour where it can; text on it is white or a dark ink, whichever reaches 4.5:1. Ink shades for light and dark surfaces are derived in OKLCH (same hue) until they reach 4.5:1 against the hardest surface of each theme. When the brand colour itself cannot carry text (a mid-tone), or would vanish on white or dark surfaces (near-white, navy, black), the lightness is adjusted and the reason is reported. `neutralTint` gives the page backdrop a faint hue. `accent2` is the second accent (`--accent-2`, `--accent-gradient`); without it brand.css turns the accent 60° round the hue wheel. `fonts.accent` is an accent face (`--font-accent`, the `font-accent` class) for one word or a signature. `theme.radius` (none, sharp, round or pill corners) is not written to brand.css: `brand apply` saves it as `theme.radius` in `vamos.json` and the `<html>` snippet gets `data-radius`.
 
 ```css
 /* <uiDir>/brand.css (generated) */

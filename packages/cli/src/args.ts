@@ -9,7 +9,7 @@ const VALUE_FLAGS = new Set([
   "registry", "cwd", "type", "group", "category", "tag",
   "theme", "material", "accent", "density", "font",
   "ui-dir", "blocks-dir", "css", "alias",
-  "name", "accent-dark", "display", "body", "mono", "radius", "tone",
+  "name", "accent-dark", "display", "body", "mono", "radius", "scene", "family", "tone",
   "preset", "template", "client", "out", "homepage", "starter",
   "max-pages", "timeout", "concurrency", "url", "locale", "answers", "lang", "kind", "to", "from", "note", "host", "domain", "min-score", "country",
 ]);
