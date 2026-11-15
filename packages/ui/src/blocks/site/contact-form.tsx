@@ -71,7 +71,7 @@ const isRichDoc = (v: unknown): v is RichDoc => !!v && typeof v === "object" && 
  * ```tsx
  * <ContactForm variant="split" title="Tell us about the *project*" action={sendLead}
  *   fields={[{ name: "name", required: true }, { name: "email", required: true }, { name: "budget", options: ["< $5k", "$5–15k"] }, { name: "message", required: true }]}
- *   privacyLink={{ href: "/privacy" }} privacyCheckbox info={{ phone: "+902160000000", email: "hello@vamos.ist" }} />
+ *   privacyLink={{ href: "/privacy" }} privacyCheckbox info={{ phone: "+902160000000", email: "merhaba@ornek.com.tr" }} />
  * ```
  */
 export function ContactForm({

@@ -340,7 +340,7 @@ export const contactFormBlock = defineBlock({
       eyebrow: "Contact",
       title: "Tell us about the *project*",
       fields: [{ name: "name", required: true }, { name: "email", required: true }, { name: "budget", options: ["Under $5k", "$5k–15k", "$15k+"] }, { name: "message", required: true }],
-      info: { phone: "+902160000000", email: "hello@vamos.ist" },
+      info: { phone: "+902160000000", email: "merhaba@ornek.com.tr" },
       privacyCheckbox: true,
       marketingConsent: false,
       showInfo: true,

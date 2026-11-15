@@ -25,7 +25,7 @@ describe("Field", () => {
   it("error replaces hint, sets aria-invalid and accepts arrays", async () => {
     const { container } = render(
       <Field label="Email" hint="Work address" error={[undefined, "This address is already registered."]}>
-        <Input type="email" defaultValue="hello@vamos.ist" />
+        <Input type="email" defaultValue="merhaba@ornek.com.tr" />
       </Field>,
     );
     const input = screen.getByLabelText("Email");
