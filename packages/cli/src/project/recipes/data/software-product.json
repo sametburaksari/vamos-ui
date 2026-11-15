@@ -317,8 +317,7 @@
           "id": "estimator",
           "purpose": "Usage-priced products: set seats and usage with sliders and see the monthly bill per plan, with the cheapest plan that fits marked.",
           "use": [
-            "slider",
-            "stat"
+            "estimator"
           ],
           "fields": [
             "Pricing formula per plan (base, per seat, per usage unit)",
@@ -326,7 +325,10 @@
             "Which users are free (e.g. viewers)"
           ],
           "optional": true,
-          "notes": "Total announced in an aria-live region; show the formula in words under the result."
+          "notes": "Estimator with seat and usage sliders; the formula returns one line per plan, the cheapest that fits highlighted with a badge and plans that do not fit shown as text. The total is announced in a polite live region; show the formula in words under the result (notes).",
+          "alternatives": [
+            "slider: two hand-built sliders beside a stat when only one figure changes"
+          ]
         },
         {
           "id": "compare",

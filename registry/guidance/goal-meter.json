@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A fundraising campaign, pre-order threshold or membership drive: raised against the goal with backers and the deadline.",
+    "Limited runs and drops: units left against the run, with low stock and sold out stated."
+  ],
+  "avoidWhen": [
+    "Task or upload progress — use progress.",
+    "A single KPI against a target in a dashboard — use stat or gauge."
+  ],
+  "related": [
+    "progress",
+    "amount-picker",
+    "countdown",
+    "stat"
+  ],
+  "a11y": [
+    "Built on Progress: role=\"progressbar\" with one localized aria-valuetext sentence; the large figure is aria-hidden so it is not read twice.",
+    "Days left render after hydration (or from `now`), so server and client markup agree."
+  ]
+}

@@ -64,6 +64,7 @@
           "id": "packages",
           "purpose": "Preset packages as numbered frames, each opening the package builder pre-filled.",
           "use": ["pricing-table"],
+          "notes": "Each package's action loads the Estimator on the pricing page with its preset values.",
           "alternatives": ["feature-grid: packages described without prices when every job is quoted"],
           "fields": ["Package name", "Session type", "What is included (studio hours, edited images, people)", "Price including VAT"],
           "when": { "any": ["booking", "section:pricing"] }
@@ -191,9 +192,10 @@
         {
           "id": "builder",
           "purpose": "Build a session: session type, studio time, edited images, people (for headshots) and extras, with a live quote beside it.",
-          "use": ["radio-group", "slider", "checkbox", "line-items"],
+          "use": ["estimator"],
+          "alternatives": ["line-items: a hand-built receipt beside radio-group, slider and checkbox controls"],
           "fields": ["Session types with base price, included hours and images", "Price per extra hour and per extra image", "Per-person pricing (headshots)", "Extras with flat price or percentage (make-up, stylist, backdrop, raw files, prints, rush delivery)", "VAT rate", "Deposit percentage", "Delivery time (normal and rush)"],
-          "notes": "Numbered steps on the left, a sticky receipt on the right: line items, subtotal, VAT, total, deposit and delivery time. The total is announced in a polite live region. Switching the session type resets hours, images and people to that session's base. 'Book this package' carries the build to the booking page and survives a language switch."
+          "notes": "Estimator with numbered inputs: session type as option cards, studio time and edited images as sliders, people only for headshots (`when`), extras as add-on cards. The sticky summary is the receipt: line items, subtotal and tax lines, total, and deposit and delivery time as facts; the total is announced in a polite live region. Switching the session type resets hours, images and people to that session's base (controlled values). The CTA carries the build to the booking page (onSubmit and a shared store) and survives a language switch."
         }
       ]
     },

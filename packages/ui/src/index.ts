@@ -12,6 +12,8 @@ export { AlertDialog, AlertDialogAction, AlertDialogBody, AlertDialogCancel, Ale
 export type { AlertDialogActionProps, AlertDialogCancelProps, AlertDialogContentProps, AlertDialogHeaderProps, ConfirmDialogProps, ConfirmOptions } from "./components/alert-dialog";
 export { Alert, AlertActions, AlertDescription, AlertTitle, alertVariants } from "./components/alert";
 export type { AlertProps, AlertTone } from "./components/alert";
+export { AmountPicker, amountPickerLabels, impactFor } from "./components/amount-picker";
+export type { AmountFrequency, AmountOption, AmountPickerLabels, AmountPickerProps, AmountPickerValue } from "./components/amount-picker";
 export { AppShell, AppShellBreadcrumb, AppShellProvider, useAppShell, useInAppShell } from "./components/app-shell";
 export type { AppDefinition, AppLink, AppShellLabels, AppShellProps, AppShellProviderProps } from "./components/app-shell";
 export { AspectRatio, aspectRatioVariants, parseAspectRatio } from "./components/aspect-ratio";
@@ -44,6 +46,8 @@ export { Carousel, CarouselCounter, CarouselDots, CarouselNext, CarouselPlayPaus
 export type { CarouselApi, CarouselAutoplayOptions, CarouselCounterProps, CarouselDotsProps, CarouselLabels, CarouselOptions, CarouselPlayPauseProps, CarouselPlugin, CarouselPreset, CarouselProps, CarouselSlideProps, CarouselThumbsProps, CarouselViewportProps, MarqueeProps } from "./components/carousel";
 export { Checkbox, CheckboxGroup, CheckboxGroupItem, checkboxVariants } from "./components/checkbox";
 export type { CheckboxCheckedState, CheckboxGroupItemProps, CheckboxGroupProps, CheckboxProps } from "./components/checkbox";
+export { ChoiceGrid, choiceGridLabels, choiceGridStep } from "./components/choice-grid";
+export type { ChoiceGridAxisItem, ChoiceGridCell, ChoiceGridLabels, ChoiceGridProps, ChoiceGridValue } from "./components/choice-grid";
 export { CodeBlock, CodeTabs, codeBlockLabels, copyText, highlightCode, parseLineRanges, useCodeLanguage } from "./components/code-block";
 export type { CodeBlockLabels, CodeBlockProps, CodeHighlighter, CodeSample, CodeTabsProps, CodeToken, CodeTokenKind } from "./components/code-block";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./components/collapsible";
@@ -82,6 +86,8 @@ export { EmptyState, EmptyStateActions, EmptyStateDescription, EmptyStateIcon, E
 export type { EmptyStateKind, EmptyStateProps } from "./components/empty-state";
 export { EntityCard, entityCardLabels } from "./components/entity-card";
 export type { EntityCardLabels, EntityCardProps, EntityKind, EntityStat, EntityTone } from "./components/entity-card";
+export { Estimator, effectiveEstimatorValues, estimatorDefaults, estimatorLabels } from "./components/estimator";
+export type { EstimateLine, EstimateResult, EstimatorAddonsInput, EstimatorChoice, EstimatorFormat, EstimatorInput, EstimatorLabels, EstimatorNumberInput, EstimatorOptionsInput, EstimatorProps, EstimatorSelectInput, EstimatorSliderInput, EstimatorToggleInput, EstimatorValue, EstimatorValues } from "./components/estimator";
 export { FeedbackPrompt, feedbackPromptLabels } from "./components/feedback-prompt";
 export type { FeedbackPromptLabels, FeedbackPromptProps, FeedbackPromptValue, FeedbackReason } from "./components/feedback-prompt";
 export { FileUpload, FileUploadButton, FileUploadItem, FileUploadList, ImageUpload, matchesAccept, parseAccept, toUploadFile, useFileDropzone } from "./components/file-upload";
@@ -90,6 +96,8 @@ export { FixtureList, fixtureListLabels, fixtureOutcome } from "./components/fix
 export type { Fixture, FixtureCompetition, FixtureListLabels, FixtureListProps, FixtureStatus, FixtureView } from "./components/fixture-list";
 export { FormattedInput, NumberInput, PercentInput, WithoutFieldName, canonicalDecimal, createDecimalFormat, maskFormatter, percentSignPosition, useDecimalKeys, useFormattedValidity, useSubmitName } from "./components/formatted-input";
 export type { BaseFormattedProps, DecimalFormatOptions, FormattedInputLabels, FormattedInputProps, FormattedValidity, FormattedValueMeta, InputFormatter, NumberInputLabels, NumberInputProps, PercentInputProps } from "./components/formatted-input";
+export { GoalMeter, daysUntil, goalMeterLabels } from "./components/goal-meter";
+export type { GoalMeterLabels, GoalMeterProps } from "./components/goal-meter";
 export { HierarchyChart, HierarchyNodeCard, HierarchyPersonNode, hierarchyChartLabels, layoutHierarchy } from "./components/hierarchy-chart";
 export type { HierarchyChartHandle, HierarchyChartLabels, HierarchyChartProps, HierarchyNodeCardProps, HierarchyNodeData, HierarchyNodeState, HierarchyPersonNodeProps, HierarchyReparentEvent } from "./components/hierarchy-chart";
 export { HoverCard, HoverCardContent, HoverCardTrigger, hoverCardContentVariants } from "./components/hover-card";
@@ -198,6 +206,8 @@ export { TagInput } from "./components/tag-input";
 export type { TagDelimiter, TagInputLabels, TagInputProps } from "./components/tag-input";
 export { TaskList, taskListLabels } from "./components/task-list";
 export type { TaskData, TaskListLabels, TaskListProps, TaskPriority } from "./components/task-list";
+export { TierPricing, tierPricingLabels, tierQuote } from "./components/tier-pricing";
+export type { PriceTier, TierPricingLabels, TierPricingProps, TierQuote } from "./components/tier-pricing";
 export { TimeInput, TimePicker, TimeRangePicker, isTimeOutOfRange, timeRangeMinutes } from "./components/time-picker";
 export type { TimeInputProps, TimePickerLabels, TimePickerProps, TimeRange, TimeRangePickerProps } from "./components/time-picker";
 export { Toaster, toast } from "./components/toast";

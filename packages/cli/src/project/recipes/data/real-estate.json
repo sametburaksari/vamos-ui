@@ -65,10 +65,11 @@
         {
           "id": "mortgage",
           "purpose": "Price, down payment, interest rate and term give a monthly payment with a principal/interest split.",
-          "use": ["form-01"],
+          "use": ["estimator"],
+          "alternatives": ["form-01: a hand-built calculator layout"],
           "fields": ["Default price", "Down-payment range", "Indicative interest rate and its date", "Term options in months", "Disclaimer text"],
           "optional": true,
-          "notes": "Currency input, slider, number input with stepper and a term select; the result panel is a polite live region. Annuity formula. Clearly say it is indicative, not a credit offer."
+          "notes": "Estimator with number fields or sliders for price, down payment, interest rate and term; the formula (annuity) returns the monthly payment with principal and interest as lines, in a polite live region. Clearly say it is indicative, not a credit offer."
         },
         {
           "id": "agents",
@@ -160,10 +161,10 @@
         {
           "id": "mortgage",
           "purpose": "The monthly payment for this price.",
-          "use": ["form-01"],
+          "use": ["estimator"],
           "fields": ["Indicative rate and date", "Term options"],
           "optional": true,
-          "notes": "Same calculator as home, preset with the listing price."
+          "notes": "Same Estimator and formula as on the home page, with defaultValues from the listing price."
         },
         {
           "id": "agent",

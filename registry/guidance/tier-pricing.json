@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Bulk or trade prices that drop at set quantities (cases, boxes, seats, labels) and the buyer should see which tier they are in.",
+    "Nudging to the next price break with how many more units it takes and the saving."
+  ],
+  "avoidWhen": [
+    "Plans or packages compared side by side — use pricing-table.",
+    "A full quote with many lines, shipping and tax — use line-items or cart-01 and show each line's tier with tierQuote."
+  ],
+  "related": [
+    "pricing-table",
+    "line-items",
+    "data-table",
+    "estimator"
+  ],
+  "a11y": [
+    "The table has a caption and header cells; the active tier has aria-current and a \"Your price\" tag in text.",
+    "The next-break hint is a polite live region; ladder steps are buttons named \"Order 50 at $40.00 per case\"."
+  ]
+}
