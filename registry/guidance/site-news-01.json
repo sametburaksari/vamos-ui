@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "A news site, daily paper or multi-section magazine with a dense front page: lead grid, section modules, ticker, ads and a sidebar.",
+    "Publishers that need section fronts, numbered archives, reader sign-in and consent-aware ad slots."
+  ],
+  "avoidWhen": [
+    "A single-voice essay magazine or quarterly — use site-blog-01.",
+    "A writer's newsletter — use site-newsletter-01."
+  ],
+  "related": [
+    "post-modules",
+    "post-tabs",
+    "news-masthead",
+    "news-widgets",
+    "ad-slot",
+    "article-layout"
+  ],
+  "a11y": [
+    "One h1 per page; every module is a section named by its heading and every story an article with one covering link.",
+    "The ticker pauses on hover, focus and its button and never autoplays under reduced motion; mega menus open on focus as well as hover."
+  ]
+}

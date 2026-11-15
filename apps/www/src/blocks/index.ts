@@ -133,6 +133,7 @@ import metaSiteHelp01 from "./site-help-01/meta";
 import metaSiteLaw01 from "./site-law-01/meta";
 import metaSiteMarket01 from "./site-market-01/meta";
 import metaSiteMovers01 from "./site-movers-01/meta";
+import metaSiteNews01 from "./site-news-01/meta";
 import metaSiteNewsletter01 from "./site-newsletter-01/meta";
 import metaSiteNonprofit01 from "./site-nonprofit-01/meta";
 import metaSitePhysio01 from "./site-physio-01/meta";
@@ -292,6 +293,7 @@ export const blocks: BlockEntry[] = [
   { ...metaSiteLaw01, name: "site-law-01", load: () => import("./site-law-01/page") },
   { ...metaSiteMarket01, name: "site-market-01", load: () => import("./site-market-01/page") },
   { ...metaSiteMovers01, name: "site-movers-01", load: () => import("./site-movers-01/page") },
+  { ...metaSiteNews01, name: "site-news-01", load: () => import("./site-news-01/page") },
   { ...metaSiteNewsletter01, name: "site-newsletter-01", load: () => import("./site-newsletter-01/page") },
   { ...metaSiteNonprofit01, name: "site-nonprofit-01", load: () => import("./site-nonprofit-01/page") },
   { ...metaSitePhysio01, name: "site-physio-01", load: () => import("./site-physio-01/page") },
