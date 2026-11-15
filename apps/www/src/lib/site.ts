@@ -26,6 +26,7 @@ export const docSections = [
   { label: "Theme editor", href: "/themes" },
   { label: "Localization", href: "/docs/localization" },
   { label: "KVKK consent records", href: "/docs/kvkk" },
+  { label: "Payments (iyzico, PayTR)", href: "/docs/payments" },
   { label: "CLI & registry", href: "/docs/cli" },
   { label: "MCP server", href: "/docs/mcp" },
   { label: "Publish a registry", href: "/docs/publish-a-registry" },

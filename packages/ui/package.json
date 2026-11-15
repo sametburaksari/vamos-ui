@@ -29,6 +29,7 @@
     "./locale-data/tr/neighbourhoods/*.json": "./src/locale-data/tr/neighbourhoods/*.json",
     "./business": "./src/business/index.ts",
     "./compliance": "./src/compliance/index.ts",
+    "./payments": "./src/payments/index.ts",
     "./locale/*": "./src/locales/*.ts",
     "./fonts": "./src/fonts/index.ts"
   },
