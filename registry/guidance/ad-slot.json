@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Display advertising on a news, magazine or blog page, with the space reserved before the ad loads.",
+    "House ads or sponsor slots that need the same labelled box (consent={false} when nothing tracks)."
+  ],
+  "avoidWhen": [
+    "Promoting your own product inside an app — use announcement-bar or a card.",
+    "Pages without a consent banner for ad cookies — add consent-banner first."
+  ],
+  "related": [
+    "news-widgets",
+    "consent-banner",
+    "post-card",
+    "news-masthead"
+  ],
+  "a11y": [
+    "An aside landmark named by its visible label (\"Advertisement\").",
+    "The box keeps its ratio before loading, so nothing jumps under the reader (no layout shift)."
+  ]
+}
