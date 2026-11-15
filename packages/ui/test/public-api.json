@@ -1067,6 +1067,7 @@
    "RecordPickerTriggerContext",
    "RecordSectionProps",
    "RecordSource",
+   "RegionOption",
    "RegionSelectProps",
    "RelativeTimeProps",
    "ResizableGroupHandle",
@@ -2569,6 +2570,7 @@
    "computeKdv",
    "countWorkingDays",
    "createHolidayProvider",
+   "createTrNeighbourhoodLoader",
    "daysInMonth",
    "defaultWorkDays",
    "diffDays",
@@ -2599,6 +2601,7 @@
    "netFromGross",
    "nextWorkingDay",
    "normalizeIban",
+   "parseTrNeighbourhoods",
    "regionOf",
    "roundHalfUp",
    "subtractDecimal",
@@ -2614,6 +2617,8 @@
    "trIbanBankCode",
    "trIbanRule",
    "trKdv",
+   "trNeighbourhoodLabel",
+   "trNeighbourhoodsFromUrl",
    "trNumberToWords",
    "trPack",
    "trProvinces",
@@ -2632,12 +2637,14 @@
    "vknCheckDigit",
    "weekInfoForRegion",
    "weekdayOrder",
+   "withNeighbourhoods",
    "withheldVat",
    "workingValue"
   ],
   "types": [
    "AddressDataSource",
    "AddressDistrict",
+   "AddressNeighbourhood",
    "AddressProvince",
    "BusinessHours",
    "CreateHolidayProviderOptions",
@@ -2654,13 +2661,25 @@
    "KdvLineResult",
    "KdvOptions",
    "LocaleDataPack",
+   "NeighbourhoodLoader",
    "TaxRate",
    "TaxScheme",
    "TrAddressData",
    "TrAddressRow",
+   "TrNeighbourhoodFile",
+   "TrNeighbourhoodRow",
+   "TrNeighbourhoodsFromUrlOptions",
    "WeekInfo",
    "WorkCalendar"
   ]
+ },
+ "./locale-data/tr-neighbourhoods": {
+  "values": [
+   "loadTrNeighbourhoodFile",
+   "trAddressWithNeighbourhoods",
+   "trNeighbourhoods"
+  ],
+  "types": []
  },
  "./business": {
   "values": [

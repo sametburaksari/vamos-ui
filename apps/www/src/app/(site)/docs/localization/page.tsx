@@ -110,7 +110,7 @@ formatTrIban("TR330006100519786457841326"); // "TR33 0006 1005 1978 6457 8413 26
           ["TR IBAN validation, mask and bank name; +90 phone format", <A key="a2" href="/docs/components/formatted-input">Formatted inputs</A>, <Badge key="2" tone="success">Ready</Badge>],
           ["KDV rates, withholding (tevkifat), rounding, amount in words", <A key="a3" href="/docs/components/line-items">Line items</A>, <Badge key="3" tone="success">Ready</Badge>],
           ["Public and religious holidays, work calendar", <A key="a4" href="/docs/components/calendar">Calendar</A>, <Badge key="4" tone="success">Ready</Badge>],
-          ["Provinces, districts and postal codes", <A key="a5" href="/docs/components/address-field">Address field</A>, <Badge key="5" tone="success">Ready</Badge>],
+          ["Provinces, districts, neighbourhoods (lazy, per province) and postal codes", <A key="a5" href="/docs/components/address-field">Address field</A>, <Badge key="5" tone="success">Ready</Badge>],
           ["Turkish-aware search and slugs (İ/ı, ş, ğ)", "Combobox, pickers, slug input", <Badge key="6" tone="success">Ready</Badge>],
         ]}
       />
