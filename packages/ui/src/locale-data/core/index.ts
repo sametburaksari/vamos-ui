@@ -15,6 +15,7 @@ export type {
   TaxScheme,
   AddressProvince,
   AddressDistrict,
+  AddressNeighbourhood,
   AddressDataSource,
   LocaleDataPack,
 } from "./types";

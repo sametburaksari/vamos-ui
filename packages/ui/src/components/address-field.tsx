@@ -6,10 +6,10 @@ import { cn } from "../lib/cn";
 import { useFieldControl, type ControlA11yProps } from "../lib/field-context";
 import { useLabels } from "../lib/labels";
 import { useLocale } from "../lib/locale";
-import { compareText } from "../lib/text";
+import { compareText, foldText } from "../lib/text";
 import { useControllableState, useLatest } from "../lib/use-controllable-state";
 import { controlVariants } from "../lib/variants";
-import type { AddressDataSource, AddressProvince } from "../locale-data/core/types";
+import type { AddressDataSource, AddressNeighbourhood, AddressProvince } from "../locale-data/core/types";
 import { checkTrPostalCode, trAddress } from "../locale-data/tr/address";
 import { Field, Fieldset, Input } from "./input";
 
@@ -28,7 +28,7 @@ export interface Address {
   region1?: string;
   /** District / city ("Kadıköy", "San Francisco"). */
   region2?: string;
-  /** Neighbourhood (from an app endpoint; not bundled). */
+  /** Neighbourhood / village ("Caferağa Mah."), from a source with a `neighbourhoods` level or typed. */
   region3?: string;
   line1?: string;
   line2?: string;
@@ -56,9 +56,14 @@ const addressLabels = {
   select: "Select…",
   selectProvince: "Select a province",
   selectDistrict: "Select a district",
+  neighbourhood: "Neighbourhood",
+  selectNeighbourhood: "Select a neighbourhood",
   provinceFirst: "Choose a province first",
+  districtFirst: "Choose a district first",
   loading: "Loading…",
+  loadFailed: "Couldn't load the list",
   districtCleared: "District cleared",
+  neighbourhoodCleared: "Neighbourhood cleared",
   postalMismatch: "Postal codes in {province} start with {prefix}",
 };
 export type AddressFieldLabels = typeof addressLabels;
@@ -77,21 +82,33 @@ function displayNames(locale: string) {
  * Formats an address as lines in the country's convention.
  *
  * ```ts
- * formatAddress({ country: "TR", region1: "İstanbul", region2: "Kadıköy", line1: "Caferağa Mah. Moda Cad. No: 12", postalCode: "34710" }, { locale: "en-US" });
+ * formatAddress({ country: "TR", region1: "İstanbul", region2: "Kadıköy", region3: "Caferağa Mah.", line1: "Moda Cad. No: 12", postalCode: "34710" }, { locale: "en-US" });
  * // ["Caferağa Mah. Moda Cad. No: 12", "34710 Kadıköy/İstanbul", "Türkiye"]
  * ```
+ *
+ * Turkish addresses put the neighbourhood in front of the street; when `line1` already names it,
+ * it is not repeated.
  */
 export function formatAddress(a: Address, opts: { locale?: string; includeCountry?: boolean } = {}): string[] {
   const { locale = "en-US", includeCountry = true } = opts;
   const c = a.country?.toUpperCase();
   const join = (...xs: (string | undefined)[]) => xs.filter(Boolean).join(" ");
   let lines: (string | undefined)[];
-  if (c === "TR") lines = [a.line1, a.line2, a.region3, join(a.postalCode, [a.region2, a.region1].filter(Boolean).join("/"))];
+  if (c === "TR") lines = [trStreetLine(a.region3, a.line1), a.line2, join(a.postalCode, [a.region2, a.region1].filter(Boolean).join("/"))];
   else if (US_LIKE.has(c)) lines = [a.line1, a.line2, [a.region2, join(a.region1, a.postalCode)].filter(Boolean).join(", ")];
   else if (c === "GB" || c === "IE") lines = [a.line1, a.line2, a.region2, a.region1, a.postalCode];
   else lines = [a.line1, a.line2, join(a.postalCode, a.region2), a.region1];
   if (includeCountry && c) lines.push(displayNames(locale)?.of(c) ?? c);
   return lines.map((l) => l?.trim()).filter((l): l is string => !!l);
+}
+
+/** "Caferağa Mah." + "Moda Cad. No: 12", skipping the neighbourhood when the street line already has it. */
+function trStreetLine(region3: string | undefined, line1: string | undefined): string | undefined {
+  const n = region3?.trim();
+  if (!n) return line1;
+  if (!line1?.trim()) return n;
+  const bare = n.replace(/\s+(Mah\.?|Mahallesi|Köyü)(\s*\(.*\))?\s*$/iu, "");
+  return foldText(line1, "tr").includes(foldText(bare, "tr")) ? line1 : `${n} ${line1}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -126,10 +143,18 @@ const NativeSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, NativeSel
 /* RegionSelect                                                        */
 /* ------------------------------------------------------------------ */
 
-function useRegions(source: AddressDataSource | undefined, level: "province" | "district", province: string | undefined) {
-  const [state, setState] = React.useState<{ key: string; items: { code: number; name: string }[] | null }>({ key: "", items: null });
+/** One option of a RegionSelect: the stored text, plus the neighbourhood when it is one. */
+export interface RegionOption {
+  value: string;
+  neighbourhood?: AddressNeighbourhood;
+}
+
+type RegionLevel = "province" | "district" | "neighbourhood";
+
+function useRegions(source: AddressDataSource | undefined, level: RegionLevel, province: string | undefined, district?: string) {
+  const [state, setState] = React.useState<{ key: string; items: RegionOption[] | null; failed?: boolean }>({ key: "", items: null });
   const [provinces, setProvinces] = React.useState<AddressProvince[] | null>(null);
-  const key = `${source?.id ?? ""}|${level}|${level === "district" ? province ?? "" : ""}`;
+  const key = `${source?.id ?? ""}|${level}|${level !== "province" ? province ?? "" : ""}|${level === "neighbourhood" ? district ?? "" : ""}`;
   const cmp = React.useMemo(() => compareText(source?.id ?? "en"), [source?.id]);
 
   React.useEffect(() => {
@@ -146,33 +171,47 @@ function useRegions(source: AddressDataSource | undefined, level: "province" | "
   React.useEffect(() => {
     if (!source || !provinces) return;
     let alive = true;
+    const done = (items: RegionOption[]) => alive && setState({ key, items });
+    const fail = () => alive && setState({ key, items: [], failed: true });
     if (level === "province") {
-      setState({ key, items: [...provinces].sort((a, b) => cmp(a.name, b.name)) });
+      done([...provinces].sort((a, b) => cmp(a.name, b.name)).map((p) => ({ value: p.name })));
     } else {
       const p = provinces.find((x) => x.name === province);
-      if (!p) setState({ key, items: [] });
+      if (!p) done([]);
+      else if (level === "district") source.districts(p.code).then((d) => done(d.map((x) => ({ value: x.name }))), fail);
+      else if (!district || !source.neighbourhoods) done([]);
       else
-        source.districts(p.code).then((d) => {
-          if (alive) setState({ key, items: d });
-        });
+        source
+          .districts(p.code)
+          .then((ds) => {
+            const d = ds.find((x) => x.name === district);
+            return d ? source.neighbourhoods!(p.code, d.code) : [];
+          })
+          .then((ns) => done(ns.map((n) => ({ value: n.label, neighbourhood: n }))), fail);
     }
     return () => {
       alive = false;
     };
-  }, [source, provinces, level, province, key, cmp]);
+  }, [source, provinces, level, province, district, key, cmp]);
 
-  return { items: state.key === key ? state.items : null, provinces };
+  const current = state.key === key ? state : null;
+  return { items: current?.items ?? null, failed: !!current?.failed, provinces };
 }
 
 export interface RegionSelectProps extends Omit<NativeSelectProps, "value" | "defaultValue" | "onChange"> {
   /** Region data (e.g. `trAddress` from `@vamos-ui/react/locale-data`). */
   source: AddressDataSource;
-  level: "province" | "district";
-  /** Parent province name, for `level="district"`. */
+  /** `"neighbourhood"` needs a source with a `neighbourhoods` level (`trAddressWithNeighbourhoods`). */
+  level: RegionLevel;
+  /** Parent province name, for `level="district"` and `"neighbourhood"`. */
   province?: string;
+  /** Parent district name, for `level="neighbourhood"`. */
+  district?: string;
   value?: string;
   defaultValue?: string;
   onValueChange?: (name: string) => void;
+  /** Like `onValueChange`, with the picked option (a neighbourhood carries its postal code). */
+  onOptionChange?: (option: RegionOption | null) => void;
   /** First option text. */
   placeholder?: string;
   labels?: Partial<AddressFieldLabels>;
@@ -187,15 +226,26 @@ export interface RegionSelectProps extends Omit<NativeSelectProps, "value" | "de
  * ```
  */
 export const RegionSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, RegionSelectProps>(function RegionSelect(
-  { source, level, province, value, defaultValue, onValueChange, placeholder, labels, disabled, ...rest },
+  { source, level, province, district, value, defaultValue, onValueChange, onOptionChange, placeholder, labels, disabled, ...rest },
   ref,
 ) {
   const t = useLabels("address", addressLabels, labels);
   const [current, setCurrent] = useControllableState<string>({ value, defaultValue: defaultValue ?? "", onChange: onValueChange, name: "RegionSelect" });
-  const { items } = useRegions(source, level, province);
-  const needsParent = level === "district" && !province;
+  const { items, failed } = useRegions(source, level, province, district);
+  const needsProvince = level !== "province" && !province;
+  const needsDistrict = level === "neighbourhood" && !!province && !district;
+  const needsParent = needsProvince || needsDistrict;
   const loading = !needsParent && items === null;
-  const known = items?.some((x) => x.name === current);
+  const known = items?.some((x) => x.value === current);
+  const first = loading
+    ? t("loading")
+    : needsProvince
+      ? t("provinceFirst")
+      : needsDistrict
+        ? t("districtFirst")
+        : failed
+          ? t("loadFailed")
+          : placeholder ?? (level === "province" ? t("selectProvince") : level === "district" ? t("selectDistrict") : t("selectNeighbourhood"));
   return (
     <NativeSelect
       ref={ref}
@@ -204,13 +254,17 @@ export const RegionSelect = /*#__PURE__*/ React.forwardRef<HTMLSelectElement, Re
       disabled={disabled || needsParent || loading}
       aria-busy={loading || undefined}
       data-level={level}
-      onChange={(e) => setCurrent(e.currentTarget.value)}
+      onChange={(e) => {
+        const v = e.currentTarget.value;
+        setCurrent(v);
+        onOptionChange?.(v ? (items?.find((x) => x.value === v) ?? { value: v }) : null);
+      }}
     >
-      <option value="">{loading ? t("loading") : needsParent ? t("provinceFirst") : placeholder ?? (level === "province" ? t("selectProvince") : t("selectDistrict"))}</option>
+      <option value="">{first}</option>
       {current && !known && !loading ? <option value={current}>{current}</option> : null}
       {items?.map((x) => (
-        <option key={x.code} value={x.name}>
-          {x.name}
+        <option key={x.value} value={x.value}>
+          {x.value}
         </option>
       ))}
     </NativeSelect>
@@ -225,13 +279,16 @@ export interface AddressFieldProps extends Omit<React.FieldsetHTMLAttributes<HTM
   value?: Address | null;
   defaultValue?: Address | null;
   onValueChange?: (address: Address) => void;
-  /** Region data per country. Default `{ TR: trAddress }` (81 provinces, 973 districts, lazy). */
+  /**
+   * Region data per country. Default `{ TR: trAddress }` (81 provinces, 973 districts, lazy). A source
+   * with a `neighbourhoods` level (`trAddressWithNeighbourhoods`) adds a neighbourhood picker.
+   */
   sources?: Record<string, AddressDataSource>;
   /** Country list. Default: every country. */
   countries?: string[];
   /** Initial country when there is no value. Default `"TR"` for Turkish locales, else the locale's region. */
   defaultCountry?: string;
-  /** Parts to show, in any order of preference. Default: all except `region3`. */
+  /** Parts to show, in any order of preference. Default: all; `region3` only when the source has neighbourhoods. */
   fields?: AddressPart[];
   /** Parts that are required. */
   required?: AddressPart[];
@@ -249,6 +306,7 @@ export interface AddressFieldProps extends Omit<React.FieldsetHTMLAttributes<HTM
 }
 
 const DEFAULT_FIELDS: AddressPart[] = ["country", "region1", "region2", "line1", "line2", "postalCode"];
+const DEFAULT_FIELDS_WITH_NEIGHBOURHOOD: AddressPart[] = ["country", "region1", "region2", "region3", "line1", "line2", "postalCode"];
 
 /**
  * Structured postal address in a fieldset: country → province → district cascading pickers for
@@ -268,7 +326,7 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
     sources = { TR: trAddress },
     countries,
     defaultCountry,
-    fields = DEFAULT_FIELDS,
+    fields: fieldsProp,
     required = [],
     layout = "grid",
     name,
@@ -293,6 +351,8 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
   });
   const a: Address = { ...address, country: (address?.country || fallbackCountry).toUpperCase() };
   const source = sources[a.country];
+  const fields = fieldsProp ?? (source?.neighbourhoods ? DEFAULT_FIELDS_WITH_NEIGHBOURHOOD : DEFAULT_FIELDS);
+  const autoPostal = React.useRef<string | undefined>(undefined);
   const [announce, setAnnounce] = React.useState("");
   const [postalWarning, setPostalWarning] = React.useState<string | null>(null);
   const { provinces } = useRegions(source, "province", undefined);
@@ -393,8 +453,9 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
             labels={labels}
             autoComplete="address-level2"
             onValueChange={(region2) => {
+              const hadChild = !!source.neighbourhoods && !!latest.current!.region3;
               set({ region2: region2 || undefined, region3: undefined });
-              setAnnounce("");
+              setAnnounce(hadChild ? t("neighbourhoodCleared") : "");
             }}
           />
         ) : (
@@ -403,8 +464,31 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
       </Field>
     ) : null,
     region3: show("region3") ? (
-      <Field key="region3" label={t("city")} name={fname("region3")} required={req("region3")} error={errors?.region3}>
-        <Input size={size} value={a.region3 ?? ""} autoComplete="address-level3" onChange={(e) => set({ region3: e.currentTarget.value || undefined })} />
+      <Field key="region3" label={source || a.country === "TR" ? t("neighbourhood") : t("city")} name={fname("region3")} required={req("region3")} error={errors?.region3}>
+        {source?.neighbourhoods ? (
+          <RegionSelect
+            size={size}
+            source={source}
+            level="neighbourhood"
+            province={a.region1}
+            district={a.region2}
+            value={a.region3 ?? ""}
+            labels={labels}
+            autoComplete="address-level3"
+            onOptionChange={(option) => {
+              const cur = latest.current!;
+              const code = option?.neighbourhood?.postalCode;
+              // Fill the postal code from the neighbourhood unless the visitor typed their own.
+              const fill = code && (!cur.postalCode || cur.postalCode === autoPostal.current);
+              if (fill) autoPostal.current = code;
+              set({ region3: option?.value || undefined, ...(fill ? { postalCode: code } : null) });
+              if (fill) setPostalWarning(null);
+              setAnnounce("");
+            }}
+          />
+        ) : (
+          <Input size={size} value={a.region3 ?? ""} autoComplete="address-level3" onChange={(e) => set({ region3: e.currentTarget.value || undefined })} />
+        )}
       </Field>
     ) : null,
     line1: show("line1") ? (
