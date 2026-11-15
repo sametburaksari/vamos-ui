@@ -8,9 +8,7 @@
     "Product catalogs with cart."
   ],
   "related": [
-    "pricing-table",
-    "site-restaurant-01",
-    "site-spa-01"
+    "pricing-table"
   ],
   "a11y": [
     "Each category is a labelled section; the jump bar is a nav of anchors.",

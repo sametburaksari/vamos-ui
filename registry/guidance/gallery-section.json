@@ -10,8 +10,7 @@
   "related": [
     "gallery",
     "lightbox",
-    "media-text",
-    "site-restaurant-01"
+    "media-text"
   ],
   "a11y": [
     "Every photo has descriptive alt text; the section has a heading.",

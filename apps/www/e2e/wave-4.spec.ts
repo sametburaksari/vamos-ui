@@ -22,7 +22,7 @@ const BLOCKS = [
   "settings-01", "settings-02", "users-roles-01", "form-01",
   "onboarding-01", "onboarding-02",
   "empty-01", "empty-02", "error-404-01", "error-500-01", "maintenance-01", "no-access-01",
-  "site-saas-01", "site-restaurant-01", "site-spa-01", "site-agency-01", "page-pricing-01", "page-contact-01",
+  "site-saas-01", "site-agency-01", "page-pricing-01", "page-contact-01",
   "sections-01",
 ];
 
@@ -409,7 +409,7 @@ test.describe("wave 4 — empty and error states", () => {
 });
 
 test.describe("wave 4 — website pages", () => {
-  for (const name of ["site-saas-01", "site-restaurant-01", "site-spa-01", "site-agency-01", "page-pricing-01", "page-contact-01"]) {
+  for (const name of ["site-saas-01", "site-agency-01", "page-pricing-01", "page-contact-01"]) {
     test(`${name}: the TR link swaps the page language without a reload`, async ({ page }) => {
       const errors = await openBlock(page, name);
       const before = await page.locator("body").innerText();

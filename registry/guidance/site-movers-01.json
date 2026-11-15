@@ -4,8 +4,7 @@
     "Service businesses that want a multi-step quote calculator with a live price range."
   ],
   "avoidWhen": [
-    "Trades selling standard products from a catalogue — use site-wholesale-01.",
-    "Clinics booking appointment slots — use site-physio-01."
+    "Trades selling standard products from a catalogue — use site-wholesale-01."
   ],
   "related": [
     "site-construction-01",

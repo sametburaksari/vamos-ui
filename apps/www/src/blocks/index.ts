@@ -111,8 +111,6 @@ import metaSiteBlog01 from "./site-blog-01/meta";
 import metaSiteBlog02 from "./site-blog-02/meta";
 import metaSiteCareers01 from "./site-careers-01/meta";
 import metaSiteChangelog01 from "./site-changelog-01/meta";
-import metaSiteClinic01 from "./site-clinic-01/meta";
-import metaSiteClinic02 from "./site-clinic-02/meta";
 import metaSiteClub01 from "./site-club-01/meta";
 import metaSiteCommunity01 from "./site-community-01/meta";
 import metaSiteConstruction01 from "./site-construction-01/meta";
@@ -120,7 +118,6 @@ import metaSiteCourse01 from "./site-course-01/meta";
 import metaSiteCv01 from "./site-cv-01/meta";
 import metaSiteDepartment01 from "./site-department-01/meta";
 import metaSiteDevtool01 from "./site-devtool-01/meta";
-import metaSiteDietitian01 from "./site-dietitian-01/meta";
 import metaSiteDigital01 from "./site-digital-01/meta";
 import metaSiteDriving01 from "./site-driving-01/meta";
 import metaSiteEstate01 from "./site-estate-01/meta";
@@ -135,24 +132,19 @@ import metaSiteMarket01 from "./site-market-01/meta";
 import metaSiteMovers01 from "./site-movers-01/meta";
 import metaSiteNewsletter01 from "./site-newsletter-01/meta";
 import metaSiteNonprofit01 from "./site-nonprofit-01/meta";
-import metaSitePhysio01 from "./site-physio-01/meta";
 import metaSitePodcast01 from "./site-podcast-01/meta";
 import metaSitePortfolio01 from "./site-portfolio-01/meta";
 import metaSitePortfolio02 from "./site-portfolio-02/meta";
 import metaSitePreschool01 from "./site-preschool-01/meta";
 import metaSitePublic01 from "./site-public-01/meta";
-import metaSiteRestaurant01 from "./site-restaurant-01/meta";
 import metaSiteSaas01 from "./site-saas-01/meta";
 import metaSiteSaas02 from "./site-saas-02/meta";
-import metaSiteSpa01 from "./site-spa-01/meta";
 import metaSiteStatus01 from "./site-status-01/meta";
 import metaSiteStore01 from "./site-store-01/meta";
 import metaSiteStore02 from "./site-store-02/meta";
 import metaSiteStudio01 from "./site-studio-01/meta";
 import metaSiteSubbox01 from "./site-subbox-01/meta";
-import metaSiteTherapy01 from "./site-therapy-01/meta";
 import metaSiteVenue01 from "./site-venue-01/meta";
-import metaSiteVet01 from "./site-vet-01/meta";
 import metaSiteWaitlist01 from "./site-waitlist-01/meta";
 import metaSiteWedding01 from "./site-wedding-01/meta";
 import metaSiteWholesale01 from "./site-wholesale-01/meta";
@@ -270,8 +262,6 @@ export const blocks: BlockEntry[] = [
   { ...metaSiteBlog02, name: "site-blog-02", load: () => import("./site-blog-02/page") },
   { ...metaSiteCareers01, name: "site-careers-01", load: () => import("./site-careers-01/page") },
   { ...metaSiteChangelog01, name: "site-changelog-01", load: () => import("./site-changelog-01/page") },
-  { ...metaSiteClinic01, name: "site-clinic-01", load: () => import("./site-clinic-01/page") },
-  { ...metaSiteClinic02, name: "site-clinic-02", load: () => import("./site-clinic-02/page") },
   { ...metaSiteClub01, name: "site-club-01", load: () => import("./site-club-01/page") },
   { ...metaSiteCommunity01, name: "site-community-01", load: () => import("./site-community-01/page") },
   { ...metaSiteConstruction01, name: "site-construction-01", load: () => import("./site-construction-01/page") },
@@ -279,7 +269,6 @@ export const blocks: BlockEntry[] = [
   { ...metaSiteCv01, name: "site-cv-01", load: () => import("./site-cv-01/page") },
   { ...metaSiteDepartment01, name: "site-department-01", load: () => import("./site-department-01/page") },
   { ...metaSiteDevtool01, name: "site-devtool-01", load: () => import("./site-devtool-01/page") },
-  { ...metaSiteDietitian01, name: "site-dietitian-01", load: () => import("./site-dietitian-01/page") },
   { ...metaSiteDigital01, name: "site-digital-01", load: () => import("./site-digital-01/page") },
   { ...metaSiteDriving01, name: "site-driving-01", load: () => import("./site-driving-01/page") },
   { ...metaSiteEstate01, name: "site-estate-01", load: () => import("./site-estate-01/page") },
@@ -294,24 +283,19 @@ export const blocks: BlockEntry[] = [
   { ...metaSiteMovers01, name: "site-movers-01", load: () => import("./site-movers-01/page") },
   { ...metaSiteNewsletter01, name: "site-newsletter-01", load: () => import("./site-newsletter-01/page") },
   { ...metaSiteNonprofit01, name: "site-nonprofit-01", load: () => import("./site-nonprofit-01/page") },
-  { ...metaSitePhysio01, name: "site-physio-01", load: () => import("./site-physio-01/page") },
   { ...metaSitePodcast01, name: "site-podcast-01", load: () => import("./site-podcast-01/page") },
   { ...metaSitePortfolio01, name: "site-portfolio-01", load: () => import("./site-portfolio-01/page") },
   { ...metaSitePortfolio02, name: "site-portfolio-02", load: () => import("./site-portfolio-02/page") },
   { ...metaSitePreschool01, name: "site-preschool-01", load: () => import("./site-preschool-01/page") },
   { ...metaSitePublic01, name: "site-public-01", load: () => import("./site-public-01/page") },
-  { ...metaSiteRestaurant01, name: "site-restaurant-01", load: () => import("./site-restaurant-01/page") },
   { ...metaSiteSaas01, name: "site-saas-01", load: () => import("./site-saas-01/page") },
   { ...metaSiteSaas02, name: "site-saas-02", load: () => import("./site-saas-02/page") },
-  { ...metaSiteSpa01, name: "site-spa-01", load: () => import("./site-spa-01/page") },
   { ...metaSiteStatus01, name: "site-status-01", load: () => import("./site-status-01/page") },
   { ...metaSiteStore01, name: "site-store-01", load: () => import("./site-store-01/page") },
   { ...metaSiteStore02, name: "site-store-02", load: () => import("./site-store-02/page") },
   { ...metaSiteStudio01, name: "site-studio-01", load: () => import("./site-studio-01/page") },
   { ...metaSiteSubbox01, name: "site-subbox-01", load: () => import("./site-subbox-01/page") },
-  { ...metaSiteTherapy01, name: "site-therapy-01", load: () => import("./site-therapy-01/page") },
   { ...metaSiteVenue01, name: "site-venue-01", load: () => import("./site-venue-01/page") },
-  { ...metaSiteVet01, name: "site-vet-01", load: () => import("./site-vet-01/page") },
   { ...metaSiteWaitlist01, name: "site-waitlist-01", load: () => import("./site-waitlist-01/page") },
   { ...metaSiteWedding01, name: "site-wedding-01", load: () => import("./site-wedding-01/page") },
   { ...metaSiteWholesale01, name: "site-wholesale-01", load: () => import("./site-wholesale-01/page") },

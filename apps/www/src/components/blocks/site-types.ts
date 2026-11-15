@@ -6,7 +6,7 @@ export const siteTypeGroups = [
   { id: "software", label: "Software & apps", types: ["saas", "app", "ai", "devtool", "changelog", "status", "waitlist", "help"] },
   { id: "commerce", label: "Shops & commerce", types: ["store", "digital", "subbox", "market", "wholesale"] },
   { id: "business", label: "Business & B2B", types: ["agency", "law", "accounting", "factory", "construction", "careers", "estate"] },
-  { id: "local", label: "Local & health", types: ["restaurant", "spa", "clinic", "vet", "autoservice", "preschool", "driving", "movers", "florist", "studio", "venue", "therapy", "dietitian", "physio"] },
+  { id: "local", label: "Local & health", types: ["autoservice", "preschool", "driving", "movers", "florist", "studio", "venue"] },
   { id: "creative", label: "Creative & personal", types: ["portfolio", "cv", "artist", "wedding", "blog", "newsletter", "podcast", "game"] },
   { id: "community", label: "Events & community", types: ["event", "course", "nonprofit", "public", "department", "club", "community"] },
 ] as const;

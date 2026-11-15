@@ -4,8 +4,7 @@
     "Service businesses where the ready-by time and price must update as the customer picks jobs."
   ],
   "avoidWhen": [
-    "A driving school — use site-driving-01.",
-    "A clinic-style appointment booking — use site-clinic-01."
+    "A driving school — use site-driving-01."
   ],
   "related": [
     "multi-step-form",
