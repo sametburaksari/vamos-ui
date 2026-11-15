@@ -1,0 +1,162 @@
+// Built-in strings for the news / magazine site blocks (post cards, modules, ticker, top bar,
+// header, sidebar widgets, ad slots, auth dialog). Server-safe: no context, plain objects that
+// cross the RSC boundary into the client islands. Blocks take `labels`; English is the default.
+
+import { formatMessage } from "../../../lib/message-format";
+
+/** English defaults. */
+export const newsLabels = {
+  // Card metadata
+  by: "By {name}",
+  minRead: "{count} min read",
+  comments: "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
+  commentsShort: "{count}",
+  updated: "Updated {date}",
+  video: "Video",
+  gallery: "Gallery",
+  live: "Live",
+  // Modules
+  viewAll: "View all",
+  more: "More",
+  moreTopics: "More topics",
+  all: "All",
+  loading: "Loading…",
+  emptyModule: "No stories here yet.",
+  previousPage: "Previous page",
+  nextPage: "Next page",
+  pageOf: "Page {page} of {total}",
+  pagination: "Pagination",
+  slideOf: "{index} of {total}",
+  // Ticker
+  trendingNow: "Trending now",
+  previousHeadline: "Previous headline",
+  nextHeadline: "Next headline",
+  pauseHeadlines: "Pause headlines",
+  playHeadlines: "Play headlines",
+  headlineOf: "Headline {index} of {total}",
+  // Ads
+  advertisement: "Advertisement",
+  adConsent: "Ads appear once you allow marketing cookies.",
+  adSize: "{width} × {height}",
+  // Sidebar
+  followers: "{count} followers",
+  follow: "Follow",
+  followOn: "Follow us on {network}",
+  commentOn: "{name} on {title}",
+  postsInCategory: "{count, plural, one {# story} other {# stories}}",
+  // Top bar / header
+  today: "Today",
+  weather: "{temp}° {condition} in {place}",
+  weatherShort: "{temp}°",
+  signIn: "Sign in",
+  join: "Join",
+  signInOrJoin: "Sign in / Join",
+  account: "Account",
+  search: "Search",
+  searchPlaceholder: "Search stories, topics, writers",
+  closeSearch: "Close search",
+  sections: "Sections",
+  mainNav: "Main",
+  menu: "Menu",
+  storiesIn: "Latest in {category}",
+  // Auth dialog
+  signInTitle: "Welcome back",
+  signInLead: "Sign in to comment, save stories and manage your newsletters.",
+  email: "Email",
+  password: "Password",
+  rememberMe: "Keep me signed in",
+  forgotPassword: "Forgot your password?",
+  noAccount: "New here?",
+  createAccount: "Create a free account",
+  recoverTitle: "Reset your password",
+  recoverLead: "Enter the email you signed up with. We’ll send a link to choose a new password.",
+  sendResetLink: "Send reset link",
+  backToSignIn: "Back to sign in",
+  recoverSent: "If an account exists for {email}, a reset link is on its way. Check your inbox.",
+  signingIn: "Signing in…",
+  sending: "Sending…",
+  errorRequired: "Required",
+  errorEmail: "Enter a valid email address",
+  errorGeneric: "Something went wrong. Try again in a moment.",
+};
+
+export type NewsLabels = typeof newsLabels;
+export type NewsBlockLabels = Partial<NewsLabels>;
+export type NewsKey = keyof NewsLabels;
+export type NewsText = (key: NewsKey, vars?: Record<string, unknown>) => string;
+
+/** Turkish. */
+export const newsLabelsTr: NewsLabels = {
+  by: "{name}",
+  minRead: "{count} dk okuma",
+  comments: "{count, plural, =0 {Yorum yok} other {# yorum}}",
+  commentsShort: "{count}",
+  updated: "Güncellendi: {date}",
+  video: "Video",
+  gallery: "Galeri",
+  live: "Canlı",
+  viewAll: "Tümünü gör",
+  more: "Daha fazla",
+  moreTopics: "Diğer konular",
+  all: "Tümü",
+  loading: "Yükleniyor…",
+  emptyModule: "Burada henüz haber yok.",
+  previousPage: "Önceki sayfa",
+  nextPage: "Sonraki sayfa",
+  pageOf: "Sayfa {page} / {total}",
+  pagination: "Sayfalama",
+  slideOf: "{index} / {total}",
+  trendingNow: "Gündemde",
+  previousHeadline: "Önceki başlık",
+  nextHeadline: "Sonraki başlık",
+  pauseHeadlines: "Başlıkları durdur",
+  playHeadlines: "Başlıkları oynat",
+  headlineOf: "Başlık {index} / {total}",
+  advertisement: "Reklam",
+  adConsent: "Reklamlar pazarlama çerezlerine izin verdiğinizde görünür.",
+  adSize: "{width} × {height}",
+  followers: "{count} takipçi",
+  follow: "Takip et",
+  followOn: "{network} hesabımızı takip edin",
+  commentOn: "{name}, {title} hakkında",
+  postsInCategory: "{count} haber",
+  today: "Bugün",
+  weather: "{place} {temp}° {condition}",
+  weatherShort: "{temp}°",
+  signIn: "Giriş yap",
+  join: "Üye ol",
+  signInOrJoin: "Giriş / Üye ol",
+  account: "Hesap",
+  search: "Ara",
+  searchPlaceholder: "Haber, konu veya yazar arayın",
+  closeSearch: "Aramayı kapat",
+  sections: "Bölümler",
+  mainNav: "Ana menü",
+  menu: "Menü",
+  storiesIn: "{category} bölümünden son haberler",
+  signInTitle: "Tekrar hoş geldiniz",
+  signInLead: "Yorum yapmak, haber kaydetmek ve bültenlerinizi yönetmek için giriş yapın.",
+  email: "E-posta",
+  password: "Şifre",
+  rememberMe: "Oturumum açık kalsın",
+  forgotPassword: "Şifrenizi mi unuttunuz?",
+  noAccount: "Yeni misiniz?",
+  createAccount: "Ücretsiz hesap oluşturun",
+  recoverTitle: "Şifrenizi sıfırlayın",
+  recoverLead: "Kayıt olduğunuz e-posta adresini girin; yeni şifre belirlemeniz için bir bağlantı gönderelim.",
+  sendResetLink: "Sıfırlama bağlantısı gönder",
+  backToSignIn: "Girişe dön",
+  recoverSent: "{email} adresine kayıtlı bir hesap varsa sıfırlama bağlantısı yolda. Gelen kutunuzu kontrol edin.",
+  signingIn: "Giriş yapılıyor…",
+  sending: "Gönderiliyor…",
+  errorRequired: "Zorunlu alan",
+  errorEmail: "Geçerli bir e-posta adresi girin",
+  errorGeneric: "Bir sorun oluştu. Birazdan tekrar deneyin.",
+};
+
+/** Label lookup (server or client): `labels` prop → English. */
+export function newsText(labels: NewsBlockLabels | Record<string, unknown> | undefined, locale = "en-US"): NewsText {
+  const merged: Record<string, string> = { ...newsLabels };
+  if (labels) for (const [k, v] of Object.entries(labels)) if (typeof v === "string") merged[k] = v;
+  return (key, vars) => formatMessage(merged[key] ?? String(key), vars, locale);
+}
