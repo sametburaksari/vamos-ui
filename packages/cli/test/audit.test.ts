@@ -5,7 +5,9 @@ import {
   analyzePage,
   formatAuditText,
   isAllowed,
+  isLocalPreviewHost,
   isPlaceholderPhone,
+  LOCAL_PREVIEW_NOTE,
   pageIssues,
   parseRobots,
   parseSitemap,
@@ -274,6 +276,56 @@ describe("runAudit", () => {
     const report = await runAudit("https://yavas.test/", { fetch: slow, deadlineMs: 50, hostVariants: false });
     expect(report.durationMs).toBeLessThan(2000);
     expect(report.issues.some((i) => i.rule === "truncated")).toBe(true);
+  });
+});
+
+describe("local preview", () => {
+  it("knows the preview hosts", () => {
+    for (const h of ["localhost", "127.0.0.1", "127.1.2.3", "[::1]", "0.0.0.0", "kuzey.localhost", "kuzeycicek.test", "LOCALHOST."]) expect(isLocalPreviewHost(h), h).toBe(true);
+    for (const h of ["ornek.com.tr", "example.com", "testing.com", "localhost.example.com", "128.0.0.1", "10.0.0.1"]) expect(isLocalPreviewHost(h), h).toBe(false);
+  });
+
+  /** `next start` on a port: plain http, no security headers, canonical and sitemap on the live host. */
+  const preview = (origin: string, live: string): Record<string, Route> => {
+    const head = GOOD_HEAD.replace(/https:\/\/lavanta\.test/g, live);
+    return {
+      [`${origin}/`]: { body: head + body(`<h1>Ekşi maya fırını</h1><p>${words}</p>`) },
+      [`${origin}/robots.txt`]: { body: `User-agent: *\nAllow: /\n\nSitemap: ${live}/sitemap.xml\n`, headers: { "content-type": "text/plain" } },
+      [`${origin}/sitemap.xml`]: { body: `<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${live}/</loc></url></urlset>`, headers: { "content-type": "application/xml" } },
+      [`${origin}/llms.txt`]: { body: "# Fırın Lavanta\n", headers: { "content-type": "text/plain" } },
+      [`${origin}/gizlilik`]: { body: page("Gizlilik — Fırın Lavanta") },
+      [`${origin}/kvkk`]: { body: page("KVKK — Fırın Lavanta") },
+      [`${origin}/cerez-politikasi`]: { body: page("Çerez politikası — Fırın Lavanta") },
+      [`${origin}/logo.png`]: { headers: { "content-type": "image/png", "content-length": "12000" } },
+    };
+  };
+  const hostRules = ["no-https", "security-headers", "canonical", "sitemap", "http-not-redirected"];
+
+  it("reports https, security headers and live-host URLs as info with a note, so the score reflects the site", async () => {
+    const report = await runAudit("http://localhost:4321/", { fetch: fakeSite(preview("http://localhost:4321", "https://lavanta.test")) });
+    expect(report.localPreview).toBe(true);
+    const host = report.issues.filter((i) => hostRules.includes(i.rule));
+    expect([...new Set(host.map((i) => i.rule))].sort()).toEqual(["canonical", "no-https", "security-headers", "sitemap"]);
+    for (const i of host) {
+      expect(i.severity, i.rule).toBe("info");
+      expect(i.message, i.rule).toContain(LOCAL_PREVIEW_NOTE);
+    }
+    expect(LOCAL_PREVIEW_NOTE).toContain("vamos-ui site check");
+    expect(report.summary.errors).toBe(0);
+    expect(report.issues.filter((i) => i.severity !== "info")).toEqual([]);
+    expect(report.score).toBe(100);
+    expect(formatAuditText(report)).toContain("Local preview");
+  });
+
+  it("live URLs behave as before, and site check can force live rules on any host", async () => {
+    const live = await runAudit("http://ornek.com.tr/", { fetch: fakeSite(preview("http://ornek.com.tr", "https://lavanta.test")), hostVariants: false });
+    expect(live.localPreview).toBe(false);
+    const sev = (r: typeof live, rule: string) => r.issues.find((i) => i.rule === rule)?.severity;
+    expect([sev(live, "no-https"), sev(live, "canonical"), sev(live, "sitemap")]).toEqual(["error", "warning", "warning"]);
+    expect(live.issues.some((i) => i.message.includes(LOCAL_PREVIEW_NOTE))).toBe(false);
+
+    const forced = await runAudit("http://127.0.0.1:4321/", { fetch: fakeSite(preview("http://127.0.0.1:4321", "https://lavanta.test")), localPreview: false });
+    expect([sev(forced, "no-https"), sev(forced, "canonical"), sev(forced, "sitemap")]).toEqual(["error", "warning", "warning"]);
   });
 });
 

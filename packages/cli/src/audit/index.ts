@@ -72,11 +72,28 @@ export interface AuditOptions {
   guard?: (url: URL) => void | Promise<void>;
   /** Also request the http:// and www/non-www variants of the start URL (default true). */
   hostVariants?: boolean;
+  /**
+   * Treat the URL as a local preview (default: detected from the host — localhost, 127.x, ::1,
+   * *.localhost, *.test). On a preview, https, security headers and canonical/sitemap URLs on the
+   * live host are info: they depend on the hosting and are checked again after deploy.
+   */
+  localPreview?: boolean;
+}
+
+/** Appended to findings that a local preview cannot pass and the deployed site is checked for. */
+export const LOCAL_PREVIEW_NOTE = "Local preview — checked again after deploy (`vamos-ui site check`).";
+
+/** localhost, 127.0.0.0/8, ::1, 0.0.0.0, *.localhost and *.test (RFC 6761 names that never resolve publicly). */
+export function isLocalPreviewHost(hostname: string): boolean {
+  const h = hostname.toLowerCase().replace(/^\[|\]$/g, "").replace(/\.$/, "");
+  return h === "localhost" || h.endsWith(".localhost") || h.endsWith(".test") || h === "::1" || h === "0.0.0.0" || /^127(?:\.\d{1,3}){3}$/.test(h);
 }
 
 export interface AuditReport {
   url: string;
   finalUrl: string;
+  /** True when the URL is a local preview (see AuditOptions.localPreview). */
+  localPreview: boolean;
   startedAt: string;
   durationMs: number;
   score: number;
@@ -237,7 +254,7 @@ function key(url: string): string {
 }
 
 /** Checks that need only one page's HTML. `start` adds the site-wide head checks. */
-export function pageIssues(facts: PageFacts, start: boolean): AuditIssue[] {
+export function pageIssues(facts: PageFacts, start: boolean, opts: { localPreview?: boolean } = {}): AuditIssue[] {
   const issues: AuditIssue[] = [];
   const url = facts.url;
   const push = (rule: string, message: string, severity: AuditSeverity = AUDIT_RULES[rule]?.severity ?? "warning") =>
@@ -259,7 +276,10 @@ export function pageIssues(facts: PageFacts, start: boolean): AuditIssue[] {
       const c = new URL(facts.canonical);
       const p = new URL(url);
       const norm = (u: URL) => `${u.host}${u.pathname.replace(/\/+$/, "")}`;
-      if (c.host !== p.host) push("canonical", `Canonical points to another host: ${facts.canonical}.`);
+      if (c.host !== p.host) {
+        if (opts.localPreview) push("canonical", `Canonical points to another host: ${facts.canonical}. ${LOCAL_PREVIEW_NOTE}`, "info");
+        else push("canonical", `Canonical points to another host: ${facts.canonical}.`);
+      }
       else if (norm(c) !== norm(p) && !p.search) push("canonical", `Canonical points elsewhere: ${facts.canonical} (this page is ${url}).`, start ? "warning" : "info");
     } catch {
       push("canonical", `Canonical "${facts.canonical}" is not a valid URL.`);
@@ -401,9 +421,11 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
   let truncated = false;
 
   const url = normalizeAuditUrl(input);
+  const local = options.localPreview ?? isLocalPreviewHost(new URL(url).hostname);
   const report: AuditReport = {
     url,
     finalUrl: url,
+    localPreview: local,
     startedAt: new Date(startedMs).toISOString(),
     durationMs: 0,
     score: 0,
@@ -452,7 +474,10 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
   report.fetch.compression = headers.get("content-encoding");
   if (start.status >= 400) push("http-status", `The start page returned HTTP ${start.status}.`, finalUrl);
   else if (start.status !== 200) push("http-status", `The start page returned HTTP ${start.status}.`, finalUrl, "warning");
-  if (!report.fetch.https) push("no-https", `The site ends up on ${finalUrl} without TLS.`, finalUrl);
+  if (!report.fetch.https) {
+    if (local) push("no-https", `The preview is served over plain http (${finalUrl}). ${LOCAL_PREVIEW_NOTE}`, finalUrl, "info");
+    else push("no-https", `The site ends up on ${finalUrl} without TLS.`, finalUrl);
+  }
   if (start.chain.length > 2) push("redirect-chain", `${plural(start.chain.length, "redirect")} before the page: ${[...start.chain.map((c) => `${c.url} (${c.status})`), finalUrl].join(" → ")}.`, url);
   if (start.ms > 3000) push("slow-response", `The start page took ${(start.ms / 1000).toFixed(1)} s to load (HTML only).`, finalUrl, start.ms > 6000 ? "error" : "warning");
   if (start.bytes > 500 * 1024) push("page-weight", `The HTML is ${kb(start.bytes)}; over 500 KB slows the first paint on mobile.`, finalUrl);
@@ -465,7 +490,7 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
   };
   report.fetch.securityHeaders = sec;
   const missingSec = Object.keys(sec).filter((k) => !sec[k]);
-  if (missingSec.length) push("security-headers", `Not set: ${missingSec.join(", ")}.`, finalUrl);
+  if (missingSec.length) push("security-headers", `Not set: ${missingSec.join(", ")}.${local ? ` ${LOCAL_PREVIEW_NOTE}` : ""}`, finalUrl);
   const xRobots = headers.get("x-robots-tag");
   if (xRobots && /\bnoindex\b/i.test(xRobots)) push("noindex", `X-Robots-Tag header is "${xRobots}".`, finalUrl);
 
@@ -474,7 +499,7 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
   let startFacts: PageFacts | null = null;
   if (start.body !== null && (/html/i.test(contentType) || /^\s*</.test(start.body))) {
     startFacts = analyzePage(start.body, finalUrl);
-    issues.push(...pageIssues(startFacts, true));
+    issues.push(...pageIssues(startFacts, true, { localPreview: local }));
     report.head = {
       lang: startFacts.lang,
       title: startFacts.title,
@@ -501,7 +526,8 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
       const r = await request(plain.href, "HEAD", { ...http, maxRedirects: 0 });
       if (r.chain.length) report.fetch.httpRedirectsToHttps = /^https:/i.test(r.finalUrl);
       else if (r.status) report.fetch.httpRedirectsToHttps = false;
-      if (report.fetch.httpRedirectsToHttps === false) push("http-not-redirected", `${plain.href} ${r.status ? `answers ${r.status} without redirecting` : "does not redirect"} to https.`, plain.href);
+      if (report.fetch.httpRedirectsToHttps === false)
+        push("http-not-redirected", `${plain.href} ${r.status ? `answers ${r.status} without redirecting` : "does not redirect"} to https.${local ? ` ${LOCAL_PREVIEW_NOTE}` : ""}`, plain.href, local ? "info" : undefined);
     }
     const alt = new URL(finalUrl);
     const twin = alternateHost(alt.hostname);
@@ -568,7 +594,10 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
         return true;
       }
     });
-    if (foreign.length) push("sitemap", `${plural(foreign.length, "sitemap URL")} on another host or protocol, e.g. ${foreign[0]}.`, sitemapUrl);
+    if (foreign.length) {
+      if (local) push("sitemap", `${plural(foreign.length, "sitemap URL")} on the live host, e.g. ${foreign[0]}. ${LOCAL_PREVIEW_NOTE}`, sitemapUrl, "info");
+      else push("sitemap", `${plural(foreign.length, "sitemap URL")} on another host or protocol, e.g. ${foreign[0]}.`, sitemapUrl);
+    }
   } else {
     report.files.sitemap = { url: sitemapUrl, found: false, valid: false, kind: null, urls: 0 };
     push("sitemap", `No sitemap at ${sitemapUrl} (${sm.status ? `HTTP ${sm.status}` : sm.error}).`, sitemapUrl);
@@ -651,7 +680,7 @@ export async function runAudit(input: string, options: AuditOptions = {}): Promi
           if (r.status === 200 && r.body !== null && /html/i.test(type) && sameOrigin(r.finalUrl) && !dup) {
             if (finalKey !== u) pages.set(finalKey, rec);
             rec.facts = analyzePage(r.body, r.finalUrl);
-            issues.push(...pageIssues(rec.facts, false));
+            issues.push(...pageIssues(rec.facts, false, { localPreview: local }));
             collect(rec.facts);
           }
         })().finally(() => {
@@ -795,6 +824,7 @@ export function formatAuditText(report: AuditReport, opts: { maxPerRule?: number
   const { errors, warnings, info } = report.summary;
   lines.push(`Audit of ${report.finalUrl}${report.finalUrl !== report.url ? ` (from ${report.url})` : ""}`);
   lines.push(`Score ${report.score}/100 · ${plural(errors, "error")}, ${plural(warnings, "warning")}, ${info} info · ${plural(report.crawl.pages.length, "page")} crawled, ${report.crawl.linksChecked} links and ${report.crawl.imagesChecked} images checked in ${(report.durationMs / 1000).toFixed(1)} s`);
+  if (report.localPreview) lines.push("Local preview: https, security headers and URLs on the live host are info here; `vamos-ui site check` checks them after deploy.");
   if (report.fetch.status) {
     lines.push(`HTTP ${report.fetch.status} in ${report.fetch.timeMs} ms, ${kb(report.fetch.htmlBytes)} HTML${report.fetch.compression ? ` (${report.fetch.compression})` : " (uncompressed)"}${report.fetch.redirects.length ? `, ${plural(report.fetch.redirects.length, "redirect")}` : ""}`);
   }
