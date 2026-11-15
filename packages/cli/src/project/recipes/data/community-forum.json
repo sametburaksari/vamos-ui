@@ -66,11 +66,12 @@
           "id": "latest",
           "purpose": "The latest topics, each row with participants, replies, views, a 14-day activity sparkline and time since the last post.",
           "use": [
-            "list-01",
+            "topic-list",
             "sparkline",
             "avatar"
           ],
           "alternatives": [
+            "list-01: a whole list page with filters and bulk actions",
             "data-table: a staff-facing moderation view"
           ],
           "fields": [
@@ -138,12 +139,12 @@
           "id": "list",
           "purpose": "The topic list with a category rail (deep-linkable), the four sort orders and pagination.",
           "use": [
-            "list-01",
-            "sparkline",
+            "topic-list",
             "pagination"
           ],
           "alternatives": [
-            "filter-bar: many tags and filters beyond categories"
+            "filter-bar: many tags and filters beyond categories",
+            "sparkline: a per-topic activity bar beside the counts"
           ],
           "fields": [
             "Categories",

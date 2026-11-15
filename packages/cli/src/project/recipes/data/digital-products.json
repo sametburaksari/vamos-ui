@@ -64,6 +64,7 @@
           "id": "newsletter",
           "purpose": "Sign-up for new releases and updates.",
           "use": ["cta"],
+          "alternatives": ["email-capture: a compact signup inside another section or a sidebar"],
           "fields": ["What is sent and how often", "Consent text"],
           "when": { "any": ["newsletter"] }
         }

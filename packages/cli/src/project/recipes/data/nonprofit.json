@@ -152,6 +152,9 @@
           "use": [
             "cta"
           ],
+          "alternatives": [
+            "email-capture: a compact signup inside another section"
+          ],
           "fields": [
             "What subscribers receive and how often"
           ],

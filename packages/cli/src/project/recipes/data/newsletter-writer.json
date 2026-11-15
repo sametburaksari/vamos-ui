@@ -22,7 +22,8 @@
         {
           "id": "nameplate",
           "purpose": "A newspaper-style nameplate with the promise, the subscribe form and the reader count, beside the latest letter.",
-          "use": ["hero", "form-01"],
+          "use": ["hero", "email-capture"],
+          "alternatives": ["form-01: a custom form when readers also choose a cadence (every letter / monthly digest)"],
           "fields": ["Newsletter name", "One-line promise", "Cadence options (every letter / monthly digest)", "Reader count (if true and current)", "Latest letter: number, date, title, first paragraph"],
           "notes": "Email field with a typo hint for common domains linked to the input (aria-describedby); after submit show the double opt-in step in a role=\"status\" region with the address to check and an undo. The latest letter shows its opening with a drop cap and a 'continue reading' link."
         },
@@ -80,8 +81,8 @@
         {
           "id": "subscribe",
           "purpose": "The subscribe card beside the results.",
-          "use": ["form-01"],
-          "alternatives": ["cta: a plain subscribe band"],
+          "use": ["email-capture"],
+          "alternatives": ["form-01: with cadence options", "cta: a plain subscribe band"],
           "fields": ["Cadence options"]
         }
       ]
@@ -101,8 +102,8 @@
         {
           "id": "subscribe",
           "purpose": "Subscribe card at the end of the letter.",
-          "use": ["form-01"],
-          "alternatives": ["cta: a plain band linking to the home form"],
+          "use": ["email-capture"],
+          "alternatives": ["form-01: with cadence options", "cta: a plain band linking to the home form"],
           "fields": ["Cadence options"]
         },
         {
