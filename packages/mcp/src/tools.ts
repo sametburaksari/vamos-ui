@@ -398,7 +398,11 @@ export async function planScreen(registry: Registry, args: { description: string
   const blocks = items.filter((item) => item.type === "block" && !/^site-/.test(item.name));
   const recipes = await loadRecipes();
   const recipeHits = recipes ? recipes.matchRecipes(description, recipes.RECIPES) : [];
-  const siteLike = topCategory === "Website pages" || topCategory === "Marketing sections" || (!topCategory && recipeHits.length > 0);
+  // A website is meant when website words score at least as high as any other category (so
+  // "a website with a guest form" stays a website), or when only a recipe matched.
+  const webScore = Math.max(categoryScores.get("Website pages") ?? 0, categoryScores.get("Marketing sections") ?? 0);
+  const topScore = topCategory ? (categoryScores.get(topCategory) ?? 0) : 0;
+  const siteLike = (webScore > 0 && webScore >= topScore) || (!topCategory && recipeHits.length > 0);
   const recipe = siteLike ? recipeHits[0]?.recipe : undefined;
   const blockHits = new Map(rankItems(description, blocks, details, "any").map((hit) => [hit.item.name, hit.score]));
   const rankedBlocks = blocks

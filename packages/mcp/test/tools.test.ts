@@ -172,6 +172,12 @@ describe("plan_screen", () => {
     expect(out).toMatch(/npx vamos-ui add list-01 date-range-picker/);
   });
 
+  it("keeps a website with a form on its recipe", async () => {
+    const out = await planScreen(registry, { description: "Website for a podcast with episodes, guest suggestion form and listen links" });
+    expect(out).toMatch(/## Recipe: Podcast \(`podcast`\)/);
+    expect(out).not.toMatch(/\*\*`legal-01`\*\*/);
+  });
+
   it("adds the website launch checklist for website screens only", async () => {
     const site = await planScreen(registry, { description: "Podcast website with episode pages and a newsletter" });
     expect(site).toMatch(/## Recipe: Podcast \(`podcast`\)/);
