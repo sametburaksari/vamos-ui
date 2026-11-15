@@ -7,10 +7,10 @@ export interface Legal01Props {
   doc?: LegalDoc;
   /**
    * A ready template: privacy, kvkk, cookies, terms, accessibility, returns, distance-sales,
-   * pre-information or legal-notice. Default "privacy".
+   * pre-information, legal-notice, withdrawal or do-not-sell. Default "privacy".
    */
   preset?: LegalKind;
-  /** Language of the preset and the page chrome. Default "en" ("tr" for kvkk). */
+  /** Language of the preset and the page chrome: en, tr, de or fr (a kind without that language falls back to English). Default "en" ("tr" for kvkk). */
   locale?: LegalLocale;
   /** The "template text, review before publishing" notice. Default true. */
   notice?: boolean;
@@ -25,7 +25,8 @@ export interface Legal01Props {
  * Long-form legal page for a website footer link (/privacy, /kvkk, /cookies, /terms,
  * /accessibility, /returns, /mesafeli-satis-sozlesmesi, /on-bilgilendirme-formu, /yasal-uyari): title and last-updated date, a review notice, table of contents and sections,
  * driven by one typed content object. Presets are template text with [fill-in] fields in brackets;
- * the business or its lawyer must review them before the page is published. EN / TR.
+ * the business or its lawyer must review them before the page is published. EN / TR, plus DE / FR
+ * for Impressum, Datenschutzerklärung, Widerrufsbelehrung, mentions légales and rétractation.
  *
  * ```tsx
  * // app/kvkk/page.tsx

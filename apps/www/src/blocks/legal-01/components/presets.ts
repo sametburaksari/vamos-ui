@@ -1036,22 +1036,502 @@ const legalNoticeTr: LegalDoc = {
   ],
 };
 
-/** Every preset by kind and language. English first, Turkish second. */
-export const legalPresets: Record<LegalKind, Record<LegalLocale, LegalDoc>> = {
-  privacy: { en: privacyEn, tr: privacyTr },
+/*
+ * German and French presets, and the pages some countries add: the EU right of withdrawal (with
+ * the model withdrawal form) and the California "Do Not Sell or Share" page. The withdrawal texts
+ * follow the statutory models (Directive 2011/83/EU Annex I; EGBGB Anlage 1 and 2; Code de la
+ * consommation, annexe à l'article R221-1); the others are templates or, where marked
+ * "[Structure only]", the required headings with the fields to fill. None of them is legal advice.
+ */
+
+const legalNoticeDe: LegalDoc = {
+  kind: "legal-notice",
+  title: "Impressum",
+  summary: "Angaben zum Anbieter von [Website-Adresse] nach [Rechtsgrundlage: § 5 DDG (Deutschland) / § 5 ECG und § 25 MedienG (Österreich) / Art. 3 Abs. 1 lit. s UWG (Schweiz)].",
+  updated: "[JJJJ-MM-TT]",
+  sections: [
+    {
+      id: "anbieter",
+      title: "Anbieter",
+      body: [
+        {
+          list: [
+            "[Vollständiger Name / Firma] ([Rechtsform])",
+            "Anschrift: [Anschrift]",
+            "Vertreten durch: [Vertretungsberechtigte Person]",
+            "[Nur bei Kapitalangaben: Stamm- bzw. Grundkapital und ggf. ausstehende Einlagen. Sonst löschen.]",
+          ],
+        },
+      ],
+    },
+    {
+      id: "kontakt",
+      title: "Kontakt",
+      body: ["E-Mail: [E-Mail-Adresse]. Telefon: [Telefonnummer]. [Weitere schnelle Kontaktmöglichkeit, z. B. Kontaktformular.]"],
+    },
+    {
+      id: "register",
+      title: "Registereintrag und Umsatzsteuer",
+      body: [
+        {
+          list: [
+            "Registergericht und Registernummer: [Registergericht], [Handelsregisternummer]",
+            "Umsatzsteuer-Identifikationsnummer: [USt-IdNr.] (bzw. Wirtschafts-Identifikationsnummer, falls vorhanden)",
+            "[Bei zulassungspflichtiger Tätigkeit: zuständige Aufsichtsbehörde. Sonst löschen.]",
+            "[Bei reglementierten Berufen: Kammer, gesetzliche Berufsbezeichnung und Staat der Verleihung, berufsrechtliche Regelungen und wo sie zugänglich sind. Sonst löschen.]",
+            "[Bei Gesellschaften in Abwicklung oder Liquidation: Hinweis darauf. Sonst löschen.]",
+          ],
+        },
+      ],
+    },
+    {
+      id: "verbraucherstreitbeilegung",
+      title: "Verbraucherstreitbeilegung",
+      body: ["[Angabe, ob Sie bereit oder verpflichtet sind, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen, und ggf. Name, Anschrift und Website der zuständigen Stelle (§ 36 VSBG). Unternehmen mit höchstens zehn Beschäftigten müssen die Bereitschaft nicht angeben.]"],
+    },
+    {
+      id: "inhaltlich-verantwortlich",
+      title: "Verantwortlich für den Inhalt",
+      body: ["[Nur bei journalistisch-redaktionellen Inhalten: Name und Anschrift der verantwortlichen Person (§ 18 Abs. 2 MStV). Österreich: Offenlegung nach § 25 MedienG (Medieninhaber, Sitz, Unternehmensgegenstand). Sonst löschen.]"],
+    },
+  ],
+};
+
+const privacyDe: LegalDoc = {
+  kind: "privacy",
+  title: "Datenschutzerklärung",
+  summary: "Wie [Firmenname] personenbezogene Daten verarbeitet, wenn Sie [Website-Adresse] nutzen oder uns kontaktieren (Art. 13 DSGVO).",
+  updated: "[JJJJ-MM-TT]",
+  sections: [
+    {
+      id: "verantwortlicher",
+      title: "Verantwortlicher",
+      body: [
+        "Verantwortlich für die Datenverarbeitung auf dieser Website ist [Vollständiger Name / Firma], [Anschrift], E-Mail: [Datenschutz-E-Mail], Telefon: [Telefonnummer].",
+        "[Falls benannt: Kontaktdaten der/des Datenschutzbeauftragten. Sonst löschen.]",
+      ],
+    },
+    {
+      id: "verarbeitungen",
+      title: "Welche Daten wir verarbeiten, wozu und auf welcher Rechtsgrundlage",
+      body: [
+        {
+          list: [
+            "Server-Logfiles (IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Browser): für den sicheren Betrieb der Website; Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse); Speicherdauer [7 Tage].",
+            "Kontaktformular, E-Mail, Telefon: Name, Kontaktdaten und Ihre Nachricht, um Ihre Anfrage zu beantworten; Art. 6 Abs. 1 lit. b DSGVO (Vertrag oder vorvertragliche Maßnahmen) bzw. lit. f; Speicherdauer [12 Monate nach dem letzten Kontakt].",
+            "Bestellungen: Name, Anschrift, Bestell- und Zahlungsdaten zur Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) und zur Erfüllung handels- und steuerrechtlicher Aufbewahrungspflichten (Art. 6 Abs. 1 lit. c DSGVO); Kartendaten verarbeitet [Zahlungsdienstleister], nicht wir.",
+            "Cookies und ähnliche Technologien: technisch notwendige nach § 25 Abs. 2 TDDDG; alle anderen (z. B. [Analyse-Tool]) nur mit Ihrer Einwilligung nach § 25 Abs. 1 TDDDG und Art. 6 Abs. 1 lit. a DSGVO. Details in der Cookie-Richtlinie.",
+            "Newsletter: nur mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), jederzeit über den Abmeldelink widerrufbar. [Sonst löschen.]",
+          ],
+        },
+      ],
+    },
+    {
+      id: "empfaenger",
+      title: "Empfänger",
+      body: ["Wir geben Daten nur an Dienstleister weiter, die sie in unserem Auftrag verarbeiten (Art. 28 DSGVO): [Hosting-Anbieter] (Hosting), [E-Mail-Anbieter] (E-Mail), [Zahlungsdienstleister] (Zahlung), [Analyse-Tool] (Analyse, mit Einwilligung). Eine Weitergabe an Behörden erfolgt nur bei gesetzlicher Pflicht."],
+    },
+    {
+      id: "drittlaender",
+      title: "Übermittlung in Drittländer",
+      body: ["[Falls Dienstleister Daten außerhalb des EWR verarbeiten: welche, in welches Land und auf welcher Grundlage (Angemessenheitsbeschluss, z. B. EU-U.S. Data Privacy Framework, oder Standardvertragsklauseln). Sonst: „Eine Übermittlung in Drittländer findet nicht statt.“]"],
+    },
+    {
+      id: "speicherdauer",
+      title: "Speicherdauer",
+      body: ["Wir löschen Daten, sobald der Zweck entfällt und keine gesetzliche Aufbewahrungspflicht besteht (z. B. [6 bzw. 10 Jahre] für Handels- und Steuerunterlagen nach HGB und AO)."],
+    },
+    {
+      id: "ihre-rechte",
+      title: "Ihre Rechte",
+      body: [
+        "Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21). Eine Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3).",
+        "Schreiben Sie dazu an [Datenschutz-E-Mail]. Sie können sich außerdem bei einer Datenschutz-Aufsichtsbehörde beschweren (Art. 77 DSGVO), z. B. bei [Zuständige Aufsichtsbehörde].",
+      ],
+    },
+    {
+      id: "pflicht",
+      title: "Pflicht zur Bereitstellung, automatisierte Entscheidungen",
+      body: ["Für eine Bestellung oder Anfrage benötigen wir die als Pflichtfelder markierten Angaben; ohne sie können wir den Vertrag nicht schließen bzw. nicht antworten. Eine automatisierte Entscheidungsfindung einschließlich Profiling (Art. 22 DSGVO) findet [nicht] statt."],
+    },
+  ],
+};
+
+const cookiesDe: LegalDoc = {
+  kind: "cookies",
+  title: "Cookie-Richtlinie",
+  summary: "Welche Cookies und ähnlichen Technologien [Website-Adresse] verwendet und wie Sie Ihre Einwilligung verwalten.",
+  updated: "[JJJJ-MM-TT]",
+  sections: [
+    {
+      id: "was-sind-cookies",
+      title: "Was sind Cookies?",
+      body: ["Cookies sind kleine Dateien, die Ihr Browser speichert. Ähnliche Technologien (z. B. Local Storage, Pixel) behandeln wir genauso."],
+    },
+    {
+      id: "notwendig",
+      title: "Technisch notwendige Cookies",
+      body: [
+        "Ohne Einwilligung setzen wir nur, was für den von Ihnen gewünschten Dienst unbedingt erforderlich ist (§ 25 Abs. 2 Nr. 2 TDDDG), z. B. das Speichern Ihrer Cookie-Auswahl oder des Warenkorbs.",
+        { table: { caption: "Notwendige Cookies", head: ["Name", "Anbieter", "Zweck", "Speicherdauer"], rows: [["[cookie_consent]", "[Firmenname]", "Speichert Ihre Cookie-Auswahl", "[6 Monate]"]] } },
+      ],
+    },
+    {
+      id: "einwilligung",
+      title: "Cookies nur mit Einwilligung",
+      body: [
+        "Analyse- und Marketing-Cookies setzen wir erst, wenn Sie im Cookie-Banner zustimmen (§ 25 Abs. 1 TDDDG, Art. 6 Abs. 1 lit. a DSGVO). „Ablehnen“ ist dort genauso einfach wie „Akzeptieren“.",
+        { table: { caption: "Einwilligungspflichtige Cookies", head: ["Name", "Anbieter", "Zweck", "Speicherdauer"], rows: [["[_ga]", "[Analyse-Tool]", "[Reichweitenmessung]", "[14 Monate]"]] } },
+      ],
+    },
+    {
+      id: "widerruf",
+      title: "Einwilligung ändern oder widerrufen",
+      body: ["Sie können Ihre Auswahl jederzeit über [Link „Cookie-Einstellungen“ im Footer] ändern oder widerrufen; der Widerruf ist so einfach wie die Einwilligung. Fragen: [Datenschutz-E-Mail]."],
+    },
+  ],
+};
+
+const termsDe: LegalDoc = {
+  kind: "terms",
+  title: "Allgemeine Geschäftsbedingungen (AGB)",
+  summary: "[Structure only] Gliederung mit den Angaben, die AGB für einen Online-Shop üblicherweise enthalten. Lassen Sie den Text anwaltlich erstellen oder prüfen.",
+  updated: "[JJJJ-MM-TT]",
+  sections: [
+    { id: "geltungsbereich", title: "Geltungsbereich", body: ["[Für welche Verträge die AGB gelten; Verbraucher und Unternehmer.]"] },
+    { id: "vertragspartner", title: "Vertragspartner", body: ["Der Kaufvertrag kommt zustande mit [Vollständiger Name / Firma], [Anschrift]."] },
+    { id: "vertragsschluss", title: "Vertragsschluss", body: ["[Ablauf der Bestellung, Korrekturmöglichkeiten, Bestellbutton „zahlungspflichtig bestellen“, Zeitpunkt des Vertragsschlusses, Bestätigung per E-Mail.]"] },
+    { id: "vertragssprache", title: "Vertragssprache und Vertragstext", body: ["[Vertragssprache; ob und wo der Vertragstext gespeichert wird und zugänglich ist.]"] },
+    { id: "preise", title: "Preise und Versandkosten", body: ["[Preise inklusive Umsatzsteuer; Versandkosten und Liefergebiete.]"] },
+    { id: "zahlung", title: "Zahlung", body: ["[Angebotene Zahlungsarten und Fälligkeit.]"] },
+    { id: "lieferung", title: "Lieferung", body: ["[Lieferzeiten und Lieferbeschränkungen.]"] },
+    { id: "widerrufsrecht", title: "Widerrufsrecht", body: ["Verbrauchern steht ein Widerrufsrecht zu; Einzelheiten in der [Widerrufsbelehrung]."] },
+    { id: "gewaehrleistung", title: "Mängelhaftung", body: ["[Es gilt das gesetzliche Mängelhaftungsrecht; ggf. Angaben zu Garantien.]"] },
+    { id: "streitbeilegung", title: "Streitbeilegung", body: ["[Angabe nach § 36 VSBG zur Teilnahme an Verbraucherschlichtung.]"] },
+  ],
+};
+
+const withdrawalEn: LegalDoc = {
+  kind: "withdrawal",
+  title: "Right of withdrawal",
+  summary: "Your right to withdraw from an online purchase from [Company name] within 14 days, and the model withdrawal form (EU Consumer Rights Directive, Annex I).",
+  updated: "[YYYY-MM-DD]",
+  sections: [
+    {
+      id: "right-of-withdrawal",
+      title: "Right of withdrawal",
+      body: [
+        "You have the right to withdraw from this contract within 14 days without giving any reason.",
+        "The withdrawal period will expire after 14 days from [the day of the conclusion of the contract (services, digital content) / the day on which you acquire, or a third party other than the carrier and indicated by you acquires, physical possession of the goods (goods)].",
+        "To exercise the right of withdrawal, you must inform us ([Company legal name], [Registered address], [Phone number], [Contact email]) of your decision to withdraw from this contract by an unequivocal statement (e.g. a letter sent by post or email). You may use the model withdrawal form below, but it is not obligatory.",
+        "[If you offer an online withdrawal function: You can also withdraw online at [Address of the withdrawal function]. We will send you an acknowledgement of receipt on a durable medium (e.g. by email) without delay.]",
+        "To meet the withdrawal deadline, it is sufficient for you to send your communication concerning your exercise of the right of withdrawal before the withdrawal period has expired.",
+      ],
+    },
+    {
+      id: "effects",
+      title: "Effects of withdrawal",
+      body: [
+        "If you withdraw from this contract, we shall reimburse to you all payments received from you, including the costs of delivery (with the exception of the supplementary costs resulting from your choice of a type of delivery other than the least expensive type of standard delivery offered by us), without undue delay and in any event not later than 14 days from the day on which we are informed about your decision to withdraw from this contract. We will carry out such reimbursement using the same means of payment as you used for the initial transaction, unless you have expressly agreed otherwise; in any event, you will not incur any fees as a result of such reimbursement.",
+        "[Goods: We may withhold reimbursement until we have received the goods back or you have supplied evidence of having sent back the goods, whichever is the earliest.]",
+        "[Goods: You shall send back the goods or hand them over to us or [Name and address of the person authorised to receive the goods] without undue delay and in any event not later than 14 days from the day on which you communicate your withdrawal from this contract to us. The deadline is met if you send back the goods before the period of 14 days has expired.]",
+        "[Who pays the return: We will bear the cost of returning the goods. / You will have to bear the direct cost of returning the goods.]",
+        "[Goods: You are only liable for any diminished value of the goods resulting from the handling other than what is necessary to establish the nature, characteristics and functioning of the goods.]",
+        "[Services started during the withdrawal period at your request: you shall pay us an amount which is in proportion to what has been provided until you have communicated your withdrawal.]",
+      ],
+    },
+    {
+      id: "exceptions",
+      title: "Exceptions",
+      body: ["[List the exceptions that apply to what you sell, e.g. goods made to the consumer's specifications, sealed goods unsealed after delivery for health or hygiene reasons, digital content supplied with the consumer's prior consent. Delete if none.]"],
+    },
+    {
+      id: "model-form",
+      title: "Model withdrawal form",
+      body: [
+        "(Complete and return this form only if you wish to withdraw from the contract.)",
+        {
+          list: [
+            "To [Company legal name], [Registered address], [Contact email]:",
+            "I/We (*) hereby give notice that I/We (*) withdraw from my/our (*) contract of sale of the following goods (*)/for the provision of the following service (*),",
+            "Ordered on (*)/received on (*),",
+            "Name of consumer(s),",
+            "Address of consumer(s),",
+            "Signature of consumer(s) (only if this form is notified on paper),",
+            "Date",
+          ],
+        },
+        "(*) Delete as appropriate.",
+      ],
+    },
+  ],
+};
+
+const withdrawalDe: LegalDoc = {
+  kind: "withdrawal",
+  title: "Widerrufsbelehrung",
+  summary: "Ihr Widerrufsrecht bei Verträgen mit [Firmenname] und das Muster-Widerrufsformular (nach Anlage 1 und 2 zum EGBGB).",
+  updated: "[JJJJ-MM-TT]",
+  sections: [
+    {
+      id: "widerrufsrecht",
+      title: "Widerrufsrecht",
+      body: [
+        "Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen.",
+        "Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag [des Vertragsabschlusses (Dienstleistungen, digitale Inhalte) / , an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen haben bzw. hat (Kaufvertrag)].",
+        "Um Ihr Widerrufsrecht auszuüben, müssen Sie uns ([Vollständiger Name / Firma], [Anschrift], [Telefonnummer], [E-Mail-Adresse]) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.",
+        "[Wenn Sie eine Widerrufsfunktion bereitstellen müssen: Sie können Ihr Widerrufsrecht auch online unter [Adresse der Widerrufsfunktion] ausüben. Wenn Sie diese Online-Funktion nutzen, übermitteln wir Ihnen auf einem dauerhaften Datenträger (z. B. durch eine E-Mail) unverzüglich eine Eingangsbestätigung mit Informationen zum Inhalt der Widerrufserklärung sowie dem Datum und der Uhrzeit ihres Eingangs.]",
+        "Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.",
+      ],
+    },
+    {
+      id: "folgen",
+      title: "Folgen des Widerrufs",
+      body: [
+        "Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.",
+        "[Kaufvertrag ohne Abholung: Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.]",
+        "[Waren: Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von vierzehn Tagen absenden.]",
+        "[Rücksendekosten: Wir tragen die Kosten der Rücksendung der Waren. / Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.]",
+        "[Waren: Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.]",
+        "[Dienstleistungen, die auf Ihren Wunsch während der Widerrufsfrist beginnen: Gestaltungshinweis 6 der Anlage 1 EGBGB einfügen.]",
+      ],
+    },
+    {
+      id: "muster-widerrufsformular",
+      title: "Muster-Widerrufsformular",
+      body: [
+        "(Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie bitte dieses Formular aus und senden Sie es zurück.)",
+        {
+          list: [
+            "An [Vollständiger Name / Firma], [Anschrift], [E-Mail-Adresse]:",
+            "Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung (*)",
+            "Bestellt am (*)/erhalten am (*)",
+            "Name des/der Verbraucher(s)",
+            "Anschrift des/der Verbraucher(s)",
+            "Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)",
+            "Datum",
+          ],
+        },
+        "(*) Unzutreffendes streichen.",
+      ],
+    },
+  ],
+};
+
+const legalNoticeFr: LegalDoc = {
+  kind: "legal-notice",
+  title: "Mentions légales",
+  summary: "Informations sur l’éditeur et l’hébergeur de [Adresse du site] (article 1-1 de la loi n° 2004-575 du 21 juin 2004, LCEN).",
+  updated: "[AAAA-MM-JJ]",
+  sections: [
+    {
+      id: "editeur",
+      title: "Éditeur du site",
+      body: [
+        {
+          list: [
+            "[Dénomination sociale] ([Forme juridique]), au capital de [Montant du capital social]",
+            "Siège social : [Adresse du siège]",
+            "Immatriculation : [Numéro RCS] (ou numéro au registre national des entreprises)",
+            "Numéro de TVA intracommunautaire : [Numéro de TVA intracommunautaire]",
+            "Téléphone : [Numéro de téléphone]. E-mail : [Adresse e-mail]",
+            "[Personne physique : nom, prénom, domicile, téléphone et, le cas échéant, numéro d’immatriculation. Sinon supprimer.]",
+            "[Activité réglementée : ordre professionnel ou autorité ayant délivré l’autorisation. Sinon supprimer.]",
+          ],
+        },
+      ],
+    },
+    {
+      id: "directeur-publication",
+      title: "Directeur de la publication",
+      body: ["[Directeur de la publication]"],
+    },
+    {
+      id: "hebergeur",
+      title: "Hébergeur",
+      body: ["[Nom de l’hébergeur], [Adresse de l’hébergeur], [Téléphone de l’hébergeur]."],
+    },
+    {
+      id: "propriete-intellectuelle",
+      title: "Propriété intellectuelle",
+      body: ["Les textes, images, logos et la présentation de ce site appartiennent à [Nom de l’entreprise] ou sont utilisés avec autorisation. Toute reproduction sans autorisation écrite est interdite."],
+    },
+    {
+      id: "donnees-personnelles",
+      title: "Données personnelles et cookies",
+      body: ["Voir notre [Politique de confidentialité] et notre page [Gestion des cookies]."],
+    },
+  ],
+};
+
+const privacyFr: LegalDoc = {
+  kind: "privacy",
+  title: "Politique de confidentialité",
+  summary: "[Structure only] Les informations à fournir au titre de l’article 13 du RGPD, à rédiger pour [Nom de l’entreprise] et à faire relire.",
+  updated: "[AAAA-MM-JJ]",
+  sections: [
+    { id: "responsable", title: "Responsable du traitement", body: ["[Dénomination sociale], [Adresse du siège], [E-mail données personnelles]. [Délégué à la protection des données, s’il est désigné.]"] },
+    { id: "donnees", title: "Données collectées", body: ["[Formulaire de contact, commandes, journaux du serveur, cookies : quelles données pour chacun.]"] },
+    { id: "finalites", title: "Finalités et bases légales", body: ["[Pour chaque finalité, la base légale : contrat, obligation légale, intérêt légitime, consentement.]"] },
+    { id: "destinataires", title: "Destinataires", body: ["[Sous-traitants : hébergeur, messagerie, paiement, mesure d’audience.]"] },
+    { id: "transferts", title: "Transferts hors de l’Union européenne", body: ["[Pays et garanties (décision d’adéquation, clauses contractuelles types), ou « aucun transfert ».]"] },
+    { id: "conservation", title: "Durées de conservation", body: ["[Durée par catégorie de données.]"] },
+    {
+      id: "droits",
+      title: "Vos droits",
+      body: ["Accès, rectification, effacement, limitation, portabilité, opposition et retrait du consentement : écrivez à [E-mail données personnelles]. [Directives relatives au sort des données après le décès.] Vous pouvez introduire une réclamation auprès de la CNIL (www.cnil.fr)."],
+    },
+  ],
+};
+
+const cookiesFr: LegalDoc = {
+  kind: "cookies",
+  title: "Gestion des cookies",
+  summary: "[Structure only] Les traceurs utilisés sur [Adresse du site] et la manière de gérer vos choix, selon les lignes directrices de la CNIL.",
+  updated: "[AAAA-MM-JJ]",
+  sections: [
+    { id: "exemptes", title: "Traceurs exemptés de consentement", body: [{ table: { caption: "Traceurs nécessaires", head: ["Nom", "Éditeur", "Finalité", "Durée"], rows: [["[cookie_consent]", "[Nom de l’entreprise]", "Mémoriser vos choix", "[6 mois]"]] } }] },
+    { id: "consentement", title: "Traceurs soumis à votre consentement", body: ["Ils ne sont déposés qu’après votre accord. Le bandeau propose « Tout refuser » aussi simplement que « Tout accepter ».", { table: { caption: "Traceurs soumis à consentement", head: ["Nom", "Éditeur", "Finalité", "Durée"], rows: [["[_ga]", "[Outil de mesure]", "[Mesure d’audience]", "[13 mois]"]] } }] },
+    { id: "choix", title: "Modifier vos choix", body: ["[Lien « Gestion des cookies » en pied de page]. Contact : [E-mail données personnelles]."] },
+  ],
+};
+
+const termsFr: LegalDoc = {
+  kind: "terms",
+  title: "Conditions générales de vente",
+  summary: "[Structure only] Le plan des conditions générales de vente d’une boutique en ligne. À rédiger ou faire vérifier par un avocat.",
+  updated: "[AAAA-MM-JJ]",
+  sections: [
+    { id: "objet", title: "Objet et champ d’application", body: ["[Contrats concernés, clients consommateurs.]"] },
+    { id: "vendeur", title: "Identité du vendeur", body: ["[Dénomination sociale], [Adresse du siège], [Numéro RCS], [Adresse e-mail], [Numéro de téléphone]."] },
+    { id: "prix", title: "Prix", body: ["[Prix TTC en euros, frais de livraison.]"] },
+    { id: "commande", title: "Commande", body: ["[Étapes, correction des erreurs, confirmation.]"] },
+    { id: "paiement", title: "Paiement", body: ["[Moyens de paiement.]"] },
+    { id: "livraison", title: "Livraison", body: ["[Délais et zones de livraison.]"] },
+    { id: "retractation", title: "Droit de rétractation", body: ["Le consommateur dispose d’un délai de quatorze jours pour se rétracter ; voir la page [Droit de rétractation]."] },
+    { id: "garanties", title: "Garanties légales", body: ["[Garantie légale de conformité et garantie des vices cachés : textes et modalités.]"] },
+    { id: "mediation", title: "Médiation de la consommation", body: ["[Nom, adresse et site du médiateur de la consommation dont relève le vendeur.]"] },
+  ],
+};
+
+const withdrawalFr: LegalDoc = {
+  kind: "withdrawal",
+  title: "Droit de rétractation",
+  summary: "Votre droit de vous rétracter d’un achat en ligne auprès de [Nom de l’entreprise] dans un délai de quatorze jours, et le formulaire type de rétractation.",
+  updated: "[AAAA-MM-JJ]",
+  sections: [
+    {
+      id: "droit",
+      title: "Droit de rétractation",
+      body: [
+        "Vous avez le droit de vous rétracter du présent contrat sans donner de motif dans un délai de quatorze jours.",
+        "Le délai de rétractation expire quatorze jours après [le jour de la conclusion du contrat (services, contenu numérique) / le jour où vous-même, ou un tiers autre que le transporteur et désigné par vous, prenez physiquement possession du bien (biens)].",
+        "Pour exercer le droit de rétractation, vous devez nous notifier ([Dénomination sociale], [Adresse du siège], [Numéro de téléphone], [Adresse e-mail]) votre décision de rétractation du présent contrat au moyen d’une déclaration dénuée d’ambiguïté (par exemple, lettre envoyée par la poste ou courrier électronique). Vous pouvez utiliser le modèle de formulaire de rétractation ci-dessous, mais ce n’est pas obligatoire.",
+        "[Si vous proposez une fonction de rétractation en ligne : son adresse et l’accusé de réception envoyé sur un support durable.]",
+        "Pour que le délai de rétractation soit respecté, il suffit que vous transmettiez votre communication relative à l’exercice du droit de rétractation avant l’expiration du délai de rétractation.",
+      ],
+    },
+    {
+      id: "effets",
+      title: "Effets de la rétractation",
+      body: [
+        "En cas de rétractation de votre part du présent contrat, nous vous rembourserons tous les paiements reçus de vous, y compris les frais de livraison (à l’exception des frais supplémentaires découlant du fait que vous avez choisi, le cas échéant, un mode de livraison autre que le mode moins coûteux de livraison standard proposé par nous) sans retard excessif et, en tout état de cause, au plus tard quatorze jours à compter du jour où nous sommes informés de votre décision de rétractation du présent contrat. Nous procéderons au remboursement en utilisant le même moyen de paiement que celui que vous aurez utilisé pour la transaction initiale, sauf si vous convenez expressément d’un moyen différent ; en tout état de cause, ce remboursement n’occasionnera pas de frais pour vous.",
+        "[Biens : renvoi des biens dans les quatorze jours, prise en charge des frais de retour, responsabilité en cas de dépréciation.]",
+      ],
+    },
+    {
+      id: "formulaire",
+      title: "Modèle de formulaire de rétractation",
+      body: [
+        "(Veuillez compléter et renvoyer le présent formulaire uniquement si vous souhaitez vous rétracter du contrat.)",
+        {
+          list: [
+            "À l’attention de [Dénomination sociale], [Adresse du siège], [Adresse e-mail] :",
+            "Je/Nous (*) vous notifie/notifions (*) par la présente ma/notre (*) rétractation du contrat portant sur la vente du bien (*)/pour la prestation de services (*) ci-dessous :",
+            "Commandé le (*)/reçu le (*) :",
+            "Nom du (des) consommateur(s) :",
+            "Adresse du (des) consommateur(s) :",
+            "Signature du (des) consommateur(s) (uniquement en cas de notification du présent formulaire sur papier) :",
+            "Date :",
+          ],
+        },
+        "(*) Rayez la mention inutile.",
+      ],
+    },
+  ],
+};
+
+const doNotSellEn: LegalDoc = {
+  kind: "do-not-sell",
+  title: "Do Not Sell or Share My Personal Information",
+  summary: "How California residents can opt out of the sale or sharing of their personal information by [Company name] (California Consumer Privacy Act).",
+  updated: "[YYYY-MM-DD]",
+  sections: [
+    {
+      id: "your-right",
+      title: "Your right to opt out",
+      body: ["If you live in California, you have the right to tell us not to sell or share your personal information. \"Sharing\" includes making it available to others for cross-context behavioral advertising, for example through advertising cookies and pixels."],
+    },
+    {
+      id: "what-we-share",
+      title: "What we sell or share",
+      body: [
+        "[Describe what is sold or shared, or delete this page if nothing is. Example:] We share identifiers (such as cookie IDs and IP address) and internet activity (pages viewed, ads clicked) with [Advertising partners, e.g. Google Ads, Meta] to show you relevant ads on other websites. We do not sell personal information for money. We do not knowingly sell or share the personal information of consumers under 16.",
+      ],
+    },
+    {
+      id: "how-to-opt-out",
+      title: "How to opt out",
+      body: [
+        {
+          list: [
+            "Use [Cookie settings] on this site and switch off advertising cookies. Your choice applies to this browser and device.",
+            "Turn on Global Privacy Control (GPC) in your browser: we treat it as a request to opt out for that browser, and show that we received it.",
+            "Or email [Privacy contact email] with the subject \"Do Not Sell or Share\".",
+          ],
+        },
+        "You do not need an account to opt out. An authorized agent may submit the request on your behalf.",
+      ],
+    },
+    {
+      id: "sensitive",
+      title: "Limit the use of my sensitive personal information",
+      body: ["[Only if you use sensitive personal information beyond what is needed to provide the service: describe it and how to limit it. Otherwise delete this section.]"],
+    },
+    {
+      id: "no-discrimination",
+      title: "No discrimination",
+      body: ["We will not deny you goods or services, charge a different price or give a different quality because you used your privacy rights."],
+    },
+    {
+      id: "contact",
+      title: "Contact",
+      body: ["Questions about this page or our [Privacy policy]: [Privacy contact email], [Phone number]."],
+    },
+  ],
+};
+
+/**
+ * Every preset by kind and language. English exists for every kind; Turkish for the Turkish
+ * pages; German and French for the pages those countries require.
+ */
+export const legalPresets: Record<LegalKind, Partial<Record<LegalLocale, LegalDoc>> & { en: LegalDoc }> = {
+  privacy: { en: privacyEn, tr: privacyTr, de: privacyDe, fr: privacyFr },
   kvkk: { en: kvkkEn, tr: kvkkTr },
-  cookies: { en: cookiesEn, tr: cookiesTr },
-  terms: { en: termsEn, tr: termsTr },
+  cookies: { en: cookiesEn, tr: cookiesTr, de: cookiesDe, fr: cookiesFr },
+  terms: { en: termsEn, tr: termsTr, de: termsDe, fr: termsFr },
   accessibility: { en: accessibilityEn, tr: accessibilityTr },
   returns: { en: returnsEn, tr: returnsTr },
   "distance-sales": { en: distanceSalesEn, tr: distanceSalesTr },
   "pre-information": { en: preInformationEn, tr: preInformationTr },
-  "legal-notice": { en: legalNoticeEn, tr: legalNoticeTr },
+  "legal-notice": { en: legalNoticeEn, tr: legalNoticeTr, de: legalNoticeDe, fr: legalNoticeFr },
+  withdrawal: { en: withdrawalEn, de: withdrawalDe, fr: withdrawalFr },
+  "do-not-sell": { en: doNotSellEn },
 };
 
-/** The preset for one page, e.g. `legalPreset("kvkk", "tr")`. */
+/** The preset for one page, e.g. `legalPreset("kvkk", "tr")`. Falls back to English when there is none in that language. */
 export function legalPreset(kind: LegalKind, locale: LegalLocale = "en"): LegalDoc {
-  return legalPresets[kind][locale];
+  return legalPresets[kind][locale] ?? legalPresets[kind].en;
 }
 
 /** Placeholder → the LegalValues field that fills it (English and Turkish presets). */
@@ -1091,6 +1571,30 @@ const fillIns: Record<string, keyof LegalValues> = {
   "[ETBİS doğrulama bağlantısı veya karekodu]": "etbis",
   "[KEP address]": "kep",
   "[KEP adresi]": "kep",
+  // German
+  "[Firmenname]": "companyName",
+  "[Vollständiger Name / Firma]": "legalName",
+  "[Anschrift]": "address",
+  "[E-Mail-Adresse]": "email",
+  "[Datenschutz-E-Mail]": "privacyEmail",
+  "[Telefonnummer]": "phone",
+  "[Website-Adresse]": "website",
+  "[Handelsregisternummer]": "tradeRegistry",
+  "[USt-IdNr.]": "vatId",
+  "[Vertretungsberechtigte Person]": "representative",
+  // French
+  "[Nom de l’entreprise]": "companyName",
+  "[Dénomination sociale]": "legalName",
+  "[Adresse du siège]": "address",
+  "[Adresse e-mail]": "email",
+  "[E-mail données personnelles]": "privacyEmail",
+  "[Numéro de téléphone]": "phone",
+  "[Adresse du site]": "website",
+  "[Numéro RCS]": "tradeRegistry",
+  "[Numéro de TVA intracommunautaire]": "vatId",
+  "[Directeur de la publication]": "representative",
+  // English additions
+  "[VAT number]": "vatId",
 };
 
 function fillText(text: string, values: LegalValues): string {

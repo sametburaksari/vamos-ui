@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { collectRoutes, internalHrefs } from "../site-check";
+import { countryOfSite } from "../project/jurisdiction";
 import { AI_BOTS, SITE_FILE, parseSiteJson, type SiteInfo } from "../site-info";
 import type { ProjectInfo } from "./project";
 import { iconSvg, monogram, opengraphImage, siteColors } from "./site-assets";
@@ -20,13 +21,17 @@ type LegalKind =
   | "returns"
   | "distance-sales"
   | "pre-information"
-  | "legal-notice";
+  | "legal-notice"
+  | "withdrawal"
+  | "do-not-sell";
+
+export type LegalLocale = "en" | "tr" | "de" | "fr";
 
 /**
- * Legal slugs (English and Turkish) → legal-01 preset and its starting language.
+ * Legal slugs (English, Turkish, German, French) → legal-01 preset and its starting language.
  * Mirrors `legalSlugs` in apps/www/src/blocks/legal-01/components/types.ts.
  */
-export const LEGAL_SLUGS: Record<string, { kind: LegalKind; locale: "en" | "tr" }> = {
+export const LEGAL_SLUGS: Record<string, { kind: LegalKind; locale: LegalLocale }> = {
   privacy: { kind: "privacy", locale: "en" },
   "privacy-policy": { kind: "privacy", locale: "en" },
   gizlilik: { kind: "privacy", locale: "tr" },
@@ -57,9 +62,52 @@ export const LEGAL_SLUGS: Record<string, { kind: LegalKind; locale: "en" | "tr" 
   "on-bilgilendirme-formu": { kind: "pre-information", locale: "tr" },
   "legal-notice": { kind: "legal-notice", locale: "en" },
   imprint: { kind: "legal-notice", locale: "en" },
-  impressum: { kind: "legal-notice", locale: "en" },
+  impressum: { kind: "legal-notice", locale: "de" },
   "yasal-uyari": { kind: "legal-notice", locale: "tr" },
+  datenschutz: { kind: "privacy", locale: "de" },
+  datenschutzerklaerung: { kind: "privacy", locale: "de" },
+  "cookie-richtlinie": { kind: "cookies", locale: "de" },
+  agb: { kind: "terms", locale: "de" },
+  widerrufsbelehrung: { kind: "withdrawal", locale: "de" },
+  widerruf: { kind: "withdrawal", locale: "de" },
+  "mentions-legales": { kind: "legal-notice", locale: "fr" },
+  "politique-de-confidentialite": { kind: "privacy", locale: "fr" },
+  confidentialite: { kind: "privacy", locale: "fr" },
+  "gestion-des-cookies": { kind: "cookies", locale: "fr" },
+  "politique-cookies": { kind: "cookies", locale: "fr" },
+  "conditions-generales-de-vente": { kind: "terms", locale: "fr" },
+  cgv: { kind: "terms", locale: "fr" },
+  "droit-de-retractation": { kind: "withdrawal", locale: "fr" },
+  retractation: { kind: "withdrawal", locale: "fr" },
+  withdrawal: { kind: "withdrawal", locale: "en" },
+  "right-of-withdrawal": { kind: "withdrawal", locale: "en" },
+  "cancellation-rights": { kind: "withdrawal", locale: "en" },
+  "do-not-sell-or-share": { kind: "do-not-sell", locale: "en" },
+  "do-not-sell": { kind: "do-not-sell", locale: "en" },
+  "your-privacy-choices": { kind: "do-not-sell", locale: "en" },
 };
+
+interface ProjectLegal {
+  country: string | null;
+  pages: { path: string; required: boolean; kind?: LegalKind; locale?: LegalLocale }[];
+}
+
+/** The legal pages and country of the plan in vamos.project.json, or null without a readable plan. */
+function readProjectLegal(root: string): ProjectLegal | null {
+  try {
+    const file = path.join(root, "vamos.project.json");
+    if (!existsSync(file)) return null;
+    const plan = (JSON.parse(readFileSync(file, "utf8")) as { plan?: { legalPages?: unknown; jurisdiction?: { country?: unknown } } }).plan;
+    if (!plan || !Array.isArray(plan.legalPages)) return null;
+    const pages = (plan.legalPages as Record<string, unknown>[])
+      .filter((p) => typeof p?.path === "string" && /^\/[a-z0-9-]+$/.test(p.path as string))
+      .map((p) => ({ path: p.path as string, required: p.required === true, ...(typeof p.kind === "string" && typeof p.locale === "string" ? { kind: p.kind as LegalKind, locale: p.locale as LegalLocale } : {}) }));
+    const country = typeof plan.jurisdiction?.country === "string" ? plan.jurisdiction.country : null;
+    return { country, pages };
+  } catch {
+    return null;
+  }
+}
 
 /** The KVKK notice route essentials writes when a Turkish site collects personal data and links none. */
 export const KVKK_ROUTE = "/kvkk-aydinlatma-metni";
@@ -118,6 +166,13 @@ export interface EssentialsPlan {
    * footer and the contact form should link it). Null when not needed or already linked.
    */
   kvkkUnlinked: string | null;
+  /**
+   * Legal routes written (or found) because the plan in vamos.project.json or the site's country
+   * requires them, that nothing links to yet (link them from the footer).
+   */
+  requiredUnlinked: string[];
+  /** The country the legal pages were chosen for (vamos.project.json, else vamos.site.json / layout lang / url), or null. */
+  country: string | null;
   /** True when the kit Footer is rendered without jsonLd={false} (it would describe the business twice). */
   footerJsonLd: boolean;
   /** Things the user should do by hand (an existing file predates vamos.site.json, an outdated block …). */
@@ -186,7 +241,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 }
 `;
 
-function legalPage(route: string, kind: LegalKind, locale: "en" | "tr", pageImport: string, presetsImport: string, siteImport: string | null): string {
+function legalPage(route: string, kind: LegalKind, locale: LegalLocale, pageImport: string, presetsImport: string, siteImport: string | null): string {
   if (siteImport) {
     return `${header(`The ${route} page (legal-01, preset "${kind}").`)}import type { Metadata } from "next";
 import Legal01 from "${pageImport}";
@@ -379,6 +434,47 @@ export function planEssentials(
     if (!existing) addLegalPage(KVKK_ROUTE, LEGAL_SLUGS[KVKK_ROUTE.slice(1)]!, ", the site collects personal data");
     else legalRoutes.push(existing);
   }
+  // Legal pages the plan or the country requires, even when no block links them yet: every
+  // required page of vamos.project.json; without a plan, the imprint in Germany, Austria and
+  // France and a privacy policy wherever the site collects personal data.
+  const projectLegal = readProjectLegal(root);
+  const country = projectLegal?.country ?? countryOfSite(site, { lang: layoutLang });
+  const siteLang = (site?.locale?.trim() || layoutLang).slice(0, 2).toLowerCase();
+  const required: { route: string; legal: (typeof LEGAL_SLUGS)[string]; why: string }[] = [];
+  if (projectLegal?.pages.length) {
+    for (const p of projectLegal.pages) {
+      const legal = p.kind && p.locale ? { kind: p.kind, locale: p.locale } : LEGAL_SLUGS[p.path.slice(1)];
+      if (p.required && legal) required.push({ route: p.path, legal, why: ", planned in vamos.project.json" });
+    }
+  } else if (country && country !== "TR") {
+    const de = siteLang === "de";
+    const frLang = siteLang === "fr";
+    if (country === "DE" || country === "AT") required.push({ route: de ? "/impressum" : "/imprint", legal: { kind: "legal-notice", locale: de ? "de" : "en" }, why: `, required in ${country}` });
+    if (country === "FR") required.push({ route: frLang ? "/mentions-legales" : "/legal-notice", legal: { kind: "legal-notice", locale: frLang ? "fr" : "en" }, why: ", required in FR" });
+    if (collectsData) required.push(de ? { route: "/datenschutz", legal: { kind: "privacy", locale: "de" }, why: ", the site collects personal data" } : frLang ? { route: "/politique-de-confidentialite", legal: { kind: "privacy", locale: "fr" }, why: ", the site collects personal data" } : { route: "/privacy-policy", legal: { kind: "privacy", locale: "en" }, why: ", the site collects personal data" });
+  }
+  const requiredUnlinked: string[] = [];
+  const existingRoutes = routes.map((r) => `/${r.segments.join("/")}`);
+  for (const req of required) {
+    const sameKind = (r: string) => LEGAL_SLUGS[r.slice(1)]?.kind === req.legal.kind;
+    const linkedSame = [...linked, ...(kvkkUnlinked ? [kvkkUnlinked] : [])].find(sameKind);
+    if (linkedSame) continue; // a page of this kind is linked already (written above, or it exists), or the KVKK hint covers it
+    const existing = hasRoute(req.route) ? req.route : existingRoutes.find(sameKind);
+    if (existing) {
+      if (!legalRoutes.includes(existing)) legalRoutes.push(existing);
+      requiredUnlinked.push(existing);
+      continue;
+    }
+    if (files.some((f) => f.path === `${appDir}${req.route}/page.tsx`)) continue;
+    addLegalPage(req.route, req.legal, req.why);
+    requiredUnlinked.push(req.route);
+  }
+
+  // German / French presets and the withdrawal / do-not-sell kinds need a current legal-01.
+  const needsCountryPresets = files.some((f) => /legalPreset\("(?:withdrawal|do-not-sell)"|legalPreset\("[a-z-]+", "(?:de|fr)"\)/.test(f.content));
+  if (needsCountryPresets && existsSync(presetsFile) && !/"do-not-sell"/.test(readFileSync(presetsFile, "utf8")))
+    notes.push(`The installed ${LEGAL_BLOCK} has no German / French presets or the withdrawal and do-not-sell pages yet. Update it with \`npx vamos-ui add ${LEGAL_BLOCK} --overwrite\` before building.`);
+
   const footerJsonLd = appSources.some((p) => {
     const text = readSource(p);
     return /<Footer\b/.test(text) && !/jsonLd=\{false\}/.test(text);
@@ -386,7 +482,7 @@ export function planEssentials(
 
   const sitemapRoutes = [
     "/",
-    ...[...new Set([...linked, ...(kvkkUnlinked ? [kvkkUnlinked] : [])])].filter((r) => r !== "/" && (hasRoute(r) || files.some((f) => f.path === `${appDir}${r}/page.tsx`))).sort(),
+    ...[...new Set([...linked, ...(kvkkUnlinked ? [kvkkUnlinked] : []), ...requiredUnlinked])].filter((r) => r !== "/" && (hasRoute(r) || files.some((f) => f.path === `${appDir}${r}/page.tsx`))).sort(),
   ];
   const robotsPath = paths.find((p) => new RegExp(`^(?:${appDir}/robots\\.(?:ts|js|txt)|public/robots\\.txt)$`).test(p));
   const hasSitemap = exists(new RegExp(`^(?:${appDir}/sitemap\\.(?:ts|js|xml)|public/sitemap\\.xml)$`));
@@ -469,6 +565,8 @@ export function planEssentials(
     jsonLdInLayout,
     layoutPatch,
     kvkkUnlinked,
+    requiredUnlinked,
+    country,
     footerJsonLd,
     notes,
   };

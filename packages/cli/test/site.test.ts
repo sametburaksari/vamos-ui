@@ -141,7 +141,7 @@ describe("planEssentials", () => {
   it("knows every legal-01 slug (kept in step with the block's legalSlugs)", () => {
     const block = readFileSync(path.join(__dirname, "../../../apps/www/src/blocks/legal-01/components/types.ts"), "utf8");
     const map = block.slice(block.indexOf("export const legalSlugs"));
-    const entries = [...map.matchAll(/^\s+"?([a-z0-9-]+)"?: \{ kind: "([a-z-]+)", locale: "(en|tr)" \}/gm)].map((m) => [m[1], { kind: m[2], locale: m[3] }]);
+    const entries = [...map.matchAll(/^\s+"?([a-z0-9-]+)"?: \{ kind: "([a-z-]+)", locale: "(en|tr|de|fr)" \}/gm)].map((m) => [m[1], { kind: m[2], locale: m[3] }]);
     expect(entries.length).toBeGreaterThan(30);
     expect(LEGAL_SLUGS).toEqual(Object.fromEntries(entries));
   });
