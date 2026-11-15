@@ -189,3 +189,21 @@ export {
   type Signer,
   type SignerState,
 } from "./signer-status";
+
+// Billing details (e-Fatura / e-Arşiv buyer)
+export { BillingDetailsFields, type BillingDetailsFieldsProps } from "./billing-details";
+export {
+  validateBillingDetails,
+  billingDetailsFromFormData,
+  billingErrorMessages,
+  billingDetailsLabels,
+  UNKNOWN_TCKN,
+  type BillingDetails,
+  type BillingDetailsLabels,
+  type BillingParty,
+  type BillingPartyType,
+  type BillingField,
+  type BillingErrorCode,
+  type BillingValidation,
+  type ValidateBillingOptions,
+} from "./billing-details-core";

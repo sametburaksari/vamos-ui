@@ -12,7 +12,7 @@ const entry: DocEntry = {
   group: "Forms & inputs",
   description:
     "A structured postal address in one fieldset: country, then province and district pickers for countries with region data (Türkiye's 81 provinces and 973 districts ship built in, loaded on demand), free text everywhere else. An optional neighbourhood (mahalle / köy) level adds about 50 000 Turkish neighbourhoods and villages, one small file per province, loaded only when that province is picked. Changing a parent clears its children; read-only prints the address the way the country writes it.",
-  source: ["components/address-field.tsx", "locale-data/tr/address.ts", "locale-data/tr/neighbourhoods.ts", "locale-data/tr/neighbourhoods-bundled.ts", "locale-data/core/types.ts"],
+  source: ["components/address-field.tsx", "locale-data/tr/address.ts", "locale-data/tr/neighbourhoods.ts", "locale-data/core/types.ts"],
   basedOn: "Fieldset · Field · native select",
   usage: `import { AddressField } from "@vamos-ui/react";
 
