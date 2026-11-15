@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "Product tiles and product grids or lists on shop home, category and search pages."
+  ],
+  "avoidWhen": [
+    "Directory listings (venues, apps, jobs) — use a listing card.",
+    "Admin product records — use Entity card."
+  ],
+  "related": [
+    "star-rating",
+    "site-store-01",
+    "filter-bar"
+  ],
+  "a11y": [
+    "Each card is an article named by its title; one link covers the card.",
+    "Swatches are a native radio group; the sale price has a spoken “Now / Was” text."
+  ]
+}

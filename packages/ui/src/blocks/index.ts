@@ -67,3 +67,10 @@ export { site2Labels, site2LabelsTr, site2LabelsDe, site2LabelsFr, site2LabelsEs
 export { SiteShell, SiteShellPage, SiteShellLocale, SiteShellLink, useSiteShell, type SiteShellProps, type SiteShellPageProps, type SiteShellLocaleProps, type SiteShellLinkProps, type SiteShellContextValue } from "./site/site-shell";
 export { siteAccent, siteAccentCss, siteAccentKey, isBuiltInAccent, BUILT_IN_SITE_ACCENTS, SITE_TEXT_CONTRAST, type SiteAccentPalette, type SiteAccentOptions } from "./site/shared/site-accent";
 export { sitePageHref, siteLocaleHref, parseSiteHref, readSiteLocation, writeSiteLocation, type SiteRouting, type SiteLocation, type SiteRouteParams } from "./site/shared/site-routing";
+
+// Commerce and reviews: star rating, review score box, product card and grid (styles/commerce.css)
+export { StarRating, StarRatingInput, type StarRatingProps, type StarRatingInputProps, type StarRatingSize } from "./site/star-rating";
+export { ReviewScore, reviewJsonLd, type ReviewScoreProps, type ReviewCriterion, type ReviewedItem, type ReviewJsonLdInput } from "./site/review-score";
+export { ProductCard, productJsonLd, discountPercent, type ProductCardProps, type ProductCardData, type ProductSwatch, type ProductJsonLdOptions } from "./site/product-card";
+export { ProductGrid, productListJsonLd, type ProductGridProps, type ProductGridVariant, type ProductGridColumns } from "./site/product-grid";
+export { commerceLabels, commerceLabelsTr, commerceLabelsDe, commerceLabelsFr, commerceLabelsEs, commerceLabelsAr, commerceText, type CommerceLabels, type CommerceBlockLabels } from "./site/shared/labels-commerce";

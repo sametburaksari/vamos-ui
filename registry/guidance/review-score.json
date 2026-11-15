@@ -1,0 +1,18 @@
+{
+  "whenToUse": [
+    "The score summary of a product, book, app or gear review article."
+  ],
+  "avoidWhen": [
+    "Customer quotes — use Testimonials.",
+    "Plan or spec matrices — use Comparison table."
+  ],
+  "related": [
+    "star-rating",
+    "comparison-table",
+    "article-layout"
+  ],
+  "a11y": [
+    "A named section; every score is in text, the bars are decorative.",
+    "Emits Review JSON-LD only when an item is given."
+  ]
+}
