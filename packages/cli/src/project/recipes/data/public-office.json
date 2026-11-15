@@ -1,0 +1,341 @@
+{
+  "id": "public-office",
+  "title": {
+    "en": "Public office",
+    "tr": "Kamu kurumu"
+  },
+  "summary": "A local public office or municipal service where residents come to get a task done: task-first home with today's opening and waits, a searchable services A–Z, dated announcements and an accessibility statement, with an accessibility toolbar on every page.",
+  "match": {
+    "siteTypes": [
+      "nonprofit",
+      "corporate"
+    ],
+    "signals": [
+      "municipality",
+      "district office",
+      "council",
+      "town hall",
+      "public services",
+      "registry office",
+      "mukhtar",
+      "belediye",
+      "kaymakamlik",
+      "muhtarlik",
+      "ilce",
+      "valilik",
+      "mudurlugu",
+      "kamu hizmetleri",
+      "nufus"
+    ],
+    "features": [
+      "multilingual",
+      "channel:map",
+      "channel:phone",
+      "section:services"
+    ]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Get residents to the task they came for in one step, and tell them what is happening at the office today.",
+      "sections": [
+        {
+          "id": "a11y-toolbar",
+          "purpose": "Text size, high contrast and link underlines for the whole site, at the very top before the navigation.",
+          "use": [
+            "accessibility-toolbar"
+          ],
+          "fields": [
+            "Which options to offer (text size steps, contrast, underline links)"
+          ],
+          "notes": "A labelled region; on phones it collapses to one line that opens the settings so it never pushes the page down. Applies through the kit's tokens (root font size, muted text to full strength, hairlines to solid rules) and is remembered on the device, read after mount to avoid hydration mismatch."
+        },
+        {
+          "id": "service-notice",
+          "purpose": "One time-boxed notice (closures, outages, changed hours).",
+          "use": [
+            "announcement-bar"
+          ],
+          "fields": [
+            "Notice text",
+            "Start and end date",
+            "Link to details"
+          ],
+          "optional": true
+        },
+        {
+          "id": "hero",
+          "purpose": "Ask 'what do you need to do today?', a search that opens the services A–Z, and today's status at the office: open/closed, hours and current desk waits.",
+          "use": [
+            "hero",
+            "input"
+          ],
+          "alternatives": [
+            "page-header: a smaller office without live status"
+          ],
+          "fields": [
+            "Main question/lead",
+            "Office address",
+            "Today's hours (late openings)",
+            "Desk names and current waiting times (if available)",
+            "Out-of-hours emergency number"
+          ],
+          "notes": "The search is a GET form with role=search that lands on the services page prefilled (?q=). Desk waits are a small captioned table; say when they were last updated."
+        },
+        {
+          "id": "top-tasks",
+          "purpose": "The most requested tasks, numbered, with large click targets.",
+          "use": [
+            "list-01"
+          ],
+          "alternatives": [
+            "feature-grid: tasks with short descriptions"
+          ],
+          "fields": [
+            "Top tasks: name, one-line description, online or in person, link"
+          ]
+        },
+        {
+          "id": "announcements",
+          "purpose": "Dated, typed announcements (works, closures, consultations, events).",
+          "use": [
+            "blog-list"
+          ],
+          "fields": [
+            "Announcement title",
+            "Type",
+            "Publication date",
+            "Affected area",
+            "Summary"
+          ],
+          "notes": "Dates as text, type as a badge with a word, never colour alone."
+        },
+        {
+          "id": "figures",
+          "purpose": "Monthly service figures (applications handled, average wait, share online).",
+          "use": [
+            "stats-band"
+          ],
+          "fields": [
+            "Figures with label, month and source"
+          ],
+          "optional": true
+        },
+        {
+          "id": "visit",
+          "purpose": "Address, map, opening hours per desk and how to get there.",
+          "use": [
+            "map-hours"
+          ],
+          "fields": [
+            "Address and map",
+            "Opening hours (and holiday closures)",
+            "Phone and email",
+            "Step-free access and parking"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "purpose": "The accessibility statement: standard met, known issues, how to report a problem and get an alternative format.",
+          "use": [
+            "rich-text-section"
+          ],
+          "fields": [
+            "Conformance level and date of last review",
+            "Known issues",
+            "Contact for accessibility problems and alternative formats"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "path": {
+        "en": "/services",
+        "tr": "/hizmetler"
+      },
+      "title": {
+        "en": "Services A–Z",
+        "tr": "Hizmetler A–Z"
+      },
+      "purpose": "Find any service by search, topic or 'online only', and read what it needs.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Breadcrumb, title and how the list works.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Intro line"
+          ]
+        },
+        {
+          "id": "finder",
+          "purpose": "Search (accent- and case-insensitive), a topic switch and an 'online only' filter; results grouped by topic as an accordion.",
+          "use": [
+            "filter-bar",
+            "accordion"
+          ],
+          "alternatives": [
+            "command: a very large catalogue with quick search"
+          ],
+          "fields": [
+            "Service name",
+            "Topic",
+            "Online or in person",
+            "Who it is for",
+            "Documents needed",
+            "Fee (if any)",
+            "Processing time",
+            "Link to apply or book"
+          ],
+          "notes": "Prefill the search from ?q=; a #service-id hash opens that service. Announce the result count in a status region; keep matching tolerant of Turkish characters."
+        }
+      ]
+    },
+    {
+      "id": "announcement",
+      "path": {
+        "en": "/announcements/[slug]",
+        "tr": "/duyurular/[slug]"
+      },
+      "title": {
+        "en": "Announcement",
+        "tr": "Duyuru"
+      },
+      "purpose": "One announcement with the facts first: when, where, reference, what to do.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title, type, publication date and breadcrumb.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Title",
+            "Type",
+            "Published and updated dates"
+          ]
+        },
+        {
+          "id": "facts",
+          "purpose": "The key facts as a definition list (start, end, reference number).",
+          "use": [
+            "description-list"
+          ],
+          "fields": [
+            "Start date/time",
+            "End date/time",
+            "Reference number"
+          ]
+        },
+        {
+          "id": "what-to-do",
+          "purpose": "Practical help for residents (alternatives, assistance for elderly or disabled residents).",
+          "use": [
+            "alert",
+            "steps"
+          ],
+          "fields": [
+            "What residents should do",
+            "Assistance offered and how to request it"
+          ]
+        },
+        {
+          "id": "timeline",
+          "purpose": "Dated updates as the situation changes.",
+          "use": [
+            "activity-timeline"
+          ],
+          "alternatives": [
+            "activity-timeline: an ongoing disruption with status updates"
+          ],
+          "fields": [
+            "Dated updates"
+          ],
+          "optional": true
+        },
+        {
+          "id": "affected",
+          "purpose": "Affected streets or areas as a text list, and the official notice to download.",
+          "use": [
+            "list-01",
+            "attachment-list"
+          ],
+          "fields": [
+            "Affected streets/areas",
+            "Official notice file"
+          ]
+        },
+        {
+          "id": "more",
+          "purpose": "Other current announcements.",
+          "use": [
+            "blog-list"
+          ],
+          "fields": [
+            "Other announcements"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Office name, address, map location and parking/step-free access",
+    "Opening hours per desk, late openings and holiday closures",
+    "Full services list: name, topic, online/in person, documents, fees, processing time, link",
+    "Top tasks residents ask for most",
+    "Announcements with type, dates, affected areas and official notice files",
+    "Emergency and out-of-hours numbers",
+    "Accessibility statement: conformance level, review date, known issues, contact",
+    "Desk waiting-time source (if shown live)",
+    "Monthly service figures (optional)",
+    "Languages the site and services are offered in"
+  ],
+  "styles": [
+    {
+      "name": "civic plain",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ocean",
+        "density": "comfortable",
+        "font": "system",
+        "radius": "sharp"
+      },
+      "motion": "off",
+      "why": "System fonts, a deep civic blue tuned for AAA text contrast in both modes, ruled lists and large targets; for any public body."
+    },
+    {
+      "name": "institutional",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "graphite",
+        "density": "comfortable",
+        "font": "corporate"
+      },
+      "motion": "off",
+      "why": "Neutral, formal look for agencies and directorates that must stay brand-neutral."
+    }
+  ],
+  "pitfalls": [
+    "Announcements dated or typed by colour only; print dates and types as text.",
+    "An accessibility toolbar that only resizes some blocks or overflows layouts; apply it through tokens so everything reflows.",
+    "No accessibility statement or no way to request an alternative format.",
+    "Live waiting times or hours shown without a 'last updated' time, and wrong on holidays.",
+    "Service search that fails on Turkish characters or synonyms (e.g. accented vs plain spelling).",
+    "Official notices only as PDFs; put the key facts and affected areas on the page as text.",
+    "Decorative motion or low-contrast muted text on a site that must serve everyone."
+  ]
+}

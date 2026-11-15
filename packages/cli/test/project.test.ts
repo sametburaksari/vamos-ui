@@ -83,7 +83,10 @@ describe("plan", () => {
     const plan = buildPlan(shop);
     expect(plan.structure.value).toBe("multi");
     expect(plan.hosting.value).toBe("vercel");
-    expect(plan.pages[0]!.sections).toEqual(expect.arrayContaining(["hero", "site-store-01", "feature-grid"]));
+    expect(plan.recipe?.id).toBe("online-store");
+    expect(plan.pages[0]!.sections).toEqual(expect.arrayContaining(["hero", "feature-grid"]));
+    expect(plan.pages[0]!.sections.join(" ")).not.toMatch(/site-/);
+    expect(plan.pages.find((p) => p.path === "/urun/[slug]")!.sections).toContain("product-01");
     expect(plan.pages.map((p) => p.path)).toEqual(expect.arrayContaining(["/urunler", "/urun/[slug]", "/sepet", "/odeme", "/iletisim"]));
     expect(plan.legalPages.map((p) => p.path)).toEqual(expect.arrayContaining(["/kvkk-aydinlatma-metni", "/mesafeli-satis-sozlesmesi", "/on-bilgilendirme-formu", "/iade-politikasi"]));
     expect(plan.compliance.map((c) => c.tr).join(" ")).toMatch(/ETBİS/);

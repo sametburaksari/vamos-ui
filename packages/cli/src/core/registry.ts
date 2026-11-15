@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { removedItemHint } from "./removed";
 import { bundledSnapshotPath, describeSnapshot, loadSnapshot, snapshotText, type Snapshot, type SnapshotMeta } from "./snapshot";
 import { CliError, type RegistryIndex, type RegistryIndexItem, type RegistryItem } from "./types";
 
@@ -192,6 +193,8 @@ export class Registry {
       return await this.json<RegistryItem>(`${name}.json`);
     } catch (err) {
       if (err instanceof NotFound) {
+        const removed = removedItemHint(name);
+        if (removed) throw new CliError(removed.message, removed.hint);
         const index = await this.index().catch(() => null);
         const close = index ? suggest(name, index.items) : [];
         throw new CliError(`"${name}" is not in the registry.`, close.length ? `Did you mean ${close.map((c) => `"${c}"`).join(", ")}? Run \`vamos-ui list\` to see everything.` : "Run `vamos-ui list` to see everything.");

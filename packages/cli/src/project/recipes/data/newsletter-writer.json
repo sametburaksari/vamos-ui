@@ -1,0 +1,151 @@
+{
+  "id": "newsletter-writer",
+  "title": { "en": "Writer's newsletter", "tr": "Yazar bülteni" },
+  "summary": "An email-first publication by one writer or a small desk: the subscribe form is the hero, the latest letter proves the voice, a searchable archive and single-issue pages do the rest.",
+  "match": {
+    "siteTypes": ["blog"],
+    "signals": [
+      "newsletter", "substack", "letter", "weekly letter", "digest", "issue", "subscribe", "columnist",
+      "bulten", "e-bulten", "haftalik mektup", "mektup", "sayi", "abone ol", "kose yazari"
+    ],
+    "features": ["newsletter"],
+    "fallback": false
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Turn a visitor into a subscriber: what it is, how often, a real sample, who writes it and what readers say.",
+      "sections": [
+        {
+          "id": "nameplate",
+          "purpose": "A newspaper-style nameplate with the promise, the subscribe form and the reader count, beside the latest letter.",
+          "use": ["hero", "form-01"],
+          "fields": ["Newsletter name", "One-line promise", "Cadence options (every letter / monthly digest)", "Reader count (if true and current)", "Latest letter: number, date, title, first paragraph"],
+          "notes": "Email field with a typo hint for common domains linked to the input (aria-describedby); after submit show the double opt-in step in a role=\"status\" region with the address to check and an undo. The latest letter shows its opening with a drop cap and a 'continue reading' link."
+        },
+        {
+          "id": "recent",
+          "purpose": "The last few letters as ruled rows, with a topic index beside them.",
+          "use": ["list-layout"],
+          "alternatives": ["blog-list: card list when letters have cover images"],
+          "fields": ["Per letter: number, title, dek, topic, date, reading time", "Topics with letter counts"],
+          "notes": "Each topic opens the archive pre-filtered."
+        },
+        {
+          "id": "about",
+          "purpose": "Who writes it and why, beside a photo.",
+          "use": ["media-text"],
+          "fields": ["Writer's name and short bio", "Why the newsletter exists", "Photo with alt text"]
+        },
+        {
+          "id": "readers",
+          "purpose": "What readers say.",
+          "use": ["testimonials"],
+          "fields": ["Reader quotes with name or role and permission"],
+          "optional": true,
+          "when": { "any": ["section:testimonials"] }
+        },
+        {
+          "id": "faq",
+          "purpose": "Cost, cadence, unsubscribing, replying to letters, data use.",
+          "use": ["faq"],
+          "fields": ["Questions and answers"],
+          "when": { "any": ["section:faq"] }
+        }
+      ]
+    },
+    {
+      "id": "archive",
+      "path": { "en": "/archive", "tr": "/arsiv" },
+      "title": { "en": "Archive", "tr": "Arşiv" },
+      "purpose": "Every letter, searchable in full text, filterable by topic and year, with the subscribe form at hand.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "How many letters and since when.",
+          "use": ["page-intro"],
+          "fields": ["Archive lead"]
+        },
+        {
+          "id": "search",
+          "purpose": "Full-text search across titles, deks and body; topic and year switches; results by year with matches highlighted.",
+          "use": ["filter-bar", "input", "list-layout"],
+          "alternatives": ["empty-state: when nothing matches, offering to drop the filters"],
+          "fields": ["Full text of each letter", "Topic and year per letter"],
+          "notes": "Diacritics-insensitive matching in every language the site uses; '/' can focus the search box (documented, ignored while typing); live result count in a polite region; a 'clear filters' action."
+        },
+        {
+          "id": "subscribe",
+          "purpose": "The subscribe card beside the results.",
+          "use": ["form-01"],
+          "alternatives": ["cta: a plain subscribe band"],
+          "fields": ["Cadence options"]
+        }
+      ]
+    },
+    {
+      "id": "issue",
+      "path": { "en": "/archive/[slug]", "tr": "/arsiv/[slug]" },
+      "title": { "en": "Letter", "tr": "Mektup" },
+      "purpose": "One letter as it arrives in the inbox, then a reason to subscribe and the neighbouring letters.",
+      "sections": [
+        {
+          "id": "letter",
+          "purpose": "Issue number in the margin, date, reading time, topic, the body with a drop cap and a pulled sentence, and the sign-off.",
+          "use": ["article-layout"],
+          "fields": ["Issue number", "Title", "Date", "Reading time", "Topic", "Body", "Pull quote", "Sign-off"]
+        },
+        {
+          "id": "subscribe",
+          "purpose": "Subscribe card at the end of the letter.",
+          "use": ["form-01"],
+          "alternatives": ["cta: a plain band linking to the home form"],
+          "fields": ["Cadence options"]
+        },
+        {
+          "id": "neighbours",
+          "purpose": "Older and newer letters.",
+          "use": ["pagination"],
+          "fields": ["Previous and next letter titles"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Newsletter name and one-line promise",
+    "Cadence and delivery day; free or paid",
+    "Writer's bio and photo",
+    "Back issues: number, title, dek, topic, date, full text",
+    "Topics list",
+    "Current, honest reader count (optional)",
+    "Reader quotes with permission (optional)",
+    "FAQ answers: cost, unsubscribing, replying, data use",
+    "Email service that does double opt-in, and the sender address",
+    "Privacy notice for subscriber data"
+  ],
+  "styles": [
+    {
+      "name": "slow desk",
+      "axes": { "theme": "light", "material": "solid", "density": "comfortable", "font": "editorial", "accent": "ember", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Old-style book serif headlines over a screen serif, mono datelines, a double rule under the nameplate and an ink-red accent; postmark and drop cap details. Suits a personal essay or culture newsletter."
+    },
+    {
+      "name": "briefing",
+      "axes": { "theme": "light", "material": "solid", "density": "compact", "font": "grotesk", "accent": "ocean", "radius": "default" },
+      "motion": "off",
+      "why": "Compact grotesk and clear lists; for a weekly industry or market briefing."
+    }
+  ],
+  "pitfalls": [
+    "Signup without double opt-in, explicit consent or a privacy link; say what is sent and how often next to the button.",
+    "Inflated or stale subscriber counts; show a count only if it is true and kept current.",
+    "Subscribe success that is not announced to screen readers, or a typo hint not linked to the email field.",
+    "An archive search that misses words written with or without diacritics.",
+    "Letters only available in the inbox: every issue should have its own page and stay linkable.",
+    "Reader quotes used without permission or attributed to full names that readers did not agree to show."
+  ]
+}

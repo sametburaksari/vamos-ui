@@ -46,7 +46,7 @@ describe("verifyProject", () => {
 
   it("asks a website for robots, sitemap, metadataBase, Open Graph and canonical", () => {
     const issues = verifyProject({
-      paths: ["app/page.tsx", "app/layout.tsx", "components/blocks/site-spa-01/page.tsx"],
+      paths: ["app/page.tsx", "app/layout.tsx", "components/blocks/site-agency-01/page.tsx"],
       sources: [{ path: "app/layout.tsx", content: `export const metadata = { title: "x" };` }],
     }).filter((i) => i.rule === "site-essentials");
     const text = issues.map((i) => i.message).join("\n");
@@ -56,7 +56,7 @@ describe("verifyProject", () => {
   it("is quiet for a complete site and for apps that are not websites", () => {
     const layout = `export const metadata = { metadataBase: new URL("https://kiyi.com.tr"), alternates: { canonical: "/" }, openGraph: { siteName: "Kıyı" } };`;
     const site = verifyProject({
-      paths: ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "app/llms.txt/route.ts", "app/privacy/page.tsx", "app/kvkk/page.tsx", "components/blocks/site-spa-01/page.tsx"],
+      paths: ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "app/llms.txt/route.ts", "app/privacy/page.tsx", "app/kvkk/page.tsx", "components/blocks/site-agency-01/page.tsx"],
       sources: [{ path: "app/layout.tsx", content: layout }, { path: "components/f.tsx", content: footer }],
     });
     expect(site).toEqual([]);
@@ -79,7 +79,7 @@ describe("planEssentials", () => {
     write("src/app/page.tsx", `export default function P() { return null; }`);
     write("src/app/terms/page.tsx", `export default function T() { return null; }`);
     write(
-      "src/components/blocks/site-spa-01/components/spa-site.tsx",
+      "src/components/blocks/site-agency-01/components/agency-site.tsx",
       `const l = [{ href: "/gizlilik" }, { href: "/kvkk" }, { href: "/cerez-politikasi" }, { href: "/terms" }, { href: "/hakkimizda" }];`,
     );
     const plan = planEssentials(dir, { blocksDir: "src/components/blocks" }, { alias: { alias: "@", target: "src" } });
@@ -148,7 +148,7 @@ describe("planEssentials", () => {
 });
 
 describe("meta-length and image-weight", () => {
-  const base = ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "public/llms.txt", "components/blocks/site-spa-01/page.tsx"];
+  const base = ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "public/llms.txt", "components/blocks/site-agency-01/page.tsx"];
   const layout = `export const metadata = { metadataBase: new URL("https://kiyi.com.tr"), alternates: { canonical: "/" }, openGraph: { siteName: "Kıyı" } };`;
 
   it("flags short or long descriptions and long titles in metadata only", () => {
@@ -216,7 +216,7 @@ describe("vamos.site.json", () => {
     write("package.json", "{}");
     write("app/layout.tsx", `export const metadata = { title: "x" };`);
     write("app/page.tsx", `export default function P() { return null; }`);
-    write("components/blocks/site-spa-01/components/spa-site.tsx", `const l = [{ href: "/gizlilik" }, { href: "/kvkk" }, { href: "/atolye" }];`);
+    write("components/blocks/site-agency-01/components/agency-site.tsx", `const l = [{ href: "/gizlilik" }, { href: "/kvkk" }, { href: "/atolye" }];`);
     write("app/atolye/page.tsx", `export default function A() { return null; }`);
     if (site !== undefined) write("vamos.site.json", typeof site === "string" ? site : JSON.stringify(site));
   };
@@ -406,7 +406,7 @@ describe("legal-01 values", () => {
 });
 
 describe("verify site-info", () => {
-  const complete = ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "components/blocks/site-spa-01/page.tsx"];
+  const complete = ["app/page.tsx", "app/layout.tsx", "app/robots.ts", "app/sitemap.ts", "components/blocks/site-agency-01/page.tsx"];
   const layout = { path: "app/layout.tsx", content: `export const metadata = { metadataBase: new URL("https://kiyi.com.tr"), alternates: { canonical: "/" }, openGraph: { siteName: "Kıyı" } }; <script type="application/ld+json" />` };
   const siteInfo = (paths: string[], siteJson?: string) => verifyProject({ paths, sources: [layout], siteJson }).filter((i) => i.rule === "site-info");
 

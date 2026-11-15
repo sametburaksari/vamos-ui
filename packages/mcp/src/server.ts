@@ -177,7 +177,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Plan a screen",
       description:
-        "Turns a screen description into a plan: the block to start from (plus alternatives), extra components to add with reasons, the install command, density and a build checklist. Use it when a new page or screen is requested.",
+        "Turns a screen description into a plan: the block to start from (plus alternatives) or, for a website, the matching site recipe (pages, sections, kit components, facts to supply), extra components to add with reasons, the install command, density and a build checklist. Use it when a new page or screen is requested.",
       inputSchema: {
         description: z
           .string()

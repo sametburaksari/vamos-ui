@@ -1,0 +1,179 @@
+{
+  "id": "careers",
+  "title": { "en": "Careers site", "tr": "Kariyer sitesi" },
+  "summary": "An employer's careers site: how the company works, what it offers, how hiring runs and who already works there, a searchable board of open roles, and a page per role with a validated application form.",
+  "match": {
+    "siteTypes": ["corporate"],
+    "signals": ["careers", "jobs", "join us", "join our team", "hiring", "open roles", "vacancies", "recruitment", "work with us", "kariyer", "is ilanlari", "acik pozisyonlar", "ise alim", "bize katil", "basvuru"],
+    "features": ["section:careers", "section:team", "section:faq", "channel:form"],
+    "fallback": false
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Careers", "tr": "Kariyer" },
+      "purpose": "Help a candidate decide whether this is a place for them, and get them to the right open role.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "The employer promise in one line beside a list of teams with their open-role counts; choosing a team opens the board filtered to it.",
+          "use": ["hero"],
+          "fields": ["Headline", "Lead", "Teams with open-role counts", "Primary action (see open roles)", "Secondary action (how we hire)"],
+          "notes": "A memorable version draws the teams on a dial with a needle that swings to the hovered team; the dial is decorative and the ruled team list is the accessible part (build from hero + list-layout). Choosing a team pre-sets the board filter."
+        },
+        {
+          "id": "principles",
+          "purpose": "How the company works, as a few numbered principles beside a photo of the real workplace.",
+          "use": ["media-text"],
+          "alternatives": ["feature-grid: principles without a photo"],
+          "fields": ["Three to five working principles with title and sentence", "Workplace photo with alt text"]
+        },
+        {
+          "id": "numbers",
+          "purpose": "Open roles, locations, team size and other honest figures.",
+          "use": ["stats-band"],
+          "fields": ["Three or four figures with label and as-of date"],
+          "notes": "Ledger variant with count-up."
+        },
+        {
+          "id": "benefits",
+          "purpose": "What employees get, concretely.",
+          "use": ["feature-grid"],
+          "fields": ["Benefit name", "Concrete detail (amount, days, policy)"],
+          "notes": "Grid variant."
+        },
+        {
+          "id": "process",
+          "purpose": "Every hiring stage with its typical duration and who the candidate meets.",
+          "use": ["steps"],
+          "fields": ["Stages with title, what happens and typical duration", "Total time to a decision"],
+          "notes": "Horizontal variant."
+        },
+        {
+          "id": "voices",
+          "purpose": "Short quotes from employees about their actual work.",
+          "use": ["testimonials"],
+          "fields": ["Quote", "Name", "Team and role", "Years at the company", "Consent"],
+          "when": { "any": ["section:testimonials", "section:team"] },
+          "notes": "Set as a ruled ledger of three quotes rather than avatar cards."
+        },
+        {
+          "id": "latest",
+          "purpose": "The newest roles with a link to the full board.",
+          "use": ["list-layout"],
+          "fields": ["Role title", "Team", "Location", "Posted date", "Link to all roles"],
+          "notes": "Four newest roles as compact rows."
+        },
+        {
+          "id": "faq",
+          "purpose": "Questions candidates ask before applying.",
+          "use": ["faq"],
+          "fields": ["Question and answer pairs (remote work, relocation, salary bands, feedback)"],
+          "when": { "any": ["section:faq"] },
+          "notes": "Split variant."
+        },
+        {
+          "id": "cta",
+          "purpose": "For people with no matching role: send an open application or join a talent list.",
+          "use": ["cta"],
+          "fields": ["Open application route", "Contact email"],
+          "notes": "Split variant."
+        }
+      ]
+    },
+    {
+      "id": "jobs",
+      "path": { "en": "/careers", "tr": "/kariyer" },
+      "title": { "en": "Open roles", "tr": "Açık pozisyonlar" },
+      "purpose": "Every open role, searchable and filterable.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title, breadcrumb and the number of open roles.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead"],
+          "notes": "Ruled variant."
+        },
+        {
+          "id": "board",
+          "purpose": "Free-text search, team toggles, location and contract filters, a live result count, results grouped by team, and an empty state that offers to widen the search.",
+          "use": ["filter-bar", "list-layout"],
+          "alternatives": ["data-table: very many roles with sortable columns"],
+          "fields": ["Every role: reference, title, team, locations, contract type, salary band, posted date, closing date"],
+          "notes": "The board is a role=\"search\" region; the count is a status region. Search is case- and diacritic-insensitive. Filters survive a language switch. Each row is one link."
+        }
+      ]
+    },
+    {
+      "id": "job",
+      "path": { "en": "/careers/[slug]", "tr": "/kariyer/[slug]" },
+      "title": { "en": "Job post", "tr": "İş ilanı" },
+      "purpose": "One role in full, with the application form beside it.",
+      "sections": [
+        {
+          "id": "header",
+          "purpose": "Breadcrumb, role title and a ruled fact strip.",
+          "use": ["page-intro"],
+          "fields": ["Role title", "Team", "Locations", "Contract type", "Salary band", "Closing date", "Reference"]
+        },
+        {
+          "id": "description",
+          "purpose": "What you will do, what you need, nice to have, and this role's hiring steps.",
+          "use": ["rich-text-section"],
+          "fields": ["Responsibilities", "Requirements", "Nice-to-haves", "Role-specific process"]
+        },
+        {
+          "id": "apply",
+          "purpose": "Apply for this role: name, email, CV upload, short note, location and right to work, plus consent for CV storage.",
+          "use": ["form-01", "file-upload"],
+          "alternatives": ["multi-step-form: long applications with screening questions"],
+          "fields": ["CV file rules (format, max size)", "Location options", "Right-to-work question", "Consent text: what is stored, for how long, who sees it", "Reply-by promise in working days"],
+          "notes": "Sticky column on wide screens. Validate on submit then on change; focus the first invalid field; end with a reference and a reply-by date. Consent checkbox must be unticked by default and state the retention period."
+        },
+        {
+          "id": "related",
+          "purpose": "Other roles in the same team.",
+          "use": ["list-layout"],
+          "fields": ["Related role rows"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Teams or departments with their open-role counts",
+    "Every open role: title, team, locations, contract type, salary band, posted and closing dates, responsibilities, requirements",
+    "Working principles or values with concrete examples",
+    "Benefits with concrete amounts or policies",
+    "Hiring stages, typical duration and who the candidate meets",
+    "Employee quotes with consent",
+    "Workplace photos of real people and places",
+    "Application rules: CV format and size, right-to-work requirement, screening questions",
+    "Candidate privacy notice: what is stored, retention period, who processes it",
+    "Reply-time promise and contact for questions",
+    "Company figures with as-of date"
+  ],
+  "styles": [
+    {
+      "name": "calm and precise",
+      "axes": { "theme": "light", "material": "solid", "accent": "lime", "font": "grotesk", "density": "comfortable", "radius": "default" },
+      "motion": "subtle",
+      "why": "A tech or engineering employer: a Scandinavian-style grotesk with mono references, ruled ledgers instead of cards, calm entrance motion. Nothing showy for people deciding on a job."
+    },
+    {
+      "name": "corporate employer",
+      "axes": { "theme": "light", "material": "solid", "accent": "ocean", "font": "corporate", "density": "comfortable" },
+      "motion": "subtle",
+      "why": "A larger or more traditional employer whose careers site sits next to a corporate site and should look like the same company."
+    }
+  ],
+  "pitfalls": [
+    "Discriminatory wording in job posts (age, gender, nationality) or asking for a photo, marital status or date of birth; many jurisdictions forbid it.",
+    "Collecting CVs without a candidate privacy notice, retention period and an unticked consent box.",
+    "Closed roles left on the board; every role needs a closing date and is removed after it.",
+    "No salary band: candidates skip roles without one, and some markets require it.",
+    "File upload without clear format and size limits, or errors shown only in colour.",
+    "Filter results and counts that change silently; announce them in a status region.",
+    "Stock photos of smiling strangers instead of real colleagues and workplaces."
+  ]
+}

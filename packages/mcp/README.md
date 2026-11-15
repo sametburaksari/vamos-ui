@@ -135,7 +135,7 @@ npx -y @vamos-ui/mcp --registry https://ui.example.com/r
 | Tool | When the agent calls it |
 |---|---|
 | `get_rules` | Once at the start of any UI task: tokens only, accent scarcity, glass budget, density, kit over hand-rolled markup, no AI-looking patterns, realistic content, accessibility. |
-| `plan_screen(description)` | First, for a new page: suggests the block to start from, extra components with reasons, density and the install command. |
+| `plan_screen(description)` | First, for a new page: suggests the block to start from (for a website: the matching site recipe with its sections and kit components), extra components with reasons, density and the install command. |
 | `get_block(name)` | Full source of a block plus the kit components it uses. |
 | `search(query, type?, limit?)` | Find items by need, in English or Turkish ("date range picker", "tarih seçici"). |
 | `get_item(name, include?, format?)` | Usage, props, examples, when-to-use guidance, dependencies; source with `include: ["files"]`. |

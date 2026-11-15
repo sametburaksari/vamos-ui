@@ -1,0 +1,290 @@
+{
+  "id": "academic-department",
+  "title": {
+    "en": "Academic department",
+    "tr": "Akademik bölüm"
+  },
+  "summary": "A university department, faculty or research institute: masthead with a course search, admissions, research groups, seminars, faculty, a programmes page with a course finder and a people directory.",
+  "match": {
+    "siteTypes": [
+      "nonprofit",
+      "corporate"
+    ],
+    "signals": [
+      "department",
+      "faculty",
+      "university",
+      "institute",
+      "research group",
+      "graduate school",
+      "laboratory",
+      "bolum",
+      "fakulte",
+      "universite",
+      "enstitu",
+      "arastirma grubu",
+      "laboratuvar",
+      "yuksek lisans",
+      "lisansustu"
+    ],
+    "features": [
+      "section:team",
+      "multilingual"
+    ]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Orient prospective students, current students and researchers: search courses, see admissions, research and what is on this week.",
+      "sections": [
+        {
+          "id": "masthead",
+          "purpose": "Department name under the institution, one-line focus, and a course search that lands on the course finder.",
+          "use": [
+            "hero",
+            "input"
+          ],
+          "fields": [
+            "Department and institution name",
+            "One-line focus",
+            "Decorative artwork or photo of the building"
+          ],
+          "notes": "The search is a GET form (role=search) that prefills the finder with ?q= and ?level=. Drawn artwork is decorative."
+        },
+        {
+          "id": "admissions",
+          "purpose": "Admissions as a ruled table: programme, level, deadline, places, language.",
+          "use": [
+            "table"
+          ],
+          "fields": [
+            "Programme",
+            "Level",
+            "Application deadline",
+            "Places",
+            "Teaching language",
+            "Application link"
+          ]
+        },
+        {
+          "id": "research",
+          "purpose": "Research groups with their focus and lead.",
+          "use": [
+            "feature-grid"
+          ],
+          "alternatives": [
+            "entity-card: few groups shown with a photo and lead"
+          ],
+          "fields": [
+            "Group name",
+            "Focus",
+            "Lead",
+            "Link"
+          ]
+        },
+        {
+          "id": "events",
+          "purpose": "Seminars and events as a dated list.",
+          "use": [
+            "list-01"
+          ],
+          "alternatives": [
+            "calendar: a busy events programme"
+          ],
+          "fields": [
+            "Event title",
+            "Date and time",
+            "Speaker and affiliation",
+            "Room or online link"
+          ],
+          "optional": true
+        },
+        {
+          "id": "faculty",
+          "purpose": "Faculty members with research interests, linking to the directory.",
+          "use": [
+            "team"
+          ],
+          "fields": [
+            "Name, title, research interests, photo"
+          ],
+          "when": {
+            "any": [
+              "section:team"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "programmes",
+      "path": {
+        "en": "/programmes",
+        "tr": "/programlar"
+      },
+      "title": {
+        "en": "Programmes & courses",
+        "tr": "Programlar ve dersler"
+      },
+      "purpose": "Compare degrees, find a course and learn how to apply.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Breadcrumb and lead.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Lead"
+          ]
+        },
+        {
+          "id": "degrees",
+          "purpose": "The degree programmes side by side (duration, credits, language, places).",
+          "use": [
+            "comparison-table"
+          ],
+          "alternatives": [
+            "feature-grid: degrees as cards"
+          ],
+          "fields": [
+            "Degree name and level",
+            "Duration and credits",
+            "Teaching language",
+            "Places",
+            "Entry requirements"
+          ]
+        },
+        {
+          "id": "finder",
+          "purpose": "Every course, filtered by level, term, format and language, with free-text search over codes, titles, descriptions and lecturers, a 'free seats only' switch and sort orders; each entry shows a seat meter and opens to its description, prerequisites and room.",
+          "use": [
+            "filter-bar",
+            "accordion",
+            "progress"
+          ],
+          "alternatives": [
+            "data-table: staff-facing catalogues with many columns"
+          ],
+          "fields": [
+            "Course code and title",
+            "Level, term, format, language",
+            "Lecturer",
+            "Weekday, time and room",
+            "Seats taken and total",
+            "Description and prerequisites"
+          ],
+          "notes": "role=search on the filters; result count in a status region; seat meters need a text value."
+        },
+        {
+          "id": "apply",
+          "purpose": "How to apply, step by step.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Application steps, documents and deadlines"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "people",
+      "path": {
+        "en": "/people",
+        "tr": "/kadro"
+      },
+      "title": {
+        "en": "People",
+        "tr": "Kadro"
+      },
+      "purpose": "The staff directory grouped by rank: title, research interests, group, office and office hours.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Breadcrumb and lead.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Lead"
+          ]
+        },
+        {
+          "id": "directory",
+          "purpose": "Staff grouped by rank with contact details.",
+          "use": [
+            "list-01",
+            "avatar"
+          ],
+          "alternatives": [
+            "team: a small department with photos"
+          ],
+          "fields": [
+            "Name and academic title",
+            "Rank/group",
+            "Research interests",
+            "Office room",
+            "Office hours",
+            "Email"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Department and institution names, address and contact",
+    "Degree programmes: level, duration, credits, language, places, requirements",
+    "Admissions deadlines and application links",
+    "Course catalogue with codes, lecturers, rooms, times, seats",
+    "Research groups with focus and leads",
+    "Seminar/event schedule",
+    "Staff directory: titles, interests, offices, office hours, emails",
+    "Approval from the institution for the use of its name and logo",
+    "Data source/update routine for courses and seats"
+  ],
+  "styles": [
+    {
+      "name": "corporate serif",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "rose",
+        "density": "comfortable",
+        "font": "corporate",
+        "radius": "sharp"
+      },
+      "motion": "subtle",
+      "why": "Serif headings over a reading sans, mono for codes and rooms, a deep burgundy-like accent and restrained motion: an institution, not a launch."
+    },
+    {
+      "name": "research lab",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ocean",
+        "density": "compact",
+        "font": "grotesk"
+      },
+      "motion": "off",
+      "why": "Dense and technical for research institutes and labs."
+    }
+  ],
+  "pitfalls": [
+    "Course and seat data that goes stale; show when it was last updated and the source.",
+    "Seat meters shown only as bars; give a text value.",
+    "Admission deadlines without time zone or with the wrong academic year.",
+    "Staff emails exposed without the institution's policy, or departed staff still listed.",
+    "Using the university's name or logo against its brand rules.",
+    "A finder that cannot be reached by keyboard or does not announce result counts."
+  ]
+}

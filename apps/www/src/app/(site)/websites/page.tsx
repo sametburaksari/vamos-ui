@@ -6,7 +6,7 @@ const sites = blocks.filter((b) => b.category === "Website pages");
 
 export const metadata = pageMeta({
   title: "Websites",
-  description: `${sites.length} example websites built from Vamos UI components: firms, studios, shops, SaaS. Themeable, EN / TR, one command to copy.`,
+  description: "Showcase websites built only from Vamos UI components. A new site is planned with `vamos-ui new`: a recipe picks the pages and the components for every section.",
   path: "/websites/",
 });
 
@@ -25,10 +25,12 @@ export default function WebsitesPage() {
     <main id="main" className="w-full px-5 md:px-8 xl:px-12 py-12">
       <div className="max-w-2xl">
         <div className="mb-2 text-[11.5px] font-medium uppercase tracking-[0.14em] text-fg-subtle">Websites</div>
-        <h1 className="font-display text-[length:calc(48px*var(--display-scale))] leading-[1.03]">Complete sites, ready to copy.</h1>
+        <h1 className="font-display text-[length:calc(48px*var(--display-scale))] leading-[1.03]">Showcase sites, built from the kit.</h1>
         <p className="mt-3 text-[15.5px] leading-relaxed text-fg-muted">
-          {sites.length} example websites with inner pages, motion and English / Turkish copy. Built only from kit
-          components, so each one takes your theme, accent, density and font. Open one to see it full size and copy its code.
+          {sites.length} finished websites with inner pages, motion and English / Turkish copy, built only from kit components,
+          so each one takes your theme, accent, density and font. They are references, not templates: run{" "}
+          <code className="font-mono text-fg">npx vamos-ui new</code> and the plan picks a recipe for your kind of site, with the
+          components and the facts to supply for every section.
         </p>
       </div>
       <BlocksBrowser mode="websites" blocks={withFiles} categories={blockCategories} />

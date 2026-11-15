@@ -1,6 +1,6 @@
 # Vamos UI — screen recipes
 
-Each recipe names the block to start from, the components it is built with and the decisions that make it right. Install the block with `npx vamos-ui add <block>`, then adapt content and columns to the real domain. Imports below use package mode (`@vamos-ui/react`); in copy mode replace it with the `importAlias` from vamos.json (e.g. `@/components/vamos`, `@/components/vamos/data-table`). Read props with MCP `get_item` / `npx vamos-ui view <name>` before writing code; the snippets show structure, not every prop.
+Each pattern names the block to start from, the components it is built with and the decisions that make it right. Install the block with `npx vamos-ui add <block>`, then adapt content and columns to the real domain. Imports below use package mode (`@vamos-ui/react`); in copy mode replace it with the `importAlias` from vamos.json (e.g. `@/components/vamos`, `@/components/vamos/data-table`). Read props with MCP `get_item` / `npx vamos-ui view <name>` before writing code; the snippets show structure, not every prop.
 
 ## 0. Every app screen: the shell
 
@@ -84,7 +84,7 @@ import { DataTable, DataTableContent, DataTableFilterBar, DataTableFooter, DataT
 
 ## 6. Landing page and websites
 
-- **Start from:** `site-saas-01` (SaaS product), `site-agency-01` (agency/studio), `site-restaurant-01`, `site-spa-01` (local business), `page-pricing-01`, `page-contact-01`; compare section variants in `sections-01`.
+- **Start from:** a recipe, not an example site. `npx vamos-ui new` (MCP `start_project`) picks one from the interview ([recipes.md](recipes.md) lists them) and writes each page's sections with the kit components to use; single pages start from `page-pricing-01`, `page-contact-01` or `legal-01`; compare section variants in `sections-01`.
 - **Built with (site blocks subpath):** `navbar`, `announcement-bar`, `hero`, `logo-strip`, `feature-grid`, `media-text`, `stats-band`, `steps`, `testimonials`, `team`, `pricing-table`, `comparison-table`, `menu-list`, `gallery-section`, `faq`, `map-hours`, `contact-form`, `contact-dock`, `cta`, `blog-list`, `article-layout`, `page-intro`, `rich-text-section`, `footer`, `consent-banner`, `not-found`; the `blocks-api` primitives for new sections.
 - **Decisions:**
   - Pick one hero character for the sector (editorial, split media, full bleed, product, statement); one h1 per page.

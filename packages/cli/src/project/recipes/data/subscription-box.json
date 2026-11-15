@@ -1,0 +1,193 @@
+{
+  "id": "subscription-box",
+  "title": { "en": "Subscription box", "tr": "Abonelik kutusu" },
+  "summary": "A recurring-delivery brand (coffee, tea, snacks, books, beauty, pet supplies and similar) priced by box size and delivery frequency: this edition's contents, a plan builder with per-delivery and per-unit price, how it works, the suppliers behind it, and gift subscriptions.",
+  "match": {
+    "siteTypes": ["ecommerce"],
+    "signals": ["subscription box", "monthly box", "box", "subscription", "club", "curated", "every month", "abonelik", "aylik kutu", "kutu", "kulup", "her ay", "abone ol"],
+    "features": ["shop", "shipping:yes", "section:pricing", "section:faq"],
+    "fallback": false
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show what is in this edition, make the price easy to read as size x frequency, explain the rhythm of deliveries and lead to the builder or a gift.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Edition number and month, the items in this box, headline and start button.",
+          "use": ["hero"],
+          "fields": ["Current edition number and month", "Items in this box with photo", "Headline and one-line pitch", "Price from per delivery"]
+        },
+        {
+          "id": "this-edition",
+          "purpose": "One card per item in the current box with its facts (origin, maker, notes, ratings on simple scales).",
+          "use": ["feature-grid"],
+          "alternatives": ["entity-card: richer cards with badges"],
+          "fields": ["Per item: name, origin or maker, key facts, tasting/usage notes", "Scale values (e.g. intensity, sweetness) if relevant"],
+          "notes": "Scales drawn as filled/hollow marks need the value as text too."
+        },
+        {
+          "id": "plans",
+          "purpose": "The price grid: box size by delivery frequency, every cell a plan; choosing one carries the choice to the plans page.",
+          "use": ["pricing-table"],
+          "alternatives": ["comparison-table: few plans with many differing features"],
+          "fields": ["Box sizes", "Frequencies", "Price per cell", "What is included in every box (shipping, extras)"],
+          "notes": "Build the size x frequency grid as one radio group (one tab stop, arrow keys move between cells); highlight the chosen cell's row and column headers so it reads as coordinates. Keep the choice in a shared store.",
+          "when": { "any": ["section:pricing"] }
+        },
+        {
+          "id": "how-it-works",
+          "purpose": "The life of one delivery: choose, prepared, shipped on the fixed day, arrives; skip or pause any time.",
+          "use": ["steps"],
+          "fields": ["Steps with timing (preparation, shipping day, arrival)", "Skip, pause and cancel rules"]
+        },
+        {
+          "id": "suppliers",
+          "purpose": "The producers or makers behind the boxes, to show where things come from.",
+          "use": ["feature-grid"],
+          "alternatives": ["team: the curators are the story", "logo-strip: well-known brands supply the box"],
+          "fields": ["Suppliers: name, place, photo, what they contribute"],
+          "optional": true
+        },
+        {
+          "id": "reviews",
+          "purpose": "Subscriber reviews.",
+          "use": ["testimonials"],
+          "fields": ["Subscriber quotes with how long they have subscribed"],
+          "when": { "any": ["section:testimonials"] },
+          "optional": true
+        },
+        {
+          "id": "faq",
+          "purpose": "Before the first box: changing plans, skipping, cancelling, delivery days, damaged boxes.",
+          "use": ["faq"],
+          "fields": ["Questions and answers on skip/pause/cancel, delivery and billing"],
+          "when": { "any": ["section:faq"] }
+        },
+        {
+          "id": "gift-band",
+          "purpose": "A band pointing to gift subscriptions.",
+          "use": ["cta"],
+          "fields": ["Gift lengths offered and price from"],
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "plans",
+      "path": { "en": "/plans", "tr": "/planlar" },
+      "title": { "en": "Build your plan", "tr": "Planini olustur" },
+      "purpose": "The full builder: size and frequency, product options, and a sticky receipt with price per delivery, per unit, over a month, and the next delivery dates.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and one line on flexibility.",
+          "use": ["page-intro"],
+          "fields": ["One line on skip/cancel flexibility"]
+        },
+        {
+          "id": "builder",
+          "purpose": "Size x frequency grid, option choices (e.g. variety, preparation), a picture of the box as it will arrive, and the receipt with the order button.",
+          "use": ["pricing-table", "radio-group"],
+          "alternatives": ["multi-step-form: many options that need one step each"],
+          "fields": ["Options per product (e.g. variety, preparation/grind, flavour)", "Shipping days and cut-off for the next box", "Price per delivery, per unit and per month"],
+          "notes": "The receipt updates in a role=status live region. Show the next few shipping dates computed from the shipping weekday. A drawn picture of the box is decorative; the receipt carries the same facts as text. End with an order reference after subscribing."
+        }
+      ]
+    },
+    {
+      "id": "gift",
+      "path": { "en": "/gift", "tr": "/hediye" },
+      "title": { "en": "Gift a subscription", "tr": "Hediye abonelik" },
+      "purpose": "A prepaid subscription for someone else: length (longer is cheaper), size, first delivery date, recipient and a card message previewed live.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and how gifting works.",
+          "use": ["page-intro"],
+          "fields": ["How the gift is delivered and when the recipient is told"]
+        },
+        {
+          "id": "gift-form",
+          "purpose": "Choose length, size, start date, recipient details and card message; live card preview beside it.",
+          "use": ["form-02", "date-picker"],
+          "alternatives": ["multi-step-form: gift flow in steps"],
+          "fields": ["Gift lengths and prices", "First possible start date", "Card message character limit", "Recipient data needed (name, address, email)"],
+          "notes": "Validate on submit and end with a gift reference. The card preview updates in a polite live region."
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "path": { "en": "/checkout", "tr": "/odeme" },
+      "title": { "en": "Checkout", "tr": "Odeme" },
+      "purpose": "Pay for the subscription: delivery address, recurring payment consent, first charge date.",
+      "sections": [
+        {
+          "id": "checkout",
+          "purpose": "Contact, address, payment with recurring-billing consent and summary.",
+          "use": ["checkout-01"],
+          "fields": ["Recurring billing terms and first charge date", "Cancellation method", "Payment provider supporting recurring charges"]
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "path": { "en": "/order/[id]", "tr": "/siparis/[id]" },
+      "title": { "en": "Subscription confirmed", "tr": "Abonelik onayi" },
+      "purpose": "Confirm the subscription with the next delivery date and how to manage it.",
+      "sections": [
+        {
+          "id": "confirmation",
+          "purpose": "Reference, first delivery date, billing schedule, how to skip or cancel.",
+          "use": ["order-confirmation-01"],
+          "fields": ["Where subscribers manage, skip or cancel"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Box sizes, delivery frequencies and the price of every combination",
+    "Product options subscribers choose (variety, preparation, flavours)",
+    "Current edition: items with photos and facts, updated each cycle",
+    "Shipping weekday, cut-off for each box and delivery areas",
+    "Skip, pause, change and cancel rules",
+    "Recurring billing terms and payment provider",
+    "Gift lengths, prices and how the recipient is notified",
+    "Supplier or maker profiles with photos",
+    "Subscriber reviews with permission",
+    "Damaged or missing box policy"
+  ],
+  "styles": [
+    {
+      "name": "warm label print",
+      "axes": { "theme": "light", "material": "solid", "accent": "ember", "density": "comfortable", "font": "editorial", "radius": "default" },
+      "motion": "subtle",
+      "why": "High-contrast display serif for labels and prices, a deep warm brown accent and solid surfaces feel like a printed product label; suits food and drink boxes."
+    },
+    {
+      "name": "playful bright",
+      "axes": { "theme": "light", "material": "solid", "accent": "rose", "density": "comfortable", "font": "grotesk", "radius": "round" },
+      "motion": "full",
+      "why": "For beauty, snack, toy and pet boxes with a younger audience."
+    },
+    {
+      "name": "calm curated",
+      "axes": { "theme": "light", "material": "glass", "accent": "graphite", "density": "comfortable", "font": "editorial", "radius": "default" },
+      "motion": "subtle",
+      "why": "For book and lifestyle clubs where the curation is the product."
+    }
+  ],
+  "pitfalls": [
+    "Recurring charge not stated clearly before payment (amount, frequency, first charge date, how to cancel) — a legal requirement for subscriptions in many markets.",
+    "Cancelling made harder than subscribing; offer online cancel and say so on the plans page.",
+    "Only the per-delivery price shown; show per-unit and per-month too so plans compare honestly.",
+    "Price grid cells that are not keyboard-operable or not announced with their row and column.",
+    "Current edition section left stale after the cycle changes.",
+    "Gift subscriptions that renew automatically without the buyer knowing.",
+    "Next delivery dates computed in the visitor's time zone instead of the warehouse's."
+  ]
+}

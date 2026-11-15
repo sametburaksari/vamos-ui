@@ -1,0 +1,19 @@
+{
+  "whenToUse": [
+    "Public-sector, education or community sites that offer readers their own text size, contrast and reading settings.",
+    "A display-settings popover or settings page that must change the whole app through the kit's tokens."
+  ],
+  "avoidWhen": [
+    "Switching light / dark or brand themes — use the theme axes (ThemeScope, theme switcher) instead.",
+    "As a substitute for meeting contrast and text-spacing requirements in the design itself."
+  ],
+  "related": [
+    "switch",
+    "popover",
+    "mode-toggle"
+  ],
+  "a11y": [
+    "A labelled region; text size is a toggle group with named items, the other settings are switches.",
+    "High contrast only remaps kit tokens (muted text to full text colour, hairlines to visible rules) and strengthens the focus outline; settings can persist on the device and are restored after mount."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "Long-form reading such as articles, essays, documentation and reports, where the reader wants to know how far along they are.",
+    "Showing minutes left through one article (target) rather than through the whole page."
+  ],
+  "avoidWhen": [
+    "Task or upload progress — use progress.",
+    "A purely decorative scroll bar with no announced value — use ScrollProgress from motion.",
+    "Short pages that fit in one or two screens."
+  ],
+  "related": [
+    "progress",
+    "motion",
+    "article-layout",
+    "section-nav"
+  ],
+  "a11y": [
+    "role=\"progressbar\" with aria-valuenow and an aria-valuetext such as \"42% · 3 min left\"; the floating indicator is aria-hidden because it repeats the bar.",
+    "The bar follows the scroll directly, so it stays under reduced motion; only its easing is removed."
+  ]
+}

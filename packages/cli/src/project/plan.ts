@@ -9,6 +9,8 @@ import type { SiteInfo } from "../site-info";
 import { type Answers, type Lang, type SiteType, type Text, wantsTurkish } from "./questions";
 import { jurisdictionFromAnswers, type Jurisdiction } from "./jurisdiction";
 import { requirementsFor, taskDependencies, type Agent, type Requirement } from "./requirements";
+import { RECIPES } from "./recipes";
+import { pickRecipe, projectFeatures, resolveRecipe, type BlueprintPage, type PlanRecipe } from "./recipes/engine";
 
 export type { Agent, Requirement } from "./requirements";
 
@@ -60,8 +62,12 @@ export interface ProjectPlan {
   siteType: SiteType;
   structure: Decision & { value: Structure };
   languages: string[];
-  /** Closest example websites in the registry to start from. */
-  templates: string[];
+  /** @deprecated Plans no longer point to example sites; see `recipe` and `blueprint`. Kept for older vamos.project.json files. */
+  templates?: string[];
+  /** The recipe chosen from the answers: the kind of site, its looks, what the business supplies, pitfalls. */
+  recipe?: PlanRecipe;
+  /** The recipe's pages with the sections that apply: purpose, kit items, alternatives, fields to supply. */
+  blueprint?: BlueprintPage[];
   pages: PlanPage[];
   legalPages: PlanLegalPage[];
   /** Where the business is, whom it serves and the legal regimes that follow (older plans have none: Türkiye or generic). */
@@ -147,18 +153,6 @@ function pageLabel(label: string, path: string): string {
   const seg = path.split("/").filter(Boolean).pop() ?? "";
   return seg ? seg.replace(/-/g, " ").replace(/^./, (c) => c.toLocaleUpperCase("tr")) : clean || path;
 }
-
-const TEMPLATES: Record<SiteType, string[]> = {
-  "local-business": ["site-studio-01", "site-florist-01", "site-autoservice-01"],
-  corporate: ["site-agency-01", "site-accounting-01", "site-law-01"],
-  ecommerce: ["site-store-01", "site-store-02"],
-  booking: ["site-clinic-01", "site-physio-01", "site-therapy-01"],
-  portfolio: ["site-portfolio-01", "site-portfolio-02", "site-cv-01"],
-  blog: ["site-blog-01", "site-blog-02", "site-news-01"],
-  saas: ["site-saas-01", "site-saas-02"],
-  nonprofit: ["site-nonprofit-01"],
-  event: ["site-event-01", "site-venue-01"],
-};
 
 /** schema.org type for vamos.site.json. */
 export const SCHEMA_TYPES: Record<SiteType, string> = {
@@ -465,6 +459,21 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
   const structure = decideStructure(a, type, sections);
   const hosting = decideHosting(a, type);
   const forms = decideForms(a, hosting);
+  const choice = pickRecipe(a, RECIPES, jurisdiction.country);
+  const blueprint = choice ? resolveRecipe(choice.recipe, projectFeatures(a)) : undefined;
+  const recipe: PlanRecipe | undefined = choice
+    ? {
+        id: choice.recipe.id,
+        title: choice.recipe.title,
+        summary: choice.recipe.summary,
+        signals: choice.signals,
+        alternatives: choice.alternatives,
+        ...(choice.recipe.showcase?.length ? { showcase: choice.recipe.showcase } : {}),
+        styles: choice.recipe.styles,
+        content: choice.recipe.content,
+        pitfalls: choice.recipe.pitfalls,
+      }
+    : undefined;
 
   // Pages
   const contactSections = [
@@ -480,7 +489,7 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
   } else {
     const home =
       type === "ecommerce"
-        ? ["hero", "site-store-01", "feature-grid", ...(sections.includes("testimonials") ? ["testimonials"] : []), "cta"]
+        ? ["hero", "feature-grid", ...(sections.includes("testimonials") ? ["testimonials"] : []), "cta"]
         : ["hero", ...(sections.includes("services") ? ["feature-grid"] : []), ...(sections.includes("testimonials") ? ["testimonials"] : []), ...(type === "corporate" ? ["logo-strip", "stats-band"] : []), "cta"];
     pages.push({
       path: "/",
@@ -507,7 +516,7 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
   if (type === "ecommerce") {
     const p = (en: string, trp: string) => (tr ? trp : en);
     pages.push(
-      { path: p("/products", "/urunler"), title: t("Products", "Ürünler"), sections: [...chrome.top, "page-intro", "site-store-01", ...chrome.bottom] },
+      { path: p("/products", "/urunler"), title: t("Products", "Ürünler"), sections: [...chrome.top, "page-intro", "filter-bar", ...chrome.bottom] },
       { path: p("/products/[slug]", "/urun/[slug]"), title: t("Product", "Ürün"), sections: [...chrome.top, "product-01", ...chrome.bottom] },
       { path: p("/cart", "/sepet"), title: t("Cart", "Sepet"), sections: [...chrome.top, "cart-01", ...chrome.bottom] },
       { path: p("/checkout", "/odeme"), title: t("Checkout", "Ödeme"), sections: ["checkout-01"] },
@@ -527,6 +536,8 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
       known.add(p.path);
     }
   }
+
+  if (blueprint) applyBlueprint(pages, blueprint, { lang: L, multi: structure.value === "multi", chrome: [...chrome.top, ...chrome.bottom] });
 
   const legal = legalPages(a, type, tr, jurisdiction, languages, tracking);
 
@@ -637,7 +648,7 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     siteType: type,
     structure,
     languages,
-    templates: TEMPLATES[type] ?? [],
+    ...(recipe ? { recipe, blueprint } : {}),
     pages,
     legalPages: legal,
     jurisdiction,
@@ -651,6 +662,38 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     tasks,
     openQuestions,
   };
+}
+
+/** Generic fillers the default page bodies use; a recipe page replaces them with its own sections. */
+const GENERIC_SECTIONS = new Set(["hero", "page-intro", "feature-grid", "testimonials", "logo-strip", "stats-band", "cta", "media-text", "rich-text-section", "filter-bar"]);
+
+/**
+ * Puts the recipe's sections into the pages: a page the plan already has (same path) gets the
+ * recipe's kit items first and keeps what the answers added (contact form, map, FAQ …); a recipe
+ * page the plan lacks is added (on a one-page site only pages per item, such as an article).
+ */
+function applyBlueprint(pages: PlanPage[], blueprint: BlueprintPage[], o: { lang: Lang; multi: boolean; chrome: string[] }): void {
+  const chrome = new Set(o.chrome);
+  for (const bp of blueprint) {
+    const body = dedupe(bp.sections.filter((s) => !s.optional && s.use[0]).map((s) => s.use[0]!));
+    if (!body.length) continue;
+    const path = bp.id === "home" ? "/" : bp.path[o.lang];
+    // The same kind of page under another address (a kept /bize-ulasin for the recipe's /contact) counts as the same page.
+    const kind = Object.keys(SECTION_PATTERNS).find((k) => SECTION_PATTERNS[k]!.test(bp.path.en) || SECTION_PATTERNS[k]!.test(bp.path.tr));
+    const page =
+      pages.find((p) => p.path === path || (bp.id !== "home" && (p.path === bp.path.en || p.path === bp.path.tr))) ??
+      (kind ? pages.find((p) => SECTION_PATTERNS[kind]!.test(p.path)) : undefined);
+    if (page) {
+      const top = page.sections.filter((x, i) => chrome.has(x) && page.sections.slice(0, i).every((y) => chrome.has(y)));
+      const bottom = page.sections.filter((x) => chrome.has(x) && !top.includes(x));
+      const kept = page.sections.filter((x) => !chrome.has(x) && !GENERIC_SECTIONS.has(x));
+      page.sections = [...top, ...dedupe([...body, ...kept]), ...bottom];
+    } else if (o.multi || path.includes("[")) {
+      const top = [...chrome].filter((x) => x === "navbar");
+      const bottom = [...chrome].filter((x) => x !== "navbar");
+      pages.push({ path, title: bp.title, sections: [...top, ...body, ...bottom], why: { en: bp.purpose, tr: bp.purpose } });
+    }
+  }
 }
 
 function dedupe<T>(items: T[]): T[] {
