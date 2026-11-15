@@ -25,7 +25,11 @@
     "./form": "./src/form/index.ts",
     "./next": "./src/next/index.ts",
     "./locale-data": "./src/locale-data/index.ts",
+    "./locale-data/tr-neighbourhoods": "./src/locale-data/tr/neighbourhoods-bundled.ts",
+    "./locale-data/tr/neighbourhoods/*.json": "./src/locale-data/tr/neighbourhoods/*.json",
     "./business": "./src/business/index.ts",
+    "./compliance": "./src/compliance/index.ts",
+    "./payments": "./src/payments/index.ts",
     "./locale/*": "./src/locales/*.ts",
     "./fonts": "./src/fonts/index.ts"
   },

@@ -79,7 +79,10 @@ for (const file of walk(SRC)) {
 for (const file of walk(DIST)) {
   if (!file.endsWith(".js")) continue;
   const code = fs.readFileSync(file, "utf8");
-  const next = code.replace(/(import\s+[\w{}\s,*]+\s+from\s+["'][^"']+\.json["'])(?!\s*with)/g, '$1 with { type: "json" }');
+  const next = code
+    .replace(/(import\s+[\w{}\s,*]+\s+from\s+["'][^"']+\.json["'])(?!\s*with)/g, '$1 with { type: "json" }')
+    // dynamic imports of JSON (lazy data files) need the attribute in Node ESM too
+    .replace(/(import\(\s*["'][^"']+\.json["'])\s*\)/g, '$1, { with: { type: "json" } })');
   if (next !== code) fs.writeFileSync(file, next);
 }
 
@@ -87,7 +90,7 @@ for (const file of walk(DIST)) {
 const pkg = JSON.parse(fs.readFileSync(path.join(PKG, "package.json"), "utf8"));
 const exportsMap = {};
 for (const [key, target] of Object.entries(pkg.exports)) {
-  if (target.endsWith(".css")) {
+  if (target.endsWith(".css") || target.endsWith(".json")) {
     exportsMap[key] = target.replace("./src/", "./dist/");
     continue;
   }

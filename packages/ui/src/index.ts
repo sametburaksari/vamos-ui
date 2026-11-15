@@ -5,7 +5,7 @@ export type { AccordionContentProps, AccordionItemProps, AccordionProps, Accordi
 export { ActivityTimeline, RelativeTime, Timeline, TimelineActions, TimelineBody, TimelineContent, TimelineGroup, TimelineIndicator, TimelineItem, TimelineNewItems, TimelineSkeleton, TimelineTime, TimelineTitle } from "./components/activity-timeline";
 export type { ActivityTimelineProps, RelativeTimeProps, TimelineBodyProps, TimelineEntry, TimelineGroupProps, TimelineIndicatorProps, TimelineItemProps, TimelineLabels, TimelineNewItemsProps, TimelineProps, TimelineStatus, TimelineTimeProps, TimelineTone } from "./components/activity-timeline";
 export { AddressField, RegionSelect, formatAddress } from "./components/address-field";
-export type { Address, AddressFieldLabels, AddressFieldProps, AddressPart, RegionSelectProps } from "./components/address-field";
+export type { Address, AddressFieldLabels, AddressFieldProps, AddressPart, RegionOption, RegionSelectProps } from "./components/address-field";
 export { AlertDialog, AlertDialogAction, AlertDialogBody, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogIcon, AlertDialogTrigger, ConfirmDialog, ConfirmProvider, useConfirm } from "./components/alert-dialog";
 export type { AlertDialogActionProps, AlertDialogCancelProps, AlertDialogContentProps, AlertDialogHeaderProps, ConfirmDialogProps, ConfirmOptions } from "./components/alert-dialog";
 export { Alert, AlertActions, AlertDescription, AlertTitle, alertVariants } from "./components/alert";

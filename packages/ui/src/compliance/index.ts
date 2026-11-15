@@ -1,0 +1,20 @@
+// Public API of @vamos-ui/react/compliance — React-free, server-side helpers for consent records.
+export {
+  buildConsentRecord,
+  recordConsent,
+  verifyConsentRecord,
+  verifyConsentChain,
+  resolveNotice,
+  contactConsentInput,
+  memoryConsentStore,
+  sha256Hex,
+  canonicalJson,
+  type ConsentNotice,
+  type ConsentPurpose,
+  type ConsentRecordInput,
+  type ConsentRecord,
+  type ConsentRecordStore,
+  type ConsentVerifyResult,
+  type ContactConsentFields,
+  type ContactConsentOptions,
+} from "./kvkk-record";

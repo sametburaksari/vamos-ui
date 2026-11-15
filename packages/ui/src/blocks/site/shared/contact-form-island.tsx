@@ -13,6 +13,7 @@ import {
   PRIVACY_FIELD,
   TIMESTAMP_FIELD,
   FORM_FIELD,
+  NOTICE_FIELD,
   SENT_PARAM,
   fieldConstraints,
   validateContactForm,
@@ -40,8 +41,8 @@ export interface ContactFormIslandProps {
   submitLabel?: string;
   /** Rendered in place of the form after a successful submit. */
   successMessage?: React.ReactNode;
-  /** Privacy notice link; with `privacyCheckbox` a required (never pre-checked) checkbox. */
-  privacy?: { href: string; label?: string; checkbox?: boolean };
+  /** Privacy notice link; with `privacyCheckbox` a required (never pre-checked) checkbox. `version` is posted as `_notice`. */
+  privacy?: { href: string; label?: string; checkbox?: boolean; version?: string };
   /** Separate, optional marketing consent checkbox. */
   marketingConsent?: boolean;
   /** Shown with server errors: "call us on …". */
@@ -223,6 +224,7 @@ export function ContactFormIsland({
         </label>
         <input type="hidden" name={TIMESTAMP_FIELD} value={ts} readOnly />
         <input type="hidden" name={FORM_FIELD} value={idBase} readOnly />
+        {privacy?.version ? <input type="hidden" name={NOTICE_FIELD} value={privacy.version} readOnly /> : null}
       </div>
 
       {privacy || marketingConsent ? (

@@ -147,11 +147,26 @@ export interface AddressProvince {
   name: string;
 }
 
+/** A neighbourhood (mahalle) or village (köy) inside a district. */
+export interface AddressNeighbourhood {
+  /** Official name without the "Mah." / "Köyü" suffix ("Caferağa"). */
+  name: string;
+  /** Unique within the district and what an address stores ("Caferağa Mah.", "Akören Köyü", "Cami Mah. (Pınarbaşı)"). */
+  label: string;
+  kind: "neighbourhood" | "village";
+  /** Town (belde) municipality the neighbourhood belongs to, when it is not the district centre. */
+  town?: string;
+  /** 5-digit postal code, when the source has an official one. */
+  postalCode?: string;
+}
+
 /** Province / district lookups. Async so packs can lazy-load their data. */
 export interface AddressDataSource {
   id: string;
   provinces(): Promise<AddressProvince[]>;
   districts(provinceCode: number): Promise<AddressDistrict[]>;
+  /** Optional third level, loaded per province or district on demand (not bundled with `provinces`). */
+  neighbourhoods?(provinceCode: number, districtCode: number): Promise<AddressNeighbourhood[]>;
 }
 
 export interface LocaleDataPack {
