@@ -5,13 +5,14 @@
  *   @import "tailwindcss";
  *   @import "@vamos-ui/react/styles.css";
  *
- * Six independent axes, set on <html> (or on any subtree):
+ * Seven independent axes, set on <html> (or on any subtree):
  *   class="dark"                          → theme (light | dark)
  *   data-material="glass|solid"           → surface material (Liquid Glass | solid)
  *   data-accent="lime|ocean|ember|..."    → accent colour (or set --accent-base yourself)
- *   data-density="comfortable|compact"    → density
- *   data-font="editorial|grotesk|..."     → type pairing
- *   data-radius="sharp|round"             → corners (absent = default)
+ *   data-density="comfortable|compact|spacious" → density
+ *   data-font="editorial|grotesk|..."     → type pairing (24, see fonts/pairings.ts)
+ *   data-radius="none|sharp|round|pill"   → corners (absent = default)
+ *   data-scene="paper|warm|ink"           → backdrop and neutral tint (absent = neutral)
  *
  * Components only read the variables defined here and never use `dark:`.
  * Every axis can therefore be switched with one attribute, even per subtree.
@@ -45,6 +46,35 @@
   --accent-fg: oklch(0.17 0.02 120);
   --accent-ink-light: oklch(0.47 0.13 125);
   --accent-ink-dark: oklch(0.9 0.19 122);
+}
+/* Second accent (gradients, a secondary highlight; never a second brand colour on chrome).
+   Each named accent has its own; a brand accent gets one from brand.css, otherwise it repeats
+   the accent. Inks are text-safe: >= 4.5:1 on every scene and surface-2 of their theme. */
+:root:not([data-accent]),
+[data-accent="lime"] {
+  --accent-2-base: #0f9f8f;
+  --accent-2-ink-light: #0b6e64;
+  --accent-2-ink-dark: #5fe0cc;
+}
+[data-accent="ocean"] {
+  --accent-2-base: #7b4fe0;
+  --accent-2-ink-light: #6232c9;
+  --accent-2-ink-dark: #c2adff;
+}
+[data-accent="ember"] {
+  --accent-2-base: #e0335c;
+  --accent-2-ink-light: #b8183f;
+  --accent-2-ink-dark: #ff9fb2;
+}
+[data-accent="rose"] {
+  --accent-2-base: #f0782a;
+  --accent-2-ink-light: #a8430b;
+  --accent-2-ink-dark: #ffb27a;
+}
+[data-accent="graphite"] {
+  --accent-2-base: #6b6b73;
+  --accent-2-ink-light: #4e4e55;
+  --accent-2-ink-dark: #c9c9cf;
 }
 [data-accent="ocean"] {
   --accent-base: oklch(0.55 0.17 245);
@@ -142,6 +172,23 @@
   --chart-6: #c94f7c;
   --chart-grid: rgba(18, 21, 15, 0.07);
   --chart-axis: #8a9083;
+
+  /* Category colours (news sections, tags, legend chips): fill with --cat-fg text, or text-cat-N
+     (the ink) on any scene or surface. Measured: white on every fill >= 5.3:1; light inks
+     >= 4.5:1 on every data-scene and surface-2, dark inks >= 7.6:1. */
+  --cat-fg: #ffffff;
+  --cat-1: #1f5cc9;
+  --cat-2: #bf2433;
+  --cat-3: #11713f;
+  --cat-4: #6a3cbd;
+  --cat-5: #9f4c0a;
+  --cat-6: #0a6f7a;
+  --cat-1-ink: var(--cat-1);
+  --cat-2-ink: var(--cat-2);
+  --cat-3-ink: var(--cat-3);
+  --cat-4-ink: var(--cat-4);
+  --cat-5-ink: var(--cat-5);
+  --cat-6-ink: var(--cat-6);
   --chart-cursor: rgba(18, 21, 15, 0.22);
   --chart-tooltip: #ffffff;
 
@@ -209,6 +256,13 @@
   --chart-6: #ee86ac;
   --chart-grid: rgba(255, 255, 255, 0.06);
   --chart-axis: #767c6d;
+
+  --cat-1-ink: #8fb3ff;
+  --cat-2-ink: #ff9296;
+  --cat-3-ink: #62d39c;
+  --cat-4-ink: #c4a6ff;
+  --cat-5-ink: #f3a865;
+  --cat-6-ink: #62cfdb;
   --chart-cursor: rgba(255, 255, 255, 0.24);
   --chart-tooltip: #1d2117;
 
@@ -227,6 +281,9 @@
   --accent-soft: color-mix(in oklch, var(--accent-base) 22%, transparent);
   --accent-ink: var(--accent-ink-light);
   --ring: var(--accent-ink-light);
+  --accent-2: var(--accent-2-base, var(--accent-base));
+  --accent-2-ink: var(--accent-2-ink-light, var(--accent-ink-light));
+  --accent-gradient: linear-gradient(120deg, var(--accent-base), var(--accent-2-base, var(--accent-base)));
 }
 
 /* Chart series 1 + the sequential ramp (heatmaps, choropleths) follow the accent and theme.
@@ -255,6 +312,7 @@
   --accent-soft: color-mix(in oklch, var(--accent-base) 16%, transparent);
   --accent-ink: var(--accent-ink-dark);
   --ring: var(--accent-ink-dark);
+  --accent-2-ink: var(--accent-2-ink-dark, var(--accent-ink-dark));
 }
 /* A light section inside a dark page must get the light accent values back. */
 .dark .light,
@@ -263,6 +321,124 @@
   --accent-soft: color-mix(in oklch, var(--accent-base) 22%, transparent);
   --accent-ink: var(--accent-ink-light);
   --ring: var(--accent-ink-light);
+  --accent-2-ink: var(--accent-2-ink-light, var(--accent-ink-light));
+}
+
+/* ------------------------------------------------------------------ */
+/* Scene — data-scene="paper|warm|ink" (absent = the neutral default)  */
+/* Retints the backdrop, solid surfaces and neutral text together:     */
+/*   paper  parchment and sepia ink (broadsheets, vintage, long reads) */
+/*   warm   sand and warm greys (nature, food, hospitality)            */
+/*   ink    untinted greys, near-black in dark mode (neon, commerce)   */
+/* Placed before Material so glass keeps its translucent surfaces.     */
+/* Text measured: fg-muted >= 6.1:1, fg-subtle >= 4.6:1 on scene,      */
+/* surface and surface-2 of each scene, light and dark.                */
+/* ------------------------------------------------------------------ */
+
+[data-scene="paper"],
+[data-scene="paper"] .light {
+  --scene: #f2ead8;
+  --fg: #1f1a12;
+  --fg-muted: #5c5243;
+  --fg-subtle: #685d4c;
+  --surface: #fbf7ee;
+  --surface-2: #f5eddc;
+  --surface-solid: #fbf7ee;
+  --surface-border: rgba(62, 46, 20, 0.13);
+  --line: rgba(62, 46, 20, 0.11);
+  --field: #fffcf5;
+  --field-border: rgba(62, 46, 20, 0.2);
+  --hover: rgba(62, 46, 20, 0.055);
+  --selected: rgba(62, 46, 20, 0.085);
+  --popover: #fffcf5;
+  --popover-nested: #fffcf5;
+  --bar: rgba(242, 234, 216, 0.92);
+  --bar-border: rgba(62, 46, 20, 0.1);
+}
+.dark[data-scene="paper"],
+.dark [data-scene="paper"],
+[data-scene="paper"] .dark {
+  --scene: #15120d;
+  --fg: #f1e9d8;
+  --fg-muted: #b8ab93;
+  --fg-subtle: #9a8d76;
+  --surface: #1d1912;
+  --surface-2: #241f17;
+  --surface-solid: #1d1912;
+  --surface-border: rgba(255, 240, 210, 0.09);
+  --line: rgba(255, 240, 210, 0.07);
+  --field: rgba(255, 240, 210, 0.04);
+  --field-border: rgba(255, 240, 210, 0.14);
+  --hover: rgba(255, 240, 210, 0.055);
+  --selected: rgba(255, 240, 210, 0.085);
+  --popover: #221d15;
+  --popover-nested: #262118;
+  --bar: rgba(21, 18, 13, 0.9);
+  --bar-border: rgba(255, 240, 210, 0.07);
+}
+[data-scene="warm"],
+[data-scene="warm"] .light {
+  --scene: #f0ece2;
+  --fg: #17140e;
+  --fg-muted: #5c564a;
+  --fg-subtle: #686152;
+  --surface: #fffdf8;
+  --surface-2: #f7f3ea;
+  --surface-solid: #fffdf8;
+  --surface-border: rgba(48, 38, 18, 0.1);
+  --line: rgba(48, 38, 18, 0.08);
+  --field: #fffdf8;
+  --popover: #fffdf8;
+  --popover-nested: #fffdf8;
+  --bar: rgba(240, 236, 226, 0.92);
+}
+.dark[data-scene="warm"],
+.dark [data-scene="warm"],
+[data-scene="warm"] .dark {
+  --scene: #12110d;
+  --fg: #f2efe6;
+  --fg-muted: #aca595;
+  --fg-subtle: #8e8778;
+  --surface: #1a1813;
+  --surface-2: #211f19;
+  --surface-solid: #1a1813;
+  --popover: #1f1d17;
+  --popover-nested: #22201a;
+  --bar: rgba(18, 17, 13, 0.9);
+}
+[data-scene="ink"],
+[data-scene="ink"] .light {
+  --scene: #f4f4f5;
+  --fg: #0f0f11;
+  --fg-muted: #55555c;
+  --fg-subtle: #64646c;
+  --surface: #ffffff;
+  --surface-2: #f7f7f8;
+  --surface-solid: #ffffff;
+  --surface-border: rgba(15, 15, 17, 0.09);
+  --line: rgba(15, 15, 17, 0.075);
+  --field-border: rgba(15, 15, 17, 0.15);
+  --hover: rgba(15, 15, 17, 0.05);
+  --selected: rgba(15, 15, 17, 0.075);
+  --nav: #111113;
+  --bar: rgba(244, 244, 245, 0.92);
+}
+.dark[data-scene="ink"],
+.dark [data-scene="ink"],
+[data-scene="ink"] .dark {
+  --scene: #050506;
+  --fg: #f4f4f5;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #85858e;
+  --surface: #0e0e10;
+  --surface-2: #151518;
+  --surface-solid: #0e0e10;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.065);
+  --popover: #141416;
+  --popover-nested: #18181b;
+  --nav: #09090b;
+  --bar: rgba(5, 5, 6, 0.9);
 }
 
 /* ------------------------------------------------------------------ */
@@ -382,57 +558,324 @@
 
 /* ------------------------------------------------------------------ */
 /* Typography — data-font axis                                         */
-/* The app loads the font files and provides the --ff-* variables.     */
-/* Heading character (weight, tracking, emphasis style, scale) changes */
-/* with the preset: <em> is italic in serif headings, plain in sans.   */
+/* The app loads the font files: next/font --ff-* variables, or the    */
+/* Google Fonts <link> from pairingUrl() (each block falls back to the */
+/* family name). Heading character (weight, tracking, emphasis style,  */
+/* scale, case) changes with the preset: <em> is italic in serif       */
+/* headings, plain in sans. --font-accent is a one-word accent face    */
+/* (script, pixel) for the font-accent class.                          */
+/* Generated from fonts/pairings.ts (pairingCss); a test keeps them    */
+/* in sync. Arabic pairings (naskh, kufi) keep tracking at 0.          */
 /* ------------------------------------------------------------------ */
 
 :root,
 [data-font="editorial"] {
-  --font-ui: var(--ff-onest, ui-sans-serif);
-  --font-heading: var(--ff-instrument, Georgia);
-  --font-code: var(--ff-jetbrains, ui-monospace);
+  --font-ui: var(--ff-onest, "Onest");
+  --font-heading: var(--ff-instrument, "Instrument Serif");
+  --font-code: var(--ff-jetbrains, "JetBrains Mono");
+  --font-accent: var(--font-heading);
   --display-weight: 400;
   --display-tracking: -0.01em;
   --display-em: italic;
   --display-scale: 1;
+  --display-case: none;
+  --display-case-tracking: 0em;
 }
 [data-font="grotesk"] {
-  --font-ui: var(--ff-hanken, ui-sans-serif);
-  --font-heading: var(--ff-bricolage, ui-sans-serif);
-  --font-code: var(--ff-geist-mono, ui-monospace);
+  --font-ui: var(--ff-hanken, "Hanken Grotesk");
+  --font-heading: var(--ff-bricolage, "Bricolage Grotesque");
+  --font-code: var(--ff-geist-mono, "Geist Mono");
+  --font-accent: var(--font-heading);
   --display-weight: 640;
   --display-tracking: -0.035em;
   --display-em: normal;
   --display-scale: 0.86;
+  --display-case: none;
+  --display-case-tracking: 0em;
 }
 [data-font="corporate"] {
-  --font-ui: var(--ff-plex, ui-sans-serif);
-  --font-heading: var(--ff-plex, ui-sans-serif);
-  --font-code: var(--ff-plex-mono, ui-monospace);
+  --font-ui: var(--ff-plex, "IBM Plex Sans");
+  --font-heading: var(--ff-plex, "IBM Plex Sans");
+  --font-code: var(--ff-plex-mono, "IBM Plex Mono");
+  --font-accent: var(--font-heading);
   --display-weight: 600;
   --display-tracking: -0.025em;
   --display-em: normal;
   --display-scale: 0.8;
+  --display-case: none;
+  --display-case-tracking: 0em;
 }
 [data-font="system"] {
   --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-code: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-accent: var(--font-heading);
   --display-weight: 650;
   --display-tracking: -0.03em;
   --display-em: normal;
   --display-scale: 0.8;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="newsroom"] {
+  --font-ui: var(--ff-source-sans-3, "Source Sans 3");
+  --font-heading: var(--ff-newsreader, "Newsreader");
+  --font-code: var(--ff-plex-mono, "IBM Plex Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 500;
+  --display-tracking: -0.02em;
+  --display-em: italic;
+  --display-scale: 0.94;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="product"] {
+  --font-ui: var(--ff-geist, "Geist");
+  --font-heading: var(--ff-geist, "Geist");
+  --font-code: var(--ff-geist-mono, "Geist Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 600;
+  --display-tracking: -0.045em;
+  --display-em: normal;
+  --display-scale: 0.82;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="fintech"] {
+  --font-ui: var(--ff-manrope, "Manrope");
+  --font-heading: var(--ff-sora, "Sora");
+  --font-code: var(--ff-jetbrains, "JetBrains Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 600;
+  --display-tracking: -0.035em;
+  --display-em: normal;
+  --display-scale: 0.8;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="boutique"] {
+  --font-ui: var(--ff-figtree, "Figtree");
+  --font-heading: var(--ff-fraunces, "Fraunces");
+  --font-code: var(--ff-dm-mono, "DM Mono");
+  --font-accent: var(--ff-sacramento, "Sacramento");
+  --display-weight: 420;
+  --display-tracking: -0.02em;
+  --display-em: italic;
+  --display-scale: 0.92;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="luxe"] {
+  --font-ui: var(--ff-urbanist, "Urbanist");
+  --font-heading: var(--ff-bodoni-moda, "Bodoni Moda");
+  --font-code: var(--ff-dm-mono, "DM Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 500;
+  --display-tracking: -0.015em;
+  --display-em: italic;
+  --display-scale: 0.96;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="magazine"] {
+  --font-ui: var(--ff-dm-sans, "DM Sans");
+  --font-heading: var(--ff-dm-serif-display, "DM Serif Display");
+  --font-code: var(--ff-dm-mono, "DM Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 400;
+  --display-tracking: -0.015em;
+  --display-em: italic;
+  --display-scale: 0.94;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="studio"] {
+  --font-ui: var(--ff-instrument-sans, "Instrument Sans");
+  --font-heading: var(--ff-syne, "Syne");
+  --font-code: var(--ff-space-mono, "Space Mono");
+  --font-accent: var(--ff-kalam, "Kalam");
+  --display-weight: 700;
+  --display-tracking: -0.03em;
+  --display-em: normal;
+  --display-scale: 0.8;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="bistro"] {
+  --font-ui: var(--ff-plus-jakarta-sans, "Plus Jakarta Sans");
+  --font-heading: var(--ff-young-serif, "Young Serif");
+  --font-code: var(--ff-jetbrains, "JetBrains Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 400;
+  --display-tracking: -0.02em;
+  --display-em: normal;
+  --display-scale: 0.9;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="friendly"] {
+  --font-ui: var(--ff-nunito, "Nunito");
+  --font-heading: var(--ff-fredoka, "Fredoka");
+  --font-code: var(--ff-dm-mono, "DM Mono");
+  --font-accent: var(--ff-caveat, "Caveat");
+  --display-weight: 600;
+  --display-tracking: -0.02em;
+  --display-em: normal;
+  --display-scale: 0.86;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="poster"] {
+  --font-ui: var(--ff-archivo, "Archivo");
+  --font-heading: var(--ff-barlow-condensed, "Barlow Condensed");
+  --font-code: var(--ff-martian-mono, "Martian Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 700;
+  --display-tracking: -0.005em;
+  --display-em: normal;
+  --display-scale: 1.08;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="bookish"] {
+  --font-ui: var(--ff-literata, "Literata");
+  --font-heading: var(--ff-eb-garamond, "EB Garamond");
+  --font-code: var(--ff-fira-code, "Fira Code");
+  --font-accent: var(--font-heading);
+  --display-weight: 500;
+  --display-tracking: -0.01em;
+  --display-em: italic;
+  --display-scale: 0.96;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="civic"] {
+  --font-ui: var(--ff-commissioner, "Commissioner");
+  --font-heading: var(--ff-commissioner, "Commissioner");
+  --font-code: var(--ff-plex-mono, "IBM Plex Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 620;
+  --display-tracking: -0.025em;
+  --display-em: normal;
+  --display-scale: 0.82;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="portal"] {
+  --font-ui: var(--ff-source-sans-3, "Source Sans 3");
+  --font-heading: var(--ff-archivo, "Archivo");
+  --font-code: var(--ff-plex-mono, "IBM Plex Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 760;
+  --display-tracking: -0.025em;
+  --display-em: normal;
+  --display-scale: 0.84;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="tabloid"] {
+  --font-ui: var(--ff-work-sans, "Work Sans");
+  --font-heading: var(--ff-anton, "Anton");
+  --font-code: var(--ff-jetbrains, "JetBrains Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 400;
+  --display-tracking: 0em;
+  --display-em: normal;
+  --display-scale: 1.04;
+  --display-case: uppercase;
+  --display-case-tracking: 0.01em;
+}
+[data-font="neon"] {
+  --font-ui: var(--ff-hanken, "Hanken Grotesk");
+  --font-heading: var(--ff-unbounded, "Unbounded");
+  --font-code: var(--ff-space-mono, "Space Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 600;
+  --display-tracking: -0.03em;
+  --display-em: normal;
+  --display-scale: 0.72;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="grove"] {
+  --font-ui: var(--ff-work-sans, "Work Sans");
+  --font-heading: var(--ff-fraunces, "Fraunces");
+  --font-code: var(--ff-dm-mono, "DM Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 600;
+  --display-tracking: -0.02em;
+  --display-em: normal;
+  --display-scale: 0.9;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="retail"] {
+  --font-ui: var(--ff-inter-tight, "Inter Tight");
+  --font-heading: var(--ff-inter-tight, "Inter Tight");
+  --font-code: var(--ff-dm-mono, "DM Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 600;
+  --display-tracking: -0.04em;
+  --display-em: normal;
+  --display-scale: 0.84;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="arcade"] {
+  --font-ui: var(--ff-host-grotesk, "Host Grotesk");
+  --font-heading: var(--ff-silkscreen, "Silkscreen");
+  --font-code: var(--ff-space-mono, "Space Mono");
+  --font-accent: var(--ff-silkscreen, "Silkscreen");
+  --display-weight: 400;
+  --display-tracking: 0em;
+  --display-em: normal;
+  --display-scale: 0.6;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="naskh"] {
+  --font-ui: var(--ff-ibm-plex-sans-arabic, "IBM Plex Sans Arabic");
+  --font-heading: var(--ff-noto-naskh-arabic, "Noto Naskh Arabic");
+  --font-code: var(--ff-plex-mono, "IBM Plex Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 700;
+  --display-tracking: 0em;
+  --display-em: normal;
+  --display-scale: 0.9;
+  --display-case: none;
+  --display-case-tracking: 0em;
+}
+[data-font="kufi"] {
+  --font-ui: var(--ff-readex-pro, "Readex Pro");
+  --font-heading: var(--ff-noto-kufi-arabic, "Noto Kufi Arabic");
+  --font-code: var(--ff-plex-mono, "IBM Plex Mono");
+  --font-accent: var(--font-heading);
+  --display-weight: 700;
+  --display-tracking: 0em;
+  --display-em: normal;
+  --display-scale: 0.8;
+  --display-case: none;
+  --display-case-tracking: 0em;
 }
 
 @layer components {
   .font-display {
     font-weight: var(--display-weight);
-    letter-spacing: var(--display-tracking);
+    letter-spacing: calc(var(--display-tracking) + var(--display-case-tracking, 0em));
+    text-transform: var(--display-case, none);
   }
   .font-display em {
     font-style: var(--display-em);
   }
+}
+
+/* One accent word in the pairing's accent face (script, handwriting, pixel); falls back to the
+   heading family. It drops the display case and tracking, which scripts never want. */
+@utility font-accent {
+  font-family: var(--font-accent, var(--font-heading));
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 /* ------------------------------------------------------------------ */
@@ -490,28 +933,60 @@
   --row-h: 3.25rem;
   --cell-px: 1rem;
 }
+/* Spacious pages (luxury, editorial): taller controls, larger gaps and sections. Tables and
+   data tables keep their table-local meaning (rows and cells only). */
+[data-density="spacious"]:not([data-slot="table"], [data-slot="data-table"]) {
+  --radius-base: 16px;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
+  --control-h: 2.75rem;
+  --gap: 1.75rem;
+  --topbar-h: 4rem;
+  --section-y: calc(clamp(4rem, 2.5rem + 7cqi, 9rem) * 1.25);
+}
 [data-density="spacious"] {
   --row-h: 3.75rem;
   --cell-px: 1.25rem;
 }
 
 /* ------------------------------------------------------------------ */
-/* Corners — data-radius="sharp|round" (absent = default)              */
+/* Corners — data-radius="none|sharp|round|pill" (absent = default)    */
 /* ------------------------------------------------------------------ */
 /* Scales --radius (and so rounded-ui / rounded-ui-sm / rounded-ui-lg and every calc(var(--radius) …)):
-   default 14px (compact 10px), sharp 6px (4px), round 20px (14px). Pills, avatars, switches,
-   radio dots and progress bars use rounded-full and stay round on purpose. */
+   default 14px (compact 10px), sharp 6px (4px), round 20px (14px), none 0 (lg too). Pills, avatars,
+   switches, radio dots and progress bars use rounded-full and stay round on purpose.
+   Controls (buttons, inputs, select and picker triggers) use rounded-control, which reads
+   --control-radius and falls back to --radius: pill sets it to 9999px and keeps cards at the
+   default scale. Set --control-radius yourself for any other control shape. Every value
+   resets what another value set, so a nested subtree can change corners again. */
 [data-radius="default"] {
   --radius-scale: 1;
   --radius: calc(var(--radius-base) * var(--radius-scale));
+  --radius-step: initial;
+  --control-radius: initial;
 }
 [data-radius="sharp"] {
   --radius-scale: 0.4;
   --radius: calc(var(--radius-base) * var(--radius-scale));
+  --radius-step: initial;
+  --control-radius: initial;
 }
 [data-radius="round"] {
   --radius-scale: 1.4;
   --radius: calc(var(--radius-base) * var(--radius-scale));
+  --radius-step: initial;
+  --control-radius: initial;
+}
+[data-radius="none"] {
+  --radius-scale: 0;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
+  --radius-step: 0px;
+  --control-radius: initial;
+}
+[data-radius="pill"] {
+  --radius-scale: 1;
+  --radius: calc(var(--radius-base) * var(--radius-scale));
+  --radius-step: initial;
+  --control-radius: 9999px;
 }
 [dir="rtl"] {
   --dir: -1;
@@ -553,7 +1028,24 @@
   --color-accent-fg: var(--accent-fg);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-2: var(--accent-2);
+  --color-accent-2-ink: var(--accent-2-ink);
   --color-ring: var(--ring);
+  --color-cat-fg: var(--cat-fg);
+  --color-cat-1: var(--cat-1);
+  --color-cat-2: var(--cat-2);
+  --color-cat-3: var(--cat-3);
+  --color-cat-4: var(--cat-4);
+  --color-cat-5: var(--cat-5);
+  --color-cat-6: var(--cat-6);
+  /* text-cat-N reads the ink (lighter in dark mode); bg-/border-cat-N keep the fill */
+  --text-color-cat-1: var(--cat-1-ink);
+  --text-color-cat-2: var(--cat-2-ink);
+  --text-color-cat-3: var(--cat-3-ink);
+  --text-color-cat-4: var(--cat-4-ink);
+  --text-color-cat-5: var(--cat-5-ink);
+  --text-color-cat-6: var(--cat-6-ink);
+  --text-color-accent-2: var(--accent-2-ink);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
@@ -589,7 +1081,9 @@
 
   --radius-ui: var(--radius);
   --radius-ui-sm: max(0px, calc(var(--radius) - 4px));
-  --radius-ui-lg: calc(var(--radius) + 6px);
+  --radius-ui-lg: calc(var(--radius) + var(--radius-step, 6px));
+  --radius-control: var(--control-radius, var(--radius));
+  --radius-control-sm: var(--control-radius, max(0px, calc(var(--radius) - 4px)));
 
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-heading), ui-serif, Georgia, serif;
@@ -665,6 +1159,10 @@ html {
   box-shadow: var(--surface-shadow);
   -webkit-backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
   backdrop-filter: blur(var(--blur, 0px)) saturate(160%);
+}
+/* The accent gradient (accent → accent-2) as a background, e.g. a hero band or gradient text. */
+@utility bg-accent-gradient {
+  background-image: var(--accent-gradient);
 }
 @utility surface-2 {
   background: var(--surface-2);
