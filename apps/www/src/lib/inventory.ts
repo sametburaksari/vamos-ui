@@ -81,6 +81,9 @@ export const inventory: InvGroup[] = [
     p("Post card", true), p("Post modules (featured grid, category blocks)", true), p("Post tabs (tabbed category block)", true), p("News ticker", true),
     p("Ad slot", true), p("Sidebar widgets (follow counts, popular, comments, categories)", true), p("News masthead (top bar, mega menu, auth dialog)", true),
   ] },
+  { group: "Commerce & reviews", items: [
+    p("Star rating", true), p("Review score box", true), p("Product card & grid", true),
+  ] },
 ];
 
 /** Recipes: domain screens built from the kit. */

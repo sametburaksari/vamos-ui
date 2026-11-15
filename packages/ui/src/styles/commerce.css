@@ -1,0 +1,116 @@
+/* commerce — StarRating, StarRatingInput, ReviewScore, ProductCard, ProductGrid. Tokens only.
+   The interactive parts are native radios; everything below is plain CSS (no JS). */
+
+/* ------------------------------------------------------------------ */
+/* StarRatingInput: fills follow the checked radio, hover previews.     */
+/* Specificity is stepped on purpose: default < unchecked < after the   */
+/* checked star < hover < after the hovered star.                       */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .vb-stars-input { --star: 2rem; }
+  .vb-stars-input[data-size="sm"] { --star: 1.5rem; }
+  .vb-stars-input[data-size="lg"] { --star: 2.5rem; }
+  .vb-star-opt { width: var(--star); height: var(--star); }
+  .vb-star-opt[data-half] { width: calc(var(--star) / 2); }
+  .vb-stars-input[data-disabled] .vb-star-opt { cursor: default; opacity: 0.45; }
+
+  .vb-star-fill { opacity: 1; transition: opacity 120ms ease-out; }
+  .vb-stars-row:not(:has(input:checked)) .vb-star-fill { opacity: 0; }
+  .vb-star-opt:has(input:checked) ~ .vb-star-opt .vb-star-fill { opacity: 0; }
+  @media (hover: hover) {
+    .vb-stars-input:not([data-disabled]) .vb-stars-row:hover .vb-star-opt .vb-star-fill { opacity: 1; }
+    .vb-stars-input:not([data-disabled]) .vb-stars-row:hover .vb-star-opt:hover ~ .vb-star-opt .vb-star-fill { opacity: 0; }
+    .vb-stars-input:not([data-disabled]) .vb-star-opt:hover .vb-star-box { scale: 1.08; }
+  }
+  .vb-star-box { transition: scale 120ms ease-out; }
+  /* Focus ring on the whole star (both halves when half steps are on). */
+  .vb-star-opt:has(input:focus-visible) { outline: 2px solid var(--ring); outline-offset: -1px; border-radius: 0.375rem; }
+  .vb-star-opt[data-half]:has(input:focus-visible) { outline-offset: -2px; }
+
+  /* ------------------------------------------------------------------ */
+  /* ProductCard                                                          */
+  /* ------------------------------------------------------------------ */
+  .vb-pc-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    padding-inline: 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  /* Photos stack and cross-fade: the first one (or the checked / hovered swatch) is shown. */
+  .vb-pc-photo { transition: opacity 450ms ease-out; }
+  .vb-pc-photo[data-i]:not([data-i="0"]),
+  .vb-pc-photo[data-hover] { opacity: 0; }
+  .vb-pc-name { display: block; position: absolute; inset-inline: 0; top: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vb-pc-name:first-child { position: relative; }
+  .vb-pc-name:not([data-i="0"]) { opacity: 0; }
+  @media (hover: hover) {
+    .vb-pc:hover .vb-pc-photo[data-hover],
+    .vb-pc:has(:focus-visible) .vb-pc-photo[data-hover] { opacity: 1; }
+  }
+  .vb-pc:has(.vb-pc-sw[data-i="0"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="0"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="0"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="0"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="1"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="1"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="1"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="1"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="2"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="2"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="2"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="2"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="3"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="3"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="3"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="3"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="4"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="4"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="4"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="4"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="5"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="5"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="5"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="5"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="6"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="6"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="6"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="6"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="7"] > input:checked) :is(.vb-pc-photo, .vb-pc-name):not([data-i="7"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="7"] > input:checked) :is(.vb-pc-photo, .vb-pc-name)[data-i="7"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="0"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="0"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="0"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="0"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="1"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="1"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="1"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="1"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="2"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="2"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="2"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="2"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="3"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="3"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="3"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="3"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="4"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="4"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="4"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="4"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="5"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="5"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="5"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="5"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="6"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="6"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="6"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="6"] { opacity: 1; }
+  .vb-pc:has(.vb-pc-sw[data-i="7"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name):not([data-i="7"]) { opacity: 0; }
+  .vb-pc:has(.vb-pc-sw[data-i="7"]:is(:hover, :has(> input:focus-visible))) :is(.vb-pc-photo, .vb-pc-name)[data-i="7"] { opacity: 1; }
+
+  .vb-pc-sw { box-shadow: 0 0 0 1px transparent; transition: box-shadow 150ms ease-out; }
+  .vb-pc-sw:hover { box-shadow: 0 0 0 1px var(--line); }
+  .vb-pc-sw:has(> input:checked) { box-shadow: 0 0 0 1.5px var(--fg); }
+  .vb-pc-sw:has(> input:focus-visible) { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .vb-pc-dot { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 14%, transparent); }
+  .vb-pc-sw[data-sold-out] .vb-pc-dot { background-image: linear-gradient(to bottom right, transparent calc(50% - 0.75px), var(--fg-muted) calc(50% - 0.75px), var(--fg-muted) calc(50% + 0.75px), transparent calc(50% + 0.75px)) !important; background-blend-mode: normal; }
+
+  /* Quick add: always visible on touch; on hover devices it appears with the card. */
+  @media (hover: hover) and (pointer: fine) {
+    .vb-pc-quick-slot { opacity: 0; translate: 0 0.25rem; transition: opacity 150ms ease-out, translate 150ms ease-out; }
+    .vb-pc:hover .vb-pc-quick-slot,
+    .vb-pc:focus-within .vb-pc-quick-slot { opacity: 1; translate: 0 0; }
+  }
+  /* An uncontrolled card whose chosen option is sold out: the + looks (and is) unavailable. */
+  .vb-pc:has(.vb-pc-sw[data-sold-out] > input:checked) .vb-pc-quick { opacity: 0.45; pointer-events: none; }
+  .vb-pc[data-sold-out] .vb-pc-media img { filter: saturate(0.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vb-star-fill,
+  .vb-star-box,
+  .vb-pc-photo,
+  .vb-pc-sw,
+  .vb-pc-quick-slot { transition: none !important; }
+  .vb-star-opt:hover .vb-star-box { scale: none !important; }
+}

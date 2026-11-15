@@ -110,6 +110,7 @@ import docPostCard from "./post-card";
 import docPostModules from "./post-modules";
 import docPostTabs from "./post-tabs";
 import docPricingTable from "./pricing-table";
+import docProductCard from "./product-card";
 import docProgress from "./progress";
 import docQrCode from "./qr-code";
 import docRadioGroup from "./radio-group";
@@ -117,6 +118,7 @@ import docRecordDetailLayout from "./record-detail-layout";
 import docRecordPicker from "./record-picker";
 import docResizable from "./resizable";
 import docResourceCalendar from "./resource-calendar";
+import docReviewScore from "./review-score";
 import docRichTextSection from "./rich-text-section";
 import docSavedViews from "./saved-views";
 import docScheduler from "./scheduler";
@@ -138,6 +140,7 @@ import docSortableList from "./sortable-list";
 import docSortable from "./sortable";
 import docSparkline from "./sparkline";
 import docSpinner from "./spinner";
+import docStarRating from "./star-rating";
 import docStat from "./stat";
 import docStatsBand from "./stats-band";
 import docStatusPicker from "./status-picker";
@@ -274,6 +277,7 @@ export const entries: DocEntry[] = [
   docPostModules,
   docPostTabs,
   docPricingTable,
+  docProductCard,
   docProgress,
   docQrCode,
   docRadioGroup,
@@ -281,6 +285,7 @@ export const entries: DocEntry[] = [
   docRecordPicker,
   docResizable,
   docResourceCalendar,
+  docReviewScore,
   docRichTextSection,
   docSavedViews,
   docScheduler,
@@ -302,6 +307,7 @@ export const entries: DocEntry[] = [
   docSortable,
   docSparkline,
   docSpinner,
+  docStarRating,
   docStat,
   docStatsBand,
   docStatusPicker,
