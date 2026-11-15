@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "App and product screens on a marketing page, built from live components instead of screenshots.",
+    "A feature section whose tabs or scroll position swap the screen inside one phone (DeviceScreens).",
+    "A live preview of a page or template at phone, tablet or desktop width."
+  ],
+  "avoidWhen": [
+    "Real screenshots or photos of the product — use image or gallery.",
+    "Showing a responsive layout to the person building it — resize the real page instead."
+  ],
+  "related": [
+    "feature-grid",
+    "tabs",
+    "section-nav",
+    "store-badges"
+  ],
+  "a11y": [
+    "A static frame is role=\"img\" named by label, with its content inert and hidden; without a label it is decorative.",
+    "interactive frames keep their content live and focusable and scroll inside; inactive DeviceScreens are inert."
+  ]
+}

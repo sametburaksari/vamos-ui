@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Several videos where one plays at a time: trailers, talks, sessions, a channel's latest uploads, a music video archive.",
+    "YouTube or Vimeo videos that must not load third-party content before the visitor presses play."
+  ],
+  "avoidWhen": [
+    "A single video — use video-player (VideoPlayer or VideoEmbed).",
+    "A grid of many videos that open full screen — use gallery with a lightbox."
+  ],
+  "related": [
+    "video-player",
+    "audio-player",
+    "gallery",
+    "carousel"
+  ],
+  "a11y": [
+    "An ordered list of buttons named by the video title; the selected one has aria-current.",
+    "Switching announces \"Now showing: <title>\" politely and keeps focus in the list."
+  ]
+}

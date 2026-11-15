@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A press kit, brand assets, templates or datasets a visitor downloads one by one or all at once.",
+    "Files generated in the browser (texts, SVGs from tokens) that should be bundled into one ZIP."
+  ],
+  "avoidWhen": [
+    "Files attached to a record in an admin panel — use attachment-list.",
+    "Uploading files — use file-upload.",
+    "Very large or private files — create the archive on the server."
+  ],
+  "related": [
+    "attachment-list",
+    "checkbox",
+    "button",
+    "release-notes"
+  ],
+  "a11y": [
+    "Tri-state select all; every row checkbox and download button is named after its file.",
+    "Progress and results (saved, failed, files left out) are announced through a polite status line."
+  ]
+}
