@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Donations, pledges, tips, top-ups or gift-card values: a few preset amounts, an own amount and optionally one-off or recurring.",
+    "Telling the giver what their amount does (\"₺250 buys ten new books\")."
+  ],
+  "avoidWhen": [
+    "A price that follows from several choices — use estimator.",
+    "Entering an arbitrary money value in a form — use formatted-input (CurrencyInput)."
+  ],
+  "related": [
+    "goal-meter",
+    "formatted-input",
+    "radio-group",
+    "estimator"
+  ],
+  "a11y": [
+    "Frequency and amount are labelled radio groups with one tab stop each; the own-amount field states its minimum and maximum as an error message.",
+    "The chosen amount, frequency and impact are a polite live region."
+  ]
+}
