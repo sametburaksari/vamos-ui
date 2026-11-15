@@ -1,9 +1,12 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { run } from "../src/cli";
-import { LEGAL_SLUGS, planEssentials } from "../src/core/site";
+import { scaffold } from "../src/commands/create";
+import { KVKK_ROUTE, LEGAL_SLUGS, planEssentials } from "../src/core/site";
+import { monogram, siteColors } from "../src/core/site-assets";
+import { CREATE_LAYOUT_MARKER, ESSENTIALS_LAYOUT_HEADER, isCreatedLayout } from "../src/core/site-layout";
 import { collectRoutes, internalHrefs, verifyProject } from "../src/site-check";
 import { AI_BOTS, SITE_JSON_SCHEMA, SITE_SCHEMA, siteTemplate, type SiteInfo } from "../src/site-info";
 
@@ -269,6 +272,8 @@ describe("vamos.site.json", () => {
       "app/sitemap.ts",
       "app/llms.txt/route.ts",
       "app/site-json-ld.tsx",
+      "app/icon.svg",
+      "app/opengraph-image.tsx",
       "app/gizlilik/page.tsx",
       "app/kvkk/page.tsx",
     ]);
@@ -424,3 +429,174 @@ describe("verify site-info", () => {
     expect(siteInfo(paths, "{ nope")[0]!.message).toContain("not valid JSON");
   });
 });
+
+describe("site essentials on an app from `vamos-ui create`", () => {
+  let dir = "";
+  afterEach(() => {
+    if (dir) rmSync(dir, { recursive: true, force: true });
+    dir = "";
+  });
+  const write = (rel: string, content: string) => {
+    mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    writeFileSync(path.join(dir, rel), content);
+  };
+  const read = (rel: string) => readFileSync(path.join(dir, rel), "utf8");
+  /** Fictional florist: create's Next.js template, vamos.site.json and a page with the kit blocks. */
+  const KUZEY = (over: Partial<SiteInfo> = {}): SiteInfo => ({
+    ...siteTemplate({ name: "Kuzey Çiçek Atölyesi", url: "https://kuzeycicek.test", locale: "tr-TR" }),
+    description: "Kadıköy'de mevsim çiçekleriyle el yapımı buketler ve aynı gün teslim.",
+    ...over,
+  });
+  const PAGE = `import { ContactForm, Footer } from "@/components/vamos/blocks";
+export default function Home() {
+  return <><ContactForm title="İletişim" /><Footer brand={{ name: "Kuzey Çiçek Atölyesi" }} /></>;
+}
+`;
+  const setup = async (site: SiteInfo | null, page = PAGE) => {
+    dir = mkdtempSync(path.join(tmpdir(), "vamos-created-"));
+    await scaffold(dir, { template: "next", name: "kuzey", theme: { accent: "ocean" } });
+    write("vamos.json", JSON.stringify({ registry: "https://ui.vamos.ist/r", uiDir: "src/components/vamos", blocksDir: "src/components/blocks", css: "src/app/globals.css", importAlias: "@/components/vamos", tsx: true, theme: { accent: "ocean" } }));
+    write("src/app/page.tsx", page);
+    if (site) write("vamos.site.json", JSON.stringify(site));
+  };
+  const config = { blocksDir: "src/components/blocks", uiDir: "src/components/vamos", theme: { accent: "ocean" } };
+  const plan = () => planEssentials(dir, config, { alias: { alias: "@", target: "src" } });
+  const cli = (...argv: string[]) => run(argv, { cwd: dir, interactive: false, env: { ...process.env, CI: "1", NO_COLOR: "1" } });
+
+  it("create's layout carries the marker and is recognised; any other edit is not", async () => {
+    await setup(KUZEY());
+    const layout = read("src/app/layout.tsx");
+    expect(layout.split("\n")[0]).toContain(CREATE_LAYOUT_MARKER);
+    expect(isCreatedLayout(layout)).toBe(true);
+    // theme/brand change the <html> attributes, older releases had no marker: still the starter layout
+    expect(isCreatedLayout(layout.replace('data-accent="ocean"', 'data-accent="brand"'))).toBe(true);
+    expect(isCreatedLayout(layout.split("\n").slice(1).join("\n"))).toBe(true);
+    expect(isCreatedLayout(layout.replace("{children}</body>", "<Analytics />{children}</body>"))).toBe(false);
+    expect(isCreatedLayout(layout.replace('import "./globals.css";', 'import "./globals.css";\nimport "./extra.css";'))).toBe(false);
+  });
+
+  it("fills in the untouched layout: lang from locale, site metadata with og:url, <SiteJsonLd /> once", async () => {
+    await setup(KUZEY());
+    const p = plan();
+    expect(p.layoutPatch?.path).toBe("src/app/layout.tsx");
+    expect(p.layoutMissing).toEqual([]);
+    expect(p.jsonLdInLayout).toBe(false);
+    const after = p.layoutPatch!.after;
+    expect(after.split("\n")[0]).toBe(ESSENTIALS_LAYOUT_HEADER);
+    expect(after).toContain(`import { SITE_URL, filled, site } from "./site";`);
+    expect(after).toContain(`import { SiteJsonLd } from "./site-json-ld";`);
+    expect(after).toContain(`<html lang={filled(site.locale) ?? "en"} data-material="solid" data-accent="ocean"`);
+    expect(after).toContain("metadataBase: new URL(SITE_URL)");
+    expect(after).toContain(`alternates: { canonical: "/" }`);
+    expect(after).toContain(`openGraph: { type: "website", url: "/", siteName: site.name`);
+    expect(after).toContain(`twitter: { card: "summary_large_image"`);
+    expect(after.match(/<SiteJsonLd \/>/g)).toHaveLength(1);
+    expect(after).not.toContain("Built with Vamos UI");
+    expect(isCreatedLayout(after)).toBe(false);
+    // the kit Footer on the page would describe the business a second time
+    expect(p.footerJsonLd).toBe(true);
+  });
+
+  it("writes a monogram favicon and an og:image in the theme colours, never over existing ones", async () => {
+    await setup(KUZEY());
+    const files = plan().files;
+    const icon = files.find((f) => f.path === "src/app/icon.svg")!.content;
+    expect(icon).toMatch(/^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" viewBox="0 0 64 64"/);
+    expect(icon).toContain(`fill="${siteColors(dir, config).accent}"`);
+    expect(siteColors(dir, config).accent).toMatch(/^#[0-9a-f]{6}$/);
+    expect(icon).toMatch(/>K<\/text>/);
+    expect(icon).not.toMatch(/gradient|filter|shadow/i);
+    const og = files.find((f) => f.path === "src/app/opengraph-image.tsx")!.content;
+    expect(og).toContain(`import { ImageResponse } from "next/og";`);
+    expect(og).toContain(`from "@/app/site"`);
+    expect(og).toContain("export const size = { width: 1200, height: 630 };");
+    expect(og).toContain(`accent: "${siteColors(dir, config).accent}"`);
+
+    write("src/app/icon.png", "png");
+    write("public/og.jpg", "jpg");
+    const again = plan();
+    expect(again.files.some((f) => /icon\.svg|opengraph-image/.test(f.path))).toBe(false);
+    expect(again.kept).toEqual(expect.arrayContaining(["favicon", "og:image"]));
+  });
+
+  it("monogram: first letter, upper-cased for the language", () => {
+    expect(monogram("Kuzey Çiçek Atölyesi", "tr-TR")).toBe("K");
+    expect(monogram("istanbul ışık", "tr-TR")).toBe("İ");
+    expect(monogram("  «özel» stüdyo")).toBe("Ö");
+  });
+
+  it("a Turkish site with a contact form gets the KVKK notice page and the hint to link it", async () => {
+    await setup(KUZEY());
+    const p = plan();
+    expect(p.kvkkUnlinked).toBe(KVKK_ROUTE);
+    const page = p.files.find((f) => f.path === `src/app${KVKK_ROUTE}/page.tsx`)!;
+    expect(page.reason).toContain("collects personal data");
+    expect(page.content).toContain(`legalPreset("kvkk", "tr")`);
+    expect(page.content).toContain(`openGraph: { url: "${KVKK_ROUTE}"`);
+    const siteTs = p.files.find((f) => f.path === "src/app/site.ts")!.content;
+    expect(siteTs).toContain(`"${KVKK_ROUTE}"`);
+
+    // English site, or a footer that already links a KVKK notice: nothing extra
+    await setup(KUZEY({ locale: "en-GB", locales: ["en-GB"] }));
+    expect(plan().kvkkUnlinked).toBeNull();
+    await setup(KUZEY(), PAGE.replace("<Footer ", `<Footer legalLinks={[{ href: "/kvkk", label: "KVKK" }]} `));
+    const linked = plan();
+    expect(linked.kvkkUnlinked).toBeNull();
+    expect(linked.files.map((f) => f.path)).toContain("src/app/kvkk/page.tsx");
+    expect(linked.files.map((f) => f.path)).not.toContain(`src/app${KVKK_ROUTE}/page.tsx`);
+    // no form, no personal data
+    await setup(KUZEY(), `export default function Home() { return <h1>Kuzey</h1>; }\n`);
+    expect(plan().kvkkUnlinked).toBeNull();
+  });
+
+  it("an edited layout is left alone and the snippets are printed (today's behaviour)", async () => {
+    await setup(KUZEY());
+    write("src/app/layout.tsx", read("src/app/layout.tsx").replace('title: "Kuzey"', 'title: "Kuzey Çiçek"'));
+    const p = plan();
+    expect(p.layoutPatch).toBeNull();
+    expect(p.layoutMissing).toEqual(["metadataBase", "alternates", "openGraph"]);
+    expect(p.jsonLdInLayout).toBe(true);
+  });
+
+  it("site essentials patches the layout; --dry-run prints the diff and writes nothing", async () => {
+    // English site without a form: no legal page, so nothing is fetched from the registry.
+    await setup(KUZEY({ locale: "en-GB", locales: ["en-GB"] }), `export default function Home() { return <h1>Kuzey</h1>; }\n`);
+    const before = read("src/app/layout.tsx");
+    let out = "";
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation((chunk: string | Uint8Array) => {
+      out += typeof chunk === "string" ? chunk : Buffer.from(chunk).toString();
+      return true;
+    });
+    try {
+      expect(await cli("site", "essentials", "--dry-run")).toBe(0);
+    } finally {
+      spy.mockRestore();
+    }
+    expect(out).toContain("+        <SiteJsonLd />");
+    expect(out).toContain(`-  description: "Built with Vamos UI.",`);
+    expect(read("src/app/layout.tsx")).toBe(before);
+    expect(existsSync(path.join(dir, "src/app/icon.svg"))).toBe(false);
+
+    const res = await captureJson(() => cli("site", "essentials", "--json"));
+    expect(res.layout).toBe("patched");
+    expect(res.written).toEqual(expect.arrayContaining(["src/app/layout.tsx", "src/app/icon.svg", "src/app/opengraph-image.tsx", "src/app/site-json-ld.tsx"]));
+    expect(read("src/app/layout.tsx")).toContain("<SiteJsonLd />");
+    const again = await captureJson(() => cli("site", "essentials", "--json"));
+    expect(again.written).toEqual([]);
+    expect(again.layout).toBeNull();
+  });
+});
+
+async function captureJson(fn: () => Promise<number>): Promise<{ written: string[]; layout: string | null; kvkkUnlinked: string | null }> {
+  let out = "";
+  const spy = vi.spyOn(process.stdout, "write").mockImplementation((chunk: string | Uint8Array) => {
+    out += typeof chunk === "string" ? chunk : Buffer.from(chunk).toString();
+    return true;
+  });
+  try {
+    expect(await fn()).toBe(0);
+  } finally {
+    spy.mockRestore();
+  }
+  return JSON.parse(out);
+}
