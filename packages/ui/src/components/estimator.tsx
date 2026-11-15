@@ -492,7 +492,7 @@ export const Estimator = /*#__PURE__*/ React.forwardRef<HTMLDivElement, Estimato
           <div data-slot="estimator-bar" className="sticky bottom-0 z-10 -mx-1 flex items-center justify-between gap-3 rounded-ui border border-line bg-surface px-4 py-3 shadow-sm @3xl:hidden">
             <span className="min-w-0" aria-hidden="true">
               <span className="block text-xs text-fg-muted">{totalLabel ?? t("total")}</span>
-              <span className="block truncate font-mono text-lg font-semibold text-fg tabular">
+              <span className="block font-mono text-base font-semibold leading-snug text-fg tabular [overflow-wrap:anywhere] @md:text-lg">
                 {figure ?? "—"}
                 {figure && totalSuffix ? <span className="ms-1 text-xs font-normal text-fg-muted">{totalSuffix}</span> : null}
               </span>
@@ -501,6 +501,7 @@ export const Estimator = /*#__PURE__*/ React.forwardRef<HTMLDivElement, Estimato
               type="button"
               variant="secondary"
               size="sm"
+              className="shrink-0"
               onClick={() => {
                 const el = summaryRef.current;
                 el?.scrollIntoView({ block: "start", behavior: "smooth" });
