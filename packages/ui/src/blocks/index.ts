@@ -63,6 +63,19 @@ export { validateContactForm, isSpam, contactFieldLabel, HONEYPOT_FIELD, TIMESTA
 export { BrandIcon, BRAND_NAMES, type BrandName, type BrandIconProps } from "./site/shared/brand-icons";
 export { site2Labels, site2LabelsTr, site2LabelsDe, site2LabelsFr, site2LabelsEs, site2LabelsAr, type Site2Labels, type Site2BlockLabels } from "./site/shared/labels-2";
 
+// News / magazine blocks: post cards, lead grid, category modules, tabs, ticker, ads, sidebar, masthead
+export { PostCard, type PostCardProps, type PostCardVariant, type PostCardSize } from "./site/post-card";
+export { FeaturedPosts, PostBlock, PostLayout, type FeaturedPostsProps, type FeaturedPostsLayout, type PostBlockProps, type PostBlockLayout } from "./site/post-modules";
+export { PostTabs, type PostTabsProps, type PostTab } from "./site/post-tabs";
+export { NewsTicker, type NewsTickerProps, type NewsTickerItem } from "./site/news-ticker";
+export { NewsPagination, newsPageHref, type NewsPaginationProps } from "./site/news-pagination";
+export { AdSlot, type AdSlotProps } from "./site/ad-slot";
+export { NewsColumns, SidebarWidget, FollowCounts, PopularPosts, RecentComments, CategoryCounts, type NewsColumnsProps, type SidebarWidgetProps, type FollowCountsProps, type FollowAccount, type PopularPostsProps, type RecentCommentsProps, type RecentComment, type CategoryCountsProps, type CategoryCount } from "./site/news-widgets";
+export { NewsTopBar, NewsHeader, type NewsTopBarProps, type NewsHeaderProps, type NewsNavItem, type NewsMegaSection, type WeatherData, type WeatherCondition } from "./site/news-masthead";
+export { AuthDialog, type AuthDialogProps, type AuthView, type AuthSignInData } from "./site/auth-dialog";
+export { PostMeta, CategoryBadge, ModuleHeading, NewsDate, newsArticleJsonLd, newsItemListJsonLd, AD_SIZES, type NewsPost, type PostMetaFields, type PostMetaProps, type CategoryBadgeProps, type ModuleHeadingProps, type NewsJsonLdOptions, type AdSize } from "./site/shared/news";
+export { newsLabels, newsLabelsTr, newsText, type NewsLabels, type NewsBlockLabels } from "./site/shared/labels-news";
+
 // Site shell: locale switch, inner pages and a scoped accent for whole-site blocks
 export { SiteShell, SiteShellPage, SiteShellLocale, SiteShellLink, useSiteShell, type SiteShellProps, type SiteShellPageProps, type SiteShellLocaleProps, type SiteShellLinkProps, type SiteShellContextValue } from "./site/site-shell";
 export { siteAccent, siteAccentCss, siteAccentKey, isBuiltInAccent, BUILT_IN_SITE_ACCENTS, SITE_TEXT_CONTRAST, type SiteAccentPalette, type SiteAccentOptions } from "./site/shared/site-accent";

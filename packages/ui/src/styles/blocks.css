@@ -956,3 +956,48 @@
 @container (min-width: 56rem) {
   .vb-media-overlap:not([data-side="end"]) .vb-container > :first-child { grid-column-start: 1; }
 }
+
+/* ------------------------------------------------------------------ */
+/* News blocks: post cards, ticker, ad slots, sticky sidebar.          */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /* Overlay cards: the same bottom-weighted scrim as heroes, a little longer for two-line titles. */
+  .vb-news-scrim { background: linear-gradient(to top, rgb(6 8 4 / 0.86), rgb(6 8 4 / 0.42) 48%, rgb(6 8 4 / 0) 78%); }
+  .vb-news-card[data-variant="overlay"] { --ring: currentColor; }
+
+  /* Ticker: one headline at a time. The incoming line rises in; reduced motion swaps instantly. */
+  .vb-ticker-line { animation: vb-ticker-in 380ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  @keyframes vb-ticker-in {
+    from { opacity: 0; transform: translateY(0.6em); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Ad slots reserve their box before the ad loads (no layout shift). */
+  .vb-ad-box {
+    width: min(100%, var(--ad-w));
+    aspect-ratio: var(--ad-w-n) / var(--ad-h-n);
+    background:
+      repeating-linear-gradient(-45deg, transparent 0 10px, color-mix(in oklch, var(--line) 55%, transparent) 10px 11px),
+      var(--surface-2);
+  }
+  .vb-ad-box[data-filled] { background: none; }
+  @container (max-width: 40rem) {
+    .vb-ad-box[data-mobile] {
+      width: min(100%, var(--ad-mw));
+      aspect-ratio: var(--ad-mw-n) / var(--ad-mh-n);
+    }
+  }
+
+  /* Sticky sidebar on wide containers. */
+  @container (min-width: 64rem) {
+    .vb-news-aside-sticky[data-sticky] {
+      position: sticky;
+      top: calc(var(--topbar-h, 0px) + var(--news-sticky-offset, 4.5rem));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vb-ticker-line { animation: none; }
+}
