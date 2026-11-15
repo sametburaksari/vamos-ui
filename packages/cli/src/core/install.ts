@@ -105,7 +105,7 @@ export async function applyPlan(
     recordItem(lock, key, { version, type: item.type, files, source: item.source?.url });
   }
 
-  const indexes = await refreshIndexes(root, config.uiDir, { barrels, owned: ownedFiles(lock) });
+  const indexes = await refreshIndexes(root, config.uiDir, { barrels, owned: ownedFiles(lock), pending: plan.dependencies });
   const hasStyles = existsSync(path.join(root, config.uiDir, "styles.css"));
   const css = hasStyles ? await ensureStylesImport(root, config.css, config.uiDir) : null;
   return { written, skipped, indexes, css };
