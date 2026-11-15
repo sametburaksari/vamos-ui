@@ -15,10 +15,13 @@ import {
   PresetError,
   PRESET_AXES,
   PRESET_DEFAULTS,
+  PRESET_FAMILIES,
+  getPresetFamily,
   tryDecodePreset,
   type Preset,
 } from "../src/preset";
 import { writeFixtureRegistry } from "./fixtures/registry";
+import { fontPairings } from "../../ui/src/fonts/pairings";
 
 describe("preset codec", () => {
   it("encodes the documented examples", () => {
@@ -35,14 +38,71 @@ describe("preset codec", () => {
         for (const accent of PRESET_AXES.accent)
           for (const density of PRESET_AXES.density)
             for (const font of PRESET_AXES.font)
-              for (const radius of PRESET_AXES.radius) {
-                const preset: Preset = { theme, material, accent, density, font, radius };
-                const code = encodePreset(preset);
-                expect(decodePreset(code)).toEqual(preset);
-                seen.add(code);
-              }
+              for (const radius of PRESET_AXES.radius)
+                for (const scene of PRESET_AXES.scene) {
+                  const preset: Preset = { theme, material, accent, density, font, radius, scene };
+                  const code = encodePreset(preset);
+                  expect(decodePreset(code)).toEqual(preset);
+                  seen.add(code);
+                }
     // every combination has its own code
-    expect(seen.size).toBe(2 * 2 * 5 * 2 * 4 * 3);
+    expect(seen.size).toBe(2 * 2 * 5 * 3 * 24 * 5 * 4);
+  });
+
+  it("decodes every code an older vamos-ui wrote to the same preset (v1 only gained letters)", () => {
+    // Every code the previous axes (4 fonts, 2 densities, 3 corners, no scene) could produce.
+    const OLD = { density: ["comfortable", "compact"], font: ["system", "editorial", "grotesk", "corporate"], radius: ["default", "sharp", "round"] } as const;
+    const L = { theme: { light: "l", dark: "d" }, material: { solid: "s", glass: "g" }, accent: { lime: "l", ocean: "o", ember: "e", rose: "r", graphite: "g" }, density: { comfortable: "c", compact: "k" }, font: { system: "s", editorial: "e", grotesk: "g", corporate: "c" }, radius: { default: "", sharp: "s", round: "r" } } as const;
+    let n = 0;
+    for (const theme of PRESET_AXES.theme)
+      for (const material of PRESET_AXES.material)
+        for (const accent of [...PRESET_AXES.accent, "#4f46e5"] as const)
+          for (const density of OLD.density)
+            for (const font of OLD.font)
+              for (const radius of OLD.radius) {
+                const a = accent.startsWith("#") ? "x" + accent.slice(1) : L.accent[accent as keyof typeof L.accent];
+                const old = `v1${L.theme[theme]}${L.material[material]}${a}${L.density[density]}${L.font[font]}${L.radius[radius]}`;
+                const preset = { theme, material, accent, density, font, radius, scene: "neutral" };
+                expect(decodePreset(old), old).toEqual(preset);
+                expect(encodePreset(preset), old).toBe(old);
+                n++;
+              }
+    expect(n).toBe(2 * 2 * 6 * 2 * 4 * 3);
+    // Documented examples from before.
+    expect(decodePreset("v1dgokg")).toEqual({ theme: "dark", material: "glass", accent: "ocean", density: "compact", font: "grotesk", radius: "default", scene: "neutral" });
+    expect(decodePreset("v1lsokcs")).toMatchObject({ accent: "ocean", density: "compact", font: "corporate", radius: "sharp", scene: "neutral" });
+  });
+
+  it("has one font letter per kit pairing, in the same order", () => {
+    expect([...PRESET_AXES.font]).toEqual(fontPairings.map((p) => p.id).sort((a, b) => PRESET_AXES.font.indexOf(a as never) - PRESET_AXES.font.indexOf(b as never)));
+    expect(new Set(PRESET_AXES.font)).toEqual(new Set(fontPairings.map((p) => p.id)));
+  });
+
+  it("writes the radius when a scene follows, and leaves both out at their defaults", () => {
+    expect(encodePreset({ scene: "paper" })).toBe("v1lslcsdp");
+    expect(encodePreset({ radius: "none", scene: "paper", font: "bookish" })).toBe("v1lslcbnp");
+    expect(encodePreset({ radius: "pill" })).toBe("v1lslcsp");
+    expect(encodePreset({ density: "spacious", font: "luxe" })).toBe("v1lslpu");
+    expect(decodePreset("v1lslcsdp")).toMatchObject({ radius: "default", scene: "paper" });
+  });
+
+  it("every style family is a valid code, round-trips and has its own look", () => {
+    expect(PRESET_FAMILIES).toHaveLength(13);
+    const codes = new Set<string>();
+    for (const f of PRESET_FAMILIES) {
+      const p = decodePreset(f.code);
+      expect(encodePreset(p), f.id).toBe(f.code);
+      codes.add(f.code);
+      if (f.accent2) expect(normalizeHex(f.accent2), f.id).toBe(f.accent2);
+    }
+    expect(codes.size).toBe(13);
+    // no two families share a font pairing, except where the axis says otherwise
+    expect(new Set(PRESET_FAMILIES.map((f) => decodePreset(f.code).font)).size).toBe(13);
+    expect(getPresetFamily("Dark Neon")?.id).toBe("neon");
+    expect(getPresetFamily("NEWSROOM")?.code).toBe("v1lsx7a1f2bcnsw");
+    expect(getPresetFamily("nope")).toBeUndefined();
+    expect(getPresetFamily("arabic")).toMatchObject({ dir: "rtl" });
+    expect(decodePreset(getPresetFamily("arabic")!.code).font).toBe("naskh");
   });
 
   it("round-trips custom hex accents (3 and 6 digits, any case)", () => {
@@ -65,7 +125,9 @@ describe("preset codec", () => {
     expect(() => decodePreset("v1qgokg")).toThrow(/"q" is not a theme letter/);
     expect(() => decodePreset("v1dgzkg")).toThrow(/accent letter/);
     expect(() => decodePreset("v1dgx12kg")).toThrow(/6 hex digits/);
-    expect(() => decodePreset("v1dgokgsz")).toThrow(/extra characters/);
+    expect(() => decodePreset("v1dgokgsz")).toThrow(/"z" is not a scene letter/);
+    expect(() => decodePreset("v1dgokgsnz")).toThrow(/extra characters/);
+    expect(() => decodePreset("v1lsecj")).toThrow(/"j" is not a font letter/);
     expect(tryDecodePreset("nope")).toMatchObject({ ok: false });
     expect(isPresetCode("v1dgokg")).toBe(true);
   });
@@ -82,6 +144,8 @@ describe("preset codec", () => {
     expect(presetAttributes(p)).toEqual({ class: "dark", "data-material": "glass", "data-accent": "ocean", "data-density": "compact", "data-font": "grotesk" });
     expect(presetAttributes(decodePreset("v1lsx4f46e5ce"))["data-accent"]).toBe("brand");
     expect(describePreset(decodePreset("v1lslcsr"))).toContain("round corners");
+    expect(describePreset(decodePreset("v1lslcbnp"))).toBe("light · solid · lime · comfortable · bookish · none corners · paper scene");
+    expect(presetAttributes(decodePreset("v1dsx19e3c4kzpi"))).toEqual({ class: "dark", "data-material": "solid", "data-accent": "brand", "data-density": "compact", "data-font": "neon", "data-radius": "pill", "data-scene": "ink" });
   });
 
   it("maps corners to data-radius, independent of the accent", () => {
@@ -163,8 +227,8 @@ describe("vamos-ui preset (CLI)", () => {
   it("theme --preset applies to an existing project; a bad code fails cleanly", async () => {
     const app = makeApp("themed");
     await cli(app, "init", "--yes", "--no-install");
-    const res = await cli(app, "theme", "--preset", "v1lseck", "--json");
-    expect(res.code).toBe(1); // "k" is not a font letter
+    const res = await cli(app, "theme", "--preset", "v1lsecj", "--json");
+    expect(res.code).toBe(1); // "j" is not a font letter
     expect(JSON.parse(res.out).error).toMatch(/not a font letter/);
     const ok = await cli(app, "theme", "--preset", "v1lsekc", "--json");
     expect(ok.code).toBe(0);
@@ -197,6 +261,47 @@ describe("vamos-ui preset (CLI)", () => {
     const d = await cli(app, "theme", "--radius", "default", "--json");
     expect(JSON.parse(d.out).attributes).not.toHaveProperty("data-radius");
     expect(JSON.parse(readFileSync(path.join(app, "vamos.json"), "utf8")).theme).not.toHaveProperty("radius");
+  });
+
+  it("theme --family applies a named family: preset, brand accent-2, dir and font loading", async () => {
+    const app = makeApp("family");
+    await cli(app, "init", "--yes", "--no-install");
+    const res = await cli(app, "theme", "--family", "tabloid", "--json");
+    expect(res.code).toBe(0);
+    const json = JSON.parse(res.out);
+    expect(json).toMatchObject({ code: "v1lsxe23b2ektn", family: "tabloid", saved: true, attributes: { "data-font": "tabloid", "data-radius": "none", "data-density": "compact", "data-accent": "brand", "data-motion": "full" } });
+    expect(json.fonts).toContain('variable: "--ff-anton"');
+    expect(json.fonts).toContain("Work_Sans");
+    const brand = JSON.parse(readFileSync(path.join(app, "vamos.brand.json"), "utf8"));
+    expect(brand.colors).toMatchObject({ accent: "#e23b2e", accent2: "#f5c400" });
+    const css = readFileSync(path.join(app, "src/components/vamos/brand.css"), "utf8");
+    expect(css).toMatch(/--accent-2-base: oklch\(/);
+    expect(css).toContain("accent2 #f5c400");
+    expect(JSON.parse(readFileSync(path.join(app, "vamos.json"), "utf8")).theme).toMatchObject({ font: "tabloid", radius: "none" });
+
+    const rtl = await cli(app, "theme", "--family", "arabic", "--json");
+    const r = JSON.parse(rtl.out);
+    expect(r.attributes).toMatchObject({ dir: "rtl", "data-font": "naskh", "data-accent": "ocean" });
+    expect(r.fonts).toContain('subsets: ["latin", "latin-ext", "arabic"]');
+
+    const bad = await cli(app, "theme", "--family", "baroque", "--json");
+    expect(bad.code).toBe(1);
+    expect(JSON.parse(bad.out).error).toMatch(/Unknown style family/);
+
+    const list = JSON.parse((await cli(app, "theme", "--families", "--json")).out);
+    expect(list.families).toHaveLength(13);
+    expect(list.families[0]).toMatchObject({ id: "portal", preset: { font: "portal" } });
+  });
+
+  it("theme --scene and --radius pill are stored and cleared like the other axes", async () => {
+    const app = makeApp("scene-flag");
+    await cli(app, "init", "--yes", "--no-install");
+    const r = await cli(app, "theme", "--scene", "paper", "--radius", "pill", "--density", "spacious", "--json");
+    expect(JSON.parse(r.out)).toMatchObject({ theme: { scene: "paper", radius: "pill", density: "spacious" }, attributes: { "data-scene": "paper", "data-radius": "pill", "data-density": "spacious" } });
+    expect((await cli(app, "preset")).out.split("\n")[0]).toBe("v1lslpspp");
+    const n = await cli(app, "theme", "--scene", "neutral", "--json");
+    expect(JSON.parse(n.out).attributes).not.toHaveProperty("data-scene");
+    expect(JSON.parse(readFileSync(path.join(app, "vamos.json"), "utf8")).theme).not.toHaveProperty("scene");
   });
 
   it("preset <code> explains a code without writing", async () => {

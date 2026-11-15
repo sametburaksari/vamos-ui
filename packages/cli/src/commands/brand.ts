@@ -166,7 +166,7 @@ async function askColour(message: string, initial: string, optional = false): Pr
 }
 
 async function pickFont(role: FontRole, current: string | undefined): Promise<string | undefined> {
-  const label = { display: "Heading font", body: "Body / UI font", mono: "Mono font" }[role];
+  const label = { display: "Heading font", body: "Body / UI font", mono: "Mono font", accent: "Accent font" }[role];
   const keep = current ? `Keep ${current}` : "Kit default";
   const options = [
     { value: "", label: keep, hint: current ? "" : role === "mono" ? "JetBrains Mono" : "from the data-font preset" },

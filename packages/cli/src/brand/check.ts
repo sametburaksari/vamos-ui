@@ -19,6 +19,7 @@ export function checkBrand(input: unknown): BrandIssue[] {
   if (brand.colors.accent && !accentOk) add("error", "colors.accent", `"${brand.colors.accent}" is not a colour.`, "Use hex (#1d4ed8), rgb(), hsl() or oklch().");
   if (brand.colors.accentDark && !parseColor(brand.colors.accentDark)) add("error", "colors.accentDark", `"${brand.colors.accentDark}" is not a colour.`);
   if (brand.colors.neutralTint && !parseColor(brand.colors.neutralTint)) add("error", "colors.neutralTint", `"${brand.colors.neutralTint}" is not a colour.`);
+  if (brand.colors.accent2 && !parseColor(brand.colors.accent2)) add("error", "colors.accent2", `"${brand.colors.accent2}" is not a colour.`);
   if (accentOk && (!brand.colors.accentDark || parseColor(brand.colors.accentDark))) {
     const palette = generateAccent(brand.colors.accent, { dark: brand.colors.accentDark });
     for (const w of palette.warnings) {

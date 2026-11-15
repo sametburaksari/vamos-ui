@@ -2,22 +2,26 @@
  * Font helpers for brands, backed by the kit's Google Fonts catalog (bundled at build time,
  * so the CLI has no runtime dependency on @vamos-ui/react). Pure.
  */
-import { fontStack, getFont, googleFonts, type GoogleFont } from "../../../ui/src/fonts/catalog";
+import { fontStack, fontSubsets, getFont, googleFonts, type GoogleFont } from "../../../ui/src/fonts/catalog";
 import { googleFontsUrl } from "../../../ui/src/fonts/loader";
-import { displayTokensFor, type FontDisplayTokens } from "../../../ui/src/fonts/pairings";
+import { displayTokensFor, fontPairings as kitPairings, fontVar, pairingFamilies, pairingUrl, type FontDisplayTokens } from "../../../ui/src/fonts/pairings";
 import type { BrandFonts } from "./types";
 
 export { fontPairings, type FontPairing } from "../../../ui/src/fonts/pairings";
 export { getFont, googleFonts, type GoogleFont };
 
-export type FontRole = "display" | "body" | "mono";
+export type FontRole = "display" | "body" | "mono" | "accent";
 
 /** CSS variable each role sets, and the next/font variable that feeds it. */
 export const FONT_ROLE_VARS: Record<FontRole, { token: string; loaded: string; fallback: string }> = {
   display: { token: "--font-heading", loaded: "--ff-brand-display", fallback: "ui-serif, Georgia, serif" },
   body: { token: "--font-ui", loaded: "--ff-brand-body", fallback: "ui-sans-serif, system-ui, sans-serif" },
   mono: { token: "--font-code", loaded: "--ff-brand-mono", fallback: 'ui-monospace, "SF Mono", Menlo, monospace' },
+  accent: { token: "--font-accent", loaded: "--ff-brand-accent", fallback: "cursive" },
 };
+
+/** The roles a brand can set, in the order brand.css and the font snippets write them. */
+export const FONT_ROLES = ["display", "body", "mono", "accent"] as const;
 
 const GENERIC = new Set([
   "serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui", "ui-sans-serif", "ui-serif", "ui-monospace", "ui-rounded",
@@ -77,7 +81,7 @@ export function displayTokens(display: string | undefined): FontDisplayTokens | 
 /** Catalog families among the brand fonts, in display/body/mono order, deduplicated. */
 export function brandFamilies(fonts: BrandFonts): GoogleFont[] {
   const out: GoogleFont[] = [];
-  for (const role of ["display", "body", "mono"] as const) {
+  for (const role of FONT_ROLES) {
     const f = fonts[role] ? getFont(fonts[role]!) : undefined;
     if (f && !out.includes(f)) out.push(f);
   }
@@ -86,7 +90,7 @@ export function brandFamilies(fonts: BrandFonts): GoogleFont[] {
 
 /** Google Fonts stylesheet URL for the brand fonts (catalog or not), or null when there are none. */
 export function brandFontsUrl(fonts: BrandFonts): string | null {
-  const names = [...new Set((["display", "body", "mono"] as const).map((r) => fonts[r]).filter((f): f is string => !!f && !isGenericFamily(f)))];
+  const names = [...new Set(FONT_ROLES.map((r) => fonts[r]).filter((f): f is string => !!f && !isGenericFamily(f)))];
   return names.length ? googleFontsUrl(names.map((n) => canonicalFamily(n).family)) : null;
 }
 
@@ -108,7 +112,7 @@ const ident = (family: string) => family.replace(/[^A-Za-z0-9]+/g, "_").replace(
  * className expression for <html>. Families outside the catalog are passed through by name.
  */
 export function nextFontSnippet(fonts: BrandFonts): { code: string; classNames: string[] } | null {
-  const roles = (["display", "body", "mono"] as const).filter((r) => fonts[r] && !isGenericFamily(fonts[r]!));
+  const roles = FONT_ROLES.filter((r) => fonts[r] && !isGenericFamily(fonts[r]!));
   if (!roles.length) return null;
   const imports = new Set<string>();
   const lines: string[] = [];
@@ -117,7 +121,7 @@ export function nextFontSnippet(fonts: BrandFonts): { code: string; classNames: 
     const { family, font } = canonicalFamily(fonts[role]!);
     const fn = ident(family);
     imports.add(fn);
-    const opts: string[] = [`subsets: ["latin", "latin-ext"]`];
+    const opts: string[] = [`subsets: [${(font ? fontSubsets(font) : ["latin", "latin-ext"]).map((x) => `"${x}"`).join(", ")}]`];
     const variable = font?.axes.some((a) => a.tag === "wght");
     if (font && !variable) opts.push(`weight: [${font.weights.map((w) => `"${w}"`).join(", ")}]`);
     if (font?.italics) opts.push(`style: ["normal", "italic"]`);
@@ -136,4 +140,40 @@ export function searchFonts(query: string, role?: FontRole): GoogleFont[] {
   const pool = role ? [...googleFonts.filter(inRole), ...googleFonts.filter((f) => !inRole(f))] : googleFonts;
   if (!q) return pool;
   return pool.filter((f) => `${f.family} ${f.id} ${f.category} ${f.style ?? ""} ${f.use}`.toLowerCase().includes(q));
+}
+
+/**
+ * How to load a kit pairing the app does not load yet (`theme --font newsroom`, a family preset):
+ * next/font loaders named after the `--ff-*` variables its `[data-font]` block reads, or the
+ * Google Fonts <link>. Null for the classic four (the scaffold loads them) and for System.
+ */
+export function fontLoadSnippet(pairingId: string, framework: string): string | null {
+  const pairing = kitPairings.find((p) => p.id === pairingId);
+  if (!pairing || pairing.css) return null;
+  const url = pairingUrl(pairing);
+  if (!url) return null;
+  if (framework !== "next") {
+    return [
+      '<link rel="preconnect" href="https://fonts.googleapis.com">',
+      '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+      `<link rel="stylesheet" href="${url.replace(/&/g, "&amp;")}">`,
+    ].join("\n");
+  }
+  const imports: string[] = [];
+  const lines: string[] = [];
+  const vars: string[] = [];
+  for (const req of pairingFamilies(pairing)) {
+    const font = getFont(req.family)!;
+    const fn = ident(font.family);
+    const v = fontVar(font.family)!;
+    const name = v.slice(5).replace(/-([a-z0-9])/g, (_, c: string) => c.toUpperCase());
+    imports.push(fn);
+    const opts = [`subsets: [${fontSubsets(font).map((x) => `"${x}"`).join(", ")}]`];
+    if (!font.axes.some((a) => a.tag === "wght")) opts.push(`weight: [${font.weights.map((w) => `"${w}"`).join(", ")}]`);
+    if (font.italics) opts.push(`style: ["normal", "italic"]`);
+    opts.push(`variable: "${v}"`);
+    lines.push(`const ${name} = ${fn}({ ${opts.join(", ")} });`);
+    vars.push(`\${${name}.variable}`);
+  }
+  return [`import { ${imports.join(", ")} } from "next/font/google";`, "", ...lines, "", `// <html className={\`${vars.join(" ")}\`} data-font="${pairing.id}">`].join("\n");
 }
