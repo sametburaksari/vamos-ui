@@ -33,6 +33,7 @@ import docCard from "./card";
 import docCarousel from "./carousel";
 import docChart from "./chart";
 import docCheckbox from "./checkbox";
+import docCodeBlock from "./code-block";
 import docCollapsible from "./collapsible";
 import docColorPicker from "./color-picker";
 import docComboChart from "./combo-chart";
@@ -50,8 +51,10 @@ import docDataTable from "./data-table";
 import docDatePicker from "./date-picker";
 import docDateRangePicker from "./date-range-picker";
 import docDescriptionList from "./description-list";
+import docDeviceFrame from "./device-frame";
 import docDialog from "./dialog";
 import docDonutChart from "./donut-chart";
+import docDownloadKit from "./download-kit";
 import docDropdownMenu from "./dropdown-menu";
 import docEditorLayout from "./editor-layout";
 import docEmptyState from "./empty-state";
@@ -158,6 +161,7 @@ import docStatsBand from "./stats-band";
 import docStatusPicker from "./status-picker";
 import docStepper from "./stepper";
 import docSteps from "./steps";
+import docStoreBadges from "./store-badges";
 import docSwitch from "./switch";
 import docTable from "./table";
 import docTabs from "./tabs";
@@ -179,6 +183,7 @@ import docUptimeBars from "./uptime-bars";
 import docUserPicker from "./user-picker";
 import docVersionHistory from "./version-history";
 import docVideoPlayer from "./video-player";
+import docVideoPlaylist from "./video-playlist";
 
 export const entries: DocEntry[] = [
   docAccessibilityToolbar,
@@ -214,6 +219,7 @@ export const entries: DocEntry[] = [
   docCarousel,
   docChart,
   docCheckbox,
+  docCodeBlock,
   docCollapsible,
   docColorPicker,
   docComboChart,
@@ -231,8 +237,10 @@ export const entries: DocEntry[] = [
   docDatePicker,
   docDateRangePicker,
   docDescriptionList,
+  docDeviceFrame,
   docDialog,
   docDonutChart,
+  docDownloadKit,
   docDropdownMenu,
   docEditorLayout,
   docEmptyState,
@@ -339,6 +347,7 @@ export const entries: DocEntry[] = [
   docStatusPicker,
   docStepper,
   docSteps,
+  docStoreBadges,
   docSwitch,
   docTable,
   docTabs,
@@ -360,4 +369,5 @@ export const entries: DocEntry[] = [
   docUserPicker,
   docVersionHistory,
   docVideoPlayer,
+  docVideoPlaylist,
 ];
