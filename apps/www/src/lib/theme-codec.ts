@@ -5,7 +5,7 @@
  *   - preset codec        ← packages/cli/src/preset.ts            (vamos-ui/preset)
  *   - colour maths        ← packages/cli/src/brand/color.ts       (subset: hex/rgb/oklch parsing)
  *   - generateAccent      ← packages/cli/src/brand/accent.ts      (vamos-ui/brand)
- *   - brandCss            ← packages/cli/src/brand/css.ts         (accent + radius part only)
+ *   - brandCss            ← packages/cli/src/brand/css.ts         (accent, accent-2 + radius part only)
  *   - KIT_ACCENT_BASE     ← packages/cli/src/commands/preset.ts
  * Keep them in sync: `node --test apps/www/src/lib/theme-codec.test.mjs` compares the outputs of
  * this file with the CLI build (packages/cli/dist) for every axis and a spread of colours.
@@ -23,9 +23,15 @@ export const PRESET_AXES = {
   theme: ["light", "dark"],
   material: ["solid", "glass"],
   accent: ["lime", "ocean", "ember", "rose", "graphite"],
-  density: ["comfortable", "compact"],
-  font: ["system", "editorial", "grotesk", "corporate"],
-  radius: ["default", "sharp", "round"],
+  density: ["comfortable", "compact", "spacious"],
+  /** Every pairing in @vamos-ui/react/fonts (same ids); the classic four first. */
+  font: [
+    "system", "editorial", "grotesk", "corporate",
+    "newsroom", "magazine", "bookish", "poster", "fintech", "friendly", "boutique", "luxe", "studio",
+    "product", "bistro", "civic", "portal", "tabloid", "neon", "grove", "retail", "arcade", "naskh", "kufi",
+  ],
+  radius: ["default", "sharp", "round", "none", "pill"],
+  scene: ["neutral", "paper", "warm", "ink"],
 } as const;
 
 export type PresetTheme = (typeof PRESET_AXES.theme)[number];
@@ -34,6 +40,7 @@ export type PresetAccentName = (typeof PRESET_AXES.accent)[number];
 export type PresetDensity = (typeof PRESET_AXES.density)[number];
 export type PresetFont = (typeof PRESET_AXES.font)[number];
 export type PresetRadius = (typeof PRESET_AXES.radius)[number];
+export type PresetScene = (typeof PRESET_AXES.scene)[number];
 
 export interface Preset {
   theme: PresetTheme;
@@ -43,8 +50,10 @@ export interface Preset {
   density: PresetDensity;
   font: PresetFont;
   radius: PresetRadius;
+  scene: PresetScene;
 }
 
+/** The values the CLI assumes when vamos.json leaves an axis out. */
 export const PRESET_DEFAULTS: Readonly<Preset> = Object.freeze({
   theme: "light",
   material: "solid",
@@ -52,15 +61,22 @@ export const PRESET_DEFAULTS: Readonly<Preset> = Object.freeze({
   density: "comfortable",
   font: "system",
   radius: "default",
+  scene: "neutral",
 });
 
+/** One letter per value. Letters are unique within an axis. */
 const LETTERS = {
   theme: { light: "l", dark: "d" },
   material: { solid: "s", glass: "g" },
   accent: { lime: "l", ocean: "o", ember: "e", rose: "r", graphite: "g" },
-  density: { comfortable: "c", compact: "k" },
-  font: { system: "s", editorial: "e", grotesk: "g", corporate: "c" },
-  radius: { default: "d", sharp: "s", round: "r" },
+  density: { comfortable: "c", compact: "k", spacious: "p" },
+  font: {
+    system: "s", editorial: "e", grotesk: "g", corporate: "c",
+    newsroom: "n", magazine: "m", bookish: "b", poster: "p", fintech: "f", friendly: "r", boutique: "q", luxe: "u", studio: "y",
+    product: "d", bistro: "i", civic: "v", portal: "o", tabloid: "t", neon: "z", grove: "w", retail: "h", arcade: "l", naskh: "a", kufi: "k",
+  },
+  radius: { default: "d", sharp: "s", round: "r", none: "n", pill: "p" },
+  scene: { neutral: "n", paper: "p", warm: "w", ink: "i" },
 } as const;
 
 const CUSTOM_ACCENT = "x";
@@ -80,8 +96,10 @@ const FROM_LETTER = {
   density: invert(LETTERS.density),
   font: invert(LETTERS.font),
   radius: invert(LETTERS.radius),
+  scene: invert(LETTERS.scene),
 };
 
+/** "#4F46E5", "4f46e5" or "#abc" → "#4f46e5"; null when it is not a hex colour. */
 export function normalizeHex(value: string): `#${string}` | null {
   const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(value.trim());
   if (!m) return null;
@@ -94,6 +112,10 @@ export function isNamedAccent(value: string): value is PresetAccentName {
   return (PRESET_AXES.accent as readonly string[]).includes(value);
 }
 
+/**
+ * Fills missing axes with the defaults and checks every value. Accepts a custom accent as any
+ * hex form ("#ABC", "4f46e5"). Throws a PresetError on an unknown value.
+ */
 export function normalizePreset(input: Partial<Record<keyof Preset, string>>): Preset {
   const out = { ...PRESET_DEFAULTS } as Preset;
   for (const axis of Object.keys(PRESET_AXES) as (keyof Preset)[]) {
@@ -116,6 +138,7 @@ export function normalizePreset(input: Partial<Record<keyof Preset, string>>): P
   return out;
 }
 
+/** Preset → code. The input is normalised first, so partial presets work. */
 export function encodePreset(input: Partial<Record<keyof Preset, string>>): string {
   const p = normalizePreset(input);
   const accent = isNamedAccent(p.accent) ? LETTERS.accent[p.accent] : CUSTOM_ACCENT + p.accent.slice(1);
@@ -126,10 +149,12 @@ export function encodePreset(input: Partial<Record<keyof Preset, string>>): stri
     accent,
     LETTERS.density[p.density],
     LETTERS.font[p.font],
-    p.radius === PRESET_DEFAULTS.radius ? "" : LETTERS.radius[p.radius],
+    p.radius === PRESET_DEFAULTS.radius && p.scene === PRESET_DEFAULTS.scene ? "" : LETTERS.radius[p.radius],
+    p.scene === PRESET_DEFAULTS.scene ? "" : LETTERS.scene[p.scene],
   ].join("");
 }
 
+/** Code → preset. Throws a PresetError that says which position is wrong. */
 export function decodePreset(code: string): Preset {
   if (typeof code !== "string") throw new PresetError("A preset code must be a string.");
   const s = code.trim().toLowerCase().replace(/[-_.\s]/g, "");
@@ -161,10 +186,12 @@ export function decodePreset(code: string): Preset {
   const density = take("density");
   const font = take("font");
   const radius = i < s.length ? take("radius") : PRESET_DEFAULTS.radius;
+  const scene = i < s.length ? take("scene") : PRESET_DEFAULTS.scene;
   if (i < s.length) throw new PresetError(`Preset "${code}" has extra characters: "${s.slice(i)}".`);
-  return { theme, material, accent, density, font, radius } as Preset;
+  return { theme, material, accent, density, font, radius, scene } as Preset;
 }
 
+/** Decode without throwing. */
 export function tryDecodePreset(code: string): { ok: true; preset: Preset } | { ok: false; error: string } {
   try {
     return { ok: true, preset: decodePreset(code) };
@@ -173,13 +200,23 @@ export function tryDecodePreset(code: string): { ok: true; preset: Preset } | { 
   }
 }
 
+export function isPresetCode(code: string): boolean {
+  return tryDecodePreset(code).ok;
+}
+
+/** "dark · glass · ocean · compact · grotesk" (radius and scene only when not default). */
 export function describePreset(preset: Preset): string {
   const parts: string[] = [preset.theme, preset.material, preset.accent, preset.density, preset.font];
   if (preset.radius !== PRESET_DEFAULTS.radius) parts.push(`${preset.radius} corners`);
+  if (preset.scene !== PRESET_DEFAULTS.scene) parts.push(`${preset.scene} scene`);
   return parts.join(" · ");
 }
 
-/** <html> attributes. Corners are their own axis (data-radius, left out for the default). */
+/**
+ * The attributes for <html>. A custom accent needs the generated brand.css (`vamos-ui init --preset`
+ * / `theme --preset` write it), so it maps to data-accent="brand". Corners are their own axis:
+ * data-radius="sharp|round" (left out for the default), which works with every accent.
+ */
 export function presetAttributes(preset: Preset): Record<string, string> {
   return {
     ...(preset.theme === "dark" ? { class: "dark" } : {}),
@@ -188,12 +225,63 @@ export function presetAttributes(preset: Preset): Record<string, string> {
     "data-density": preset.density,
     "data-font": preset.font,
     ...(preset.radius !== PRESET_DEFAULTS.radius ? { "data-radius": preset.radius } : {}),
+    ...(preset.scene !== PRESET_DEFAULTS.scene ? { "data-scene": preset.scene } : {}),
   };
 }
 
-/** Only a custom accent colour needs a generated brand.css. */
+/** Does applying this preset need a generated brand.css? Only for a custom accent colour. */
 export function presetNeedsBrand(preset: Preset): boolean {
   return !isNamedAccent(preset.accent);
+}
+
+// ---------------------------------------------------------------------------
+// Style families: named starting points, one preset code each
+// ---------------------------------------------------------------------------
+
+export interface PresetFamily {
+  /** Name for `vamos-ui theme --family <id>`. */
+  id: string;
+  label: string;
+  /** The mood and the sites it fits. */
+  description: string;
+  /** The preset code the family applies. */
+  code: string;
+  /** Second accent for gradients and highlights (brand.colors.accent2). Derived from the accent when absent. */
+  accent2?: `#${string}`;
+  /** `dir` for <html>. Only the Arabic family sets it. */
+  dir?: "rtl";
+  /** Suggested data-motion value (full | subtle | off). */
+  motion: "full" | "subtle" | "off";
+  /** One line on how to hold the look: card treatment, what to avoid. */
+  notes: string;
+}
+
+/**
+ * Twelve style families plus the Arabic RTL modifier. Each is one preset code, so an AI agent or a
+ * recipe can pick a look by name (`theme --family newsroom`) and a person can share it as a code.
+ * Accents are our own choices; every custom one goes through the same contrast-checked accent
+ * generator as a brand colour.
+ */
+export const PRESET_FAMILIES: readonly PresetFamily[] = Object.freeze([
+  { id: "portal", label: "Classic Portal", description: "White page, cobalt accent, bold grotesk headlines, coloured category chips. Dense news and magazine homepages.", code: "v1lsx2448c8kos", motion: "subtle", notes: "Image-top cards, a category chip on the image (bg-cat-N text-cat-fg), dark block-title bars, a tight three-column grid." },
+  { id: "tabloid", label: "Tabloid", description: "Black and white with one hot red, heavy condensed capitals, square corners. Breaking news, sport, nightlife.", code: "v1lsxe23b2ektn", accent2: "#f5c400", motion: "full", notes: "Text over images with a dark gradient, numbered lists, uppercase kickers; accent-2 (yellow) only for BREAKING." },
+  { id: "newsroom", label: "Editorial Serif", description: "Ink on warm white, an oxblood accent, optical-size serif headlines over a calm sans. Magazines, long reads, culture.", code: "v1lsx7a1f2bcnsw", motion: "subtle", notes: "Large images with captions, italic serif decks, generous gutters, hairline rules between items instead of cards." },
+  { id: "broadsheet", label: "Broadsheet", description: "Parchment scene, near-black ink, one rust accent, Garamond headings, no corners. Vintage papers and archives.", code: "v1lsx9a3b16kbnp", motion: "off", notes: "Column rules, a nameplate masthead, almost no card chrome; keep imagery in black and white or duotone." },
+  { id: "neon", label: "Dark Neon", description: "Near-black scene, an electric teal accent, wide display type, pill controls. Gaming, music, video.", code: "v1dsx19e3c4kzpi", accent2: "#b14dff", motion: "full", notes: "Dark surfaces, an accent glow on hover, round thumbnails, an accent underline on titles; one neon colour, never three." },
+  { id: "web3", label: "Gradient Glass", description: "Deep violet-navy with an indigo-to-fuchsia gradient, glass surfaces and big corners. Web3, AI and gaming launches.", code: "v1dgx6d4affcfr", accent2: "#e040c8", motion: "full", notes: "Glass cards, gradient borders and buttons (bg-accent-gradient), big rounded tiles; keep body text on solid surfaces." },
+  { id: "saas", label: "SaaS Clean", description: "Cool grey scene, one saturated indigo, a tight Swiss grotesk, soft shadows. Directories, apps, B2B sites.", code: "v1lsx4a3fd6cd", motion: "subtle", notes: "White cards with soft shadows, icon tiles, search-first heroes; one accent for actions only." },
+  { id: "pastel", label: "Soft Pastel", description: "Cream scene, a coral accent with mint, rounded type with a handwritten accent, round corners. Lifestyle, kids, beauty.", code: "v1lsxf2665acrrw", accent2: "#3fb58f", motion: "full", notes: "Rounded image cards, circular avatars, sticker-like category chips; one handwritten word per heading at most (font-accent)." },
+  { id: "luxury", label: "Luxury Boutique", description: "Near-black scene, a muted brass accent, a razor-thin Didone, no corners and a lot of air. Fashion, interiors, wine, law.", code: "v1dsxb8955apuni", motion: "subtle", notes: "Edge-to-edge photographs, thin rules, small letter-spaced uppercase labels; slow crossfades, never bounce." },
+  { id: "earthy", label: "Earthy Nature", description: "Sand scene, moss green, a soft sturdy serif over an open grotesk. Nature, food, gardens, travel.", code: "v1lsx4f6b2acwdw", accent2: "#b7792b", motion: "subtle", notes: "Photo-led cards, leaf-tone category tags, natural textures; avoid saturated blues." },
+  { id: "agency", label: "Playful Agency", description: "A fuchsia accent with mint pops, an extended avant-garde display, round corners. Studios, creators, portfolios.", code: "v1lsxd6249fcyr", accent2: "#2fd3a6", motion: "full", notes: "Colour-block tiles, stickers, oversized type, marquees; a hand-drawn accent word (font-accent) for warmth." },
+  { id: "commerce", label: "Minimal Commerce", description: "Untinted white, graphite type, one tight grotesk, pill buttons on square-ish cards. Shops and catalogues.", code: "v1lsgchpi", motion: "subtle", notes: "Product-first cards, swatch dots, the danger ink for sale prices; image swap on hover is the only motion." },
+  { id: "arabic", label: "Arabic RTL", description: "A Naskh headline face over IBM Plex Sans Arabic, mirrored layout. Arabic news and portals; switch the font to kufi for apps.", code: "v1lsocas", dir: "rtl", motion: "subtle", notes: 'Set dir="rtl" and lang="ar"; no letter-spacing on Arabic, no italics, no uppercase. Latin runs use the matching Plex Latin.' },
+] satisfies PresetFamily[]);
+
+/** Looks a family up by id or label, case-insensitively ("Dark Neon", "neon"). */
+export function getPresetFamily(name: string): PresetFamily | undefined {
+  const q = name.trim().toLowerCase().replace(/[\s_]+/g, "-");
+  return PRESET_FAMILIES.find((f) => f.id === q || f.label.toLowerCase().replace(/\s+/g, "-") === q);
 }
 
 // ---------------------------------------------------------------------------
@@ -543,19 +631,37 @@ export const KIT_ACCENT_BASE: Record<PresetAccentName, string> = {
 };
 
 /** The --radius each corner setting resolves to (styles.css: --radius-base × --radius-scale). */
-export const RADIUS: Record<"sharp" | "round", { comfortable: string; compact: string }> = {
-  sharp: { comfortable: "6px", compact: "4px" },
-  round: { comfortable: "20px", compact: "14px" },
+export const RADIUS: Record<PresetRadius, Record<PresetDensity, string>> = {
+  default: { comfortable: "14px", compact: "10px", spacious: "16px" },
+  sharp: { comfortable: "6px", compact: "4px", spacious: "6px" },
+  round: { comfortable: "20px", compact: "14px", spacious: "22px" },
+  none: { comfortable: "0px", compact: "0px", spacious: "0px" },
+  pill: { comfortable: "14px · pill controls", compact: "10px · pill controls", spacious: "16px · pill controls" },
 };
+
+/** Hue turn for a derived second accent (packages/cli/src/brand/css.ts ACCENT2_HUE_TURN). */
+export const ACCENT2_HUE_TURN = 60;
+
+/** The colour the second accent is generated from (packages/cli/src/brand/css.ts accent2Source). */
+export function accent2Source(colors: { accent: string; accent2?: string }): string {
+  if (colors.accent2) {
+    if (!parseColor(colors.accent2)) throw new TypeError(`"${colors.accent2}" (accent2) is not a colour.`);
+    return colors.accent2;
+  }
+  const a = parseColor(colors.accent);
+  if (!a) throw new TypeError(`"${colors.accent}" is not a colour.`);
+  if (a.c < 0.035) return formatOklch({ ...a, alpha: 1 });
+  return formatOklch(gamutMap({ ...a, h: (a.h + ACCENT2_HUE_TURN) % 360, alpha: 1 }));
+}
 
 /** The accent colour a preset's brand.css is generated from. */
 export const presetAccentSource = (preset: Preset) => (isNamedAccent(preset.accent) ? KIT_ACCENT_BASE[preset.accent] : preset.accent);
 
 /**
  * The brand.css `vamos-ui init/theme/create --preset` writes for a custom accent (brandCss for a
- * brand with only colors.accent set; corners are data-radius, not brand.css). null when none is needed.
+ * brand with colors.accent, and accent2 for a family; corners are data-radius, not brand.css). null when none is needed.
  */
-export function presetBrandCss(preset: Preset, name = "my-app"): string | null {
+export function presetBrandCss(preset: Preset, name = "my-app", accent2?: string): string | null {
   if (!presetNeedsBrand(preset)) return null;
   const palette = generateAccent(presetAccentSource(preset));
   const sel = `[data-accent="brand"]`;
@@ -570,6 +676,10 @@ export function presetBrandCss(preset: Preset, name = "my-app"): string | null {
   out.push(`  --accent-fg: ${palette.fg}; /* ${palette.contrast.fgOnBase}:1 on the fill */`);
   out.push(`  --accent-ink-light: ${palette.inkLight}; /* ${palette.contrast.inkLightOnLight}:1 on light surfaces */`);
   out.push(`  --accent-ink-dark: ${palette.inkDark}; /* ${palette.contrast.inkDarkOnDark}:1 on dark surfaces */`);
+  const second = generateAccent(accent2Source({ accent: presetAccentSource(preset), accent2 }));
+  out.push(`  --accent-2-base: ${second.base}; /* ${accent2 ? `accent2 ${accent2.replace(/\*\//g, "")}` : "derived from the accent"} */`);
+  out.push(`  --accent-2-ink-light: ${second.inkLight};`);
+  out.push(`  --accent-2-ink-dark: ${second.inkDark};`);
   out.push("}");
   if (palette.dark) {
     out.push(`.dark${sel},`);

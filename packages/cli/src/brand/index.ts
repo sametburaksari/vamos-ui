@@ -4,7 +4,7 @@
  * Pure: no Node built-ins and no dependencies, so it bundles into editors, agents and servers.
  */
 export { generateAccent, SURFACES, TEXT_CONTRAST, UI_CONTRAST, type AccentContrast, type AccentPalette, type GenerateAccentOptions } from "./accent";
-export { brandCss, brandHasFonts, readBrandCssVars, BRAND_CSS_FILE, type BrandCssOptions } from "./css";
+export { accent2Source, ACCENT2_HUE_TURN, brandCss, brandHasFonts, readBrandCssVars, BRAND_CSS_FILE, type BrandCssOptions } from "./css";
 export {
   createBrandCollector,
   extractBrandFromHtml,
@@ -22,7 +22,7 @@ export {
 } from "./extract";
 export { accentVarContrast, checkBrand } from "./check";
 export { fixClassList, fixSource, FIX_MAPPINGS, type FixChange, type FixKind, type FixOptions, type FixResult } from "./fix";
-export { brandFontsUrl, googleFontsLinks, nextFontSnippet, searchFonts, type FontRole } from "./fonts";
+export { brandFontsUrl, fontLoadSnippet, googleFontsLinks, nextFontSnippet, searchFonts, type FontRole } from "./fonts";
 export { contrastRatio, deltaE, formatOklch, parseColor, toHex, type Oklch } from "./color";
 export {
   BRAND_AXIS_VALUE,
