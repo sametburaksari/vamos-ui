@@ -69,7 +69,9 @@ export interface ThemeConfig {
   density?: string;
   font?: string;
   /** Corners → data-radius. "default" (or absent) leaves the attribute out. */
-  radius?: "default" | "sharp" | "round";
+  radius?: "default" | "sharp" | "round" | "none" | "pill";
+  /** Backdrop and neutral tint → data-scene. "neutral" (or absent) leaves the attribute out. */
+  scene?: "neutral" | "paper" | "warm" | "ink";
 }
 
 export interface VamosConfig {
