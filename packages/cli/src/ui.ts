@@ -11,6 +11,8 @@ export interface Context {
   yes: boolean;
   json: boolean;
   registryFlag?: string;
+  /** --offline / VAMOS_OFFLINE=1: never use the network for the registry. */
+  offline?: boolean;
   env: NodeJS.ProcessEnv;
 }
 
