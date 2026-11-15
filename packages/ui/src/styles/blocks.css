@@ -1,5 +1,8 @@
 /* blocks — component CSS owned by the blocks group. Tokens only. */
 
+/* Commerce and review parts (StarRating, ReviewScore, ProductCard, ProductGrid) live in their own file. */
+@import "./commerce.css";
+
 /* ------------------------------------------------------------------ */
 /* Block infrastructure (layer 1): Section, Container, SectionHeader,   */
 /* BlockHeading, BlockImage, RichText. Every value is a token.          */
