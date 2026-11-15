@@ -87,8 +87,8 @@ Pitfalls:
 
 **B2B supplier** — A wholesaler, distributor or manufacturer selling to businesses: a catalogue with bulk price tiers or full spec tables, what the plant or warehouse can do, quality and certifications, delivery terms, and a quote request (a quote list with editable lines, or an RFQ form with drawings).
 
-- `/` **Home**: hero (`hero`) → figures (`stats-band`, optional) → catalogue-index (`feature-grid`) → tiers (`pricing-table`, conditional) → capabilities (`media-text` + `feature-grid`) → industries (`feature-grid`, optional) → process (`steps`) → buyers (`testimonials`, optional, conditional) → delivery (`table`) → rfq (`contact-form`, conditional) → plant (`map-hours`, conditional) → faq (`faq`, conditional)
-- `/products` **Catalogue**: intro (`page-intro`) → catalogue (`filter-bar` + `data-table`, conditional) → specs (`table` + `tabs`, conditional) → quote-cta (`cta`)
+- `/` **Home**: hero (`hero`) → figures (`stats-band`, optional) → catalogue-index (`feature-grid`) → tiers (`tier-pricing`, conditional) → capabilities (`media-text` + `feature-grid`) → industries (`feature-grid`, optional) → process (`steps`) → buyers (`testimonials`, optional, conditional) → delivery (`table`) → rfq (`contact-form`, conditional) → plant (`map-hours`, conditional) → faq (`faq`, conditional)
+- `/products` **Catalogue**: intro (`page-intro`) → catalogue (`filter-bar` + `data-table` + `tier-pricing`, conditional) → specs (`table` + `tabs`, conditional) → quote-cta (`cta`)
 - `/quote` **Quote** (conditional): intro (`page-intro`) → quote-lines (`line-items`) → company-form (`form-01`)
 - `/quality` **Quality**: intro (`page-intro`) → process-data (`line-chart` + `stat`, optional) → quality-gates (`steps`) → certificates (`attachment-list`) → faq (`faq`, optional, conditional)
 
@@ -184,7 +184,7 @@ Pitfalls:
 
 **Developer tool / API** — Site for an API, SDK, CLI or other developer product: a code-first hero, a quick start with code per step, measured reliability, usage-based pricing with an estimator, a docs landing with search and SDKs, and a changelog. Code samples follow one language choice across the whole site.
 
-- `/` **Home**: hero (`hero` + `code-block` + `kbd`) → quickstart (`steps` + `code-block`) → features (`feature-grid`) → reliability (`stats-band`) → pricing (`pricing-table` + `slider`, conditional) → faq (`faq`, conditional) → closing-cta (`cta`)
+- `/` **Home**: hero (`hero` + `code-block` + `kbd`) → quickstart (`steps` + `code-block`) → features (`feature-grid`) → reliability (`stats-band`) → pricing (`pricing-table` + `estimator`, conditional) → faq (`faq`, conditional) → closing-cta (`cta`)
 - `/docs` **Docs**: intro (`page-intro` + `command`) → guides (`feature-grid`) → first-request (`code-block`) → sdks (`table`)
 - `/changelog` **Changelog**: intro (`page-intro`) → recent (`release-notes`) → full-log (`cta`, optional)
 
@@ -242,9 +242,9 @@ Pitfalls:
 
 **Home and local services** — A local service business that prices by the job and works by appointment: moving, cleaning, repairs, installation, car service or washing. The site's core is an instant quote calculator or a service picker that shows price and time live, a price list, a booking or quote request, trust signals (insurance, warranty, crew) and a searchable FAQ.
 
-- `/` **Home**: hero (`hero`) → proof (`stats-band`) → picker (`capacity-finder`, conditional) → services (`menu-list`) → combo (`media-text`, optional) → day (`steps`) → team (`team`, conditional) → reviews (`testimonials`, conditional) → faq (`faq`, conditional) → locations (`map-hours`, conditional) → cta (`cta`)
+- `/` **Home**: hero (`hero`) → proof (`stats-band`) → picker (`estimator`, conditional) → services (`menu-list`) → combo (`media-text`, optional) → day (`steps`) → team (`team`, conditional) → reviews (`testimonials`, conditional) → faq (`faq`, conditional) → locations (`map-hours`, conditional) → cta (`cta`)
 - `/services` **Prices and times** (conditional): intro (`page-intro`) → list (`menu-list`)
-- `/quote` **Get a quote** (conditional): intro (`page-intro`) → calculator (`multi-step-form`)
+- `/quote` **Get a quote** (conditional): intro (`page-intro`) → calculator (`multi-step-form` + `estimator`)
 - `/booking` **Book** (conditional): intro (`page-intro`) → flow (`scheduler`)
 - `/faq` **FAQ** (conditional): intro (`page-intro`) → answers (`faq` + `filter-bar`) → cta (`cta`)
 - `/contact` **Contact**: form (`contact-form`) → locations (`map-hours`, conditional)
@@ -384,8 +384,8 @@ Pitfalls:
 
 **Non-profit** — A charity, foundation or community project that raises one-off and monthly donations: mission and current campaign, what each gift buys, programmes, stories, a donate page and a transparency report.
 
-- `/` **Home**: hero (`hero` + `progress`) → impact (`stats-band`) → give (`button-group` + `card`) → programmes (`feature-grid`) → stories (`testimonials`, optional, conditional) → how-it-works (`steps`) → volunteer (`cta`) → newsletter (`cta`, conditional)
-- `/donate` **Donate**: intro (`page-intro` + `progress`) → amount (`button-group` + `card`) → details (`form-01`) → next (`steps`) → faq (`faq`)
+- `/` **Home**: hero (`hero` + `goal-meter`) → impact (`stats-band`) → give (`amount-picker`) → programmes (`feature-grid`) → stories (`testimonials`, optional, conditional) → how-it-works (`steps`) → volunteer (`cta`) → newsletter (`cta`, conditional)
+- `/donate` **Donate**: intro (`page-intro` + `goal-meter`) → amount (`amount-picker`) → details (`form-01`) → next (`steps`) → faq (`faq`)
 - `/transparency` **Transparency report**: intro (`page-intro`) → figures (`stats-band`) → split (`donut-chart`) → ledger (`table`) → files (`attachment-list`) → board (`team`, optional, conditional) → cta (`cta`)
 
 Looks: warm report (theme light, material solid, accent rose, density comfortable, font editorial, radius sharp); plain civic (theme light, material solid, accent ocean, density comfortable, font system).
@@ -484,7 +484,7 @@ Pitfalls:
 - `/` **Home**: hero (`hero`) → selected-work (`gallery` + `tabs` + `lightbox`) → project-index (`table` + `filter-bar`, optional) → practice (`feature-grid` + `stats-band`, optional, conditional) → studio-kit (`feature-grid`, optional, conditional) → packages (`pricing-table`, conditional) → recognition (`list-layout`, optional) → team (`team`, optional, conditional) → bio-cta (`cta`)
 - `/gallery` **Work** (conditional): intro (`page-intro`) → wall (`gallery` + `tabs` + `lightbox`) → index (`table` + `filter-bar`)
 - `/projects/[slug]` **Project**: intro (`page-intro` + `description-list`) → cover (`image`) → story (`feature-grid`) → series (`gallery` + `lightbox`, optional) → credits (`description-list`, optional) → next (`cta`)
-- `/pricing` **Packages** (conditional): intro (`page-intro`) → presets (`pricing-table`) → builder (`radio-group` + `slider` + `checkbox` + `line-items`)
+- `/pricing` **Packages** (conditional): intro (`page-intro`) → presets (`pricing-table`) → builder (`estimator`)
 - `/booking` **Booking** (conditional): intro (`page-intro`) → slot (`calendar`) → details (`form-01`) → summary (`line-items`)
 - `/about` **About**: intro (`page-intro`) → approach (`media-text`) → team (`team`, conditional) → process (`steps`, optional) → clients-shows (`list-layout`, optional) → visit (`map-hours`, conditional) → faq (`faq`, conditional) → contact (`contact-form`, conditional)
 
@@ -530,7 +530,7 @@ Pitfalls:
 **Professional firm** — A law, accounting, tax, audit or advisory practice: sober and trustworthy, organised around practice areas or service packages run by named partners, with credentials, an approach, insights, transparent fees where the profession allows, and an enquiry that respects confidentiality.
 
 - `/` **Home**: hero (`hero`) → figures (`stats-band`, optional) → practices (`feature-grid`) → fee-preview (`pricing-table`, conditional) → approach (`steps`) → partners (`team`, conditional) → switching (`media-text`, optional) → reviews (`testimonials`, conditional) → insights (`blog-list`, conditional) → faq (`faq`, conditional) → enquiry (`contact-form`)
-- `/services` **Practice areas**: intro (`page-intro`) → list (`menu-list`) → fee-estimate (`form-01`, conditional) → faq (`faq`, conditional)
+- `/services` **Practice areas**: intro (`page-intro`) → list (`menu-list`) → fee-estimate (`estimator`, conditional) → faq (`faq`, conditional)
 - `/services/[slug]` **Practice area**: intro (`page-intro`) → scope (`feature-grid`) → matters (`description-list`) → lead (`media-text`) → faq (`faq`) → others (`list-layout`) → cta (`cta`)
 - `/team` **Team** (conditional): intro (`page-intro`) → managing (`team`) → partners (`team`) → associates (`team`) → join (`cta`)
 - `/blog` **Insights** (conditional): list (`blog-list`)
@@ -591,9 +591,9 @@ Pitfalls:
 
 **Real estate agency** — An estate agency or private property office: search and browse homes for sale or rent, a page per listing with gallery, facts, location and an enquiry, plus the agents, local area guides and a valuation request for sellers. Covers an everyday city agency with a list/map search and a luxury office that shows a small collection as large photographs and floor plans.
 
-- `/` **Home**: hero (`hero`) → figures (`stats-band`) → intro (`rich-text-section`, optional) → featured (`entity-card`) → guides (`list-layout`, optional) → off-market (`cta`, optional) → mortgage (`form-01`, optional) → agents (`team`, conditional) → testimonial (`testimonials`, conditional) → valuation (`contact-form`)
+- `/` **Home**: hero (`hero`) → figures (`stats-band`) → intro (`rich-text-section`, optional) → featured (`entity-card`) → guides (`list-layout`, optional) → off-market (`cta`, optional) → mortgage (`estimator`, optional) → agents (`team`, conditional) → testimonial (`testimonials`, conditional) → valuation (`contact-form`)
 - `/listings` **Listings**: intro (`page-intro`) → results (`filter-bar` + `pin-map`)
-- `/listings/[slug]` **Listing**: gallery (`lightbox`) → facts (`description-list`) → story (`rich-text-section`) → floor-plan (`image-hotspots`, optional) → location (`pin-map`) → mortgage (`form-01`, optional) → agent (`entity-card`) → others (`entity-card`)
+- `/listings/[slug]` **Listing**: gallery (`lightbox`) → facts (`description-list`) → story (`rich-text-section`) → floor-plan (`image-hotspots`, optional) → location (`pin-map`) → mortgage (`estimator`, optional) → agent (`entity-card`) → others (`entity-card`)
 - `/team` **Agents** (conditional): intro (`page-intro`) → agents (`team`)
 - `/contact` **Contact**: form (`contact-form`) → office (`map-hours`, conditional)
 
@@ -633,7 +633,7 @@ Pitfalls:
 **Software product** — Marketing site for a launched software product sold by subscription: a product-led home with a live or scripted demo, proof, features, setup steps and pricing, plus a pricing page, an optional integrations catalogue, a security / data-handling page and a release-notes page. Covers a general B2B app, a data / analytics product and an AI product through alternatives and optional sections.
 
 - `/` **Home**: release-notice (`announcement-bar`, optional) → hero (`hero`) → customers (`logo-strip`, optional) → features (`feature-grid`) → deep-dive (`media-text`, optional) → numbers (`stats-band`, optional) → capabilities (`feature-grid`, optional) → integrations (`logo-strip`, optional) → setup (`steps`) → security-teaser (`media-text`, optional) → quote (`testimonials`, conditional) → pricing (`pricing-table`, conditional) → faq (`faq`, conditional) → closing-cta (`cta`)
-- `/pricing` **Pricing** (conditional): intro (`page-intro`) → plans (`pricing-table`) → estimator (`slider` + `stat`, optional) → compare (`comparison-table`) → billing-faq (`faq`)
+- `/pricing` **Pricing** (conditional): intro (`page-intro`) → plans (`pricing-table`) → estimator (`estimator`, optional) → compare (`comparison-table`) → billing-faq (`faq`)
 - `/integrations` **Integrations**: intro (`page-intro`) → catalogue (`filter-bar` + `item` + `badge`) → request (`cta`, optional)
 - `/security` **Security**: intro (`page-intro`) → flow (`steps`) → retention (`table`) → admin-policy (`rich-text-section`, optional) → subprocessors (`table`) → report (`rich-text-section`) → security-faq (`faq`, optional)
 - `/changelog` **What's new**: intro (`page-intro`) → releases (`release-notes`) → closing-cta (`cta`)
@@ -672,8 +672,8 @@ Pitfalls:
 
 **Subscription box** — A recurring-delivery brand (coffee, tea, snacks, books, beauty, pet supplies and similar) priced by box size and delivery frequency: this edition's contents, a plan builder with per-delivery and per-unit price, how it works, the suppliers behind it, and gift subscriptions.
 
-- `/` **Home**: hero (`hero`) → this-edition (`feature-grid`) → plans (`pricing-table`, conditional) → how-it-works (`steps`) → suppliers (`feature-grid`, optional) → reviews (`testimonials`, optional, conditional) → faq (`faq`, conditional) → gift-band (`cta`, optional)
-- `/plans` **Build your plan**: intro (`page-intro`) → builder (`pricing-table` + `radio-group`)
+- `/` **Home**: hero (`hero`) → this-edition (`feature-grid`) → plans (`choice-grid`, conditional) → how-it-works (`steps`) → suppliers (`feature-grid`, optional) → reviews (`testimonials`, optional, conditional) → faq (`faq`, conditional) → gift-band (`cta`, optional)
+- `/plans` **Build your plan**: intro (`page-intro`) → builder (`choice-grid` + `radio-group`)
 - `/gift` **Gift a subscription**: intro (`page-intro`) → gift-form (`form-02` + `date-picker`)
 - `/checkout` **Checkout**: checkout (`checkout-01`)
 - `/order/[id]` **Subscription confirmed**: confirmation (`order-confirmation-01`)

@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A plan priced on two axes — box size by delivery frequency, room by booking length, tier by contract term — where the visitor picks one cell.",
+    "Showing every combination's price at once so the cheapest rhythm or size is obvious."
+  ],
+  "avoidWhen": [
+    "One axis only — use radio-group (card variant) or pricing-table.",
+    "Comparing features per plan — use comparison-table.",
+    "More than about six columns on phones — split one axis into a separate radio group."
+  ],
+  "related": [
+    "radio-group",
+    "pricing-table",
+    "estimator",
+    "comparison-table"
+  ],
+  "a11y": [
+    "One radio group with a single tab stop: arrow keys move in both axes (mirrored in RTL), Home / End to the row ends, unavailable cells are skipped and marked aria-disabled.",
+    "Each cell's accessible name carries its row, column and price, so the choice is read as coordinates."
+  ]
+}
