@@ -21,7 +21,7 @@ export default function KvkkPage() {
         { id: "kvkk", title: "Kit vs. KVKK" },
       ]}
       prev={{ href: "/docs/localization", title: "Localization" }}
-      next={{ href: "/docs/cli", title: "CLI & registry" }}
+      next={{ href: "/docs/payments", title: "Payments (iyzico, PayTR)" }}
     >
       <Callout title="Scope">
         This page describes what the code does and lists the KVKK provisions it relates to. It does not say whether a given

@@ -18,6 +18,7 @@ const pages = [
   ["/docs/theming/", 0.7, "monthly"],
   ["/docs/localization/", 0.6, "monthly"],
   ["/docs/kvkk/", 0.5, "monthly"],
+  ["/docs/payments/", 0.5, "monthly"],
   ["/docs/fonts/", 0.6, "monthly"],
   ["/docs/cli/", 0.8, "monthly"],
   ["/docs/mcp/", 0.7, "monthly"],

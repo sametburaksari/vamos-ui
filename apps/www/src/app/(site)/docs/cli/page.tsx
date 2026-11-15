@@ -21,7 +21,7 @@ export default function CliPage() {
         { id: "site", title: "Website essentials" },
         { id: "mcp", title: "MCP server (AI agents)" },
       ]}
-      prev={{ href: "/docs/kvkk", title: "KVKK consent records" }}
+      prev={{ href: "/docs/payments", title: "Payments (iyzico, PayTR)" }}
       next={{ href: "/docs/publish-a-registry", title: "Publish a registry" }}
     >
       <H2 id="package-or-copy">Package or copy</H2>

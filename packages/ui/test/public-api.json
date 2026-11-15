@@ -2860,6 +2860,46 @@
    "ContactConsentOptions"
   ]
  },
+ "./payments": {
+  "values": [
+   "IYZICO_BASE_URL",
+   "IyzicoError",
+   "PAYTR_CALLBACK_OK",
+   "PAYTR_IFRAME_RESIZER",
+   "PAYTR_IFRAME_URL",
+   "PAYTR_TOKEN_URL",
+   "PaytrError",
+   "createIyzicoClient",
+   "createPaytrIframeToken",
+   "iyzicoAuthorization",
+   "iyzicoCheckoutBody",
+   "iyzicoSignature",
+   "iyzicoTrimPrice",
+   "paytrTokenFields",
+   "verifyIyzicoInitializeSignature",
+   "verifyIyzicoRetrieveSignature",
+   "verifyIyzicoWebhook",
+   "verifyPaytrCallback"
+  ],
+  "types": [
+   "IyzicoAddress",
+   "IyzicoBasketItem",
+   "IyzicoBuyer",
+   "IyzicoCheckoutRequest",
+   "IyzicoCheckoutResult",
+   "IyzicoCheckoutSession",
+   "IyzicoClient",
+   "IyzicoConfig",
+   "IyzicoCurrency",
+   "IyzicoWebhookPayload",
+   "PaytrBasketItem",
+   "PaytrCallback",
+   "PaytrConfig",
+   "PaytrCurrency",
+   "PaytrIframeToken",
+   "PaytrTokenRequest"
+  ]
+ },
  "./locale/ar": {
   "values": [
    "ar"
