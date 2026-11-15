@@ -4,6 +4,12 @@ Release notes for the Vamos UI MCP server (local stdio and the hosted server at 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change tools).
 
+## 0.3.1 — 2026-11-15
+
+### Patch Changes
+
+- 3396525: plan_screen: a website description that also mentions a form ("a podcast website with a guest form") now gets its site recipe instead of a form block.
+
 ## 0.3.0 — 2026-11-15
 
 ### Minor Changes
