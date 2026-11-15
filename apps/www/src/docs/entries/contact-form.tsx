@@ -42,7 +42,7 @@ async function sendLead(prev: SiteFormState, data: FormData): Promise<SiteFormSt
         { name: "fields", type: "ContactFieldConfig[]", default: "name, email, message", description: "2–8 of name · email · phone · company · subject · budget · message · date, each { required?, label?, options?, placeholder?, hint?, max? }." },
         { name: "action", type: "(prev: SiteFormState, data: FormData) => Promise<SiteFormState> | string", description: "Your server action, or a URL (e.g. /contact.php on static hosting): a plain POST without JS, a fetch with Accept: application/json once hydrated — the endpoint answers { status: \"success\" } or { status: \"invalid\", errors }. Without it the form only validates (previews). A success also fires the vb:lead event that Analytics measures." },
         { name: "successMessage", type: "ReactNode | RichDoc", description: "Replaces the form; focus moves to it." },
-        { name: "privacyLink / privacyCheckbox", type: "{ href; label? } / boolean", description: "Linked notice; with privacyCheckbox a required, never pre-checked box." },
+        { name: "privacyLink / privacyCheckbox", type: "{ href; label?; version? } / boolean", description: "Linked notice; with privacyCheckbox a required, never pre-checked box. version is posted in a hidden _notice field so the server can record which notice the visitor saw (see KVKK consent records)." },
         { name: "marketingConsent", type: "boolean", default: "false", description: "A separate, optional marketing box." },
         { name: "info / showInfo", type: "{ address?; phone?; email?; hours? } / boolean", description: "Contact column (split). phone is also the fallback on server errors." },
         { name: "submitLabel", type: "string", default: '"Send message"', description: "Button text." },
@@ -56,7 +56,7 @@ async function sendLead(prev: SiteFormState, data: FormData): Promise<SiteFormSt
       name: "validateContactForm(fields, data, opts)",
       props: [
         { name: "opts", type: "{ privacyCheckbox?; labels?; locale?; spamMinMs? }", description: "spamMinMs: submits faster than this after render count as bots (default 2500)." },
-        { name: "returns", type: "{ ok; spam; values; errors; privacy; marketing; state }", description: "state is ready to return from the action." },
+        { name: "returns", type: "{ ok; spam; values; errors; privacy; marketing; noticeVersion?; formId?; state }", description: "state is ready to return from the action. Pass the result to contactConsentInput (@vamos-ui/react/compliance) to keep a consent record." },
       ],
     },
     {

@@ -40,8 +40,11 @@ export interface ContactFormProps extends Omit<BlockBaseProps, "variant" | "labe
   submitLabel?: string;
   /** Replaces the form after success; focus moves to it. */
   successMessage?: React.ReactNode | RichDoc;
-  /** Privacy notice (KVKK requires a linked notice). */
-  privacyLink?: { href: string; label?: string };
+  /**
+   * Privacy notice (KVKK requires a linked notice). `version` is posted in a hidden `_notice` field so
+   * the server can record which wording the visitor saw (`@vamos-ui/react/compliance`).
+   */
+  privacyLink?: { href: string; label?: string; version?: string };
   /** A required, never pre-checked "I have read the notice" checkbox. */
   privacyCheckbox?: boolean;
   /** A separate, optional marketing consent checkbox. */
@@ -115,7 +118,7 @@ export function ContactForm({
       layout={variant}
       submitLabel={submitLabel}
       successMessage={isRichDoc(successMessage) ? <RichText doc={successMessage} components={components} labels={labels} locale={locale} /> : successMessage}
-      privacy={privacyLink ? { href: privacyLink.href, label: privacyLink.label, checkbox: privacyCheckbox } : undefined}
+      privacy={privacyLink ? { href: privacyLink.href, label: privacyLink.label, checkbox: privacyCheckbox, version: privacyLink.version } : undefined}
       marketingConsent={marketingConsent}
       fallbackPhone={info?.phone ? { href: telHref(info.phone), label: prettyPhone(info.phone) } : undefined}
       initialState={initialState}

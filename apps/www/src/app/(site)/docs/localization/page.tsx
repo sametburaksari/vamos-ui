@@ -20,7 +20,7 @@ export default function LocalizationPage() {
         { id: "rtl", title: "Right-to-left" },
       ]}
       prev={{ href: "/docs/theming", title: "Theming" }}
-      next={{ href: "/docs/cli", title: "CLI & registry" }}
+      next={{ href: "/docs/kvkk", title: "KVKK consent records" }}
     >
       <H2 id="provider">LocaleProvider</H2>
       <P>
