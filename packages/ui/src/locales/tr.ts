@@ -2141,7 +2141,7 @@ export const tr = {
     range: "{low}–{high}",
     live: "{label}: {value}",
     empty: "Fiyatı görmek için bir seçim yapın.",
-    details: "Dökümü gör",
+    details: "Dökümü görün",
     step: "{n}",
   },
   choiceGrid: {
@@ -2164,7 +2164,7 @@ export const tr = {
     best: "En iyi fiyattasınız.",
     minimum: "En az sipariş: {min}.",
     saved: "{amount} tasarruf ediyorsunuz.",
-    setQuantity: "{min} {unit} sipariş et, {unit} fiyatı {price}",
+    setQuantity: "{min} {unit} sipariş edin, {unit} fiyatı {price}",
     unit: "adet",
   },
   amountPicker: {
@@ -2185,7 +2185,7 @@ export const tr = {
     meter: "Hedefe ulaşılan tutar",
     stockMeter: "Kalan stok",
     of: "/ {goal}",
-    valueText: "{goal} hedefin {value} kadarı toplandı, {percent}",
+    valueText: "{goal} hedefinden {value} toplandı ({percent})",
     percent: "{percent}",
     backers: "{count, plural, other {# destekçi}}",
     ends: "Bitiş {date}",
