@@ -44,12 +44,14 @@ export default function CliPage() {
       <Code lang="bash" code={`npx vamos-ui create my-app                         # Next.js App Router + Tailwind CSS v4
 npx vamos-ui create my-app --template vite         # Vite + React + Tailwind CSS v4
 npx vamos-ui create my-app --preset v1dgokg --yes  # with a shared theme, no prompts
+npx vamos-ui create my-app --locale tr-TR          # <html lang="tr-TR">
 npx vamos-ui create my-app --no-install            # write files only`} />
       <Table
         head={["Flag", "What it does"]}
         rows={[
           [<C key="t">--template next|vite</C>, "Next.js (App Router) is the default."],
           [<C key="p">--preset &lt;code&gt;</C>, <span key="pd">Applies a <A href="#presets">preset code</A>: the axes in <C>vamos.json</C> and on <C>&lt;html&gt;</C>.</span>],
+          [<C key="l">--locale &lt;tag&gt;</C>, <span key="ld">Sets <C>&lt;html lang&gt;</C> (default <C>en</C>). For a website, <C>site essentials</C> later takes the language from <C>vamos.site.json</C>.</span>],
           [<C key="n">--no-install</C>, "Skips the package install; the files and the kit source are still written."],
           [<C key="y">--yes</C>, "No prompts. Without a terminal the defaults are used anyway."],
         ]}
@@ -195,6 +197,7 @@ npx vamos-ui site form                   # contact-form sender: contact.php, Res
 npx vamos-ui site deploy                 # host config (https, headers, cache) and publishing steps
 npx vamos-ui site check                  # after publishing: audit + redirects, headers, 404, sitemap; exit 1 below 90
 npx vamos-ui audit https://example.com   # audit a live site: SEO basics, broken links, placeholders
+npx vamos-ui audit http://localhost:3000 # a local preview: hosting checks (https, headers) are info only
 npx vamos-ui brand import https://example.com  # turn a site into a brand profile
 npx vamos-ui site init       # empty vamos.site.json: the business info for a website
 npx vamos-ui site essentials # robots, sitemap, llms.txt, JSON-LD and legal pages
@@ -218,7 +221,7 @@ npx vamos-ui init --no-agent # skip the AI rules (AGENTS.md, CLAUDE.md, Copilot,
       </P>
       <Code lang="bash" code={`npx vamos-ui site init --name "Kıyı Seramik" --url https://kiyiseramik.com.tr --locale tr-TR
 npx vamos-ui site essentials            # writes what is missing, never replaces a file
-npx vamos-ui site essentials --dry-run  # show the plan`} />
+npx vamos-ui site essentials --dry-run  # show the plan and the layout diff`} />
       <Table
         head={["File", "What it does"]}
         rows={[
@@ -227,9 +230,17 @@ npx vamos-ui site essentials --dry-run  # show the plan`} />
           [<C key="m">app/sitemap.ts</C>, "sitemap.xml from SITE_ROUTES."],
           [<C key="l">app/llms.txt/route.ts</C>, <span key="ld"><A href="https://llmstxt.org">llms.txt</A>: name, description, services, contact, opening hours, FAQ, key pages and legal pages. Off with <C>ai.llmsTxt: false</C>.</span>],
           [<C key="j">app/site-json-ld.tsx</C>, <span key="jd"><C>&lt;SiteJsonLd /&gt;</C>: the business type with address, phone, geo, opening hours and <C>sameAs</C>, plus <C>FAQPage</C> when <C>ai.faq</C> is set. Render it once in the root layout.</span>],
-          [<C key="p">app/&lt;legal&gt;/page.tsx</C>, <span key="pd">One page per legal link the blocks have, rendering <C>legal-01</C> with <C>values</C> from the site file, so the known <C>[fill-in]</C> fields are filled.</span>],
+          [<C key="i">app/icon.svg</C>, "The favicon: the business name's first letter on a flat tile in the theme accent (or the brand accent)."],
+          [<C key="o">app/opengraph-image.tsx</C>, <span key="od">The 1200×630 <C>og:image</C> (<C>next/og</C>): business name and description in the site&apos;s colours.</span>],
+          [<C key="p">app/&lt;legal&gt;/page.tsx</C>, <span key="pd">One page per legal link the blocks have, rendering <C>legal-01</C> with <C>values</C> from the site file, so the known <C>[fill-in]</C> fields are filled. A Turkish site (<C>locale</C> <C>tr-*</C>) with a contact form or newsletter also gets <C>/kvkk-aydinlatma-metni</C> when nothing links a KVKK notice yet; the command says to link it from the footer and the form.</span>],
         ]}
       />
+      <P>
+        The root layout: while it is still the one <C>create</C> wrote, <C>site essentials</C> fills it in: <C>&lt;html lang&gt;</C>{" "}
+        from <C>locale</C>, metadata from <C>app/site.ts</C> (<C>metadataBase</C>, canonical, <C>og:url</C>, Open Graph, Twitter
+        card) and <C>&lt;SiteJsonLd /&gt;</C> once in <C>&lt;body&gt;</C>. A layout you edited is never changed; the command
+        prints the metadata and JSON-LD to add instead. Existing files (a favicon, an og image, a legal page) are always kept.
+      </P>
       <P>
         The JSON Schema is at <C>https://ui.vamos.ist/r/site-schema.json</C> (set <C>$schema</C> for editor hints).{" "}
         <C>vamos-ui verify</C> reports empty required fields (name, url, phone or email, city; MERSİS and ETBİS for a shop) and a

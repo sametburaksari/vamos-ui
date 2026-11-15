@@ -85,7 +85,7 @@ export async function siteCheck(ctx: Context, args: ParsedArgs): Promise<number>
   const s = ctx.json ? null : spinner();
   s?.start(lang === "tr" ? `${url} kontrol ediliyor` : `Checking ${url}`);
   const [audit, deploy] = await Promise.all([
-    runAudit(url, { maxPages: int(args.flags, "max-pages", 1, AUDIT_DEFAULTS.maxPagesCap), timeoutMs, userAgent }),
+    runAudit(url, { maxPages: int(args.flags, "max-pages", 1, AUDIT_DEFAULTS.maxPagesCap), timeoutMs, userAgent, localPreview: false }),
     runDeployChecks(url, { timeoutMs, userAgent }),
   ]);
   const verdict = siteCheckVerdict(audit, deploy.checks, minScore);
