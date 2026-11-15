@@ -100,7 +100,7 @@ describe("emphasis", () => {
 
 describe("safety", () => {
   it("sanitizes hrefs", () => {
-    for (const ok of ["/menu", "#faq", "?q=1", "https://vamos.ist", "//cdn.example/x", "mailto:hello@vamos.ist", "tel:+902160000000", "menu/today"]) expect(sanitizeHref(ok)).toBe(ok);
+    for (const ok of ["/menu", "#faq", "?q=1", "https://vamos.ist", "//cdn.example/x", "mailto:merhaba@ornek.com.tr", "tel:+902160000000", "menu/today"]) expect(sanitizeHref(ok)).toBe(ok);
     for (const bad of ["javascript:alert(1)", " JaVaScRiPt:alert(1)", "java\tscript:alert(1)", "data:text/html,<b>", "vbscript:x", "ftp://x", "", null, 42]) expect(sanitizeHref(bad)).toBeNull();
   });
   it("detects kinds and emoji", () => {

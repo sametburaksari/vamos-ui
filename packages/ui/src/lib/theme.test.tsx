@@ -73,7 +73,7 @@ describe("VamosProvider", () => {
       <VamosProvider Link={AppLink}>
         <SmartLink href="/posts">Posts</SmartLink>
         <SmartLink href="https://vamos.ist">Website</SmartLink>
-        <SmartLink href="mailto:hello@vamos.ist">Email</SmartLink>
+        <SmartLink href="mailto:merhaba@ornek.com.tr">Email</SmartLink>
       </VamosProvider>,
     );
     expect(screen.getByText("Posts")).toHaveAttribute("data-router");
