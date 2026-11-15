@@ -154,7 +154,7 @@ const TEMPLATES: Record<SiteType, string[]> = {
   ecommerce: ["site-store-01", "site-store-02"],
   booking: ["site-clinic-01", "site-physio-01", "site-therapy-01"],
   portfolio: ["site-portfolio-01", "site-portfolio-02", "site-cv-01"],
-  blog: ["site-blog-01", "site-blog-02"],
+  blog: ["site-blog-01", "site-blog-02", "site-news-01"],
   saas: ["site-saas-01", "site-saas-02"],
   nonprofit: ["site-nonprofit-01"],
   event: ["site-event-01", "site-venue-01"],
