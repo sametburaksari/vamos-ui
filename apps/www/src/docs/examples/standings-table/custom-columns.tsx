@@ -1,3 +1,5 @@
+"use client";
+
 import { StandingsTable, type StandingRow } from "@vamos-ui/react";
 
 // A debating ladder: no draws, ballots instead of goals, points given directly.
