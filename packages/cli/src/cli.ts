@@ -15,6 +15,7 @@ import { diff, upgrade } from "./commands/sync";
 import { theme } from "./commands/theme";
 import { update } from "./commands/update";
 import { verify } from "./commands/verify";
+import { isOffline } from "./core/registry";
 import { CliError } from "./core/types";
 import { out, p, pc, type Context } from "./ui";
 
@@ -66,6 +67,9 @@ ${pc.bold("Commands")}
                        Define the brand (accent, fonts, theme, voice, assets) and apply it
   update [paths...]    Bring code in line with the brand and the rules   --fix, --dry-run
   registry build [dir] Build your own registry from a folder of components   --out, --homepage
+  registry export <dir>
+                       Write the Vamos UI registry bundled with the CLI to a folder, to host or
+                       vendor it (registry info: its version and date)
   mcp add              Connect an AI client to the MCP server
                        --client claude|cursor|vscode|windsurf|codex|gemini, --print
 
@@ -77,6 +81,9 @@ ${pc.bold("Options")}
       --no-agent       (init) Skip the AI rules (AGENTS.md, CLAUDE.md, Copilot, Cursor, agent skill)
       --json           Machine-readable output (list, search, view, diff, theme, verify, audit)
   -r, --registry <url|dir>   Registry location (also VAMOS_REGISTRY)
+      --offline        Never use the network for the registry: read the copy bundled with the
+                       CLI (also VAMOS_OFFLINE=1). Without it, the bundled copy is used when
+                       ui.vamos.ist cannot be reached (timeout VAMOS_REGISTRY_TIMEOUT, ms)
       --cwd <dir>      Run in another directory
 
 ${pc.dim("Docs: https://ui.vamos.ist")}`;
@@ -143,6 +150,7 @@ export async function run(argv: string[], opts: RunOptions = {}): Promise<number
     yes,
     json,
     registryFlag: str(args.flags, "registry"),
+    offline: isOffline(args.flags.offline === undefined ? undefined : bool(args.flags, "offline"), env),
     env,
   };
   try {

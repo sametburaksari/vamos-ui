@@ -16,6 +16,7 @@ export default function CliPage() {
         { id: "registry", title: "Registry" },
         { id: "item", title: "Registry item format" },
         { id: "open-registry", title: "Items from other registries" },
+        { id: "offline", title: "Offline / restricted networks" },
         { id: "presets", title: "Preset codes" },
         { id: "vamos-cli", title: "The vamos CLI" },
         { id: "site", title: "Website essentials" },
@@ -110,6 +111,40 @@ npx vamos-ui create my-app --no-install            # write files only`} />
         To publish your own components and blocks this way, see <A href="/docs/publish-a-registry">Publish a registry</A>.
       </P>
 
+      <H2 id="offline">Offline / restricted networks</H2>
+      <P>
+        The CLI package carries a copy of the whole Vamos UI registry (about 2.5 MB compressed), so <C>add</C>, <C>list</C>,{" "}
+        <C>search</C>, <C>view</C>, <C>init</C>, <C>create</C>, <C>diff</C> and <C>upgrade</C> also work where{" "}
+        <C>ui.vamos.ist</C> cannot be reached: corporate proxies, firewalled CI runners, sandboxes. The registry is chosen in
+        this order:
+      </P>
+      <Table
+        head={["", "Source", "When"]}
+        rows={[
+          ["1", <span key="1"><C>--registry &lt;url|dir&gt;</C> or <C>VAMOS_REGISTRY</C> (then <C>registry</C> in <C>vamos.json</C>)</span>, "Always, when set to anything other than the default. Never falls back."],
+          ["2", <C key="2">https://ui.vamos.ist/r</C>, "The default, over the network."],
+          ["3", "The bundled copy", <span key="3">When the site gives no answer within 5 s (<C>VAMOS_REGISTRY_TIMEOUT</C>, in ms), the connection fails, or a proxy answers instead. The CLI prints one line saying which copy it used, e.g. <C>using the bundled registry (v0.4.3, built 2026-11-15)</C>.</span>],
+        ]}
+      />
+      <Code lang="bash" code={`npx vamos-ui add data-table --offline     # never touch the network
+VAMOS_OFFLINE=1 npx vamos-ui init --yes    # the same, for CI
+npx vamos-ui registry info                 # version and date of the bundled copy`} />
+      <P>
+        With <C>--offline</C>, items from other registries (URLs, <C>github:</C>, <C>@ns/item</C> mapped to a URL) are refused
+        instead of fetched; local item files still work. npm packages still install from your npm registry or mirror; add{" "}
+        <C>--no-install</C> to skip that step.
+      </P>
+      <H3 id="vendor">Host or vendor the registry</H3>
+      <P>
+        The bundled copy can lag behind the site until the next CLI release. A team that wants one pinned copy for everyone
+        writes it to a folder and points the CLI at it, from the repo or from an internal static host:
+      </P>
+      <Code lang="bash" code={`npx vamos-ui registry export ./vendor/vamos-registry   # the same files https://ui.vamos.ist/r serves
+npx vamos-ui add button --registry ./vendor/vamos-registry
+
+# or set it once in vamos.json: "registry": "./vendor/vamos-registry"
+# or upload the folder and use "registry": "https://intranet.example.dev/vamos-registry"`} />
+
       <H2 id="presets">Preset codes</H2>
       <P>
         A preset code is the six theme axes (the sixth, corners, is optional) in one short string, so a look can be shared in a
@@ -163,6 +198,8 @@ npx vamos-ui brand import https://example.com  # turn a site into a brand profil
 npx vamos-ui site init       # empty vamos.site.json: the business info for a website
 npx vamos-ui site essentials # robots, sitemap, llms.txt, JSON-LD and legal pages
 npx vamos-ui registry build  # build your own registry from a folder of components
+npx vamos-ui registry export ./vendor/vamos-registry   # the registry bundled with the CLI, to host or vendor
+npx vamos-ui add button --offline   # no network: use the bundled registry (also VAMOS_OFFLINE=1)
 npx vamos-ui mcp add         # connect your AI client to the MCP server
 npx vamos-ui init --no-agent # skip the AI rules (AGENTS.md, CLAUDE.md, Copilot, Cursor) and skill`} />
       <Callout title="Why diff matters">

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/scripts/registry/**", "$TURBO_ROOT$/packages/ui/src/**", "$TURBO_ROOT$/packages/ui/package.json", "$TURBO_ROOT$/apps/www/src/blocks/**", "$TURBO_ROOT$/apps/www/src/docs/**", "$TURBO_ROOT$/registry/**", "$TURBO_ROOT$/skills/**"],
+      "outputs": ["dist/**", "snapshot/**"]
+    }
+  }
+}

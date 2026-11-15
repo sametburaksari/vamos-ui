@@ -30,6 +30,7 @@ Every file the CLI writes is recorded with its sha256 in `<uiDir>/.vamos-lock.js
 | `upgrade [names...]` | Files you never touched are replaced. For files you edited that also changed upstream, it shows the diff and asks (non-interactive runs keep your version unless you pass `--overwrite`). Installs new dependencies. |
 | `theme` | Picks the six axes (`--theme`, `--material`, `--accent`, `--density`, `--font`, `--radius`, or `--preset <code>`), saves them in `vamos.json` and prints the `<html>` attributes. `--radius sharp|round` sets `data-radius` (see [Corners](#corners)). |
 | `preset [code]` | Prints the project's shareable preset code, or explains a code. See [Preset codes](#preset-codes). |
+| `registry export <dir>` | Writes the Vamos UI registry bundled with the CLI (the same files `https://ui.vamos.ist/r` serves) to `<dir>`, to host or vendor it. `--force` writes into a folder that is not empty. `registry info` prints the bundled copy's version and build date. |
 | `registry build [dir]` | Builds a third-party registry (`<item>.json` + `index.json`) from `components/`, `lib/` and `blocks/<name>/`, with an optional `registry.json`. `--out` (default `<dir>/r`), `--homepage`, `--name`, `--dry-run`, `--strict`. |
 | `mcp add` | Writes the MCP server config for `--client claude\|cursor\|vscode\|windsurf\|codex\|gemini` (detected when left out; Claude Code as fallback). Idempotent; `--print` shows the config without writing. |
 | `verify [paths...]` | Lints for design-rule and accessibility issues and exits 1 on errors. By default it checks `src/`, `app/`, `components/`, `pages/` and `lib/`, skips the kit folder, and also runs the project checks (`missing-route`, `site-essentials`). `--json`, `--quiet`. |
@@ -55,7 +56,7 @@ const report = await runAudit("https://example.com", { maxPages: 10 });
 console.log(report.score, report.summary, formatAuditText(report));
 ```
 
-Common flags: `-y/--yes` (no prompts), `--dry-run`, `--no-install`, `--json`, `--cwd <dir>`, `-r/--registry <url|dir>`.
+Common flags: `-y/--yes` (no prompts), `--dry-run`, `--no-install`, `--json`, `--cwd <dir>`, `-r/--registry <url|dir>`, `--offline`.
 
 ## Configuration: `vamos.json`
 
@@ -72,6 +73,24 @@ Common flags: `-y/--yes` (no prompts), `--dry-run`, `--no-install`, `--json`, `-
 ```
 
 The registry location is resolved in this order: `--registry`, then `VAMOS_REGISTRY`, then `vamos.json`, then the default. A value that is not an `http(s)` URL is treated as a local directory, such as `apps/www/public/r` in the monorepo.
+
+## Offline / restricted networks
+
+The package carries a copy of the whole Vamos UI registry (`snapshot/registry.json.br`, about 2.5 MB), so `add`, `list`, `search`, `view`, `init`, `create`, `diff` and `upgrade` also work where `ui.vamos.ist` cannot be reached (corporate proxies, firewalled CI, sandboxes). Order:
+
+1. `--registry <url|dir>` / `VAMOS_REGISTRY` / `registry` in `vamos.json`, when set to anything other than the default. Never falls back.
+2. `https://ui.vamos.ist/r` over the network.
+3. The bundled copy, when the site gives no answer within 5 s (`VAMOS_REGISTRY_TIMEOUT`, ms), the connection fails or a proxy answers instead. One line says which copy was used: `Could not reach ui.vamos.ist (fetch failed); using the bundled registry (v0.4.3, built 2026-11-15).` With `--json` the line goes to stderr.
+
+`--offline` (or `VAMOS_OFFLINE=1`) skips the network for the registry entirely; items from URLs, `github:` and URL-mapped namespaces are then refused instead of fetched (local item files still work). npm packages still come from your npm registry or mirror (`--no-install` skips them).
+
+The bundled copy is as new as the CLI release. To pin one copy for a team, export it and point the CLI at the folder, in the repo or on an internal static host:
+
+```bash
+npx vamos-ui registry export ./vendor/vamos-registry
+npx vamos-ui add button --registry ./vendor/vamos-registry   # or "registry" in vamos.json, or VAMOS_REGISTRY
+npx vamos-ui registry info                                   # version and build date of the bundled copy
+```
 
 ## Open registry
 
@@ -240,7 +259,8 @@ const projectIssues = verifyProject({ paths, sources: [{ path: "src/app/page.tsx
 ## Development
 
 ```sh
-pnpm --filter vamos-ui build      # tsup → dist/index.js (bin) + dist/verify.js + dist/brand.js + dist/preset.js (+ .d.ts)
+pnpm --filter vamos-ui build      # tsup → dist/index.js (bin) + dist/verify.js + dist/brand.js + dist/preset.js (+ .d.ts),
+                                  # then scripts/snapshot-registry.mjs → snapshot/registry.json.br (the bundled registry)
 pnpm --filter vamos-ui test       # vitest
 pnpm --filter vamos-ui typecheck
 ```

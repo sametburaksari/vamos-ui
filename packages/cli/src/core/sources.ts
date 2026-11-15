@@ -175,7 +175,7 @@ export function canonicalSpec(spec: string, opts: SourceOptions): string {
   return parseItemSpec(spec, opts)?.key ?? spec.trim();
 }
 
-async function readSource(source: ItemSource, fetchImpl: typeof fetch): Promise<string> {
+async function readSource(source: ItemSource, fetchImpl: typeof fetch, offline?: boolean): Promise<string> {
   if (source.kind === "file") {
     try {
       return await readFile(source.url, "utf8");
@@ -184,6 +184,7 @@ async function readSource(source: ItemSource, fetchImpl: typeof fetch): Promise<
       throw err;
     }
   }
+  if (offline) throw new CliError(`--offline: "${source.key}" comes from ${source.host}, which needs the network.`, "Download the item JSON and add it by path (./r/<item>.json), or map the namespace to a local folder in vamos.json \"registries\".");
   let res: Response;
   try {
     res = await fetchImpl(source.url, { headers: { accept: "application/json" }, redirect: "follow" });
@@ -208,8 +209,8 @@ export function validateExternalItem(value: unknown): string[] {
  * Fetches, parses and validates a third-party item. The returned item carries `key` (its lock and
  * resolver key) and `source`, and its registryDependencies are already resolved to specs.
  */
-export async function fetchExternalItem(source: ItemSource, opts: SourceOptions & { fetch?: typeof fetch }): Promise<RegistryItem> {
-  const text = await readSource(source, opts.fetch ?? fetch);
+export async function fetchExternalItem(source: ItemSource, opts: SourceOptions & { fetch?: typeof fetch; offline?: boolean }): Promise<RegistryItem> {
+  const text = await readSource(source, opts.fetch ?? fetch, opts.offline);
   let raw: unknown;
   try {
     raw = JSON.parse(text);

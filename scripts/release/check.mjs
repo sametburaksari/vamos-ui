@@ -58,6 +58,8 @@ for (const pkg of PACKAGES) {
   }
   const files = run("tar", ["-tzf", tgz], { capture: true }).split("\n");
   for (const f of ["package/CHANGELOG.md", "package/README.md", "package/LICENSE"]) if (!files.includes(f)) fail(`${pkg.name}: ${f.slice(8)} is not in the tarball.`);
+  // The registry copy the CLI falls back to (and --offline reads); built by packages/cli/scripts/snapshot-registry.mjs.
+  if (pkg.name === "vamos-ui" && !files.includes("package/snapshot/registry.json.br")) fail("vamos-ui: snapshot/registry.json.br (the bundled registry) is not in the tarball.");
   log(`✓ packed ${path.basename(tgz)} (${files.length - 1} files)`);
 }
 
