@@ -55,8 +55,8 @@ describe("ReferralPanel", () => {
 
   it("speaks Turkish from the built-in dictionary", () => {
     renderWithProviders(<ReferralPanel position={7} shareUrl={URL_} referrals={1} goal={3} reward="erken erişim" />, { locale: "tr-TR", messages: tr });
-    expect(screen.getByRole("region", { name: "Arkadaşlarını davet et" })).toBeInTheDocument();
-    expect(screen.getByText("Sırada 7. kişisin.")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Arkadaşlarınızı davet edin" })).toBeInTheDocument();
+    expect(screen.getByText("Sırada 7. kişisiniz.")).toBeInTheDocument();
     expect(screen.getByText("erken erişim için 2 arkadaş daha")).toBeInTheDocument();
   });
 });
