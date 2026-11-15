@@ -87,6 +87,32 @@ export interface IndexOptions {
   barrels?: Record<string, string>;
   /** Project-relative files that registry items own (from the lockfile). Never regenerated. */
   owned?: Set<string>;
+  /**
+   * npm packages about to be installed (`zod@^4`, `@scope/pkg`). Together with the project's
+   * package.json they decide which npm re-exports (`export { z } from "zod"`) an index may keep.
+   */
+  pending?: string[];
+}
+
+/** `zod/v4` → `zod`, `@scope/pkg/x` → `@scope/pkg`, `zod@^4.6.7` → `zod`. */
+export function packageName(spec: string): string {
+  const parts = spec.split("/");
+  const name = spec.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0]!;
+  return name.replace(/(.)@.*$/, "$1");
+}
+
+/** Packages the project declares (all dependency fields) plus the ones about to be installed. */
+function availablePackages(root: string, pending: string[] = []): Set<string> {
+  const out = new Set(pending.map(packageName));
+  try {
+    const pkg = JSON.parse(readFileSync(path.join(root, "package.json"), "utf8"));
+    for (const field of ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]) {
+      for (const name of Object.keys(pkg[field] ?? {})) out.add(name);
+    }
+  } catch {
+    // No package.json: nothing declared.
+  }
+  return out;
 }
 
 const SOURCE_EXTS = [".ts", ".tsx", ".js", ".jsx"];
@@ -116,9 +142,10 @@ function relSpec(fromDir: string, kitFile: string): string {
 /**
  * Index files built from the kit's barrels: keeps the statements whose target is installed,
  * inlines non-index barrels the project does not have (lib/public.ts → root index), and keeps
- * npm re-exports (`export { z } from "zod"`) only when something else in the index survives.
+ * npm re-exports (`export { z } from "zod"`) only when something else in the index survives and
+ * the project has (or is installing) that package.
  */
-async function refreshFromBarrels(root: string, base: string, barrels: Record<string, string>, owned: Set<string>, result: IndexResult): Promise<void> {
+async function refreshFromBarrels(root: string, base: string, barrels: Record<string, string>, owned: Set<string>, result: IndexResult, npmOk: (spec: string) => boolean): Promise<void> {
   const projRel = (kitRel: string) => path.relative(root, path.join(base, kitRel)).split(path.sep).join("/");
   /** Generated index files that ended up with content (kit-relative). */
   const generated = new Set<string>();
@@ -152,7 +179,8 @@ async function refreshFromBarrels(root: string, base: string, barrels: Record<st
     let local = 0;
     for (const st of barrelStatements(code)) {
       if (!st.spec.startsWith(".")) {
-        npm.push(st.text);
+        // A re-export of a package the project does not have would break the build.
+        if (npmOk(st.spec)) npm.push(st.text);
         continue;
       }
       if (resolveLocal(dir, st.spec)) {
@@ -215,7 +243,8 @@ export async function refreshIndexes(root: string, uiDir: string, opts: IndexOpt
   const result: IndexResult = { written: [], kept: [] };
   if (!existsSync(base)) return result;
   if (opts.barrels && Object.keys(opts.barrels).length) {
-    await refreshFromBarrels(root, base, opts.barrels, opts.owned ?? new Set(), result);
+    const npm = availablePackages(root, opts.pending);
+    await refreshFromBarrels(root, base, opts.barrels, opts.owned ?? new Set(), result, (spec) => npm.has(packageName(spec)));
     return result;
   }
   const write = async (dir: string, modules: { spec: string; code: string }[]) => {

@@ -55,7 +55,7 @@ describe("project detection + barrel indexes", () => {
       "media/index.ts": `export { z } from "zod";\nexport * from "./types";\n`,
       "next/index.ts": `export * from "./x";\n`,
     };
-    const res = await refreshIndexes(dir, ui, { barrels, owned: new Set([`${ui}/next/index.ts`]) });
+    const res = await refreshIndexes(dir, ui, { barrels, owned: new Set([`${ui}/next/index.ts`]), pending: ["zod@^4.6.7"] });
     const root = readFileSync(path.join(dir, ui, "index.ts"), "utf8");
     expect(root).toBe(`${INDEX_HEADER}\nexport { cn } from "./lib/cn";\nexport * from "./components/button";\n`);
     const schema = readFileSync(path.join(dir, ui, "blocks/schema/index.ts"), "utf8");
@@ -63,5 +63,17 @@ describe("project detection + barrel indexes", () => {
     expect(existsSync(path.join(dir, ui, "media/index.ts"))).toBe(false);
     expect(readFileSync(path.join(dir, ui, "next/index.ts"), "utf8")).toBe("export const real = 1;");
     expect(res.kept).toEqual([]);
+  });
+
+  it("drops an npm re-export the project does not have (no broken build)", async () => {
+    const ui = "src/components/vamos";
+    write(`${ui}/blocks/schema/types.ts`, "export type T = 1;");
+    const barrels = { "blocks/schema/index.ts": `export { z } from "zod";\nexport type { T } from "./types";\n` };
+    await refreshIndexes(dir, ui, { barrels });
+    const file = path.join(dir, ui, "blocks/schema/index.ts");
+    expect(readFileSync(file, "utf8")).toBe(`${INDEX_HEADER}\nexport type { T } from "./types";\n`);
+    write("package.json", JSON.stringify({ dependencies: { zod: "^4.6.7" } }));
+    await refreshIndexes(dir, ui, { barrels });
+    expect(readFileSync(file, "utf8")).toContain(`export { z } from "zod";`);
   });
 });
