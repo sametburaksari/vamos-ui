@@ -4,7 +4,7 @@
     "Publishers that need section fronts, numbered archives, reader sign-in and consent-aware ad slots."
   ],
   "avoidWhen": [
-    "A single-voice essay magazine or quarterly — use site-blog-01.",
+    "A single-voice essay magazine or quarterly — follow the publication recipe (npx vamos-ui new) with article-layout instead.",
     "A writer's newsletter — use site-newsletter-01."
   ],
   "related": [
