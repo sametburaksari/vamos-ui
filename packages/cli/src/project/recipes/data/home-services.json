@@ -1,0 +1,560 @@
+{
+  "id": "home-services",
+  "title": {
+    "en": "Home and local services",
+    "tr": "Ev ve yerel hizmetler"
+  },
+  "summary": "A local service business that prices by the job and works by appointment: moving, cleaning, repairs, installation, car service or washing. The site's core is an instant quote calculator or a service picker that shows price and time live, a price list, a booking or quote request, trust signals (insurance, warranty, crew) and a searchable FAQ.",
+  "match": {
+    "siteTypes": [
+      "booking",
+      "local-business"
+    ],
+    "signals": [
+      "moving",
+      "movers",
+      "cleaning",
+      "cleaners",
+      "repair",
+      "handyman",
+      "plumber",
+      "electrician",
+      "car service",
+      "garage",
+      "car wash",
+      "nakliyat",
+      "evden eve",
+      "tasimacilik",
+      "temizlik",
+      "tamir",
+      "tadilat",
+      "tesisat",
+      "oto servis",
+      "oto yikama"
+    ],
+    "features": [
+      "booking",
+      "booking:calendar",
+      "booking:form",
+      "section:pricing",
+      "section:faq",
+      "section:services",
+      "channel:phone",
+      "channel:whatsapp",
+      "channel:map"
+    ],
+    "fallback": true
+  },
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Give a price or a ready-by time within seconds, back it with proof (insurance, warranty, reviews, crew), and send the visitor to a full quote or a booking.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "The promise plus a quick estimate: two or three choices (service type, job size) give a 'from' price or time that opens the full calculator prefilled.",
+          "use": [
+            "hero"
+          ],
+          "fields": [
+            "Headline promise",
+            "Lead: area served",
+            "Service types for the quick estimate",
+            "Job-size options (rooms, car size, area)",
+            "'From' price per combination and the assumptions behind it",
+            "Primary action (get a quote / book)"
+          ],
+          "notes": "Segmented radio groups and a polite live region for the figure. A memorable version draws the job: a measured floor plan like a survey sheet that fills with the load as the home size changes, or a board of today's bays as a departures board (decorative; the text carries the meaning)."
+        },
+        {
+          "id": "proof",
+          "purpose": "Hard trust figures: years, jobs done, insurance cover, warranty, rating.",
+          "use": [
+            "stats-band"
+          ],
+          "fields": [
+            "Three or four figures with label",
+            "Insurance cover amount",
+            "Warranty terms",
+            "Rating with source and count"
+          ],
+          "notes": "Inline variant."
+        },
+        {
+          "id": "picker",
+          "purpose": "Build the job: pick the vehicle or home size and the jobs; see the price and the time it will be ready, live, and go to booking with the job kept.",
+          "use": [
+            "capacity-finder"
+          ],
+          "alternatives": [
+            "checkbox: card checkboxes of the most-booked jobs beside a live job card"
+          ],
+          "fields": [
+            "Most-booked jobs with duration and price per size",
+            "Which jobs run in parallel (e.g. workshop and wash lane)",
+            "Opening hours and last drop-off"
+          ],
+          "when": {
+            "any": [
+              "booking"
+            ]
+          },
+          "notes": "Compact mode on home (most-booked jobs), full mode on the services page. The live card shows a two-lane timeline when two teams work in parallel, the ready-by time and the total, all in polite live regions; the chosen job survives page changes and a language switch."
+        },
+        {
+          "id": "services",
+          "purpose": "Services priced like a spec sheet: what is included and the starting price.",
+          "use": [
+            "menu-list"
+          ],
+          "alternatives": [
+            "pricing-table: two or three fixed packages",
+            "feature-grid: services without published prices"
+          ],
+          "fields": [
+            "Service name",
+            "What is included",
+            "Starting price or price per unit",
+            "Duration",
+            "VAT and deposit note"
+          ],
+          "notes": "Service-list variant. The 'from' prices must come from the same model as the calculator, with the assumptions stated."
+        },
+        {
+          "id": "combo",
+          "purpose": "A combined offer (e.g. move plus end-of-tenancy clean) explained with what the customer gets.",
+          "use": [
+            "media-text"
+          ],
+          "fields": [
+            "Combined offer description",
+            "Two or three concrete benefits",
+            "Photo of the real team at work"
+          ],
+          "optional": true,
+          "notes": "Overlap variant."
+        },
+        {
+          "id": "day",
+          "purpose": "How the job day or a visit works, hour by hour or step by step.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Steps or time slots with title and sentence"
+          ],
+          "notes": "Split or horizontal variant."
+        },
+        {
+          "id": "team",
+          "purpose": "The named people who will do the job or sign the quote.",
+          "use": [
+            "team"
+          ],
+          "fields": [
+            "Name",
+            "Role",
+            "Portrait"
+          ],
+          "when": {
+            "any": [
+              "section:team"
+            ]
+          },
+          "notes": "Portrait variant."
+        },
+        {
+          "id": "reviews",
+          "purpose": "Customer reviews with the job they refer to.",
+          "use": [
+            "testimonials"
+          ],
+          "fields": [
+            "Quote",
+            "Name or initials",
+            "Job and date",
+            "Rating",
+            "Review source"
+          ],
+          "when": {
+            "any": [
+              "section:testimonials"
+            ]
+          },
+          "notes": "Feature or reviews variant."
+        },
+        {
+          "id": "faq",
+          "purpose": "The most asked questions, linking to the full FAQ.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Five or six question and answer pairs"
+          ],
+          "when": {
+            "any": [
+              "section:faq"
+            ]
+          },
+          "notes": "Split variant."
+        },
+        {
+          "id": "locations",
+          "purpose": "Office, workshop or warehouse with hours.",
+          "use": [
+            "map-hours"
+          ],
+          "fields": [
+            "Each address",
+            "Opening hours",
+            "Phone",
+            "Map"
+          ],
+          "when": {
+            "any": [
+              "channel:map",
+              "section:location"
+            ]
+          },
+          "notes": "Map-split for one place, branches for several."
+        },
+        {
+          "id": "cta",
+          "purpose": "Final push to quote or book, with the phone for people who prefer to call.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Action label",
+            "Phone number and calling hours"
+          ],
+          "notes": "Band variant."
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "path": {
+        "en": "/services",
+        "tr": "/hizmetler"
+      },
+      "title": {
+        "en": "Prices and times",
+        "tr": "Fiyatlar ve süreler"
+      },
+      "purpose": "Every job with its price and duration by size, and the full picker.",
+      "when": {
+        "any": [
+          "section:services",
+          "section:pricing",
+          "booking"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title, breadcrumb and what prices include.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Page title",
+            "What prices include (VAT, parts, materials)"
+          ],
+          "notes": "Ruled variant."
+        },
+        {
+          "id": "list",
+          "purpose": "Every job by category with price per size and duration; picking jobs builds the job card.",
+          "use": [
+            "menu-list"
+          ],
+          "alternatives": [
+            "capacity-finder: the full picker for booking businesses",
+            "comparison-table: prices across three or four sizes"
+          ],
+          "fields": [
+            "Job categories",
+            "Per job: name, duration, price per size",
+            "Parts or materials policy",
+            "Warranty per job"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quote",
+      "path": {
+        "en": "/quote",
+        "tr": "/teklif-al"
+      },
+      "title": {
+        "en": "Get a quote",
+        "tr": "Teklif al"
+      },
+      "purpose": "A step-by-step calculator that ends in a priced request the office confirms.",
+      "when": {
+        "not": [
+          "booking"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and how the quote is confirmed.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Page title",
+            "Lead: how and when the price is confirmed"
+          ],
+          "notes": "Simple variant."
+        },
+        {
+          "id": "calculator",
+          "purpose": "Five steps (service, job size and access, extras, date, contact) with a live estimate panel: a range, crew, vehicle or equipment, time and line items.",
+          "use": [
+            "multi-step-form"
+          ],
+          "alternatives": [
+            "stepper: build the steps by hand around custom fields"
+          ],
+          "fields": [
+            "Service types",
+            "Size options and access factors (floors, lift, distance)",
+            "Extras with price and which services they apply to",
+            "Date pricing rules (weekend, month-end, flexible-date discount)",
+            "Crew and vehicle rules by size",
+            "Deposit terms",
+            "Contact fields: name, phone, email, addresses, note"
+          ],
+          "notes": "Stepper navigable to completed steps; card radios, segmented radios, sliders, switches and a calendar that marks busy and discounted days. The estimate is a range in a role=\"status\" live region with the line items; announce step changes. Submitting gives a reference and says when the office calls back."
+        }
+      ]
+    },
+    {
+      "id": "booking",
+      "path": {
+        "en": "/booking",
+        "tr": "/randevu"
+      },
+      "title": {
+        "en": "Book",
+        "tr": "Randevu al"
+      },
+      "purpose": "Three steps: the job, a drop-off day and slot, and the customer's details.",
+      "when": {
+        "any": [
+          "booking"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and what happens after booking.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Page title",
+            "Confirmation method"
+          ],
+          "notes": "Simple variant."
+        },
+        {
+          "id": "flow",
+          "purpose": "Job (kept from the picker), then day and time slot with the ready-by time, then name, phone and vehicle or address details.",
+          "use": [
+            "scheduler"
+          ],
+          "alternatives": [
+            "multi-step-form: booking by request without live slots",
+            "calendar: day choice only, slot confirmed by phone"
+          ],
+          "fields": [
+            "Bookable days ahead",
+            "Closed days",
+            "Slot length and capacity per slot",
+            "Customer fields (name, phone, email, plate or address, note)",
+            "Cancellation and rescheduling policy"
+          ],
+          "notes": "Stepper with grouped, visibly labelled fields; ready-by time in a polite live region; disable full slots and closed days in the calendar. End with a reference and the policy."
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "path": {
+        "en": "/faq",
+        "tr": "/sss"
+      },
+      "title": {
+        "en": "FAQ",
+        "tr": "SSS"
+      },
+      "purpose": "All answers on prices, the job day, insurance and warranty, with topic filter and search.",
+      "when": {
+        "any": [
+          "section:faq"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and when the office answers the phone.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Page title",
+            "Phone hours"
+          ],
+          "notes": "Ruled variant."
+        },
+        {
+          "id": "answers",
+          "purpose": "A topic filter and a search over the questions; empty state offers to call.",
+          "use": [
+            "faq",
+            "filter-bar"
+          ],
+          "fields": [
+            "Question and answer pairs, each with a topic"
+          ],
+          "notes": "Segmented topic toggle plus a search input above a stacked FAQ; announce the number of matches."
+        },
+        {
+          "id": "cta",
+          "purpose": "Still unsure? Get a quote or call.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Action label",
+            "Phone"
+          ],
+          "notes": "Minimal variant."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "path": {
+        "en": "/contact",
+        "tr": "/iletisim"
+      },
+      "title": {
+        "en": "Contact",
+        "tr": "İletişim"
+      },
+      "purpose": "Phone, messaging, address and a short form for anything the calculator does not cover.",
+      "sections": [
+        {
+          "id": "form",
+          "purpose": "A short message form for unusual jobs.",
+          "use": [
+            "contact-form"
+          ],
+          "fields": [
+            "Name, phone, email",
+            "Job description",
+            "Privacy notice link"
+          ]
+        },
+        {
+          "id": "locations",
+          "purpose": "Where to find the business and when.",
+          "use": [
+            "map-hours"
+          ],
+          "fields": [
+            "Addresses",
+            "Hours",
+            "Map"
+          ],
+          "when": {
+            "any": [
+              "channel:map",
+              "section:location"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Services or jobs, each with what is included, duration and price per size",
+    "Pricing model behind the calculator: base price by size, access factors, extras, date surcharges and discounts, VAT, deposit",
+    "Crew, vehicle or equipment rules by job size (if shown in the estimate)",
+    "Area served and any travel or distance charges",
+    "Opening hours, closed days, slot length and capacity (for booking)",
+    "Insurance cover, licences and warranty terms",
+    "Cancellation, rescheduling and deposit refund policy",
+    "Named team members with roles and portraits",
+    "Customer reviews with source and date",
+    "FAQ grouped by topic",
+    "Office, workshop or warehouse addresses, phone and messaging number",
+    "Real photos of the team and the work"
+  ],
+  "styles": [
+    {
+      "name": "trusty blue",
+      "axes": {
+        "theme": "light",
+        "material": "glass",
+        "accent": "ocean",
+        "font": "corporate",
+        "density": "comfortable",
+        "radius": "default"
+      },
+      "motion": "subtle",
+      "why": "Moving, cleaning and household services: corporate blue, clear sans, spec-sheet prices; brisk motion where prices settle into place when they change."
+    },
+    {
+      "name": "workshop dark",
+      "axes": {
+        "theme": "dark",
+        "material": "solid",
+        "accent": "brand",
+        "font": "grotesk",
+        "density": "compact",
+        "radius": "sharp"
+      },
+      "motion": "subtle",
+      "why": "A garage, car wash or repair shop: dark with a safety-yellow brand accent, grotesk with mono numerals, compact and quick; a workshop, not a show."
+    },
+    {
+      "name": "fresh and friendly",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "lime",
+        "font": "system",
+        "density": "comfortable",
+        "radius": "round"
+      },
+      "motion": "subtle",
+      "why": "Cleaning, gardening or small repair businesses that want an approachable, light look."
+    }
+  ],
+  "pitfalls": [
+    "Calculator prices that do not match the price list or the final invoice; derive both from one pricing model and state the assumptions behind 'from' prices.",
+    "A live estimate presented as a fixed price; show a range, state what can change it (access, extra items) and who confirms it.",
+    "Hidden surcharges (weekend, month-end, distance, VAT) that only appear on the invoice; show them as line items in the estimate.",
+    "Insurance and warranty claims without the cover amount, insurer or terms.",
+    "Booking calendars that offer closed days or full slots, or have no cancellation policy.",
+    "Multi-step forms that lose answers on going back or on a language switch, or do not announce step changes and live totals to screen readers.",
+    "Long forms on mobile with tiny segmented controls; keep touch targets large and let people call instead.",
+    "Collecting addresses and phone numbers without a privacy notice."
+  ]
+}

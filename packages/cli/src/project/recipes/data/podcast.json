@@ -1,0 +1,158 @@
+{
+  "id": "podcast",
+  "title": { "en": "Podcast", "tr": "Podcast" },
+  "summary": "A site for a podcast or audio show: the newest episode in a player on the home page, a searchable episode archive, the hosts, follow links and guest suggestions, and an episode page with chapters, a synced transcript and show notes.",
+  "match": {
+    "siteTypes": ["blog"],
+    "signals": [
+      "podcast", "episode", "audio show", "radio show", "listen", "season", "host", "interview show",
+      "bolum", "sezon", "radyo", "programi", "dinle", "sesli yayin", "sunucu", "soylesi"
+    ],
+    "features": ["newsletter", "section:team"],
+    "fallback": false
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Let a visitor press play within seconds, then browse episodes, meet the hosts and follow the show.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "The show name and one-line pitch beside the newest episode in a player, with the episode count.",
+          "use": ["hero", "audio-player"],
+          "fields": ["Show name", "One-line pitch", "Newest episode: number, title, guest, duration, audio file", "Total episode count"],
+          "notes": "In the hero the player can show the line being spoken as a caption; that caption region should not be aria-live (it would talk over the audio)."
+        },
+        {
+          "id": "episodes",
+          "purpose": "Every episode: search by title, guest or summary, a topic filter, rows that open into notes.",
+          "use": ["accordion", "filter-bar", "input"],
+          "alternatives": ["blog-list: card list when each episode has its own artwork", "empty-state: when a search matches nothing, offering to clear it"],
+          "fields": ["Per episode: number, title, guest, date, duration, topic, summary, link to the episode page"],
+          "notes": "Diacritics-insensitive search; live count of matching episodes in a polite region."
+        },
+        {
+          "id": "hosts",
+          "purpose": "Who hosts the show.",
+          "use": ["team"],
+          "fields": ["Host name, role, short bio, photo with alt text"]
+        },
+        {
+          "id": "how-made",
+          "purpose": "How and where the show is recorded, beside a photo.",
+          "use": ["media-text"],
+          "fields": ["Recording setting and format", "Photo with alt text"],
+          "optional": true
+        },
+        {
+          "id": "follow",
+          "purpose": "Ways to follow: copy the RSS feed, open a podcast app, get episodes by email.",
+          "use": ["cta"],
+          "fields": ["RSS feed URL", "Podcast app links", "Email signup or link"],
+          "notes": "Copying the feed confirms in a status message. Prefer generic labels and the feed URL over a row of third-party logos."
+        },
+        {
+          "id": "suggest",
+          "purpose": "Suggest a guest: who, why and how you know them.",
+          "use": ["contact-form"],
+          "alternatives": ["form-01: a custom form with a relation-to-guest choice"],
+          "fields": ["Fields: guest name, relation to them, why, your email", "Topics the show is looking for"],
+          "optional": true,
+          "when": { "any": ["channel:form"] }
+        }
+      ]
+    },
+    {
+      "id": "episodes",
+      "path": { "en": "/episodes", "tr": "/bolumler" },
+      "title": { "en": "Episodes", "tr": "Bölümler" },
+      "purpose": "The full archive on its own page when there are many episodes or seasons.",
+      "when": { "any": ["structure:multi"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "How many episodes and seasons.",
+          "use": ["page-intro"],
+          "fields": ["Archive lead"]
+        },
+        {
+          "id": "list",
+          "purpose": "Searchable, filterable list grouped by season, paged.",
+          "use": ["accordion", "filter-bar", "pagination"],
+          "fields": ["Episodes with season, number, title, guest, date, duration, topic"]
+        }
+      ]
+    },
+    {
+      "id": "episode",
+      "path": { "en": "/episodes/[slug]", "tr": "/bolumler/[slug]" },
+      "title": { "en": "Episode", "tr": "Bölüm" },
+      "purpose": "One episode: listen with chapters, follow the transcript, and read the notes, mentions and credits.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Episode number, title, guest, date, duration and a summary.",
+          "use": ["page-intro"],
+          "fields": ["Episode number and title", "Guest", "Release date", "Duration", "Summary"]
+        },
+        {
+          "id": "player",
+          "purpose": "The full player: chapter markers on the scrubber, a chapter list, speed and skip controls, and the transcript that follows playback.",
+          "use": ["audio-player"],
+          "fields": ["Audio file", "Chapter titles with start times", "Transcript with speaker and start time per line"],
+          "notes": "Clicking a chapter or a transcript line jumps there; the current line is marked with aria-current; 'follow along' can be turned off. The scrubber is a keyboard-operable slider with an accessible name and a value in minutes and seconds."
+        },
+        {
+          "id": "notes",
+          "purpose": "Show notes in tabs: what was mentioned (with links), any extras that go with the episode, and credits.",
+          "use": ["tabs", "accordion", "description-list"],
+          "fields": ["Things mentioned with links", "Episode extras (guides, lists, resources)", "Credits: producer, editing, music, artwork"]
+        },
+        {
+          "id": "more",
+          "purpose": "Other episodes to listen to next.",
+          "use": ["blog-list"],
+          "fields": ["Two or three related or recent episodes"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Show name, one-line pitch and cover art",
+    "Episodes: number, season, title, guest, date, duration, topic, summary and audio file",
+    "Chapter titles with start times per episode",
+    "Transcripts with speakers and timestamps",
+    "Show notes: mentions with links, extras and credits",
+    "Hosts with bios and photos",
+    "RSS feed URL and the podcast apps it is listed in",
+    "How the show is recorded (optional)",
+    "Guest-suggestion topics and the address suggestions go to",
+    "Email signup details if episodes are sent by email"
+  ],
+  "styles": [
+    {
+      "name": "late-night studio",
+      "axes": { "theme": "dark", "material": "glass", "density": "comfortable", "font": "grotesk", "accent": "ember", "radius": "round" },
+      "motion": "full",
+      "why": "Dark by default, a glass player over a soft rippling shape, a warm saffron-like accent and a waveform that rises bar by bar. Suits conversational and culture shows."
+    },
+    {
+      "name": "radio bulletin",
+      "axes": { "theme": "light", "material": "solid", "density": "compact", "font": "corporate", "accent": "ocean", "radius": "default" },
+      "motion": "subtle",
+      "why": "Light, compact and businesslike, with long episode lists; for interview, news and industry podcasts."
+    }
+  ],
+  "pitfalls": [
+    "No transcript: publish one per episode (accessibility and search), synced or at least timestamped.",
+    "A scrubber or waveform that only works with a mouse; it must be a keyboard slider with an accessible name and value.",
+    "Live regions that announce every caption line over the audio; keep the spoken-line caption silent to screen readers.",
+    "Autoplaying audio on page load.",
+    "Episode pages without the audio file, date and duration, or a broken RSS feed link.",
+    "Third-party player embeds that load trackers before the visitor presses play.",
+    "Guest suggestion form without a privacy note, collecting more than needed."
+  ]
+}

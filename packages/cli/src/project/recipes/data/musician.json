@@ -1,0 +1,194 @@
+{
+  "id": "musician",
+  "title": { "en": "Musician or band", "tr": "Müzisyen veya grup" },
+  "summary": "A site for a band, musician, DJ or performer built around the new release and the tour: tour dates with ticket states, a discography with tracklists, videos, merch and a mailing list for presale codes.",
+  "match": {
+    "siteTypes": ["portfolio", "event"],
+    "signals": [
+      "band", "musician", "singer", "dj", "album", "tour", "concert", "live music", "record label",
+      "grup", "muzisyen", "sanatci", "sarkici", "turne", "konser", "canli muzik", "plak"
+    ],
+    "features": ["newsletter", "section:gallery", "shop"],
+    "fallback": false
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Lead with the act and the newest release, show the next dates, and turn visitors into listeners, ticket buyers and list subscribers.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "A full-bleed live or press photo with the name set edge to edge, the new release and the next show, and actions for tickets and listening.",
+          "use": ["hero"],
+          "fields": ["Act name", "Hero photo with a real description as alt text", "New release title, format and date", "Next show: city, venue, date", "Primary action (tickets / pre-order) and secondary (watch / listen)"],
+          "notes": "Make sure text over the photo keeps contrast (scrim). A running list of tour cities under the hero is a nice poster touch: it must pause on request and stop under reduced motion."
+        },
+        {
+          "id": "release",
+          "purpose": "The new or latest release: sleeve, release date, tracklist and where to pre-order or stream.",
+          "use": ["media-text", "table"],
+          "fields": ["Release title and kind (album, EP, single)", "Release date", "Cover art with alt text", "Tracklist with durations", "Pre-order / streaming links", "Formats (vinyl, CD, digital)"],
+          "notes": "External store and streaming links open in a new tab and say so to screen readers."
+        },
+        {
+          "id": "tour-preview",
+          "purpose": "The next few dates with their ticket state and a link to the full tour page.",
+          "use": ["fixture-list", "badge"],
+          "alternatives": ["list-layout: a simple dated list when only a handful of shows are announced"],
+          "fields": ["Date", "City and country", "Venue", "Doors time", "Ticket state (on sale, few left, moved, sold out)", "Ticket link"],
+          "notes": "Show the state as text, not colour only. Group by month on the full page; here just the next five or six."
+        },
+        {
+          "id": "videos",
+          "purpose": "Music videos and live sessions: one player and a list that swaps which video plays.",
+          "use": ["video-player"],
+          "alternatives": ["media-text: a single featured video beside its description"],
+          "fields": ["Video titles", "Video URLs or files", "Poster images", "Year or context (official video, live session)"],
+          "notes": "Click-to-load facade: nothing loads from the video host until play is pressed (privacy and speed).",
+          "optional": true
+        },
+        {
+          "id": "merch",
+          "purpose": "A few merch items with price and where to buy.",
+          "use": ["entity-card"],
+          "alternatives": ["gallery-section: merch photos linking to an external store"],
+          "fields": ["Item name", "Photo with alt text", "Price", "Sizes or variants", "Store link"],
+          "optional": true,
+          "when": { "any": ["shop"] }
+        },
+        {
+          "id": "mailing-list",
+          "purpose": "Join the list for presale codes and news, choosing the nearest city so codes go to the right people.",
+          "use": ["form-01"],
+          "alternatives": ["cta: a plain signup band without the city choice"],
+          "fields": ["What subscribers get and how often", "Presale lead time", "City or region choices"],
+          "when": { "any": ["newsletter"] },
+          "notes": "The result is a status region; explicit consent wording and a link to the privacy notice next to the button."
+        }
+      ]
+    },
+    {
+      "id": "tour",
+      "path": { "en": "/tour", "tr": "/turne" },
+      "title": { "en": "Tour", "tr": "Turne" },
+      "purpose": "Every date, grouped by month, filterable by region, with tickets, waitlists for sold-out shows and the practical answers fans need.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Tour name, number of shows, support acts and age policy.",
+          "use": ["page-intro"],
+          "fields": ["Tour name", "Number of shows", "Support acts", "Age policy"]
+        },
+        {
+          "id": "dates",
+          "purpose": "All dates grouped by month with region filter and 'hide sold out'.",
+          "use": ["fixture-list", "filter-bar", "switch"],
+          "fields": ["Per show: date, doors, city, country, venue, region, support, price, ticket state, ticket link", "For moved shows: the original date"],
+          "notes": "States: on sale, few left (primary button), new date (old date struck through and explained in text), sold out (ticket link replaced by a 'join waitlist' toggle with aria-pressed). A live count of shown dates; the waitlist result is announced."
+        },
+        {
+          "id": "faq",
+          "purpose": "Waitlist rules, accessibility of venues, stage times, moved dates and refunds.",
+          "use": ["faq"],
+          "fields": ["How the waitlist and returns work", "Step-free access and viewing areas", "Typical door and stage times", "Refund and exchange rules for moved shows"]
+        }
+      ]
+    },
+    {
+      "id": "music",
+      "path": { "en": "/music", "tr": "/muzik" },
+      "title": { "en": "Music", "tr": "Müzik" },
+      "purpose": "The discography: filter by kind, pick a sleeve and see its tracklist and links; then the band.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What has been released so far.",
+          "use": ["page-intro"],
+          "fields": ["One-line overview of the catalogue"]
+        },
+        {
+          "id": "discography",
+          "purpose": "A strip of sleeves with a kind filter; the chosen release shows its date, label, tracklist and listening links.",
+          "use": ["gallery", "filter-bar", "table"],
+          "fields": ["Per release: title, kind, date, label, cover art, tracklist with durations, links; upcoming flag"],
+          "notes": "Tracklist table with a visually hidden caption; upcoming releases get a badge and a pre-order action."
+        },
+        {
+          "id": "band",
+          "purpose": "Who plays what.",
+          "use": ["team"],
+          "fields": ["Member name", "Instrument or role", "Photo with alt text (optional)"],
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "path": { "en": "/contact", "tr": "/iletisim" },
+      "title": { "en": "Contact", "tr": "İletişim" },
+      "purpose": "Booking, press and management contacts, plus a press kit.",
+      "when": { "any": ["structure:multi", "channel:form"] },
+      "sections": [
+        {
+          "id": "contacts",
+          "purpose": "Separate addresses for booking, press, management and label.",
+          "use": ["description-list"],
+          "fields": ["Booking agent contact", "Press contact", "Management contact", "Label"]
+        },
+        {
+          "id": "press-kit",
+          "purpose": "Downloadable press photos and bio.",
+          "use": ["attachment-list"],
+          "fields": ["Press photos with credits", "Short and long bio", "Technical rider (optional)"],
+          "optional": true
+        },
+        {
+          "id": "form",
+          "purpose": "An enquiry form with the kind of request.",
+          "use": ["contact-form"],
+          "fields": ["Enquiry kinds (booking, press, other)"],
+          "when": { "any": ["channel:form"] }
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Act name and a short bio",
+    "Hero and press photos with credits and real alt text",
+    "Latest release: title, kind, date, cover, tracklist, formats, pre-order and streaming links",
+    "Back catalogue with the same details per release",
+    "Tour dates: date, doors, city, country, venue, support, price, ticket link and current ticket state",
+    "Waitlist, refund and moved-show policy; venue accessibility notes; age policy",
+    "Video links or files with poster images",
+    "Merch items with photos, prices, variants and store link (if selling)",
+    "Mailing list: what is sent, how often, presale lead time",
+    "Band members and roles",
+    "Booking, press and management contacts"
+  ],
+  "styles": [
+    {
+      "name": "loud poster",
+      "axes": { "theme": "dark", "material": "solid", "density": "compact", "font": "grotesk", "accent": "rose", "radius": "sharp" },
+      "motion": "full",
+      "why": "Dark, compact, a heavy lower-case display face with italic serif emphasis and one hot accent; tilting merch cards and a running city ticker. Suits indie, pop and electronic acts."
+    },
+    {
+      "name": "quiet record sleeve",
+      "axes": { "theme": "light", "material": "solid", "density": "comfortable", "font": "editorial", "accent": "graphite", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Paper-light, serif and restrained, letting cover art and photos supply the colour. Suits jazz, classical, folk and singer-songwriters."
+    }
+  ],
+  "pitfalls": [
+    "Ticket state shown by colour alone; 'sold out', 'few left' and 'new date' must be written, and moved shows must show both dates.",
+    "Out-of-date tour lists: past dates should drop off or move to an archive automatically.",
+    "Embedding video players that load third-party trackers on page load; use a click-to-load facade and mention it in the privacy notice.",
+    "Mailing-list signup without explicit consent, a privacy link or a clear cadence.",
+    "Text over a busy hero photo without a scrim fails contrast; placeholder alt text left on the hero photo.",
+    "Auto-moving tickers or animations with no pause control and no reduced-motion fallback.",
+    "External ticket and store links that open a new tab without saying so."
+  ]
+}

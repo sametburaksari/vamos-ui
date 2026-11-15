@@ -1,0 +1,327 @@
+{
+  "id": "agency",
+  "title": { "en": "Agency or studio", "tr": "Ajans veya stüdyo" },
+  "summary": "A creative, digital or brand agency that sells projects and retainers: a statement hero, proof from clients, case studies with measured results, services, how the work runs, the people, and a clear way to start a project. Works for a quiet consultancy-style studio as well as a loud brand studio.",
+  "match": {
+    "siteTypes": ["corporate", "portfolio"],
+    "signals": ["agency", "studio", "creative", "branding", "brand studio", "design studio", "web studio", "digital agency", "marketing agency", "case study", "ajans", "reklam ajansi", "dijital ajans", "tasarim studyosu", "kreatif", "marka", "studyo"],
+    "features": ["section:services", "section:team", "section:testimonials", "section:gallery", "section:blog", "channel:form"],
+    "fallback": true
+  },
+  "showcase": ["site-agency-01"],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Say in one line what the studio makes and for whom, prove it with clients and one strong case, and send serious prospects to the project brief.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "A statement headline about the kind of work and client, with the services listed as links so the visitor can jump straight to what they need.",
+          "use": ["hero"],
+          "alternatives": ["media-text: a studio whose work is best shown by one big image or reel", "video-player: a motion or film studio with a showreel"],
+          "fields": ["One-sentence positioning (what you make, for whom)", "One emphasised word in the headline", "Location and discipline line", "Two to five service names", "Primary action label (start a project)"],
+          "notes": "Statement variant: oversized type, no stock photo. A loud brand studio can instead build a full-bleed colour stage: a chooser of selected clients that repaints the hero in each client's brand colour with its mark, palette and one result (build from hero + button-group; every client colour must be run through the contrast-safe accent helper so text stays at least 4.5:1). Arrow keys move between clients; announce the current client in a polite live region."
+        },
+        {
+          "id": "clients",
+          "purpose": "Show at a glance who already trusts the studio.",
+          "use": ["logo-strip"],
+          "fields": ["Client logos (SVG, with permission)", "Caption with a count and a since-year"],
+          "notes": "Grid variant with five columns and tight rhythm. Only logos the client has agreed to show."
+        },
+        {
+          "id": "case",
+          "purpose": "One featured case study told as problem, what was built and the measured outcome, linking to the full case.",
+          "use": ["media-text"],
+          "alternatives": ["gallery-section: several projects of equal weight"],
+          "fields": ["Client and sector", "Headline outcome", "Short story: the starting point and what was done", "Two or three measured results with a period", "Hero image of the delivered work", "Link to the case page"],
+          "notes": "Overlap variant, 3:2 image. Results must be numbers the client has approved."
+        },
+        {
+          "id": "services",
+          "purpose": "What the studio sells, kept to a handful of offers with what each includes.",
+          "use": ["feature-grid"],
+          "alternatives": ["menu-list: services with a starting price and duration"],
+          "fields": ["Service name", "One or two sentences on what is included", "Optional starting price or typical duration"],
+          "notes": "Sticky-media variant (an image stays in view while services scroll) on a surface-2 band. A loud studio may set the services in oversized type instead, one per line."
+        },
+        {
+          "id": "work-index",
+          "purpose": "A browsable list of selected projects; each row opens its case page.",
+          "use": ["list-layout"],
+          "alternatives": ["gallery-section: image-led grid of projects"],
+          "fields": ["Project or client name", "Sector", "Year", "Disciplines", "Brand colour (optional)"],
+          "optional": true,
+          "when": { "any": ["section:gallery"] },
+          "notes": "Brand-studio pattern: client names set huge, one per row; hover or focus floods the row with that client's colour from the bottom. Disable the flood under reduced motion; the row must be a single real link."
+        },
+        {
+          "id": "figures",
+          "purpose": "A short annual report: a few hard numbers that make the studio's claims checkable.",
+          "use": ["stats-band"],
+          "fields": ["Three or four figures with unit", "Label for each figure", "Source and date for each figure"],
+          "notes": "Ledger variant with a source under each number. A loud studio can paint each figure in a different colour block of its own palette."
+        },
+        {
+          "id": "process",
+          "purpose": "How a project runs from first meeting to launch, so the buyer knows the time and effort expected of them.",
+          "use": ["steps"],
+          "fields": ["Three to six stages with a title and one sentence", "Total duration or number of meetings"],
+          "notes": "Vertical variant on a surface-2 band."
+        },
+        {
+          "id": "team",
+          "purpose": "The people the client will actually talk to.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Specialty", "Portrait photo", "Optional professional profile link"],
+          "when": { "any": ["section:team"] },
+          "notes": "List variant. Use each person's name as the photo alt text."
+        },
+        {
+          "id": "quotes",
+          "purpose": "Clients describing working with the studio in their own words.",
+          "use": ["testimonials"],
+          "fields": ["Quote", "Person's name", "Role and company", "Permission to publish"],
+          "when": { "any": ["section:testimonials"] },
+          "notes": "Carousel variant; three quotes is enough."
+        },
+        {
+          "id": "journal",
+          "purpose": "Recent notes or articles that show how the studio thinks.",
+          "use": ["blog-list"],
+          "fields": ["Post title", "Excerpt", "Publish date", "Cover image", "Link to all posts"],
+          "when": { "any": ["section:blog"] },
+          "notes": "Editorial variant with three posts."
+        },
+        {
+          "id": "contact-cta",
+          "purpose": "A large, calm invitation to start a project, with availability and the reply time.",
+          "use": ["cta"],
+          "fields": ["Availability (when new projects can start)", "Contact email or link to the brief", "Reply time promise", "Phone number"],
+          "notes": "Minimal variant: one big link, fine print with the reply time."
+        }
+      ]
+    },
+    {
+      "id": "work",
+      "path": { "en": "/gallery", "tr": "/galeri" },
+      "title": { "en": "Work", "tr": "İşler" },
+      "purpose": "All selected projects, filterable by discipline or sector.",
+      "when": { "any": ["section:gallery"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and one line on what kind of work is shown.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "One-sentence lead"]
+        },
+        {
+          "id": "index",
+          "purpose": "Every project as a card or row linking to its case page.",
+          "use": ["gallery-section"],
+          "alternatives": ["list-layout: a typographic index without images", "filter-bar: more than about eight projects across several disciplines"],
+          "fields": ["Project name", "Client", "Sector", "Year", "Disciplines", "Cover image with alt text"]
+        }
+      ]
+    },
+    {
+      "id": "case",
+      "path": { "en": "/gallery/[slug]", "tr": "/galeri/[slug]" },
+      "title": { "en": "Case study", "tr": "Vaka çalışması" },
+      "purpose": "One project from problem to result, so a prospect can see the thinking and the outcome.",
+      "when": { "any": ["section:gallery"] },
+      "sections": [
+        {
+          "id": "header",
+          "purpose": "Client, sector, year, disciplines and the one-line outcome.",
+          "use": ["page-intro"],
+          "alternatives": ["hero: a full-bleed header painted in the client's brand colour"],
+          "fields": ["Client name", "Sector", "Year", "Disciplines", "Headline outcome", "Breadcrumb back to the work index"],
+          "notes": "A brand studio paints the whole header in the client's colour via the contrast-safe accent helper."
+        },
+        {
+          "id": "story",
+          "purpose": "The problem, the approach and what was delivered.",
+          "use": ["rich-text-section"],
+          "alternatives": ["media-text: alternate text and images through the story"],
+          "fields": ["The problem", "The approach", "List of deliverables", "Duration in weeks"]
+        },
+        {
+          "id": "system",
+          "purpose": "The delivered work: identity applications, screens, packaging or photography.",
+          "use": ["gallery-section"],
+          "alternatives": ["lightbox: high-resolution images worth inspecting"],
+          "fields": ["Images of the work with alt text", "Brand palette (names and colour codes) when it is an identity project", "Typeface used"]
+        },
+        {
+          "id": "results",
+          "purpose": "What changed for the client, in numbers.",
+          "use": ["stats-band"],
+          "fields": ["Two to four results with value, label and period"]
+        },
+        {
+          "id": "quote",
+          "purpose": "The client's verdict on this project.",
+          "use": ["testimonials"],
+          "fields": ["Quote", "Name", "Role"],
+          "optional": true
+        },
+        {
+          "id": "next",
+          "purpose": "Keep the visitor browsing: previous and next project.",
+          "use": ["cta"],
+          "fields": ["Next project name and link", "Previous project link"],
+          "notes": "Band variant; can be painted in the next client's colour."
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "path": { "en": "/services", "tr": "/hizmetler" },
+      "title": { "en": "Services", "tr": "Hizmetler" },
+      "purpose": "Each offer in more depth: what is included, typical timing and where to start.",
+      "when": { "any": ["section:services", "section:pricing"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What the studio does and does not do.",
+          "use": ["page-intro"],
+          "fields": ["Page title", "Lead"]
+        },
+        {
+          "id": "list",
+          "purpose": "Every service with its scope and typical duration, optionally a starting price.",
+          "use": ["menu-list"],
+          "alternatives": ["feature-grid: services without prices", "pricing-table: fixed packages or retainers"],
+          "fields": ["Service name", "What is included", "Typical duration", "Starting price (optional)"]
+        },
+        {
+          "id": "faq",
+          "purpose": "Answer the usual buying questions: ownership, revisions, payment terms, hosting.",
+          "use": ["faq"],
+          "fields": ["Question and answer pairs"],
+          "when": { "any": ["section:faq"] }
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "path": { "en": "/about", "tr": "/hakkimizda" },
+      "title": { "en": "Studio", "tr": "Stüdyo" },
+      "purpose": "Who the studio is, how it works and the full team.",
+      "when": { "any": ["section:about", "section:team"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "The studio's story and stance in a paragraph, with a photo of the real space or people.",
+          "use": ["media-text"],
+          "fields": ["Founding year and place", "Short studio story", "Photo of the studio or team"]
+        },
+        {
+          "id": "team",
+          "purpose": "Everyone with role and specialty.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Specialty", "Portrait"]
+        },
+        {
+          "id": "careers-cta",
+          "purpose": "Point candidates to open roles.",
+          "use": ["cta"],
+          "fields": ["Whether the studio is hiring", "Link to careers or contact"],
+          "when": { "any": ["section:careers"] }
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "path": { "en": "/blog", "tr": "/blog" },
+      "title": { "en": "Journal", "tr": "Yazılar" },
+      "purpose": "All articles, newest first.",
+      "when": { "any": ["section:blog"] },
+      "sections": [
+        {
+          "id": "list",
+          "purpose": "Every post with date and excerpt.",
+          "use": ["blog-list"],
+          "fields": ["Post title", "Excerpt", "Date", "Category", "Cover image"]
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "path": { "en": "/contact", "tr": "/iletisim" },
+      "title": { "en": "Start a project", "tr": "Proje başlatın" },
+      "purpose": "A project brief that qualifies the enquiry: what to make, budget band, timing and contact details.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What happens after the brief is sent and how fast the studio replies.",
+          "use": ["page-intro"],
+          "fields": ["Reply time", "What the first call covers"]
+        },
+        {
+          "id": "brief",
+          "purpose": "Pick services, budget and start date; a side panel adds up an indicative duration and starting figure live.",
+          "use": ["contact-form"],
+          "alternatives": ["multi-step-form: longer briefs split into steps", "form-01: a fully custom brief layout"],
+          "fields": ["Selectable services with typical weeks and starting figure", "Budget bands", "Start-time options", "Name, email, company, short message"],
+          "notes": "Services as a multi-select button group, budget and timing as card radio groups, then name/email/company/message. The live total sits beside the form in a polite live region; overlapping services should not simply add up weeks (longest runs in full, others add part). Validate on submit, focus the first error, end with a reference number. Label the figure as indicative, not a quote."
+        },
+        {
+          "id": "details",
+          "purpose": "Direct contact for people who prefer email or phone, and the office address.",
+          "use": ["map-hours"],
+          "alternatives": ["description-list: no visitable office, just email, phone and hours"],
+          "fields": ["Email", "Phone", "Office address", "Office hours"],
+          "when": { "any": ["channel:map", "channel:phone"] }
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Positioning sentence: what the studio makes and for which clients",
+    "List of services with scope, typical duration and (optionally) a starting price",
+    "Client logos with permission to show them",
+    "Two to six case studies: client, sector, year, disciplines, problem, approach, deliverables, approved measured results, images",
+    "Three or four studio figures, each with a source and date",
+    "The working process as stages, with total duration",
+    "Team members: name, role, specialty, portrait",
+    "Client quotes with names, roles and permission",
+    "Availability for new projects and the reply-time promise",
+    "Contact email, phone and office address",
+    "Budget bands and start-time options for the brief form",
+    "Brand colours of featured clients (only for the colour-led brand-studio look)"
+  ],
+  "styles": [
+    {
+      "name": "quiet studio",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "font": "editorial", "density": "comfortable", "radius": "default" },
+      "motion": "full",
+      "why": "A consultancy-style agency: oversized statement type with one emphasised word, plenty of white, alternating surface bands, a reading-progress bar and count-up figures. Lets the case studies carry the colour."
+    },
+    {
+      "name": "loud brand studio",
+      "axes": { "theme": "light", "material": "solid", "accent": "brand", "font": "grotesk", "density": "comfortable", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "A brand or design studio: grotesk pushed to poster weight with tight tracking, wide container, whole sections painted in the studio's and its clients' colours (each colour contrast-checked)."
+    },
+    {
+      "name": "dark digital",
+      "axes": { "theme": "dark", "material": "glass", "accent": "ocean", "font": "grotesk", "density": "comfortable" },
+      "motion": "subtle",
+      "why": "A digital product or performance-marketing agency whose work lives on screens; dark surfaces make screenshots and dashboards pop."
+    }
+  ],
+  "pitfalls": [
+    "Publishing client logos, results or quotes without the client's written permission.",
+    "Results without a period or source ('3x more bookings' with no timeframe) read as invented; give the period and how it was measured.",
+    "Client brand colours used as backgrounds without a contrast check: text on them must stay at least 4.5:1, so route every colour through the accent helper.",
+    "A live 'price' in the brief form that reads like a binding quote; label it as an indicative starting figure and say who confirms it.",
+    "Colour floods, crossfades and scroll effects that ignore prefers-reduced-motion.",
+    "Stock photos of laptops and handshakes instead of the studio's real work and people.",
+    "Case studies that are just image galleries with no problem, approach or outcome.",
+    "Bilingual sites where one language is a weaker translation; both versions must be written with equal care."
+  ]
+}

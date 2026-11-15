@@ -1,0 +1,346 @@
+{
+  "id": "portfolio-studio",
+  "title": { "en": "Portfolio or creative studio", "tr": "Portfolyo veya yaratıcı stüdyo" },
+  "summary": "A work-led site for a photographer, architecture / interiors / design practice or photo studio: the work leads, each project gets its own case page, and an about + contact page closes the sale. Studios that sell fixed packages add a pricing page with a package builder and a booking page.",
+  "match": {
+    "siteTypes": ["portfolio", "local-business"],
+    "signals": [
+      "photographer", "photography", "photo studio", "architect", "architecture", "interior design", "illustrator", "design studio", "portfolio",
+      "fotograf", "fotografci", "fotograf studyosu", "mimar", "mimarlik", "ic mimar", "ic mimarlik", "tasarim studyosu", "cekim", "portfolyo"
+    ],
+    "features": ["section:gallery", "section:about", "channel:form", "booking"],
+    "fallback": true
+  },
+  "showcase": ["site-agency-01"],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show the work within one screen and let the visitor browse it by discipline, then point to the projects, the person or studio behind them and the way to commission.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "The name (or studio name) as the image: oversized type, what they do, where they work and whether they are taking work now.",
+          "use": ["hero"],
+          "alternatives": ["image: a single framed hero photograph or model shot with a caption line, for an architecture practice or a photo studio"],
+          "fields": ["Name or studio name", "Discipline in a few words", "Cities or regions worked in", "Availability line (booking from / taking commissions from)", "Up to three quick facts (projects, years active, formats or people)", "Primary action (commission / book / build a package)"],
+          "notes": "Keep the hero typographic for a solo photographer; for a practice, a captioned hero figure (number, caption, credit) reads like a drawing sheet. Only one scroll-linked effect at most (a slow parallax on the hero image)."
+        },
+        {
+          "id": "selected-work",
+          "purpose": "The work itself: a filterable wall of images or a sequence of captioned plates linking to each project.",
+          "use": ["gallery", "tabs", "lightbox"],
+          "alternatives": ["gallery-section: a fixed mosaic of recent work with captions, for a studio that sells sessions rather than projects", "media-text: alternating large plates with a caption block (place, type, area, status, year) for an architecture or interiors practice"],
+          "fields": ["Selected images with width, height and real alt text", "Caption per image (project and year)", "Discipline or category per image", "Category labels for the filter"],
+          "notes": "Masonry wall with a category filter (pill tabs with counts) that opens in a lightbox with thumbnails. Practices alternate plate sizes and positions across a 12-column grid so the page never settles into a card grid."
+        },
+        {
+          "id": "project-index",
+          "purpose": "Every project as one row, so a visitor can scan the whole body of work and open any case page.",
+          "use": ["table", "filter-bar"],
+          "alternatives": ["list-layout: a plain ruled list when there are fewer than ten projects"],
+          "fields": ["Project number", "Project title", "Client or client type", "Discipline or typology", "Year", "Place (practices)", "Area and status: built, on site, in design, unbuilt (practices)"],
+          "notes": "A register of hairline rows, newest first, with a typology filter and a live count ('n of m projects'). Rows link only when a case page exists. A cover preview that follows the cursor is a nice extra but pointer-only: keep every row a plain link and show a thumbnail in the row on touch screens.",
+          "optional": true
+        },
+        {
+          "id": "practice",
+          "purpose": "What the practice does and the numbers behind it.",
+          "use": ["feature-grid", "stats-band"],
+          "fields": ["Services or kinds of work, each with one line", "Founding year", "People in the studio", "Completed works"],
+          "optional": true,
+          "when": { "any": ["section:services"] }
+        },
+        {
+          "id": "studio-kit",
+          "purpose": "For a hireable photo studio: the room and its kit (size, light, backdrops, changing room).",
+          "use": ["feature-grid"],
+          "fields": ["Room size and ceiling height", "Lighting and equipment list", "Backdrops and props", "Facilities (changing room, parking, access)"],
+          "optional": true,
+          "when": { "any": ["booking"] }
+        },
+        {
+          "id": "packages",
+          "purpose": "Preset packages as numbered frames, each opening the package builder pre-filled.",
+          "use": ["pricing-table"],
+          "alternatives": ["feature-grid: packages described without prices when every job is quoted"],
+          "fields": ["Package name", "Session type", "What is included (studio hours, edited images, people)", "Price including VAT"],
+          "when": { "any": ["booking", "section:pricing"] }
+        },
+        {
+          "id": "recognition",
+          "purpose": "Awards, publications, exhibitions or selected clients as credibility.",
+          "use": ["list-layout"],
+          "alternatives": ["logo-strip: when clients allow their logos to be shown", "testimonials: quotes from clients for a studio that sells sessions"],
+          "fields": ["Year", "Award, publication or exhibition title", "Awarding body, publisher or venue", "Selected clients grouped by sector"],
+          "optional": true
+        },
+        {
+          "id": "team",
+          "purpose": "The photographer or the people behind the studio.",
+          "use": ["team"],
+          "fields": ["Name", "Role", "Short bio or specialty", "Portrait photo with alt text"],
+          "optional": true,
+          "when": { "any": ["section:team"] }
+        },
+        {
+          "id": "bio-cta",
+          "purpose": "A short statement and bio leading to about and contact, plus when new work is accepted.",
+          "use": ["cta"],
+          "fields": ["One-sentence statement of approach", "Two-line bio (years, shows, sectors)", "When new commissions are accepted"]
+        }
+      ]
+    },
+    {
+      "id": "gallery",
+      "path": { "en": "/gallery", "tr": "/galeri" },
+      "title": { "en": "Work", "tr": "İşler" },
+      "purpose": "The full work wall and project index when the home page only shows a selection.",
+      "when": { "any": ["structure:multi"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and a line on what is included (commissioned and personal, period covered).",
+          "use": ["page-intro"],
+          "fields": ["Page lead"]
+        },
+        {
+          "id": "wall",
+          "purpose": "All images, filterable by discipline, opening in the lightbox.",
+          "use": ["gallery", "tabs", "lightbox"],
+          "fields": ["Images with alt text and captions", "Discipline per image"]
+        },
+        {
+          "id": "index",
+          "purpose": "Every project as a row linking to its case page.",
+          "use": ["table", "filter-bar"],
+          "fields": ["Project title, client type, discipline, year"]
+        }
+      ]
+    },
+    {
+      "id": "project",
+      "path": { "en": "/projects/[slug]", "tr": "/projeler/[slug]" },
+      "title": { "en": "Project", "tr": "Proje" },
+      "purpose": "One case story per project: the facts, the cover, the story, the rest of the series or the drawings, credits and the next project.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Breadcrumb, project number of total, title, a one-paragraph summary and the facts.",
+          "use": ["page-intro", "description-list"],
+          "fields": ["Project title", "Summary", "Client and client type", "Discipline or typology", "Year", "Place", "Area and status (practices)"],
+          "notes": "Facts sit in a ruled box like a drawing title block."
+        },
+        {
+          "id": "cover",
+          "purpose": "The cover image across the page.",
+          "use": ["image"],
+          "fields": ["Cover image with alt text"],
+          "notes": "Wide aspect (21:9), loaded with priority."
+        },
+        {
+          "id": "story",
+          "purpose": "Brief, approach and result as three numbered columns; practices interleave text blocks with figures and plans.",
+          "use": ["feature-grid"],
+          "alternatives": ["rich-text-section: a longer narrative with figures for an architecture project", "section-nav: a sticky margin list of numbered figure captions that tracks the figure in view and jumps to it"],
+          "fields": ["Brief", "Approach", "Result", "Story text blocks with headings (practices)", "Figures with numbered captions", "Plans or drawings"],
+          "notes": "In the margin-caption variant, every caption is listed in a sticky margin; the caption of the figure in view is marked with aria-current and choosing one scrolls to its figure (smooth only without reduced motion)."
+        },
+        {
+          "id": "series",
+          "purpose": "The rest of the series as a masonry wall that opens in the lightbox.",
+          "use": ["gallery", "lightbox"],
+          "fields": ["Further images with alt text", "Caption (place)"],
+          "optional": true
+        },
+        {
+          "id": "credits",
+          "purpose": "Who worked on it and the technical facts.",
+          "use": ["description-list"],
+          "fields": ["Credit label and value pairs (editor, client, designer, camera, consultants, contractor)"],
+          "optional": true
+        },
+        {
+          "id": "next",
+          "purpose": "A large link to the next project, so the visitor keeps going.",
+          "use": ["cta"],
+          "fields": ["Next project title and number"]
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "path": { "en": "/pricing", "tr": "/fiyatlar" },
+      "title": { "en": "Packages", "tr": "Paketler" },
+      "purpose": "For studios with fixed prices: presets, and a builder that turns choices into a live quote carried over to booking.",
+      "when": { "any": ["booking", "section:pricing"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What a package contains and how the price is built.",
+          "use": ["page-intro"],
+          "fields": ["Page lead"]
+        },
+        {
+          "id": "presets",
+          "purpose": "Preset starting points, each loading the builder.",
+          "use": ["pricing-table"],
+          "fields": ["Preset name and one line", "Price including VAT"]
+        },
+        {
+          "id": "builder",
+          "purpose": "Build a session: session type, studio time, edited images, people (for headshots) and extras, with a live quote beside it.",
+          "use": ["radio-group", "slider", "checkbox", "line-items"],
+          "fields": ["Session types with base price, included hours and images", "Price per extra hour and per extra image", "Per-person pricing (headshots)", "Extras with flat price or percentage (make-up, stylist, backdrop, raw files, prints, rush delivery)", "VAT rate", "Deposit percentage", "Delivery time (normal and rush)"],
+          "notes": "Numbered steps on the left, a sticky receipt on the right: line items, subtotal, VAT, total, deposit and delivery time. The total is announced in a polite live region. Switching the session type resets hours, images and people to that session's base. 'Book this package' carries the build to the booking page and survives a language switch."
+        }
+      ]
+    },
+    {
+      "id": "booking",
+      "path": { "en": "/booking", "tr": "/rezervasyon" },
+      "title": { "en": "Booking", "tr": "Rezervasyon" },
+      "purpose": "Hold a date: pick a day and start time, leave details, accept the terms; the package summary and deposit stay in view.",
+      "when": { "any": ["booking"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "How holding a date works (how long it is held, how the deposit is paid).",
+          "use": ["page-intro"],
+          "fields": ["Hold period", "How the deposit is paid"]
+        },
+        {
+          "id": "slot",
+          "purpose": "Choose a day on the calendar, then an available start time.",
+          "use": ["calendar"],
+          "alternatives": ["scheduler: when the studio runs several rooms or photographers"],
+          "fields": ["Opening days and hours", "Closed days", "Session length per package", "Availability source"],
+          "notes": "Days and start times are buttons with full date labels; fully booked days say so and offer another day."
+        },
+        {
+          "id": "details",
+          "purpose": "Contact details, the brief and the booking terms.",
+          "use": ["form-01"],
+          "alternatives": ["contact-form: a plain enquiry when the studio confirms by hand"],
+          "fields": ["Name, company, email, mobile", "Brief or moodboard link (optional)", "Booking terms: deposit refund window, reschedule rule"],
+          "notes": "Validate on submit with an error summary; the confirmation is a status region with the date, the deposit amount and a reference."
+        },
+        {
+          "id": "summary",
+          "purpose": "The chosen package, total and deposit beside the form, with a link back to change it.",
+          "use": ["line-items"],
+          "fields": ["Package lines", "Total including VAT", "Deposit due now"],
+          "notes": "If no package was built, show the default session and say it can be changed."
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "path": { "en": "/about", "tr": "/hakkimizda" },
+      "title": { "en": "About", "tr": "Hakkında" },
+      "purpose": "Who is behind the work, how a commission runs, clients and shows, and the enquiry form.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "A titled introduction: who, where, since when.",
+          "use": ["page-intro"],
+          "fields": ["Short biography or studio history"]
+        },
+        {
+          "id": "approach",
+          "purpose": "How they work beside a portrait or studio photo, with the practical terms.",
+          "use": ["media-text"],
+          "fields": ["How a commission starts and runs", "What the client receives", "Rate basis (day rate, licensing per use / territory / term) if published", "Portrait or studio photo with alt text"]
+        },
+        {
+          "id": "team",
+          "purpose": "The people in the studio.",
+          "use": ["team"],
+          "fields": ["Name, role and specialty per person"],
+          "when": { "any": ["section:team"] }
+        },
+        {
+          "id": "process",
+          "purpose": "How a commission runs, step by step.",
+          "use": ["steps"],
+          "fields": ["Steps from first conversation to handover, with what happens in each"],
+          "optional": true
+        },
+        {
+          "id": "clients-shows",
+          "purpose": "Selected clients by sector and exhibitions by year.",
+          "use": ["list-layout"],
+          "alternatives": ["logo-strip: client logos where permitted"],
+          "fields": ["Clients grouped by sector", "Exhibitions: year, title, venue"],
+          "optional": true
+        },
+        {
+          "id": "visit",
+          "purpose": "Address, opening hours and how to get there, for a studio visitors come to.",
+          "use": ["map-hours"],
+          "fields": ["Address", "Opening hours", "Access and parking"],
+          "when": { "any": ["channel:map", "booking"] }
+        },
+        {
+          "id": "faq",
+          "purpose": "Practical questions (delivery time, usage rights, what to bring, cancellations).",
+          "use": ["faq"],
+          "fields": ["Questions and answers"],
+          "when": { "any": ["section:faq"] }
+        },
+        {
+          "id": "contact",
+          "purpose": "The enquiry form with the kind of work as a choice and reply expectations.",
+          "use": ["contact-form"],
+          "fields": ["Kinds of enquiry (commission, licensing an existing image, print sale, other)", "Reply time", "Email and phone", "Studio visit policy", "Reply hours and time zone"],
+          "when": { "any": ["channel:form", "channel:phone", "channel:whatsapp"] }
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Selected images or project photographs, each with width, height and real alt text",
+    "Project list: title, client or client type, discipline / typology, year, place, status",
+    "Per project: summary, brief, approach, result, credits and the further images or drawings",
+    "Short statement of approach and biography (or studio history)",
+    "Availability: from when new work is booked",
+    "Selected clients, awards, publications or exhibitions",
+    "Team members with roles and portraits (studios)",
+    "How a commission runs, and what the client receives",
+    "Image licensing terms and rate basis, if published",
+    "For bookable studios: session types, inclusions, extras, prices, VAT, deposit and delivery times",
+    "For bookable studios: opening hours, closed days, address, booking and cancellation terms",
+    "Contact email, phone and reply time"
+  ],
+  "styles": [
+    {
+      "name": "type-led gallery",
+      "axes": { "theme": "light", "material": "solid", "density": "compact", "font": "grotesk", "accent": "ember", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Oversized grotesk name, square images, mono eyebrows and one warm accent; the photographs carry all the colour. Suits a solo photographer or illustrator."
+    },
+    {
+      "name": "drawing sheet",
+      "axes": { "theme": "light", "material": "solid", "density": "comfortable", "font": "corporate", "accent": "ocean", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Light page on a visible 12-column grid, light-weight large headings, hairline rules, numbered figures and mono captions; slow linear reveals. Suits architecture, interiors and design practices."
+    },
+    {
+      "name": "darkroom mono",
+      "axes": { "theme": "light", "material": "solid", "density": "compact", "font": "grotesk", "accent": "graphite", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Black and white only, a wide mono for headlines and numbers, crop marks and frame counters, near-square corners. Suits a photo studio selling sessions and room hire."
+    }
+  ],
+  "pitfalls": [
+    "Every image needs meaningful alt text; the lightbox must trap focus, close on Escape and return focus to the image that opened it.",
+    "Hover-only effects (cursor-following cover previews, hover captions) must have a keyboard and touch equivalent; the project list stays usable as plain links.",
+    "Huge unoptimised images: give width and height, serve sized variants and only prioritise the hero.",
+    "Showing client names, logos or recognisable people without permission or a model release; state image licensing terms rather than implying images are free to use.",
+    "Prices shown without VAT or without saying what is included, and deposits without refund and reschedule terms next to the button.",
+    "A live quote that is not announced: put the total in a polite status region and keep it in sync with the booking summary.",
+    "Category filters that hide everything or lose state on language switch; show counts and keep the choice.",
+    "Decorative extras (grid overlays, keyboard shortcuts) presented as if required to use the site."
+  ]
+}

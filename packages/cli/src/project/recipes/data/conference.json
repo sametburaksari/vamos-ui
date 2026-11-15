@@ -1,0 +1,339 @@
+{
+  "id": "conference",
+  "title": {
+    "en": "Conference",
+    "tr": "Konferans"
+  },
+  "summary": "A conference, summit or festival site: dates and venue up front, speakers, a multi-day schedule with tracks and a personal agenda, sponsors and a tickets page with tiers and the code of conduct.",
+  "match": {
+    "siteTypes": [
+      "event"
+    ],
+    "signals": [
+      "conference",
+      "summit",
+      "festival",
+      "meetup",
+      "symposium",
+      "speakers",
+      "keynote",
+      "konferans",
+      "zirve",
+      "festivali",
+      "kongre",
+      "sempozyum",
+      "konusmaci",
+      "etkinlik programi"
+    ],
+    "features": [
+      "section:faq",
+      "section:pricing",
+      "multilingual"
+    ],
+    "fallback": true
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Say what the event is, when and where in the first screen, then build the case to buy a ticket: speakers, the programme at a glance, the venue and who backs it.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "Event name, dates, city and venue, with a live countdown and the primary ticket action.",
+          "use": [
+            "hero",
+            "countdown"
+          ],
+          "fields": [
+            "Event name and edition/year",
+            "Dates (and start time) with time zone",
+            "City and venue name",
+            "One-line promise of the event",
+            "Primary call to action (tickets) and secondary (schedule)",
+            "Hero artwork or photo"
+          ],
+          "notes": "Put the dates and venue in a ruled band under the title as plain text; the countdown sits beside them. The countdown renders placeholder dashes on the server and starts after hydration so there is no mismatch, and switches to a 'happening now' state once the event has started."
+        },
+        {
+          "id": "speakers",
+          "purpose": "Show who is speaking and what each talk is about: the strongest reason to come.",
+          "use": [
+            "team"
+          ],
+          "alternatives": [
+            "entity-card: few headliners shown large with their talk"
+          ],
+          "fields": [
+            "Speaker name",
+            "Role and organisation",
+            "Portrait photo",
+            "Talk title",
+            "Track or day of the talk"
+          ],
+          "notes": "Portraits can be cut into the event's graphic shapes; give the masked art role=img with the speaker's name as its label."
+        },
+        {
+          "id": "programme-glance",
+          "purpose": "A short preview of each day (keynotes, tracks) with a link to the full schedule.",
+          "use": [
+            "tabs",
+            "feature-grid"
+          ],
+          "alternatives": [
+            "steps: a single-day event shown as an order of the day"
+          ],
+          "fields": [
+            "Days of the event",
+            "Keynote per day with time and speaker",
+            "Track names"
+          ],
+          "notes": "Keep it to the highlights; the schedule page carries every session."
+        },
+        {
+          "id": "venue",
+          "purpose": "Where it is and how to get there: transport, step-free access, nearby stays.",
+          "use": [
+            "map-hours"
+          ],
+          "alternatives": [
+            "media-text: a venue photo with directions beside it",
+            "pin-map: several locations (main hall, workshops, after-party)"
+          ],
+          "fields": [
+            "Venue name and address",
+            "Getting there by public transport, car, boat",
+            "Accessibility of the venue",
+            "Rooms/stages and what happens in each"
+          ],
+          "notes": "A drawn, stylised map is decorative only; the directions must be text."
+        },
+        {
+          "id": "sponsors",
+          "purpose": "Show the partners that make the event possible.",
+          "use": [
+            "logo-strip"
+          ],
+          "fields": [
+            "Sponsor logos with names and links",
+            "Sponsor tiers (if any)"
+          ],
+          "optional": true
+        },
+        {
+          "id": "tickets-cta",
+          "purpose": "Push the current ticket deadline (early bird, last seats).",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Current ticket offer and its deadline",
+            "Link to the tickets page"
+          ]
+        },
+        {
+          "id": "faq",
+          "purpose": "Answer the questions that block a ticket purchase: language, recordings, access, children.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Questions and answers: language of talks, recordings, accessibility, bringing children, refunds, invoices"
+          ],
+          "when": {
+            "any": [
+              "section:faq"
+            ]
+          },
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "schedule",
+      "path": {
+        "en": "/schedule",
+        "tr": "/program"
+      },
+      "title": {
+        "en": "Schedule",
+        "tr": "Program"
+      },
+      "purpose": "The full programme, filterable by day and track, where attendees build their own agenda.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Page title, the days and a one-line note on how the agenda works.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Schedule intro line",
+            "Days and opening hours"
+          ]
+        },
+        {
+          "id": "board",
+          "purpose": "Every session by day with a track filter and an 'Add to my agenda' toggle per session.",
+          "use": [
+            "tabs",
+            "activity-timeline",
+            "button-group"
+          ],
+          "alternatives": [
+            "scheduler: many parallel rooms shown as a time grid",
+            "data-table: a very large programme that needs search"
+          ],
+          "fields": [
+            "Session title",
+            "Start and end time",
+            "Room/stage",
+            "Track (or 'for everyone' for keynotes and breaks)",
+            "Speaker(s)",
+            "Session type (talk, workshop, break)"
+          ],
+          "notes": "Day switch as tabs, track filter as a multi-select toggle group, a switch to show only saved sessions. The agenda is saved in this browser and flags clashes between saved sessions ('clashes with …'). Keynotes and breaks show under every track filter. Mark tracks with a glyph or label, not colour alone. Announce agenda changes through an aria-live region."
+        }
+      ]
+    },
+    {
+      "id": "tickets",
+      "path": {
+        "en": "/tickets",
+        "tr": "/biletler"
+      },
+      "title": {
+        "en": "Tickets",
+        "tr": "Biletler"
+      },
+      "purpose": "Choose a ticket tier, see what each includes, read the code of conduct before buying.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What a ticket gets you and the sale deadlines.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Ticket sale phases and their end dates"
+          ]
+        },
+        {
+          "id": "tiers",
+          "purpose": "Ticket tiers side by side with price, availability and the buy action.",
+          "use": [
+            "pricing-table"
+          ],
+          "fields": [
+            "Tier name",
+            "Price and currency (incl./excl. tax)",
+            "What the tier includes",
+            "Seats left or sale end",
+            "Purchase link (ticketing provider)"
+          ]
+        },
+        {
+          "id": "included",
+          "purpose": "A comparison of what each tier includes (talks, workshops, meals, recordings, party).",
+          "use": [
+            "comparison-table"
+          ],
+          "fields": [
+            "Included items per tier"
+          ]
+        },
+        {
+          "id": "conduct",
+          "purpose": "The code of conduct and how to report a problem.",
+          "use": [
+            "rich-text-section"
+          ],
+          "fields": [
+            "Code of conduct text",
+            "How and to whom to report an incident during the event"
+          ]
+        },
+        {
+          "id": "ticket-faq",
+          "purpose": "Refunds, transfers, invoices, group and student discounts.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Ticket questions and answers: refunds, name transfers, invoices, workshops, discounts"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Event name, edition, dates, start time and time zone",
+    "Venue name, address, rooms/stages and directions",
+    "Venue accessibility facts (step-free routes, quiet room, hearing loops)",
+    "Speakers: name, role, organisation, portrait, talk title",
+    "Full session list with day, time, room, track and speaker",
+    "Track names and what each covers",
+    "Ticket tiers with prices, inclusions, deadlines and the ticketing link",
+    "Code of conduct and incident contact",
+    "Sponsor logos and tiers",
+    "FAQ answers on language, recordings, refunds, invoices, children",
+    "Organiser contact email/phone"
+  ],
+  "styles": [
+    {
+      "name": "poster grotesk",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ember",
+        "density": "compact",
+        "font": "grotesk",
+        "radius": "sharp"
+      },
+      "motion": "subtle",
+      "why": "Bold geometric poster look with a signal accent and dense schedule tables; suits design, tech and industry conferences."
+    },
+    {
+      "name": "night programme",
+      "axes": {
+        "theme": "dark",
+        "material": "solid",
+        "accent": "lime",
+        "density": "compact",
+        "font": "grotesk"
+      },
+      "motion": "full",
+      "why": "Dark stage-lit look for festivals and evening-heavy programmes."
+    },
+    {
+      "name": "formal summit",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ocean",
+        "density": "comfortable",
+        "font": "corporate",
+        "radius": "default"
+      },
+      "motion": "subtle",
+      "why": "Quieter, corporate look for professional summits, academic congresses and association meetings."
+    }
+  ],
+  "pitfalls": [
+    "The countdown is the only place the date appears; always print the dates and time zone as text.",
+    "Schedule tracks distinguished by colour alone; add labels or glyphs.",
+    "Agenda saved only in the browser without saying so; tell attendees it is stored on this device.",
+    "Ticket prices shown without saying whether tax and fees are included, or without refund and transfer terms.",
+    "No code of conduct or no way to report an incident during the event.",
+    "Venue accessibility missing or vague (step-free routes, seating, captions).",
+    "Speakers listed before they have confirmed; mark the programme as provisional until it is final."
+  ]
+}

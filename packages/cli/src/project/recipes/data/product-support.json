@@ -1,0 +1,274 @@
+{
+  "id": "product-support",
+  "title": { "en": "Product support site (help centre, changelog, status)", "tr": "Urun destek sitesi (yardim merkezi, yenilikler, durum)" },
+  "summary": "The companion sites of a software product: a help centre with instant search, categories and articles; a changelog with release filters and subscribe; and a public status page with components, uptime bars, incidents and history. Each part is independent: build only the parts the business runs (often each on its own subdomain), and treat the first page of each part as its home.",
+  "match": {
+    "siteTypes": ["saas"],
+    "signals": ["help centre", "help center", "help", "support", "docs", "knowledge base", "status", "status page", "changelog", "release notes", "destek", "yardim", "yardim merkezi", "bilgi bankasi", "durum", "sistem durumu", "yenilikler", "surum notlari"],
+    "features": ["channel:form", "newsletter"]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Help centre", "tr": "Yardim merkezi" },
+      "purpose": "Help-centre home: one big search that answers while the visitor types, the topics, the most-read articles and how to reach a person.",
+      "sections": [
+        {
+          "id": "search",
+          "purpose": "Large search field whose results appear under it as you type: articles with the match highlighted, matching categories and an 'ask support with these words' row.",
+          "use": ["command", "hero"],
+          "fields": ["Search placeholder", "Article index: titles, keywords, summaries, category", "Where 'ask support' sends the typed question"],
+          "notes": "No results page and no Enter needed; arrows move, Enter opens, Escape closes, '/' focuses. Rank by whole query at the start of a title word, then title words, keywords, summary; highlight only matches at word starts and fold diacritics. Results count announced via aria-live. A quiet line with the current service status (linked to the status page) can sit under the field."
+        },
+        {
+          "id": "topics",
+          "purpose": "Six or so topic cards, each with icon, one line and article count.",
+          "use": ["feature-grid"],
+          "alternatives": ["card: when each topic needs a few top articles listed inside the card"],
+          "fields": ["Per category: name, icon, one-line description, number of articles"]
+        },
+        {
+          "id": "popular",
+          "purpose": "Most-read articles, so common questions are one click away.",
+          "use": ["list-layout"],
+          "alternatives": ["blog-list: articles with excerpts and update dates"],
+          "fields": ["Most-read article titles, category, last updated date"]
+        },
+        {
+          "id": "contact",
+          "purpose": "How to reach support when the articles do not answer: channels, hours and expected reply time.",
+          "use": ["feature-grid", "contact-form"],
+          "fields": ["Support channels (chat, email, form, phone, community)", "Support hours and time zone", "Expected reply time per channel"]
+        }
+      ]
+    },
+    {
+      "id": "category",
+      "path": { "en": "/help/[slug]", "tr": "/yardim/[slug]" },
+      "title": { "en": "Help category", "tr": "Yardim kategorisi" },
+      "purpose": "One topic: its articles with a filter, the other topics beside it.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Category title, description and breadcrumb back to the help home.",
+          "use": ["page-intro"],
+          "fields": ["Category name and description"]
+        },
+        {
+          "id": "articles",
+          "purpose": "Articles of the category with a filter field; the other categories as a side list.",
+          "use": ["list-layout", "input"],
+          "fields": ["Article titles, summaries, updated dates"],
+          "notes": "Filter folds diacritics; show an empty state that offers to ask support. Shareable link per category."
+        }
+      ]
+    },
+    {
+      "id": "article",
+      "path": { "en": "/help/article/[slug]", "tr": "/yardim/makale/[slug]" },
+      "title": { "en": "Help article", "tr": "Yardim makalesi" },
+      "purpose": "One answer: steps as an ordered list, then 'was this helpful', related articles and contact.",
+      "sections": [
+        {
+          "id": "article",
+          "purpose": "The article with a compact search above it.",
+          "use": ["article-layout"],
+          "fields": ["Title, summary, last updated date", "Body with headings in order, steps as an ordered list, screenshots with alt text"],
+          "notes": "Keep headings in order so readers jump by heading; show the updated date."
+        },
+        {
+          "id": "helpful",
+          "purpose": "'Was this helpful?': yes thanks, no asks what was missing (reasons plus an optional note).",
+          "use": ["feedback-prompt"],
+          "fields": ["Reasons offered after 'no'", "Where feedback is stored"]
+        },
+        {
+          "id": "related",
+          "purpose": "Next articles to read and the way to support.",
+          "use": ["list-layout", "cta"],
+          "fields": ["Related articles", "Support contact action"]
+        }
+      ]
+    },
+    {
+      "id": "changelog",
+      "path": { "en": "/changelog", "tr": "/yenilikler" },
+      "title": { "en": "Changelog", "tr": "Yenilikler" },
+      "purpose": "Changelog home: every release in a narrow editorial column with its date pinned beside it, filterable by kind, with email and RSS subscribe.",
+      "sections": [
+        {
+          "id": "masthead",
+          "purpose": "What this changelog covers, release cadence and subscribe.",
+          "use": ["page-intro"],
+          "fields": ["Product name and what is covered", "Release cadence"]
+        },
+        {
+          "id": "releases",
+          "purpose": "Release list with feature / improvement / fix filters; each release's date and version stay pinned beside it while it scrolls.",
+          "use": ["release-notes"],
+          "alternatives": ["activity-timeline: a short log without per-release pages"],
+          "fields": ["Per release: version, ISO date, title, changes tagged by kind, link to the release page"],
+          "notes": "Wide screens: sticky date rail beside each release; narrow screens: a date bar under the navbar follows the release in view. Hide releases with nothing left after filtering and announce the filter result in a status region. Use real dates in each heading."
+        },
+        {
+          "id": "subscribe",
+          "purpose": "Email subscription (validated, with a confirmation state) and the RSS feed with a copy button.",
+          "use": ["cta"],
+          "fields": ["What subscribers get and how often", "RSS feed URL", "Consent text"],
+          "when": { "any": ["newsletter"] },
+          "notes": "RSS alone can stay without the newsletter feature."
+        }
+      ]
+    },
+    {
+      "id": "release",
+      "path": { "en": "/changelog/[slug]", "tr": "/yenilikler/[slug]" },
+      "title": { "en": "Release", "tr": "Surum" },
+      "purpose": "One release as an article: a section per kind of change, a code sample when relevant, the upgrade note, older / newer links.",
+      "sections": [
+        {
+          "id": "entry",
+          "purpose": "The release body.",
+          "use": ["article-layout"],
+          "fields": ["Version, date, title", "Changes per kind", "Code sample or screenshot", "Upgrade / migration note for breaking changes"]
+        },
+        {
+          "id": "more",
+          "purpose": "Older and newer release links, then subscribe.",
+          "use": ["pagination", "cta"],
+          "fields": ["Adjacent releases"]
+        }
+      ]
+    },
+    {
+      "id": "status",
+      "path": { "en": "/status", "tr": "/durum" },
+      "title": { "en": "Status", "tr": "Durum" },
+      "purpose": "Status home: is it working right now, what is broken, what is planned and how reliable each part has been.",
+      "sections": [
+        {
+          "id": "now",
+          "purpose": "Overall banner (status-coloured edge, one summary line), then the active incident with its latest updates and any scheduled maintenance.",
+          "use": ["alert", "activity-timeline"],
+          "fields": ["Overall state", "Active incidents: title, impact, affected components, updates with times", "Scheduled maintenance: window, components, what to expect"],
+          "notes": "Banner is a role=status live region. Status pills keep the colour in the dot and the text at full contrast (status colours are not reliable as small text)."
+        },
+        {
+          "id": "components",
+          "purpose": "Components in groups, each with its state and 90 daily uptime bars plus the uptime percentage.",
+          "use": ["uptime-bars"],
+          "fields": ["Component groups and components", "Daily uptime per component for 90 days", "Incidents linked to days"],
+          "notes": "One tab stop per row; arrows, Home and End move between days with a tooltip (date, uptime, incidents) tied by aria-describedby; Enter on a day with an incident opens it. Include a legend of states."
+        },
+        {
+          "id": "performance",
+          "purpose": "Latency of the main API over the last days, plus recently resolved incidents.",
+          "use": ["bar-chart", "list-layout"],
+          "fields": ["Daily p95 latency for the main endpoint", "Recently resolved incidents"],
+          "optional": true,
+          "notes": "Give the chart a text summary."
+        },
+        {
+          "id": "subscribe",
+          "purpose": "Get notified by email, webhook or RSS, only for incidents and maintenance.",
+          "use": ["cta"],
+          "fields": ["Notification channels offered", "How often messages are sent on average"]
+        }
+      ]
+    },
+    {
+      "id": "incident",
+      "path": { "en": "/status/incidents/[id]", "tr": "/durum/olaylar/[id]" },
+      "title": { "en": "Incident", "tr": "Olay" },
+      "purpose": "One incident: what was hit and for how long, every update, and the postmortem when there is one.",
+      "sections": [
+        {
+          "id": "summary",
+          "purpose": "Impact, affected components, start, end and duration.",
+          "use": ["description-list", "card"],
+          "fields": ["Incident title, impact, components, start / end times with time zone"]
+        },
+        {
+          "id": "updates",
+          "purpose": "Every update newest first (investigating, identified, monitoring, resolved).",
+          "use": ["activity-timeline"],
+          "fields": ["Updates with stage, time and text"]
+        },
+        {
+          "id": "postmortem",
+          "purpose": "Cause, impact, what was done and what changes.",
+          "use": ["rich-text-section"],
+          "fields": ["Root cause", "Customer impact", "Follow-up actions"],
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "history",
+      "path": { "en": "/status/history", "tr": "/durum/gecmis" },
+      "title": { "en": "Incident history", "tr": "Olay gecmisi" },
+      "purpose": "Every incident and maintenance of the last 90 days, by month, filterable by component group.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Period covered.",
+          "use": ["page-intro"],
+          "fields": ["History period"]
+        },
+        {
+          "id": "list",
+          "purpose": "Incidents and maintenance grouped by month with a component-group filter.",
+          "use": ["filter-bar", "list-layout"],
+          "alternatives": ["activity-timeline: a compact chronological list"],
+          "fields": ["Past incidents with impact, components, duration and link"],
+          "notes": "Months without incidents say so instead of disappearing."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Which parts the business runs: help centre, changelog, status page (and their domains)",
+    "Help articles with titles, keywords, summaries, categories and update dates",
+    "Help categories with icons and descriptions",
+    "Support channels, hours, time zone and reply times",
+    "Where article feedback and support questions go",
+    "Release history: versions, dates, change kinds, upgrade notes",
+    "RSS feed and email subscription setup",
+    "Status components and groups",
+    "Uptime data source (monitoring tool) and incident history",
+    "Incident and maintenance update process and postmortem policy",
+    "Status notification channels (email, webhook, RSS)"
+  ],
+  "styles": [
+    {
+      "name": "calm civic help",
+      "axes": { "theme": "light", "material": "solid", "accent": "ocean", "density": "comfortable", "font": "system", "radius": "default" },
+      "motion": "subtle",
+      "why": "Help centres: an open, readable sans, quick and out-of-the-way motion, results dropping under the field."
+    },
+    {
+      "name": "narrow editorial notes",
+      "axes": { "theme": "light", "material": "solid", "accent": "ocean", "density": "comfortable", "font": "editorial" },
+      "motion": "subtle",
+      "why": "Changelogs read as a column of dated articles; a serif and a deep accent make each release feel published."
+    },
+    {
+      "name": "neutral compact status",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "density": "compact", "font": "system", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Status pages: information first, a neutral accent so only status colours carry meaning; the live dot is the only loop."
+    }
+  ],
+  "pitfalls": [
+    "A status page hosted on the same infrastructure as the product goes down with it; host it separately.",
+    "Status colour as the only signal, or coloured small text that fails contrast; pair every state with a word and an icon.",
+    "Uptime bars that cannot be read by keyboard or screen reader; give each day a tooltip and a text alternative.",
+    "Incident times without a time zone, or incidents quietly removed from history.",
+    "Help search that needs Enter and a results page, or misses words with diacritics.",
+    "Articles without an updated date or with steps as prose instead of an ordered list.",
+    "Changelog entries without real dates, or breaking changes without an upgrade note.",
+    "Subscribe forms without a confirmation state and clear consent for what will be sent."
+  ]
+}

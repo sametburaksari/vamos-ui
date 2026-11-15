@@ -1,0 +1,223 @@
+{
+  "id": "publication",
+  "title": { "en": "Blog or online publication", "tr": "Blog veya çevrimiçi yayın" },
+  "summary": "A reading site: an editorial magazine or journal with issues, topics and long reads, or an engineering / technical blog with code samples, tags and a keyboard-first post index. Home, the archive and the article page carry it; author and about pages are optional.",
+  "match": {
+    "siteTypes": ["blog"],
+    "signals": [
+      "blog", "magazine", "journal", "essays", "publication", "engineering blog", "dev blog", "long reads", "editorial",
+      "dergi", "yayin", "makale", "deneme", "yazilar", "muhendislik blogu", "teknik blog", "editoryal"
+    ],
+    "features": ["section:blog", "newsletter", "multilingual"],
+    "fallback": true
+  },
+  "showcase": ["site-news-01"],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show what the publication is and what is new, and get the reader into one piece quickly.",
+      "sections": [
+        {
+          "id": "masthead",
+          "purpose": "The masthead: current issue or theme with its table of contents (magazine), or a plain-text intro beside the latest post (technical blog).",
+          "use": ["page-header"],
+          "alternatives": ["hero: a full-width masthead with the publication name and one-line promise"],
+          "fields": ["Publication name and one-line description", "Current issue number, date and theme (magazine)", "Contents of the issue", "Latest post: title, date, reading time, author"],
+          "notes": "A technical blog can show an excerpt of the latest post as code; a terminal-style typing eyebrow is optional and must render as plain text without motion."
+        },
+        {
+          "id": "lead-story",
+          "purpose": "The lead piece large: image, topic, title, dek, author and reading time.",
+          "use": ["media-text"],
+          "fields": ["Lead article title, dek, topic, author, reading time", "Cover image with alt text"],
+          "optional": true
+        },
+        {
+          "id": "latest",
+          "purpose": "Latest pieces with topic chips, or a post index read like a log: date, title, tags, minutes.",
+          "use": ["blog-list"],
+          "alternatives": ["list-layout: a dense mono post index with '/' to filter and j / k to move, for a technical blog"],
+          "fields": ["Per post: title, dek or summary, topic / tags, author, date, reading time, cover image (magazine)"],
+          "notes": "If keyboard shortcuts are offered, document them on the page and ignore them while typing in a field."
+        },
+        {
+          "id": "topics-authors",
+          "purpose": "Topics with post counts and the authors, each opening the archive filtered.",
+          "use": ["feature-grid", "avatar"],
+          "fields": ["Topics with descriptions", "Authors: name, role, short bio, photo"],
+          "optional": true
+        },
+        {
+          "id": "most-read-letter",
+          "purpose": "A most-read list beside an editor's letter (magazine).",
+          "use": ["list-layout", "rich-text-section"],
+          "fields": ["Most-read titles", "Editor's letter and sign-off"],
+          "optional": true
+        },
+        {
+          "id": "newsletter",
+          "purpose": "Subscribe by email, with the cadence and an RSS link.",
+          "use": ["cta"],
+          "alternatives": ["form-01: an inline email field that validates in place and confirms without leaving the page"],
+          "fields": ["What subscribers get and how often", "RSS / feed URL"],
+          "when": { "any": ["newsletter"] }
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "path": { "en": "/blog", "tr": "/blog" },
+      "title": { "en": "Archive", "tr": "Arşiv" },
+      "purpose": "Every piece, filterable by topic, tag, author, year or a search, paged.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and how many pieces there are.",
+          "use": ["page-intro"],
+          "fields": ["Archive lead"]
+        },
+        {
+          "id": "filters",
+          "purpose": "Search plus topic / tag / author filters.",
+          "use": ["filter-bar", "input"],
+          "fields": ["Topic or tag list", "Author list"],
+          "notes": "Keep the filter in the URL (e.g. a hash per topic) so topic chips and author links elsewhere open the archive pre-filtered and back / forward keep working. Announce the result count in a polite live region."
+        },
+        {
+          "id": "results",
+          "purpose": "The matching pieces, grouped by year for a long archive, with paging.",
+          "use": ["blog-list", "pagination"],
+          "alternatives": ["empty-state: when a filter matches nothing, offering to clear it"],
+          "fields": ["Posts with title, summary, topic, author, date, reading time"]
+        }
+      ]
+    },
+    {
+      "id": "article",
+      "path": { "en": "/blog/[slug]", "tr": "/blog/[slug]" },
+      "title": { "en": "Article", "tr": "Yazı" },
+      "purpose": "One piece, comfortable to read to the end: header, body with notes, code or figures, the author and what to read next.",
+      "sections": [
+        {
+          "id": "header",
+          "purpose": "Topic, title, dek, author, date, updated date and reading time; cover image for a magazine.",
+          "use": ["article-layout"],
+          "fields": ["Title", "Dek", "Topic / tags", "Author", "Published and updated dates", "Reading time", "Cover image with alt text and credit"]
+        },
+        {
+          "id": "progress",
+          "purpose": "A reading-progress bar with minutes left for long reads.",
+          "use": ["reading-progress"],
+          "fields": ["Word count (for minutes left)"],
+          "optional": true
+        },
+        {
+          "id": "body",
+          "purpose": "The text, with footnotes as side notes on wide screens (endnotes on narrow), figures, call-outs, tables and code samples.",
+          "use": ["article-layout", "rich-text-section"],
+          "alternatives": ["tabs: code samples in several languages that switch together across the page", "table: benchmark or data tables with a caption", "alert: an aside or warning call-out", "section-nav: margin contents for a long technical post"],
+          "fields": ["Body text with headings", "Footnotes", "Figures with captions and alt text", "Code samples per language", "Data tables with captions"],
+          "notes": "Footnote numbers jump to the side note when visible, else the endnote; both link back; notes use role=\"note\". Code blocks scroll sideways inside their own box, have a copy button with a status message, and a language choice that is one setting for the page."
+        },
+        {
+          "id": "author",
+          "purpose": "Who wrote it, with a link to their other pieces.",
+          "use": ["avatar", "card"],
+          "fields": ["Author name, role, short bio, photo"]
+        },
+        {
+          "id": "related",
+          "purpose": "Related pieces or previous / next.",
+          "use": ["blog-list"],
+          "fields": ["Two to four related posts"]
+        },
+        {
+          "id": "newsletter",
+          "purpose": "Subscribe at the end of the piece.",
+          "use": ["cta"],
+          "fields": ["What subscribers get and how often"],
+          "when": { "any": ["newsletter"] }
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "path": { "en": "/about", "tr": "/hakkimizda" },
+      "title": { "en": "About", "tr": "Hakkında" },
+      "purpose": "Who publishes it, editorial policy, contributors and how to pitch or get in touch.",
+      "when": { "any": ["section:about", "section:team"] },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What the publication is for and who is behind it.",
+          "use": ["page-intro"],
+          "fields": ["Mission", "Publisher"]
+        },
+        {
+          "id": "team",
+          "purpose": "Editors and contributors.",
+          "use": ["team"],
+          "fields": ["Name, role, short bio, photo"],
+          "when": { "any": ["section:team"] }
+        },
+        {
+          "id": "policy",
+          "purpose": "Editorial standards, corrections and pitching guidelines.",
+          "use": ["rich-text-section"],
+          "fields": ["Editorial and corrections policy", "How to pitch"],
+          "optional": true
+        },
+        {
+          "id": "contact",
+          "purpose": "How to reach the editors.",
+          "use": ["contact-form"],
+          "fields": ["Editorial email"],
+          "when": { "any": ["channel:form"] }
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Publication name, one-line description and publisher",
+    "Topics or tags with short descriptions",
+    "Authors: name, role, bio and photo",
+    "At least six to ten published pieces with title, dek, topic, author, dates and reading time",
+    "Cover images with alt text and photo credits",
+    "Issue structure if the publication runs issues (number, date, theme, contents)",
+    "Footnotes, figures, code samples or data tables in the pieces that need them",
+    "Newsletter promise and cadence; RSS feed",
+    "Editorial and corrections policy (optional)",
+    "Contact for editors and pitches"
+  ],
+  "styles": [
+    {
+      "name": "bookish magazine",
+      "axes": { "theme": "light", "material": "solid", "density": "comfortable", "font": "editorial", "accent": "ocean", "radius": "default" },
+      "motion": "subtle",
+      "why": "Garamond-style headings over a screen serif, one ink-blue accent, wide margins for side notes. Suits essays, culture and long-form journalism."
+    },
+    {
+      "name": "terminal log",
+      "axes": { "theme": "dark", "material": "solid", "density": "compact", "font": "system", "accent": "ember", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Dark by default with a reader light-mode switch, system type, mono dates and an amber accent; terse fades only. Suits engineering and developer blogs."
+    },
+    {
+      "name": "clean newsroom",
+      "axes": { "theme": "light", "material": "solid", "density": "compact", "font": "grotesk", "accent": "brand", "radius": "default" },
+      "motion": "off",
+      "why": "Dense grotesk lists, brand accent for topics; for a company or team blog publishing often."
+    }
+  ],
+  "pitfalls": [
+    "Images without real alt text or photo credits; covers reused across pieces.",
+    "Missing published and updated dates, author and reading time; these are also what search engines and readers look for.",
+    "Archive filters that reset on back / forward or cannot be linked; keep them in the URL and announce result counts.",
+    "Keyboard shortcuts that fire while typing in a field, or that are not documented on the page.",
+    "Code blocks that break the layout on phones; they must scroll inside their own box and stay readable in both themes.",
+    "Line length too long for reading; keep the body column near 60–75 characters.",
+    "Signup forms without consent wording or a privacy link."
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "id": "launch-waitlist",
+  "title": { "en": "Launch waitlist", "tr": "Lansman bekleme listesi" },
+  "summary": "A pre-launch page for a product (or event) that is not live yet: one promise, one validated email form, a countdown to the opening, a few proof points and a 'you're on the list' state with a referral link that moves the person up the line.",
+  "match": {
+    "siteTypes": ["saas", "event"],
+    "signals": ["waitlist", "wait list", "coming soon", "pre-launch", "prelaunch", "early access", "beta", "launch", "bekleme listesi", "cok yakinda", "yakinda", "lansman", "erken erisim", "on kayit"],
+    "features": ["newsletter", "structure:single"]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "One page with one job: get the visitor's email for the launch, with enough proof that it is worth it.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "One-line promise and the email form in a card over a soft photo, with the countdown to the first wave.",
+          "use": ["hero", "countdown"],
+          "fields": ["Headline", "One-sentence lead", "Background photo or key art", "Launch / first-wave date and time with time zone", "What happens after sign-up (when they hear from you)", "Consent text", "Number already waiting (only if real)"],
+          "notes": "The only form on the page: email validated on submit, then live once it has been wrong, error tied to the input; on success a toast and the joined state. Wash the photo so text sits on calm ground. Countdown renders placeholders on the server, ticks after hydration, hides the digits from screen readers and reads one sentence with the day count; honour reduced motion."
+        },
+        {
+          "id": "why",
+          "purpose": "Three proof points: what the product does, each with a figure.",
+          "use": ["feature-grid"],
+          "alternatives": ["stats-band: when the proof points are mainly numbers"],
+          "fields": ["Per point: figure, title, one sentence"]
+        },
+        {
+          "id": "faq",
+          "purpose": "When it launches, what it costs, which platforms, what happens to the email.",
+          "use": ["faq"],
+          "fields": ["Questions and answers"],
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "joined",
+      "path": { "en": "/joined", "tr": "/kaydoldunuz" },
+      "title": { "en": "You're on the list", "tr": "Listedesiniz" },
+      "purpose": "Confirmation after sign-up: the person's place in line, a share link that moves them up, and what happens next.",
+      "sections": [
+        {
+          "id": "position",
+          "purpose": "Place in line counting in after sign-up; each friend who joins with the link moves them up a fixed number of places, with a progress bar to the first wave.",
+          "use": ["stat", "progress"],
+          "fields": ["Queue position logic (start position, places gained per referral)", "Size of the first wave", "What the person gets at the front"],
+          "optional": true,
+          "notes": "Counter eases to the new number (instant under reduced motion) and is announced via aria-live. Without a referral programme show a plain confirmation instead."
+        },
+        {
+          "id": "share",
+          "purpose": "Personal invite link with a copy button and share options.",
+          "use": ["input", "button"],
+          "alternatives": ["qr-code: when the link is shared in person"],
+          "fields": ["Invite link format", "Share channels"],
+          "optional": true,
+          "notes": "Copy result announced with a toast."
+        },
+        {
+          "id": "next",
+          "purpose": "What happens next and when the next email arrives.",
+          "use": ["steps"],
+          "alternatives": ["cta: a single line with a link back to the home page"],
+          "fields": ["Next steps and dates", "Confirmation email note (double opt-in)"]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "One-line promise and lead",
+    "Launch or first-wave date, time and time zone",
+    "Hero photo or key art",
+    "Three proof points with figures",
+    "Email provider / list where sign-ups go, with double opt-in",
+    "Consent text and what will be sent",
+    "Referral rules (places per referral, first-wave size) if used",
+    "FAQ answers: price, platforms, timing, data use"
+  ],
+  "styles": [
+    {
+      "name": "soft editorial glass",
+      "axes": { "theme": "light", "material": "glass", "accent": "brand", "density": "comfortable", "font": "editorial", "radius": "round" },
+      "motion": "full",
+      "why": "Consumer products before launch: a soft photo, a serif headline cut in, digits that rise into place; unhurried."
+    },
+    {
+      "name": "dark launch countdown",
+      "axes": { "theme": "dark", "material": "glass", "accent": "ember", "density": "comfortable", "font": "grotesk" },
+      "motion": "subtle",
+      "why": "Tech launches and events: dark with one hot accent so the countdown and form are all that stand out."
+    }
+  ],
+  "pitfalls": [
+    "A countdown that reaches zero with nothing live; update the page or switch it to 'out now' before the date.",
+    "Countdowns without a time zone, or that cause hydration mismatches and read every second to screen readers.",
+    "Collecting emails without consent text, double opt-in or a privacy link.",
+    "Fake waiting-list numbers or positions; only show counts that are real.",
+    "Validation errors not tied to the input, or an error shown before the person typed anything.",
+    "More than one call to action; the page has one job.",
+    "Referral schemes that promise rewards the business cannot deliver at launch."
+  ]
+}

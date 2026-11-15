@@ -1,0 +1,322 @@
+{
+  "id": "venue",
+  "title": {
+    "en": "Event venue",
+    "tr": "Etkinlik mekanı"
+  },
+  "summary": "A venue that hires out rooms for weddings, conferences and parties: capacities by layout and head count, the spaces in detail, what is included, viewings, and an enquiry form with a live hire estimate.",
+  "match": {
+    "siteTypes": [
+      "event",
+      "booking",
+      "local-business"
+    ],
+    "signals": [
+      "venue",
+      "event space",
+      "hall",
+      "banquet",
+      "function room",
+      "wedding venue",
+      "hire",
+      "mekan",
+      "etkinlik alani",
+      "salon",
+      "dugun salonu",
+      "davet",
+      "toplanti salonu",
+      "kiralik salon"
+    ],
+    "features": [
+      "booking",
+      "booking:form",
+      "channel:map",
+      "section:gallery",
+      "section:faq"
+    ]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Show the place and answer 'will we fit?' immediately, then build trust: history, what is included, past clients, viewings.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "A wide photo of the main space with the venue's key facts as a short ledger (capacity, spaces, hours, location).",
+          "use": [
+            "hero"
+          ],
+          "fields": [
+            "Venue name and one-line description",
+            "Wide photo of the main space",
+            "Key facts: maximum guests, number of spaces, hire hours, district",
+            "Primary action: enquire; secondary: see spaces"
+          ]
+        },
+        {
+          "id": "finder",
+          "purpose": "Pick a layout (banquet, theatre, standing, classroom…) and a head count; the spaces that fit light up, with combinations when no single room does.",
+          "use": [
+            "capacity-finder"
+          ],
+          "alternatives": [
+            "comparison-table: a small venue with two or three rooms",
+            "image-hotspots: show the rooms on a site plan"
+          ],
+          "fields": [
+            "Layouts offered",
+            "Capacity of each space in each layout",
+            "Which spaces can be combined"
+          ],
+          "notes": "List the fitting spaces as text as well as on the plan; announce the matches through aria-live. The chosen layout and head count are shared with the spaces page and the enquiry form."
+        },
+        {
+          "id": "history",
+          "purpose": "The story of the building or the venue: what makes it different.",
+          "use": [
+            "activity-timeline"
+          ],
+          "alternatives": [
+            "media-text: a short story beside one photo"
+          ],
+          "fields": [
+            "Key years and what happened",
+            "Story photos"
+          ],
+          "optional": true,
+          "when": {
+            "any": [
+              "section:about"
+            ]
+          }
+        },
+        {
+          "id": "included",
+          "purpose": "What every hire includes (furniture, AV, staff, cleaning, parking) and what costs extra.",
+          "use": [
+            "feature-grid"
+          ],
+          "fields": [
+            "Included items",
+            "Extras with a note that they cost more"
+          ]
+        },
+        {
+          "id": "testimonials",
+          "purpose": "Words from couples, companies and organisers who held events here.",
+          "use": [
+            "testimonials"
+          ],
+          "fields": [
+            "Quote",
+            "Client name and kind of event",
+            "Source if from a review site"
+          ],
+          "when": {
+            "any": [
+              "section:testimonials"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "id": "visit",
+          "purpose": "Book a viewing: map, address, viewing hours and how to arrange one.",
+          "use": [
+            "map-hours"
+          ],
+          "fields": [
+            "Address and map location",
+            "Viewing hours",
+            "Parking and transport",
+            "Phone/email for viewings"
+          ]
+        },
+        {
+          "id": "faq",
+          "purpose": "Own caterer, curfew, how to hold a date, accessibility.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Questions and answers: outside catering, latest finish, holding a date and deposit, accessibility, noise rules"
+          ],
+          "when": {
+            "any": [
+              "section:faq"
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "purpose": "Close with the enquiry action and the reply promise.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Reply time promise",
+            "Link to the enquiry page"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spaces",
+      "path": {
+        "en": "/spaces",
+        "tr": "/alanlar"
+      },
+      "title": {
+        "en": "Spaces",
+        "tr": "Alanlar"
+      },
+      "purpose": "Every room in detail: photos, measurements, capacity in each layout and the day rate.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Total floor area, hire hours and a note on weekday/weekend rates.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Total floor area",
+            "Hire hours",
+            "Rate rules (weekday vs weekend, season)"
+          ]
+        },
+        {
+          "id": "all-spaces",
+          "purpose": "The capacity finder in detailed mode: each space with photos, floor, ceiling height, notes and its capacity in every layout.",
+          "use": [
+            "capacity-finder",
+            "entity-card"
+          ],
+          "alternatives": [
+            "comparison-table: capacities as one table across spaces",
+            "gallery-section: photo-led rooms"
+          ],
+          "fields": [
+            "Space name",
+            "Photos",
+            "Floor and size (m²)",
+            "Ceiling height",
+            "Short character line",
+            "Capacity per layout",
+            "Day rate",
+            "Seasonal availability (outdoor spaces)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "enquiry",
+      "path": {
+        "en": "/enquiry",
+        "tr": "/talep"
+      },
+      "title": {
+        "en": "Enquiry",
+        "tr": "Talep"
+      },
+      "purpose": "Collect everything needed to quote and hold a date, with a live hire estimate.",
+      "when": {
+        "any": [
+          "booking",
+          "channel:form"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "How long a date is held while you talk and who replies when.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Hold period for a provisional date",
+            "Reply time and contact person role"
+          ]
+        },
+        {
+          "id": "form",
+          "purpose": "Event type, date, guests and layout (carried from the finder), spaces, catering, budget and contact, with a running estimate.",
+          "use": [
+            "form-01",
+            "date-picker",
+            "radio-group"
+          ],
+          "alternatives": [
+            "multi-step-form: long enquiries split into steps",
+            "contact-form: a simple venue without pricing"
+          ],
+          "fields": [
+            "Event types",
+            "Minimum notice for a date",
+            "Catering options",
+            "Budget bands",
+            "Rate basis for the estimate"
+          ],
+          "notes": "Date picker with a minimum lead time; warn when the picked spaces do not fit the guest count; the estimate is an aria-live region and clearly labelled as an estimate. Validate on submit with errors next to fields."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Venue name, address, map location and transport/parking",
+    "Every space: name, photos, size, ceiling height, floor, character",
+    "Capacity of each space per layout and which spaces combine",
+    "Day rates and how weekends/seasons change them",
+    "What every hire includes and what costs extra",
+    "Catering policy (in-house, approved list, own caterer)",
+    "Hire hours, curfew and noise rules",
+    "Viewing hours and how to book a viewing",
+    "How a date is held (provisional hold, deposit)",
+    "Accessibility of each space",
+    "Client quotes and the building's history (optional)"
+  ],
+  "styles": [
+    {
+      "name": "heritage serif",
+      "axes": {
+        "theme": "light",
+        "material": "solid",
+        "accent": "ember",
+        "density": "compact",
+        "font": "editorial",
+        "radius": "sharp"
+      },
+      "motion": "full",
+      "why": "Warm terracotta, a heritage serif and mono figures for capacities; suits historic buildings, barns, mills and wedding venues."
+    },
+    {
+      "name": "modern event space",
+      "axes": {
+        "theme": "dark",
+        "material": "solid",
+        "accent": "graphite",
+        "density": "comfortable",
+        "font": "grotesk"
+      },
+      "motion": "subtle",
+      "why": "Clean, photo-led look for conference centres, studios and urban event spaces."
+    }
+  ],
+  "pitfalls": [
+    "The site plan is the only source of which rooms fit; list fitting rooms as text too.",
+    "The hire estimate reads like a quote; label it as an estimate and say what it excludes.",
+    "Capacities given without the layout (a room seats far fewer at a banquet than standing).",
+    "Outdoor spaces shown without their seasonal or weather limits.",
+    "Catering and curfew rules hidden until the enquiry, causing wasted viewings.",
+    "Heavy scroll motion without honouring prefers-reduced-motion.",
+    "Choices made in the finder lost when the visitor moves to the enquiry form or switches language."
+  ]
+}

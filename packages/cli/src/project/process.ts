@@ -147,10 +147,10 @@ export const ROLES: Record<Agent, Role> = {
   build: {
     agent: "build",
     name: { en: "Build", tr: "Geliştirme" },
-    description: "Build specialist: creates the Next.js app from the starting template and builds every planned page from kit blocks.",
+    description: "Build specialist: creates the Next.js app and builds every planned page from kit components, following the plan's recipe.",
     steps: [
       "If there is no app yet: `npx vamos-ui create site --template next` (static export for cPanel, see the plan's hosting).",
-      "`npx vamos-ui add <block>` for the starting template and each planned section; compose pages in the planned order with the content specialist's texts.",
+      "`npx vamos-ui add <name>` for each planned section's kit component; compose every page in the planned order from the recipe's section patterns (purpose, kit items, alternatives) with the content specialist's texts. Never copy a whole example site.",
       "Wire vamos.site.json into the blocks (Navbar, Footer, ContactDock, MapHours) instead of copying values.",
       "Images: convert to WebP/AVIF under 300 KB with width/height. Add a designed 404 page.",
       "`npx vamos-ui verify` and `npm run build` must both pass.",
@@ -254,6 +254,26 @@ function requirementLine(r: NonNullable<ProjectPlan["requirements"]>[number], la
   return `- [ ] \`${r.id}\` ${L(r.text, lang)}${r.check ? ` — check: \`${r.check}\`` : ""}${r.source ? ` — source: ${r.source}` : ""}${r.counsel ? " — **verify with counsel**" : ""}`;
 }
 
+function styleLine(st: NonNullable<ProjectPlan["recipe"]>["styles"][number]): string {
+  const axes = Object.entries(st.axes).map(([k, v]) => `${k} ${v}`).join(", ");
+  return `**${st.name}**: ${axes}${st.motion ? `, motion ${st.motion}` : ""}. ${st.why}`;
+}
+
+/** The recipe as build instructions: per page, each section's purpose, kit items, alternatives and notes. */
+function blueprintLines(plan: ProjectPlan, lang: Lang): string[] {
+  if (!plan.recipe || !plan.blueprint?.length) return [];
+  const out = [`Recipe \`${plan.recipe.id}\` (${plan.recipe.title.en}): ${plan.recipe.summary} Build every page from kit components (\`npx vamos-ui add <name>\`); no example site is copied.`];
+  for (const p of plan.blueprint) {
+    out.push(`- \`${p.path[lang]}\` ${p.title[lang]} — ${p.purpose}`);
+    for (const sec of p.sections) {
+      const alt = sec.alternatives?.length ? ` Alternatives: ${sec.alternatives.join("; ")}.` : "";
+      out.push(`  - ${sec.id}${sec.optional ? " (optional)" : ""}: ${sec.purpose} Use ${sec.use.map((u) => `\`${u}\``).join(" + ")}.${alt}${sec.notes ? ` ${sec.notes}` : ""}`);
+    }
+  }
+  if (plan.recipe.pitfalls.length) out.push("Pitfalls for this kind of site:", ...plan.recipe.pitfalls.map((x) => `- ${x}`));
+  return out;
+}
+
 /** What a specialist needs to know from the plan for its task (Markdown). */
 function planContext(plan: ProjectPlan, task: PlanTask, lang: Lang): string[] {
   const out: string[] = [];
@@ -263,15 +283,25 @@ function planContext(plan: ProjectPlan, task: PlanTask, lang: Lang): string[] {
   };
   switch (task.agent) {
     case "brand":
-      out.push(`Site type: ${plan.siteType}. Starting templates: ${plan.templates.join(", ") || "—"}.`);
+      out.push(`Site type: ${plan.siteType}.${plan.recipe ? ` Recipe: ${plan.recipe.title.en} (\`${plan.recipe.id}\`).` : ""}`);
+      if (plan.recipe?.styles.length) {
+        out.push("Looks that suit this kind of site (pick one, or follow vamos.brand.json when it exists):");
+        for (const st of plan.recipe.styles) out.push(`- ${styleLine(st)}`);
+      }
       break;
     case "content":
       out.push(`Languages: ${plan.languages.join(", ")}.`);
       pages();
+      if (plan.blueprint?.length) {
+        out.push("What each section needs (ask the business for every field; never invent facts, names or numbers):");
+        for (const p of plan.blueprint) for (const sec of p.sections) if (sec.fields.length) out.push(`- \`${p.path[lang]}\` ${sec.id}${sec.optional ? " (optional)" : ""}: ${sec.fields.join("; ")}`);
+      }
+      if (plan.recipe?.content.length) out.push("The business supplies:", ...plan.recipe.content.map((c) => `- ${c}`));
       break;
     case "build":
-      out.push(`Hosting: ${plan.hosting.value} (${plan.hosting.output}). Structure: ${plan.structure.value}. Starting templates: ${plan.templates.join(", ") || "—"}.`);
+      out.push(`Hosting: ${plan.hosting.value} (${plan.hosting.output}). Structure: ${plan.structure.value}.`);
       pages();
+      out.push(...blueprintLines(plan, lang));
       if (plan.commerce) out.push(`Store: catalogue ${plan.commerce.catalog.value}; payments ${plan.commerce.payments.join(", ") || "—"}; shipping ${plan.commerce.shipping}.`);
       break;
     case "legal":

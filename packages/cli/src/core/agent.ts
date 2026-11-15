@@ -16,6 +16,7 @@ This project uses Vamos UI (docs: https://ui.vamos.ist). Kit source lives in \`$
 
 **Build screens**
 - Start from a block: \`npx vamos-ui list --type block\`, then \`npx vamos-ui add <block>\`.
+- A whole website is built from kit components, not copied from an example site: \`npx vamos-ui new\` picks a recipe from the interview and lists each page's sections with the components to use.
 - Add components with \`npx vamos-ui add <name>\` and import them from \`${alias}\` (subpaths: \`${alias}/charts\`, \`${alias}/data-table\`, …).
 - Look before you build: \`npx vamos-ui search <query>\` and \`npx vamos-ui view <name>\` show usage, props and guidance. Never hand-roll a modal, dropdown, tooltip, select or table the kit already has.
 - Before editing a kit file in \`${config.uiDir}\`, prefer composition; local edits show up in \`npx vamos-ui diff\` and are protected on \`upgrade\`.

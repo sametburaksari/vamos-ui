@@ -1,0 +1,170 @@
+{
+  "id": "developer-tool",
+  "title": { "en": "Developer tool / API", "tr": "Gelistirici araci / API" },
+  "summary": "Site for an API, SDK, CLI or other developer product: a code-first hero, a quick start with code per step, measured reliability, usage-based pricing with an estimator, a docs landing with search and SDKs, and a changelog. Code samples follow one language choice across the whole site.",
+  "match": {
+    "siteTypes": ["saas"],
+    "signals": ["api", "sdk", "cli", "developer", "developers", "devtool", "webhook", "webhooks", "open source", "framework", "library", "infrastructure", "gelistirici", "yazilimci", "entegrasyon api", "altyapi", "kutuphane"],
+    "features": ["section:pricing", "section:faq"]
+  },
+  "showcase": [],
+  "pages": [
+    {
+      "id": "home",
+      "path": { "en": "/", "tr": "/" },
+      "title": { "en": "Home", "tr": "Ana sayfa" },
+      "purpose": "Show a developer the first request and its result in the first screen, how long it takes to get going, how reliable it is and what it costs at their volume.",
+      "sections": [
+        {
+          "id": "hero",
+          "purpose": "One-line promise, install command and a code window with the minimal call, plus what happened to it (a log of the result).",
+          "use": ["hero", "tabs", "kbd"],
+          "alternatives": ["media-text: a CLI or desktop tool better shown as a terminal recording"],
+          "fields": ["Headline and one-line lead", "Install command per language / package manager", "Minimal code sample per supported language", "Result of the sample as a short log or response", "Primary action (get API key / sign up) and docs link"],
+          "notes": "Code window: dark scope, language tabs, a copy button with a polite 'copied' announcement and a clipboard fallback. Code stays selectable text, never an image. A small highlighter is enough (comments, strings, numbers, keywords). Picking a language in any code window switches every sample, the install line and the SDK table site-wide, and is remembered per browser. A live result log should update in an aria-live region."
+        },
+        {
+          "id": "quickstart",
+          "purpose": "Three or four steps from zero to the first working call, each step carrying its own code.",
+          "use": ["steps", "tabs"],
+          "fields": ["Per step: title, one sentence, code per language", "Time to first call"],
+          "notes": "Steps follow the site-wide language choice."
+        },
+        {
+          "id": "features",
+          "purpose": "The guarantees and mechanics a developer cares about (retries, signing, idempotency, limits).",
+          "use": ["feature-grid"],
+          "fields": ["Per feature: icon, title, one technical sentence"]
+        },
+        {
+          "id": "reliability",
+          "purpose": "Measured uptime, latency and volume with sources, linking to the status page.",
+          "use": ["stats-band"],
+          "fields": ["Per figure: value, unit, label, source and period", "Link to the public status page"],
+          "notes": "Ledger variant reads like a spec. Only measured numbers."
+        },
+        {
+          "id": "pricing",
+          "purpose": "Plans plus a volume slider that shows the price of each plan at that volume and lights up the cheapest.",
+          "use": ["pricing-table", "slider"],
+          "fields": ["Plans: name, included volume, price per period, overage price, limits", "Free tier limits", "Volume slider range and unit", "Tax note"],
+          "when": { "any": ["section:pricing"] },
+          "notes": "Estimator result announced via aria-live."
+        },
+        {
+          "id": "faq",
+          "purpose": "Limits, data retention, regions, SLAs, migration.",
+          "use": ["faq"],
+          "fields": ["Technical and billing questions with answers"],
+          "when": { "any": ["section:faq"] }
+        },
+        {
+          "id": "closing-cta",
+          "purpose": "Get an API key / read the docs.",
+          "use": ["cta"],
+          "fields": ["Closing line", "Primary action (key / sign-up)", "Secondary action (docs)"]
+        }
+      ]
+    },
+    {
+      "id": "docs",
+      "path": { "en": "/docs", "tr": "/dokumanlar" },
+      "title": { "en": "Docs", "tr": "Dokumanlar" },
+      "purpose": "Docs landing: find the right guide fast, make the first request in your language and pick an SDK.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Title and a search field focused with the '/' key.",
+          "use": ["page-intro", "command"],
+          "alternatives": ["input: a plain search field that submits to the docs search"],
+          "fields": ["Docs headline", "Search index (guide titles and keywords)"],
+          "notes": "Show the '/' shortcut with kbd; include a skip link."
+        },
+        {
+          "id": "guides",
+          "purpose": "Guides grouped by the job the developer has (receive, send, secure, debug).",
+          "use": ["feature-grid"],
+          "alternatives": ["list-layout: many guides that need filtering"],
+          "fields": ["Job groups", "Per guide: title, one line, link"]
+        },
+        {
+          "id": "first-request",
+          "purpose": "The first request in the chosen language, copyable.",
+          "use": ["tabs"],
+          "fields": ["First request sample per language", "Expected response"]
+        },
+        {
+          "id": "sdks",
+          "purpose": "Every official SDK with its install line, version and status.",
+          "use": ["table"],
+          "fields": ["Per SDK: language, package name, install command, latest version, maintenance status, repository link"],
+          "notes": "The row for the chosen language is highlighted."
+        }
+      ]
+    },
+    {
+      "id": "changelog",
+      "path": { "en": "/changelog", "tr": "/degisiklikler" },
+      "title": { "en": "Changelog", "tr": "Degisiklikler" },
+      "purpose": "Latest releases as a version ledger, linking to the full changelog.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What the changelog covers and the versioning policy.",
+          "use": ["page-intro"],
+          "fields": ["Versioning / deprecation policy in one line"]
+        },
+        {
+          "id": "recent",
+          "purpose": "Recent releases with version, date, kind badges (feature, improvement, fix, breaking) and short notes.",
+          "use": ["release-notes"],
+          "alternatives": ["activity-timeline: very short notes without per-release pages"],
+          "fields": ["Per release: version, ISO date, kind of each change, change notes, breaking-change upgrade note"]
+        },
+        {
+          "id": "full-log",
+          "purpose": "Link to the full changelog / subscribe.",
+          "use": ["cta"],
+          "fields": ["Full changelog link", "RSS / email subscribe"],
+          "optional": true,
+          "notes": "When the product has its own changelog site, see the product-support recipe."
+        }
+      ]
+    }
+  ],
+  "content": [
+    "Supported languages / runtimes and the install command for each",
+    "Minimal working code sample per language and its real output",
+    "Quick-start steps with code per language",
+    "Technical guarantees (retries, signing, limits, regions)",
+    "Measured uptime / latency / volume with source and period",
+    "Plans, included volume, overage price and free-tier limits",
+    "Docs guide list grouped by job",
+    "SDK list with package names, versions and repository links",
+    "Release history with versions, dates and breaking changes",
+    "Status page URL and support / security contact"
+  ],
+  "styles": [
+    {
+      "name": "graphite compact code",
+      "axes": { "theme": "light", "material": "solid", "accent": "graphite", "density": "compact", "font": "grotesk", "radius": "sharp" },
+      "motion": "subtle",
+      "why": "Neutral graphite with one cool accent dot, dark code windows on a light page, dot-grid hero; reads as a precise tool."
+    },
+    {
+      "name": "dark terminal",
+      "axes": { "theme": "dark", "material": "solid", "accent": "ocean", "density": "compact", "font": "system" },
+      "motion": "off",
+      "why": "Infrastructure and CLI tools whose audience lives in a terminal: everything dark, mono numerals, no decorative motion."
+    }
+  ],
+  "pitfalls": [
+    "Code shown as images or with smart quotes from a word processor; samples must be selectable, copyable and actually run.",
+    "Language tabs that only switch one window; one choice should drive every sample, install line and SDK row.",
+    "Copy buttons that fail silently where the clipboard API is blocked; provide a fallback and announce the result.",
+    "Uptime or latency claims that do not match the public status page.",
+    "Usage pricing without a worked example or estimator; developers leave when they cannot predict the bill.",
+    "Docs search reachable only by mouse; support '/' to focus, arrows and Enter, and keep a skip link.",
+    "Breaking changes buried in release notes without an upgrade note and a date."
+  ]
+}

@@ -1,0 +1,616 @@
+{
+  "id": "software-product",
+  "title": {
+    "en": "Software product",
+    "tr": "Yazilim urunu"
+  },
+  "summary": "Marketing site for a launched software product sold by subscription: a product-led home with a live or scripted demo, proof, features, setup steps and pricing, plus a pricing page, an optional integrations catalogue, a security / data-handling page and a release-notes page. Covers a general B2B app, a data / analytics product and an AI product through alternatives and optional sections.",
+  "match": {
+    "siteTypes": [
+      "saas"
+    ],
+    "signals": [
+      "saas",
+      "software",
+      "platform",
+      "dashboard",
+      "analytics",
+      "crm",
+      "inbox",
+      "workflow",
+      "automation",
+      "ai",
+      "assistant",
+      "yapay zeka",
+      "yazilim",
+      "platformu",
+      "otomasyon",
+      "analiz",
+      "raporlama",
+      "bulut"
+    ],
+    "features": [
+      "section:pricing",
+      "section:faq",
+      "section:testimonials"
+    ],
+    "fallback": true
+  },
+  "showcase": [
+    "site-saas-01"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "path": {
+        "en": "/",
+        "tr": "/"
+      },
+      "title": {
+        "en": "Home",
+        "tr": "Ana sayfa"
+      },
+      "purpose": "Show what the product does in the first screen (with the product itself, not stock art), prove it is used, explain the main jobs it does and get a trial or demo request.",
+      "sections": [
+        {
+          "id": "release-notice",
+          "purpose": "One line about the latest release that links to the release notes; shows the product is alive.",
+          "use": [
+            "announcement-bar"
+          ],
+          "fields": [
+            "Latest release name or version",
+            "One-line summary of what is new",
+            "Link to the release notes"
+          ],
+          "optional": true,
+          "notes": "Time-boxed: remove or update it when the release is more than a couple of months old."
+        },
+        {
+          "id": "hero",
+          "purpose": "Promise in one line, who it is for, the two actions (start trial, see demo) and the product on screen.",
+          "use": [
+            "hero"
+          ],
+          "alternatives": [
+            "typing-demo: an AI or text product; a scripted rewrite (pick a situation and a tone, the result types out and lists what changed) sells better than a screenshot",
+            "area-chart: a data / analytics product; put a small live query console under the headline where metric, segment and range change the chart, the headline figures and the generated query together",
+            "media-text: the product is best shown as one large annotated screenshot"
+          ],
+          "fields": [
+            "Headline (one promise, the key word can be emphasised)",
+            "Lead: who it is for and the main outcome",
+            "Primary action (trial / sign-up) and its target",
+            "Secondary action (demo video or booked demo)",
+            "Product visual: a real screen or a recreated UI preview",
+            "Up to two headline figures with label (e.g. teams using it, median result), each with a source",
+            "Optional release tag linking to the release notes"
+          ],
+          "notes": "Use the product hero variant with a visual of the actual product. For an interactive demo: build it from tabs / toggle groups, stat, sparkline and a chart; it must run on seeded demo data with no network calls, say so on screen, keep the key numbers as text in an aria-live region, and stop animating under reduced motion. Hero for a dark data product: headline above, console full width below."
+        },
+        {
+          "id": "customers",
+          "purpose": "Show recognisable customers right under the hero.",
+          "use": [
+            "logo-strip"
+          ],
+          "fields": [
+            "Customer logos (with permission)",
+            "Caption saying where / by whom it is used"
+          ],
+          "optional": true,
+          "notes": "Marquee variant only with real logos and it must pause under reduced motion; a static row reads calmer for technical buyers."
+        },
+        {
+          "id": "features",
+          "purpose": "The three to five main jobs the product does, each with its own screen.",
+          "use": [
+            "feature-grid"
+          ],
+          "alternatives": [
+            "tabs: when each feature needs a larger screenshot and the visitor should switch between them",
+            "description-list: a technical product that reads better as a dense capability sheet (index, name, one line, one measurable fact)"
+          ],
+          "fields": [
+            "Per feature: title, one or two sentences of what it does, screenshot or illustration"
+          ],
+          "notes": "Tabs variant of feature-grid with one media per item; follow the tabs keyboard pattern."
+        },
+        {
+          "id": "deep-dive",
+          "purpose": "One concept that sets the product apart explained in depth (a metric layer, an alert feed, a before / after use case).",
+          "use": [
+            "media-text"
+          ],
+          "alternatives": [
+            "activity-timeline: show a sample feed of alerts or events as the product would send them",
+            "comparison-table: before / after of the same task without and with the product",
+            "feature-grid: use cases as cards, each with the input people actually send and the result"
+          ],
+          "fields": [
+            "Name of the concept",
+            "Problem it solves in plain words",
+            "Sample of what it produces (alert, rewrite, report) as text",
+            "Up to three small figures that back it up"
+          ],
+          "optional": true,
+          "notes": "Repeat for at most two concepts; samples must be clearly marked as examples."
+        },
+        {
+          "id": "numbers",
+          "purpose": "Measured results, each with where the number comes from.",
+          "use": [
+            "stats-band"
+          ],
+          "fields": [
+            "Per figure: value, unit, label, source (dataset or survey with sample size and period)"
+          ],
+          "optional": true,
+          "notes": "Never show a figure without a source line; counters may count up but must respect reduced motion."
+        },
+        {
+          "id": "capabilities",
+          "purpose": "The smaller things buyers check for (seats, compliance, apps, integrations) in a dense grid.",
+          "use": [
+            "feature-grid"
+          ],
+          "fields": [
+            "Per item: icon, title, one-line fact"
+          ],
+          "optional": true
+        },
+        {
+          "id": "integrations",
+          "purpose": "Where the product works or what it connects to, as a short teaser of the full list.",
+          "use": [
+            "logo-strip"
+          ],
+          "alternatives": [
+            "feature-grid: integrations described as surfaces (email, docs, chat) without third-party logos"
+          ],
+          "fields": [
+            "Integrations / surfaces it works in",
+            "Link to the full integrations page when there is one"
+          ],
+          "optional": true
+        },
+        {
+          "id": "setup",
+          "purpose": "How fast a customer goes from sign-up to first result, as three or four timed steps.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Per step: title, one sentence, time it takes",
+            "Action after the last step"
+          ]
+        },
+        {
+          "id": "security-teaser",
+          "purpose": "Short answer to where data lives and who can see it, linking to the security page.",
+          "use": [
+            "media-text"
+          ],
+          "fields": [
+            "Where data is stored",
+            "Whether data is used to train models (AI products)",
+            "Compliance and agreements offered (DPA, KVKK, GDPR)",
+            "Link to the security page"
+          ],
+          "optional": true
+        },
+        {
+          "id": "quote",
+          "purpose": "One customer story (or a wall of short quotes for a technical audience) in their words.",
+          "use": [
+            "testimonials"
+          ],
+          "fields": [
+            "Quote",
+            "Author name and role",
+            "Company and logo (with permission)"
+          ],
+          "when": {
+            "any": [
+              "section:testimonials"
+            ]
+          }
+        },
+        {
+          "id": "pricing",
+          "purpose": "Plans on the home page so visitors do not have to leave to compare.",
+          "use": [
+            "pricing-table"
+          ],
+          "fields": [
+            "Plan names and who each is for",
+            "Price per plan and billing period (monthly / yearly)",
+            "Yearly saving",
+            "Included / excluded features per plan",
+            "Highlighted plan",
+            "Custom / sales-led plan and its contact action",
+            "Tax note and refund / cancellation footnote"
+          ],
+          "when": {
+            "any": [
+              "section:pricing"
+            ]
+          },
+          "notes": "On a multi-page site keep a short version here and link to the pricing page."
+        },
+        {
+          "id": "faq",
+          "purpose": "Objections before buying: trial end, data location, setup requirements.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Questions and answers buyers ask before signing up"
+          ],
+          "when": {
+            "any": [
+              "section:faq"
+            ]
+          }
+        },
+        {
+          "id": "closing-cta",
+          "purpose": "Repeat the main action at the end with the friction removed (no card, cancel any time).",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Closing line",
+            "Primary and secondary action",
+            "Fine print (trial terms)",
+            "Phone / WhatsApp for sales when offered"
+          ],
+          "notes": "Band variant on the accent surface."
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "path": {
+        "en": "/pricing",
+        "tr": "/fiyatlar"
+      },
+      "title": {
+        "en": "Pricing",
+        "tr": "Fiyatlar"
+      },
+      "purpose": "Let a buyer pick a plan and know the bill before talking to anyone.",
+      "when": {
+        "any": [
+          "section:pricing"
+        ]
+      },
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Page title and the one rule of the pricing (per seat, per location, per usage).",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Pricing headline",
+            "How the price is counted"
+          ]
+        },
+        {
+          "id": "plans",
+          "purpose": "All plans with a monthly / yearly switch.",
+          "use": [
+            "pricing-table"
+          ],
+          "alternatives": [
+            "page-pricing-01: a standard pricing page with plans, comparison and FAQ in one block"
+          ],
+          "fields": [
+            "Plan names, prices per billing period, included limits, highlighted plan, plan actions",
+            "Tax note",
+            "Overage / extra usage price",
+            "Refund and cancellation terms"
+          ]
+        },
+        {
+          "id": "estimator",
+          "purpose": "Usage-priced products: set seats and usage with sliders and see the monthly bill per plan, with the cheapest plan that fits marked.",
+          "use": [
+            "slider",
+            "stat"
+          ],
+          "fields": [
+            "Pricing formula per plan (base, per seat, per usage unit)",
+            "Slider ranges and units",
+            "Which users are free (e.g. viewers)"
+          ],
+          "optional": true,
+          "notes": "Total announced in an aria-live region; show the formula in words under the result."
+        },
+        {
+          "id": "compare",
+          "purpose": "Every feature line per plan for buyers who check details.",
+          "use": [
+            "comparison-table"
+          ],
+          "fields": [
+            "Feature rows grouped by area",
+            "Value or included / not per plan"
+          ]
+        },
+        {
+          "id": "billing-faq",
+          "purpose": "Billing questions: invoices, currency, VAT, plan changes, refunds.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Billing questions and answers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "integrations",
+      "path": {
+        "en": "/integrations",
+        "tr": "/entegrasyonlar"
+      },
+      "title": {
+        "en": "Integrations",
+        "tr": "Entegrasyonlar"
+      },
+      "purpose": "A searchable catalogue of what the product connects to, with honest status per connector.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "What connecting means (read-only, sync frequency) and how many connectors exist.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Headline",
+            "How connections work",
+            "Count of available connectors"
+          ]
+        },
+        {
+          "id": "catalogue",
+          "purpose": "Filter by kind and status, search by name; each connector shows kind, sync method and status (available, beta, planned).",
+          "use": [
+            "filter-bar",
+            "item",
+            "badge"
+          ],
+          "alternatives": [
+            "data-table: a long technical list where sorting by column matters"
+          ],
+          "fields": [
+            "Per connector: name, kind, sync method / frequency, status, one-line note",
+            "Kinds used as filters",
+            "Request-a-connector link"
+          ],
+          "notes": "Planned connectors must be labelled as planned (and hideable); show an empty state with a request action when nothing matches."
+        },
+        {
+          "id": "request",
+          "purpose": "Ask for a missing connector.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Where requests go"
+          ],
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "path": {
+        "en": "/security",
+        "tr": "/guvenlik"
+      },
+      "title": {
+        "en": "Security",
+        "tr": "Guvenlik"
+      },
+      "purpose": "Answer a buyer's security review on one page: data flow, retention, admin controls, subprocessors and how to report a vulnerability.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Short promise about data handling with the key facts as meta.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Headline",
+            "Key facts (storage region, encryption, certifications)"
+          ],
+          "notes": "A reading progress bar suits this long page."
+        },
+        {
+          "id": "flow",
+          "purpose": "What happens to a piece of customer data from input to deletion, as steps.",
+          "use": [
+            "steps"
+          ],
+          "fields": [
+            "Steps of the data flow with what is stored where and for how long"
+          ]
+        },
+        {
+          "id": "retention",
+          "purpose": "Retention per plan in a table.",
+          "use": [
+            "table"
+          ],
+          "fields": [
+            "Data types",
+            "Retention period per plan",
+            "Whether data trains models"
+          ]
+        },
+        {
+          "id": "admin-policy",
+          "purpose": "Controls an admin can set (SSO, allowed domains, policy file).",
+          "use": [
+            "rich-text-section"
+          ],
+          "fields": [
+            "Admin controls and how they are configured"
+          ],
+          "optional": true
+        },
+        {
+          "id": "subprocessors",
+          "purpose": "Every third party that processes data, with purpose and region.",
+          "use": [
+            "table"
+          ],
+          "fields": [
+            "Per subprocessor: name, purpose, region",
+            "Date of the last change"
+          ]
+        },
+        {
+          "id": "report",
+          "purpose": "How to report a vulnerability and what the reporter can expect.",
+          "use": [
+            "rich-text-section"
+          ],
+          "fields": [
+            "Security contact address",
+            "Response time",
+            "Disclosure policy"
+          ]
+        },
+        {
+          "id": "security-faq",
+          "purpose": "Remaining security questions.",
+          "use": [
+            "faq"
+          ],
+          "fields": [
+            "Security questions and answers"
+          ],
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "changelog",
+      "path": {
+        "en": "/changelog",
+        "tr": "/yenilikler"
+      },
+      "title": {
+        "en": "What's new",
+        "tr": "Yenilikler"
+      },
+      "purpose": "Release notes, newest first, so customers see the product moving and what changed for them.",
+      "sections": [
+        {
+          "id": "intro",
+          "purpose": "Release cadence and the latest version.",
+          "use": [
+            "page-intro"
+          ],
+          "fields": [
+            "Release cadence",
+            "Latest version and date"
+          ]
+        },
+        {
+          "id": "releases",
+          "purpose": "One block per release: version, date, title and the changes.",
+          "use": [
+            "release-notes"
+          ],
+          "alternatives": [
+            "feature-grid: few releases, each shown as a list of changes with icons"
+          ],
+          "fields": [
+            "Per release: version, ISO date, title, list of changes (title + one sentence)"
+          ]
+        },
+        {
+          "id": "closing-cta",
+          "purpose": "Turn a reader into a trial.",
+          "use": [
+            "cta"
+          ],
+          "fields": [
+            "Closing line and actions"
+          ]
+        }
+      ]
+    }
+  ],
+  "content": [
+    "One-line promise and who the product is for",
+    "Real product screenshots or a recreated UI for the hero and each feature",
+    "For a demo: scripted demo inputs and results (AI) or seeded demo data (analytics), clearly marked as examples",
+    "Customer logos and quotes with written permission",
+    "Measured figures with source, sample size and period",
+    "Setup steps with honest durations",
+    "Plans: names, prices per billing period, limits, tax note, refund and cancellation terms",
+    "Feature comparison per plan",
+    "Integrations / connectors list with status",
+    "Data handling facts: storage region, retention, model training policy, subprocessors, DPA",
+    "Vulnerability report contact and policy",
+    "Release history with versions and dates",
+    "Trial and demo targets (sign-up URL, demo booking, sales contact)"
+  ],
+  "styles": [
+    {
+      "name": "bright editorial glass",
+      "axes": {
+        "theme": "light",
+        "material": "glass",
+        "accent": "lime",
+        "density": "comfortable",
+        "font": "editorial",
+        "radius": "default"
+      },
+      "motion": "full",
+      "why": "A general B2B app sold to operators: friendly, with a cascading hero and a playing UI preview; quick motion keeps it lively."
+    },
+    {
+      "name": "dense dark data",
+      "axes": {
+        "theme": "dark",
+        "material": "solid",
+        "accent": "ocean",
+        "density": "compact",
+        "font": "corporate",
+        "radius": "sharp"
+      },
+      "motion": "subtle",
+      "why": "Data, analytics and technical products: wide container, mono figures, hairline spec sheets; data people read specs, not slogans."
+    },
+    {
+      "name": "dark AI glass",
+      "axes": {
+        "theme": "dark",
+        "material": "glass",
+        "accent": "brand",
+        "density": "comfortable",
+        "font": "grotesk"
+      },
+      "motion": "subtle",
+      "why": "AI products: dark by default with crisp short motion so the demo is the only thing that moves much."
+    }
+  ],
+  "pitfalls": [
+    "Figures without a source (\"38% fewer\" with no survey, size or period) look invented; every stat needs a source line.",
+    "Demos that look like real customer data or make network calls; mark seeded / scripted data as an example and keep it local.",
+    "Interactive demos that only make sense visually: put the key numbers and the result in text and an aria-live region, honour reduced motion, keep controls keyboard reachable.",
+    "Prices shown without tax note, billing period or what happens at the end of the trial; yearly plans without refund terms.",
+    "Customer logos and quotes used without permission, or integration partner logos used against their brand rules.",
+    "AI products that do not say whether customer data trains models, where it is stored and who the subprocessors are.",
+    "Feature names in internal jargon; buyers search for the job (\"shared inbox\", \"revenue dashboard\"), not the module name.",
+    "A changelog that is not kept up: a stale announcement bar or last release from a year ago signals a dead product."
+  ]
+}
