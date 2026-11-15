@@ -4,6 +4,41 @@ Release notes for the Vamos UI MCP server (local stdio and the hosted server at 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change tools).
 
+## 0.3.2 — 2026-11-15
+
+### Patch Changes
+
+- d78c5ab: Five new website components for code samples, app mockups, store links, video lists and file downloads, and the site recipes now use them.
+  
+  - `CodeBlock` and `CodeTabs`: highlighted code with a file name, line numbers, marked lines and a copy button that falls back where the clipboard is blocked. The language picked in one `CodeTabs` switches every other block on the page and can be remembered per browser (`useCodeLanguage` lets an install line or SDK table follow it). A small built-in highlighter colours with tokens; Shiki or Prism output plugs in through `highlight` or `html`.
+  - `DeviceFrame` and `DeviceScreens`: a phone, tablet or desktop browser drawn from tokens whose screen lays content out at the device's real width and scales to fit; swap screens from feature tabs or scroll.
+  - `StoreBadges`: App Store and Google Play links drawn as plain text with a generic icon (no store artwork), more stores, and an optional QR code on wide screens.
+  - `VideoPlaylist` (`@vamos-ui/react/media`): one player and a list that swaps the video; YouTube and Vimeo stay behind the click-to-load facade.
+  - `DownloadKit`: files with format and size, downloaded one by one or ticked and saved as one ZIP built in the browser (`createZip`, no dependency); files that fail to fetch are listed inside the archive.
+  - Labels for all of them in English, Turkish, German, French, Spanish and Arabic.
+  - Recipes: developer-tool and publication use `code-block`; mobile-app uses `device-frame` and `store-badges`; musician and game use `video-playlist` and `download-kit`; digital-products uses `device-frame` and `download-kit`.
+- 60f0774: New components for signups, following and community pages, generic and documented, with built-in labels in all six locales:
+  
+  - `ReferralPanel`: place in line, a personal invite link to copy or send through the device's share sheet, and referral progress toward a reward.
+  - `EmailCapture`: a compact newsletter or waitlist signup (inline or stacked) with validation, success and error states, and the privacy link or KVKK checkbox. It posts to a URL, a server action or `onSubmit`, with the same fields as `ContactForm`.
+  - `SubscribeLinks`: "listen on / follow on" links from your own list (no bundled logos), with a Copy RSS feed button.
+  - `TopicList` and `TopicRow`: forum topics with tags, reply and view counts, the latest post, and pinned, solved, locked and unread states.
+  - `PrintButton` with `PrintStyles` / `printStyles()`: opens the print dialog with a suggested PDF file name, plus a print stylesheet that hides the site chrome and prints link addresses.
+  - The launch-waitlist, newsletter-writer, publication, podcast, community-forum and personal-cv recipes now use these components; a few other recipes list them as alternatives.
+  - Registry guidance (when to use, when not to, accessibility) for `ad-slot`, `billing-details`, `news-ticker`, `news-widgets`, `post-card` and `post-tabs`.
+- 28b8641: New pricing and giving components, generic and documented, with English, Turkish, German, French, Spanish and Arabic labels:
+  
+  - `Estimator`: a live calculator. Declarative inputs (number, slider, select, toggle, option cards, add-on checkboxes) feed a pure formula; the summary panel shows the total or a range, line items, facts, notes and a CTA that hands the selection on (callback, link or hidden form field). Sticky on wide containers, a bottom bar on narrow ones.
+  - `ChoiceGrid`: a two-axis option grid (size × frequency) as one radio group, arrow keys in both axes, a price per cell, unavailable cells and form posting.
+  - `TierPricing`: quantity breaks as a table or a ladder, with the active tier, unit price, total and the next break ("8 more for $45.00 per case"). `tierQuote()` gives the same numbers for order lines.
+  - `AmountPicker`: preset amounts with an impact line, an own amount with bounds and a one-off / monthly switch.
+  - `GoalMeter`: raised against a goal with backers and days left, or stock left of a run. Built on `Progress`.
+  - The site recipes (professional firm, home services, software product, developer tool, portfolio studio, subscription box, B2B supplier, nonprofit, online store, mobile app, agency, venue, real estate) now name these components where they describe calculators, price grids, quantity tiers, donations and meters.
+- Updated dependencies [d78c5ab]
+- Updated dependencies [60f0774]
+- Updated dependencies [28b8641]
+  - vamos-ui@0.7.0
+
 ## 0.3.1 — 2026-11-15
 
 ### Patch Changes
