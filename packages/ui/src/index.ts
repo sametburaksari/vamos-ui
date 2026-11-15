@@ -72,6 +72,8 @@ export { ActionMenu, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent
 export type { ActionMenuLabels, ActionMenuProps, DropdownMenuCheckboxItemProps, DropdownMenuContentProps, DropdownMenuItemProps, DropdownMenuRadioItemProps, DropdownMenuSubTriggerProps } from "./components/dropdown-menu";
 export { EditorBar, EditorCanvas, EditorLayout, EditorPanel, EditorPanelContent, EditorPanelSection, SaveStatus } from "./components/editor-layout";
 export type { EditorBarProps, EditorCanvasProps, EditorLayoutLabels, EditorLayoutProps, EditorPanelContentProps, EditorPanelProps, EditorPanelSectionProps, SaveState, SaveStatusProps } from "./components/editor-layout";
+export { EmailCapture, emailCaptureLabels } from "./components/email-capture";
+export type { EmailCaptureLabels, EmailCaptureProps } from "./components/email-capture";
 export { EmptyState, EmptyStateActions, EmptyStateDescription, EmptyStateIcon, EmptyStateTitle, emptyStateVariants } from "./components/empty-state";
 export type { EmptyStateKind, EmptyStateProps } from "./components/empty-state";
 export { EntityCard, entityCardLabels } from "./components/entity-card";
@@ -128,6 +130,8 @@ export { PLACEHOLDER_ART_PATTERNS, PlaceholderArt, hashSeed, placeholderArtRecip
 export type { PlaceholderArtPattern, PlaceholderArtProps, PlaceholderArtRecipe } from "./components/placeholder-art";
 export { Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverDescription, PopoverFooter, PopoverHeader, PopoverTitle, PopoverTrigger, popoverContentVariants } from "./components/popover";
 export type { PopoverContentProps, PopoverHeaderProps } from "./components/popover";
+export { PrintButton, PrintStyles, printButtonLabels, printStyles } from "./components/print-button";
+export type { PrintButtonLabels, PrintButtonProps, PrintStylesOptions, PrintStylesProps } from "./components/print-button";
 export { Progress, ProgressCircle, progressTrackVariants } from "./components/progress";
 export type { ProgressCircleProps, ProgressProps, ProgressTone } from "./components/progress";
 export { QrCode, encodeQr, qrPath } from "./components/qr-code";
@@ -140,6 +144,8 @@ export { RecordAside, RecordAsideSection, RecordHeader, RecordLayout, RecordMain
 export type { RecordAsideProps, RecordAsideSectionProps, RecordFact, RecordHeaderProps, RecordLayoutLabels, RecordLayoutProps, RecordLayoutState, RecordMainProps, RecordPagerProps, RecordSectionProps, SidePaneHandleProps } from "./components/record-detail-layout";
 export { RecordPicker, arrayRecordSource, clearRecordPickerCache } from "./components/record-picker";
 export type { ArrayRecordSourceOptions, RecordPickerAction, RecordPickerLabels, RecordPickerMultipleProps, RecordPickerProps, RecordPickerRenderState, RecordPickerSingleProps, RecordPickerTriggerContext, RecordSource } from "./components/record-picker";
+export { ReferralPanel, referralPanelLabels } from "./components/referral-panel";
+export type { ReferralPanelLabels, ReferralPanelProps } from "./components/referral-panel";
 export { ReleaseNotes, releaseAnchor, releaseChangeTypes, releaseNotesLabels } from "./components/release-notes";
 export type { Release, ReleaseChange, ReleaseChangeType, ReleaseChangeTypeDef, ReleaseNotesLabels, ReleaseNotesProps } from "./components/release-notes";
 export { ResizableGroup, ResizableHandle, ResizablePanel, useResizableGroupRef, useResizablePanelRef } from "./components/resizable";
@@ -180,6 +186,8 @@ export { StatusBadge, StatusIcon, StatusPicker } from "./components/status-picke
 export type { StatusCategory, StatusConfirm, StatusDef, StatusPickerLabels, StatusPickerProps, StatusTone } from "./components/status-picker";
 export { Step, StepIndicator, Stepper } from "./components/stepper";
 export type { StepIndicatorProps, StepItem, StepProps, StepStatus, StepperProps } from "./components/stepper";
+export { SubscribeLinks, subscribeLinksLabels } from "./components/subscribe-links";
+export type { SubscribeLink, SubscribeLinksLabels, SubscribeLinksProps } from "./components/subscribe-links";
 export { Switch, switchVariants } from "./components/switch";
 export type { SwitchProps } from "./components/switch";
 export { Table, TableBody, TableCaption, TableCell, TableContainer, TableEmpty, TableFooter, TableHead, TableHeader, TableRow } from "./components/table";
@@ -200,6 +208,8 @@ export { IconButtonTooltip, Tooltip, TooltipContent, TooltipProvider, TooltipRoo
 export type { IconButtonTooltipProps, TooltipContentProps, TooltipProps, TooltipProviderProps, TooltipRootProps } from "./components/tooltip";
 export { TopBar, TopBarActions, TopBarMenuButton, TopBarSearch, TopBarSeparator, TopBarShellContext, TopBarSpacer, TopBarStart, UserMenu } from "./components/top-bar";
 export type { TopBarLabels, TopBarMenuButtonProps, TopBarProps, TopBarSearchProps, UserMenuProps } from "./components/top-bar";
+export { TopicList, TopicRow, topicListLabels } from "./components/topic-list";
+export type { TopicListItem, TopicListLabels, TopicListProps, TopicPerson, TopicRowProps } from "./components/topic-list";
 export { Tour, tourLabels } from "./components/tour";
 export type { TourLabels, TourProps, TourStep } from "./components/tour";
 export { TreeSelect } from "./components/tree-select";
