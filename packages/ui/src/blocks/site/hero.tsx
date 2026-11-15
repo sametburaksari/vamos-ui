@@ -21,7 +21,7 @@ export interface HeroProps extends Omit<BlockBaseProps, "variant" | "labels"> {
    * statement: one centred sentence, services as slash-separated links. No image.
    */
   variant?: HeroVariant;
-  /** Small mono line above the title ("Agency · Maltepe, Istanbul"). */
+  /** Small mono line above the title ("Studio · Moda, Istanbul"). */
   eyebrow?: React.ReactNode;
   /** The page `h1`. A string supports one `*emphasis*`; `\n` sets a line break (each line is a block, joined by a real space so search engines and screen readers read "közde, muhabbet"). ≤ 9 words reads best. */
   title: React.ReactNode;
