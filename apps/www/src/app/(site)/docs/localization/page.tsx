@@ -114,7 +114,7 @@ formatTrIban("TR330006100519786457841326"); // "TR33 0006 1005 1978 6457 8413 26
           ["Turkish-aware search and slugs (İ/ı, ş, ğ)", "Combobox, pickers, slug input", <Badge key="6" tone="success">Ready</Badge>],
         ]}
       />
-      <P>Locale data packs are Turkey-first: only the Turkish pack exists today. German, French, Spanish and Arabic translate the interface strings, but there is no built-in ID, IBAN, tax, holiday or address data for those countries yet. Other countries can add a pack with the same shape (<C>LocaleDataPack</C>): week start, holidays, ID and IBAN rules, phone format, money, tax scheme and address data.</P>
+      <P>Addresses work for every country: AddressField and formatAddress follow each country's format (field order, names, required parts, postal code patterns; Google address data, CC BY 4.0), with state / province pickers for 202 countries (Google, Unicode CLDR) and optional city suggestions (city data © GeoNames, CC BY 4.0). Locale data packs are Turkey-first: only the Turkish pack exists today. German, French, Spanish and Arabic translate the interface strings, but there is no built-in ID, IBAN, tax, holiday or address data for those countries yet. Other countries can add a pack with the same shape (<C>LocaleDataPack</C>): week start, holidays, ID and IBAN rules, phone format, money, tax scheme and address data.</P>
 
       <H2 id="rtl">Right-to-left</H2>
       <P>
