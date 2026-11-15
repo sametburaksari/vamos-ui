@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { PRESET_FAMILIES } from "../../cli/src/preset";
 import { RULES } from "../src/guidance.js";
 import { Registry } from "../src/registry.js";
 import {
@@ -114,12 +115,27 @@ describe("get_theming / get_rules", () => {
     expect(await getTheming(registry, { include_tokens: false })).not.toMatch(/## Tokens/);
   });
 
-  it("documents corners as the sixth axis and its scope", async () => {
+  it("documents corners and scene as axes, and their scope", async () => {
     const out = await getTheming(registry, { include_tokens: false });
-    expect(out).toMatch(/six independent axes \(mode, material, accent, density, font, corners\)/);
+    expect(out).toMatch(/seven independent axes \(mode, material, accent, density, font, corners, scene\)/);
     expect(out).toContain("## Corners");
     expect(out).toMatch(/`data-radius="sharp"` or `"round"` \(absent = default\)/);
     expect(out).toMatch(/Stays round on purpose: `rounded-full`/);
+  });
+
+  it("names the style families with their preset codes and the new tokens", async () => {
+    const out = await getTheming(registry, { include_tokens: false });
+    expect(out).toContain("## Style families");
+    expect(out).toContain("`npx vamos-ui theme --family <id>`");
+    expect(out).toContain("| `newsroom` |");
+    expect(out).toContain("`v1lsx9a3b16kbnp`");
+    expect(out).toContain("`rounded-control`");
+    expect(out).toContain("bg-cat-1 … bg-cat-6");
+    expect(out).toContain('`data-scene="paper|warm|ink"`');
+    expect(out).not.toContain('data-scene="neutral"');
+    // Same families and codes as the CLI (packages/cli/src/preset.ts).
+    for (const f of PRESET_FAMILIES) expect(out, f.id).toContain(`| \`${f.id}\` |`), expect(out, f.id).toContain(`\`${f.code}\``);
+    expect(out.match(/^\| `[a-z0-9]+` \| .* \| `v1[a-z0-9]+` \|$/gm)).toHaveLength(PRESET_FAMILIES.length);
   });
 
   it("covers the core rules", () => {
