@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "One story in a news, magazine or blog layout: overlay, stack, row, list or text shapes.",
+    "Home-page grids and section fronts built from posts with a section badge and byline."
+  ],
+  "avoidWhen": [
+    "Product tiles — use product-card.",
+    "Forum topics — use topic-list."
+  ],
+  "related": [
+    "post-modules",
+    "post-tabs",
+    "news-widgets",
+    "blog-list"
+  ],
+  "a11y": [
+    "An article whose title link covers the card (one tab stop); the section badge is its own link.",
+    "The publish time is a time element; comment counts are announced in full."
+  ]
+}

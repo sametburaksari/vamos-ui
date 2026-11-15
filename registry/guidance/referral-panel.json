@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "The confirmation step of a launch waitlist: the person's place in line and a link that moves them up.",
+    "Invite or give-a-month-get-a-month programmes where people share a personal link and see progress toward a reward."
+  ],
+  "avoidWhen": [
+    "There is no real queue or referral programme — show a plain confirmation (empty-state or alert).",
+    "Showing invented queue numbers or signup counts."
+  ],
+  "related": [
+    "countdown",
+    "email-capture",
+    "progress",
+    "qr-code",
+    "stat"
+  ],
+  "a11y": [
+    "A labelled region; the big queue number is aria-hidden and a polite live sentence (\"You are number 412 in line\") is re-announced when it changes.",
+    "The link is a read-only labelled field; the copy result is announced in a status region and a failed copy shows a visible hint."
+  ]
+}

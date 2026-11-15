@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "Forum, community or Q&A topic lists with replies, views and the latest post.",
+    "A \"latest discussions\" module on a home page or in a sidebar (TopicRow in your own list)."
+  ],
+  "avoidWhen": [
+    "Threaded replies inside one topic — use comment-thread.",
+    "Editorial articles — use post-card or blog-list.",
+    "Sortable admin tables of posts — use data-table."
+  ],
+  "related": [
+    "comment-thread",
+    "pagination",
+    "avatar",
+    "badge",
+    "data-table"
+  ],
+  "a11y": [
+    "A named list; each row's title is a heading whose link covers the row, while category and tag links stay their own tab stops.",
+    "Column heads are aria-hidden; every cell carries its own words (\"23 replies\", \"Last post by …\"), and pinned / locked / solved are spoken, not only shown as icons."
+  ]
+}

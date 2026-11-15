@@ -1,0 +1,21 @@
+{
+  "whenToUse": [
+    "A compact newsletter or waitlist signup inside a page: a hero card, a sidebar, the end of an article, a podcast page.",
+    "Anywhere the app wants one email field with the same server contract as ContactForm (URL or server action, honeypot, KVKK notice)."
+  ],
+  "avoidWhen": [
+    "A full-width signup section with its own heading — use cta (variant newsletter) or the footer newsletter.",
+    "Asking for more than an email — use contact-form or form fields."
+  ],
+  "related": [
+    "cta",
+    "contact-form",
+    "footer",
+    "referral-panel",
+    "consent-banner"
+  ],
+  "a11y": [
+    "Visible label (or a screen-reader-only one with hideLabel); errors tied with aria-describedby and aria-invalid, focus moves to the field on an invalid submit.",
+    "Success replaces the form with a focused status; server errors are a focused alert. The privacy checkbox is never pre-checked."
+  ]
+}
