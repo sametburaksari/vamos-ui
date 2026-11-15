@@ -60,7 +60,7 @@
           "id": "newsletter",
           "purpose": "Subscribe by email, with the cadence and an RSS link.",
           "use": ["cta"],
-          "alternatives": ["form-01: an inline email field that validates in place and confirms without leaving the page"],
+          "alternatives": ["email-capture: an inline email field that validates in place and confirms without leaving the page"],
           "fields": ["What subscribers get and how often", "RSS / feed URL"],
           "when": { "any": ["newsletter"] }
         }
@@ -136,7 +136,8 @@
         {
           "id": "newsletter",
           "purpose": "Subscribe at the end of the piece.",
-          "use": ["cta"],
+          "use": ["email-capture"],
+          "alternatives": ["cta: a full-width newsletter band"],
           "fields": ["What subscribers get and how often"],
           "when": { "any": ["newsletter"] }
         }

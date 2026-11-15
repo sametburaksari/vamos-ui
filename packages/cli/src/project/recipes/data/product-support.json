@@ -116,6 +116,7 @@
           "id": "subscribe",
           "purpose": "Email subscription (validated, with a confirmation state) and the RSS feed with a copy button.",
           "use": ["cta"],
+          "alternatives": ["subscribe-links: an RSS feed to copy plus other channels", "email-capture: updates by email inline"],
           "fields": ["What subscribers get and how often", "RSS feed URL", "Consent text"],
           "when": { "any": ["newsletter"] },
           "notes": "RSS alone can stay without the newsletter feature."
@@ -174,6 +175,7 @@
           "id": "subscribe",
           "purpose": "Get notified by email, webhook or RSS, only for incidents and maintenance.",
           "use": ["cta"],
+          "alternatives": ["email-capture: incident updates by email inline"],
           "fields": ["Notification channels offered", "How often messages are sent on average"]
         }
       ]
