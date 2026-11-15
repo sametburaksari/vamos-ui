@@ -26,6 +26,7 @@ import {
 import { formatAddress } from "../locale-data/world/format-address";
 import { findSubdivision, parseSubdivisions, type Subdivision, type SubdivisionLoader } from "../locale-data/world/subdivisions";
 import { bundledSubdivisions, SUBDIVISION_COUNTRIES } from "../locale-data/world/subdivisions-bundled";
+import { parseCities, type CityFile, type CityLoader } from "../locale-data/world/cities";
 import { Field, Fieldset, Input } from "./input";
 
 export { formatAddress };
@@ -224,6 +225,26 @@ function useRegions(source: AddressDataSource | undefined, level: RegionLevel, p
   return { items: current?.items ?? null, failed: !!current?.failed, provinces };
 }
 
+/** Suggestions per datalist; the most populous places of the country or of the chosen state. */
+const CITY_LIMIT = 3000;
+
+/** One country's city file, once `loader` is set (the field was focused); `null` until then and on failure. */
+function useCityFile(loader: CityLoader | undefined, country: string) {
+  const [state, setState] = React.useState<{ key: string; file: CityFile | null }>({ key: "", file: null });
+  React.useEffect(() => {
+    if (!loader) return;
+    let alive = true;
+    loader(country).then(
+      (file) => alive && setState({ key: country, file }),
+      () => alive && setState({ key: country, file: null }),
+    );
+    return () => {
+      alive = false;
+    };
+  }, [loader, country]);
+  return state.key === country ? state.file : null;
+}
+
 /** A country's subdivisions for `locale`, loaded lazily (`null` while loading). */
 function useSubdivisions(loader: SubdivisionLoader | undefined, country: string | undefined, locale: string) {
   const key = `${country ?? ""}|${locale}`;
@@ -356,6 +377,13 @@ export interface AddressFieldProps extends Omit<React.FieldsetHTMLAttributes<HTM
    * keeps a text field.
    */
   subdivisions?: SubdivisionLoader | false;
+  /**
+   * City suggestions (GeoNames, CC BY 4.0: show the attribution) for the city field of countries
+   * without a cascading source, loaded per country when the field is first focused; typing any
+   * other place stays possible. `citiesFromUrl()` loads from ui.vamos.ist, `citiesFromUrl("/data/cities/{cc}.json")`
+   * from your app. Default: none (no request).
+   */
+  cities?: CityLoader;
   /** Country list. Default: every country. */
   countries?: string[];
   /** Initial country when there is no value. Default `"TR"` for Turkish locales, else the locale's region. */
@@ -427,6 +455,7 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
     onValueChange,
     sources = { TR: trAddress },
     subdivisions = bundledSubdivisions,
+    cities,
     countries,
     defaultCountry,
     fields: fieldsProp,
@@ -466,6 +495,14 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
   const subs = useSubdivisions(!source && subdivisions ? subdivisions : undefined, a.country, locale);
   // A picker once the country has a list; a text field for countries without one (and while a
   // custom loader answers).
+  const [wantCities, setWantCities] = React.useState(false);
+  const cityFile = useCityFile(wantCities && !source ? cities : undefined, a.country);
+  const cityListId = React.useId();
+  const region1Code = subs.items && a.region1 ? findSubdivision(subs.items, a.region1)?.code : undefined;
+  const cityOptions = React.useMemo(
+    () => (cityFile ? parseCities(cityFile, locale, { subdivision: region1Code, limit: CITY_LIMIT }).map((c) => c.value) : []),
+    [cityFile, locale, region1Code],
+  );
   const subdivisionPicker =
     !source && !!subdivisions && (subs.items ? subs.items.length > 0 : subdivisions === bundledSubdivisions && SUBDIVISION_COUNTRIES.includes(a.country));
   const latest = useLatest(a);
@@ -595,8 +632,22 @@ export const AddressField = /*#__PURE__*/ React.forwardRef<HTMLFieldSetElement, 
             }}
           />
         ) : (
-          <Input size={size} value={a.region2 ?? ""} autoComplete="address-level2" onChange={(e) => set({ region2: e.currentTarget.value || undefined })} />
+          <Input
+            size={size}
+            value={a.region2 ?? ""}
+            autoComplete="address-level2"
+            list={cityOptions.length ? cityListId : undefined}
+            onFocus={cities ? () => setWantCities(true) : undefined}
+            onChange={(e) => set({ region2: e.currentTarget.value || undefined })}
+          />
         )}
+        {cityOptions.length ? (
+          <datalist id={cityListId}>
+            {cityOptions.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
+        ) : null}
       </Field>
     ) : null,
     region3: show("region3") ? (
