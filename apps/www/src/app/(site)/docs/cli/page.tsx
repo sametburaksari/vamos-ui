@@ -20,6 +20,8 @@ export default function CliPage() {
         { id: "presets", title: "Preset codes" },
         { id: "vamos-cli", title: "The vamos CLI" },
         { id: "site", title: "Website essentials" },
+        { id: "process", title: "Website process" },
+        { id: "countries", title: "Countries and markets" },
         { id: "mcp", title: "MCP server (AI agents)" },
       ]}
       prev={{ href: "/docs/payments", title: "Payments (iyzico, PayTR)" }}
@@ -232,7 +234,7 @@ npx vamos-ui site essentials --dry-run  # show the plan and the layout diff`} />
           [<C key="j">app/site-json-ld.tsx</C>, <span key="jd"><C>&lt;SiteJsonLd /&gt;</C>: the business type with address, phone, geo, opening hours and <C>sameAs</C>, plus <C>FAQPage</C> when <C>ai.faq</C> is set. Render it once in the root layout.</span>],
           [<C key="i">app/icon.svg</C>, "The favicon: the business name's first letter on a flat tile in the theme accent (or the brand accent)."],
           [<C key="o">app/opengraph-image.tsx</C>, <span key="od">The 1200×630 <C>og:image</C> (<C>next/og</C>): business name and description in the site&apos;s colours.</span>],
-          [<C key="p">app/&lt;legal&gt;/page.tsx</C>, <span key="pd">One page per legal link the blocks have, rendering <C>legal-01</C> with <C>values</C> from the site file, so the known <C>[fill-in]</C> fields are filled. A Turkish site (<C>locale</C> <C>tr-*</C>) with a contact form or newsletter also gets <C>/kvkk-aydinlatma-metni</C> when nothing links a KVKK notice yet; the command says to link it from the footer and the form.</span>],
+          [<C key="p">app/&lt;legal&gt;/page.tsx</C>, <span key="pd">One page per legal link the blocks have and per required legal page of the plan (<A href="#countries">by country</A>), rendering <C>legal-01</C> with <C>values</C> from the site file, so the known <C>[fill-in]</C> fields are filled. Without a plan, a site in Germany, Austria or France gets its imprint, and a site that collects personal data a privacy policy; a Turkish site (<C>locale</C> <C>tr-*</C>) with a contact form or newsletter gets <C>/kvkk-aydinlatma-metni</C> when nothing links a KVKK notice yet. The command lists the pages nothing links yet, to add to the footer.</span>],
         ]}
       />
       <P>
@@ -243,7 +245,7 @@ npx vamos-ui site essentials --dry-run  # show the plan and the layout diff`} />
       </P>
       <P>
         The JSON Schema is at <C>https://ui.vamos.ist/r/site-schema.json</C> (set <C>$schema</C> for editor hints).{" "}
-        <C>vamos-ui verify</C> reports empty required fields (name, url, phone or email, city; MERSİS and ETBİS for a shop) and a
+        <C>vamos-ui verify</C> reports empty required fields (name, url, phone or email, city; MERSİS and ETBİS for a shop in Türkiye) and a
         website without llms.txt (rule <C>site-info</C>). The legal pages stay template text: the business or its lawyer reviews them.
       </P>
 
@@ -264,10 +266,45 @@ npx vamos-ui task reset forms  # QA found a problem: reopen it`} />
         A brief has the goal, what to read, the part of the plan that matters for the task, the steps, the requirements the
         specialist owns, the checks that prove it is done and a fixed report format (<C>STATUS / CHANGED / CHECKS / REQUIREMENTS /
         FOLLOW-UPS</C>). The requirements come from a pack per site type on top of a shared baseline: a local business needs the
-        same name, address and phone as its Google profile and LocalBusiness JSON-LD; a shop needs Product JSON-LD, the distance
+        same name, address and phone as its Google profile and LocalBusiness JSON-LD; a shop needs Product JSON-LD and, in Türkiye, the distance
         sales agreement at checkout and ETBİS in the footer; a booking site states its cancellation rules and asks separate explicit
         consent for health data; an event has Event JSON-LD with a time zone. QA walks the whole list before deploy.
       </P>
+      <H3 id="countries">Countries and markets</H3>
+      <P>
+        The legal part of the process follows the country the business is registered in and the markets it sells to, not the site
+        language. The interview asks both as ISO codes (<C>country</C>: <C>DE</C>, <C>GB</C>, <C>US</C> …; <C>markets</C>: codes,{" "}
+        <C>EU</C> for the whole EU/EEA, <C>US-CA</C> for California); left empty, the country comes from the domain&apos;s ccTLD
+        (<C>.de</C>, <C>.co.uk</C>, <C>.com.br</C> …), then the site language, so plans written before keep working (a Turkish
+        site is a business in Türkiye). The plan records the result under <C>jurisdiction</C>, with the regimes that follow.
+      </P>
+      <Table
+        head={["Regime", "When", "Adds (examples)", "Legal pages"]}
+        rows={[
+          ["TR", "Türkiye", "KVKK notice, MERSİS, ETBİS, KEP, distance sales", <C key="tr">/kvkk-aydinlatma-metni, /mesafeli-satis-sozlesmesi …</C>],
+          ["EU", "Business or market in the EU/EEA", "GDPR Art. 13 notice, rights contact, prior consent with Reject as easy as Accept, provider info, 14-day withdrawal + model form, online withdrawal function (from 19 June 2026), total price with VAT, European Accessibility Act. No ODR link: the platform closed on 20 July 2025.", <C key="eu">/legal-notice, /withdrawal</C>],
+          ["DE / AT", "Business in Germany / Austria", "Impressum (DDG § 5 / ECG § 5), Datenschutzerklärung, TDDDG § 25, “zahlungspflichtig bestellen”, Widerrufsbelehrung, VSBG § 36", <C key="de">/impressum, /datenschutz, /cookie-richtlinie, /agb, /widerrufsbelehrung</C>],
+          ["FR", "Business in France", "Mentions légales (LCEN art. 1-1), CNIL “Tout refuser”, consumer mediator", <C key="fr">/mentions-legales, /politique-de-confidentialite, /gestion-des-cookies</C>],
+          ["UK", "Business or market in the UK", "UK GDPR notice, PECR cookies and marketing, company details on the website, ICO fee, 14-day cancellation", <C key="uk">/cancellation-rights (shops)</C>],
+          ["US, US-CA, US-STATES", "Business or market in the US", "CalOPPA policy, CCPA scope check, “Do Not Sell or Share” with ad tags, Global Privacy Control, CAN-SPAM, COPPA, ADA / WCAG, other state laws", <C key="us">/do-not-sell-or-share</C>],
+          ["CA, CA-QC", "Canada / Québec", "PIPEDA, CASL, Law 25 privacy officer and off-by-default tracking, French website in Québec", "—"],
+          ["BR, AE, SA, AU, CH", "Brazil, UAE, Saudi Arabia, Australia, Switzerland", "LGPD + encarregado, 7-day arrependimento; PDPL; PDPL; APP privacy policy, Spam Act, GST-inclusive prices; revFADP, UWG imprint for shops", "—"],
+        ]}
+      />
+      <P>
+        Every country requirement carries a <C>source</C> (the law or the regulator&apos;s page) so QA can check it; the ones that
+        depend on facts a template cannot know (size thresholds, national transposition, scope) are marked{" "}
+        <strong>verify with counsel</strong> and reported as open questions for the business&apos;s lawyer. They are checks, not
+        legal advice. Legal pages are written in the site&apos;s language where a preset exists (English, Turkish, German, French);
+        other languages get the English template and a note to translate it. <C>vamos-ui audit</C> and <C>site check</C> run the
+        country checks on a URL (missing Impressum or mentions légales is an error; ad tags in the US without “Do Not Sell or
+        Share”, and EU/UK trackers that load before consent, are warnings); the country comes from <C>--country</C>, else{" "}
+        <C>vamos.site.json</C>, else the ccTLD, else the <C>&lt;html lang&gt;</C> region.
+      </P>
+      <Code lang="bash" code={`npx vamos-ui new --answers answers.json   # "country": "DE", "markets": ["DE", "AT"]
+npx vamos-ui task brief legal             # country, regimes, requirements with sources
+npx vamos-ui site essentials              # /impressum, /datenschutz, /widerrufsbelehrung …
+npx vamos-ui audit https://ornek.de --country DE`} />
       <P>
         <C>vamos-ui agents</C> (also run by <C>new</C>) writes <C>.claude/skills/vamos-site/SKILL.md</C>, the orchestrator that
         interviews the user, shows the plan, hands each brief to a subagent and reports progress, and nine subagents in{" "}
