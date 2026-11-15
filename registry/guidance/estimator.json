@@ -1,0 +1,24 @@
+{
+  "whenToUse": [
+    "A price, fee, quote or projection that follows from a few answers: job size, seats and usage, session options, company type, a monthly amount and horizon.",
+    "Showing the line items behind a figure as the visitor changes inputs, then handing the selection to a contact form or booking.",
+    "Comparing what each plan would cost for the visitor's own numbers, with the cheapest that fits marked."
+  ],
+  "avoidWhen": [
+    "Fixed packages without inputs — use pricing-table.",
+    "A long flow with contact details, dates and validation per step — use multi-step-form, and put an Estimator (or its formula) in one of the steps.",
+    "A two-axis choice where each cell has its own price — use choice-grid."
+  ],
+  "related": [
+    "choice-grid",
+    "tier-pricing",
+    "pricing-table",
+    "multi-step-form",
+    "contact-form",
+    "slider"
+  ],
+  "a11y": [
+    "Inputs are kit controls (radio groups, checkbox cards, slider, switch, number field, native select) with visible labels; option groups are fieldsets named by their legend.",
+    "The figure is announced once per change through a polite live region; the narrow-screen bottom bar is decorative and its button moves focus to the summary panel."
+  ]
+}
