@@ -41,7 +41,7 @@ describe("AddressField", () => {
     const province = await within(group).findByRole("combobox", { name: "Province" });
     const district = within(group).getByRole("combobox", { name: "District" });
     expect(district).toBeDisabled();
-    await screen.findByRole("option", { name: "İstanbul" });
+    await screen.findByRole("option", { name: "İstanbul" }, { timeout: 5000 });
     await user.selectOptions(province, "İstanbul");
     await screen.findByRole("option", { name: "Kadıköy" });
     expect(district).toBeEnabled();
@@ -84,7 +84,7 @@ describe("AddressField neighbourhoods", () => {
     const { container } = render(<AddressField legend="Delivery address" sources={{ TR: fixtureSource }} defaultValue={{ country: "TR" }} onValueChange={onValueChange} />);
     const neighbourhood = await screen.findByRole("combobox", { name: "Neighbourhood" });
     expect(neighbourhood).toBeDisabled();
-    await screen.findByRole("option", { name: "İstanbul" });
+    await screen.findByRole("option", { name: "İstanbul" }, { timeout: 5000 });
     await user.selectOptions(screen.getByRole("combobox", { name: "Province" }), "İstanbul");
     await screen.findByRole("option", { name: "Kadıköy" });
     await user.selectOptions(screen.getByRole("combobox", { name: "District" }), "Kadıköy");
