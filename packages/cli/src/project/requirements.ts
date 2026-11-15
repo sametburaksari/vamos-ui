@@ -113,8 +113,8 @@ function base(c: ResolvedContext): Requirement[] {
   return out;
 }
 
-/** Regimes whose consumer law has a 14-day right of withdrawal for online sales. */
-const withdrawal14 = (c: ResolvedContext) => c.tr || c.jurisdiction.regimes.some((x) => x === "EU" || x === "UK") || !c.jurisdiction.country;
+/** Türkiye (and the generic pack, as before) state a 14-day right of withdrawal on the returns page. */
+const withdrawal14 = (c: ResolvedContext) => c.tr || !c.jurisdiction.country;
 
 const PACKS: Record<SiteType, (c: ResolvedContext) => Requirement[]> = {
   "local-business": () => [
@@ -136,9 +136,11 @@ const PACKS: Record<SiteType, (c: ResolvedContext) => Requirement[]> = {
     c.tr || !c.jurisdiction.country
       ? r("shop-checkout-legal", "legal", t("Checkout shows the pre-contract information and the distance sales agreement and needs an explicit tick before paying.", "Ödeme adımı ön bilgilendirme formunu ve mesafeli satış sözleşmesini gösterir, ödemeden önce açık onay ister."), undefined)
       : r("shop-checkout-legal", "legal", t("Before payment the checkout shows the seller, the main characteristics, the total price with taxes and delivery, and links the terms and the returns policy.", "Ödemeden önce satıcıyı, ürünün temel özelliklerini, vergi ve teslimat dahil toplam fiyatı gösterir; koşullara ve iade politikasına bağlantı verir."), undefined),
-    withdrawal14(c)
-      ? r("shop-returns", "legal", t("The returns page states the 14-day right of withdrawal and how to use it.", "İade sayfası 14 günlük cayma hakkını ve nasıl kullanılacağını anlatır."), undefined)
-      : r("shop-returns", "legal", t("The returns page states the return and refund policy (period, condition, who pays shipping) and how to start a return.", "İade sayfası iade ve geri ödeme politikasını (süre, koşul, kargoyu kim öder) ve iadenin nasıl başlatılacağını anlatır."), undefined),
+    !c.tr && (c.jurisdiction.regimes.includes("EU") || c.jurisdiction.regimes.includes("UK"))
+      ? r("shop-returns", "legal", t("The right-of-withdrawal page states the 14-day right, its exceptions, who pays the return and how to use it, and links the model form.", "Cayma hakkı sayfası 14 günlük hakkı, istisnalarını, iade kargosunu kimin ödediğini ve nasıl kullanılacağını anlatır; örnek forma bağlantı verir."), undefined)
+      : withdrawal14(c)
+        ? r("shop-returns", "legal", t("The returns page states the 14-day right of withdrawal and how to use it.", "İade sayfası 14 günlük cayma hakkını ve nasıl kullanılacağını anlatır."), undefined)
+        : r("shop-returns", "legal", t("The returns page states the return and refund policy (period, condition, who pays shipping) and how to start a return.", "İade sayfası iade ve geri ödeme politikasını (süre, koşul, kargoyu kim öder) ve iadenin nasıl başlatılacağını anlatır."), undefined),
     ...(c.tr ? [r("shop-etbis", "legal", t("ETBİS registration and MERSIS number are in the footer.", "ETBİS kaydı ve MERSİS numarası footer'da."), VERIFY, ETBIS)] : []),
     r("shop-payment-test", "build", t("A full order with the payment provider's test card succeeds, the callback is verified on the server, and a failed payment shows a clear error.", "Ödeme sağlayıcının test kartıyla tam bir sipariş başarılı olur, geri dönüş sunucuda doğrulanır, başarısız ödeme net bir hata gösterir."), undefined),
     r("shop-emails", "build", t("Order confirmation and shipping emails reach the customer, with the order and the seller's details.", "Sipariş onayı ve kargo e-postaları müşteriye, sipariş ve satıcı bilgileriyle ulaşır."), undefined),
