@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "A product changelog or release history with versions, dates and typed changes (added, changed, fixed, removed).",
+    "Pages that need a linkable anchor per release and an optional filter by change type."
+  ],
+  "avoidWhen": [
+    "Record or audit history of who did what — use activity-timeline or audit-log.",
+    "Comparing two versions of a document — use version-history."
+  ],
+  "related": [
+    "activity-timeline",
+    "version-history",
+    "badge",
+    "button-group"
+  ],
+  "a11y": [
+    "Each release is an article labelled by its heading (title plus version); the date is a <time> element and the anchor link has a full-sentence name.",
+    "Change types are text tags, not colour only; filter results are announced in a polite live region."
+  ]
+}

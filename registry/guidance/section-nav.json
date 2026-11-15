@@ -1,0 +1,22 @@
+{
+  "whenToUse": [
+    "A sticky in-page table of contents for long pages: documentation, handbooks, CVs, policy pages, long articles.",
+    "Showing which section the reader is in while they scroll."
+  ],
+  "avoidWhen": [
+    "Navigation between pages — use navigation-menu, sidebar or navbar.",
+    "Switching views in place without scrolling — use tabs.",
+    "Pages with only two or three short sections."
+  ],
+  "related": [
+    "navigation-menu",
+    "tabs",
+    "article-layout",
+    "reading-progress"
+  ],
+  "a11y": [
+    "A nav landmark (named \"On this page\" by default or by the visible title) of plain #id links that work without JavaScript.",
+    "The current section's link gets aria-current=\"location\"; the accent rule is decorative.",
+    "Clicking moves focus to the section and updates the URL hash; scrolling is instant under reduced motion or data-motion=\"off\"."
+  ]
+}

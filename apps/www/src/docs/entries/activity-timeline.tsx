@@ -5,6 +5,7 @@ import ActivityTimelineSteps from "../examples/activity-timeline/steps";
 import ActivityTimelineWithBody from "../examples/activity-timeline/with-body";
 import ActivityTimelineLive from "../examples/activity-timeline/live";
 import ActivityTimelineLoadMore from "../examples/activity-timeline/load-more";
+import ActivityTimelineIncident from "../examples/activity-timeline/incident";
 
 const entry: DocEntry = {
   slug: "activity-timeline",
@@ -27,6 +28,7 @@ import { Inbox } from "lucide-react";
     ex("steps", "Steps", "activity-timeline/steps.tsx", ActivityTimelineSteps, "variant=\"steps\": done / current / upcoming / failed, aria-current=\"step\" and status text for screen readers."),
     ex("with-body", "Notes and comments", "activity-timeline/with-body.tsx", ActivityTimelineWithBody, "body holds a note or quote; actions add buttons under it."),
     ex("live", "Live feed", "activity-timeline/live.tsx", ActivityTimelineLive, "New events wait behind a \"3 new updates\" pill instead of shifting the list; announcement is a polite live region you batch."),
+    ex("incident", "Incident updates (status page)", "activity-timeline/incident.tsx", ActivityTimelineIncident, "An incident's updates, newest first: your own phases (investigating → identified → monitoring → resolved) map to a tone and are always written as the title; times in UTC grouped by day; affected components in the header."),
     ex("load-more", "Paginated history with filters", "activity-timeline/load-more.tsx", ActivityTimelineLoadMore, "hasMore + onLoadMore show a busy load button; filter renders chips above the list."),
   ],
   api: [

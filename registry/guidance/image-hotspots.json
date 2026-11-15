@@ -1,0 +1,20 @@
+{
+  "whenToUse": [
+    "Picking a place or part on a picture: rooms on a floor plan, parts of a product, buildings on a campus or venue map.",
+    "Explaining an image with labelled points and short details."
+  ],
+  "avoidWhen": [
+    "Locations with latitude and longitude — use pin-map.",
+    "A plain list of options with no spatial meaning — use radio-group or toggle-group.",
+    "Zoomable photo viewing — use lightbox."
+  ],
+  "related": [
+    "pin-map",
+    "radio-group",
+    "lightbox"
+  ],
+  "a11y": [
+    "Every spot is a real button with an accessible name; single selection is a radio group, multiple selection uses aria-pressed toggle buttons.",
+    "One tab stop with arrow keys to the nearest spot in a direction, Home / End and Escape; provide a list or legend when the picture alone carries meaning."
+  ]
+}
