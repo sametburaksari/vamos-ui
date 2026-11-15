@@ -54,6 +54,7 @@ import docDialog from "./dialog";
 import docDonutChart from "./donut-chart";
 import docDropdownMenu from "./dropdown-menu";
 import docEditorLayout from "./editor-layout";
+import docEmailCapture from "./email-capture";
 import docEmptyState from "./empty-state";
 import docEntityCard from "./entity-card";
 import docExport from "./export";
@@ -118,6 +119,7 @@ import docPostCard from "./post-card";
 import docPostModules from "./post-modules";
 import docPostTabs from "./post-tabs";
 import docPricingTable from "./pricing-table";
+import docPrintButton from "./print-button";
 import docProductCard from "./product-card";
 import docProgress from "./progress";
 import docQrCode from "./qr-code";
@@ -125,6 +127,7 @@ import docRadioGroup from "./radio-group";
 import docReadingProgress from "./reading-progress";
 import docRecordDetailLayout from "./record-detail-layout";
 import docRecordPicker from "./record-picker";
+import docReferralPanel from "./referral-panel";
 import docReleaseNotes from "./release-notes";
 import docResizable from "./resizable";
 import docResourceCalendar from "./resource-calendar";
@@ -158,6 +161,7 @@ import docStatsBand from "./stats-band";
 import docStatusPicker from "./status-picker";
 import docStepper from "./stepper";
 import docSteps from "./steps";
+import docSubscribeLinks from "./subscribe-links";
 import docSwitch from "./switch";
 import docTable from "./table";
 import docTabs from "./tabs";
@@ -170,6 +174,7 @@ import docTimeTracker from "./time-tracker";
 import docToast from "./toast";
 import docTooltip from "./tooltip";
 import docTopBar from "./top-bar";
+import docTopicList from "./topic-list";
 import docTour from "./tour";
 import docTreeSelect from "./tree-select";
 import docTreeView from "./tree-view";
@@ -235,6 +240,7 @@ export const entries: DocEntry[] = [
   docDonutChart,
   docDropdownMenu,
   docEditorLayout,
+  docEmailCapture,
   docEmptyState,
   docEntityCard,
   docExport,
@@ -299,6 +305,7 @@ export const entries: DocEntry[] = [
   docPostModules,
   docPostTabs,
   docPricingTable,
+  docPrintButton,
   docProductCard,
   docProgress,
   docQrCode,
@@ -306,6 +313,7 @@ export const entries: DocEntry[] = [
   docReadingProgress,
   docRecordDetailLayout,
   docRecordPicker,
+  docReferralPanel,
   docReleaseNotes,
   docResizable,
   docResourceCalendar,
@@ -339,6 +347,7 @@ export const entries: DocEntry[] = [
   docStatusPicker,
   docStepper,
   docSteps,
+  docSubscribeLinks,
   docSwitch,
   docTable,
   docTabs,
@@ -351,6 +360,7 @@ export const entries: DocEntry[] = [
   docToast,
   docTooltip,
   docTopBar,
+  docTopicList,
   docTour,
   docTreeSelect,
   docTreeView,
