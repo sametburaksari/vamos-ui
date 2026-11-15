@@ -143,6 +143,7 @@ async function ask(q: ReturnType<typeof localize>): Promise<string | string[]> {
   return unwrap(
     await p.text({
       message: message + skip,
+      ...(q.suggested ? { initialValue: q.suggested } : {}),
       validate: (v) => {
         const value = (v ?? "").trim();
         if (!value && !q.optional) return "Required / zorunlu";
@@ -199,7 +200,7 @@ export async function newProject(ctx: Context, args: ParsedArgs): Promise<number
     for (;;) {
       const [q] = nextQuestions(answers, 1);
       if (!q) break;
-      answers[q.id] = await ask(localize(q, lang));
+      answers[q.id] = await ask(localize(q, lang, answers));
       if (q.id === "existing_site") await doImport();
     }
   } else await doImport();

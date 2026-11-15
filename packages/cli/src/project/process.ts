@@ -161,13 +161,14 @@ export const ROLES: Record<Agent, Role> = {
   legal: {
     agent: "legal",
     name: { en: "Legal", tr: "Hukuk" },
-    description: "Legal pages specialist: KVKK / privacy / cookie / sales texts from the kit presets, filled from vamos.site.json and linked in the footer.",
+    description: "Legal pages specialist: the privacy, cookie, imprint and sales texts the business's country requires, from the kit presets, filled from vamos.site.json and linked in the footer.",
     steps: [
-      "`npx vamos-ui site essentials` writes a page for every legal link with the legal-01 block; fill the fields it reports missing in vamos.site.json (ask the user through the orchestrator).",
-      "Check the planned legal pages all exist, are linked in the footer, and that the KVKK notice is linked next to every form.",
+      "`npx vamos-ui site essentials` writes a page for every planned legal page and every legal link with the legal-01 block; fill the fields it reports missing in vamos.site.json (ask the user through the orchestrator).",
+      "Check the planned legal pages all exist, are linked in the footer, and that the privacy notice the plan names is linked next to every form.",
+      "Walk the legal requirements with their sources; for items marked \"verify with counsel\" write down the open question for the business's lawyer instead of deciding it.",
       "Tell the user the texts are templates that the business or its lawyer must approve; record that approval in your report.",
     ],
-    rules: ["Never present a template as legal advice.", "Trade name, tax number, MERSIS, ETBİS and KEP come only from the user."],
+    rules: ["Never present a template as legal advice.", "Legal identifiers (trade name, register and tax / VAT numbers and the country-specific ids in the brief) come only from the user."],
     tools: ["Read", "Write", "Edit", "Bash"],
   },
   seo: {
@@ -199,7 +200,7 @@ export const ROLES: Record<Agent, Role> = {
   forms: {
     agent: "forms",
     name: { en: "Forms", tr: "Formlar" },
-    description: "Forms specialist: the contact or booking form and its sender (contact.php, Resend or SMTP) with spam protection and the KVKK notice.",
+    description: "Forms specialist: the contact or booking form and its sender (contact.php, Resend or SMTP) with spam protection and the privacy notice link.",
     steps: [
       "`npx vamos-ui site form --kind <plan.forms.value>` writes the sender and the shared field list (never overwrites).",
       "Point <ContactForm action=…> at it (\"/contact.php\" for php-mail, the server action otherwise); add the privacy notice link and the optional marketing checkbox.",
@@ -236,6 +237,23 @@ export const ROLES: Record<Agent, Role> = {
   },
 };
 
+/** Country, markets and regimes, plus the country's own rules for the legal and forms specialists. */
+function jurisdictionLines(plan: ProjectPlan): string[] {
+  const j = plan.jurisdiction;
+  // Plans written before the jurisdiction model: a Turkish plan has a KVKK page.
+  const tr = j ? j.regimes.includes("TR") : plan.legalPages.some((p) => /kvkk/.test(p.path));
+  const out: string[] = [];
+  if (j?.country) out.push(`Country: ${j.country} (from ${j.from}). Markets: ${j.markets.join(", ") || j.country}. Legal regimes: ${j.regimes.join(", ") || "none specific"}.`);
+  else if (!tr) out.push("Country: unknown, so only the generic pack applies. Ask the user which country the business is registered in and set `country` in the answers.");
+  if (tr) out.push("Türkiye: the KVKK aydınlatma metni is linked next to every form; trade name, tax number, MERSİS, ETBİS and KEP come only from the user.");
+  return out;
+}
+
+/** One requirement as a checklist line: id, text, check command, source, counsel flag. */
+function requirementLine(r: NonNullable<ProjectPlan["requirements"]>[number], lang: Lang): string {
+  return `- [ ] \`${r.id}\` ${L(r.text, lang)}${r.check ? ` — check: \`${r.check}\`` : ""}${r.source ? ` — source: ${r.source}` : ""}${r.counsel ? " — **verify with counsel**" : ""}`;
+}
+
 /** What a specialist needs to know from the plan for its task (Markdown). */
 function planContext(plan: ProjectPlan, task: PlanTask, lang: Lang): string[] {
   const out: string[] = [];
@@ -257,6 +275,7 @@ function planContext(plan: ProjectPlan, task: PlanTask, lang: Lang): string[] {
       if (plan.commerce) out.push(`Store: catalogue ${plan.commerce.catalog.value}; payments ${plan.commerce.payments.join(", ") || "—"}; shipping ${plan.commerce.shipping}.`);
       break;
     case "legal":
+      out.push(...jurisdictionLines(plan));
       out.push("Legal pages:");
       for (const p of plan.legalPages) out.push(`- \`${p.path}\` ${L(p.title, lang)}${p.required ? " (required)" : " (recommended)"}`);
       for (const c of plan.compliance) out.push(`- ${L(c, lang)}`);
@@ -270,9 +289,11 @@ function planContext(plan: ProjectPlan, task: PlanTask, lang: Lang): string[] {
       for (const s of plan.tracking.steps) out.push(`- ${L(s, lang)}`);
       break;
     case "forms":
+      out.push(...jurisdictionLines(plan));
       out.push(`Sender: ${plan.forms.value} — ${L(plan.forms.reason, lang)}`, `Spam protection: ${plan.forms.spam.join(", ") || "—"}. Environment: ${plan.forms.env.join(", ") || "—"}.`);
       break;
     case "qa":
+      out.push(...jurisdictionLines(plan));
       out.push(`Hosting: ${plan.hosting.value} (${plan.hosting.output}). ${plan.pages.length} pages, ${plan.legalPages.length} legal pages.`);
       break;
     case "deploy": {
@@ -306,13 +327,19 @@ export function taskBrief(plan: ProjectPlan, id: string, lang: Lang = "tr"): str
   out.push("## Plan context", ...planContext(plan, task, lang), "");
   out.push("## Steps", ...role.steps.map((s, i) => `${i + 1}. ${s}`), "");
   if (task.needs?.length) out.push("## Needs from the user", ...task.needs.map((n) => `- ${L(n, lang)}`), "If any of these is still missing, report BLOCKED instead of guessing.", "");
-  if (reqs.length) out.push("## Requirements you own", ...reqs.map((r) => `- [ ] \`${r.id}\` ${L(r.text, lang)}${r.check ? ` — check: \`${r.check}\`` : ""}`), "");
+  if (reqs.length) out.push("## Requirements you own", ...reqs.map((r) => requirementLine(r, lang)), "");
   if (task.agent === "qa" && plan.requirements?.length) {
     out.push("## Full requirement list (walk all of it)");
     for (const a of AGENTS) {
       const own = plan.requirements.filter((r) => r.agent === a);
       if (own.length) out.push(`- ${ROLES[a].name.en}: ${own.map((r) => `\`${r.id}\``).join(", ")}`);
     }
+    const counsel = plan.requirements.filter((r) => r.counsel);
+    if (counsel.length) out.push("", `Verify with counsel (report as open legal questions, not as failures): ${counsel.map((r) => `\`${r.id}\``).join(", ")}.`);
+    const sourced = plan.requirements.filter((r) => r.source && r.agent !== "qa");
+    const bySource = new Map<string, string[]>();
+    for (const r of sourced) bySource.set(r.source!, [...(bySource.get(r.source!) ?? []), r.id]);
+    if (bySource.size) out.push("", "Sources to check the legal items against:", ...[...bySource].map(([src, ids]) => `- ${src} (${ids.join(", ")})`));
     out.push("");
   }
   out.push("## Rules", ...[...SHARED_RULES, ...role.rules].map((r) => `- ${r}`), "");

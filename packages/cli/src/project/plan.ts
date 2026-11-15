@@ -7,6 +7,7 @@
 
 import type { SiteInfo } from "../site-info";
 import { type Answers, type Lang, type SiteType, type Text, wantsTurkish } from "./questions";
+import { jurisdictionFromAnswers, type Jurisdiction } from "./jurisdiction";
 import { requirementsFor, taskDependencies, type Agent, type Requirement } from "./requirements";
 
 export type { Agent, Requirement } from "./requirements";
@@ -38,6 +39,18 @@ export interface PlanTask {
 
 export type TaskStatus = "todo" | "blocked" | "done";
 
+/** legal-01 preset kinds the plan can ask for. */
+export type LegalPageKind = "privacy" | "kvkk" | "cookies" | "terms" | "accessibility" | "returns" | "distance-sales" | "pre-information" | "legal-notice" | "withdrawal" | "do-not-sell";
+
+export interface PlanLegalPage {
+  path: string;
+  title: Text;
+  required: boolean;
+  /** The legal-01 preset and its language (`site essentials` writes the page from them). */
+  kind?: LegalPageKind;
+  locale?: "en" | "tr" | "de" | "fr";
+}
+
 export interface Decision {
   value: string;
   reason: Text;
@@ -50,7 +63,9 @@ export interface ProjectPlan {
   /** Closest example websites in the registry to start from. */
   templates: string[];
   pages: PlanPage[];
-  legalPages: { path: string; title: Text; required: boolean }[];
+  legalPages: PlanLegalPage[];
+  /** Where the business is, whom it serves and the legal regimes that follow (older plans have none: Türkiye or generic). */
+  jurisdiction?: Jurisdiction;
   hosting: Decision & { value: Hosting; output: "static" | "server" };
   forms: Decision & { value: FormDelivery; spam: string[]; consent: boolean; env: string[] };
   tracking: { tools: string[]; consentMode: boolean; steps: Text[] };
@@ -225,11 +240,134 @@ function decideForms(a: Answers, hosting: ProjectPlan["hosting"]): ProjectPlan["
   return { value: value as FormDelivery, reason, spam: value === "whatsapp" ? [] : spam, consent: true, env };
 }
 
-function legalPages(a: Answers, type: SiteType, tr: boolean, tracking: string[]): ProjectPlan["legalPages"] {
+/** Slug → preset, for the pages the plan writes (mirrors LEGAL_SLUGS in core/site.ts). */
+const PLAN_SLUGS: Record<string, { kind: LegalPageKind; locale: "en" | "tr" | "de" | "fr" }> = {
+  kvkk: { kind: "kvkk", locale: "tr" },
+  "kvkk-aydinlatma-metni": { kind: "kvkk", locale: "tr" },
+  "privacy-policy": { kind: "privacy", locale: "en" },
+  "gizlilik-politikasi": { kind: "privacy", locale: "tr" },
+  datenschutz: { kind: "privacy", locale: "de" },
+  "politique-de-confidentialite": { kind: "privacy", locale: "fr" },
+  "cookie-policy": { kind: "cookies", locale: "en" },
+  "cerez-politikasi": { kind: "cookies", locale: "tr" },
+  "cookie-richtlinie": { kind: "cookies", locale: "de" },
+  "gestion-des-cookies": { kind: "cookies", locale: "fr" },
+  "terms-of-use": { kind: "terms", locale: "en" },
+  "kullanim-kosullari": { kind: "terms", locale: "tr" },
+  agb: { kind: "terms", locale: "de" },
+  "conditions-generales-de-vente": { kind: "terms", locale: "fr" },
+  "distance-sales-agreement": { kind: "distance-sales", locale: "en" },
+  "mesafeli-satis-sozlesmesi": { kind: "distance-sales", locale: "tr" },
+  "pre-information": { kind: "pre-information", locale: "en" },
+  "on-bilgilendirme-formu": { kind: "pre-information", locale: "tr" },
+  "refund-policy": { kind: "returns", locale: "en" },
+  "iade-politikasi": { kind: "returns", locale: "tr" },
+  "legal-notice": { kind: "legal-notice", locale: "en" },
+  imprint: { kind: "legal-notice", locale: "en" },
+  "yasal-uyari": { kind: "legal-notice", locale: "tr" },
+  impressum: { kind: "legal-notice", locale: "de" },
+  "mentions-legales": { kind: "legal-notice", locale: "fr" },
+  withdrawal: { kind: "withdrawal", locale: "en" },
+  "cancellation-rights": { kind: "withdrawal", locale: "en" },
+  widerrufsbelehrung: { kind: "withdrawal", locale: "de" },
+  "droit-de-retractation": { kind: "withdrawal", locale: "fr" },
+  "do-not-sell-or-share": { kind: "do-not-sell", locale: "en" },
+  accessibility: { kind: "accessibility", locale: "en" },
+};
+const legalOf = (slug: string) => PLAN_SLUGS[slug] ?? {};
+
+/** Languages the legal-01 presets are written in. */
+type LegalLang = "en" | "de" | "fr";
+
+const LEGAL_PAGE_SLUG: Record<Exclude<LegalPageKind, "kvkk" | "distance-sales" | "pre-information">, Partial<Record<LegalLang, string>> & { en: string }> = {
+  privacy: { en: "privacy-policy", de: "datenschutz", fr: "politique-de-confidentialite" },
+  cookies: { en: "cookie-policy", de: "cookie-richtlinie", fr: "gestion-des-cookies" },
+  terms: { en: "terms-of-use", de: "agb", fr: "conditions-generales-de-vente" },
+  "legal-notice": { en: "legal-notice", de: "impressum", fr: "mentions-legales" },
+  withdrawal: { en: "withdrawal", de: "widerrufsbelehrung", fr: "droit-de-retractation" },
+  returns: { en: "refund-policy" },
+  "do-not-sell": { en: "do-not-sell-or-share" },
+  accessibility: { en: "accessibility" },
+};
+
+const LEGAL_TITLES: Record<string, Text> = {
+  "privacy-policy": t("Privacy policy", "Gizlilik politikası"),
+  datenschutz: t("Privacy policy (Datenschutzerklärung)", "Gizlilik politikası (Datenschutzerklärung)"),
+  "politique-de-confidentialite": t("Privacy policy (Politique de confidentialité)", "Gizlilik politikası (Politique de confidentialité)"),
+  "cookie-policy": t("Cookie policy", "Çerez politikası"),
+  "cookie-richtlinie": t("Cookie policy (Cookie-Richtlinie)", "Çerez politikası (Cookie-Richtlinie)"),
+  "gestion-des-cookies": t("Cookie policy (Gestion des cookies)", "Çerez politikası (Gestion des cookies)"),
+  "terms-of-use": t("Terms of use", "Kullanım koşulları"),
+  agb: t("Terms and conditions (AGB)", "Genel satış koşulları (AGB)"),
+  "conditions-generales-de-vente": t("Terms of sale (CGV)", "Genel satış koşulları (CGV)"),
+  "legal-notice": t("Legal notice", "Yasal bilgiler"),
+  imprint: t("Imprint", "Künye (Imprint)"),
+  impressum: t("Imprint (Impressum)", "Künye (Impressum)"),
+  "mentions-legales": t("Legal notice (Mentions légales)", "Yasal bilgiler (Mentions légales)"),
+  withdrawal: t("Right of withdrawal", "Cayma hakkı"),
+  "cancellation-rights": t("Right to cancel", "İptal hakkı"),
+  widerrufsbelehrung: t("Right of withdrawal (Widerrufsbelehrung)", "Cayma hakkı (Widerrufsbelehrung)"),
+  "droit-de-retractation": t("Right of withdrawal (Droit de rétractation)", "Cayma hakkı (Droit de rétractation)"),
+  "refund-policy": t("Returns and refunds", "İade ve geri ödeme"),
+  "do-not-sell-or-share": t("Do Not Sell or Share My Personal Information", "Kişisel bilgilerimi satma veya paylaşma (Do Not Sell or Share)"),
+  accessibility: t("Accessibility statement", "Erişilebilirlik beyanı"),
+};
+
+/** Which language the legal pages are written in: the site's first language when a preset exists for it, else English. */
+export function legalLanguage(languages: string[]): LegalLang {
+  const first = (languages[0] ?? "en").toLowerCase();
+  return first === "de" || first === "fr" ? first : "en";
+}
+
+/**
+ * Legal pages for a business in a known country other than Türkiye: privacy and cookies for
+ * everyone, the imprint where the country requires one, withdrawal pages for EU/UK shops and
+ * "Do Not Sell or Share" for California with ad tools. Türkiye and an unknown country keep the
+ * pages the process has always planned.
+ */
+function jurisdictionLegalPages(a: Answers, type: SiteType, j: Jurisdiction, lang: LegalLang, tracking: string[]): ProjectPlan["legalPages"] {
   const pages: ProjectPlan["legalPages"] = [];
-  const add = (en: string, trSlug: string, title: Text, required: boolean) => pages.push({ path: `/${tr ? trSlug : en}`, title, required });
+  const has = (...r: string[]) => r.some((x) => j.regimes.includes(x as never));
+  const home = (...r: string[]) => r.some((x) => j.home.includes(x as never));
+  const add = (kind: keyof typeof LEGAL_PAGE_SLUG, required: boolean, slugOverride?: string) => {
+    const slug = slugOverride ?? LEGAL_PAGE_SLUG[kind][lang] ?? LEGAL_PAGE_SLUG[kind].en;
+    if (pages.some((p) => p.path === `/${slug}`)) return;
+    pages.push({ path: `/${slug}`, title: LEGAL_TITLES[slug] ?? t(slug, slug), required, ...legalOf(slug) });
+  };
+  const entity = one(a.legal_entity);
+  const business = entity !== "person";
+  const tools = tracking.filter((x) => x !== "none" && x !== "gsc");
+  const ads = tools.some((x) => x === "google-ads" || x === "meta");
+  const shop = type === "ecommerce";
+  const euUk = has("EU", "UK");
+
+  // Imprint / legal notice: required where the country of establishment requires one.
+  const imprint = home("DE", "AT", "FR") || (home("EU") && business) || (home("UK") && entity === "company") || (home("CH") && shop);
+  if (imprint) add("legal-notice", home("DE", "AT", "FR") || home("EU") || shop, lang === "en" && home("DE", "AT", "CH") ? "imprint" : undefined);
+  add("privacy", true);
+  add("cookies", tools.length > 0);
+  if (has("US-CA") && ads) add("do-not-sell", true);
+  if (shop) {
+    add("terms", !home("DE"));
+    if (euUk) add("withdrawal", true, lang === "en" && has("UK") && !has("EU") ? "cancellation-rights" : undefined);
+    else add("returns", true);
+    if (lang === "en" && (has("EU") || has("US"))) add("accessibility", false);
+  }
+  if (type === "saas" || type === "booking") add("terms", type !== "booking");
+  return pages;
+}
+
+function legalPages(a: Answers, type: SiteType, tr: boolean, j: Jurisdiction, languages: string[], tracking: string[]): ProjectPlan["legalPages"] {
+  if (j.regimes.includes("TR") || !j.country) return legacyLegalPages(a, type, tr, j.regimes.includes("TR"), tracking);
+  return jurisdictionLegalPages(a, type, j, legalLanguage(languages), tracking);
+}
+
+/** Türkiye (KVKK, distance sales) and the generic pack for an unknown country: unchanged. `tr` is the slug language. */
+function legacyLegalPages(a: Answers, type: SiteType, tr: boolean, trLaw: boolean, tracking: string[]): ProjectPlan["legalPages"] {
+  const pages: ProjectPlan["legalPages"] = [];
+  const add = (en: string, trSlug: string, title: Text, required: boolean) => pages.push({ path: `/${tr ? trSlug : en}`, title, required, ...legalOf(tr ? trSlug : en) });
   const collectsData = list(a.contact_channels).includes("form") || type === "ecommerce" || type === "booking";
-  if (tr) add("kvkk", "kvkk-aydinlatma-metni", t("KVKK information notice", "KVKK aydınlatma metni"), collectsData);
+  if (trLaw) add("kvkk", "kvkk-aydinlatma-metni", t("KVKK information notice", "KVKK aydınlatma metni"), collectsData);
   add("privacy-policy", "gizlilik-politikasi", t("Privacy policy", "Gizlilik politikası"), true);
   const tools = tracking.filter((x) => x !== "none" && x !== "gsc");
   add("cookie-policy", "cerez-politikasi", t("Cookie policy", "Çerez politikası"), tools.length > 0);
@@ -239,25 +377,72 @@ function legalPages(a: Answers, type: SiteType, tr: boolean, tracking: string[])
     add("refund-policy", "iade-politikasi", t("Returns and refunds", "İade ve cayma hakkı"), true);
   }
   if (type === "ecommerce" || type === "saas" || type === "booking") add("terms-of-use", "kullanim-kosullari", t("Terms of use", "Kullanım koşulları"), type !== "booking");
-  if (one(a.legal_entity) === "company" && tr) add("legal-notice", "yasal-uyari", t("Legal notice", "Yasal uyarı"), false);
+  if (one(a.legal_entity) === "company" && trLaw) add("legal-notice", "yasal-uyari", t("Legal notice", "Yasal uyarı"), false);
   return pages;
 }
 
 const DOMAIN_STOP = new Set(["ve", "and", "the", "ltd", "sti", "as", "a", "s", "inc", "llc", "gmbh", "co", "sirketi", "ticaret", "sanayi", "limited"]);
 const DOMAIN_GENERIC = new Set(["atolyesi", "atolye", "studio", "studyo", "magazasi", "magaza", "shop", "store", "group", "grup", "hizmetleri", "danismanlik", "consulting", "official"]);
 
-/** Short, readable domain ideas from the business name (availability is not checked). */
-export function domainIdeas(name: string, tr: boolean): string[] {
+/** ccTLDs offered first for a country (then .com). */
+const COUNTRY_TLDS: Record<string, [string, string, string]> = {
+  TR: [".com.tr", ".com", ".tr"],
+  DE: [".de", ".com", ".eu"],
+  AT: [".at", ".com", ".eu"],
+  CH: [".ch", ".com", ".swiss"],
+  FR: [".fr", ".com", ".eu"],
+  NL: [".nl", ".com", ".eu"],
+  GB: [".co.uk", ".com", ".uk"],
+  BR: [".com.br", ".com", ".br"],
+  AU: [".com.au", ".com", ".au"],
+  AE: [".ae", ".com", ".co"],
+  SA: [".sa", ".com", ".co"],
+  CA: [".ca", ".com", ".co"],
+};
+
+/** Short, readable domain ideas from the business name (availability is not checked). `country`: true / "TR" for Türkiye, an ISO code, or false. */
+export function domainIdeas(name: string, country: boolean | string | null): string[] {
   const words = slugify(name).split("-").filter((w) => w && !DOMAIN_STOP.has(w));
   if (!words.length) return [];
   const core = words.filter((w) => !DOMAIN_GENERIC.has(w));
   const main = (core.length ? core : words).slice(0, 2).join("");
   const withThird = (core.length ? core : words).slice(0, 3).join("");
-  const tlds = tr ? [".com.tr", ".com", ".tr"] : [".com", ".co", ".io"];
+  const code = country === true ? "TR" : typeof country === "string" ? country.toUpperCase() : "";
+  const tlds = COUNTRY_TLDS[code] ?? [".com", ".co", ".io"];
   const ideas = [`${main}${tlds[0]}`, `${main}${tlds[1]}`];
   if (withThird !== main && withThird.length <= 24) ideas.push(`${withThird}${tlds[0]}`);
   ideas.push(`${main}${tlds[2]}`);
   return [...new Set(ideas)].filter((d) => d.split(".")[0]!.length >= 3);
+}
+
+/** What the legal pages need from a company, in the country's terms. */
+function companyIdsNeed(j: Jurisdiction): Text {
+  if (j.regimes.includes("TR") || !j.country) return t("Trade name, tax number, MERSIS.", "Unvan, vergi numarası, MERSIS.");
+  if (j.home.includes("DE") || j.home.includes("AT")) return t("Legal name and form, authorised representative, register court and number, VAT id (USt-IdNr. / UID).", "Unvan ve hukuki biçim, yetkili temsilci, sicil mahkemesi ve numarası, KDV numarası (USt-IdNr. / UID).");
+  if (j.home.includes("FR")) return t("Company name, legal form, share capital, RCS / RNE number, VAT number, publication director, host details.", "Unvan, hukuki biçim, sermaye, RCS / RNE numarası, KDV numarası, yayın sorumlusu, barındırma bilgileri.");
+  if (j.home.includes("UK")) return t("Registered name and number, registered office, part of the UK, VAT number.", "Kayıtlı unvan ve numara, kayıtlı merkez, kayıtlı olduğu bölge, KDV numarası.");
+  if (j.home.includes("BR")) return t("Company name and CNPJ.", "Unvan ve CNPJ.");
+  return t("Registered company name, registration number and tax / VAT id.", "Kayıtlı şirket unvanı, sicil numarası ve vergi / KDV numarası.");
+}
+
+function companyIdsQuestion(j: Jurisdiction): Text {
+  if (j.regimes.includes("TR") || !j.country) return t("Trade name, tax office and number, MERSIS (for the legal pages).", "Unvan, vergi dairesi ve numarası, MERSIS (yasal sayfalar için).");
+  const need = companyIdsNeed(j);
+  return t(`${need.en.replace(/\.$/, "")} (for the legal pages).`, `${need.tr.replace(/\.$/, "")} (yasal sayfalar için).`);
+}
+
+/** Compliance summary lines for a known country other than Türkiye. */
+function jurisdictionCompliance(j: Jurisdiction, legal: ProjectPlan["legalPages"], languages: string[]): Text[] {
+  if (!j.country || j.regimes.includes("TR")) return [];
+  const out: Text[] = [];
+  const regimes = j.regimes.join(", ") || "—";
+  out.push(t(`Country ${j.country}, markets ${j.markets.join(", ") || j.country}: legal regimes ${regimes}. Each requirement names its source; items marked "verify with counsel" need a lawyer's check.`, `Ülke ${j.country}, pazarlar ${j.markets.join(", ") || j.country}: hukuki rejimler ${regimes}. Her gereklilik kaynağını belirtir; "avukatla doğrulayın" işaretliler bir avukatın kontrolünü gerektirir.`));
+  if (j.regimes.includes("EU")) out.push(t("EU: no link to the EU ODR platform is needed any more (closed on 20 July 2025).", "AB: AB ODR platformuna bağlantı artık gerekmez (20 Temmuz 2025'te kapandı)."));
+  const site = (languages[0] ?? "en").toLowerCase();
+  const written = new Set(legal.map((p) => p.locale ?? "en"));
+  if (!["en", "de", "fr", "tr"].includes(site) && written.has("en"))
+    out.push(t(`The legal templates are in English; translate them into ${site} before launch and have the translation reviewed.`, `Yasal şablonlar İngilizce; yayından önce ${site} diline çevirin ve çeviriyi kontrol ettirin.`));
+  return out;
 }
 
 export interface ImportedHints {
@@ -269,6 +454,8 @@ export interface ImportedHints {
 export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan {
   const type = (one(a.site_type) || "local-business") as SiteType;
   const tr = wantsTurkish(a) || (!a.languages && true);
+  const jurisdiction = jurisdictionFromAnswers(a);
+  const trLaw = jurisdiction.regimes.includes("TR");
   const L: Lang = tr ? "tr" : "en";
   const languages = list(a.languages).length ? list(a.languages) : ["tr"];
   const sections = list(a.sections);
@@ -341,7 +528,7 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     }
   }
 
-  const legal = legalPages(a, type, tr, tracking);
+  const legal = legalPages(a, type, tr, jurisdiction, languages, tracking);
 
   // Measurement
   const steps: Text[] = [];
@@ -360,15 +547,16 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
 
   // Compliance (Turkey first)
   const compliance: Text[] = [];
-  if (tr && legal.some((p) => p.path.includes("kvkk")))
+  if (trLaw && legal.some((p) => p.path.includes("kvkk")))
     compliance.push(t("KVKK: forms link the information notice and ask for explicit consent only for marketing; data stays in your inbox.", "KVKK: formlar aydınlatma metnine bağlanır, açık rıza yalnızca pazarlama için istenir; veriler sizin gelen kutunuzda kalır."));
   if (consentMode) compliance.push(t("Cookies: measurement loads only after consent (Consent Mode v2, default denied).", "Çerezler: ölçüm araçları yalnızca onaydan sonra yüklenir (Consent Mode v2, varsayılan reddedildi)."));
-  if (type === "ecommerce" && tr) {
+  if (type === "ecommerce" && trLaw) {
     compliance.push(t("Register the store in ETBİS (etbis.ticaret.gov.tr) and show the ETBİS badge in the footer.", "Mağazayı ETBİS'e kaydedin (etbis.ticaret.gov.tr) ve ETBİS logosunu footer'da gösterin."));
     compliance.push(t("Show trade name, MERSIS number, address and contact in the footer or legal notice (Law 6563).", "Unvan, MERSIS numarası, adres ve iletişim bilgilerini footer'da ya da yasal uyarıda gösterin (6563 sayılı Kanun)."));
     compliance.push(t("Checkout shows the pre-contract information form and the distance sales agreement before payment; 14-day withdrawal right.", "Ödeme öncesinde ön bilgilendirme formu ve mesafeli satış sözleşmesi gösterilir; 14 günlük cayma hakkı."));
     if (one(a.einvoice) === "yes") compliance.push(t("e-Archive invoice: connect your integrator after payment (not part of the kit).", "e-Arşiv fatura: ödemeden sonra entegratörünüzü bağlayın (kitin parçası değil)."));
   }
+  compliance.push(...jurisdictionCompliance(jurisdiction, legal, languages));
   if (type === "ecommerce" && list(a.payment).some((p) => p === "iyzico" || p === "paytr" || p === "stripe"))
     compliance.push(t("Card payments: use the provider's hosted or iframe form so card data never touches your server.", "Kart ödemeleri: sağlayıcının kendi sayfasını ya da iframe formunu kullanın; kart verisi sunucunuza hiç gelmez."));
 
@@ -404,7 +592,8 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
   if (!one(a.email) && !imported.site?.contact?.email) openQuestions.push(t("Email address for messages and the legal pages.", "Mesajlar ve yasal sayfalar için e-posta adresi."));
   if ((channels.includes("phone") || channels.includes("whatsapp")) && !one(a.phone) && !imported.site?.contact?.phone) openQuestions.push(t("Phone / WhatsApp number.", "Telefon / WhatsApp numarası."));
   if (one(a.domain) !== "yes") openQuestions.push(t("Domain name (ideas below).", "Alan adı (öneriler aşağıda)."));
-  if (legal.length && one(a.legal_entity) === "company") openQuestions.push(t("Trade name, tax office and number, MERSIS (for the legal pages).", "Unvan, vergi dairesi ve numarası, MERSIS (yasal sayfalar için)."));
+  if (!jurisdiction.country) openQuestions.push(t("Country the business is registered in (decides the legal pages and checks).", "İşletmenin kayıtlı olduğu ülke (yasal sayfaları ve kontrolleri belirler)."));
+  if (legal.length && one(a.legal_entity) === "company") openQuestions.push(companyIdsQuestion(jurisdiction));
 
   // Tasks for the specialists
   const hasImport = !!(one(a.existing_site) || imported.site);
@@ -413,12 +602,14 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     { id: "content", agent: "content", status: "todo", title: t(`Write the texts for ${pages.length} ${pages.length === 1 ? "page" : "pages"} in ${languages.join(", ")}.`, `${pages.length} sayfanın metinlerini ${languages.join(", ")} ${languages.length === 1 ? "dilinde" : "dillerinde"} yaz.`), needs: hasImport ? [] : [t("Photos of the place, products or team (or approve placeholders).", "Mekân, ürün ya da ekip fotoğrafları (ya da yer tutucuları onaylayın).")] },
     { id: "build", agent: "build", status: "todo", title: t(`Create the app (${hosting.output === "static" ? "static export" : "Next.js"}), apply the brand and build the pages from the components listed.`, `Uygulamayı oluştur (${hosting.output === "static" ? "statik çıktı" : "Next.js"}), markayı uygula ve sayfaları listelenen bileşenlerle kur.`) },
     ...commerceTasks,
-    { id: "legal", agent: "legal", status: "todo", title: t(`Fill ${legal.length} legal pages from vamos.site.json.`, `${legal.length} yasal sayfayı vamos.site.json'dan doldur.`), needs: one(a.legal_entity) === "company" ? [t("Trade name, tax number, MERSIS.", "Unvan, vergi numarası, MERSIS.")] : [] },
+    { id: "legal", agent: "legal", status: "todo", title: t(`Fill ${legal.length} legal pages from vamos.site.json.`, `${legal.length} yasal sayfayı vamos.site.json'dan doldur.`), needs: one(a.legal_entity) === "company" ? [companyIdsNeed(jurisdiction)] : [] },
     { id: "seo", agent: "seo", status: "todo", title: t("Metadata, sitemap, robots, llms.txt and JSON-LD for every page.", "Her sayfa için metadata, sitemap, robots, llms.txt ve JSON-LD.") },
     ...(forms.value !== "none" ? [{ id: "forms", agent: "forms" as const, status: "todo" as const, title:
           forms.value === "whatsapp"
             ? t("Contact through WhatsApp: ContactDock with the business number, no form server.", "WhatsApp ile iletişim: işletme numarasıyla ContactDock, form sunucusu yok.")
-            : t(`Contact form via ${forms.value}: run \`npx vamos-ui site form --kind ${forms.value}\` (sender + field list), then <ContactForm action=…> with the KVKK notice.`, `İletişim formu (${forms.value}): \`npx vamos-ui site form --kind ${forms.value}\` çalıştırın (gönderici + alan listesi), sonra KVKK bilgilendirmeli <ContactForm action=…>.`), needs: forms.env.length ? [t(`Values for ${forms.env.join(", ")}.`, `${forms.env.join(", ")} değerleri.`)] : [] }] : []),
+            : trLaw
+              ? t(`Contact form via ${forms.value}: run \`npx vamos-ui site form --kind ${forms.value}\` (sender + field list), then <ContactForm action=…> with the KVKK notice.`, `İletişim formu (${forms.value}): \`npx vamos-ui site form --kind ${forms.value}\` çalıştırın (gönderici + alan listesi), sonra KVKK bilgilendirmeli <ContactForm action=…>.`)
+              : t(`Contact form via ${forms.value}: run \`npx vamos-ui site form --kind ${forms.value}\` (sender + field list), then <ContactForm action=…> with the privacy notice link.`, `İletişim formu (${forms.value}): \`npx vamos-ui site form --kind ${forms.value}\` çalıştırın (gönderici + alan listesi), sonra gizlilik bildirimi bağlantılı <ContactForm action=…>.`), needs: forms.env.length ? [t(`Values for ${forms.env.join(", ")}.`, `${forms.env.join(", ")} değerleri.`)] : [] }] : []),
     ...(tracking.length ? [{ id: "tracking", agent: "tracking" as const, status: "todo" as const, title: tracking.some((x) => x !== "gsc") ? t(`Consent and measurement: <ConsentDefaults /> in <head>, <ConsentBanner /> and <Analytics {...site.analytics} conversions={…} /> in the root layout (${tracking.join(", ")}).`, `Onay ve ölçüm: <head> içinde <ConsentDefaults />, kök layout'ta <ConsentBanner /> ve <Analytics {...site.analytics} conversions={…} /> (${tracking.join(", ")}).`) : t("Search Console verification and sitemap (no cookies, no banner needed).", "Search Console doğrulaması ve sitemap (çerez yok, onay bandı gerekmez)."), needs: tracking.includes("ga4") && !one(a.ga4_id) ? [t("GA4 measurement id.", "GA4 ölçüm kimliği.")] : [] }] : []),
     { id: "qa", agent: "qa", status: "todo", title: t("Run vamos-ui verify on the code and vamos-ui audit on the preview; fix what they find.", "Kodda vamos-ui verify, önizlemede vamos-ui audit çalıştır; bulunanları düzelt.") },
     { id: "deploy", agent: "deploy", status: "todo", title: t(`Publish on ${hosting.value}, connect the domain, HTTPS, then submit the sitemap.`, `${hosting.value} üzerinde yayınla, alan adını bağla, HTTPS, ardından sitemap gönder.`), needs: domainName ? [] : [t("A domain name.", "Bir alan adı.")] },
@@ -426,14 +617,20 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
   for (const task of tasks) if (task.needs && task.needs.length === 0) delete task.needs;
   const deps = taskDependencies(tasks.map((x) => x.id));
   for (const task of tasks) if (deps[task.id]?.length) task.after = deps[task.id];
+  const dataUses = list(a.data_uses);
   const requirements = requirementsFor({
     siteType: type,
-    tr,
+    jurisdiction,
     forms: forms.value !== "none" && forms.value !== "whatsapp",
     tracking: tracking.length > 0,
     cookies: tracking.some((x) => x !== "gsc"),
     multilingual: languages.length > 1,
     company: one(a.legal_entity) === "company",
+    legalEntity: one(a.legal_entity) || undefined,
+    ads: tracking.some((x) => x === "google-ads" || x === "meta"),
+    newsletter: dataUses.includes("newsletter"),
+    children: dataUses.includes("children"),
+    sensitive: dataUses.includes("sensitive"),
   });
 
   return {
@@ -443,10 +640,11 @@ export function buildPlan(a: Answers, imported: ImportedHints = {}): ProjectPlan
     templates: TEMPLATES[type] ?? [],
     pages,
     legalPages: legal,
+    jurisdiction,
     hosting,
     forms,
     tracking: { tools: tracking, consentMode, steps },
-    domain: { name: domainName, ideas: domainName ? [] : domainIdeas(name, tr) },
+    domain: { name: domainName, ideas: domainName ? [] : domainIdeas(name, jurisdiction.country ?? (tr ? "TR" : null)) },
     ...(commerce ? { commerce } : {}),
     compliance,
     requirements,
@@ -463,7 +661,10 @@ function dedupe<T>(items: T[]): T[] {
 export function siteFromAnswers(a: Answers): Partial<SiteInfo> {
   const type = (one(a.site_type) || "local-business") as SiteType;
   const languages = list(a.languages);
-  const localeOf = (l: string) => ({ tr: "tr-TR", en: "en-US", de: "de-DE", ar: "ar", fr: "fr-FR", es: "es-ES" })[l] ?? l;
+  const j = jurisdictionFromAnswers(a);
+  // The business's country picks the region where the language is spoken there (en-GB, de-AT, pt-BR …).
+  const SPOKEN: Record<string, string[]> = { en: ["US", "GB", "IE", "AU", "CA", "AE", "MT"], de: ["DE", "AT", "CH", "LU", "LI"], fr: ["FR", "BE", "CH", "LU", "CA"], nl: ["NL", "BE"], pt: ["PT", "BR"], es: ["ES"], ar: ["AE", "SA"], tr: ["TR"] };
+  const localeOf = (l: string) => (j.country && SPOKEN[l]?.includes(j.country) ? `${l}-${j.country}` : ({ tr: "tr-TR", en: "en-US", de: "de-DE", ar: "ar", fr: "fr-FR", es: "es-ES", nl: "nl-NL", pt: "pt-PT" })[l] ?? l);
   const out: Partial<SiteInfo> = {};
   if (one(a.business_name)) out.name = one(a.business_name);
   if (one(a.description)) out.description = one(a.description);
@@ -479,6 +680,7 @@ export function siteFromAnswers(a: Answers): Partial<SiteInfo> {
   if (one(a.email)) contact.email = one(a.email);
   if (Object.keys(contact).length) out.contact = contact;
   if (one(a.address)) out.address = { street: one(a.address) };
+  if (j.country && j.from !== "default") out.address = { ...(out.address ?? {}), country: j.country };
   if (one(a.ga4_id)) out.analytics = { ga4: one(a.ga4_id).toUpperCase() };
   return out;
 }

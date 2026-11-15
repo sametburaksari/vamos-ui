@@ -19,6 +19,8 @@ import { QUESTIONS, nextQuestions, validateAnswers, type Answers, type AnswerPro
 export * from "./questions";
 export * from "./plan";
 export * from "./requirements";
+export * from "./jurisdiction";
+export { regimeRequirements, SOURCES as LEGAL_SOURCES } from "./regimes";
 export * from "./deploy";
 export * from "./process";
 export { importSite, readPage, siteFromImport, type ImportOptions, type ImportedPage, type ImportedValue, type SiteImport } from "./import";
@@ -109,9 +111,12 @@ export interface LocalizedQuestion {
   why?: string;
   optional: boolean;
   options?: { value: string; label: string; hint?: string }[];
+  /** Suggested answer from the answers so far (e.g. the country from the domain). */
+  suggested?: string;
 }
 
-export function localize(q: Question, lang: Lang): LocalizedQuestion {
+export function localize(q: Question, lang: Lang, answers?: Answers): LocalizedQuestion {
+  const suggested = answers && q.suggest ? q.suggest(answers) : undefined;
   return {
     id: q.id,
     kind: q.kind,
@@ -120,6 +125,7 @@ export function localize(q: Question, lang: Lang): LocalizedQuestion {
     ...(q.why ? { why: q.why[lang] } : {}),
     optional: !!q.optional,
     ...(q.options ? { options: q.options.map((o) => ({ value: o.value, label: o.label[lang], ...(o.hint ? { hint: o.hint[lang] } : {}) })) } : {}),
+    ...(suggested ? { suggested } : {}),
   };
 }
 
@@ -161,7 +167,7 @@ export function startProject(answers: Answers, opts: StartOptions = {}): Project
   const step: ProjectStep = {
     complete,
     problems,
-    questions: pending.slice(0, opts.batch ?? 4).map((q) => localize(q, lang)),
+    questions: pending.slice(0, opts.batch ?? 4).map((q) => localize(q, lang, answers)),
     remaining: pending.filter((q) => !q.optional).length,
     plan,
   };
@@ -188,6 +194,8 @@ export function formatPlan(plan: ProjectPlan, lang: Lang = "tr"): string {
   out.push(`## ${tr ? "Proje planı" : "Project plan"}`);
   out.push(`- ${tr ? "Yapı" : "Structure"}: **${plan.structure.value === "single" ? (tr ? "tek sayfa" : "one page") : tr ? "çok sayfalı" : "several pages"}**. ${L(plan.structure.reason)}`);
   out.push(`- ${tr ? "Diller" : "Languages"}: ${plan.languages.join(", ")}`);
+  const j = plan.jurisdiction;
+  if (j) out.push(`- ${tr ? "Ülke / pazarlar" : "Country / markets"}: ${j.country ?? (tr ? "bilinmiyor" : "unknown")}${j.markets.length ? ` → ${j.markets.join(", ")}` : ""}${j.regimes.length ? ` · ${tr ? "hukuki rejimler" : "legal regimes"}: ${j.regimes.join(", ")}` : ""}`);
   out.push(`- ${tr ? "Yayın" : "Hosting"}: **${plan.hosting.value}** (${plan.hosting.output === "static" ? (tr ? "statik" : "static") : tr ? "sunuculu" : "server"}). ${L(plan.hosting.reason)}`);
   if (plan.forms.value !== "none") out.push(`- ${tr ? "Form" : "Forms"}: **${plan.forms.value}**. ${L(plan.forms.reason)}${plan.forms.spam.length ? ` ${tr ? "Spam koruması" : "Spam protection"}: ${plan.forms.spam.join(", ")}.` : ""}`);
   if (plan.tracking.tools.length) out.push(`- ${tr ? "Ölçüm" : "Measurement"}: ${plan.tracking.tools.join(", ")}${plan.tracking.consentMode ? ` (${tr ? "çerez onayıyla" : "after cookie consent"})` : ""}`);

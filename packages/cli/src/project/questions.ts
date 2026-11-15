@@ -4,6 +4,8 @@
  * the MCP server and any agent ask the same things in the same order.
  */
 
+import { countryFromAnswers } from "./jurisdiction";
+
 export type Lang = "en" | "tr";
 export type Text = Record<Lang, string>;
 
@@ -27,6 +29,8 @@ export interface Question {
   when?: (a: Answers) => boolean;
   /** Can be skipped ("I don't know yet"); the plan then records an open question. */
   optional?: boolean;
+  /** A suggested answer from the answers so far (shown as the default; the plan uses the same rule when it is skipped). */
+  suggest?: (a: Answers) => string | undefined;
   /** Group heading for interfaces that show several questions at once. */
   group: "business" | "domain" | "site" | "commerce" | "contact" | "tracking" | "legal";
 }
@@ -86,7 +90,7 @@ export const QUESTIONS: Question[] = [
     group: "business",
     kind: "multi",
     text: { en: "Which languages should the site have?", tr: "Site hangi dillerde olsun?" },
-    options: [o("tr", "Turkish", "Türkçe"), o("en", "English", "İngilizce"), o("de", "German", "Almanca"), o("ar", "Arabic", "Arapça"), o("fr", "French", "Fransızca"), o("es", "Spanish", "İspanyolca")],
+    options: [o("tr", "Turkish", "Türkçe"), o("en", "English", "İngilizce"), o("de", "German", "Almanca"), o("ar", "Arabic", "Arapça"), o("fr", "French", "Fransızca"), o("es", "Spanish", "İspanyolca"), o("nl", "Dutch", "Felemenkçe"), o("pt", "Portuguese", "Portekizce")],
   },
   {
     id: "existing_site",
@@ -191,7 +195,7 @@ export const QUESTIONS: Question[] = [
     id: "einvoice",
     group: "commerce",
     kind: "single",
-    when: (a) => is(a, "site_type", "ecommerce") && wantsTurkish(a),
+    when: (a) => is(a, "site_type", "ecommerce") && countryFromAnswers(a).country === "TR",
     text: { en: "Do you issue e-Archive invoices (e-Arşiv)?", tr: "e-Arşiv fatura kesiyor musunuz?" },
     options: [o("yes", "Yes", "Evet"), o("no", "No / not yet", "Hayır / henüz değil")],
   },
@@ -255,6 +259,41 @@ export const QUESTIONS: Question[] = [
     text: { en: "GA4 measurement id, if you have one (G-XXXXXXX)", tr: "Varsa GA4 ölçüm kimliği (G-XXXXXXX)" },
   },
   {
+    id: "data_uses",
+    group: "legal",
+    kind: "multi",
+    optional: true,
+    text: { en: "Does the site do any of these?", tr: "Site bunlardan birini yapıyor mu?" },
+    why: { en: "Each one adds legal checks (email marketing consent, children's data, sensitive data).", tr: "Her biri yasal kontroller ekler (e-posta pazarlama izni, çocuk verisi, hassas veri)." },
+    options: [
+      o("newsletter", "Sends newsletters or marketing email", "Bülten ya da pazarlama e-postası gönderir"),
+      o("children", "Is aimed at children", "Çocuklara yöneliktir"),
+      o("sensitive", "Asks for health or other sensitive data", "Sağlık ya da başka hassas veri ister"),
+      o("none", "None of these", "Hiçbiri"),
+    ],
+  },
+  {
+    id: "country",
+    group: "legal",
+    kind: "text",
+    optional: true,
+    suggest: (a) => countryFromAnswers(a).country ?? undefined,
+    text: { en: "Which country is the business registered in? (ISO code, e.g. DE, FR, GB, US, TR)", tr: "İşletme hangi ülkede kayıtlı? (ISO kodu, örn. TR, DE, GB, US)" },
+    why: {
+      en: "Decides the legal pages and checks (Impressum in Germany, mentions légales in France, KVKK in Türkiye …). Left empty, it is taken from the domain or the site language.",
+      tr: "Yasal sayfaları ve kontrolleri belirler (Türkiye'de KVKK, Almanya'da Impressum, Fransa'da mentions légales …). Boş bırakılırsa alan adından ya da site dilinden çıkarılır.",
+    },
+  },
+  {
+    id: "markets",
+    group: "legal",
+    kind: "text",
+    optional: true,
+    suggest: (a) => countryFromAnswers(a).country ?? undefined,
+    text: { en: "Where are the customers? (ISO codes, comma-separated; EU for the whole EU, US-CA for California)", tr: "Müşteriler nerede? (ISO kodları, virgülle; tüm AB için EU, Kaliforniya için US-CA)" },
+    why: { en: "Privacy laws follow the people a site targets: selling to the EU brings GDPR, to California the CCPA.", tr: "Gizlilik yasaları sitenin hedeflediği kişilere göre uygulanır: AB'ye satış GDPR'ı, Kaliforniya'ya satış CCPA'yı getirir." },
+  },
+  {
     id: "legal_entity",
     group: "legal",
     kind: "single",
@@ -301,6 +340,8 @@ export function validateAnswers(a: Answers): AnswerProblem[] {
     }
     if (q.kind === "url" && !/^https?:\/\/[^\s.]+\.[^\s]+$/i.test(String(value)) && !/^[^\s/]+\.[^\s]+$/.test(String(value))) problems.push({ id, problem: "not a web address" });
     if (q.kind === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value))) problems.push({ id, problem: "not an email address" });
+    if (id === "country" && !/^(?:[A-Za-z]{2})$/.test(String(value).trim())) problems.push({ id, problem: "a two-letter ISO country code, e.g. DE, GB, US, TR" });
+    if (id === "markets" && values.flatMap((v) => String(v).split(/[\s,;]+/)).filter(Boolean).some((v) => !/^(?:[A-Za-z]{2}(?:-[A-Za-z0-9]{1,3})?|EU|EEA)$/i.test(v))) problems.push({ id, problem: "ISO country codes, e.g. DE, FR, EU, US-CA" });
     if (id === "ga4_id" && !/^G-[A-Z0-9]{4,}$/i.test(String(value))) problems.push({ id, problem: "GA4 ids look like G-XXXXXXX" });
   }
   return problems;
