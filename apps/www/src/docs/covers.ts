@@ -18,6 +18,7 @@ export const docCovers: { slug: string; covers: string[] }[] = [
   {"slug":"backup-codes","covers":[]},
   {"slug":"badge","covers":["Badge"]},
   {"slug":"bar-chart","covers":["Bar"]},
+  {"slug":"billing-details","covers":["Billing details (e-Fatura / e-Arşiv)"]},
   {"slug":"block-editor","covers":["Rich text / block editor"]},
   {"slug":"blocks-api","covers":[]},
   {"slug":"blog-list","covers":["Blog list"]},
