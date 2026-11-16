@@ -1,11 +1,12 @@
 import { LocaleProvider } from "@vamos-ui/react";
-import { AdSlot, Footer, NewsHeader, SiteShellPage, sitePageHref, type NewsNavItem } from "@vamos-ui/react/blocks";
+import { AdSlot, Footer, SiteShellPage, sitePageHref, type NewsNavItem } from "@vamos-ui/react/blocks";
 import { tr } from "@vamos-ui/react/locale/tr";
 import { ArticlePage } from "./article-page";
 import { CategoryPage } from "./category-page";
 import { copyFor, inSection, inSub, postOf, sectionHref, sections, type SectionId, type SiteLocale } from "./content";
 import { HomePage } from "./home-page";
 import { HouseAd } from "./house-ad";
+import { Masthead } from "./masthead";
 import { TopBar } from "./top-bar";
 
 /**
@@ -64,7 +65,7 @@ export function NewsSite({ locale }: { locale: SiteLocale }) {
           { network: "youtube", href: "https://youtube.com/@example" },
         ]}
       />
-      <NewsHeader
+      <Masthead
         {...common}
         brand={brand}
         homeHref={sitePageHref("home")}

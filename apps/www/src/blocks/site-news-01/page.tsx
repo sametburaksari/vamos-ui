@@ -13,7 +13,7 @@ import { ACCENT } from "./components/content";
  */
 export default function SiteNews01() {
   return (
-    <SiteShell accent={ACCENT} material="solid" density="compact" pages={["home", "category", "article"]} className="min-h-dvh bg-scene">
+    <SiteShell accent={ACCENT} material="solid" density="compact" font="newsroom" pages={["home", "category", "article"]} className="min-h-dvh bg-scene">
       <FontProvider pairing="newsroom">
         <SiteShellLocale code="en">
           <NewsSite locale="en" />

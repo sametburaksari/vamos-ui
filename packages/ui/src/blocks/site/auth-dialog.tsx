@@ -124,10 +124,13 @@ export function AuthDialog({ trigger, open: openProp, defaultOpen, onOpenChange,
       {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
       <DialogContent size="sm" mobile="sheet" data-slot="auth-dialog" data-view={view}>
         <DialogHeader
+          // The title size is set on the header's own title element: a size on an inner span lost to
+          // the header's title style (its 1.3rem line box and weight).
+          className="[&_[data-slot=layer-title]]:text-[1.5rem] [&_[data-slot=layer-title]]:font-normal [&_[data-slot=layer-title]]:leading-tight"
           title={
             <span className="flex flex-col gap-1">
-              {brand ? <span className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-fg-muted">{brand}</span> : null}
-              <span className="font-display text-[1.5rem] font-normal leading-tight">{signIn ? t("signInTitle") : t("recoverTitle")}</span>
+              {brand ? <span className="font-mono text-[0.6875rem] font-medium uppercase leading-normal tracking-[0.12em] text-fg-muted">{brand}</span> : null}
+              <span>{signIn ? t("signInTitle") : t("recoverTitle")}</span>
             </span>
           }
           description={signIn ? t("signInLead") : t("recoverLead")}

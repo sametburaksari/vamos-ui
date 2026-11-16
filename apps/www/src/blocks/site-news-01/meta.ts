@@ -14,6 +14,7 @@ const meta: BlockMeta = {
     "site-news-01/components/category-page.tsx",
     "site-news-01/components/article-page.tsx",
     "site-news-01/components/top-bar.tsx",
+    "site-news-01/components/masthead.tsx",
     "site-news-01/components/house-ad.tsx",
     "site-news-01/components/content.ts",
   ],
