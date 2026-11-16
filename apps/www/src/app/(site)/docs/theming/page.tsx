@@ -5,7 +5,7 @@ import { C, Callout, Code, DocPage, H2, H3, P, Table } from "@/components/docs/p
 import { PRESET_FAMILIES } from "@/lib/theme-codec";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({ title: "Theming", description: "Seven independent theme axes — light/dark, glass/solid material, accent, density, font, corners and scene — set with HTML attributes on any subtree, and thirteen named style families.", path: "/docs/theming/" });
+export const metadata = pageMeta({ title: "Theming", description: "Seven theme axes (light/dark, material, accent, density, font, corners, scene) set as HTML attributes on any subtree, plus thirteen style families.", path: "/docs/theming/" });
 
 /** Preset letter of each font pairing (packages/cli/src/preset.ts). */
 const FONT_LETTER: Record<string, string> = {
