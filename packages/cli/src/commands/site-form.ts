@@ -5,12 +5,14 @@ import { bool, str, type ParsedArgs } from "../args";
 import { findProjectRoot } from "../core/config";
 import { detectProject } from "../core/project";
 import { CliError } from "../core/types";
-import { PROJECT_FILE } from "../project";
+import { PROJECT_FILE, secretCommands, type Hosting } from "../project";
 import { formSender, type SenderKind } from "../project/forms";
 import { SITE_FILE } from "../site-info";
 import { p, pc, plural, printJson, type Context } from "../ui";
 
-const KINDS: SenderKind[] = ["php-mail", "resend", "smtp"];
+const KINDS: SenderKind[] = ["php-mail", "edge", "resend", "smtp"];
+/** Hosts that run a static site with edge functions next to it (functions/). */
+const EDGE_HOSTS = ["cloudflare", "spacefast"];
 
 function readJson(file: string): Record<string, any> | null {
   try {
@@ -31,7 +33,8 @@ function staticExport(root: string): boolean {
 
 /**
  * `site form`: writes the contact-form sender. Kind: --kind, else the plan in vamos.project.json,
- * else php-mail for static exports and smtp for a Next.js server. Never replaces a file.
+ * else edge for a static export on Cloudflare Pages / Spacefast (--host or the plan), php-mail for
+ * other static exports and smtp for a Next.js server. Never replaces a file.
  */
 export async function siteForm(ctx: Context, args: ParsedArgs): Promise<number> {
   const root = findProjectRoot(ctx.cwd);
@@ -44,9 +47,13 @@ export async function siteForm(ctx: Context, args: ParsedArgs): Promise<number> 
   let why = "--kind";
   if (kind && !KINDS.includes(kind)) throw new CliError(`--kind must be one of ${KINDS.join(", ")}, got "${kind}".`);
   if (!kind && planned && KINDS.includes(planned as SenderKind)) [kind, why] = [planned as SenderKind, PROJECT_FILE];
-  if (!kind) [kind, why] = isStatic ? ["php-mail", "static site"] : ["smtp", "Next.js server"];
-  if (kind !== "php-mail" && isStatic) {
-    throw new CliError(`${kind} needs a server (Next.js server actions), but this is a static ${project.framework === "next" ? "export" : "site"}. Use --kind php-mail on shared hosting.`);
+  const host = str(args.flags, "host") ?? (plan?.plan?.hosting?.value as string | undefined);
+  if (!kind) [kind, why] = isStatic ? (host && EDGE_HOSTS.includes(host) ? ["edge", `static site on ${host}`] : ["php-mail", "static site"]) : ["smtp", "Next.js server"];
+  if ((kind === "resend" || kind === "smtp") && isStatic) {
+    throw new CliError(`${kind} needs a server (Next.js server actions), but this is a static ${project.framework === "next" ? "export" : "site"}. Use --kind edge on Cloudflare Pages or Spacefast, --kind php-mail on shared hosting.`);
+  }
+  if (kind === "edge" && !isStatic) {
+    throw new CliError("edge is for static exports (functions/ next to the site). A Next.js server sends from a server action: use --kind resend (or smtp).");
   }
   const lang = (str(args.flags, "lang") ?? (String(site?.locale ?? "").startsWith("en") ? "en" : "tr")) as "tr" | "en";
   if (lang !== "tr" && lang !== "en") throw new CliError(`--lang must be tr or en.`);
@@ -84,7 +91,7 @@ export async function siteForm(ctx: Context, args: ParsedArgs): Promise<number> 
     written.push(rel);
   }
   if (ctx.json) {
-    printJson({ kind, reason: why, written: dryRun ? [] : written, planned: written, kept, env: result.env, dependencies: result.dependencies, action: result.action, notes: result.notes });
+    printJson({ kind, reason: why, written: dryRun ? [] : written, planned: written, kept, env: result.env, dependencies: result.dependencies, action: result.action, notes: result.notes, ...(host ? { secretCommands: secretCommands(host as Hosting, Object.keys(result.env).filter((k) => k !== "SMTP_PORT"), { project: str(args.flags, "project"), space: str(args.flags, "space") }) } : {}) });
     return 0;
   }
   p.intro(pc.bold("vamos-ui site form"));
@@ -94,6 +101,8 @@ export async function siteForm(ctx: Context, args: ParsedArgs): Promise<number> 
     dryRun ? "Form sender (dry run)" : "Form sender",
   );
   if (Object.keys(result.env).length) p.log.info(`Environment:\n${Object.entries(result.env).map(([k, v]) => `  ${k}=${v}`).join("\n")}`);
+  const secrets = host ? secretCommands(host as Hosting, Object.keys(result.env).filter((k) => k !== "SMTP_PORT"), { project: str(args.flags, "project"), space: str(args.flags, "space") }) : [];
+  if (secrets.length) p.log.info(`${lang === "tr" ? `${host} üzerinde gizli değerler (her komut değeri sorar)` : `Secrets on ${host} (each command asks for the value)`}:\n${secrets.map((c) => `  ${c}`).join("\n")}`);
   if (result.dependencies.length) p.log.info(`Install: ${pc.cyan(`${project.packageManager} add ${result.dependencies.join(" ")}`)}`);
   for (const note of result.notes) p.log.message(note);
   p.outro(dryRun ? "Dry run: nothing was written." : written.length ? `Wrote ${plural(written.length, "file")}.` : "Nothing to write.");

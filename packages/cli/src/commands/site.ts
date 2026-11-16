@@ -21,7 +21,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site init [--name <name>] [--url <https://…>] [--locale <tr-TR>]
   npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
-  npx vamos-ui site form [--kind php-mail|resend|smtp] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
+  npx vamos-ui site form [--kind php-mail|edge|resend|smtp] [--host <host>] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
   npx vamos-ui site deploy [--host vercel|netlify|cloudflare|spacefast|cpanel|vps] [--domain <name>] [--www] [--dry-run]
   npx vamos-ui site check [url] [--min-score 90] [--ci] [--json]
 
@@ -55,11 +55,16 @@ still have no page.
 ${pc.bold("site form")} writes the sender behind ContactForm, never replacing a file:
   php-mail  public/contact.php for static exports on shared hosting (cPanel): mail() through the
             host, JSON for the form, a redirect when JavaScript is off
+  edge      functions/api/contact.ts for static exports on Cloudflare Pages and Spacefast: web
+            standards only, Resend HTTP API, exports onRequestPost (Pages) and POST (Spacefast)
   resend    app/actions/contact.ts + app/contact-fields.ts, a server action using the Resend API
   smtp      the same with nodemailer and the business's own mailbox
-All three validate the same fields as the form, drop bot submits, rate-limit per IP and refuse
-cross-site posts. Default kind: the plan in vamos.project.json, else php-mail for a static site
-and smtp for a Next.js server. --to defaults to contact.email in ${SITE_FILE}.
+All of them validate the same fields as the form, require the privacy (KVKK) consent, drop bot
+submits (honeypot + time trap), rate-limit per IP and refuse cross-site posts; edge, resend and
+smtp also verify Cloudflare Turnstile when TURNSTILE_SECRET is set. Default kind: the plan in
+vamos.project.json, else edge for a static site on Cloudflare / Spacefast (--host or the plan),
+php-mail for other static sites and smtp for a Next.js server. --to defaults to contact.email in
+${SITE_FILE}.
 
 ${pc.bold("site deploy")} writes the host's config, never replacing a file, and prints the publishing
 steps and the checks to run afterwards. It never publishes anything itself:

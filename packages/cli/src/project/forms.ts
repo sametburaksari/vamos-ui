@@ -7,16 +7,20 @@
  *   resend    app/actions/contact.ts — a Next.js server action calling the Resend HTTP API.
  *   smtp      app/actions/contact.ts — a Next.js server action with nodemailer and the
  *             business's own mailbox.
+ *   edge      functions/api/contact.ts — for static exports on Cloudflare Pages and Spacefast.
+ *             Web standards only (fetch / Request / Response), sends with the Resend HTTP API,
+ *             exports both `onRequestPost` (Cloudflare Pages Functions) and `POST` (Spacefast).
  *
  * Every sender validates against the same field list the form renders (app/contact-fields.ts or
  * the list baked into contact.php), drops honeypot / too-fast submits with a fake success,
  * rate-limits per IP, refuses cross-site posts and never puts visitor input into mail headers
- * except a checked Reply-To. Pure: returns path → content; the caller writes the files.
+ * except a checked Reply-To. The edge function and the server actions also verify Cloudflare
+ * Turnstile when TURNSTILE_SECRET is set. Pure: returns path → content; the caller writes the files.
  */
 
 import type { Lang } from "./questions";
 
-export type SenderKind = "php-mail" | "resend" | "smtp";
+export type SenderKind = "php-mail" | "resend" | "smtp" | "edge";
 
 export interface FormField {
   name: "name" | "email" | "phone" | "company" | "subject" | "budget" | "message" | "date";
@@ -76,7 +80,7 @@ export const DEFAULT_BOOKING_FIELDS: FormField[] = [
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-const LABELS: Record<Lang, Record<FormField["name"], string> & Record<"subject" | "privacy" | "marketing" | "yes" | "no" | "page" | "intro" | "required" | "invalidEmail" | "invalidPhone" | "tooLong" | "privacyRequired" | "tooMany" | "failed" | "sent" | "back", string>> = {
+const LABELS: Record<Lang, Record<FormField["name"], string> & Record<"subject" | "privacy" | "marketing" | "yes" | "no" | "page" | "intro" | "required" | "invalidEmail" | "invalidPhone" | "tooLong" | "privacyRequired" | "tooMany" | "failed" | "sent" | "back" | "captcha", string>> = {
   en: {
     name: "Name",
     email: "Email",
@@ -101,6 +105,7 @@ const LABELS: Record<Lang, Record<FormField["name"], string> & Record<"subject" 
     failed: "The message could not be sent. Please call or email us instead.",
     sent: "Thank you, your message was sent.",
     back: "Back to the site",
+    captcha: "The spam check did not pass. Please reload the page and try again.",
   },
   tr: {
     name: "Ad soyad",
@@ -126,6 +131,7 @@ const LABELS: Record<Lang, Record<FormField["name"], string> & Record<"subject" 
     failed: "Mesaj gönderilemedi. Lütfen bizi arayın ya da e-posta gönderin.",
     sent: "Teşekkürler, mesajınız gönderildi.",
     back: "Siteye dön",
+    captcha: "Güvenlik doğrulaması geçilemedi. Lütfen sayfayı yenileyip tekrar deneyin.",
   },
 };
 
@@ -176,6 +182,42 @@ export function formSender(opts: FormSenderOptions): FormSenderResult {
     };
   }
 
+  if (opts.kind === "edge") {
+    const route = "functions/api/contact.ts";
+    const env = { RESEND_API_KEY: "re_…", CONTACT_TO: opts.to ?? "", CONTACT_FROM: opts.from ?? "", TURNSTILE_SECRET: "" };
+    const fieldsImport = opts.fieldsFile ? `@/${opts.fieldsFile.replace(/^src\//, "").replace(/\.ts$/, "")}` : null;
+    return {
+      files: {
+        [route]: edgeSender({ fields, privacy, subject, L }),
+        ...(opts.fieldsFile ? { [opts.fieldsFile]: fieldsModule(fields, privacy, route) } : {}),
+      },
+      env,
+      dependencies: [],
+      action: "/api/contact",
+      notes: [
+        tr
+          ? `${route} statik sitenin yanında bir edge fonksiyonu olarak çalışır (Cloudflare Pages Functions ve Spacefast functions/). Ortam değişkenleri hostingde: RESEND_API_KEY, CONTACT_TO, CONTACT_FROM; isteğe bağlı TURNSTILE_SECRET. Gizli değerleri koda yazmayın.`
+          : `${route} runs as an edge function next to the static site (Cloudflare Pages Functions and Spacefast functions/). Environment variables on the host: RESEND_API_KEY, CONTACT_TO, CONTACT_FROM; optional TURNSTILE_SECRET. Never commit the secret values.`,
+        tr
+          ? "Resend'de alan adınızı doğrulayın; CONTACT_FROM o alan adında olmalı (ör. form@alanadiniz.com)."
+          : "Verify your domain in Resend; CONTACT_FROM must be on that domain (e.g. form@yourdomain.com).",
+        fieldsImport
+          ? tr
+            ? `Sayfada: import { contactFields, privacyCheckbox } from "${fieldsImport}"; <ContactForm action="/api/contact" fields={contactFields} privacyLink={{ href: "/kvkk" }} privacyCheckbox={privacyCheckbox} turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} />`
+            : `In the page: import { contactFields, privacyCheckbox } from "${fieldsImport}"; <ContactForm action="/api/contact" fields={contactFields} privacyLink={{ href: "/privacy" }} privacyCheckbox={privacyCheckbox} turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} />`
+          : tr
+            ? `Formda: <ContactForm action="/api/contact" fields={${JSON.stringify(fields)}} privacyLink={{ href: "/kvkk" }} privacyCheckbox={${privacy}} /> (alanlar ${route} içindeki FIELDS ile aynı olmalı)`
+            : `In the page: <ContactForm action="/api/contact" fields={${JSON.stringify(fields)}} privacyLink={{ href: "/privacy" }} privacyCheckbox={${privacy}} /> (the fields must match FIELDS in ${route})`,
+        tr
+          ? "Turnstile (isteğe bağlı): Cloudflare panelinde bir widget oluşturun; site anahtarını derlemede NEXT_PUBLIC_TURNSTILE_SITE_KEY, gizli anahtarı hostingde TURNSTILE_SECRET olarak verin. Gizli anahtar varken token'sız gönderim reddedilir."
+          : "Turnstile (optional): create a widget in the Cloudflare dashboard; give the site key to the build as NEXT_PUBLIC_TURNSTILE_SITE_KEY and the secret to the host as TURNSTILE_SECRET. With the secret set, a submit without a token is refused.",
+        tr
+          ? "IP başına sınır her çalışan kopyada ayrı tutulur (bellekte); kesin bir sınır için Cloudflare WAF hız sınırı kuralı ya da Turnstile kullanın."
+          : "The per-IP limit lives in each running instance's memory (best effort); for a hard limit add a Cloudflare WAF rate-limiting rule or Turnstile.",
+      ],
+    };
+  }
+
   const appDir = opts.appDir ?? "app";
   const files: Record<string, string> = {
     [`${appDir}/contact-fields.ts`]: fieldsModule(fields, privacy),
@@ -183,8 +225,8 @@ export function formSender(opts: FormSenderOptions): FormSenderResult {
   };
   const env: Record<string, string> =
     opts.kind === "resend"
-      ? { RESEND_API_KEY: "re_…", CONTACT_TO: opts.to ?? "", CONTACT_FROM: opts.from ?? "" }
-      : { SMTP_HOST: "", SMTP_PORT: "465", SMTP_USER: opts.from ?? "", SMTP_PASS: "", CONTACT_TO: opts.to ?? "", CONTACT_FROM: opts.from ?? "" };
+      ? { RESEND_API_KEY: "re_…", CONTACT_TO: opts.to ?? "", CONTACT_FROM: opts.from ?? "", TURNSTILE_SECRET: "" }
+      : { SMTP_HOST: "", SMTP_PORT: "465", SMTP_USER: opts.from ?? "", SMTP_PASS: "", CONTACT_TO: opts.to ?? "", CONTACT_FROM: opts.from ?? "", TURNSTILE_SECRET: "" };
   return {
     files,
     env,
@@ -192,8 +234,8 @@ export function formSender(opts: FormSenderOptions): FormSenderResult {
     action: "sendContact",
     notes: [
       tr
-        ? `Ortam değişkenleri (.env.local ve hosting paneli): ${Object.keys(env).join(", ")}. Gizli değerleri koda yazmayın.`
-        : `Environment variables (.env.local and the hosting panel): ${Object.keys(env).join(", ")}. Never commit the secret values.`,
+        ? `Ortam değişkenleri (.env.local ve hosting paneli): ${Object.keys(env).join(", ")} (TURNSTILE_SECRET isteğe bağlı: verildiğinde Cloudflare Turnstile doğrulanır). Gizli değerleri koda yazmayın.`
+        : `Environment variables (.env.local and the hosting panel): ${Object.keys(env).join(", ")} (TURNSTILE_SECRET is optional: when set, Cloudflare Turnstile is verified). Never commit the secret values.`,
       opts.kind === "resend"
         ? tr
           ? "Resend'de alan adınızı doğrulayın; CONTACT_FROM o alan adında olmalı (ör. form@alanadiniz.com)."
@@ -209,8 +251,9 @@ export function formSender(opts: FormSenderOptions): FormSenderResult {
 }
 
 function fieldsModule(fields: FormField[], privacy: boolean, server = "the server action"): string {
+  const baked = server === "contact.php" ? "FIELDS in public/contact.php" : server.startsWith("functions/") ? `FIELDS in ${server}` : null;
   return `// The fields of the contact form. The page renders them and ${server} validates
-// against the same list${server === "contact.php" ? " (FIELDS in public/contact.php): change both together" : ", so change them here only"}.
+// against the same list${baked ? ` (${baked}): change both together` : ", so change them here only"}.
 import type { ContactFieldConfig } from "@vamos-ui/react/blocks";
 
 export const contactFields: ContactFieldConfig[] = ${JSON.stringify(fields, null, 2)};
@@ -245,6 +288,18 @@ function limited(ip: string): boolean {
 
 const oneLine = (v: string) => v.replace(/[\\r\\n]+/g, " ").trim();
 
+async function turnstileOk(secret: string, token: string, ip: string): Promise<boolean> {
+  if (!token || token.length > 2048) return false;
+  try {
+    const body = new URLSearchParams({ secret, response: token });
+    if (ip !== "unknown") body.set("remoteip", ip);
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+    return ((await res.json()) as { success?: boolean }).success === true;
+  } catch {
+    return false;
+  }
+}
+
 async function prepare(data: FormData): Promise<{ state?: SiteFormState; text?: string; replyTo?: string }> {
   const v = validateContactForm(contactFields, data, { privacyCheckbox });
   if (v.spam) return { state: { status: "success", ts: Date.now() } };
@@ -255,6 +310,9 @@ async function prepare(data: FormData): Promise<{ state?: SiteFormState; text?: 
   if (origin && host && new URL(origin).host !== host) return { state: { status: "error", ts: Date.now() } };
   const ip = (h.get("x-forwarded-for") ?? "").split(",")[0]!.trim() || "unknown";
   if (limited(ip)) return { state: { status: "error", message: ${tsString(L.tooMany)}, values: v.values, ts: Date.now() } };
+  // Cloudflare Turnstile, when TURNSTILE_SECRET is set: a submit without a valid token is refused.
+  const secret = process.env.TURNSTILE_SECRET;
+  if (secret && !(await turnstileOk(secret, String(data.get("cf-turnstile-response") ?? ""), ip))) return { state: { status: "error", message: ${tsString(L.captcha)}, values: v.values, ts: Date.now() } };
   const lines = contactFields.filter((f) => v.values[f.name]).map((f) => \`\${f.label ?? LABELS[f.name] ?? f.name}: \${v.values[f.name]}\`);
   lines.push(\`${L.privacy}: \${v.privacy ? ${tsString(L.yes)} : ${tsString(L.no)}}\`, \`${L.marketing}: \${v.marketing ? ${tsString(L.yes)} : ${tsString(L.no)}}\`);
   const referer = h.get("referer");
@@ -489,5 +547,257 @@ if (!$ok) {
   answer(['status' => 'error', 'message' => MSG['failed']], 502);
 }
 answer(['status' => 'success']);
+`;
+}
+
+/**
+ * functions/api/contact.ts: one file for Cloudflare Pages Functions (`onRequestPost`) and the
+ * Spacefast file router (`POST`). Web standards only, so it runs in any Workers-style runtime.
+ * Written with String.raw: the generated code uses no template literals of its own.
+ */
+function edgeSender(o: { fields: FormField[]; privacy: boolean; subject: string; L: (typeof LABELS)[Lang] }): string {
+  const { L } = o;
+  const fields = JSON.stringify(
+    o.fields.map((f) => ({ name: f.name, label: L[f.name], required: !!f.required, max: f.max ?? (f.name === "message" ? 2000 : 160), ...(f.options?.length ? { options: f.options } : {}) })),
+    null,
+    2,
+  );
+  const msg = JSON.stringify({ required: L.required, email: L.invalidEmail, phone: L.invalidPhone, long: L.tooLong, privacy: L.privacyRequired, many: L.tooMany, failed: L.failed, sent: L.sent, back: L.back, captcha: L.captcha }, null, 2);
+  const text = JSON.stringify({ intro: L.intro, privacy: L.privacy, marketing: L.marketing, yes: L.yes, no: L.no, page: L.page });
+  return String.raw`/**
+ * Contact form sender for a static site: Vamos UI ContactForm with action="/api/contact".
+ * Written by "npx vamos-ui site form --kind edge". Runs on Cloudflare Pages Functions
+ * (onRequestPost) and on Spacefast functions/ (POST); web standards only, no Node APIs.
+ *
+ * Environment (set on the host, never in code):
+ *   RESEND_API_KEY    Resend API key (https://resend.com/api-keys)
+ *   CONTACT_TO        inbox that receives the messages (comma-separated for several)
+ *   CONTACT_FROM      sender on a domain verified in Resend, e.g. form@yourdomain.com
+ *   TURNSTILE_SECRET  optional: Cloudflare Turnstile secret; when set, every submit needs a token
+ *
+ * Answers JSON ({ ok, status, errors? }) to the hydrated form; without JavaScript it redirects
+ * back with ?vb_sent=<form> after success. Nothing is stored. The per-IP limit is kept in this
+ * instance's memory only: the runtime starts many short-lived instances, so it is a best-effort
+ * brake, not a guarantee. For a hard limit add a Cloudflare WAF rate-limiting rule or Turnstile.
+ * The fields must match the form's field list: change both together.
+ */
+
+interface Env {
+  RESEND_API_KEY?: string;
+  CONTACT_TO?: string;
+  CONTACT_FROM?: string;
+  TURNSTILE_SECRET?: string;
+}
+
+interface Field {
+  name: string;
+  label: string;
+  required: boolean;
+  max: number;
+  options?: string[];
+}
+
+const SUBJECT = ${JSON.stringify(o.subject)};
+const PRIVACY_REQUIRED = ${o.privacy ? "true" : "false"};
+const MIN_FILL_MS = 2500; // faster than this is a bot
+const LIMIT = 5; // messages per IP …
+const WINDOW_MS = 10 * 60 * 1000; // … in 10 minutes
+const MAX_BODY = 32 * 1024; // bytes
+
+const FIELDS: Field[] = ${fields};
+
+const MSG = ${msg};
+
+const TEXT = ${text};
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const PHONE_RE = /^\+?[\d\s().-]{7,20}$/;
+const hits = new Map<string, number[]>();
+
+type Values = Record<string, string>;
+
+function json(body: Record<string, unknown>, status = 200, extra: Record<string, string> = {}): Response {
+  return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", ...extra } });
+}
+
+const oneLine = (v: string) => v.replace(/[\r\n\t]+/g, " ").trim();
+const escapeHtml = (v: string) => v.replace(/[&<>"']/g, (c) => "&#" + c.charCodeAt(0) + ";");
+
+function sameHost(url: string, request: Request): boolean {
+  try {
+    return new URL(url).host === new URL(request.url).host;
+  } catch {
+    return false;
+  }
+}
+
+/** Same-host page the form was on (never an outside URL), with ?vb_sent=<form> after success. */
+function backUrl(request: Request, form: string): string {
+  const ref = request.headers.get("referer") ?? "";
+  let path = "/";
+  if (ref && sameHost(ref, request)) path = new URL(ref).pathname || "/";
+  if (/^[A-Za-z0-9_:-]{1,80}$/.test(form)) path += "?vb_sent=" + encodeURIComponent(form);
+  return new URL(path, request.url).href;
+}
+
+/** The submitted fields as strings: JSON, urlencoded or multipart. null when unreadable. */
+async function readBody(request: Request): Promise<Values | null> {
+  const type = (request.headers.get("content-type") ?? "").toLowerCase();
+  const out: Values = {};
+  if (type.includes("multipart/form-data")) {
+    const form = await request.formData();
+    form.forEach((v, k) => {
+      if (typeof v === "string") out[k] = v;
+    });
+    return out;
+  }
+  const raw = await request.text();
+  if (raw.length > MAX_BODY) return null;
+  if (type.includes("application/json")) {
+    const data: unknown = JSON.parse(raw);
+    if (!data || typeof data !== "object" || Array.isArray(data)) return null;
+    for (const [k, v] of Object.entries(data as Record<string, unknown>)) {
+      if (typeof v === "string") out[k] = v;
+      else if (typeof v === "boolean" || typeof v === "number") out[k] = String(v);
+    }
+    return out;
+  }
+  new URLSearchParams(raw).forEach((v, k) => {
+    out[k] = v;
+  });
+  return out;
+}
+
+function limited(ip: string, now: number): boolean {
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) hits.clear();
+  return recent.length > LIMIT;
+}
+
+async function turnstileOk(secret: string, token: string, ip: string): Promise<boolean> {
+  if (!token || token.length > 2048) return false;
+  try {
+    const body = new URLSearchParams({ secret, response: token });
+    if (ip !== "unknown") body.set("remoteip", ip);
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+    const data = (await res.json()) as { success?: boolean };
+    return data.success === true;
+  } catch {
+    return false;
+  }
+}
+
+async function handle(request: Request, env: Env): Promise<Response> {
+  const wantsJson = (request.headers.get("accept") ?? "").includes("application/json") || (request.headers.get("content-type") ?? "").includes("application/json");
+  let form = "";
+  const answer = (body: { status: string; errors?: Record<string, string>; message?: string }, status = 200, extra: Record<string, string> = {}): Response => {
+    const ok = body.status === "success";
+    if (wantsJson) return json({ ok, ...body }, status, extra);
+    if (ok) return new Response(null, { status: 303, headers: { Location: backUrl(request, form), "Cache-Control": "no-store" } });
+    const items = Object.values(body.errors ?? {}).map((m) => "<li>" + escapeHtml(m) + "</li>").join("");
+    const html = '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + escapeHtml(SUBJECT) + "</title>" +
+      '<main style="font:16px/1.5 system-ui;max-width:36rem;margin:4rem auto;padding:0 1rem">' + (items ? "<ul>" + items + "</ul>" : "<p>" + escapeHtml(body.message ?? MSG.failed) + "</p>") +
+      '<p><a href="' + escapeHtml(backUrl(request, "")) + '">' + escapeHtml(MSG.back) + "</a></p></main>";
+    return new Response(html, { status, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", ...extra } });
+  };
+
+  if (request.method !== "POST") return answer({ status: "error" }, 405, { Allow: "POST" });
+  const length = Number(request.headers.get("content-length") ?? 0);
+  if (length > MAX_BODY) return answer({ status: "error" }, 413);
+  const type = (request.headers.get("content-type") ?? "").toLowerCase();
+  if (!/application\/json|application\/x-www-form-urlencoded|multipart\/form-data/.test(type)) return answer({ status: "error" }, 415);
+
+  // Cross-site posts are refused (the form always posts from this host).
+  const origin = request.headers.get("origin");
+  if (origin && origin !== "null" && !sameHost(origin, request)) return answer({ status: "error" }, 403);
+
+  let data: Values | null;
+  try {
+    data = await readBody(request);
+  } catch {
+    data = null;
+  }
+  if (!data) return answer({ status: "error" }, 400);
+  form = (data._form ?? "").slice(0, 80);
+
+  // Honeypot and time trap: answer like a success, send nothing.
+  const now = Date.now();
+  const ts = Number(data._ts ?? 0);
+  if ((data.website ?? "").trim() !== "" || (ts > 0 && now - ts < MIN_FILL_MS)) return answer({ status: "success" });
+
+  const values: Values = {};
+  const errors: Record<string, string> = {};
+  for (const f of FIELDS) {
+    const v = (data[f.name] ?? "").trim();
+    values[f.name] = v;
+    if (!v) {
+      if (f.required) errors[f.name] = MSG.required;
+      continue;
+    }
+    if (v.length > f.max) errors[f.name] = MSG.long;
+    else if (f.name === "email" && !EMAIL_RE.test(v)) errors[f.name] = MSG.email;
+    else if (f.name === "phone" && !PHONE_RE.test(v)) errors[f.name] = MSG.phone;
+    else if (f.options && !f.options.includes(v)) errors[f.name] = MSG.required;
+  }
+  const yes = (v: string | undefined) => v === "on" || v === "true" || v === "1";
+  const privacy = yes(data.privacy);
+  const marketing = yes(data.marketing);
+  if (PRIVACY_REQUIRED && !privacy) errors.privacy = MSG.privacy;
+  if (Object.keys(errors).length) return answer({ status: "invalid", errors }, 422);
+
+  const ip = request.headers.get("cf-connecting-ip") ?? (request.headers.get("x-forwarded-for") ?? "").split(",")[0]!.trim();
+  const client = ip || "unknown";
+  if (limited(client, now)) return answer({ status: "error", message: MSG.many }, 429, { "Retry-After": String(WINDOW_MS / 1000) });
+
+  if (env.TURNSTILE_SECRET && !(await turnstileOk(env.TURNSTILE_SECRET, data["cf-turnstile-response"] ?? "", client))) {
+    return answer({ status: "error", message: MSG.captcha }, 403);
+  }
+
+  const missing = (["RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM"] as const).filter((k) => !env[k]);
+  if (missing.length) {
+    console.error("[contact] not configured: set " + missing.join(", "));
+    return answer({ status: "error", message: MSG.failed }, 500);
+  }
+  const to = env.CONTACT_TO!.split(",").map((x) => x.trim()).filter((x) => EMAIL_RE.test(x));
+  if (!to.length) {
+    console.error("[contact] CONTACT_TO is not an email address");
+    return answer({ status: "error", message: MSG.failed }, 500);
+  }
+
+  const lines = [TEXT.intro, ""];
+  for (const f of FIELDS) if (values[f.name]) lines.push(f.label + ": " + values[f.name]);
+  lines.push(TEXT.privacy + ": " + (privacy ? TEXT.yes : TEXT.no), TEXT.marketing + ": " + (marketing ? TEXT.yes : TEXT.no));
+  const referer = request.headers.get("referer");
+  if (referer) lines.push(TEXT.page + ": " + oneLine(referer).slice(0, 300));
+  const replyTo = values.email && EMAIL_RE.test(values.email) ? oneLine(values.email) : undefined;
+
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + env.RESEND_API_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ from: env.CONTACT_FROM, to, subject: SUBJECT, text: lines.join("\n"), ...(replyTo ? { reply_to: replyTo } : {}) }),
+    });
+    if (!res.ok) {
+      console.error("[contact] Resend answered " + res.status);
+      return answer({ status: "error", message: MSG.failed }, 502);
+    }
+  } catch {
+    console.error("[contact] Resend could not be reached");
+    return answer({ status: "error", message: MSG.failed }, 502);
+  }
+  return answer({ status: "success" });
+}
+
+/** Cloudflare Pages Functions. */
+export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
+  return handle(context.request, context.env ?? {});
+}
+
+/** Spacefast functions/ file router. */
+export async function POST(request: Request, context?: { env?: Env }): Promise<Response> {
+  return handle(request, context?.env ?? {});
+}
 `;
 }
