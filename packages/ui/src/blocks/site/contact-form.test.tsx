@@ -102,7 +102,7 @@ describe("ContactForm", () => {
     expect(document.querySelector("[data-turnstile]")).toBeNull();
     unmount();
 
-    const renderWidget = vi.fn((el: HTMLElement) => {
+    const renderWidget = vi.fn((el: HTMLElement, _opts: Record<string, unknown>) => {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = "cf-turnstile-response";
