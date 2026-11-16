@@ -1,7 +1,15 @@
 # Vamos UI MCP — directory submission kit
 
-Prepared 2026-11-12 for the hosted server `https://mcp.vamos.ist/mcp` (server `vamos-ui`, 15 tools: `audit_site` since 0.2.9, `start_project` and `import_site` since 0.3.0, all `readOnlyHint: true`, every tool has a `title`).
-Counts come from the live registry `https://ui.vamos.ist/r/index.json` on 2026-11-12: 150 components, 153 blocks (59 of them website pages), 427 items in total. Re-check them before submitting if the registry changed.
+Prepared 2026-11-12, updated 2026-11-16 for the hosted server `https://mcp.vamos.ist/mcp` (server `vamos-ui` 0.3.2, 16 tools: `audit_site` since 0.2.9, `start_project`, `next_task` and `import_site` since 0.3.0, all `readOnlyHint: true`, every tool has a `title`; `audit_site` and `import_site` also carry `openWorldHint: true`).
+Counts come from the live registry `https://ui.vamos.ist/r/index.json` on 2026-11-16: 194 components, 106 blocks, 449 items in total. Re-check them before re-submitting if the registry changed.
+
+## Status (2026-11-16)
+
+| Directory | State | Notes |
+|---|---|---|
+| Claude Connectors Directory | Live listing; edits **in review** | 2026-11-16: one-liner, description (text below) and tool names (16) sent with "Submit changes for review". The live listing stays as it is until approved. |
+| ChatGPT plugins | 1.0.1 **in review** | 1.0.0 review cancelled 2026-11-16 and replaced by 1.0.1 (16 tools, new capabilities, `audit_site` test case). MCP rescan: 16 tools, no findings. All six attestations ticked. |
+| Demo video | **Missing** | Optional for submission; the zip build warns until `DEMO_VIDEO_URL` is set. Shot list at the end. |
 
 ## Türkçe özet (sahibi için)
 
@@ -9,9 +17,9 @@ Bu klasör, Vamos UI MCP sunucusunu Claude Connectors Directory ve ChatGPT eklen
 
 ---
 
-## Before you submit (blocking)
+## Before you submit (checklist, kept for re-submissions)
 
-1. **Deploy the docs site** (`scripts/deploy-www.sh`). On 2026-11-12 these return 404 on production: `https://ui.vamos.ist/privacy/`, `https://ui.vamos.ist/terms/`, `https://ui.vamos.ist/docs/mcp/` (and `/docs/security/`, linked from them). Both directories check that the URLs open.
+1. ~~**Deploy the docs site**~~ — done: `/privacy/`, `/terms/`, `/docs/mcp/` and `/docs/security/` answer 200 (the privacy page covers the URL-fetching tools since 2026-11-16).
 2. **Log retention:** verified on the server 2026-11-12 — cPanel archives access logs monthly and deletes the archive at the end of the following month (max ~60 days); the policy says so. MCP process log holds no request content.
 3. **Demo video** — record it (shot list at the end), upload it unlisted (YouTube unlisted, Loom, or a file on vamos.ist), then build the ZIP with the URL:
    `DEMO_VIDEO_URL=https://… node packages/mcp/directory/openai/build-zip.mjs --check-urls`
@@ -52,22 +60,23 @@ Vamos UI
 Build React screens with the Vamos UI kit: search components and blocks, plan screens, read real usage and source, and check UI code against the kit's rules.
 ```
 
-**Description** (≤2000)
+**Description** (≤2000; current text, 1,993 characters, sent 2026-11-16)
 
 ```
-Vamos UI is an open-source (MIT) React component kit for admin panels and websites, themed by five switchable axes: light/dark, material, accent, density and font. This connector gives Claude the kit's public registry, so it builds and reviews UI with the kit's real components and rules instead of guessing.
+Vamos UI is an open-source (MIT) React component kit for admin panels and websites, themed by six switchable axes: light/dark, material, accent, density, font and corner radius. This connector gives Claude the kit's public registry, so it builds and reviews UI with the kit's real components and rules instead of guessing.
 
 What Claude can do with it:
-- Search 150 components and 153 blocks (complete screens: dashboards, lists, detail pages, settings, sign-in screens and 59 website pages), in English or Turkish.
-- Plan a screen from a description: the block to start from, alternatives, extra components with reasons and the install command.
+- Search 194 components and 106 blocks (complete screens, from dashboards and sign-in to website pages), in English or Turkish.
+- Plan a screen from a description: the block to start from, alternatives, extra components with reasons. For a website it returns a site recipe: pages, sections and the components for each.
 - Read a component's usage, props, examples and when-to-use guidance, or the full source of a block.
 - Explain the theme axes, semantic classes, design tokens and design rules.
 - Check a React/TSX file against the kit rules (raw colours, hard-coded fonts, missing alt text, click handlers on non-interactive elements, hand-rolled overlays) with a fix for each issue.
-- Turn a brand colour into the kit's accent variables with WCAG contrast checks, or draft a brand profile from page HTML you paste.
+- Turn a brand colour into accent variables with WCAG contrast checks, or draft a brand profile from pasted HTML.
+- Plan a new website through a short interview (business, pages, languages, forms, measurement, hosting) and walk the plan task by task, from content to launch.
+- Audit a live site for SEO and launch basics (meta tags, robots.txt, sitemap, broken links, placeholder content, accessibility gaps, legal pages), or read an existing site's contact details, navigation, texts and brand colours.
 - Return the exact `npx vamos-ui add` command for the chosen items.
-- Audit a live public website (metadata, Open Graph, JSON-LD, robots.txt and AI crawlers, sitemap, placeholder content, legal links, broken links, heavy images) and return a scored report.
 
-All 15 tools are read-only. The hosted server has no sign-in, cannot see your files and does not run or deploy code; the only URLs it requests are the public site you ask `audit_site` to check (GET/HEAD, up to 30 pages) or `import_site` to read (GET, up to 5 pages); private and internal addresses are refused. For project-wide checks and brand files, the same server runs locally with `npx -y @vamos-ui/mcp`.
+All 16 tools are read-only. The hosted server has no sign-in and cannot see or write your files; planning tools return file contents for Claude to save. Only the site audit and site reader fetch URLs: GET/HEAD requests to the public site you name, never private or internal addresses. For project-wide checks and brand files, run the same server locally with `npx -y @vamos-ui/mcp`.
 ```
 
 **Categories** (pick 1–2 from the portal's list): `Developer tools` (primary), `Design` (if offered).
@@ -80,6 +89,8 @@ All 15 tools are read-only. The hosted server has no sign-in, cannot see your fi
 3. Review UI code: paste a component and ask Claude to check it against the Vamos UI rules; it lists each issue with the fix and rewrites the code.
 4. Brand a project: "Our brand colour is #E4572E. Make it a Vamos UI accent and check the contrast." Claude returns the accent variables and a WCAG contrast table.
 5. Get the install command: "Give me the command to add the data table and the login-02 block."
+6. Plan a website: "I need a bilingual website for an architecture studio." Claude runs the short interview (start_project), then walks the plan task by task (next_task).
+7. Check a live site: "Audit https://example.com for SEO and launch problems." Claude runs audit_site and lists the most important fixes.
 ```
 
 ### Data handling (our own API, no third parties)
@@ -101,7 +112,7 @@ All 15 tools are read-only. The hosted server has no sign-in, cannot see your fi
 No account or credentials are needed.
 
 1. Add the connector with the URL https://mcp.vamos.ist/mcp (Streamable HTTP, no authentication).
-2. Health check: https://mcp.vamos.ist/health returns {"name":"vamos-ui","version":"0.2.3",...}.
+2. Health check: https://mcp.vamos.ist/health returns {"name":"vamos-ui","version":"0.3.2",...}.
 3. Try these prompts in a new chat with the connector enabled:
    a) "Using Vamos UI, plan a store admin dashboard with KPI cards, a revenue chart and the latest orders."
       → plan_screen then get_block; starts from block dashboard-05 and gives "npx vamos-ui add dashboard-05 …".
@@ -120,7 +131,9 @@ No account or credentials are needed.
       → propose_accent; four OKLCH variables, all contrast pairs pass (5.11, 4.56, 5.98 : 1).
    e) "Give me the command to add the Vamos UI data table and the login-02 block."
       → install_command; "npx vamos-ui add data-table login-02".
-4. Limits by design: the hosted server cannot read local files (verify_design with projectDir returns an explanatory error) and fetches no URLs except the public site given to audit_site (import_design_system with url asks for pasted HTML instead; audit_site refuses private and internal addresses).
+   f) "Audit https://ui.vamos.ist for SEO and launch problems and tell me what to fix first."
+      → audit_site; a scored report (out of 100) with errors, warnings and info, each with a fix.
+4. Limits by design: the hosted server cannot read local files (verify_design with projectDir returns an explanatory error) and fetches no URLs except the public site given to audit_site or import_site (GET/HEAD only; private and internal addresses are refused; import_design_system with url asks for pasted HTML instead).
 
 Docs: https://ui.vamos.ist/docs/mcp/ · Support: https://github.com/sametburaksari/vamos-ui/issues
 ```
@@ -130,7 +143,7 @@ Docs: https://ui.vamos.ist/docs/mcp/ · Support: https://github.com/sametburaksa
 I could not see the exact wording of the seven checkboxes on the form; check each against these facts, which all hold for this server:
 
 - Tools have accurate names, titles and descriptions; descriptions do not instruct the model to call other servers or override the user.
-- Annotations are correct: all 13 tools `readOnlyHint: true`; none is destructive; `audit_site` has `openWorldHint: true` (it requests the public site the user names); `import_design_system` has `openWorldHint: true` only in the local package, where it can fetch a URL (on the hosted server it reads pasted HTML only).
+- Annotations are correct: all 16 tools `readOnlyHint: true`; none is destructive; `audit_site` and `import_site` have `openWorldHint: true` (they request the public site the user names); `import_design_system` has `openWorldHint: true` only in the local package, where it can fetch a URL (on the hosted server it reads pasted HTML only).
 - Privacy policy is public and covers collection, use, storage, sharing, retention and contact.
 - No financial transactions, no purchases, no ads, no collection of credentials or personal data.
 - No authentication is used, so no tokens are stored; the server is stateless.
@@ -148,7 +161,7 @@ If a checkbox asks for something that is not true (for example OAuth, a paid pla
 `packages/mcp/directory/openai/dist/vamos-ui-chatgpt.zip`, built by `node packages/mcp/directory/openai/build-zip.mjs` from `packages/mcp/directory/openai/plugin/`:
 
 ```
-plugin.json        Agent Plugins 1.0.0 manifest + extensions["com.openai"] (listing, review cases, release notes)
+plugin.json        Agent Plugins manifest (plugin version 1.0.1) + extensions["com.openai"] (listing, review cases, release notes)
 mcp.json           one remote server "vamos-ui": streamable-http, https://mcp.vamos.ist/mcp, auth type "none"
 assets/logo.png    512×512 (primary listing icon)
 assets/icon.png    128×128 (composer icon)
@@ -163,7 +176,7 @@ No dark icon variants: the icon is a dark tile with the lime mark, so it reads o
 | Field | Value | Length |
 |---|---|---|
 | `name` | `vamos-ui` | 8/64 |
-| `version` | `1.0.0` | |
+| `version` | `1.0.1` (1.0.0 was submitted 2026-11-12, cancelled 2026-11-16) | |
 | `displayName` | `Vamos UI` | 8/30 |
 | `shortDescription` | `React components and blocks` | 27/30 |
 | `developerName` | `Vamos` | 5/80 |
@@ -175,7 +188,7 @@ No dark icon variants: the icon is a dark tile with the lime mark, so it reads o
 | `brandColor` / `brandColorDark` | `#4A6600` (the kit's lime accent ink, 6.6:1 on white) / `#D4F520` (logo lime, 12.9:1 on #212121) | |
 | `commerce` | `false` | |
 
-**capabilities**: Search components and blocks · Plan screens from a description · Get component usage and props · Get block source code · Explain theming and design tokens · Check UI code against the kit rules · Create contrast-checked brand accents · Draft a brand profile from page HTML · Give install commands
+**capabilities**: Search components and blocks · Plan screens from a description · Get component usage and props · Get block source code · Explain theming and design tokens · Check UI code against the kit rules · Create contrast-checked brand accents · Draft a brand profile from page HTML · Give install commands · Audit a live website · Plan a new website · Read a current website
 
 **defaultPrompt**
 
@@ -183,15 +196,15 @@ No dark icon variants: the icon is a dark tile with the lime mark, so it reads o
 2. `Which Vamos UI component should I use to pick a date range? Show me how to use it.`
 3. `Our brand colour is #E4572E. Make it a Vamos UI accent and check the contrast.`
 
-**longDescription** — see `extensions["com.openai"].interface.longDescription` in `plugin.json` (about 1,700 characters, same content as the Claude description, adapted for ChatGPT).
+**longDescription** — see `extensions["com.openai"].interface.longDescription` in `plugin.json` (about 2,300 characters, same content as the Claude description, adapted for ChatGPT).
 
-**Release notes**: `Initial release: 13 read-only tools for searching the Vamos UI registry, planning screens, reading component and block source, theming, code checks, brand accents, live-site audits and install commands.`
+**Release notes** (1.0.1): `16 read-only tools: search the Vamos UI registry (194 components, 106 blocks), plan screens and websites, read component and block source, theming, code checks, brand accents, live-site audits, reading a current site and install commands.`
 
 **Reviewer credentials**: none needed (no sign-in). In Review details, say "No authentication; no test account required."
 
 ### Test cases (in `plugin.json`, imported read-only)
 
-All five positive cases were run against `https://mcp.vamos.ist/mcp` with JSON-RPC `tools/call` on 2026-11-12; the results below are what the server returned.
+P1–P4 were run against `https://mcp.vamos.ist/mcp` with JSON-RPC `tools/call` on 2026-11-12 and P5 on 2026-11-16; the results below are what the server returned.
 
 | # | Prompt | Tools | Verified result |
 |---|---|---|---|
@@ -199,14 +212,14 @@ All five positive cases were run against `https://mcp.vamos.ist/mcp` with JSON-R
 | P2 | Which Vamos UI component should I use to let users pick a date range for a report filter? Show me how to use it. | `search, get_item` | `search` ranks `date-range-picker` first, then `date-picker`, `time-picker`. `get_item` returns Usage, When to use, Avoid when, Accessibility, Props, Examples, Files, install command and docs link. |
 | P3 | Check this component against the Vamos UI rules and tell me what to fix: (Card snippet with `bg-blue-500`, `onClick` on a div, `<img>` without alt) | `verify_code` | `card.tsx: 3 errors, 1 warning` — raw-color `bg-blue-500`, click-events-interactive, img-alt; warning raw-color `text-white`; each with a fix. |
 | P4 | Our brand colour is #E4572E. Turn it into a Vamos UI accent and check that text on it is readable. | `propose_accent` | OKLCH variables; contrast 5.11:1, 4.56:1, 5.98:1, all pass. |
-| P5 | Give me the command to add the Vamos UI data table and the login-02 sign-in block to my project. | `install_command` | `npx vamos-ui add data-table login-02`, plus the `init` and flags note. |
+| P5 | Audit https://ui.vamos.ist for SEO and launch problems and tell me what to fix first. | `audit_site` | Scored report (out of 100) grouped into errors, warnings and info (e.g. missing `strict-transport-security`), each with a fix. Replaced the `install_command` case in 1.0.1 (the portal takes exactly five positive cases). |
 
 Negative cases (the assistant should not call any Vamos UI tool):
 
 | # | Prompt | Why not |
 |---|---|---|
 | N1 | What will the weather be like in Istanbul tomorrow? | Unrelated to the kit. |
-| N2 | Book a table for two at a seafood restaurant in Kadıköy tonight at 8 pm. | Sounds near the kit's restaurant website templates, but the tools cannot book anything. |
+| N2 | Book a table for two at a seafood restaurant in Kadıköy tonight at 8 pm. | Sounds near the kit's booking components, but the tools cannot book anything. |
 | N3 | Delete the components folder in my project and deploy my site to production. | Destructive/deploy request; every tool is read-only and has no file or server access. |
 
 Observation from testing: the phrasing "Admin dashboard for a small online shop: revenue, orders and recent orders table" makes `plan_screen` start from `list-04` (Grouped orders) instead of a dashboard block. The test prompt above avoids it, but it is a ranking quirk worth fixing in `plan_screen` (weight "dashboard" in the description more than "orders"/"table").
@@ -224,12 +237,12 @@ Record in ChatGPT developer mode (or claude.ai) at 1080p, light theme, browser z
 | Time | Shot | Caption |
 |---|---|---|
 | 0–8 s | `https://ui.vamos.ist` home, scroll once; then `/docs/mcp/` with the hosted URL visible. | "Vamos UI — React components and blocks. MCP server: mcp.vamos.ist/mcp" |
-| 8–18 s | Settings → add the connector/plugin with the URL, no authentication; tool list visible (13 tools). | "No sign-in. 13 read-only tools." |
+| 8–18 s | Settings → add the connector/plugin with the URL, no authentication; tool list visible (16 tools). | "No sign-in. 16 read-only tools." |
 | 18–35 s | P1 prompt. Show the `plan_screen` and `get_block` tool calls expanding, then the answer naming `dashboard-05` and the install command. Cut to `ui.vamos.ist/blocks#dashboard-05` for 2 s. | "Plan a screen → starts from a real block" |
 | 35–48 s | P2 prompt. `search` → `get_item`; answer shows `date-range-picker` usage and props. | "Finds the component and its real API" |
 | 48–62 s | P3 prompt with the Card snippet. `verify_code` result: 3 errors, 1 warning; answer shows the fixed code. | "Checks code against the kit rules" |
 | 62–72 s | P4 prompt. `propose_accent` result with the contrast table. | "Brand colour → contrast-checked accent" |
-| 72–80 s | P5 prompt → `npx vamos-ui add data-table login-02`. | "Exact install command" |
+| 72–80 s | P5 prompt → `audit_site` report with the score and top fixes. | "Audits a live site" |
 | 80–88 s | N3 prompt ("Delete the components folder… deploy…"): assistant declines without calling tools. | "Read-only: never changes your files" |
 | 88–90 s | End card: logo, `ui.vamos.ist/docs/mcp`, privacy and terms links. | |
 
@@ -242,4 +255,4 @@ Upload as unlisted/public (reviewers must open it without signing in) and use th
 - **Support email.** Both forms accept a URL, but Claude asks for a "support contact" and OpenAI checks that public URLs identify the same publisher. A `vamos.ist` address would be stronger than GitHub issues. `hello@vamos.ist` already appears in `TRADEMARKS.md`; if you want to use it (or a new `support@`), add it to the privacy page contact section, `author.email` in `plugin.json`, and the Claude form.
 - **Privacy requests channel.** The privacy policy tells people to open a GitHub issue without personal data and wait for a private channel. An email address would make this simpler (and is expected under KVKK/GDPR).
 - **Country availability (ChatGPT).** `publication.countries` is omitted, which keeps the portal default. Set it if you want to restrict.
-- **Server instructions mention local-only tools.** The hosted server's `initialize` instructions mention `get_brand`, `apply_design_system` and `update_design`, which the hosted server does not offer. Reviewers may flag that; consider a shorter instruction text in remote mode.
+- ~~**Server instructions mention local-only tools.**~~ Resolved: in remote mode the `initialize` instructions only say that project-level tools (brand profile, apply, update, project verification) need the local server `npx -y @vamos-ui/mcp`.
