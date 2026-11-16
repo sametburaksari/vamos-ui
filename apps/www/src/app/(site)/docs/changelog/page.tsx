@@ -3,7 +3,7 @@ import { A, C, DocPage, H2, H3, P } from "@/components/docs/prose";
 import { changeId, readChangelogs, type ChangelogItem } from "@/lib/changelog";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata = pageMeta({ title: "Changelog", description: "Release notes for the Vamos UI component kit, CLI and MCP server.", path: "/docs/changelog/" });
+export const metadata = pageMeta({ title: "Changelog", description: "Release notes for the Vamos UI component kit, the vamos-ui CLI and the MCP server: what was added, changed and fixed in each version.", path: "/docs/changelog/" });
 
 const tone: Record<string, "success" | "info" | "warning" | "danger"> = { Added: "success", Changed: "info", Fixed: "warning", Removed: "danger" };
 

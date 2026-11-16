@@ -38,6 +38,7 @@ AddType "text/markdown; charset=utf-8" .md
 AddType "text/plain; charset=utf-8" .txt
 ErrorDocument 404 /404.html
 <IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
