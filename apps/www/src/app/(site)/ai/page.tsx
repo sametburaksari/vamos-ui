@@ -233,8 +233,8 @@ const clients: ClientSetup[] = [
 const prompts: [tool: string, prompt: string][] = [
   ["plan_screen", "Plan a store admin dashboard with KPI cards, a revenue chart and the latest orders using Vamos UI."],
   ["verify_code", "Check this component against the Vamos UI rules and fix what it finds."],
-  ["audit_site", "Audit https://kestrel-coffee.example before launch: metadata, sitemap, broken links and placeholder content."],
-  ["start_project", "Plan a website for Ada Dental, a two-chair clinic: pages, online booking, forms and the legal pages."],
+  ["audit_site", "Audit https://pinecrest-books.example before launch: metadata, sitemap, broken links and placeholder content."],
+  ["start_project", "Plan a website for Ozan & Partners, a small accounting firm: pages, appointment requests, forms and the legal pages."],
   ["propose_accent", "Our brand colour is #E4572E. Make it a Vamos UI accent and check the contrast."],
   ["search", "Which Vamos UI component should I use to pick a date range? Show me how to use it."],
 ];
