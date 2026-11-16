@@ -256,11 +256,24 @@ export function Row({ name }: { name: string }) {
   });
 
   it("is fast on large files", () => {
+    // Guards against super-linear rules (catastrophic regex backtracking, rescans per match). Wall
+    // time alone is flaky on a loaded runner, so: best of three runs, and 4× the input must cost
+    // well under 16× the time (quadratic) — with a loose absolute ceiling on top.
     const chunk = `<div className="flex gap-2 bg-surface"><Button onClick={() => go()}>Save</Button><img src="/x" alt="" /></div>\n`;
-    const big = chunk.repeat(5000);
-    const t = performance.now();
-    verifySource(big, "src/big.tsx");
-    expect(performance.now() - t).toBeLessThan(1500);
+    const best = (code: string) => {
+      let min = Infinity;
+      for (let i = 0; i < 3; i++) {
+        const t = performance.now();
+        verifySource(code, "src/big.tsx");
+        min = Math.min(min, performance.now() - t);
+      }
+      return min;
+    };
+    best(chunk.repeat(200)); // warm-up (JIT, regex compilation)
+    const small = best(chunk.repeat(1250));
+    const large = best(chunk.repeat(5000));
+    expect(large).toBeLessThan(Math.max(small * 10, 250));
+    expect(large).toBeLessThan(5000);
   });
 });
 

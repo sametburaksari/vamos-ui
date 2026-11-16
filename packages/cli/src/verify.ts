@@ -289,11 +289,12 @@ export function verifySource(code: string, filename: string): VerifyIssue[] {
     const open = cm.index + cm[0].length - 1;
     classRegions.push([open, matchBracket(masked, open) + 1]);
   }
-  const inRegion = (regions: [number, number][], offset: number) => regions.some(([a, b]) => offset >= a && offset < b);
+  const inStyleRegion = regionLookup(styleRegions);
+  const inClassRegion = regionLookup(classRegions);
 
   for (const s of strings) {
-    const inStyle = inRegion(styleRegions, s.start);
-    const inClass = inRegion(classRegions, s.start);
+    const inStyle = inStyleRegion(s.start);
+    const inClass = inClassRegion(s.start);
     if (!inStyle && !inClass) continue;
     if (inStyle) {
       for (const re of [HEX, COLOR_FN]) {
@@ -556,6 +557,27 @@ function verifyCss(code: string): Raw[] {
     }
   }
   return issues;
+}
+
+/**
+ * `offset => inside any [start, end) region`, in O(log n) per query (a linear scan per string made
+ * large files quadratic). Regions may nest or overlap: sorted by start, with a running max of ends.
+ */
+function regionLookup(regions: [number, number][]): (offset: number) => boolean {
+  const sorted = [...regions].sort((x, y) => x[0] - y[0]);
+  const maxEnd: number[] = [];
+  for (const [i, [, b]] of sorted.entries()) maxEnd.push(Math.max(b, i ? maxEnd[i - 1]! : -Infinity));
+  return (offset) => {
+    let lo = 0;
+    let hi = sorted.length - 1;
+    let last = -1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      if (sorted[mid]![0] <= offset) (last = mid), (lo = mid + 1);
+      else hi = mid - 1;
+    }
+    return last >= 0 && maxEnd[last]! > offset;
+  };
 }
 
 interface Raw {
