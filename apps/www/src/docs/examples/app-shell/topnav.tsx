@@ -24,7 +24,7 @@ export default function AppShellTopnav() {
   return (
     <ShellFrame height={520}>
       <AppShellProvider apps={[portal]} currentPath={router.currentPath} navigate={router.navigate} linkComponent={router.Link} shortcuts={false}>
-        <AppShell height="fill" layout="topnav" user={{ name: "Mert Aydın", email: "mert@lenaspa.com", items: [{ id: "out", label: "Sign out" }] }}>
+        <AppShell height="fill" layout="topnav" user={{ name: "Mert Aydın", email: "mert@northpoint.example", items: [{ id: "out", label: "Sign out" }] }}>
           <PageHeader title="Documents" description="Contracts, briefs and reports shared with you." />
           <DemoPage path={router.currentPath} />
         </AppShell>

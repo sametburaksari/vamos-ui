@@ -23,7 +23,7 @@ export default function TopBarWithBreadcrumb() {
           <Button size="sm" variant="ghost">
             <Share2 /> Share
           </Button>
-          <UserMenu name="Mert Aydın" email="mert@lenaspa.com" items={[{ id: "out", label: "Sign out" }]} />
+          <UserMenu name="Mert Aydın" email="mert@northpoint.example" items={[{ id: "out", label: "Sign out" }]} />
         </TopBarActions>
       </TopBar>
     </div>

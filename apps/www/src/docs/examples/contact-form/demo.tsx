@@ -23,7 +23,7 @@ export default function ContactFormDemo() {
         marketingConsent
         info={{
           phone: "+902160000000",
-          email: "info@lenaclinic.com.tr",
+          email: "merhaba@ornek.com.tr",
           address: { line: "Abdi İpekçi Caddesi 21, Kat 3", district: "Nişantaşı", city: "Şişli", postalCode: "34367", country: "TR" },
           hours: clinicHours,
         }}
