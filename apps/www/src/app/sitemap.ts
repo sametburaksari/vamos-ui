@@ -23,6 +23,7 @@ const pages = [
   ["/docs/fonts/", 0.6, "monthly"],
   ["/docs/cli/", 0.8, "monthly"],
   ["/docs/mcp/", 0.7, "monthly"],
+  ["/ai/", 0.8, "monthly"],
   ["/docs/changelog/", 0.6, "weekly"],
   ["/docs/license/", 0.3, "yearly"],
   ["/privacy/", 0.3, "yearly"],

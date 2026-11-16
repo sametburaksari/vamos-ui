@@ -249,6 +249,7 @@ const llms = [
   [
     link("Registry index (JSON)", `${SITE}/r/index.json`, "every component, block, lib and style item"),
     link("MCP server", "https://mcp.vamos.ist/mcp", "streamable HTTP, no account needed"),
+    link("Use Vamos UI with your AI", `${SITE}/ai/`, "one-step MCP setup for Claude, ChatGPT, Claude Code, Cursor, VS Code, Codex, Windsurf, Gemini CLI, Zed and any MCP client"),
     link("Source code", "https://github.com/sametburaksari/vamos-ui", "MIT"),
     link("npm: @vamos-ui/react", "https://www.npmjs.com/package/@vamos-ui/react"),
     link("Full text", `${SITE}/llms-full.txt`, "all docs, components and blocks in one file"),
