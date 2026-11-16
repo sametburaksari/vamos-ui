@@ -81,6 +81,53 @@ describe("ContactForm", () => {
     vi.unstubAllGlobals();
   });
 
+  it("posts to the edge function at /api/contact and reads its { ok, status } answer", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({ ok: true, status: "success" }), { headers: { "content-type": "application/json" } }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ContactForm variant="stacked" action="/api/contact" />);
+    await user.type(screen.getByRole("textbox", { name: /Full name/ }), "Deniz Arslan");
+    await user.type(screen.getByRole("textbox", { name: /Email/ }), "deniz@example.com");
+    await user.type(screen.getByRole("textbox", { name: /Message/ }), "Annual accounts, please.");
+    await user.click(screen.getByRole("button", { name: /Send message/ }));
+    await screen.findByRole("status");
+    expect(fetchMock).toHaveBeenCalledWith("/api/contact", expect.objectContaining({ method: "POST" }));
+    vi.unstubAllGlobals();
+  });
+
+  it("Turnstile: nothing loads without a site key; with one the script loads once and the widget renders in the form", async () => {
+    const script = () => document.head.querySelectorAll('script[src^="https://challenges.cloudflare.com/turnstile/"]');
+    const { unmount } = render(<ContactForm variant="stacked" action="/api/contact" />);
+    expect(script()).toHaveLength(0);
+    expect(document.querySelector("[data-turnstile]")).toBeNull();
+    unmount();
+
+    const renderWidget = vi.fn((el: HTMLElement, _opts: Record<string, unknown>) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "cf-turnstile-response";
+      input.value = "token-1";
+      el.appendChild(input);
+      return "w1";
+    });
+    const remove = vi.fn();
+    render(
+      <>
+        <ContactForm id="a" variant="stacked" action="/api/contact" turnstileSiteKey="0x4AAA-test" />
+        <ContactForm id="b" variant="minimal" action="/api/contact" turnstileSiteKey="0x4AAA-test" />
+      </>,
+    );
+    await waitFor(() => expect(script()).toHaveLength(1));
+    expect(script()[0]).toHaveAttribute("src", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit");
+    (window as unknown as { turnstile: unknown }).turnstile = { render: renderWidget, remove };
+    script()[0]!.dispatchEvent(new Event("load"));
+    await waitFor(() => expect(renderWidget).toHaveBeenCalledTimes(2));
+    expect(renderWidget.mock.calls[0]![1]).toMatchObject({ sitekey: "0x4AAA-test", theme: "auto" });
+    const form = document.querySelector("form")!;
+    expect(new FormData(form).get("cf-turnstile-response")).toBe("token-1");
+    delete (window as unknown as { turnstile?: unknown }).turnstile;
+  });
+
   it("URL action: server-side field errors come back into the form", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ status: "invalid", errors: { email: "This address bounced." } }))));

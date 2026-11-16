@@ -16,7 +16,7 @@ export interface CheckText {
   tr: string;
 }
 
-export type DeployCheckId = "https-redirect" | "one-host" | "security-headers" | "not-found" | "robots" | "sitemap";
+export type DeployCheckId = "https-redirect" | "one-host" | "security-headers" | "not-found" | "contact-endpoint" | "robots" | "sitemap";
 export type DeployCheckStatus = "pass" | "warn" | "fail" | "skip";
 
 export interface DeployCheck {
@@ -37,6 +37,14 @@ export interface DeployCheckOptions {
   guard?: (url: URL) => void | Promise<void>;
   /** Path used for the 404 check (default: a random /vamos-ui-check-… path). */
   notFoundPath?: string;
+  /**
+   * The contact form endpoint (e.g. "/api/contact" or "/contact.php"). When given, an empty POST
+   * must reach it: a 4xx refusal (400, 405, 415, 422 …) proves it exists; 404 means it did not
+   * deploy. The empty POST never passes validation, so no mail is sent.
+   */
+  formEndpoint?: string | null;
+  /** Header names the project's own config sets (e.g. from public/_headers), checked on top of the defaults. */
+  expectedHeaders?: string[];
 }
 
 export interface SiteCheckVerdict {
@@ -56,6 +64,7 @@ export const DEPLOY_CHECK_TITLES: Record<DeployCheckId, CheckText> = {
   "one-host": t("One host name (www or not)", "Tek alan adı (www'li ya da www'siz)"),
   "security-headers": t("Security headers", "Güvenlik başlıkları"),
   "not-found": t("Unknown path returns 404", "Olmayan sayfa 404 döndürüyor"),
+  "contact-endpoint": t("Contact form endpoint", "İletişim formu adresi"),
   robots: t("robots.txt", "robots.txt"),
   sitemap: t("sitemap.xml", "sitemap.xml"),
 };
@@ -109,7 +118,7 @@ export async function runDeployChecks(input: string, options: DeployCheckOptions
   const start = await request(url, "GET", http);
   if (!start.status) {
     const why = start.error ?? "no answer";
-    for (const id of Object.keys(DEPLOY_CHECK_TITLES) as DeployCheckId[]) add(id, "fail", t(`${url} could not be loaded: ${why}.`, `${url} açılamadı: ${why}.`), url);
+    for (const id of (Object.keys(DEPLOY_CHECK_TITLES) as DeployCheckId[]).filter((x) => x !== "contact-endpoint" || options.formEndpoint)) add(id, "fail", t(`${url} could not be loaded: ${why}.`, `${url} açılamadı: ${why}.`), url);
     return { url, finalUrl: url, checks };
   }
   const finalUrl = start.finalUrl;
@@ -169,11 +178,13 @@ export async function runDeployChecks(input: string, options: DeployCheckOptions
   // security headers (from the start page response) -------------------------------------
   const missingReq = REQUIRED_HEADERS.filter((h) => !headers.has(h));
   const frameOk = headers.has("x-frame-options") || /frame-ancestors/i.test(headers.get("content-security-policy") ?? "");
-  const missingRec = RECOMMENDED_HEADERS.filter((h) => (h === "x-frame-options" ? !frameOk : !headers.has(h)));
+  const known = new Set<string>([...REQUIRED_HEADERS, ...RECOMMENDED_HEADERS]);
+  const ownHeaders = [...new Set((options.expectedHeaders ?? []).map((h) => h.toLowerCase().trim()))].filter((h) => /^[a-z0-9-]+$/.test(h) && !known.has(h) && h !== "cache-control");
+  const missingRec = [...RECOMMENDED_HEADERS.filter((h) => (h === "x-frame-options" ? !frameOk : !headers.has(h))), ...ownHeaders.filter((h) => !headers.has(h))];
   const headerFix = t("Deploy the headers site deploy wrote (.htaccess, vercel.json, _headers or the nginx config) and purge the CDN cache.", "site deploy'un yazdığı başlıkları yayına alın (.htaccess, vercel.json, _headers ya da nginx yapılandırması) ve CDN önbelleğini temizleyin.");
   if (missingReq.length) add("security-headers", "fail", t(`Not set: ${[...missingReq, ...missingRec].join(", ")}.`, `Eksik: ${[...missingReq, ...missingRec].join(", ")}.`), finalUrl, headerFix);
   else if (missingRec.length) add("security-headers", "warn", t(`Set: ${REQUIRED_HEADERS.join(", ")}. Not set: ${missingRec.join(", ")}.`, `Var: ${REQUIRED_HEADERS.join(", ")}. Eksik: ${missingRec.join(", ")}.`), finalUrl, headerFix);
-  else add("security-headers", "pass", t(`${[...REQUIRED_HEADERS, ...RECOMMENDED_HEADERS].join(", ")} are set.`, `${[...REQUIRED_HEADERS, ...RECOMMENDED_HEADERS].join(", ")} tanımlı.`), finalUrl);
+  else add("security-headers", "pass", t(`${[...REQUIRED_HEADERS, ...RECOMMENDED_HEADERS, ...ownHeaders].join(", ")} are set.`, `${[...REQUIRED_HEADERS, ...RECOMMENDED_HEADERS, ...ownHeaders].join(", ")} tanımlı.`), finalUrl);
 
   // unknown path → 404 ------------------------------------------------------------------------
   const notFound = async () => {
@@ -185,6 +196,42 @@ export async function runDeployChecks(input: string, options: DeployCheckOptions
     else if (r.status >= 200 && r.status < 300)
       add("not-found", "fail", t(`${path} answers ${r.status}${r.chain.length ? ` after redirecting to ${r.finalUrl}` : ""} (a "soft 404"): search engines index error pages and broken links look fine.`, `${path} ${r.chain.length ? `${r.finalUrl} adresine yönlendirip ` : ""}${r.status} döndürüyor ("soft 404"): arama motorları hata sayfalarını dizine alır, kırık bağlantılar fark edilmez.`), probeUrl, fix);
     else add("not-found", "fail", t(`${path} answers ${failed(r, "en")}, not 404.`, `${path} 404 yerine ${failed(r, "tr")} döndürüyor.`), probeUrl, fix);
+  };
+
+  // contact form endpoint ---------------------------------------------------------------------
+  const contact = async () => {
+    if (!options.formEndpoint) return;
+    let at: string;
+    try {
+      at = new URL(options.formEndpoint, origin).href;
+      await options.guard?.(new URL(at));
+    } catch (error) {
+      add("contact-endpoint", "skip", t(`${options.formEndpoint} was not requested: ${(error as Error).message}.`, `${options.formEndpoint} istenmedi: ${(error as Error).message}.`));
+      return;
+    }
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), http.timeoutMs);
+    let status = 0;
+    let error = "";
+    try {
+      const res = await http.fetch(at, { method: "POST", redirect: "manual", signal: ctrl.signal, headers: { "user-agent": http.userAgent, accept: "application/json" } });
+      status = res.status;
+      await res.body?.cancel().catch(() => {});
+    } catch (e) {
+      error = ctrl.signal.aborted ? "timed out" : (e as Error).message;
+    } finally {
+      clearTimeout(timer);
+    }
+    const fix = t(
+      "Deploy the form sender with the site: functions/ next to out/ on Cloudflare Pages and Spacefast (site deploy --publish does it), public/contact.php on cPanel. Then send one real message.",
+      "Form göndericisini siteyle birlikte yayınlayın: Cloudflare Pages ve Spacefast'te out/ yanında functions/ (site deploy --publish bunu yapar), cPanel'de public/contact.php. Sonra gerçek bir mesaj gönderin.",
+    );
+    if (!status) add("contact-endpoint", "fail", t(`POST ${at} got no answer (${error}).`, `POST ${at} yanıt vermedi (${error}).`), at, fix);
+    else if (status === 404 || status === 410) add("contact-endpoint", "fail", t(`POST ${at} answers ${status}: the form has nowhere to send.`, `POST ${at} ${status} döndürüyor: formun gönderecek yeri yok.`), at, fix);
+    else if ([400, 403, 405, 411, 413, 415, 422, 429].includes(status)) add("contact-endpoint", "pass", t(`POST ${at} answers ${status} to an empty request: the endpoint is live.`, `POST ${at} boş isteğe ${status} döndürüyor: adres çalışıyor.`), at);
+    else if (status >= 200 && status < 300) add("contact-endpoint", "warn", t(`POST ${at} answers ${status} to an empty request; make sure it validates the fields and the consent.`, `POST ${at} boş isteğe ${status} döndürüyor; alanları ve onayı doğruladığından emin olun.`), at);
+    else if (status >= 300 && status < 400) add("contact-endpoint", "warn", t(`POST ${at} redirects (${status}); the form posts to the address it is given.`, `POST ${at} yönlendiriyor (${status}); form verilen adrese gönderir.`), at, t("Use the final address (https, one host name) as the form action.", "Form action olarak son adresi kullanın (https, tek alan adı)."));
+    else add("contact-endpoint", "warn", t(`POST ${at} answers ${status}; check the function logs and its environment variables.`, `POST ${at} ${status} döndürüyor; fonksiyon günlüklerini ve ortam değişkenlerini kontrol edin.`), at, fix);
   };
 
   // robots.txt ------------------------------------------------------------------------------
@@ -203,7 +250,7 @@ export async function runDeployChecks(input: string, options: DeployCheckOptions
     else add("robots", "pass", t(`${at} answers; Sitemap: ${parsed.sitemaps[0]}.`, `${at} açılıyor; Sitemap: ${parsed.sitemaps[0]}.`), at);
   };
 
-  await Promise.all([https(), oneHost(), notFound(), robots()]);
+  await Promise.all([https(), oneHost(), notFound(), contact(), robots()]);
 
   // sitemap.xml (after robots, which may name another location) ------------------------------
   const own = `${origin}/sitemap.xml`;
@@ -221,7 +268,7 @@ export async function runDeployChecks(input: string, options: DeployCheckOptions
     else add("sitemap", "pass", t(`${at}: ${info.urls.length} ${info.kind === "sitemapindex" ? "sitemaps" : "URLs"}.`, `${at}: ${info.urls.length} ${info.kind === "sitemapindex" ? "sitemap" : "adres"}.`), at);
   }
 
-  const order: DeployCheckId[] = ["https-redirect", "one-host", "security-headers", "not-found", "robots", "sitemap"];
+  const order: DeployCheckId[] = ["https-redirect", "one-host", "security-headers", "not-found", "contact-endpoint", "robots", "sitemap"];
   checks.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
   return { url, finalUrl, checks };
 }

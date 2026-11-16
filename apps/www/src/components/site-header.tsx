@@ -90,13 +90,13 @@ function DocsSearch() {
         onClick={() => setOpen(true)}
         onPointerEnter={prefetch}
         onFocus={prefetch}
-        className="hidden h-8 w-60 items-center gap-2 rounded-ui-sm border border-field-border bg-field ps-2.5 pe-1.5 text-[13px] text-fg-subtle hover:border-field-border-hover focus-ring lg:flex"
+        className="hidden h-8 w-60 items-center gap-2 rounded-ui-sm border border-field-border bg-field ps-2.5 pe-1.5 text-[13px] text-fg-subtle hover:border-field-border-hover focus-ring min-[1440px]:flex"
       >
         <Search className="size-3.5" aria-hidden />
         <span className="flex-1 text-start">Search documentation…</span>
         <KbdGroup keys="mod+k" size="sm" />
       </button>
-      <IconButton size="sm" label="Search documentation" className="lg:hidden" onClick={() => setOpen(true)}>
+      <IconButton size="sm" label="Search documentation" className="min-[1440px]:hidden" onClick={() => setOpen(true)}>
         <Search />
       </IconButton>
       <CommandDialog open={open} onOpenChange={setOpen} title="Search documentation">
@@ -129,13 +129,13 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-line bg-[color-mix(in_srgb,var(--scene)_78%,transparent)] backdrop-blur-xl">
       <div className="flex h-14 w-full items-center gap-3 md:gap-6 px-5 md:px-8 xl:px-12">
         <Logo />
-        <nav aria-label="Main" className="hidden items-center gap-0.5 md:flex">
+        <nav aria-label="Main" className="hidden items-center gap-0.5 xl:flex">
           {mainNav.map((n) => (
             <Link
               key={n.href}
               href={n.href}
               aria-current={isActive(n.href) ? "page" : undefined}
-              className={cn("rounded-md px-2.5 py-1.5 text-[13.5px] transition-colors focus-ring", isActive(n.href) ? "font-medium text-fg" : "text-fg-muted hover:text-fg")}
+              className={cn("whitespace-nowrap rounded-md px-2.5 py-1.5 text-[13.5px] transition-colors focus-ring", isActive(n.href) ? "font-medium text-fg" : "text-fg-muted hover:text-fg")}
             >
               {n.label}
             </Link>
@@ -147,7 +147,7 @@ export function SiteHeader() {
         <IconButton asChild size="sm" label="GitHub" className="max-md:hidden">
           <a href={site.github} target="_blank" rel="noreferrer"><GithubMark /></a>
         </IconButton>
-        <IconButton size="sm" label="Open menu" className="md:hidden" onClick={() => setMenu(true)}>
+        <IconButton size="sm" label="Open menu" className="xl:hidden" onClick={() => setMenu(true)}>
           <Menu />
         </IconButton>
       </div>

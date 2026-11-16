@@ -40,10 +40,11 @@ async function sendLead(prev: SiteFormState, data: FormData): Promise<SiteFormSt
       props: [
         { name: "variant", type: '"split" | "stacked" | "minimal"', default: '"split"', description: "Layout." },
         { name: "fields", type: "ContactFieldConfig[]", default: "name, email, message", description: "2–8 of name · email · phone · company · subject · budget · message · date, each { required?, label?, options?, placeholder?, hint?, max? }." },
-        { name: "action", type: "(prev: SiteFormState, data: FormData) => Promise<SiteFormState> | string", description: "Your server action, or a URL (e.g. /contact.php on static hosting): a plain POST without JS, a fetch with Accept: application/json once hydrated — the endpoint answers { status: \"success\" } or { status: \"invalid\", errors }. Without it the form only validates (previews). A success also fires the vb:lead event that Analytics measures." },
+        { name: "action", type: "(prev: SiteFormState, data: FormData) => Promise<SiteFormState> | string", description: "Your server action, or a URL (/contact.php on shared hosting, /api/contact for the edge function on Cloudflare Pages and Spacefast): a plain POST without JS, a fetch with Accept: application/json once hydrated — the endpoint answers { status: \"success\" } or { status: \"invalid\", errors }. Without it the form only validates (previews). A success also fires the vb:lead event that Analytics measures." },
         { name: "successMessage", type: "ReactNode | RichDoc", description: "Replaces the form; focus moves to it." },
         { name: "privacyLink / privacyCheckbox", type: "{ href; label?; version? } / boolean", description: "Linked notice; with privacyCheckbox a required, never pre-checked box. version is posted in a hidden _notice field so the server can record which notice the visitor saw (see KVKK consent records)." },
         { name: "marketingConsent", type: "boolean", default: "false", description: "A separate, optional marketing box." },
+        { name: "turnstileSiteKey", type: "string", description: "Cloudflare Turnstile site key (e.g. process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY). Optional: without it nothing from Cloudflare loads; with it the widget renders above the button, its script loads once, and the token is posted as cf-turnstile-response for the sender to verify (TURNSTILE_SECRET). Turnstile needs JavaScript, so a no-JS submit is refused while the secret is set." },
         { name: "info / showInfo", type: "{ address?; phone?; email?; hours? } / boolean", description: "Contact column (split). phone is also the fallback on server errors." },
         { name: "submitLabel", type: "string", default: '"Send message"', description: "Button text." },
         { name: "initialState", type: "SiteFormState", description: "Render a given state (docs, a server-rendered result)." },
@@ -63,7 +64,8 @@ async function sendLead(prev: SiteFormState, data: FormData): Promise<SiteFormSt
       name: "Senders: npx vamos-ui site form",
       props: [
         { name: "--kind php-mail", type: "public/contact.php", description: "Static export on shared hosting (cPanel): PHP mail() through the host, the same fields, honeypot + time trap, rate limit per IP, cross-site posts refused, Reply-To only after checking the address. Set CONTACT_TO / CONTACT_FROM inside." },
-        { name: "--kind resend", type: "app/actions/contact.ts", description: "Server action calling the Resend API (RESEND_API_KEY, CONTACT_TO, CONTACT_FROM on a verified domain)." },
+        { name: "--kind edge", type: "functions/api/contact.ts", description: "Static export on Cloudflare Pages or Spacefast: a web-standards function (onRequestPost for Pages, POST for Spacefast) with the same checks, consent required, Turnstile when TURNSTILE_SECRET is set, sent with the Resend API (RESEND_API_KEY, CONTACT_TO, CONTACT_FROM). action=\"/api/contact\". See Deploying." },
+        { name: "--kind resend", type: "app/actions/contact.ts", description: "Server action calling the Resend API (RESEND_API_KEY, CONTACT_TO, CONTACT_FROM on a verified domain; optional TURNSTILE_SECRET)." },
         { name: "--kind smtp", type: "app/actions/contact.ts", description: "Server action with nodemailer and the business's own mailbox (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO)." },
         { name: "app/contact-fields.ts", type: "ContactFieldConfig[]", description: "One field list for the page and the sender. --booking writes name, phone, date, message." },
       ],
