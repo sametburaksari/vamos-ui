@@ -154,6 +154,14 @@ describe("AuthDialog", () => {
     expect(onRecover).toHaveBeenCalledWith("reader@example.com");
     expect(await within(recover).findByRole("status")).toHaveTextContent("reader@example.com");
   });
+
+  it("sizes the title on the header's own title element (an inner size lost to the header style)", async () => {
+    render(<AuthDialog defaultOpen brand="The Harbour Ledger" joinHref="/join" />);
+    const dialog = await screen.findByRole("dialog", { name: /Welcome back/ });
+    const title = dialog.querySelector('[data-slot="layer-title"]')!;
+    expect(title.closest('[data-slot="layer-header"]')!.className).toContain("[&_[data-slot=layer-title]]:text-[1.5rem]");
+    expect(title.querySelector('[class*="text-[1.5rem]"]')).toBeNull();
+  });
 });
 
 describe("NewsTopBar / NewsHeader", () => {
@@ -193,6 +201,15 @@ describe("NewsTopBar / NewsHeader", () => {
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("search")).toBeNull();
     expect(container.querySelector(".vb-news-navbar")).toHaveClass("sticky");
+  });
+
+  it("header: a section with a mega menu is marked and underlined as the current page", () => {
+    render(<NewsHeader brand="The Harbour Ledger" nav={[{ label: "City", href: "/city", mega: [{ id: "all", label: "All", href: "/city", posts }] }, { label: "Opinion", href: "/opinion" }]} currentPath="/city/housing" />);
+    const nav = screen.getByRole("navigation", { name: "Main" });
+    const city = within(nav).getByRole("button", { name: "City" });
+    expect(city).toHaveAttribute("aria-current", "page");
+    expect(city.className).toContain("aria-[current=page]:shadow-");
+    expect(within(nav).getByRole("link", { name: "Opinion" })).not.toHaveAttribute("aria-current");
   });
 });
 

@@ -299,7 +299,7 @@ export function NewsHeader({ brand, brandLabel, homeHref = "/", tagline, aside, 
                   <NavigationMenuItem key={item.href} className="static">
                     {item.mega?.length || item.children?.length ? (
                       <>
-                        <NavigationMenuTrigger className="h-12 rounded-none px-3 text-[0.8125rem] font-semibold uppercase tracking-[0.06em] text-fg data-[state=open]:bg-transparent data-[state=open]:shadow-[inset_0_-3px_0_var(--accent)]" aria-current={isCurrent(item.href) ? "page" : undefined}>
+                        <NavigationMenuTrigger className="h-12 rounded-none px-3 text-[0.8125rem] font-semibold uppercase tracking-[0.06em] text-fg data-[state=open]:bg-transparent data-[state=open]:shadow-[inset_0_-3px_0_var(--accent)] aria-[current=page]:shadow-[inset_0_-3px_0_var(--accent)]" aria-current={isCurrent(item.href) ? "page" : undefined}>
                           {item.label}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent className={cn("p-0", item.mega?.length ? "w-max" : "w-auto")}>
