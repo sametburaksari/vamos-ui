@@ -9,7 +9,7 @@ Counts come from the live registry `https://ui.vamos.ist/r/index.json` on 2026-1
 |---|---|---|
 | Claude Connectors Directory | Live listing; edits **in review** | 2026-11-16: one-liner, description (text below) and tool names (16) sent with "Submit changes for review". The live listing stays as it is until approved. |
 | ChatGPT plugins | 1.0.1 **in review** | 1.0.0 review cancelled 2026-11-16 and replaced by 1.0.1 (16 tools, new capabilities, `audit_site` test case). MCP rescan: 16 tools, no findings. All six attestations ticked. |
-| Demo video | **Missing** | Optional for submission; the zip build warns until `DEMO_VIDEO_URL` is set. Shot list at the end. |
+| Demo video | Ready | `https://ui.vamos.ist/media/vamos-ui-mcp-demo.mp4` (58 s, 1080p, recorded 2026-11-16 in a Claude incognito chat: plan_screen, verify_code, audit_site, and a refused delete/deploy request). Use it as `DEMO_VIDEO_URL` for the next zip. The 1.0.1 zip in review was built without it. |
 
 ## Türkçe özet (sahibi için)
 
