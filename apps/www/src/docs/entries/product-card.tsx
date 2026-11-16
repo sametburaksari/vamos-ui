@@ -11,7 +11,7 @@ const entry: DocEntry = {
   group: "Site blocks",
   description:
     "Product tiles for shops. ProductCard: the photo (a second photo on hover, or one photo per colour swatch), sale, new and sold-out badges, vendor and title (the title link covers the card), the price (sale price with the regular one struck through, or a range), star rating, colour swatches as native radios that swap the photo with CSS, and slots for quick add and wishlist. No cart logic inside. ProductGrid: a section with header and “Shop all”, 2–5 columns by container width, a list variant with the photo beside the text, an empty state and ItemList JSON-LD; bare renders only the list. productJsonLd builds the Product node for a product page.",
-  source: ["blocks/site/product-grid.tsx", "blocks/site/product-card.tsx", "styles/commerce.css"],
+  source: ["blocks/site/product-grid.tsx", "blocks/site/product-card.tsx", "styles/commerce.css", "blocks/site/registry-news.ts"],
   basedOn: "Native radios + :has()",
   usage: `import { ProductCard, ProductGrid, productJsonLd, JsonLd } from "@vamos-ui/react/blocks";
 

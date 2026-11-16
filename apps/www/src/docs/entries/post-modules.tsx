@@ -11,7 +11,7 @@ const entry: DocEntry = {
   group: "Site blocks",
   description:
     "The building blocks of a news front page. FeaturedPosts is the lead grid under the masthead (one large story, three smaller, optional slider arrows). PostBlock is a section module — heading with “View all”, then the stories in one of seven layouts — with pager arrows or numbered pagination (“Page 1 of 17”). Both lay out by their own width (container queries), so a module works in a wide main column, a narrow one or a sidebar. Server components; the arrows and pagination are small islands.",
-  source: ["blocks/site/post-modules.tsx", "blocks/site/news-pagination.tsx", "blocks/site/shared/post-slider.tsx", "blocks/site/post-card.tsx", "blocks/site/shared/news.tsx"],
+  source: ["blocks/site/post-modules.tsx", "blocks/site/news-pagination.tsx", "blocks/site/shared/post-slider.tsx", "blocks/site/post-card.tsx", "blocks/site/shared/news.tsx", "blocks/site/registry-news.ts"],
   usage: `import { FeaturedPosts, PostBlock, NewsPagination } from "@vamos-ui/react/blocks";
 
 <FeaturedPosts posts={lead} label="Top stories" slider />

@@ -597,7 +597,7 @@ export const notFoundBlock = defineBlock({
   component: asBlock(NotFound),
 });
 
-/** Every registry-2 definition, for `createRegistry([...siteBlocks1, ...siteBlocks2])`. */
+/** Every registry-2 definition, for `createRegistry([...siteBlocks1, ...siteBlocks2, ...newsBlocks])` (newsBlocks: ./registry-news). */
 export const siteBlocks2: readonly AnyBlockDefinition[] = [
   pricingBlock,
   comparisonBlock,
