@@ -15,7 +15,7 @@ export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-[1440px] px-5 pt-8">
       <DocPage
-        eyebrow="Legal · Last updated 12 November 2026"
+        eyebrow="Legal · Last updated 16 November 2026"
         title="Privacy policy"
         description="Vamos UI has no accounts, no cookies, no analytics and no advertising. The only personal data we handle is what any web server sees: your IP address and the request, kept for up to 60 days."
         toc={[
@@ -106,8 +106,9 @@ export default function PrivacyPage() {
           <li>
             <strong className="text-fg">Tool calls</strong> sent by your AI client: the tool name and its arguments. Depending on
             the tool, arguments are a search query, an item or block name, a screen description, a colour, a code snippet you asked
-            it to check, or page HTML/CSS you asked it to read. Your AI client decides what to send; the server cannot read your
-            files, your chat or anything else on your device.
+            it to check, page HTML/CSS you asked it to read, the address of a public website to audit or read, or website project
+            answers and a project file (business details, pages, contact channels) for the planning tools. Your AI client decides
+            what to send; the server cannot read your files, your chat or anything else on your device.
           </li>
           <li>
             <strong className="text-fg">Connection details</strong> every web server sees: the IP address that made the request
@@ -119,8 +120,12 @@ export default function PrivacyPage() {
         <P>
           Arguments are processed in memory only to compute the tool&apos;s answer and are discarded when the response is sent. The
           server application does not write tool arguments or results to disk or to its logs; its process log contains start-up
-          messages and unexpected errors. To answer, the server reads the public registry from <C>ui.vamos.ist</C>; it does not
-          call any other service. The tools are read-only: they cannot change anything on your computer or in any account.
+          messages and unexpected errors. To answer, the server reads the public registry from <C>ui.vamos.ist</C>. Two tools also
+          fetch the website you name: <C>audit_site</C> (the page, linked pages on the same site, <C>robots.txt</C>,{" "}
+          <C>sitemap.xml</C> and <C>llms.txt</C>, with GET and HEAD requests only) and <C>import_site</C> (the start page and up
+          to four linked pages). Those requests come from our server, so the site you name sees our server&apos;s IP address. They
+          go only to public http(s) addresses; private and internal addresses are refused. No other service is called. The tools
+          are read-only: they cannot change anything on your computer, on a website or in any account.
         </P>
         <Callout tone="warning" title="Do not send secrets">
           Do not put passwords, API keys, customer data or other personal data into code or HTML you ask the server to check. It
@@ -193,7 +198,8 @@ export default function PrivacyPage() {
           <C>localStorage</C>) tutulur. Bazı örnek sayfalar Unsplash, Google Fonts ve jsDelivr&apos;dan dosya yükler; bu sağlayıcılar
           IP adresinizi görür. CLI ve yerel MCP sunucusu bilgisayarınızda çalışır, telemetri göndermez. Barındırılan MCP sunucusu (
           <C>mcp.vamos.ist</C>) yapay zekâ istemcinizin gönderdiği araç adını ve argümanlarını yalnızca yanıtı hesaplamak için
-          bellekte işler, saklamaz. Web sunucusu her istek için IP adresi, zaman, adres, durum kodu ve tarayıcı bilgisini kaydeder;
+          bellekte işler, saklamaz. <C>audit_site</C> ve <C>import_site</C> araçları, adını verdiğiniz herkese açık web sitesine
+          sunucumuzdan yalnızca okuma (GET/HEAD) istekleri gönderir; özel ve iç ağ adresleri reddedilir. Web sunucusu her istek için IP adresi, zaman, adres, durum kodu ve tarayıcı bilgisini kaydeder;
           bu kayıtlar güvenlik ve işletim amacıyla (KVKK m. 5/2-f, meşru menfaat) tutulur; aylık arşivlenir ve arşiv bir sonraki ayın sonunda silinir, yani kayıtlar <strong className="text-fg">en fazla yaklaşık 60 gün</strong>{" "}
           saklanır. Veriler satılmaz; yalnızca barındırma sağlayıcısı (bizim adımıza) ve yasal zorunlulukta yetkili makamlar
           erişebilir. KVKK m. 11 kapsamındaki haklarınız için <A href={ISSUES}>GitHub issues</A> üzerinden kişisel veri paylaşmadan
