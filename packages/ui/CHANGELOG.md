@@ -4,6 +4,17 @@ Release notes for the component kit. Until 0.4.2 this file also covered the CLI 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the kit uses [semantic versioning](https://semver.org/) (0.x: minor versions may change APIs).
 
+## 0.7.0 — 2026-11-16
+
+### Minor Changes
+
+- 4b37d18: Block definitions for the news and commerce blocks (`blocks/site/registry-news.ts`): `news-masthead`, `featured-posts`, `post-card`, `post-block`, `post-tabs`, `news-ticker`, `ad-slot`, `news-columns` (main / sidebar slots), `popular-posts`, `recent-comments`, `category-counts`, `follow-counts`, `product-grid` and `review-score`. Each has a zod schema, previews, block lint and JSON-LD through the renderer, so a news front page or a shop grid can be stored and rendered as JSON. Combine with the other site registries: `createRegistry([...siteBlocks1, ...siteBlocks2, ...newsBlocks])`.
+
+### Patch Changes
+
+- d478a07: News blocks: the `AuthDialog` title size is set on the dialog header's own title element, so the header's title style no longer shrinks it; a `NewsHeader` section with a mega menu now shows the accent underline when it is the current page (it only got `aria-current`).
+- 52707c5: `tierQuote`, `estimatorDefaults`, `effectiveEstimatorValues`, `daysUntil`, `impactFor`, `choiceGridStep`, `highlightCode`, `parseLineRanges` and `deviceFrameSize` (with `deviceViewports`) now live in server-safe modules, so server components can call them (they used to fail with "Attempted to call … from the server"). Imports from `@vamos-ui/react` and the component modules are unchanged.
+
 ## 0.6.0 — 2026-11-15
 
 ### Minor Changes

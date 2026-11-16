@@ -4,6 +4,12 @@ Release notes for the `vamos-ui` command line tool.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change commands).
 
+## 0.7.1 — 2026-11-16
+
+### Patch Changes
+
+- 6e47e31: `vamos-ui verify` is linear on large files again: the class / style region lookup was a scan per string literal, which made big generated files quadratic.
+
 ## 0.7.0 — 2026-11-15
 
 ### Minor Changes
