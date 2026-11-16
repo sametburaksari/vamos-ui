@@ -2,7 +2,7 @@ import type { BlockMeta } from "../types";
 
 const meta: BlockMeta = {
   title: "Contact page",
-  description: "Clinic contact page: ruled intro, form with KVKK consent beside contact details, branch picker with map and opening hours, FAQ and a mobile contact bar. EN / TR.",
+  description: "Contact page for a business with several offices: ruled intro, form with KVKK consent beside contact details, office picker with map and opening hours, FAQ and a mobile contact bar. EN / TR.",
   category: "Website pages",
   order: 60,
   tags: ["site"],

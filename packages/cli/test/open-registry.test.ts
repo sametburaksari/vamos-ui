@@ -47,7 +47,7 @@ function thirdParty(name: string, partial: Partial<RegistryItem> = {}): Registry
     name,
     type: "component",
     title: name,
-    description: `${name} by Acme`,
+    description: `${name} by Northpoint`,
     docs,
     dependencies: [],
     registryDependencies: [],

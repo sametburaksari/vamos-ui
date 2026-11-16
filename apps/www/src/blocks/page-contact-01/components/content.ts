@@ -1,4 +1,5 @@
-// Contact-page content for "Defne Clinic", a fictional skin clinic with three Istanbul branches.
+// Contact-page content for "Ardıç Danışmanlık", a fictional accounting and tax advisory firm with
+// three Istanbul offices.
 // Human-readable fields are `Localized` ({ en, tr }) and resolved with `pickLocale`.
 import { blockLabelsTr, pickLocale, site1LabelsTr, site2LabelsTr, type Branch, type Localized, type OpeningHours } from "@vamos-ui/react/blocks";
 import type { SiteLocale } from "./locale-switch";
@@ -13,9 +14,9 @@ export function copyFor(locale: SiteLocale) {
   };
 }
 
-export const PHONE = "+902122304455";
-export const WHATSAPP = "+905332304455";
-export const EMAIL = "info@lenaclinic.example";
+export const PHONE = "+902120000000";
+export const WHATSAPP = "+905000000000";
+export const EMAIL = "merhaba@ardic.example";
 
 const mapImage = streetMap;
 
@@ -36,26 +37,26 @@ export const hours: OpeningHours = {
 export function branches(t: (v: Localized<string>) => string): Branch[] {
   return [
     {
-      name: "Defne Clinic Nişantaşı",
-      address: { line: "Abdi İpekçi Caddesi 21, Kat 3", district: "Nişantaşı", city: "Şişli", region: "İstanbul", postalCode: "34367", country: "TR", geo: { lat: 41.0523, lng: 28.9946 } },
+      name: "Ardıç Nişantaşı",
+      address: { line: "Ihlamur Caddesi 21, Kat 3", district: "Nişantaşı", city: "Şişli", region: "İstanbul", postalCode: "34367", country: "TR", geo: { lat: 41.0523, lng: 28.9946 } },
       phone: PHONE,
       email: EMAIL,
       hours,
       mapImage,
-      notes: t({ en: "Entrance next to the pharmacy; lift to the third floor.", tr: "Giriş eczanenin yanında; asansörle üçüncü kat." }),
+      notes: t({ en: "Entrance on the side street; lift to the third floor.", tr: "Giriş yan sokaktan; asansörle üçüncü kat." }),
     },
     {
-      name: "Defne Clinic Moda",
-      address: { line: "Moda Caddesi 88", district: "Moda", city: "Kadıköy", region: "İstanbul", postalCode: "34710", country: "TR", geo: { lat: 40.9842, lng: 29.0264 } },
-      phone: "+902163380011",
+      name: "Ardıç Moda",
+      address: { line: "Kavak Sokak 8", district: "Moda", city: "Kadıköy", region: "İstanbul", postalCode: "34710", country: "TR", geo: { lat: 40.9842, lng: 29.0264 } },
+      phone: "+902160000010",
       hours,
       mapImage,
       notes: t({ en: "Five minutes from Kadıköy pier on the Moda tram.", tr: "Kadıköy iskelesinden Moda tramvayıyla beş dakika." }),
     },
     {
-      name: "Defne Clinic Ataşehir",
-      address: { line: "Barbaros Mahallesi, Ardıç Sokak 5", district: "Ataşehir", city: "Ataşehir", region: "İstanbul", postalCode: "34746", country: "TR", geo: { lat: 40.9923, lng: 29.1244 } },
-      phone: "+902165557788",
+      name: "Ardıç Ataşehir",
+      address: { line: "Barbaros Mahallesi, Çınar Sokak 5", district: "Ataşehir", city: "Ataşehir", region: "İstanbul", postalCode: "34746", country: "TR", geo: { lat: 40.9923, lng: 29.1244 } },
+      phone: "+902160000020",
       hours: { ...hours, weekly: { ...hours.weekly, sat: [] } },
       mapImage,
       notes: t({ en: "Free parking under the building, level −1. Closed on Saturdays.", tr: "Binanın altında ücretsiz otopark, −1. kat. Cumartesi kapalı." }),
