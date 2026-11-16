@@ -11,7 +11,7 @@ export const mainNav = [
   { label: "Blocks", href: "/blocks" },
   { label: "Websites", href: "/websites" },
   { label: "Charts", href: "/charts" },
-  { label: "Use with AI", href: "/ai" },
+  { label: "AI", href: "/ai" },
   { label: "Directory", href: "/directory" },
   { label: "Changelog", href: "/docs/changelog" },
 ];

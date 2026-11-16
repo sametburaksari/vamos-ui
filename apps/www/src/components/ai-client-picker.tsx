@@ -31,8 +31,7 @@ export function AiClientPicker({ clients, children }: { clients: { id: AiClientI
     <Tabs value={value} onValueChange={change} className="gap-6">
       <TabsList variant="pill" overflow="none" aria-label="AI client" className="min-w-0 flex-wrap gap-1.5">
         {clients.map((c) => (
-          <TabsTrigger key={c.id} value={c.id} className="gap-2 border border-line data-selected:border-transparent">
-            <AiClientIcon id={c.id} />
+          <TabsTrigger key={c.id} value={c.id} icon={<AiClientIcon id={c.id} />} className="border border-line data-selected:border-transparent">
             {c.label}
           </TabsTrigger>
         ))}
