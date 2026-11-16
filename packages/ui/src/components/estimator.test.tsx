@@ -1,6 +1,7 @@
 import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
-import { Estimator, effectiveEstimatorValues, estimatorDefaults, type EstimateResult, type EstimatorInput, type EstimatorValues } from "./estimator";
+import { Estimator, type EstimateResult, type EstimatorInput, type EstimatorValues } from "./estimator";
+import { effectiveEstimatorValues, estimatorDefaults } from "./estimator-values";
 import { tr } from "../locales/tr";
 import { expectNoA11yViolations, keys, renderWithProviders } from "../../test/utils";
 

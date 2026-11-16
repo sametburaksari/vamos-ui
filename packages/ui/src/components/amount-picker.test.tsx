@@ -1,6 +1,7 @@
 import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
-import { AmountPicker, impactFor, type AmountOption } from "./amount-picker";
+import { AmountPicker, type AmountOption } from "./amount-picker";
+import { impactFor } from "./amount-impact";
 import { tr } from "../locales/tr";
 import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 

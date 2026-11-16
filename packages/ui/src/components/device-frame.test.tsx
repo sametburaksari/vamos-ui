@@ -1,7 +1,8 @@
 import * as React from "react";
 import { screen } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
-import { DeviceFrame, DeviceScreens, deviceFrameSize, deviceViewports } from "./device-frame";
+import { DeviceFrame, DeviceScreens } from "./device-frame";
+import { deviceFrameSize, deviceViewports } from "./device-frame-size";
 import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 
 describe("DeviceFrame", () => {

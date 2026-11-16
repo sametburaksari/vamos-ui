@@ -5,6 +5,7 @@ import { cn } from "../lib/cn";
 import { useLabels } from "../lib/labels";
 import { useFormat } from "../lib/locale";
 import { Progress } from "./progress";
+import { daysUntil } from "./goal-meter-days";
 
 export const goalMeterLabels = {
   /** Accessible name of the bar (goal variant). */
@@ -55,14 +56,8 @@ export interface GoalMeterProps extends Omit<React.HTMLAttributes<HTMLDivElement
   labels?: Partial<GoalMeterLabels>;
 }
 
-const DAY = 86_400_000;
-const toTime = (d: string | Date | number) => (d instanceof Date ? d.getTime() : typeof d === "number" ? d : Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(d) ? `${d}T23:59:59` : d));
-
-/** Whole days from `now` until the end of `deadline` (0 on the last day, negative once it has passed). */
-export function daysUntil(deadline: string | Date, now: string | Date | number): number {
-  const diff = toTime(deadline) - toTime(now);
-  return diff < 0 ? -1 : Math.floor(diff / DAY);
-}
+// Server-safe: the date math lives in its own module so server components can call daysUntil().
+export { daysUntil } from "./goal-meter-days";
 
 /**
  * Progress toward a goal with its context: raised against the target, the share, backers and the
