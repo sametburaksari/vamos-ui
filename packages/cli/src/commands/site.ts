@@ -22,7 +22,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
   npx vamos-ui site form [--kind php-mail|resend|smtp] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
-  npx vamos-ui site deploy [--host vercel|netlify|cloudflare|cpanel|vps] [--domain <name>] [--www] [--dry-run]
+  npx vamos-ui site deploy [--host vercel|netlify|cloudflare|spacefast|cpanel|vps] [--domain <name>] [--www] [--dry-run]
   npx vamos-ui site check [url] [--min-score 90] [--ci] [--json]
 
 ${pc.bold("site init")} writes an empty ${SITE_FILE} at the project root (never over an existing one):
@@ -68,6 +68,8 @@ steps and the checks to run afterwards. It never publishes anything itself:
   vercel      vercel.json: security headers, immutable cache for /_next/static, www redirect
   netlify     public/_headers (+ public/_redirects for the other host name)
   cloudflare  public/_headers (+ public/_redirects)
+  spacefast   public/_headers (+ public/_redirects); picks server build, static export or a
+              prebuilt upload from the installed Next.js version
   vps         deploy/nginx-<domain>.conf (TLS, redirects, headers, proxy) + deploy/ecosystem.config.cjs (pm2)
 Host: --host, else the plan in vamos.project.json. Domain: --domain, else the plan, else ${SITE_FILE} url.
 

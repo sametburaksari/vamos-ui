@@ -10,7 +10,10 @@ import {
   buildPlan,
   carryTaskState,
   deployGuide,
+  formEnv,
   htaccess,
+  secretCommands,
+  spacefastNextMode,
   processState,
   requirementsFor,
   setTaskStatus,
@@ -122,7 +125,7 @@ describe("deploy guides", () => {
   });
 
   it("every host gets config files and steps", () => {
-    for (const host of ["vercel", "netlify", "cloudflare", "cpanel", "vps"] as const) {
+    for (const host of ["vercel", "netlify", "cloudflare", "spacefast", "cpanel", "vps"] as const) {
       const g = deployGuide({ host, domain: "ornek.com", env: ["SMTP_HOST"] });
       expect(Object.keys(g.files).length).toBeGreaterThan(0);
       expect(g.steps.length).toBeGreaterThan(1);
@@ -131,6 +134,64 @@ describe("deploy guides", () => {
     const vercel = JSON.parse(deployGuide({ host: "vercel", domain: "ornek.com" }).files["vercel.json"]!);
     expect(vercel.redirects[0]).toMatchObject({ has: [{ type: "host", value: "www.ornek.com" }], destination: "https://ornek.com/:path*", permanent: true });
     expect(deployGuide({ host: "vps", domain: "ornek.com" }).files["deploy/nginx-ornek.com.conf"]).toContain("return 301 https://ornek.com$request_uri;");
+  });
+});
+
+describe("deploy guides: Spacefast, Vercel plan, secrets", () => {
+  it("maps Next.js versions to the Spacefast build mode", () => {
+    expect(spacefastNextMode("16.2.4")).toBe("server");
+    expect(spacefastNextMode("16.3.8")).toBe("server");
+    expect(spacefastNextMode("15.5.24")).toBe("server");
+    expect(spacefastNextMode("15.5.23")).toBe("export");
+    expect(spacefastNextMode("16.4.6")).toBe("export");
+    expect(spacefastNextMode("16.1.0")).toBe("export");
+    expect(spacefastNextMode("14.2.35")).toBe("export");
+    expect(spacefastNextMode("16.5.0-canary.52")).toBe("prebuilt");
+    expect(spacefastNextMode("17.0.0")).toBe("prebuilt");
+    expect(spacefastNextMode("13.5.11")).toBe("prebuilt");
+    expect(spacefastNextMode(null)).toBeNull();
+  });
+
+  it("spacefast: headers, redirects, domain records, secrets and the build mode", () => {
+    const g = deployGuide({ host: "spacefast", domain: "defterkitap.com.tr", forms: "edge", nextVersion: "16.4.6", staticExport: true, space: "defter-kitap" });
+    expect(g.host).toBe("spacefast");
+    expect(g.output).toBe("static");
+    expect(g.files["public/_headers"]).toContain("X-Content-Type-Options: nosniff");
+    expect(g.files["public/_redirects"]).toContain("https://www.defterkitap.com.tr/* https://defterkitap.com.tr/:splat 301!");
+    const steps = g.steps.map((s) => s.en).join("\n");
+    expect(steps).toContain("sf domains add defterkitap.com.tr --space defter-kitap");
+    expect(steps).toContain("sf env set RESEND_API_KEY --value-from-stdin --space defter-kitap");
+    expect(steps).toContain("sf env set TURNSTILE_SECRET --value-from-stdin --space defter-kitap");
+    expect(steps).toContain("sf publish ./out --prebuilt");
+    expect(steps).toContain('output: "export"');
+    expect(steps).toMatch(/commercial use/);
+    expect(g.steps.map((s) => s.tr).join("\n")).toContain("ayarlayın");
+
+    const server = deployGuide({ host: "spacefast", domain: "defterkitap.com.tr", nextVersion: "16.3.8" });
+    expect(server.output).toBe("server");
+    expect(server.steps.map((s) => s.en).join("\n")).toContain("Publish from the project root: sf publish");
+
+    const unknown = deployGuide({ host: "spacefast", domain: "defterkitap.com.tr", nextVersion: "17.1.0" });
+    expect(unknown.steps.map((s) => s.en).join("\n")).toMatch(/outside the versions Spacefast builds/);
+  });
+
+  it("vercel: the Hobby plan note; per-host secret commands never contain values", () => {
+    const steps = deployGuide({ host: "vercel", domain: "ornek.com", forms: "resend" }).steps.map((s) => s.en).join("\n");
+    expect(steps).toMatch(/Hobby is for non-commercial/);
+    expect(steps).toContain("npx vercel env add RESEND_API_KEY production");
+    expect(formEnv("edge")).toEqual(["RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM", "TURNSTILE_SECRET?"]);
+    expect(secretCommands("cloudflare", ["RESEND_API_KEY"], { project: "defter" })).toEqual(["npx wrangler pages secret put RESEND_API_KEY --project-name defter"]);
+    expect(secretCommands("cpanel", ["RESEND_API_KEY"])).toEqual([]);
+  });
+
+  it("plans cloudflare and spacefast as static sites with the edge form", () => {
+    for (const hosting of ["cloudflare", "spacefast"] as const) {
+      const plan = buildPlan({ ...answers, hosting, contact_channels: ["form", "phone"], form_delivery: "smtp" });
+      expect(plan.hosting).toMatchObject({ value: hosting, output: "static" });
+      expect(plan.forms.value).toBe("edge");
+      expect(plan.forms.env).toContain("RESEND_API_KEY");
+    }
+    expect(buildPlan({ ...answers, hosting: "cpanel", contact_channels: ["form"] }).forms.value).toBe("php-mail");
   });
 });
 
