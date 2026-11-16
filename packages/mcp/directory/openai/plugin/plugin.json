@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "vamos-ui",
-  "version": "1.0.0",
-  "description": "Read-only MCP tools for the Vamos UI React component kit: search 150 components and 153 blocks, plan screens, get usage and source, check UI code against the kit rules and turn a brand colour into a contrast-checked accent.",
+  "version": "1.0.1",
+  "description": "Read-only MCP tools for the Vamos UI React component kit: search 194 components and 106 blocks, plan screens and websites, get usage and source, check UI code against the kit rules, turn a brand colour into a contrast-checked accent and audit live sites.",
   "author": {
     "name": "Vamos",
     "url": "https://ui.vamos.ist"
@@ -10,13 +10,21 @@
   "homepage": "https://ui.vamos.ist/docs/mcp/",
   "repository": "https://github.com/sametburaksari/vamos-ui",
   "license": "MIT",
-  "keywords": ["react", "ui components", "design system", "tailwind css", "admin panel", "dashboard", "accessibility"],
+  "keywords": [
+    "react",
+    "ui components",
+    "design system",
+    "tailwind css",
+    "admin panel",
+    "dashboard",
+    "accessibility"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "Vamos UI",
         "shortDescription": "React components and blocks",
-        "longDescription": "Vamos UI is an open-source (MIT) React component kit for admin panels and websites, themed by six switchable axes: light/dark, material, accent, density, font and corners. This plugin connects ChatGPT to the kit's public registry so it can build and review UI with the kit's real components instead of guessing.\n\nWhat it can do:\n- Search 150 components and 153 blocks (complete screens: dashboards, lists, detail pages, settings, sign-in screens and 59 website pages), in English or Turkish.\n- Plan a screen from a description: the block to start from, alternatives, extra components with reasons and the install command.\n- Return a component's usage, props, examples and when-to-use guidance, or the full source of a block.\n- Explain the theme axes, semantic classes and design tokens, and the kit's design rules.\n- Check a React/TSX file against the kit rules (raw colours, hard-coded fonts, missing alt text, click handlers on non-interactive elements, hand-rolled overlays) and report each issue with a fix.\n- Turn a brand colour into the kit's four accent variables and check WCAG contrast; draft a brand profile from page HTML you paste.\n- Audit a live public website: metadata, Open Graph, JSON-LD, robots.txt and AI crawlers, sitemap, placeholder content, legal links, broken links and heavy images, as a scored report.\n- Give the exact npx vamos-ui add command for the items you choose.\n\nWho it is for: developers and designers who build React interfaces with Vamos UI, or are evaluating it.\n\nLimitations: every tool is read-only. The plugin cannot see your files, fetches no URLs except the public site you ask it to audit (GET/HEAD only, private addresses refused), and does not install, run or deploy code; it returns documentation, source, plans, commands and lint results for you to use. The code checker covers mechanical rules only and is not a full accessibility or security review. No account or sign-in is needed. Docs: https://ui.vamos.ist/docs/mcp/",
+        "longDescription": "Vamos UI is an open-source (MIT) React component kit for admin panels and websites, themed by six switchable axes: light/dark, material, accent, density, font and corners. This plugin connects ChatGPT to the kit's public registry so it can build and review UI with the kit's real components instead of guessing.\n\nWhat it can do:\n- Search 194 components and 106 blocks (complete screens, from dashboards and sign-in screens to website pages), in English or Turkish.\n- Plan a screen from a description: the block to start from, alternatives, extra components with reasons and the install command. For a website it returns a site recipe: pages, sections and the components for each.\n- Return a component's usage, props, examples and when-to-use guidance, or the full source of a block.\n- Explain the theme axes, semantic classes and design tokens, and the kit's design rules.\n- Check a React/TSX file against the kit rules (raw colours, hard-coded fonts, missing alt text, click handlers on non-interactive elements, hand-rolled overlays) and report each issue with a fix.\n- Turn a brand colour into the kit's four accent variables and check WCAG contrast; draft a brand profile from page HTML you paste.\n- Plan a new website through a short interview (business, pages, languages, forms, measurement, hosting) and walk the resulting plan task by task, from content to launch.\n- Audit a live public website: metadata, Open Graph, JSON-LD, robots.txt and AI crawlers, sitemap, placeholder content, legal links, broken links and heavy images, as a scored report.\n- Read a current public website (start page and a few linked pages) to reuse its contact details, navigation, texts and brand colours.\n- Give the exact npx vamos-ui add command for the items you choose.\n\nWho it is for: developers and designers who build React interfaces and websites with Vamos UI, or are evaluating it.\n\nLimitations: every tool is read-only. The plugin cannot see or write your files (planning tools return file contents for you to save), fetches no URLs except the public site you ask it to audit or read (GET/HEAD only, private and internal addresses refused), and does not install, run or deploy code; it returns documentation, source, plans, commands and lint results for you to use. The code checker covers mechanical rules only and is not a full accessibility or security review. No account or sign-in is needed. Docs: https://ui.vamos.ist/docs/mcp/",
         "developerName": "Vamos",
         "category": "Developer Tools",
         "capabilities": [
@@ -28,7 +36,10 @@
           "Check UI code against the kit rules",
           "Create contrast-checked brand accents",
           "Draft a brand profile from page HTML",
-          "Give install commands"
+          "Give install commands",
+          "Audit a live website",
+          "Plan a new website",
+          "Read a current website"
         ],
         "websiteURL": "https://ui.vamos.ist/docs/mcp/",
         "supportURL": "https://github.com/sametburaksari/vamos-ui/issues",
@@ -72,10 +83,10 @@
               "expected_behavior": "propose_accent returns a CSS block with --accent-base, --accent-fg, --accent-ink-light and --accent-ink-dark in OKLCH and a contrast table: about 5.11:1 for button text on the accent, 4.56:1 for accent text on light surfaces and 5.98:1 on dark surfaces, all passing 4.5:1. It advises putting the colour in vamos.brand.json rather than pasting values into components."
             },
             {
-              "description": "Return the exact install command for chosen items.",
-              "prompt": "Give me the command to add the Vamos UI data table and the login-02 sign-in block to my project.",
-              "tools_triggered": "install_command",
-              "expected_behavior": "install_command validates the names and returns npx vamos-ui add data-table login-02, notes that registry and npm dependencies resolve automatically, and that npx vamos-ui init is needed first in a new project. The plugin does not run the command itself."
+              "description": "Audit a live public website for launch and SEO basics.",
+              "prompt": "Audit https://ui.vamos.ist for SEO and launch problems and tell me what to fix first.",
+              "tools_triggered": "audit_site",
+              "expected_behavior": "audit_site fetches the start page and a few same-site pages with GET/HEAD requests and returns a scored report (score out of 100) grouped into errors, warnings and info, for example missing security headers such as strict-transport-security, with a fix for each. The answer lists the most important fixes. The plugin changes nothing on the site."
             }
           ],
           "negative": [
@@ -84,7 +95,7 @@
               "prompt": "What will the weather be like in Istanbul tomorrow?"
             },
             {
-              "description": "Real-world action that sounds related to the kit's restaurant website templates. The tools cannot make bookings; the assistant should not call them and should say it cannot book a table.",
+              "description": "Real-world action that sounds related to the kit's booking components. The tools cannot make bookings; the assistant should not call them and should say it cannot book a table.",
               "prompt": "Book a table for two at a seafood restaurant in Kadıköy tonight at 8 pm."
             },
             {
@@ -97,7 +108,7 @@
         "commerce_description": "This plugin does not sell products or process payments. The kit is free and open source."
       },
       "publication": {
-        "release_notes": "Initial release: 13 read-only tools for searching the Vamos UI registry, planning screens, reading component and block source, theming, code checks, brand accents, live-site audits and install commands."
+        "release_notes": "16 read-only tools: search the Vamos UI registry (194 components, 106 blocks), plan screens and websites, read component and block source, theming, code checks, brand accents, live-site audits, reading a current site and install commands."
       }
     }
   }
