@@ -35,7 +35,11 @@ export interface ContactFormProps extends Omit<BlockBaseProps, "variant" | "labe
   lead?: React.ReactNode;
   /** 2–8 fields. Default: name, email, message. */
   fields?: ContactFieldConfig[];
-  /** The app's server action (`useActionState` signature), or a URL for a plain POST. */
+  /**
+   * The app's server action (`useActionState` signature), or a URL for a plain POST: "/contact.php"
+   * on shared hosting, "/api/contact" for the edge function on Cloudflare Pages / Spacefast
+   * (`npx vamos-ui site form`).
+   */
   action?: SiteFormAction | string;
   submitLabel?: string;
   /** Replaces the form after success; focus moves to it. */
@@ -54,6 +58,12 @@ export interface ContactFormProps extends Omit<BlockBaseProps, "variant" | "labe
   info?: ContactInfo;
   /** Render a given state (docs, tests, a server-rendered result). */
   initialState?: SiteFormState;
+  /**
+   * Cloudflare Turnstile site key (e.g. `process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY`). Optional:
+   * without it nothing from Cloudflare loads; with it the widget renders and the server verifies the
+   * token when TURNSTILE_SECRET is set.
+   */
+  turnstileSiteKey?: string;
   labels?: Site2BlockLabels;
 }
 
@@ -92,6 +102,7 @@ export function ContactForm({
   showInfo,
   info,
   initialState,
+  turnstileSiteKey,
   id,
   anchor,
   theme,
@@ -123,6 +134,7 @@ export function ContactForm({
       fallbackPhone={info?.phone ? { href: telHref(info.phone), label: prettyPhone(info.phone) } : undefined}
       initialState={initialState}
       idBase={base}
+      turnstileSiteKey={turnstileSiteKey || undefined}
     />
   );
   const header = title || eyebrow || lead ? <SectionHeader eyebrow={eyebrow} title={title} lead={lead} headingId={headingId} headingLevel={headingLevel} size={minimal ? "m" : "m"} editMode={editMode} labels={labels} locale={locale} /> : null;

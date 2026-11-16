@@ -51,6 +51,11 @@ export interface ContactFormIslandProps {
   initialState?: SiteFormState;
   /** Base for field ids. */
   idBase: string;
+  /**
+   * Cloudflare Turnstile site key. When set, the widget renders above the submit button and its
+   * script loads (only then); the token is posted as `cf-turnstile-response` for the server to verify.
+   */
+  turnstileSiteKey?: string;
   className?: string;
 }
 
@@ -74,6 +79,7 @@ export function ContactFormIsland({
   fallbackPhone,
   initialState,
   idBase,
+  turnstileSiteKey,
   className,
 }: ContactFormIslandProps) {
   const f = (k: keyof ContactIslandLabels, vars?: Record<string, unknown>) => formatMessage(labels[k], vars, locale);
@@ -248,6 +254,8 @@ export function ContactFormIsland({
         </div>
       ) : null}
 
+      {turnstileSiteKey ? <TurnstileWidget siteKey={turnstileSiteKey} /> : null}
+
       {!minimal ? <SubmitButton pending={pending} label={submitLabel ?? f("send")} pendingLabel={f("sending")} className="self-start" /> : null}
     </form>
   );
@@ -298,6 +306,56 @@ function ConsentCheck({ id, name, required, error, children }: { id: string; nam
       ) : null}
     </div>
   );
+}
+
+interface TurnstileApi {
+  render(el: HTMLElement, opts: { sitekey: string; theme?: "auto" | "light" | "dark"; "response-field-name"?: string }): string | undefined;
+  remove(id: string): void;
+}
+
+export const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+let turnstileLoading: Promise<TurnstileApi> | null = null;
+
+/** Loads the Turnstile script once (only when a form with a site key mounts). */
+function loadTurnstile(): Promise<TurnstileApi> {
+  const w = window as unknown as { turnstile?: TurnstileApi };
+  if (w.turnstile) return Promise.resolve(w.turnstile);
+  turnstileLoading ??= new Promise<TurnstileApi>((resolve, reject) => {
+    let script = document.querySelector<HTMLScriptElement>(`script[src="${TURNSTILE_SCRIPT}"]`);
+    if (!script) {
+      script = document.createElement("script");
+      script.src = TURNSTILE_SCRIPT;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", () => (w.turnstile ? resolve(w.turnstile) : reject(new Error("turnstile missing"))));
+    script.addEventListener("error", () => {
+      turnstileLoading = null;
+      reject(new Error("turnstile failed to load"));
+    });
+  });
+  return turnstileLoading;
+}
+
+/** Cloudflare Turnstile challenge; adds the hidden `cf-turnstile-response` input to the form. */
+function TurnstileWidget({ siteKey }: { siteKey: string }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    let cancelled = false;
+    let id: string | undefined;
+    loadTurnstile()
+      .then((api) => {
+        if (!cancelled && ref.current) id = api.render(ref.current, { sitekey: siteKey, theme: "auto", "response-field-name": "cf-turnstile-response" });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+      const api = (window as unknown as { turnstile?: TurnstileApi }).turnstile;
+      if (id && api) api.remove(id);
+    };
+  }, [siteKey]);
+  return <div ref={ref} className="vb-turnstile min-h-[65px]" data-turnstile="" />;
 }
 
 /** Tells Analytics (and anything else listening) that a lead was sent. */
