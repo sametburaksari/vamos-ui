@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Badge, Button } from "@vamos-ui/react";
 import { inventory } from "@/lib/catalog";
 import { blocks } from "@/blocks/registry";
+import { AiClientIcon } from "@/components/ai-client-icons";
 
 const axes = [
   { name: "Theme", values: "light · dark", attr: 'class="dark"' },
@@ -34,6 +35,14 @@ export default function Home() {
             <Button asChild variant="solid" size="lg"><Link href="/docs">Get started <ArrowRight /></Link></Button>
             <Button asChild size="lg"><Link href="/blocks">Browse blocks</Link></Button>
           </div>
+          <Link href="/ai" className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-accent-ink hover:underline">
+            <span className="me-1 flex items-center gap-1.5 text-fg-muted">
+              <AiClientIcon id="claude" />
+              <AiClientIcon id="chatgpt" />
+              <AiClientIcon id="cursor" />
+            </span>
+            Use it with Claude, ChatGPT, Cursor or any AI client <ArrowRight className="size-4" />
+          </Link>
           <div className="mt-6 flex gap-6 text-[13px] text-fg-subtle">
             <span><b className="font-mono text-fg tabular">{all.length}</b> components planned</span>
             <span><b className="font-mono text-fg tabular">{ready}</b> ready</span>

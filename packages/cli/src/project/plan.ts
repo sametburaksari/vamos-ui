@@ -15,8 +15,8 @@ import { pickRecipe, projectFeatures, resolveRecipe, type BlueprintPage, type Pl
 export type { Agent, Requirement } from "./requirements";
 
 export type Structure = "single" | "multi";
-export type Hosting = "vercel" | "netlify" | "cloudflare" | "cpanel" | "vps";
-export type FormDelivery = "smtp" | "resend" | "php-mail" | "whatsapp" | "none";
+export type Hosting = "vercel" | "netlify" | "cloudflare" | "spacefast" | "cpanel" | "vps";
+export type FormDelivery = "smtp" | "resend" | "php-mail" | "edge" | "whatsapp" | "none";
 
 export interface PlanPage {
   path: string;
@@ -199,7 +199,27 @@ function decideHosting(a: Answers, type: SiteType): ProjectPlan["hosting"] {
   const asked = one(a.hosting);
   if (asked === "cpanel") return { value: "cpanel", output: "static", reason: t("Shared hosting serves files: the site is exported as static HTML and forms use a small PHP mailer.", "Paylaşımlı hosting dosya sunar: site statik HTML olarak çıkar, formlar küçük bir PHP gönderici kullanır.") };
   if (asked === "vps") return { value: "vps", output: "server", reason: t("Your own server runs Next.js with Node (pm2 or Docker) behind your web server.", "Kendi sunucunuzda Next.js, Node ile (pm2 ya da Docker) web sunucusunun arkasında çalışır.") };
-  if (asked === "netlify" || asked === "cloudflare" || asked === "vercel")
+  if (asked === "cloudflare" || asked === "spacefast") {
+    const name = asked === "cloudflare" ? "Cloudflare Pages" : "Spacefast";
+    if (type === "ecommerce")
+      return {
+        value: asked,
+        output: "server",
+        reason:
+          asked === "cloudflare"
+            ? t("A shop needs a server: Next.js runs on Cloudflare through the OpenNext adapter.", "Mağaza sunucu ister: Next.js, Cloudflare'de OpenNext adaptörüyle çalışır.")
+            : t("A shop needs a server: Spacefast runs server-rendered Next.js 16.2.x, 16.3.x and 15.5.24+.", "Mağaza sunucu ister: Spacefast sunuculu Next.js'i 16.2.x, 16.3.x ve 15.5.24+ sürümlerinde çalıştırır."),
+      };
+    return {
+      value: asked,
+      output: "static",
+      reason: t(
+        `${name} serves the static export from its edge network; the contact form runs as a small function next to it (functions/api/contact.ts).`,
+        `${name} statik çıktıyı kendi ağından sunar; iletişim formu yanında küçük bir fonksiyon olarak çalışır (functions/api/contact.ts).`,
+      ),
+    };
+  }
+  if (asked === "netlify" || asked === "vercel")
     return { value: asked, output: "server", reason: t("Builds from your Git repository; forms run as serverless functions.", "Git deposundan derlenir; formlar sunucusuz fonksiyon olarak çalışır.") };
   return {
     value: "vercel",
@@ -218,6 +238,12 @@ function decideForms(a: Answers, hosting: ProjectPlan["hosting"]): ProjectPlan["
   if (!wantsForm) return { value: "none", reason: t("No form was asked for.", "Form istenmedi."), spam: [], consent: false, env: [] };
   let value = one(a.form_delivery) as FormDelivery | "recommend" | "";
   let reason = t("You chose it.", "Siz seçtiniz.");
+  const edgeHost = hosting.output === "static" && (hosting.value === "cloudflare" || hosting.value === "spacefast");
+  if (edgeHost && value !== "whatsapp") {
+    if (value && value !== "recommend" && value !== "edge") reason = t(`${value} needs a PHP or Node server; on this host the form runs as an edge function that sends with the Resend API.`, `${value} bir PHP ya da Node sunucusu ister; bu hostingde form, Resend API ile gönderen bir edge fonksiyonu olarak çalışır.`);
+    else if (value !== "edge") reason = t("The static site has no server; a small edge function (functions/api/contact.ts) checks the form and sends it with the Resend API.", "Statik sitede sunucu yok; küçük bir edge fonksiyonu (functions/api/contact.ts) formu kontrol eder ve Resend API ile gönderir.");
+    value = "edge";
+  }
   if (!value || value === "recommend") {
     value = hosting.output === "static" ? "php-mail" : "smtp";
     reason =
@@ -230,7 +256,7 @@ function decideForms(a: Answers, hosting: ProjectPlan["hosting"]): ProjectPlan["
     reason = t("SMTP from a static site needs a server script; on this hosting that is the PHP mailer.", "Statik sitede SMTP için sunucu betiği gerekir; bu hostingde bu PHP göndericidir.");
   }
   const env =
-    value === "smtp" ? ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "CONTACT_TO"] : value === "resend" ? ["RESEND_API_KEY", "CONTACT_TO"] : value === "php-mail" ? ["CONTACT_TO (in contact.php)"] : [];
+    value === "smtp" ? ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "CONTACT_TO"] : value === "resend" ? ["RESEND_API_KEY", "CONTACT_TO"] : value === "php-mail" ? ["CONTACT_TO (in contact.php)"] : value === "edge" ? ["RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM", "TURNSTILE_SECRET (optional)"] : [];
   return { value: value as FormDelivery, reason, spam: value === "whatsapp" ? [] : spam, consent: true, env };
 }
 

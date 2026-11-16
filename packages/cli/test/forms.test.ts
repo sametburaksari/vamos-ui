@@ -44,7 +44,13 @@ describe("formSender", () => {
     expect(Object.keys(resend.files)).toEqual(["src/app/contact-fields.ts", "src/app/actions/contact.ts"]);
     expect(resend.files["src/app/actions/contact.ts"]).toMatch(/^"use server";/);
     expect(resend.files["src/app/actions/contact.ts"]).toContain("https://api.resend.com/emails");
-    expect(Object.keys(resend.env)).toEqual(["RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM"]);
+    expect(Object.keys(resend.env)).toEqual(["RESEND_API_KEY", "CONTACT_TO", "CONTACT_FROM", "TURNSTILE_SECRET"]);
+    // Honeypot / time trap (validateContactForm → spam), consent (privacyCheckbox) and Turnstile.
+    const action = resend.files["src/app/actions/contact.ts"]!;
+    expect(action).toContain("if (v.spam) return");
+    expect(action).toContain("validateContactForm(contactFields, data, { privacyCheckbox })");
+    expect(action).toContain('data.get("cf-turnstile-response")');
+    expect(action).toContain("https://challenges.cloudflare.com/turnstile/v0/siteverify");
     const smtp = formSender({ kind: "smtp" });
     expect(smtp.dependencies).toContain("nodemailer");
     expect(smtp.files["app/actions/contact.ts"]).toContain("nodemailer.createTransport");
@@ -60,6 +66,34 @@ describe("formSender", () => {
 });
 
 describe("vamos-ui site form", () => {
+  it("static site on Cloudflare or Spacefast → edge; on cPanel → php-mail; --kind edge on a server is refused", async () => {
+    const { run } = await import("../src/cli");
+    const { existsSync, readFileSync } = await import("node:fs");
+    const make = (hosting: string) => {
+      const dir = mkdtempSync(path.join(tmpdir(), "vb-siteform-edge-"));
+      writeFileSync(path.join(dir, "package.json"), JSON.stringify({ dependencies: { next: "16.4.6", react: "19.2.0" } }));
+      writeFileSync(path.join(dir, "next.config.ts"), 'export default { output: "export" };');
+      writeFileSync(path.join(dir, "vamos.site.json"), JSON.stringify({ name: "Sayfa Kitabevi", locale: "tr-TR", contact: { email: "merhaba@sayfa.example" } }));
+      writeFileSync(path.join(dir, "vamos.project.json"), JSON.stringify({ plan: { hosting: { value: hosting, output: "static" } } }));
+      return dir;
+    };
+    const opts = (cwd: string) => ({ cwd, interactive: false, env: { ...process.env, CI: "1", NO_COLOR: "1" } });
+    for (const host of ["cloudflare", "spacefast"]) {
+      const dir = make(host);
+      expect(await run(["site", "form", "--json"], opts(dir))).toBe(0);
+      expect(existsSync(path.join(dir, "functions/api/contact.ts"))).toBe(true);
+      expect(readFileSync(path.join(dir, "app/contact-fields.ts"), "utf8")).toContain("FIELDS in functions/api/contact.ts");
+      expect(existsSync(path.join(dir, "public/contact.php"))).toBe(false);
+    }
+    const cpanel = make("cpanel");
+    expect(await run(["site", "form", "--json"], opts(cpanel))).toBe(0);
+    expect(existsSync(path.join(cpanel, "public/contact.php"))).toBe(true);
+
+    const server = mkdtempSync(path.join(tmpdir(), "vb-siteform-server-"));
+    writeFileSync(path.join(server, "package.json"), JSON.stringify({ dependencies: { next: "16.3.8", react: "19.2.0" } }));
+    expect(await run(["site", "form", "--kind", "edge", "--json"], opts(server))).not.toBe(0);
+  });
+
   it("static export → php-mail with the inbox from vamos.site.json; server kinds refused; files kept", async () => {
     const { run } = await import("../src/cli");
     const { existsSync, readFileSync } = await import("node:fs");

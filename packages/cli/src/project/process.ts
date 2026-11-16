@@ -200,10 +200,10 @@ export const ROLES: Record<Agent, Role> = {
   forms: {
     agent: "forms",
     name: { en: "Forms", tr: "Formlar" },
-    description: "Forms specialist: the contact or booking form and its sender (contact.php, Resend or SMTP) with spam protection and the privacy notice link.",
+    description: "Forms specialist: the contact or booking form and its sender (contact.php, an edge function, Resend or SMTP) with spam protection and the privacy notice link.",
     steps: [
       "`npx vamos-ui site form --kind <plan.forms.value>` writes the sender and the shared field list (never overwrites).",
-      "Point <ContactForm action=…> at it (\"/contact.php\" for php-mail, the server action otherwise); add the privacy notice link and the optional marketing checkbox.",
+      "Point <ContactForm action=…> at it (\"/contact.php\" for php-mail, \"/api/contact\" for edge, the server action otherwise); add the privacy notice link and the optional marketing checkbox.",
       "List the environment values the user must set (plan.forms.env) and how to test a submission.",
     ],
     rules: ["Never hand-roll a mailer or put SMTP passwords in code.", "The recipient address is the business's own (vamos.site.json contact.email or the user's answer)."],
@@ -227,7 +227,7 @@ export const ROLES: Record<Agent, Role> = {
     name: { en: "Deploy", tr: "Yayın" },
     description: "Deploy specialist: hosting config (redirects, security headers, cache), publishing, domain and HTTPS, Search Console.",
     steps: [
-      "`npx vamos-ui site deploy` writes the host's config files (never overwrites) and prints the steps.",
+      "`npx vamos-ui site deploy` writes the host's config files (never overwrites) and prints the steps. `--publish` runs the host's CLI after showing exactly what will run — only with the user's explicit yes.",
       "Prepare everything, then ask the user (through the orchestrator) before the publish itself, DNS changes or anything that replaces a live site. Publishing is the user's call.",
       "After the deploy run `npx vamos-ui site check <live-url>` (audit score 90+ with no errors, http → https 301, one host name, security headers, a real 404, robots.txt and sitemap.xml) and send a test form message. Mark the task done only when the check passes.",
       "Report the live URL, what was checked and anything left for the user (Search Console, Google Business Profile link).",

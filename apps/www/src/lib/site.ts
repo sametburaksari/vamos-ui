@@ -11,6 +11,7 @@ export const mainNav = [
   { label: "Blocks", href: "/blocks" },
   { label: "Websites", href: "/websites" },
   { label: "Charts", href: "/charts" },
+  { label: "AI", href: "/ai" },
   { label: "Directory", href: "/directory" },
   { label: "Changelog", href: "/docs/changelog" },
 ];
@@ -27,7 +28,9 @@ export const docSections = [
   { label: "Localization", href: "/docs/localization" },
   { label: "KVKK consent records", href: "/docs/kvkk" },
   { label: "Payments (iyzico, PayTR)", href: "/docs/payments" },
+  { label: "Deploying a site", href: "/docs/deploying" },
   { label: "CLI & registry", href: "/docs/cli" },
+  { label: "Use with your AI", href: "/ai" },
   { label: "MCP server", href: "/docs/mcp" },
   { label: "Publish a registry", href: "/docs/publish-a-registry" },
   { label: "Blocks", href: "/blocks" },

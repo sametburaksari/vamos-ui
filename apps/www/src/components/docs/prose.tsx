@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Info, TriangleAlert } from "lucide-react";
 import { cn } from "@vamos-ui/react";
-import { highlight } from "@/lib/highlight";
+import { highlight, type CodeLang } from "@/lib/highlight";
 import { CodeFrame } from "./code-frame";
 
 /** Building blocks for hand-written docs pages (no MDX needed). */
@@ -78,7 +78,7 @@ export function UL({ children }: { children: React.ReactNode }) {
   return <ul className="grid list-disc gap-1.5 ps-5 marker:text-fg-subtle">{children}</ul>;
 }
 
-export async function Code({ code, lang = "tsx", title }: { code: string; lang?: "tsx" | "bash" | "css"; title?: string }) {
+export async function Code({ code, lang = "tsx", title }: { code: string; lang?: CodeLang; title?: string }) {
   const html = await highlight(code, lang);
   return <CodeFrame html={html} raw={code.trim()} title={title} collapsible={false} />;
 }

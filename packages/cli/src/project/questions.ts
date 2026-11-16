@@ -127,6 +127,7 @@ export const QUESTIONS: Question[] = [
       o("vercel", "Vercel", "Vercel"),
       o("netlify", "Netlify", "Netlify"),
       o("cloudflare", "Cloudflare Pages", "Cloudflare Pages"),
+      o("spacefast", "Spacefast", "Spacefast", ["Static export + edge functions; datacenter can be Amsterdam.", "Statik çıktı + edge fonksiyonları; veri merkezi Amsterdam seçilebilir."]),
       o("cpanel", "Shared hosting (cPanel / Plesk)", "Paylaşımlı hosting (cPanel / Plesk)"),
       o("vps", "Own server (VPS)", "Kendi sunucum (VPS)"),
       o("unsure", "Not sure, recommend one", "Bilmiyorum, öneri istiyorum"),

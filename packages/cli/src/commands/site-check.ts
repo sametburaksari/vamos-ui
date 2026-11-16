@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { bool, str, type ParsedArgs } from "../args";
 import { AUDIT_DEFAULTS, normalizeAuditUrl, runAudit, runDeployChecks, siteCheckVerdict, siteCheckWorkflow, type DeployCheckStatus } from "../audit";
@@ -17,6 +17,10 @@ export const SITE_CHECK_HELP = `${pc.bold("vamos-ui site check")} [url]  After y
     headers          Strict-Transport-Security, X-Content-Type-Options, Referrer-Policy
                      (X-Frame-Options, Permissions-Policy recommended)
     404              an unknown path answers 404, not 200 or a redirect home
+    contact form     an empty POST to the form endpoint is refused (400/405/415/422), not 404
+                     (functions/api/contact.ts → /api/contact, public/contact.php → /contact.php,
+                     or --form-endpoint; nothing is sent)
+    _headers         every header public/_headers sets for /* is served
     robots, sitemap  /robots.txt and /sitemap.xml answer and parse
   Only reads the public site; never publishes or changes anything.
 
@@ -27,6 +31,7 @@ ${pc.bold("Options")}
   --max-pages <n>     HTML pages to crawl (default ${AUDIT_DEFAULTS.maxPages})
   --timeout <s>       Per-request timeout in seconds (default ${AUDIT_DEFAULTS.timeoutMs / 1000})
   --lang tr|en        Text of the deploy checks (default: the site locale, else tr)
+  --form-endpoint <p> Contact form endpoint to probe (default: detected from the project)
   --country <code>    Country for the legal checks (default: the plan, else ${SITE_FILE}, else the domain)
   --verbose           Show every audit finding
   --ci                Print a GitHub Actions workflow that runs this check after each deploy
@@ -34,6 +39,32 @@ ${pc.bold("Options")}
 
 Exit code 1 when the score is below --min-score, the audit has an error or a deploy check
 fails, so it can gate CI.`;
+
+/** The contact form endpoint of the project: --form-endpoint, else the sender found, else the plan. */
+export function formEndpoint(root: string, plan: string | undefined, flag: string | undefined): string | null {
+  if (flag) return flag;
+  if (existsSync(path.join(root, "functions/api/contact.ts")) || existsSync(path.join(root, "functions/api/contact.js"))) return "/api/contact";
+  if (existsSync(path.join(root, "public/contact.php"))) return "/contact.php";
+  if (plan === "edge") return "/api/contact";
+  if (plan === "php-mail") return "/contact.php";
+  return null;
+}
+
+/** Header names set for every path ("/*") in a Netlify / Cloudflare / Spacefast _headers file. */
+export function headersFromFile(text: string): string[] {
+  const names: string[] = [];
+  let all = false;
+  for (const line of text.split(/\r?\n/)) {
+    if (!line.trim() || line.trim().startsWith("#")) continue;
+    if (!/^\s/.test(line)) {
+      all = line.trim() === "/*";
+      continue;
+    }
+    const m = /^\s+(?:!\s*)?([A-Za-z0-9-]+)\s*:/.exec(line);
+    if (all && m && !line.trim().startsWith("!")) names.push(m[1]!.toLowerCase());
+  }
+  return names;
+}
 
 function readJson(file: string): Record<string, any> | null {
   try {
@@ -94,7 +125,12 @@ export async function siteCheck(ctx: Context, args: ParsedArgs): Promise<number>
       country: str(args.flags, "country") ?? (typeof project?.plan?.jurisdiction?.country === "string" ? project.plan.jurisdiction.country : undefined),
       site: site && typeof site === "object" ? site : null,
     }),
-    runDeployChecks(url, { timeoutMs, userAgent }),
+    runDeployChecks(url, {
+      timeoutMs,
+      userAgent,
+      formEndpoint: formEndpoint(root, typeof project?.plan?.forms?.value === "string" ? project.plan.forms.value : undefined, str(args.flags, "form-endpoint")),
+      expectedHeaders: existsSync(path.join(root, "public/_headers")) ? headersFromFile(readFileSync(path.join(root, "public/_headers"), "utf8")) : undefined,
+    }),
   ]);
   const verdict = siteCheckVerdict(audit, deploy.checks, minScore);
   const deployTask = Array.isArray(project?.plan?.tasks) ? project!.plan.tasks.find((x: { id?: string }) => x?.id === "deploy") : null;

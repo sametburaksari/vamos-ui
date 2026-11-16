@@ -24,7 +24,7 @@ export default function CliPage() {
         { id: "countries", title: "Countries and markets" },
         { id: "mcp", title: "MCP server (AI agents)" },
       ]}
-      prev={{ href: "/docs/payments", title: "Payments (iyzico, PayTR)" }}
+      prev={{ href: "/docs/deploying", title: "Deploying a site" }}
       next={{ href: "/docs/publish-a-registry", title: "Publish a registry" }}
     >
       <H2 id="package-or-copy">Package or copy</H2>
@@ -195,8 +195,9 @@ npx vamos-ui new                         # plan a website: a few questions → v
 npx vamos-ui site import https://example.com   # read a current site: details, navigation, texts, images
 npx vamos-ui task next                   # the plan's tasks that can start now, with a brief for each
 npx vamos-ui agents                      # orchestrator skill + nine specialist subagents for Claude Code
-npx vamos-ui site form                   # contact-form sender: contact.php, Resend or SMTP
-npx vamos-ui site deploy                 # host config (https, headers, cache) and publishing steps
+npx vamos-ui site form                   # contact-form sender: contact.php, edge function, Resend or SMTP
+npx vamos-ui site deploy                 # host config (https, headers, cache), steps and secret commands
+npx vamos-ui site deploy --publish       # run the host CLI (Vercel, Cloudflare, Spacefast) after a confirmation
 npx vamos-ui site check                  # after publishing: audit + redirects, headers, 404, sitemap; exit 1 below 90
 npx vamos-ui audit https://example.com   # audit a live site: SEO basics, broken links, placeholders
 npx vamos-ui audit http://localhost:3000 # a local preview: hosting checks (https, headers) are info only
@@ -316,14 +317,16 @@ npx vamos-ui audit https://ornek.de --country DE`} />
       <H3 id="deploy">Hosting config</H3>
       <P>
         <C>vamos-ui site deploy</C> writes the config that makes the launch checks pass on the first deploy and prints the
-        publishing steps; it never publishes anything itself and never replaces a file.
+        publishing steps and the commands that store the form secrets; it never replaces a file, and publishes only with{" "}
+        <C>--publish</C> (Vercel, Cloudflare Pages, Spacefast) after showing every command and asking. Hosts, form senders,
+        secrets and domain records: <A href="/docs/deploying">Deploying a site</A>.
       </P>
       <Table
         head={["Host", "Files", "What they do"]}
         rows={[
           ["cPanel", <C key="c">public/.htaccess</C>, "http → https and one host name (301), /page → page.html, security headers, long cache for /_next/static, the 404 page, project files denied."],
           ["Vercel", <C key="v">vercel.json</C>, "Security headers, immutable cache for /_next/static, the other host name redirected."],
-          ["Netlify, Cloudflare Pages", <C key="n">public/_headers, public/_redirects</C>, "The same headers and redirect in the host's own format."],
+          ["Netlify, Cloudflare Pages, Spacefast", <C key="n">public/_headers, public/_redirects</C>, "The same headers and redirect in the host's own format."],
           ["VPS", <C key="p">deploy/nginx-&lt;domain&gt;.conf, deploy/ecosystem.config.cjs</C>, "TLS server blocks with redirects and headers in front of Next.js on pm2 (standalone output)."],
         ]}
       />
@@ -340,6 +343,7 @@ npx vamos-ui audit https://ornek.de --country DE`} />
           ["One host name", "The www or bare twin 301s to the address the site is served on (skipped for subdomains)."],
           ["Security headers", <span key="s"><C>Strict-Transport-Security</C>, <C>X-Content-Type-Options</C> and <C>Referrer-Policy</C> are sent; <C>X-Frame-Options</C> and <C>Permissions-Policy</C> are recommended.</span>],
           ["404", "An unknown path answers 404, not 200 or a redirect to the home page (a soft 404)."],
+          ["Contact form", <span key="f">An empty POST to <C>/api/contact</C> or <C>/contact.php</C> (or <C>--form-endpoint</C>) is refused with 400/405/415/422, not 404; nothing is sent.</span>],
           ["robots.txt, sitemap.xml", "Both answer, parse, and robots.txt does not block the site."],
           ["Audit", <span key="a">Score at least <C>--min-score</C> (default 90) and no errors.</span>],
         ]}
