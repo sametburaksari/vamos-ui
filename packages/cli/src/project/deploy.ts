@@ -292,7 +292,10 @@ export function deployGuide(o: DeployOptions): DeployGuide {
     o.forms === "edge" || o.forms === "resend" || o.forms === "smtp"
       ? [t("Optional spam check: create a Cloudflare Turnstile widget for the domain, set TURNSTILE_SECRET on the host and NEXT_PUBLIC_TURNSTILE_SITE_KEY at build time, and pass turnstileSiteKey to ContactForm.", "İsteğe bağlı spam kontrolü: alan adı için bir Cloudflare Turnstile widget'ı oluşturun, hostingde TURNSTILE_SECRET'ı, derleme sırasında NEXT_PUBLIC_TURNSTILE_SITE_KEY'i ayarlayın ve ContactForm'a turnstileSiteKey verin.")]
       : [];
-  const envStep = env.length ? [t(`Set the environment variables: ${env.join(", ")} (never commit them).`, `Ortam değişkenlerini girin: ${env.join(", ")} (depoya asla eklemeyin).`)] : [];
+  // Hosts with a secrets CLI get the commands instead of the bare list.
+  const shown = env.map((e) => e.replace(/\?$/, " (optional)"));
+  const shownTr = env.map((e) => e.replace(/\?$/, " (isteğe bağlı)"));
+  const envStep = env.length && !secretStep.length ? [t(`Set the environment variables: ${shown.join(", ")} (never commit them).`, `Ortam değişkenlerini girin: ${shownTr.join(", ")} (depoya asla eklemeyin).`)] : [];
   const checks: Text[] = [
     t(`npx vamos-ui audit https://${domain} — no errors, HTTPS and headers pass.`, `npx vamos-ui audit https://${domain} — hata yok, HTTPS ve başlıklar geçiyor.`),
     t(`curl -sI http://${domain} answers 301 to https://${domain}/.`, `curl -sI http://${domain} 301 ile https://${domain}/ adresine yönlendiriyor.`),
@@ -371,8 +374,8 @@ export function deployGuide(o: DeployOptions): DeployGuide {
           ? t(`Next.js ${o.nextVersion}: Spacefast builds and serves it server-rendered (bundled adapter). Publish from the project root: sf publish`, `Next.js ${o.nextVersion}: Spacefast sunuculu olarak derler ve sunar (paketli adaptör). Proje kökünden yayınlayın: sf publish`)
           : mode === "server" || mode === "export"
             ? t(
-                `${o.nextVersion ? `Next.js ${o.nextVersion}` : "This Next.js version"}: ${mode === "export" ? 'Spacefast publishes it only as a static export: set output: "export" (and images: { unoptimized: true }) in next.config. ' : ""}With functions/ (the contact form) build first, then upload out/ with the functions: npm run build && cp -R functions out/ && sf publish ./out --prebuilt (site deploy --publish does this).`,
-                `${o.nextVersion ? `Next.js ${o.nextVersion}` : "Bu Next.js sürümü"}: ${mode === "export" ? 'Spacefast bunu yalnızca statik çıktı olarak yayınlar: next.config içinde output: "export" (ve images: { unoptimized: true }) ayarlayın. ' : ""}functions/ (iletişim formu) varsa önce derleyin, sonra out/ klasörünü fonksiyonlarla yükleyin: npm run build && cp -R functions out/ && sf publish ./out --prebuilt (site deploy --publish bunu yapar).`,
+                `${o.nextVersion ? `Next.js ${o.nextVersion}` : "This Next.js version"}: ${mode === "export" ? `Spacefast publishes it only as a static export${o.staticExport ? " (next.config already sets it). " : ': set output: "export" (and images: { unoptimized: true }) in next.config. '}` : ""}With functions/ (the contact form) build first, then upload out/ with the functions: npm run build && cp -R functions out/ && sf publish ./out --prebuilt (site deploy --publish does this).`,
+                `${o.nextVersion ? `Next.js ${o.nextVersion}` : "Bu Next.js sürümü"}: ${mode === "export" ? `Spacefast bunu yalnızca statik çıktı olarak yayınlar${o.staticExport ? " (next.config bunu zaten ayarlıyor). " : ': next.config içinde output: "export" (ve images: { unoptimized: true }) ayarlayın. '}` : ""}functions/ (iletişim formu) varsa önce derleyin, sonra out/ klasörünü fonksiyonlarla yükleyin: npm run build && cp -R functions out/ && sf publish ./out --prebuilt (site deploy --publish bunu yapar).`,
               )
             : t(
                 `${o.nextVersion ? `Next.js ${o.nextVersion} is outside the versions Spacefast builds (server: 16.2.x, 16.3.x, 15.5.24+; export: 14.2–16.1, 16.4)` : "Next.js version unknown (run npm install first)"}: set output: "export" in next.config, build it yourself and upload the result: npm run build && sf publish ./out --prebuilt.`,

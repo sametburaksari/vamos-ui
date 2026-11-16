@@ -52,7 +52,8 @@ ${pc.bold("Commands")}
                        Runs after \`add site-…\` too (--no-essentials)
   site form            Contact-form sender: contact.php, edge function, Resend or SMTP   --kind, --to, --dry-run
   site deploy          Host config (redirects, security headers, cache) and publishing steps
-                       --host vercel|netlify|cloudflare|spacefast|cpanel|vps, --domain, --www, --dry-run
+                       --host vercel|netlify|cloudflare|spacefast|cpanel|vps, --domain, --www, --dry-run,
+                       --publish (runs the host CLI after a confirmation), --project, --space
   site check [url]     After publishing: audit the live URL + deploy checks (http → https 301,
                        one host name, security headers, 404, robots/sitemap); exit 1 below
                        --min-score (default 90) or on errors   --ci (GitHub Actions), --json

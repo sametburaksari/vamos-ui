@@ -23,6 +23,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site essentials [--dry-run] [--no-install]
   npx vamos-ui site form [--kind php-mail|edge|resend|smtp] [--host <host>] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
   npx vamos-ui site deploy [--host vercel|netlify|cloudflare|spacefast|cpanel|vps] [--domain <name>] [--www] [--dry-run]
+                         [--publish [--yes]] [--project <name>] [--space <space>]
   npx vamos-ui site check [url] [--min-score 90] [--ci] [--json]
 
 ${pc.bold("site init")} writes an empty ${SITE_FILE} at the project root (never over an existing one):
@@ -77,6 +78,14 @@ steps and the checks to run afterwards. It never publishes anything itself:
               prebuilt upload from the installed Next.js version
   vps         deploy/nginx-<domain>.conf (TLS, redirects, headers, proxy) + deploy/ecosystem.config.cjs (pm2)
 Host: --host, else the plan in vamos.project.json. Domain: --domain, else the plan, else ${SITE_FILE} url.
+It also prints the commands that store the form secrets on the host (values are asked for, never
+put on the command line). --publish (vercel, cloudflare, spacefast) then shows the host, the
+project or Space and the directory and every command, asks (default no; --yes in CI), checks the
+host's CLI and login (printing the login command if needed) and runs:
+  vercel      npx vercel deploy --prod
+  cloudflare  <pm> run build, npx wrangler pages deploy out --project-name <--project | package name>
+  spacefast   sf publish (server build on Next 16.2.x / 16.3.x / 15.5.24+), else <pm> run build,
+              functions/ copied into out/, sf publish ./out --prebuilt [--space <space>]
 
 ${pc.bold("site check")} runs after you publish: the audit on the live URL plus the deploy checks (http → https
 301, one host name, security headers, a real 404, robots.txt and sitemap.xml). Exit code 1 when the

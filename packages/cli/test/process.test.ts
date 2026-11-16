@@ -153,7 +153,7 @@ describe("deploy guides: Spacefast, Vercel plan, secrets", () => {
   });
 
   it("spacefast: headers, redirects, domain records, secrets and the build mode", () => {
-    const g = deployGuide({ host: "spacefast", domain: "defterkitap.com.tr", forms: "edge", nextVersion: "16.4.6", staticExport: true, space: "defter-kitap" });
+    const g = deployGuide({ host: "spacefast", domain: "defterkitap.com.tr", forms: "edge", nextVersion: "16.4.6", staticExport: false, space: "defter-kitap" });
     expect(g.host).toBe("spacefast");
     expect(g.output).toBe("static");
     expect(g.files["public/_headers"]).toContain("X-Content-Type-Options: nosniff");
@@ -166,6 +166,8 @@ describe("deploy guides: Spacefast, Vercel plan, secrets", () => {
     expect(steps).toContain('output: "export"');
     expect(steps).toMatch(/commercial use/);
     expect(g.steps.map((s) => s.tr).join("\n")).toContain("ayarlayın");
+    const already = deployGuide({ host: "spacefast", domain: "defterkitap.com.tr", forms: "edge", nextVersion: "16.4.6", staticExport: true });
+    expect(already.steps.map((s) => s.en).join("\n")).toContain("next.config already sets it");
 
     const server = deployGuide({ host: "spacefast", domain: "defterkitap.com.tr", nextVersion: "16.3.8" });
     expect(server.output).toBe("server");

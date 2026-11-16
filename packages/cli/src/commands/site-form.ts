@@ -23,7 +23,7 @@ function readJson(file: string): Record<string, any> | null {
 }
 
 /** True when next.config sets output: "export" (a static export, no server actions). */
-function staticExport(root: string): boolean {
+export function staticExport(root: string): boolean {
   for (const name of ["next.config.ts", "next.config.mjs", "next.config.js"]) {
     const file = path.join(root, name);
     if (existsSync(file) && /output\s*:\s*["']export["']/.test(readFileSync(file, "utf8"))) return true;
