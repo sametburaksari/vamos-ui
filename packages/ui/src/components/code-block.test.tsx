@@ -1,7 +1,8 @@
 import * as React from "react";
 import { act, screen, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
-import { CodeBlock, CodeTabs, highlightCode, parseLineRanges, useCodeLanguage } from "./code-block";
+import { CodeBlock, CodeTabs, useCodeLanguage } from "./code-block";
+import { highlightCode, parseLineRanges } from "./code-highlight";
 import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 
 afterEach(() => window.localStorage.clear());

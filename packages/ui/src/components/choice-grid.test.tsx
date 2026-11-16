@@ -1,6 +1,7 @@
 import * as React from "react";
 import { screen } from "@testing-library/react";
-import { ChoiceGrid, choiceGridStep, type ChoiceGridAxisItem } from "./choice-grid";
+import { ChoiceGrid, type ChoiceGridAxisItem } from "./choice-grid";
+import { choiceGridStep } from "./choice-grid-step";
 import { tr } from "../locales/tr";
 import { expectNoA11yViolations, keys, renderWithProviders } from "../../test/utils";
 

@@ -8,6 +8,7 @@ import { useControllableState } from "../lib/use-controllable-state";
 import { CurrencyInput } from "./currency-input";
 import { Field } from "./input";
 import { RadioGroup } from "./radio-group";
+import { impactFor } from "./amount-impact";
 
 export const amountPickerLabels = {
   frequency: "How often",
@@ -76,12 +77,8 @@ export interface AmountPickerProps extends Omit<React.HTMLAttributes<HTMLDivElem
 const CUSTOM = "custom";
 const colsClass = { 2: "grid-cols-2", 3: "grid-cols-2 @md:grid-cols-3", 4: "grid-cols-2 @md:grid-cols-4" } as const;
 
-/** Impact of the largest preset at or below `amount` (presets sorted by value first). */
-export function impactFor(options: AmountOption[], amount: number | null): React.ReactNode {
-  if (amount == null) return null;
-  const below = [...options].filter((o) => o.value <= amount && o.impact != null).sort((a, b) => b.value - a.value);
-  return below[0]?.impact ?? null;
-}
+// Server-safe: lives in its own module so server components can call impactFor().
+export { impactFor } from "./amount-impact";
 
 /**
  * Pick an amount to give or pay: preset amounts with an impact line ("₺250 shelves ten new

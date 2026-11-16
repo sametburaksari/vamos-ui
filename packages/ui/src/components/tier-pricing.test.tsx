@@ -1,6 +1,7 @@
 import * as React from "react";
 import { fireEvent, screen } from "@testing-library/react";
-import { TierPricing, tierQuote, type PriceTier } from "./tier-pricing";
+import { TierPricing } from "./tier-pricing";
+import { tierQuote, type PriceTier } from "./tier-quote";
 import { tr } from "../locales/tr";
 import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 

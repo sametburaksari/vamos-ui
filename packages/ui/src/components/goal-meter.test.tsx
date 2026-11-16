@@ -1,6 +1,7 @@
 import * as React from "react";
 import { screen } from "@testing-library/react";
-import { GoalMeter, daysUntil } from "./goal-meter";
+import { GoalMeter } from "./goal-meter";
+import { daysUntil } from "./goal-meter-days";
 import { tr } from "../locales/tr";
 import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 
