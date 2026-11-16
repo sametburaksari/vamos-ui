@@ -5,12 +5,14 @@ import { createHighlighter, type Highlighter } from "shiki";
 
 let hl: Promise<Highlighter> | null = null;
 function getHl() {
-  hl ??= createHighlighter({ themes: ["vitesse-light", "vitesse-dark"], langs: ["tsx", "bash", "css"] });
+  hl ??= createHighlighter({ themes: ["vitesse-light", "vitesse-dark"], langs: ["tsx", "bash", "css", "json", "toml"] });
   return hl;
 }
 
+export type CodeLang = "tsx" | "bash" | "css" | "json" | "toml";
+
 /** Dual-theme (light/dark) HTML; colours are picked via CSS variables (globals.css). */
-export async function highlight(code: string, lang: "tsx" | "bash" | "css" = "tsx") {
+export async function highlight(code: string, lang: CodeLang = "tsx") {
   const h = await getHl();
   return h.codeToHtml(code.trimEnd(), { lang, themes: { light: "vitesse-light", dark: "vitesse-dark" }, defaultColor: false });
 }

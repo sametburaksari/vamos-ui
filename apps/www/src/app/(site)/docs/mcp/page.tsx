@@ -1,12 +1,8 @@
 import { A, C, Callout, Code, DocPage, H2, H3, P, Step, Steps, Table, UL } from "@/components/docs/prose";
 import { pageMeta } from "@/lib/seo";
-
-export const metadata = pageMeta({
-  title: "MCP server",
-  description:
-    "Connect Claude, ChatGPT, Claude Code, Cursor or VS Code to the Vamos UI MCP server at https://mcp.vamos.ist/mcp: 13 read-only tools for components, blocks, screen plans, theming, code checks, brand accents and live-site audits.",
-  path: "/docs/mcp/",
-});
+import { AiClientIcon } from "@/components/ai-client-icons";
+import { blocks } from "@/blocks/registry";
+import { docs } from "@/docs/registry";
 
 const URL = "https://mcp.vamos.ist/mcp";
 const ISSUES = "https://github.com/sametburaksari/vamos-ui/issues";
@@ -30,6 +26,14 @@ const tools: [name: string, title: string, what: string][] = [
   ["import_site", "Read a current website", "Reads a public website: business details with their sources, brand candidates (colours, fonts, logos), navigation, texts and images, and warns about mismatches such as two phone numbers. Up to 4 linked pages on the hosted server; only GET requests."],
   ["audit_site", "Audit a live website", "Checks a public website over HTTP, built with the kit or not: metadata, Open Graph, JSON-LD, robots.txt and AI crawlers, sitemap, placeholder content, legal links, broken internal links and heavy images, as a scored report. Up to 30 pages; only GET and HEAD requests."],
 ];
+
+export const metadata = pageMeta({
+  title: "MCP server",
+  description: `Connect Claude, ChatGPT, Claude Code, Cursor or VS Code to the Vamos UI MCP server at https://mcp.vamos.ist/mcp: ${tools.length} read-only tools for components, blocks, screen plans, theming, code checks, brand accents and live-site audits.`,
+  path: "/docs/mcp/",
+});
+
+const siteCount = blocks.filter((b) => b.category === "Website pages").length;
 
 export default function McpPage() {
   return (
@@ -56,8 +60,9 @@ export default function McpPage() {
       <P>
         The Vamos UI MCP server lets an AI assistant work with the kit the way its docs describe it: find the right component or
         block, read its real API, plan a screen, give you the install command and check the code it writes against the kit&apos;s
-        rules. It reads the public registry at <C>https://ui.vamos.ist/r</C>, which currently lists 150+ components and 150+ blocks
-        (dashboards, lists, detail pages, settings, sign-in screens and 59 website pages).
+        rules. It reads the public registry at <C>https://ui.vamos.ist/r</C>, which currently lists {docs.length} components and {blocks.length} blocks
+        (dashboards, lists, detail pages, settings, sign-in screens and {siteCount} showcase websites). Step-by-step setup for
+        each client is on <A href="/ai">Use with your AI</A>.
       </P>
       <Table
         head={["Setting", "Value"]}
@@ -65,12 +70,12 @@ export default function McpPage() {
           ["Hosted URL", <C key="u">{URL}</C>],
           ["Transport", "Streamable HTTP, stateless (POST only)"],
           ["Sign-in", "None — no account or API key"],
-          ["Tools", "13, all read-only"],
+          ["Tools", `${tools.length}, all read-only`],
           ["Also runs locally", <span key="l"><C>npx -y @vamos-ui/mcp</C> (stdio), with three extra project tools</span>],
         ]}
       />
 
-      <H2 id="claude">Claude (claude.ai, Desktop, mobile)</H2>
+      <H2 id="claude"><span className="inline-flex items-center gap-2.5"><AiClientIcon id="claude" className="size-5" />Claude (claude.ai, Desktop, mobile)</span></H2>
       <Steps>
         <Step title="Open connector settings">
           <P>In Claude, open <strong className="text-fg">Settings → Connectors</strong> and choose <strong className="text-fg">Add custom connector</strong>.</P>
@@ -86,7 +91,7 @@ export default function McpPage() {
         On Team and Enterprise plans an owner may need to add the connector for the organisation first.
       </P>
 
-      <H2 id="chatgpt">ChatGPT</H2>
+      <H2 id="chatgpt"><span className="inline-flex items-center gap-2.5"><AiClientIcon id="chatgpt" className="size-5" />ChatGPT</span></H2>
       <P>
         Custom MCP servers are added in developer mode: <strong className="text-fg">Settings → Apps &amp; Connectors → Advanced settings → Developer mode</strong>,
         then <strong className="text-fg">Create</strong> a connector with the URL <C>{URL}</C> and authentication <strong className="text-fg">No authentication</strong>.
