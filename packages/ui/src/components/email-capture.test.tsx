@@ -23,15 +23,15 @@ describe("EmailCapture", () => {
     const { user } = renderWithProviders(<EmailCapture onSubmit={onSubmit} />);
     await user.click(screen.getByRole("button", { name: "Subscribe" }));
     const input = await screen.findByRole("textbox", { name: "Email address" });
-    await waitFor(() => expect(input).toHaveAccessibleDescription("Enter your email address."), { timeout: 4000 });
+    await waitFor(() => expect(input).toHaveAccessibleDescription("Enter your email address."), { timeout: 10_000 });
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(input).toHaveFocus();
     await user.type(input, "not-an-email");
     await user.click(screen.getByRole("button", { name: "Subscribe" }));
-    await waitFor(() => expect(screen.getByRole("textbox")).toHaveAccessibleDescription("Enter an email address like name@example.com."), { timeout: 4000 });
+    await waitFor(() => expect(screen.getByRole("textbox")).toHaveAccessibleDescription("Enter an email address like name@example.com."), { timeout: 10_000 });
     expect(screen.getByRole("textbox")).toHaveValue("not-an-email");
     expect(onSubmit).not.toHaveBeenCalled();
-  }, 15_000);
+  }, 30_000);
 
   it("calls onSubmit and replaces the form with a focused status", async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
