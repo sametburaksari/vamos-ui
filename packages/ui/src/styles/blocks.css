@@ -16,6 +16,11 @@
 }
 /* Rhythm overrides sit next to the default, outside @layer: an unlayered declaration always beats a
    layered one, so inside `@layer components` these never applied. */
+/* News blocks rendered from JSON (registry-news) sit close together like a paper's modules; inside
+   news-columns they drop their own spacing and gutter (the columns block owns both). */
+.vb-section[data-news-block] { --vb-rhythm: 0.4; }
+.vb-news-columns .vb-section[data-news-block] { --vb-rhythm: 0; }
+.vb-news-columns .vb-section[data-news-block] > .vb-container { max-width: none; padding-inline: 0; }
 .vb-section[data-rhythm="tight"] { --vb-rhythm: 0.55; }
 .vb-section[data-rhythm="loose"] { --vb-rhythm: 1.35; }
 .vb-section[data-rhythm="none"] { --vb-rhythm: 0; }

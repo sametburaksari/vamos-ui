@@ -8,7 +8,7 @@ const entry: DocEntry = {
   group: "Site blocks",
   description:
     "The summary box of a review article: overall score as points, percent or stars with a word beside it, score bars per criterion, pros and cons, the verdict, the reviewer and the readers' rating. A named <section>; the bars are decorative and every score is also in text. With an item it emits schema.org Review JSON-LD: reviewRating, author, date, reviewBody, pros and cons as positiveNotes / negativeNotes, and the item's aggregateRating.",
-  source: ["blocks/site/review-score.tsx", "styles/commerce.css"],
+  source: ["blocks/site/review-score.tsx", "styles/commerce.css", "blocks/site/registry-news.ts"],
   basedOn: "Server component + JSON-LD",
   usage: `import { ReviewScore } from "@vamos-ui/react/blocks";
 

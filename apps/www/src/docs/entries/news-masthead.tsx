@@ -9,7 +9,7 @@ const entry: DocEntry = {
   group: "Site blocks",
   description:
     "The top of a newspaper. NewsTopBar: today's date, a weather slot (static data or a loadWeather adapter), utility links, “Sign in / Join” opening AuthDialog, social links. NewsHeader: the wordmark row with an optional leaderboard, then a sticky section bar with mega menus — hover or focus a sub-section in the panel and its latest stories swap in — a “More” menu, inline search and, on narrow screens, the kit MobileNav drawer. AuthDialog: reader sign-in with a password-recovery view in the same dialog.",
-  source: ["blocks/site/news-masthead.tsx", "blocks/site/auth-dialog.tsx", "blocks/site/post-card.tsx", "blocks/site/shared/labels-news.ts"],
+  source: ["blocks/site/news-masthead.tsx", "blocks/site/auth-dialog.tsx", "blocks/site/post-card.tsx", "blocks/site/shared/labels-news.ts", "blocks/site/registry-news.ts"],
   basedOn: "Navigation menu, Mobile nav, Dialog",
   usage: `import { NewsTopBar, NewsHeader, AuthDialog, AdSlot } from "@vamos-ui/react/blocks";
 
