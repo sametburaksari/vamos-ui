@@ -4,6 +4,12 @@ Release notes for the component kit. Until 0.4.2 this file also covered the CLI 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the kit uses [semantic versioning](https://semver.org/) (0.x: minor versions may change APIs).
 
+## 0.8.0 — 2026-11-16
+
+### Minor Changes
+
+- 43e31f3: `ContactForm` takes an optional `turnstileSiteKey`. With it, the Cloudflare Turnstile script loads once per page and each form renders the widget, whose `cf-turnstile-response` token is posted for the sender to verify; without it nothing from Cloudflare loads. URL actions such as `"/api/contact"` (the new edge sender) work as before.
+
 ## 0.7.0 — 2026-11-16
 
 ### Minor Changes

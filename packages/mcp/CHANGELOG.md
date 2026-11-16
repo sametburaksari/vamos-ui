@@ -4,6 +4,14 @@ Release notes for the Vamos UI MCP server (local stdio and the hosted server at 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change tools).
 
+## 0.3.4 — 2026-11-16
+
+### Patch Changes
+
+- 43e31f3: Website guidance covers the Spacefast host, the `edge` contact form sender (`functions/api/contact.ts`, `action="/api/contact"`), Cloudflare Turnstile, the Vercel Hobby limit and `site deploy --publish`, which agents run only after the user says yes.
+- Updated dependencies [43e31f3]
+  - vamos-ui@0.8.0
+
 ## 0.3.3 — 2026-11-16
 
 ### Patch Changes
