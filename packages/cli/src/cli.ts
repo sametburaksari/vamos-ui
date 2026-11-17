@@ -19,7 +19,7 @@ import { isOffline } from "./core/registry";
 import { CliError } from "./core/types";
 import { out, p, pc, type Context } from "./ui";
 
-export const VERSION = "0.8.0";
+export const VERSION = "0.8.1";
 
 const HELP = `${pc.bold("vamos-ui")} ${pc.dim(VERSION)}  Add Vamos UI components, blocks and themes to your project.
 

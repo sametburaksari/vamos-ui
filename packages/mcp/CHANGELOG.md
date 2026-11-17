@@ -4,6 +4,14 @@ Release notes for the Vamos UI MCP server (local stdio and the hosted server at 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change tools).
 
+## 0.3.5 — 2026-11-17
+
+### Patch Changes
+
+- 3dd1840: The server instructions and `get_theming` describe all seven theme axes, including scene (`data-scene`).
+- Updated dependencies [3dd1840]
+  - vamos-ui@0.8.1
+
 ## 0.3.4 — 2026-11-16
 
 ### Patch Changes

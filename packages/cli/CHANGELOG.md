@@ -4,6 +4,12 @@ Release notes for the `vamos-ui` command line tool.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change commands).
 
+## 0.8.1 — 2026-11-17
+
+### Patch Changes
+
+- 3dd1840: `audit` no longer reports a short digit run such as "000 00 00" mentioned in running text as placeholder contact data; without an area code it is reported only next to a label such as "Tel", "Phone", "Fax" or "WhatsApp". The generated agent skill names all seven theme axes.
+
 ## 0.8.0 — 2026-11-16
 
 ### Minor Changes
