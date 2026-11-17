@@ -27,7 +27,7 @@ export function AdminShell({ defaultCollapsed, children }: { defaultCollapsed?: 
         badges={badges}
         actions={<ThemeControls />}
         notifications={<NotificationCenter adapter={notificationAdapter} settingsHref="/settings/notifications" />}
-        user={{ name: "Emre Sönmez", email: "emre@northwind.studio", items: account }}
+        user={{ name: "Emre Sönmez", email: "emre@vamos.ist", items: account }}
         appSwitcherFooter={<Link href="/settings/apps">Manage apps & modules…</Link>}
       >
         {children}

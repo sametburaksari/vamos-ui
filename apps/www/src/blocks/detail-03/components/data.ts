@@ -50,13 +50,13 @@ export const activity: TimelineEntry[] = [
   { id: "a1", at: "2026-11-10T08:10:00Z", icon: BellRing, actor: "System", title: "scheduled a reminder for Nov 24", tone: "info" },
   { id: "a2", at: "2026-11-03T14:22:00Z", icon: CircleDollarSign, tone: "success", actor: "Sanne de Vries", title: "paid €5,000.00 by bank transfer" },
   { id: "a3", at: "2026-10-28T09:41:00Z", icon: Eye, actor: "Sanne de Vries", title: "viewed the invoice" },
-  { id: "a4", at: "2026-10-27T16:05:00Z", icon: Send, actor: "Emre Sönmez", title: "sent the invoice to ap@harborpine.example" },
+  { id: "a4", at: "2026-10-27T16:05:00Z", icon: Send, actor: "Emre Sarı", title: "sent the invoice to ap@harborpine.example" },
   { id: "a5", at: "2026-10-27T15:58:00Z", icon: CheckCircle2, actor: "Ece Şahin", title: "approved the invoice" },
-  { id: "a6", at: "2026-10-27T15:30:00Z", icon: FilePlus2, actor: "Emre Sönmez", title: "created the invoice from quote Q-2026-114" },
+  { id: "a6", at: "2026-10-27T15:30:00Z", icon: FilePlus2, actor: "Emre Sarı", title: "created the invoice from quote Q-2026-114" },
 ];
 
 export const attachments: AttachmentData[] = [
-  { id: "f1", name: "INV-2026-0418.pdf", size: 184_000, mime: "application/pdf", url: "#", uploadedBy: "Emre Sönmez", uploadedAt: "2026-10-27" },
+  { id: "f1", name: "INV-2026-0418.pdf", size: 184_000, mime: "application/pdf", url: "#", uploadedBy: "Emre Sarı", uploadedAt: "2026-10-27" },
   { id: "f2", name: "Signed quote Q-2026-114.pdf", size: 226_000, mime: "application/pdf", url: "#", uploadedBy: "Sanne de Vries", uploadedAt: "2026-10-20" },
   { id: "f3", name: "Purchase order PO-88412.pdf", size: 91_000, mime: "application/pdf", url: "#", uploadedBy: "Sanne de Vries", uploadedAt: "2026-10-21" },
 ];

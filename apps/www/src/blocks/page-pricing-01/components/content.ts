@@ -38,7 +38,7 @@ const FONTS = {
 const BRANDS: [string, keyof typeof FONTS][] = [
   ["Kıyı Meyhane", "serif"],
   ["HAMAM MODA", "condensed"],
-  ["Defne Clinic", "italic"],
+  ["Defne Otel", "italic"],
   ["PERA/BAKERY", "mono"],
   ["NOVA DENTAL", "condensed"],
   ["fırın&co", "sans"],

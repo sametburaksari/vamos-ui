@@ -10,7 +10,7 @@ const README = "https://github.com/sametburaksari/vamos-ui/tree/main/packages/mc
 
 const tools: [name: string, title: string, what: string][] = [
   ["get_rules", "Design rules", "The rules every Vamos UI screen follows: tokens only, accent use, density, kit components over hand-rolled markup, accessibility. Called once at the start of a UI task."],
-  ["get_theming", "Theming guide", "The six theme axes (dark, material, accent, density, font, corners) and what the corner setting covers, the semantic Tailwind classes and, optionally, the full CSS token table."],
+  ["get_theming", "Theming guide", "The seven theme axes (dark, material, accent, density, font, corners, scene) and what the corner setting covers, the semantic Tailwind classes and, optionally, the full CSS token table."],
   ["list_items", "List registry items", "Browses components, blocks, lib and style items by docs group, block category or tag."],
   ["search", "Search components and blocks", "Ranked search over names, descriptions, tags and usage guidance, in English or Turkish."],
   ["get_item", "Get a component or item", "Usage snippet, props, examples, when to use or avoid it, dependencies and file list of one item; source on request."],

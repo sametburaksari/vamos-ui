@@ -122,7 +122,7 @@ export function PricingPage({ locale }: { locale: SiteLocale }) {
                 { feature: t({ en: "Assignments and internal notes", tr: "Atama ve iç notlar" }), values: [false, true, true] },
                 { feature: t({ en: "Quiet-hours auto-reply", tr: "Sessiz saat otomatik yanıtı" }), hint: t({ en: "Tells guests when you’ll answer, based on your opening hours.", tr: "Çalışma saatlerinize göre misafire ne zaman yanıt vereceğinizi söyler." }), values: [true, true, true] },
                 { feature: t({ en: "Reply-time reports", tr: "Yanıt süresi raporları" }), values: [false, true, true] },
-                { feature: t({ en: "Booking sync with Tablekit or Google Calendar", tr: "Tablekit veya Google Takvim ile rezervasyon senkronu" }), values: [false, true, true] },
+                { feature: t({ en: "Booking sync with your reservation system or Google Calendar", tr: "Rezervasyon sisteminiz veya Google Takvim ile rezervasyon senkronu" }), values: [false, true, true] },
               ],
             },
             {
@@ -145,8 +145,8 @@ export function PricingPage({ locale }: { locale: SiteLocale }) {
             {
               quote: t({ en: "We pay for two branches and nineteen people use it. Nobody has to share a login any more.", tr: "İki şube için ödüyoruz ve on dokuz kişi kullanıyor. Artık kimse şifre paylaşmak zorunda değil." }),
               author: "Ayşe Korkmaz",
-              role: t({ en: "Clinic manager", tr: "Klinik müdürü" }),
-              company: "Defne Clinic",
+              role: t({ en: "General manager", tr: "Genel müdür" }),
+              company: "Defne Otel",
               logo: customerLogos[2]!.image,
             },
           ]}
