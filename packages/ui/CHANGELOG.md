@@ -4,6 +4,12 @@ Release notes for the component kit. Until 0.4.2 this file also covered the CLI 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the kit uses [semantic versioning](https://semver.org/) (0.x: minor versions may change APIs).
 
+## 0.8.1 — 2026-11-17
+
+### Patch Changes
+
+- 3dd1840: `FontProvider` (element scope) now keeps dialogs, menus and popovers opened inside it in its type pairing: overlays portal into its wrapper, like `ThemeScope`. Pass `portal={false}` for the old behaviour. The footer example uses a fictional company name.
+
 ## 0.8.0 — 2026-11-16
 
 ### Minor Changes
