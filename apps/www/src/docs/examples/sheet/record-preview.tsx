@@ -5,7 +5,7 @@ import { Mail, Phone } from "lucide-react";
 import { Badge, Button, Sheet, SheetBody, SheetContent, SheetFooter, SheetHeader } from "@vamos-ui/react";
 
 const contacts = [
-  { name: "Elif Demir", company: "Moda Wellness", role: "Operations lead", email: "elif@modawellness.com", phone: "+90 532 418 22 10", stage: "Customer", value: "$4,500" },
+  { name: "Elif Demir", company: "Moda Wellness", role: "Operations lead", email: "elif@modawellness.com", phone: "+90 532 418 22 10", stage: "Customer", value: "$3,800" },
   { name: "Can Yıldız", company: "Kadıköy Bistro", role: "Owner", email: "can@kadikoybistro.com", phone: "+90 541 220 71 05", stage: "Negotiation", value: "$1,280 / mo" },
   { name: "Ayşe Kaya", company: "Caddebostan Studio", role: "Marketing", email: "ayse@caddebostanstudio.com", phone: "+90 555 093 64 38", stage: "Proposal sent", value: "$2,900" },
 ];

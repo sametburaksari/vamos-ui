@@ -15,7 +15,7 @@ export default function SheetDrawer() {
       </DrawerTrigger>
       {/* Drag the handle or header down to close. Esc and × always work too. */}
       <DrawerContent size="md">
-        <DrawerHeader title="Invoice VMS-2026-0418" description="Moda Wellness · $4,500.00 · due Dec 4" />
+        <DrawerHeader title="Invoice INV-2026-0418" description="Moda Wellness · $3,800.00 · due Dec 4" />
         <DrawerBody className="grid gap-1 pb-4" flush>
           {actions.map(({ icon: Icon, label }) => (
             <DrawerClose key={label} asChild>

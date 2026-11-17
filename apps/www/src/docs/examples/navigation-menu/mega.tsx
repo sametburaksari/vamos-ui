@@ -25,13 +25,13 @@ export default function NavigationMenuMega() {
               <NavigationMenuFeatured eyebrow="New" title="vMarketing" description="Ads, social and WhatsApp in one AI-assisted panel." href="/products/vmarketing" />
               <NavigationMenuGroup heading="For your business">
                 <li>
-                  <NavigationMenuLink href="/products/vtag" icon={<Nfc />} title="vTag" description="NFC business cards your team can update" />
+                  <NavigationMenuLink href="/products/tapcard" icon={<Nfc />} title="Tapcard" description="NFC business cards your team can update" />
                 </li>
                 <li>
-                  <NavigationMenuLink href="/products/vrest" icon={<QrCode />} title="vRest" description="Restaurant POS with QR menus" />
+                  <NavigationMenuLink href="/products/tablekit" icon={<QrCode />} title="Tablekit" description="Restaurant POS with QR menus" />
                 </li>
                 <li>
-                  <NavigationMenuLink href="/products/vmob" icon={<Smartphone />} title="vMob" description="Native apps from your catalogue" />
+                  <NavigationMenuLink href="/products/appkit" icon={<Smartphone />} title="Appkit" description="Native apps from your catalogue" />
                 </li>
               </NavigationMenuGroup>
             </NavigationMenuContent>

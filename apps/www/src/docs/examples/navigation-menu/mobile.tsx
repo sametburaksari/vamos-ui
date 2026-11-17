@@ -4,9 +4,9 @@ const nav: SiteNavItem[] = [
   {
     label: "Products",
     children: [
-      { label: "vTag", href: "/products/vtag", description: "NFC business cards" },
-      { label: "vRest", href: "/products/vrest", description: "Restaurant POS and QR menus" },
-      { label: "vMob", href: "/products/vmob", description: "Native apps from your catalogue" },
+      { label: "Tapcard", href: "/products/tapcard", description: "NFC business cards" },
+      { label: "Tablekit", href: "/products/tablekit", description: "Restaurant POS and QR menus" },
+      { label: "Appkit", href: "/products/appkit", description: "Native apps from your catalogue" },
     ],
   },
   {

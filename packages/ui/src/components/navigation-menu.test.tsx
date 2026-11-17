@@ -9,8 +9,8 @@ const nav: SiteNavItem[] = [
     label: "Products",
     layout: "grid-2",
     children: [
-      { label: "vTag", href: "/products/vtag", description: "NFC business cards for teams" },
-      { label: "vRest", href: "/products/vrest", description: "Restaurant POS and QR menus" },
+      { label: "Tapcard", href: "/products/tapcard", description: "NFC business cards for teams" },
+      { label: "Tablekit", href: "/products/tablekit", description: "Restaurant POS and QR menus" },
     ],
   },
   { label: "Pricing", href: "/pricing" },
@@ -35,7 +35,7 @@ describe("NavigationMenu", () => {
     const trigger = screen.getByRole("button", { name: "Products" });
     await userEvent.click(trigger);
     expect(trigger).toHaveAttribute("aria-expanded", "true");
-    expect(await screen.findByRole("link", { name: /vTag/ })).toHaveAttribute("href", "/products/vtag");
+    expect(await screen.findByRole("link", { name: /Tapcard/ })).toHaveAttribute("href", "/products/tapcard");
     await userEvent.keyboard("{Escape}");
     expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
@@ -48,7 +48,7 @@ describe("MobileNav", () => {
     const dialog = await screen.findByRole("dialog", { name: "Menu" });
     expect(dialog).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Products" }));
-    expect(screen.getByRole("link", { name: /vRest/ })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Tablekit/ })).toBeInTheDocument();
     expect(await axe(dialog)).toHaveNoViolations();
     await userEvent.click(screen.getByRole("button", { name: "Close menu" }));
     expect(screen.queryByRole("dialog")).toBeNull();

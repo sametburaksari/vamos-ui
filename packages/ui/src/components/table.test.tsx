@@ -20,7 +20,7 @@ function Invoice() {
           <TableRow selected>
             <TableCell rowHeader>Design retainer</TableCell>
             <TableCell numeric>1</TableCell>
-            <TableCell numeric>$4,500.00</TableCell>
+            <TableCell numeric>$3,800.00</TableCell>
           </TableRow>
           <TableRow disabled>
             <TableCell rowHeader truncate>Hosting (cancelled)</TableCell>
@@ -46,7 +46,7 @@ describe("Table", () => {
     expect(screen.getByRole("region", { name: "Invoice lines" })).toHaveAttribute("tabindex", "0");
     expect(screen.getByRole("columnheader", { name: "Amount" })).toHaveClass("text-end");
     expect(screen.getByRole("rowheader", { name: "Design retainer" })).toHaveAttribute("scope", "row");
-    expect(screen.getByText("$4,500.00")).toHaveClass("tabular", "text-end");
+    expect(screen.getByText("$3,800.00")).toHaveClass("tabular", "text-end");
     expect(screen.getByText("Design retainer").closest("tr")).toHaveAttribute("data-state", "selected");
     expect(screen.getByText("Hosting (cancelled)").closest("tr")).toHaveAttribute("aria-disabled", "true");
     expect(container.querySelector("table")).toHaveAttribute("data-sticky-header");

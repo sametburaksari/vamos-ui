@@ -30,7 +30,7 @@ const entry: DocEntry = {
   examples: [
     ex("rows-agency", "Rows (agency packages, Turkish)", "pricing-table/rows-agency.tsx", RowsAgency, "Each package reads like a line on a quote: name and description, a comma list of inclusions, price and action. ₺ formatting and the “/ay” suffix come from Intl and site2LabelsTr."),
     ex("single", "Single package (ad retainer)", "pricing-table/single.tsx", Single, "One plan: large price and action on the start side, a two-column inclusion list, and a “Not included” line."),
-    ex("quote-only", "Quote-only plans", "pricing-table/quote-only.tsx", QuoteOnly, "No price: `custom` text (“From $4,500”, “Get a quote”) takes its place."),
+    ex("quote-only", "Quote-only plans", "pricing-table/quote-only.tsx", QuoteOnly, "No price: `custom` text (“From $3,800”, “Get a quote”) takes its place."),
   ],
   api: [
     {

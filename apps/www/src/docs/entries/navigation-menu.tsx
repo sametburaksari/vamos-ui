@@ -15,7 +15,7 @@ const entry: DocEntry = {
   usage: `import { NavigationMenu, MobileNav, type SiteNavItem } from "@vamos-ui/react";
 
 const nav: SiteNavItem[] = [
-  { label: "Products", children: [{ label: "vTag", href: "/vtag", description: "NFC business cards" }] },
+  { label: "Products", children: [{ label: "Tapcard", href: "/tapcard", description: "NFC business cards" }] },
   { label: "Pricing", href: "/pricing" },
 ];
 

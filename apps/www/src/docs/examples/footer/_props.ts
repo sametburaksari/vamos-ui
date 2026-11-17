@@ -5,7 +5,7 @@ export const studioFooter: FooterProps = {
   about: "A small studio in Moda designing books, posters and shop signs for publishers and makers.",
   columns: [
     { title: "Studio", links: [{ href: "/work", label: "Work" }, { href: "/services", label: "Services" }, { href: "/journal", label: "Journal" }, { href: "/about", label: "About" }] },
-    { title: "Products", links: [{ href: "/vtag", label: "vTag" }, { href: "/vrest", label: "vRest" }, { href: "/vmob", label: "vMob" }] },
+    { title: "Products", links: [{ href: "/tapcard", label: "Tapcard" }, { href: "/tablekit", label: "Tablekit" }, { href: "/appkit", label: "Appkit" }] },
     { title: "Help", links: [{ href: "/contact", label: "Contact" }, { href: "/faq", label: "FAQ" }, { href: "https://status.vamos.ist", label: "Status", newTab: true }] },
   ],
   contact: { phone: "+902160000000", email: "merhaba@ornek.com.tr", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", postalCode: "34716", country: "TR" } },

@@ -23,7 +23,7 @@ const entry: DocEntry = {
       <TableRow><TableHead>Item</TableHead><TableHead numeric>Amount</TableHead></TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow><TableCell>Design retainer</TableCell><TableCell numeric>$4,500.00</TableCell></TableRow>
+      <TableRow><TableCell>Design retainer</TableCell><TableCell numeric>$3,800.00</TableCell></TableRow>
     </TableBody>
   </Table>
 </TableContainer>`,

@@ -66,7 +66,7 @@ export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> 
  *   <Table>
  *     <TableCaption>Invoice INV-2041</TableCaption>
  *     <TableHeader><TableRow><TableHead>Item</TableHead><TableHead numeric>Amount</TableHead></TableRow></TableHeader>
- *     <TableBody><TableRow><TableCell>Design retainer</TableCell><TableCell numeric>$4,500.00</TableCell></TableRow></TableBody>
+ *     <TableBody><TableRow><TableCell>Design retainer</TableCell><TableCell numeric>$3,800.00</TableCell></TableRow></TableBody>
  *   </Table>
  * </TableContainer>
  * ```

@@ -33,7 +33,7 @@ export default function MultiStepFormDraft() {
         </MultiStepFormStep>
         <MultiStepFormStep id="programme">
           <Field label="Which products will you resell?" hint={`Draft saved ${saves} times in this session.`}>
-            <Textarea rows={3} defaultValue="vTag NFC cards for hotel chains in the Aegean region." />
+            <Textarea rows={3} defaultValue="Tapcard NFC cards for hotel chains in the Aegean region." />
           </Field>
         </MultiStepFormStep>
         <MultiStepFormStep id="agreement">

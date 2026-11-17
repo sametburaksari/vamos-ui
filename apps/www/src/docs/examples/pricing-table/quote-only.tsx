@@ -10,7 +10,7 @@ export default function PricingQuoteOnly() {
         lead="Every project starts with a free 30-minute call and a written quote within two working days."
         taxNote="Quotes exclude VAT"
         plans={[
-          { name: "Website", description: "Design, build and launch in 4–8 weeks.", custom: "From $4,500", features: [{ text: "Up to 20 pages" }, { text: "Two languages" }, { text: "Booking or contact flows" }], cta: { link: { href: "/quote?type=website", label: "Request a quote" }, style: "primary" } },
+          { name: "Website", description: "Design, build and launch in 4–8 weeks.", custom: "From $3,800", features: [{ text: "Up to 20 pages" }, { text: "Two languages" }, { text: "Booking or contact flows" }], cta: { link: { href: "/quote?type=website", label: "Request a quote" }, style: "primary" } },
           { name: "Booking system", description: "Calendars, deposits and reminders for multi-branch businesses.", custom: "Get a quote", features: [{ text: "Staff and room calendars" }, { text: "iyzico deposits" }, { text: "WhatsApp reminders" }], cta: { link: { href: "/quote?type=booking", label: "Request a quote" }, style: "secondary" } },
         ]}
       />

@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Badge, Card } from "@vamos-ui/react";
 
 const deals = [
-  { company: "Moda Wellness", value: "$4,500", stage: "Proposal sent", tone: "info" },
+  { company: "Moda Wellness", value: "$3,800", stage: "Proposal sent", tone: "info" },
   { company: "Kadıköy Bistro", value: "$1,280 / mo", stage: "Negotiation", tone: "warning" },
 ] as const;
 

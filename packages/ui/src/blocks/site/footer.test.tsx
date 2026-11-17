@@ -10,7 +10,7 @@ const props: FooterProps = {
   about: "A small studio in Moda designing books, posters and shop signs.",
   columns: [
     { title: "Studio", links: [{ href: "/work", label: "Work" }, { href: "/services", label: "Services" }, { href: "/journal", label: "Journal" }] },
-    { title: "Products", links: [{ href: "/vtag", label: "vTag" }, { href: "/vrest", label: "vRest" }] },
+    { title: "Products", links: [{ href: "/tapcard", label: "Tapcard" }, { href: "/tablekit", label: "Tablekit" }] },
     { title: "Help", links: [{ href: "/contact", label: "Contact" }, { href: "/faq", label: "FAQ" }] },
   ],
   contact: { phone: "+902160000000", email: "merhaba@ornek.com.tr", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", country: "TR" } },

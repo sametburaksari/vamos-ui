@@ -76,7 +76,7 @@ export interface NavigationMenuProps extends React.ComponentPropsWithoutRef<type
  *     <NavigationMenuItem>
  *       <NavigationMenuTrigger>Products</NavigationMenuTrigger>
  *       <NavigationMenuContent layout="grid-2">
- *         <NavigationMenuLink href="/vtag" title="vTag" description="NFC business cards" />
+ *         <NavigationMenuLink href="/tapcard" title="Tapcard" description="NFC business cards" />
  *       </NavigationMenuContent>
  *     </NavigationMenuItem>
  *     <NavigationMenuItem><NavigationMenuLink href="/pricing" variant="top">Pricing</NavigationMenuLink></NavigationMenuItem>

@@ -16,7 +16,7 @@ export default function AlertDialogDemo() {
         <Button>Close deal as lost</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        <AlertDialogHeader title="Close “Moda Wellness — Q1 retainer” as lost?" description="The deal leaves the pipeline and its $4,500 forecast. You can reopen it from the deal page." />
+        <AlertDialogHeader title="Close “Moda Wellness — Q1 retainer” as lost?" description="The deal leaves the pipeline and its $3,800 forecast. You can reopen it from the deal page." />
         <AlertDialogFooter>
           <AlertDialogCancel />
           <AlertDialogAction>Close as lost</AlertDialogAction>
