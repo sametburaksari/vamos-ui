@@ -4,6 +4,13 @@ Release notes for the Vamos UI MCP server (local stdio and the hosted server at 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change tools).
 
+## 0.3.6 — 2026-11-17
+
+### Patch Changes
+
+- Updated dependencies [996164c]
+  - vamos-ui@0.9.0
+
 ## 0.3.5 — 2026-11-17
 
 ### Patch Changes
