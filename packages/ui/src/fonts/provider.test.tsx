@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react";
 import { FontProvider, useFontPairing } from "./provider";
+import { Dialog, DialogContent, DialogTrigger } from "../components/dialog";
 import { expectNoA11yViolations, renderWithProviders } from "../../test/utils";
 
 function Probe() {
@@ -23,6 +24,34 @@ describe("FontProvider", () => {
     expect(screen.getByText("Current: Bistro")).toBeInTheDocument();
     expect(wrap.style.getPropertyValue("--font-heading")).toMatch(/^"Young Serif"/);
     await expectNoA11yViolations();
+  });
+
+  it("overlays opened inside portal into the wrapper and keep the pairing", async () => {
+    const { user, container } = renderWithProviders(
+      <FontProvider defaultPairing="newsroom" load={false}>
+        <Dialog>
+          <DialogTrigger>Sign in</DialogTrigger>
+          <DialogContent title="Welcome back">Body</DialogContent>
+        </Dialog>
+      </FontProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
+    const wrap = container.querySelector<HTMLElement>("[data-slot=font-provider]")!;
+    expect(wrap.contains(screen.getByRole("dialog"))).toBe(true);
+  });
+
+  it("portal={false} leaves overlays on the default target", async () => {
+    const { user, container } = renderWithProviders(
+      <FontProvider defaultPairing="newsroom" load={false} portal={false}>
+        <Dialog>
+          <DialogTrigger>Sign in</DialogTrigger>
+          <DialogContent title="Welcome back">Body</DialogContent>
+        </Dialog>
+      </FontProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
+    const wrap = container.querySelector<HTMLElement>("[data-slot=font-provider]")!;
+    expect(wrap.contains(screen.getByRole("dialog"))).toBe(false);
   });
 
   it("document scope writes to <html> and restores on unmount", () => {

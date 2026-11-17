@@ -83,7 +83,7 @@ export function NoAccess() {
                 Invoices are visible to the{" "}
                 <b className="font-medium text-fg">Owner</b> and{" "}
                 <b className="font-medium text-fg">Finance</b> roles. You’re
-                signed in as <span className="text-fg">samet@northpoint.studio</span>{" "}
+                signed in as <span className="text-fg">emre@northpoint.studio</span>{" "}
                 with the <Badge tone="outline">Editor</Badge> role.
               </>
             }
@@ -123,7 +123,7 @@ export function NoAccess() {
                 }
               >
                 Ece and Murat were notified. You’ll get an email at
-                samet@northpoint.studio when it’s approved — this page will open on
+                emre@northpoint.studio when it’s approved — this page will open on
                 its own.
               </Alert>
             ) : (

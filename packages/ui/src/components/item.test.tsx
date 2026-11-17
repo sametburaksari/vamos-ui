@@ -13,7 +13,7 @@ describe("Item", () => {
           </ItemLeading>
           <ItemContent>
             <ItemTitle>A practical guide to QR menus for restaurants</ItemTitle>
-            <ItemDescription>Samet · Today, 09:00</ItemDescription>
+            <ItemDescription>Emre · Today, 09:00</ItemDescription>
           </ItemContent>
           <ItemMeta>Published</ItemMeta>
           <ItemActions reveal="hover">

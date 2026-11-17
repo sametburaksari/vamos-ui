@@ -17,7 +17,7 @@ const seed: AppNotification[] = [
   {
     id: "n-1041",
     title: "Meltem mentioned you in “Local SEO checklist for 2026”",
-    body: "@Samet can you review the intro before Friday?",
+    body: "@Emre can you review the intro before Friday?",
     createdAt: minutesAgo(48),
     actor: { name: "Meltem Yıldız" },
     category: "mention",

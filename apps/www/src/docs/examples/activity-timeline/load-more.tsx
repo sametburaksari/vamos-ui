@@ -9,14 +9,14 @@ const at = (daysAgo: number, hour: number) => new Date(Math.floor(Date.now() / d
 
 const pages: TimelineEntry[][] = [
   [
-    { id: "p1", at: at(0, 9), icon: Globe, tone: "success", title: <><b>Samet</b> published the post</> },
+    { id: "p1", at: at(0, 9), icon: Globe, tone: "success", title: <><b>Emre</b> published the post</> },
     { id: "p2", at: at(1, 16), icon: FilePen, title: <><b>Ece</b> edited the introduction</> },
     { id: "p3", at: at(1, 11), icon: FilePen, title: <><b>Ece</b> changed the featured image</> },
   ],
   [
     { id: "p4", at: at(4, 15), icon: FileText, title: <><b>Meltem</b> requested a review</> },
-    { id: "p5", at: at(5, 10), icon: Trash2, tone: "danger", title: <><b>Samet</b> removed 2 paragraphs</> },
-    { id: "p6", at: at(6, 9), icon: FileText, title: <><b>Samet</b> created the draft</> },
+    { id: "p5", at: at(5, 10), icon: Trash2, tone: "danger", title: <><b>Emre</b> removed 2 paragraphs</> },
+    { id: "p6", at: at(6, 9), icon: FileText, title: <><b>Emre</b> created the draft</> },
   ],
 ];
 

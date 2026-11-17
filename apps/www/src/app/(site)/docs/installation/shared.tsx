@@ -43,7 +43,7 @@ export default function Welcome() {
 
 export const axesTable = (
   <P>
-    The six axes are attributes on <C>&lt;html&gt;</C> (or any element): <C>class=&quot;dark&quot;</C>,{" "}
+    The seven axes are attributes on <C>&lt;html&gt;</C> (or any element): <C>class=&quot;dark&quot;</C>,{" "}
     <C>data-material=&quot;glass|solid&quot;</C>, <C>data-accent=&quot;lime|ocean|ember|rose|graphite&quot;</C>,{" "}
     <C>data-density=&quot;comfortable|compact&quot;</C>, <C>data-font=&quot;editorial|grotesk|corporate|system&quot;</C> and,
     optionally, <C>data-radius=&quot;sharp|round&quot;</C> for corners.

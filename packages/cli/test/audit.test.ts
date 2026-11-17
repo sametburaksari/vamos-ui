@@ -141,6 +141,12 @@ describe("analyzePage", () => {
     expect(pageIssues(analyzePage(html, "https://lavanta.test/iletisim"), false).filter((i) => i.rule === "placeholder-content")).toEqual([]);
   });
 
+  it("does not flag a short digit run mentioned in running text", () => {
+    const html = `<html><head><title>Changelog</title></head><body><p>Verify: placeholder contact details (000 00 00 phones, .example emails) are reported.</p></body></html>`;
+    const issues = pageIssues(analyzePage(html, "https://site.test/changelog/"), false);
+    expect(issues.filter((i) => i.rule === "placeholder-content")).toEqual([]);
+  });
+
   it("isPlaceholderPhone", () => {
     for (const d of ["0000000", "02125555555", "905000000000", "5551234567"]) expect(isPlaceholderPhone(d), d).toBe(true);
     for (const d of ["02163334455", "05324182790"]) expect(isPlaceholderPhone(d), d).toBe(false);

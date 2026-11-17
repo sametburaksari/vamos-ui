@@ -22,7 +22,7 @@
 
 Most admin panels look the same, and most component kits stop at buttons and dialogs. Vamos UI covers the whole surface a business app needs — data tables, pickers, calendars, kanban, line items, approval flows, media, a block editor — plus site blocks and full-screen blocks, all styled by tokens.
 
-- **Six theme axes.** Mode, material (solid or Liquid Glass), accent, density, font and corners are attributes on `<html>` or any section. Components never use `dark:`.
+- **Seven theme axes.** Mode, material (solid or Liquid Glass), accent, density, font, corners and scene are attributes on `<html>` or any section. Components never use `dark:`.
 - **Grouped by what a component is.** A calendar is the same calendar in a CRM, an HR tool or a CMS. Domain screens ship as blocks.
 - **Install or own.** One npm package, or copy single components with the `vamos-ui` CLI and keep receiving fixes.
 - **English first, locales built in.** Built-in strings come from a locale dictionary; numbers, money and dates go through `Intl`. Turkish is the first extra locale.
@@ -54,7 +54,7 @@ Full guide: [ui.vamos.ist/docs/installation](https://ui.vamos.ist/docs/installat
 
 ## Theming
 
-Six independent axes, each an attribute on `<html>` or on any subtree (a section can differ from the page):
+Seven independent axes, each an attribute on `<html>` or on any subtree (a section can differ from the page):
 
 | Axis | Attribute | Values |
 |---|---|---|
@@ -64,6 +64,7 @@ Six independent axes, each an attribute on `<html>` or on any subtree (a section
 | Density | `data-density` | `comfortable` · `compact` |
 | Font | `data-font` | `editorial` · `grotesk` · `corporate` · `system` |
 | Corners | `data-radius` | default (no attribute) · `sharp` · `round` |
+| Scene | `data-scene` | neutral (no attribute) · `paper` · `warm` · `ink` |
 
 **Corners** scale `--radius`: default 14px (compact 10px), sharp 6px (4px), round 20px (14px). It works with every accent, material and density.
 

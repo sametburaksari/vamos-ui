@@ -36,7 +36,7 @@ export interface ItemListProps extends Omit<React.HTMLAttributes<HTMLElement>, "
  *
  * ```tsx
  * <ItemList>
- *   <Item><ItemContent><ItemTitle>Local SEO checklist for 2026</ItemTitle><ItemDescription>Samet · Edited yesterday</ItemDescription></ItemContent></Item>
+ *   <Item><ItemContent><ItemTitle>Local SEO checklist for 2026</ItemTitle><ItemDescription>Emre · Edited yesterday</ItemDescription></ItemContent></Item>
  * </ItemList>
  * ```
  */

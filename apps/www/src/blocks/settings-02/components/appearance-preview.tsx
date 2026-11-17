@@ -36,7 +36,7 @@ export function AppearancePreview({ form, pairing }: { form: PreferencesForm; pa
           <span className="text-[13px] font-medium">Northwind · CRM</span>
           <div className="flex-1" />
           <Input size="sm" placeholder="Search deals" addonStart={<Search />} className="hidden w-44 sm:flex" readOnly />
-          <Avatar size="sm" name="Samet Burak" />
+          <Avatar size="sm" name="Emre Sönmez" />
         </div>
 
         <div className="flex flex-wrap items-end justify-between gap-3">

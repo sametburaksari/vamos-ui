@@ -3,13 +3,13 @@
 import * as React from "react";
 import { DiffView, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 
-const before = `Vamos builds websites and panels for restaurants, clinics and agencies.
-Our team is based in Istanbul and works with clients across Europe.
-Projects start at $4,500 and launch in six weeks.`;
+const before = `Northwind Studio builds websites and panels for shops, hotels and agencies.
+Our team is based in Lisbon and works with clients across Europe.
+Projects start at $3,000 and launch in six weeks.`;
 
-const after = `Vamos builds fast, accessible websites and admin panels for restaurants, clinics and agencies.
-Our team is based in Istanbul and works with clients across Europe and the Gulf.
-Projects start at $4,500 and launch in four to six weeks.`;
+const after = `Northwind Studio builds fast, accessible websites and admin panels for shops, hotels and agencies.
+Our team is based in Lisbon and works with clients across Europe and North Africa.
+Projects start at $3,000 and launch in four to six weeks.`;
 
 export default function VersionHistoryTextDiff() {
   const [mode, setMode] = React.useState<"unified" | "split">("unified");

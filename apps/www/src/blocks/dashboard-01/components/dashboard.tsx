@@ -11,9 +11,9 @@ const kpis = [
 ];
 
 const posts = [
-  { title: "A practical guide to QR menus for restaurants", author: "Samet", status: "Published", tone: "success", date: "Today, 09:00" },
+  { title: "A practical guide to QR menus for restaurants", author: "Emre", status: "Published", tone: "success", date: "Today, 09:00" },
   { title: "How to stand out on Google Business Profile", author: "Meltem", status: "Scheduled", tone: "info", date: "Nov 11, 09:00" },
-  { title: "Local SEO checklist for 2026", author: "Samet", status: "Draft", tone: "neutral", date: "Edited yesterday" },
+  { title: "Local SEO checklist for 2026", author: "Emre", status: "Draft", tone: "neutral", date: "Edited yesterday" },
   { title: "NFC business cards vs. paper", author: "Ece", status: "In review", tone: "warning", date: "Nov 8" },
 ] as const;
 
@@ -42,7 +42,7 @@ export function Dashboard() {
     <div className="mx-auto max-w-[1280px]">
       <PageHeader
         eyebrow="Monday, November 10"
-        title={<>Good morning, <em className="text-accent-ink">Samet</em>.</>}
+        title={<>Good morning, <em className="text-accent-ink">Emre</em>.</>}
         description="A short summary of what happened on your site in the last 30 days."
         actions={<><Button>Export report</Button><Button variant="solid">New post</Button></>}
       />

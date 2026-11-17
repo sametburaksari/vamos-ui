@@ -18,7 +18,7 @@ export interface Post {
   updatedAt: string;
 }
 
-export const me = { id: "u-samet", name: "Samet Sarı" };
+export const me = { id: "u-emre", name: "Emre Sönmez" };
 
 export const authors = [
   me,

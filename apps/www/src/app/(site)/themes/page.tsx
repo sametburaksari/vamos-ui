@@ -18,7 +18,7 @@ export default function ThemesPage() {
             Tune the kit, <em>keep</em> the code.
           </h1>
           <p className="mt-3 text-[15.5px] leading-relaxed text-fg-muted">
-            Six axes, one short preset code. Everything below is the real kit, themed with subtree attributes, so what you see is what <code className="font-mono text-[13px]">npx vamos-ui init --preset</code> gives your app. Bring your own brand colour and the CLI derives a palette that keeps text readable.
+            Seven axes, one short preset code. Everything below is the real kit, themed with subtree attributes, so what you see is what <code className="font-mono text-[13px]">npx vamos-ui init --preset</code> gives your app. Bring your own brand colour and the CLI derives a palette that keeps text readable.
           </p>
         </div>
         <p className="max-w-xs text-[13px] leading-relaxed text-fg-muted lg:text-end">

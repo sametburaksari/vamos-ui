@@ -28,7 +28,7 @@ export function GettingStarted() {
         eyebrow="Getting started"
         title={
           <>
-            Welcome to Northwind, <em>Samet</em>.
+            Welcome to Northwind, <em>Emre</em>.
           </>
         }
         description="A few steps and your site, CRM and team are ready for clients. Everything here can be changed later."

@@ -65,7 +65,7 @@ export function upsertBlock(existing: string | null, block: string): string {
 export function skillMarkdown(config: VamosConfig): string {
   return `---
 name: vamos-ui
-description: Build and review UI with the Vamos UI kit (tokens, 6 theme axes, components and blocks). Use when creating screens, adding components, theming, or reviewing UI code in this project.
+description: Build and review UI with the Vamos UI kit (tokens, 7 theme axes, components and blocks). Use when creating screens, adding components, theming, or reviewing UI code in this project.
 ---
 
 # Vamos UI

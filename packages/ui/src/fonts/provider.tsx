@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../lib/cn";
+import { PortalContainer } from "../lib/theme-scope";
 import { useControllableState, useIsomorphicLayoutEffect } from "../lib/use-controllable-state";
 import { applyFontPairing, clearFontPairing, fontPairings, getFontPairing, pairingFamilies, pairingVars, type FontPairing } from "./pairings";
 import { loadGoogleFonts } from "./loader";
@@ -33,6 +34,12 @@ export interface FontProviderProps {
   scope?: "element" | "document";
   /** Load the families from Google Fonts. Default `true`. Turn off when you self-host. */
   load?: boolean;
+  /**
+   * With `scope="element"`, overlays opened inside (dialogs, menus, popovers) portal into the
+   * wrapper so they keep the pairing. Default `true`. The wrapper must not use `transform`,
+   * `filter` or `contain`, which would trap fixed-position overlays.
+   */
+  portal?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
@@ -44,7 +51,8 @@ export interface FontProviderProps {
  * <FontProvider defaultPairing="boutique"><SitePreview /></FontProvider>
  * ```
  */
-export function FontProvider({ pairing: pairingProp, defaultPairing = "editorial", onPairingChange, pairings = fontPairings, scope = "element", load = true, className, children }: FontProviderProps) {
+export function FontProvider({ pairing: pairingProp, defaultPairing = "editorial", onPairingChange, pairings = fontPairings, scope = "element", load = true, portal = true, className, children }: FontProviderProps) {
+  const [node, setNode] = React.useState<HTMLDivElement | null>(null);
   const resolve = React.useCallback((p: FontPairing | string | undefined) => (typeof p === "string" ? getFontPairing(p, pairings) : p), [pairings]);
   const [pairing, setPairingState] = useControllableState<FontPairing>({
     value: resolve(pairingProp),
@@ -81,8 +89,8 @@ export function FontProvider({ pairing: pairingProp, defaultPairing = "editorial
   return (
     <FontPairingContext.Provider value={value}>
       {scope === "element" ? (
-        <div data-font={active.id} data-slot="font-provider" style={pairingVars(active) as React.CSSProperties} className={cn("font-sans", className)}>
-          {children}
+        <div ref={setNode} data-font={active.id} data-slot="font-provider" style={pairingVars(active) as React.CSSProperties} className={cn("font-sans", className)}>
+          {portal ? <PortalContainer container={node}>{children}</PortalContainer> : children}
         </div>
       ) : (
         children
