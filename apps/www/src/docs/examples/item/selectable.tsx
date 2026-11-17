@@ -7,7 +7,7 @@ const team = [
   { id: "ece", name: "Ece Demir", role: "Product designer", load: "3 open tasks" },
   { id: "meltem", name: "Meltem Aydın", role: "Account manager", load: "7 open tasks" },
   { id: "can", name: "Can Özkan", role: "Frontend engineer", load: "On leave until Nov 14", away: true },
-  { id: "samet", name: "Samet Sarı", role: "Founder", load: "2 open tasks" },
+  { id: "samet", name: "Emre Sarı", role: "Founder", load: "2 open tasks" },
 ];
 
 export default function ItemSelectable() {

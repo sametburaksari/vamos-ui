@@ -41,7 +41,7 @@ export function AgencySite({ locale }: { locale: SiteLocale }) {
           variant="statement"
           eyebrow={t({ en: "Web studio · Kadıköy, Istanbul", tr: "Web stüdyosu · Kadıköy, İstanbul" })}
           title={t({ en: "Websites for places people *actually* visit.", tr: "İnsanların *gerçekten* gittiği yerler için web siteleri." })}
-          lead={t({ en: "Twelve people building sites, booking flows and ad campaigns for restaurants, spas and clinics since 2014.", tr: "2014’ten beri restoran, spa ve klinikler için site, rezervasyon akışı ve reklam kampanyası kuran on iki kişi." })}
+          lead={t({ en: "Twelve people building sites, booking flows and ad campaigns for restaurants, hotels and independent shops since 2014.", tr: "2014’ten beri restoran, otel ve bağımsız dükkânlar için site, rezervasyon akışı ve reklam kampanyası kuran on iki kişi." })}
           services={[
             { label: t({ en: "Websites", tr: "Web siteleri" }), href: "#services" },
             { label: t({ en: "Booking systems", tr: "Rezervasyon sistemleri" }), href: "#services" },
@@ -80,7 +80,7 @@ export function AgencySite({ locale }: { locale: SiteLocale }) {
           title={t({ en: "Four things, done *properly*", tr: "Dört iş, *düzgünce*" })}
           items={[
             { title: t({ en: "Websites", tr: "Web siteleri" }), text: t({ en: "Fast, bilingual sites you can edit yourself. Hosting, SSL and backups included for the first year.", tr: "Kendiniz düzenleyebileceğiniz hızlı, iki dilli siteler. İlk yıl barındırma, SSL ve yedekleme dahil." }), media: img(photos.laptop) },
-            { title: t({ en: "Booking systems", tr: "Rezervasyon sistemleri" }), text: t({ en: "WhatsApp, deposit and calendar flows connected to the tools you already use.", tr: "Zaten kullandığınız araçlara bağlı WhatsApp, kapora ve takvim akışları." }), media: img(photos.clinic) },
+            { title: t({ en: "Booking systems", tr: "Rezervasyon sistemleri" }), text: t({ en: "WhatsApp, deposit and calendar flows connected to the tools you already use.", tr: "Zaten kullandığınız araçlara bağlı WhatsApp, kapora ve takvim akışları." }), media: img(photos.reception) },
             { title: "Google Ads", text: t({ en: "Local campaigns measured by calls and bookings — not clicks. Monthly report in plain language.", tr: "Tıklamayla değil, arama ve rezervasyonla ölçülen yerel kampanyalar. Sade dille aylık rapor." }), media: img(photos.dashboard) },
             { title: t({ en: "Photography", tr: "Fotoğraf" }), text: t({ en: "A half-day shoot of your real rooms, food and people. No stock photos, ever.", tr: "Gerçek mekânınızın, yemeklerinizin ve ekibinizin yarım günlük çekimi. Asla stok fotoğraf yok." }), media: img(photos.camera) },
           ]}
@@ -135,7 +135,7 @@ export function AgencySite({ locale }: { locale: SiteLocale }) {
           title={t({ en: "In their *words*", tr: "Kendi *sözleriyle*" })}
           items={[
             { quote: t({ en: "They spent a whole Saturday at the restaurant before drawing anything. The site reads like us.", tr: "Bir şey çizmeden önce bütün bir cumartesiyi restoranda geçirdiler. Site tam bizim gibi." }), author: "Deniz Arslan", role: t({ en: "Co-owner", tr: "Ortak" }), company: "Kıyı Meyhane", avatar: portraits.can },
-            { quote: t({ en: "Our ads finally report bookings instead of clicks. We cut the budget by a third and got more appointments.", tr: "Reklamlarımız sonunda tıklama değil randevu raporluyor. Bütçeyi üçte bir azalttık, daha fazla randevu aldık." }), author: "Ayşe Korkmaz", role: t({ en: "Clinic manager", tr: "Klinik müdürü" }), company: "Defne Clinic", avatar: portraits.ayse },
+            { quote: t({ en: "Our ads finally report bookings instead of clicks. We cut the budget by a third and got more direct reservations.", tr: "Reklamlarımız sonunda tıklama değil rezervasyon raporluyor. Bütçeyi üçte bir azalttık, daha fazla doğrudan rezervasyon aldık." }), author: "Ayşe Korkmaz", role: t({ en: "General manager", tr: "Genel müdür" }), company: "Defne Otel", avatar: portraits.ayse },
             { quote: t({ en: "Six weeks, exactly as promised. The Turkish and English pages are equally good, which never happens.", tr: "Söz verildiği gibi tam altı hafta. Türkçe ve İngilizce sayfalar eşit derecede iyi; bu hiç olmaz." }), author: "Mert Kaya", role: t({ en: "Founder", tr: "Kurucu" }), company: "Hamam Moda" },
           ]}
         />
@@ -165,7 +165,7 @@ export function AgencySite({ locale }: { locale: SiteLocale }) {
         {...common}
         variant="wordmark"
         brand={{ name: "Oda Studio", href: "#top" }}
-        about={t({ en: "A web studio for restaurants, spas and clinics. Kadıköy, since 2014.", tr: "Restoran, spa ve klinikler için bir web stüdyosu. 2014’ten beri Kadıköy’de." })}
+        about={t({ en: "A web studio for restaurants, hotels and independent shops. Kadıköy, since 2014.", tr: "Restoran, otel ve bağımsız dükkânlar için bir web stüdyosu. 2014’ten beri Kadıköy’de." })}
         columns={[
           { title: t({ en: "Studio", tr: "Stüdyo" }), links: [{ href: "#work", label: t({ en: "Work", tr: "İşler" }) }, { href: "#services", label: t({ en: "Services", tr: "Hizmetler" }) }, { href: "#journal", label: t({ en: "Journal", tr: "Yazılar" }) }] },
           { title: t({ en: "Elsewhere", tr: "Diğer" }), links: [{ href: "/careers", label: t({ en: "Careers", tr: "Kariyer" }) }, { href: "/press", label: t({ en: "Press kit", tr: "Basın kiti" }) }] },

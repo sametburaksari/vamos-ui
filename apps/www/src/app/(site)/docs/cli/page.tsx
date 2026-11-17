@@ -151,7 +151,7 @@ npx vamos-ui add button --registry ./vendor/vamos-registry
 
       <H2 id="presets">Preset codes</H2>
       <P>
-        A preset code is the six theme axes (the sixth, corners, is optional) in one short string, so a look can be shared in a
+        A preset code is the seven theme axes (corners and scene are optional) in one short string, so a look can be shared in a
         message, a README or an issue:
       </P>
       <Code lang="bash" code={`npx vamos-ui preset                    # print this project's code, e.g. v1dgokg
@@ -188,7 +188,7 @@ npx vamos-ui add github:acme/ui/stat-card   # copy an item from another registry
 npx vamos-ui diff button     # show what changed upstream since you copied it
 npx vamos-ui upgrade button  # three-way merge upstream changes into your edited copy
 npx vamos-ui search calendar # find components and blocks
-npx vamos-ui theme           # pick the six theme axes
+npx vamos-ui theme           # pick the seven theme axes
 npx vamos-ui preset          # print the shareable preset code
 npx vamos-ui verify src      # lint for design-rule and accessibility issues
 npx vamos-ui new                         # plan a website: a few questions → vamos.project.json + vamos.site.json

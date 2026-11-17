@@ -7,7 +7,7 @@ export default function FieldLayouts() {
       <CardBody className="grid gap-5 pt-5">
         {/* layout="inline": fixed label column, the classic settings page */}
         <Field label="Company name" layout="inline" required>
-          <Input defaultValue="Vamos Dijital" />
+          <Input defaultValue="Northwind Studio" />
         </Field>
         <Field label="Tax office" layout="inline" optional hint="Required for Turkish e-invoices.">
           <Input defaultValue="Kozyatağı" />

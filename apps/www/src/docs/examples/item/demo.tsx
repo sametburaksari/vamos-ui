@@ -2,9 +2,9 @@ import { MoreHorizontal } from "lucide-react";
 import { Badge, Button, Card, CardHeader, IconButton, Item, ItemActions, ItemContent, ItemDescription, ItemList, ItemMeta, ItemTitle } from "@vamos-ui/react";
 
 const posts = [
-  { title: "A practical guide to QR menus for restaurants", author: "Samet", status: "Published", tone: "success", date: "Today, 09:00" },
+  { title: "A practical guide to QR menus for restaurants", author: "Emre", status: "Published", tone: "success", date: "Today, 09:00" },
   { title: "How to stand out on Google Business Profile", author: "Meltem", status: "Scheduled", tone: "info", date: "Nov 11, 09:00" },
-  { title: "Local SEO checklist for 2026", author: "Samet", status: "Draft", tone: "neutral", date: "Edited yesterday" },
+  { title: "Local SEO checklist for 2026", author: "Emre", status: "Draft", tone: "neutral", date: "Edited yesterday" },
   { title: "NFC business cards vs. paper", author: "Ece", status: "In review", tone: "warning", date: "Nov 8" },
 ] as const;
 

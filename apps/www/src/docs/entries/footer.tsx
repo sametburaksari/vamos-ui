@@ -19,7 +19,7 @@ const entry: DocEntry = {
   columns={[{ title: "Studio", links: [{ href: "/work", label: "Work" }] }]}
   social={[{ network: "instagram", href: "https://instagram.com/vamos.ist" }]}
   legalLinks={[{ href: "/kvkk", label: "KVKK notice" }]}
-  company={{ legalName: "Vamos Dijital Ajans Ltd. Şti.", registry: [{ label: "Tax no.", value: "923 145 6780" }] }}
+  company={{ legalName: "Northwind Studio Ltd. Şti.", registry: [{ label: "Tax no.", value: "923 145 6780" }] }}
 />`,
   demo: ex("demo", "Columns (dark, agency)", "footer/demo.tsx", Demo),
   examples: [

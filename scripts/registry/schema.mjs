@@ -4,7 +4,7 @@
  *   r/schema.json        RegistryItem (r/<name>.json)
  *   r/index-schema.json  r/index.json
  *   r/config-schema.json vamos.json in a user project
- *   r/axes.json          the six theme axes
+ *   r/axes.json          the seven theme axes
  */
 
 const BASE = "https://ui.vamos.ist/r";

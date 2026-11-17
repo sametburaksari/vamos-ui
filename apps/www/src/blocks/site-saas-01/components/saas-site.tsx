@@ -223,7 +223,7 @@ export function SaasSite({ locale }: { locale: SiteLocale }) {
       <Footer
         {...common}
         brand={{ name: "Relay", href: home() }}
-        about={t({ en: "A shared inbox for restaurants, spas and clinics. Made in Istanbul.", tr: "Restoran, spa ve klinikler için ortak gelen kutusu. İstanbul’da yapıldı." })}
+        about={t({ en: "A shared inbox for restaurants, hotels and studios. Made in Istanbul.", tr: "Restoran, otel ve stüdyolar için ortak gelen kutusu. İstanbul’da yapıldı." })}
         columns={[
           { title: t({ en: "Product", tr: "Ürün" }), links: [{ href: home("features"), label: t({ en: "Features", tr: "Özellikler" }) }, { href: home("pricing"), label: t({ en: "Pricing", tr: "Fiyatlar" }) }, { href: changelog, label: t({ en: "What’s new", tr: "Yenilikler" }) }] },
           { title: t({ en: "Company", tr: "Şirket" }), links: [{ href: "/about", label: t({ en: "About", tr: "Hakkımızda" }) }, { href: "/careers", label: t({ en: "Careers", tr: "Kariyer" }) }, { href: "/contact", label: t({ en: "Contact", tr: "İletişim" }) }] },

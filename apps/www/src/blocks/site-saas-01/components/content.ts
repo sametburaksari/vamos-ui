@@ -1,4 +1,4 @@
-// Sample content for "Relay", a fictional shared booking inbox for restaurants, spas and clinics.
+// Sample content for "Relay", a fictional shared booking inbox for restaurants, hotels and studios.
 // Human-readable fields are `Localized` ({ en, tr }) and resolved with `pickLocale`.
 import { blockLabelsTr, pickLocale, site1LabelsTr, site2LabelsTr, type Localized, type LogoItem } from "@vamos-ui/react/blocks";
 
@@ -47,7 +47,7 @@ const FONTS = {
 const BRANDS: [string, keyof typeof FONTS][] = [
   ["Kıyı Meyhane", "serif"],
   ["HAMAM MODA", "condensed"],
-  ["Lindell Clinic", "italic"],
+  ["Lindell Hotel", "italic"],
   ["PERA/BAKERY", "mono"],
   ["NOVA DENTAL", "condensed"],
   ["fırın&co", "sans"],

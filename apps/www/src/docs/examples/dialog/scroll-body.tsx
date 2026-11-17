@@ -15,7 +15,7 @@ export default function DialogScrollBody() {
         <Button>What&apos;s new</Button>
       </DialogTrigger>
       <DialogContent size="md">
-        <DialogHeader title="What's new in Vamos CMS" description="Release notes from the last three months." action={<Badge tone="accent">4.12</Badge>} />
+        <DialogHeader title="What's new in Northwind CMS" description="Release notes from the last three months." action={<Badge tone="accent">4.12</Badge>} />
         <DialogBody className="grid gap-6">
           {releases.map((r) => (
             <section key={r.version} className="grid gap-2">

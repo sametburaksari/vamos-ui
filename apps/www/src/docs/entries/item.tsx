@@ -20,7 +20,7 @@ const entry: DocEntry = {
   <Item>
     <ItemContent>
       <ItemTitle>Local SEO checklist for 2026</ItemTitle>
-      <ItemDescription>Samet · Edited yesterday</ItemDescription>
+      <ItemDescription>Emre · Edited yesterday</ItemDescription>
     </ItemContent>
     <ItemMeta>Draft</ItemMeta>
   </Item>

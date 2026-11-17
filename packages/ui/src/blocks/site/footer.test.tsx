@@ -6,7 +6,7 @@ import { CONSENT_OPEN_EVENT } from "./shared/consent";
 import { footerBlock } from "./registry-2";
 
 const props: FooterProps = {
-  brand: { name: "Vamos", href: "/" },
+  brand: { name: "Northwind", href: "/" },
   about: "A small studio in Moda designing books, posters and shop signs.",
   columns: [
     { title: "Studio", links: [{ href: "/work", label: "Work" }, { href: "/services", label: "Services" }, { href: "/journal", label: "Journal" }] },
@@ -14,9 +14,9 @@ const props: FooterProps = {
     { title: "Help", links: [{ href: "/contact", label: "Contact" }, { href: "/faq", label: "FAQ" }] },
   ],
   contact: { phone: "+902160000000", email: "merhaba@ornek.com.tr", address: { line: "Rıhtım Caddesi 14", district: "Rasimpaşa", city: "Kadıköy", country: "TR" } },
-  social: [{ network: "instagram", href: "https://instagram.com/vamos.ist" }, { network: "linkedin", href: "https://linkedin.com/company/vamos-ist" }],
+  social: [{ network: "instagram", href: "https://instagram.com/northwind.studio" }, { network: "linkedin", href: "https://linkedin.com/company/northwind-studio" }],
   legalLinks: [{ href: "/privacy", label: "Privacy" }, { href: "/kvkk", label: "KVKK notice" }],
-  company: { legalName: "Vamos Dijital Ajans Ltd. Şti.", registry: [{ label: "Tax office", value: "Kozyatağı" }, { label: "Tax no.", value: "923 145 6780" }, { label: "MERSİS", value: "0923 1456 7800 0015" }] },
+  company: { legalName: "Northwind Studio Ltd. Şti.", registry: [{ label: "Tax office", value: "Kozyatağı" }, { label: "Tax no.", value: "923 145 6780" }, { label: "MERSİS", value: "0923 1456 7800 0015" }] },
   year: 2026,
 };
 
@@ -27,7 +27,7 @@ describe("Footer", () => {
     expect(screen.getByRole("navigation", { name: "Studio" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Legal" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /^Instagram/ })).toHaveAttribute("target", "_blank");
-    expect(screen.getByText("© 2026 Vamos Dijital Ajans Ltd. Şti.")).toBeInTheDocument();
+    expect(screen.getByText("© 2026 Northwind Studio Ltd. Şti.")).toBeInTheDocument();
     expect(screen.getByText("MERSİS").nextSibling).toHaveTextContent("0923 1456 7800 0015");
     expect(await axe(container)).toHaveNoViolations();
   });
@@ -44,7 +44,7 @@ describe("Footer", () => {
 
   it("wordmark and minimal variants", async () => {
     const { container, rerender } = render(<Footer {...props} variant="wordmark" theme={{ mode: "dark" }} />);
-    expect(container.querySelector(".vb-wordmark")).toHaveTextContent("Vamos");
+    expect(container.querySelector(".vb-wordmark")).toHaveTextContent("Northwind");
     expect(container.querySelector(".vb-wordmark")).toHaveAttribute("aria-hidden");
     expect(await axe(container)).toHaveNoViolations();
     rerender(<Footer {...props} variant="minimal" />);
@@ -61,9 +61,9 @@ describe("Footer", () => {
 
   it("emits Organization JSON-LD by default, refinable and switchable off", () => {
     const ld = (c: HTMLElement) => [...c.querySelectorAll('script[type="application/ld+json"]')].map((n) => JSON.parse(n.textContent ?? "{}"));
-    const { container, unmount } = render(<Footer {...props} brand={{ name: "Vamos", href: "https://studio.example/" }} />);
+    const { container, unmount } = render(<Footer {...props} brand={{ name: "Northwind", href: "https://studio.example/" }} />);
     const [doc] = ld(container);
-    expect(doc).toMatchObject({ "@context": "https://schema.org", "@type": "Organization", name: "Vamos", legalName: "Vamos Dijital Ajans Ltd. Şti.", url: "https://studio.example/", telephone: "+902160000000" });
+    expect(doc).toMatchObject({ "@context": "https://schema.org", "@type": "Organization", name: "Northwind", legalName: "Northwind Studio Ltd. Şti.", url: "https://studio.example/", telephone: "+902160000000" });
     expect(doc.address).toMatchObject({ "@type": "PostalAddress", addressCountry: "TR" });
     expect(doc.sameAs).toHaveLength(2);
     unmount();

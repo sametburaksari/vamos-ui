@@ -222,6 +222,9 @@ const EXAMPLE_HOST = /^(?:[\w-]+\.)*(?:example\.(?:com|org|net)|ornek\.com(?:\.t
 const MAP_SHORT = /^https?:\/\/(?:maps\.app\.goo\.gl|goo\.gl\/maps|g\.page)\/([^/?#]+)/i;
 const WA_LINK = /^https?:\/\/(?:wa\.me\/|api\.whatsapp\.com\/send\/?\?phone=)\+?(\d+)/i;
 
+/** Words that put a number in a contact role, checked just before a short run of digits. */
+const CONTACT_LABEL = /(?:\btel|phone|telefon|\bfax|faks|\bgsm|whats\s?app|mobile|\bcep\b|\bcall\b|\u260e|\u{1F4DE})[^\d]{0,12}$/iu;
+
 /** Placeholder phone digits: the source check's rule, plus runs like 000 00 00 with no area code. */
 export function isPlaceholderPhone(digits: string): boolean {
   return isPlaceholderNumber(digits) || /^(\d)\1{6,}$/.test(digits) || /^0*(\d)\1{6,}$/.test(digits);
@@ -358,7 +361,11 @@ export function pageIssues(facts: PageFacts, start: boolean, opts: { localPrevie
     const raw = m[0];
     if (!/[ .-]/.test(raw) && !/^[+0]/.test(raw)) continue;
     const digits = raw.replace(/\D/g, "");
-    if (digits.length >= 7 && digits.length <= 15 && isPlaceholderPhone(digits)) soft.add(`number "${raw.trim()}"`);
+    if (digits.length < 7 || digits.length > 15 || !isPlaceholderPhone(digits)) continue;
+    // A short run (no area code) counts only next to a contact label; in running text such as
+    // "placeholder details (000 00 00 phones …)" it is a mention, not a number.
+    if (digits.length < 10 && !CONTACT_LABEL.test(text.slice(Math.max(0, m.index! - 24), m.index!))) continue;
+    soft.add(`number "${raw.trim()}"`);
   }
   for (const m of text.matchAll(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g)) if (EXAMPLE_EMAIL.test(m[0]) && !placeholders.has(`email ${m[0]}`)) soft.add(`email ${m[0]}`);
   if (/\blorem ipsum\b/i.test(text)) placeholders.add('"Lorem ipsum" text');

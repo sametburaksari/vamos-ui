@@ -15,7 +15,7 @@ export interface Member {
 }
 
 export const members: Member[] = [
-  { id: "u01", name: "Samet Burak Sarı", email: "samet@northwind.studio", role: "owner", apps: ["Site", "CRM", "People", "Work"], status: "active", twoFactor: true, lastActive: "2026-11-10T09:12:00Z" },
+  { id: "u01", name: "Emre Sönmez", email: "emre@northwind.studio", role: "owner", apps: ["Site", "CRM", "People", "Work"], status: "active", twoFactor: true, lastActive: "2026-11-10T09:12:00Z" },
   { id: "u02", name: "Meltem Aydın", email: "meltem@northwind.studio", role: "admin", apps: ["Site", "CRM", "People", "Work"], status: "active", twoFactor: true, lastActive: "2026-11-10T08:41:00Z" },
   { id: "u03", name: "Ece Yılmaz", email: "ece@northwind.studio", role: "editor", apps: ["Site"], status: "active", twoFactor: true, lastActive: "2026-11-09T16:05:00Z" },
   { id: "u04", name: "Ahmet Koç", email: "ahmet@northwind.studio", role: "sales", apps: ["CRM", "Work"], status: "active", twoFactor: false, lastActive: "2026-11-10T07:58:00Z" },

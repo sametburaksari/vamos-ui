@@ -48,7 +48,7 @@ export const stages: SetupStage[] = [
 ];
 
 export const firstWeek: TaskData[] = [
-  { id: "t1", title: "Walkthrough call with the Vamos team", done: true, assignee: { id: "u01", name: "Samet Burak Sarı" }, due: "2026-11-09" },
+  { id: "t1", title: "Walkthrough call with the onboarding team", done: true, assignee: { id: "u01", name: "Emre Sönmez" }, due: "2026-11-09" },
   { id: "t2", title: "Move November quotes from spreadsheets", done: false, assignee: { id: "u13", name: "Kerem Aksoy" }, due: "2026-11-10", priority: "high" },
   {
     id: "t3",

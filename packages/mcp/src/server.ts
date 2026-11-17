@@ -23,11 +23,11 @@ import {
 export const SERVER_NAME = "vamos-ui";
 export const SERVER_VERSION = "0.3.4";
 
-const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
+const LOCAL_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 7 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 Before building UI with it: call get_rules once per session, and get_brand when the project may have a brand profile (vamos.brand.json). For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file, and verify_design on the project before you finish.
 Brand work: import_design_system (URL or HTML → draft vamos.brand.json, confirm with the user), propose_accent (one colour → contrast-checked accent), apply_design_system (edits + \`npx vamos-ui brand apply\`), update_design (what \`npx vamos-ui update --dry-run\` would change). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped; next_task then walks the plan's tasks (brand, content, build, legal, SEO, forms, measurement, QA, deploy) and returns the brief for each.`;
 
-const REMOTE_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 6 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
+const REMOTE_INSTRUCTIONS = `Vamos UI is a design layer (tokens + 7 theme axes + semantic Tailwind classes), a React component kit (@vamos-ui/react) and blocks (whole screens). Docs: https://ui.vamos.ist.
 This hosted server cannot see the user's files. Before building UI with it: call get_rules once per session. For a new screen call plan_screen, then get_block. For a single component call search or get_item. Install with the command from install_command (npx vamos-ui add …). After writing code call verify_code on each file.
 Brand work: import_design_system (pasted HTML → draft vamos.brand.json, confirm with the user) and propose_accent (one colour → contrast-checked accent). To check a live site (SEO and launch basics, broken links, placeholder content) call audit_site with its URL. A new website: start_project asks the questions and returns the plan and project files; import_site reads a current site first (details, brand, navigation, texts) so nothing is retyped; next_task then walks the plan's tasks (brand, content, build, legal, SEO, forms, measurement, QA, deploy) and returns the brief for each. Project-level tools (brand profile, apply, update, project verification) need the local server: npx -y @vamos-ui/mcp.`;
 
@@ -97,7 +97,7 @@ export function createServer(options: CreateServerOptions = {}): { server: McpSe
     {
       title: "Theming guide",
       description:
-        "The 6 theme axes (dark class, data-material, data-accent, data-density, data-font, data-radius) with values, what the corner setting covers, the semantic Tailwind classes, how to add a brand accent, and the full CSS token table. Useful when setting up a project, changing colours, fonts, density or corners, or looking up a token name.",
+        "The 7 theme axes (dark class, data-material, data-accent, data-density, data-font, data-radius, data-scene) with values, what the corner setting covers, the semantic Tailwind classes, how to add a brand accent, and the full CSS token table. Useful when setting up a project, changing colours, fonts, density or corners, or looking up a token name.",
       inputSchema: {
         include_tokens: z.boolean().optional().describe("Include the full token table (default true). Pass false for a shorter answer."),
       },

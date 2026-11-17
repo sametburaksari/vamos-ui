@@ -62,8 +62,8 @@ export function WorkspaceShell({ path, app = "crm", children }: WorkspaceShellPr
     >
       <AppShell
         user={{
-          name: "Samet Burak Sarı",
-          email: "samet@northwind.studio",
+          name: "Emre Sönmez",
+          email: "emre@northwind.studio",
           items: [
             { id: "profile", label: "Your profile", href: "/settings/profile" },
             { id: "appearance", label: "Appearance", href: "/settings/appearance" },

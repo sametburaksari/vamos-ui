@@ -43,7 +43,7 @@ export function WorkspacePreview({ form, step }: { form: WelcomeForm; step: numb
         {step >= 2 ? (
           <div className="flex items-center gap-3 text-[13px] text-nav-fg/70">
             <AvatarGroup max={4} size="sm" aria-label="Invited people">
-              <Avatar name="Samet Burak Sarı" />
+              <Avatar name="Emre Sönmez" />
               {form.invites.map((e) => (
                 <Avatar key={e} name={e.split("@")[0]!.replace(/[._-]/g, " ")} />
               ))}

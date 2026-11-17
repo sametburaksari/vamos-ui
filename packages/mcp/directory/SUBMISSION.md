@@ -63,7 +63,7 @@ Build React screens with the Vamos UI kit: search components and blocks, plan sc
 **Description** (≤2000; current text, 1,993 characters, sent 2026-11-16)
 
 ```
-Vamos UI is an open-source (MIT) React component kit for admin panels and websites, themed by six switchable axes: light/dark, material, accent, density, font and corner radius. This connector gives Claude the kit's public registry, so it builds and reviews UI with the kit's real components and rules instead of guessing.
+Vamos UI is an open-source (MIT) React component kit for admin panels and websites, themed by seven switchable axes: light/dark, material, accent, density, font, corner radius and scene. This connector gives Claude the kit's public registry, so it builds and reviews UI with the kit's real components and rules instead of guessing.
 
 What Claude can do with it:
 - Search 194 components and 106 blocks (complete screens, from dashboards and sign-in to website pages), in English or Turkish.

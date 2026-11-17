@@ -82,7 +82,7 @@ const isImage = (v: unknown): v is SiteImage2 => !!v && typeof v === "object" &&
  *
  * ```tsx
  * <Footer theme={{ mode: "dark" }} brand={{ name: "Vamos" }} columns={[{ title: "Studio", links: [{ href: "/work", label: "Work" }] }]}
- *   company={{ legalName: "Vamos Dijital Ajans Ltd. Şti.", registry: [{ label: "Tax no.", value: "923 145 6780" }] }} />
+ *   company={{ legalName: "Northwind Studio Ltd. Şti.", registry: [{ label: "Tax no.", value: "923 145 6780" }] }} />
  * ```
  */
 export function Footer({
