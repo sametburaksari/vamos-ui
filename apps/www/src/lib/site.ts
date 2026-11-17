@@ -28,6 +28,7 @@ export const docSections = [
   { label: "Localization", href: "/docs/localization" },
   { label: "KVKK consent records", href: "/docs/kvkk" },
   { label: "Payments (iyzico, PayTR)", href: "/docs/payments" },
+  { label: "Online store checkout", href: "/docs/commerce" },
   { label: "Deploying a site", href: "/docs/deploying" },
   { label: "CLI & registry", href: "/docs/cli" },
   { label: "Use with your AI", href: "/ai" },

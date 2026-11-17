@@ -28,7 +28,7 @@ export default function DeployingPage() {
         { id: "publish", title: "site deploy --publish" },
         { id: "check", title: "After the deploy" },
       ]}
-      prev={{ href: "/docs/payments", title: "Payments (iyzico, PayTR)" }}
+      prev={{ href: "/docs/commerce", title: "Online store checkout" }}
       next={{ href: "/docs/cli", title: "CLI & registry" }}
     >
       <H2 id="flow">The flow</H2>

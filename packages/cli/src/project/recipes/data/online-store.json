@@ -173,7 +173,7 @@
           "use": ["cart-01"],
           "alternatives": ["sheet: the cart as a drawer from the navbar (trap focus, return it to the cart button)"],
           "fields": ["Free-delivery threshold", "Shipping prices", "Discount code rules"],
-          "notes": "Keep the cart in a provider above the language switch so switching language keeps it. Announce changes via role=status."
+          "notes": "Keep the cart in a provider above the language switch so switching language keeps it. Announce changes via role=status. For a working store, CartProvider and useCart from @vamos-ui/react/commerce/cart keep the lines (localStorage) and price them from the same catalog the server charges from (store/catalog.ts, written by npx vamos-ui site store)."
         }
       ]
     },
@@ -188,7 +188,7 @@
           "purpose": "Stepped checkout: contact, delivery details and method, payment, agreement; order summary on the side.",
           "use": ["checkout-01"],
           "alternatives": ["multi-step-form: a custom flow with more steps"],
-          "fields": ["Delivery methods with prices and times", "Payment methods offered", "Distance-sales contract and pre-information texts", "Invoice options (personal / company)"]
+          "fields": ["Delivery methods with prices and times", "Payment methods offered", "Distance-sales contract and pre-information texts", "Invoice options (personal / company)"], "notes": "Card details are never entered on the site: the form calls useCart().checkout({ buyer }), which posts to /api/checkout (npx vamos-ui site store) and redirects to the iyzico payment page; iyzico returns the buyer to the order page (?order=…) or back to checkout (?payment=failed)."
         }
       ]
     },

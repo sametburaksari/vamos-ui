@@ -21,7 +21,7 @@ export default function PaymentsPage() {
         { id: "reference", title: "Reference" },
       ]}
       prev={{ href: "/docs/kvkk", title: "KVKK consent records" }}
-      next={{ href: "/docs/deploying", title: "Deploying a site" }}
+      next={{ href: "/docs/commerce", title: "Online store checkout" }}
     >
       <H2 id="rules">Ground rules</H2>
       <UL>
