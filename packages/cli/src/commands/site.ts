@@ -13,6 +13,7 @@ import { siteImport } from "./new";
 import { siteCheck } from "./site-check";
 import { siteDeploy } from "./site-deploy";
 import { siteForm } from "./site-form";
+import { siteStore } from "./site-store";
 import { installItems, openSession, type InstallOptions, type Session } from "./shared";
 
 const SITE_HELP = `${pc.bold("vamos-ui site")}  Business info and launch basics for a website built from site-* blocks.
@@ -22,6 +23,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
   npx vamos-ui site form [--kind php-mail|edge|resend|smtp] [--host <host>] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
+  npx vamos-ui site store [--runtime next|edge] [--host <host>] [--currency TRY] [--dry-run]
   npx vamos-ui site deploy [--host vercel|netlify|cloudflare|spacefast|cpanel|vps] [--domain <name>] [--www] [--dry-run]
                          [--publish [--yes]] [--project <name>] [--space <space>]
   npx vamos-ui site check [url] [--min-score 90] [--ci] [--json]
@@ -66,6 +68,17 @@ smtp also verify Cloudflare Turnstile when TURNSTILE_SECRET is set. Default kind
 vamos.project.json, else edge for a static site on Cloudflare / Spacefast (--host or the plan),
 php-mail for other static sites and smtp for a Next.js server. --to defaults to contact.email in
 ${SITE_FILE}.
+
+${pc.bold("site store")} writes an online store's checkout, never replacing a file:
+  store/catalog.ts     products and prices (VAT included, minor units): the one price source for
+                       the cart and the server
+  store/checkout.ts    iyzico Checkout Form, order emails (Resend) and an optional order webhook
+  next   app/api/checkout/route.ts + callback/route.ts for a Next.js server (Vercel, VPS)
+  edge   functions/api/checkout/index.ts + callback.ts for static sites on Cloudflare Pages and
+         Spacefast
+The server prices the cart again from the catalog, keeps the order in a signed HttpOnly cookie (no
+database), checks iyzico's signed result against it and emails the business and the buyer once.
+Static sites on shared hosting (cPanel) have no server for the payment keys and are refused.
 
 ${pc.bold("site deploy")} writes the host's config, never replacing a file, and prints the publishing
 steps and the checks to run afterwards. It never publishes anything itself:
@@ -216,6 +229,7 @@ export async function site(ctx: Context, args: ParsedArgs): Promise<number> {
   if (sub === "init") return siteInit(ctx, args);
   if (sub === "import") return siteImport(ctx, args);
   if (sub === "form") return siteForm(ctx, args);
+  if (sub === "store") return siteStore(ctx, args);
   if (sub === "deploy") return siteDeploy(ctx, args);
   if (sub !== "essentials") {
     out(`${pc.red("Unknown site command")} "${sub}".\n\n${SITE_HELP}`);

@@ -51,6 +51,7 @@ ${pc.bold("Commands")}
                        JSON-LD, legal pages for the footer links (legal-01), metadata hints.
                        Runs after \`add site-…\` too (--no-essentials)
   site form            Contact-form sender: contact.php, edge function, Resend or SMTP   --kind, --to, --dry-run
+  site store           Store checkout: catalog, iyzico payment, order emails             --runtime, --host, --dry-run
   site deploy          Host config (redirects, security headers, cache) and publishing steps
                        --host vercel|netlify|cloudflare|spacefast|cpanel|vps, --domain, --www, --dry-run,
                        --publish (runs the host CLI after a confirmation), --project, --space

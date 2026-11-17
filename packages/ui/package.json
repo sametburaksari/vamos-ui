@@ -32,6 +32,8 @@
     "./business": "./src/business/index.ts",
     "./compliance": "./src/compliance/index.ts",
     "./payments": "./src/payments/index.ts",
+    "./commerce": "./src/commerce/index.ts",
+    "./commerce/cart": "./src/commerce/cart.tsx",
     "./locale/*": "./src/locales/*.ts",
     "./fonts": "./src/fonts/index.ts"
   },
