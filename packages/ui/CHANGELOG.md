@@ -4,6 +4,12 @@ Release notes for the component kit. Until 0.4.2 this file also covered the CLI 
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the kit uses [semantic versioning](https://semver.org/) (0.x: minor versions may change APIs).
 
+## 0.9.0 — 2026-11-17
+
+### Minor Changes
+
+- 996164c: New `@vamos-ui/react/commerce`: a working store checkout without a store platform. `priceCart` prices a cart from one catalog (VAT-inclusive minor units, variants, shipping with a free threshold, VAT by rate); `createCheckout` gives Web-standard `start` / `callback` handlers that price on the server, start an iyzico Checkout Form, keep the order in a signed HttpOnly cookie instead of a database, check iyzico's signed result against it and run `notify` once per paid order; `resendNotifier` emails the business and a receipt to the buyer, `webhookNotifier` posts each paid order as signed JSON. `@vamos-ui/react/commerce/cart` adds `CartProvider` / `useCart` (localStorage, synced across tabs, `checkout({ buyer })`).
+
 ## 0.8.1 — 2026-11-17
 
 ### Patch Changes
