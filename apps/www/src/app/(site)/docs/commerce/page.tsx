@@ -17,6 +17,7 @@ export default function CommercePage() {
         { id: "flow", title: "How an order flows" },
         { id: "setup", title: "Set it up" },
         { id: "catalog", title: "The catalog" },
+        { id: "coupons", title: "Discount codes", sub: true },
         { id: "cart", title: "Cart and checkout form" },
         { id: "server", title: "The endpoints", sub: true },
         { id: "orders", title: "Where orders go" },
@@ -87,12 +88,39 @@ export const catalog: Catalog = {
       variants: [{ id: "sea-salt", name: "Sea salt" }, { id: "iron", name: "Iron", price: 699_00 }, { id: "moss", name: "Moss", available: false }] },
     { id: "glaze-guide", name: "Glaze guide (PDF)", price: 120_00, itemType: "VIRTUAL" },
   ],
+  coupons: [
+    { code: "KASIM15", kind: "percent", value: 15, maxDiscount: 300_00,
+      startsAt: "2026-11-01T00:00:00+03:00", endsAt: "2026-12-01T00:00:00+03:00" },
+    { code: "SOFRA100", kind: "amount", value: 100_00, minSubtotal: 750_00, categories: ["Tableware"] },
+    { code: "KARGOBEDAVA", kind: "free-shipping" },
+  ],
 };`}
       />
       <P>
         <C>priceCart(catalog, lines)</C> refuses unknown products and variants, sold-out items, duplicate lines and quantities
         outside 1–<C>maxQty</C> (default 20). Digital-only carts pay no shipping and need no delivery address.
       </P>
+
+      <H2 id="coupons">Discount codes</H2>
+      <P>
+        A code is <C>percent</C> (with an optional <C>maxDiscount</C>), a fixed <C>amount</C> in minor units, or{" "}
+        <C>free-shipping</C>. It can need a <C>minSubtotal</C>, work only between <C>startsAt</C> and <C>endsAt</C>, and
+        apply only to some <C>productIds</C> or <C>categories</C>. Codes match trimmed and case-insensitively (Turkish{" "}
+        <C>i</C>/<C>İ</C>/<C>ı</C> included). <C>priceCart(catalog, lines, {"{ coupon }"})</C> spreads the discount over the
+        lines it applies to in proportion to their totals, exactly to the minor unit and never below 1 minor unit a line, so
+        the VAT on the receipt and the iyzico basket are worked out on the discounted amounts.
+      </P>
+      <UL>
+        <li><C>quote.total</C> is subtotal − discount + shipping. Free shipping over <C>freeOver</C> is judged on the subtotal before the discount, so a code never makes a cart more expensive.</li>
+        <li>A code that does not apply fails the price with <C>coupon-invalid</C> (unknown, malformed or not started), <C>coupon-expired</C>, <C>coupon-min-subtotal</C> or <C>coupon-not-applicable</C>; checkout refuses it as <C>invalid-cart</C>.</li>
+        <li>In the browser: <C>cart.applyCoupon(code)</C> returns the issue or null, <C>cart.couponIssue</C> keeps it while <C>cart.quote</C> stays the undiscounted price, and <C>cart.removeCoupon()</C> drops it. The code is saved with the cart and sent by <C>checkout()</C>.</li>
+      </UL>
+      <Callout tone="warning" title="Codes are public">
+        The catalog ships to the browser, so anyone can read its codes: use them for codes you would print on a flyer.
+        Per-customer, single-use or secret codes need a server-side store and are out of scope; the server re-checks every
+        code, window and condition on each checkout, so a code cannot be stretched past its rules. The PHP runtime for
+        shared hosting does not support discount codes yet.
+      </Callout>
 
       <H2 id="cart">Cart and checkout form</H2>
       <Code
@@ -164,7 +192,7 @@ export const POST = checkout.start;            // app/api/checkout/route.ts
 
       <H2 id="limits">What it does not do yet</H2>
       <Callout tone="warning" title="Phase one">
-        Stock counts, discount codes, shipping carriers and labels, refunds, PayTR and e-Arşiv invoices are not part of the
+        Stock counts, per-customer or single-use codes, shipping carriers and labels, refunds, PayTR and e-Arşiv invoices are not part of the
         checkout yet; handle them in the iyzico panel and your accounting tool. A store on shared hosting (PHP) is not
         supported. Test with iyzico&apos;s sandbox and test cards before switching <C>IYZICO_MODE</C> to live.
       </Callout>

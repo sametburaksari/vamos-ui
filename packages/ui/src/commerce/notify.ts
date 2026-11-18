@@ -18,6 +18,8 @@ const T = {
     order: "Sipariş",
     items: "Ürünler",
     shipping: "Kargo",
+    discount: "İndirim",
+    free: "ücretsiz",
     total: "Toplam",
     vat: "KDV dahil",
     buyer: "Alıcı",
@@ -36,6 +38,8 @@ const T = {
     order: "Order",
     items: "Items",
     shipping: "Shipping",
+    discount: "Discount",
+    free: "free",
     total: "Total",
     vat: "incl. VAT",
     buyer: "Buyer",
@@ -58,7 +62,11 @@ export function orderText(order: PaidOrder, opts: { lang?: Lang; forBusiness?: b
   if (!opts.forBusiness) out.push(t.hello(b.name), "", t.received, "");
   out.push(`${t.order}: ${order.id}`, "", `${t.items}:`);
   for (const l of order.quote.lines) out.push(`  ${l.qty} × ${l.name} — ${fmt(l.total)}`);
-  if (order.quote.shipping > 0) out.push(`  ${t.shipping} — ${fmt(order.quote.shipping)}`);
+  const q = order.quote;
+  // `?? 0`: an order signed by an older version (in flight during an upgrade) has no discount field.
+  if (q.coupon && (q.discount ?? 0) > 0) out.push(`  ${t.discount} (${q.coupon.code}) — −${fmt(q.discount)}`);
+  if (q.shipping > 0) out.push(`  ${t.shipping} — ${fmt(q.shipping)}`);
+  else if (q.coupon?.kind === "free-shipping") out.push(`  ${t.shipping} — ${t.free} (${q.coupon.code})`);
   out.push(`${t.total}: ${fmt(order.quote.total)} (${t.vat}: ${fmt(order.quote.vat)})`);
   if (order.installment) out.push(`${t.payment}: ${t.installment(order.installment)}`);
   out.push("", `${t.buyer}: ${b.name} ${b.surname} · ${b.email} · ${b.phone}`);

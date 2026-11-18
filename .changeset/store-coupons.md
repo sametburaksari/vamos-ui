@@ -1,0 +1,5 @@
+---
+"@vamos-ui/react": minor
+---
+
+Discount codes in the store core. `Catalog.coupons` takes percent (with `maxDiscount`), fixed-amount and free-shipping codes with an optional minimum subtotal, date window and product or category limits; codes match trimmed and case-insensitively. `priceCart(catalog, lines, { coupon, now })` adds `quote.discount`, `quote.coupon` and a per-line `discount` (proportional, exact to the minor unit, never below 1 per line) so VAT is computed on the discounted amounts; free shipping is judged on the subtotal before the discount. Codes that do not apply fail with `coupon-invalid`, `coupon-expired`, `coupon-min-subtotal` or `coupon-not-applicable`. `createCheckout` reads `coupon` from the request, sends discounted basket items to iyzico and accepts a `now` clock; `orderText` shows the discount and code. `useCart()` gains `coupon`, `couponIssue`, `applyCoupon(code)` and `removeCoupon()`; the code is saved with the cart and sent by `checkout()`. Codes live in the public catalog: per-customer or secret codes are out of scope.

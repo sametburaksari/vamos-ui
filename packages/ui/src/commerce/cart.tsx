@@ -8,11 +8,14 @@
  * ```tsx
  * <CartProvider catalog={catalog}>…</CartProvider>
  * const cart = useCart(); cart.add("mug", { variantId: "sand" });
+ * cart.applyCoupon("YAZ10");   // cart.quote.discount, or cart.couponIssue when it does not apply
  * ```
  */
 import * as React from "react";
 import type { OrderBuyer } from "./order";
 import { priceCart, type CartIssue, type CartLine, type Catalog, type Quote } from "./pricing";
+
+const MAX_CODE = 64;
 
 export interface CartContextValue {
   catalog: Catalog;
@@ -21,11 +24,22 @@ export interface CartContextValue {
   count: number;
   /** The priced cart, or null when it is empty or a line no longer exists. */
   quote: Quote | null;
-  /** Lines the catalog no longer accepts (removed products, sold-out variants). */
+  /** Lines the catalog no longer accepts (removed products, sold-out variants). Never coupon issues. */
   issues: CartIssue[];
+  /** The discount code the buyer entered (as typed, trimmed), or null. Sent with `checkout()`. */
+  coupon: string | null;
+  /**
+   * Why `coupon` does not apply ("coupon-invalid", "coupon-expired", "coupon-min-subtotal",
+   * "coupon-not-applicable"), or null. While set, `quote` is the cart without the discount.
+   */
+  couponIssue: CartIssue | null;
+  /** Sets the discount code and returns its issue (null when it applies, or the cart is empty). */
+  applyCoupon: (code: string) => CartIssue | null;
+  removeCoupon: () => void;
   add: (productId: string, opts?: { variantId?: string; qty?: number }) => void;
   setQty: (productId: string, variantId: string | undefined, qty: number) => void;
   remove: (productId: string, variantId?: string) => void;
+  /** Empties the cart and drops the discount code. */
   clear: () => void;
   /** True once the saved cart was read (avoids a flash of "empty" before hydration). */
   ready: boolean;
@@ -62,16 +76,26 @@ export interface CartProviderProps {
 
 const same = (l: CartLine, productId: string, variantId?: string) => l.productId === productId && (l.variantId ?? "") === (variantId ?? "");
 
-function load(key: string): CartLine[] | null {
+interface Saved {
+  lines: CartLine[];
+  coupon: string | null;
+}
+
+/** Reads `{ lines, coupon }`, or the plain array of lines earlier versions saved. */
+function load(key: string): Saved | null {
   try {
     const raw = window.localStorage.getItem(key);
     if (!raw) return null;
-    const data = JSON.parse(raw) as unknown;
-    if (!Array.isArray(data)) return null;
-    return data
+    const parsed = JSON.parse(raw) as unknown;
+    const obj = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? (parsed as Record<string, unknown>) : null;
+    const data = Array.isArray(parsed) ? parsed : obj && Array.isArray(obj.lines) ? (obj.lines as unknown[]) : null;
+    if (!data) return null;
+    const coupon = obj && typeof obj.coupon === "string" && obj.coupon.trim() ? obj.coupon.trim().slice(0, MAX_CODE) : null;
+    const lines = data
       .filter((l): l is CartLine => !!l && typeof l === "object" && typeof (l as CartLine).productId === "string" && Number.isInteger((l as CartLine).qty))
       .slice(0, 30)
       .map((l) => ({ productId: l.productId, ...(l.variantId ? { variantId: String(l.variantId) } : {}), qty: l.qty }));
+    return { lines, coupon };
   } catch {
     return null;
   }
@@ -79,14 +103,21 @@ function load(key: string): CartLine[] | null {
 
 export function CartProvider({ catalog, storageKey = "vb-cart", endpoint = "/api/checkout", initialLines = [], redirect = true, children }: CartProviderProps) {
   const [lines, setLines] = React.useState<CartLine[]>(initialLines);
+  const [coupon, setCoupon] = React.useState<string | null>(null);
   const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
     const saved = load(storageKey);
-    if (saved) setLines(saved);
+    if (saved) {
+      setLines(saved.lines);
+      setCoupon(saved.coupon);
+    }
     setReady(true);
     const onStorage = (e: StorageEvent) => {
-      if (e.key === storageKey) setLines(load(storageKey) ?? []);
+      if (e.key !== storageKey) return;
+      const next = load(storageKey);
+      setLines(next?.lines ?? []);
+      setCoupon(next?.coupon ?? null);
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
@@ -95,14 +126,19 @@ export function CartProvider({ catalog, storageKey = "vb-cart", endpoint = "/api
   React.useEffect(() => {
     if (!ready) return;
     try {
-      window.localStorage.setItem(storageKey, JSON.stringify(lines));
+      // Without a code the saved shape stays the plain array earlier versions read.
+      window.localStorage.setItem(storageKey, JSON.stringify(coupon ? { lines, coupon } : lines));
     } catch {
       /* private mode or full storage: the cart still works for this page */
     }
-  }, [lines, ready, storageKey]);
+  }, [lines, coupon, ready, storageKey]);
 
   const value = React.useMemo<CartContextValue>(() => {
-    const priced = lines.length ? priceCart(catalog, lines) : null;
+    // Lines first, then the code: a code that does not apply leaves the plain quote in place.
+    const plain = lines.length ? priceCart(catalog, lines) : null;
+    const withCode = (code: string | null) => (plain?.ok && code ? priceCart(catalog, lines, { coupon: code }) : null);
+    const discounted = withCode(coupon);
+    const priced = discounted?.ok ? discounted : plain;
     const maxOf = (productId: string) => catalog.products.find((p) => p.id === productId)?.maxQty ?? 20;
     return {
       catalog,
@@ -110,6 +146,15 @@ export function CartProvider({ catalog, storageKey = "vb-cart", endpoint = "/api
       count: lines.reduce((n, l) => n + l.qty, 0),
       quote: priced?.ok ? priced.quote : null,
       issues: priced && !priced.ok ? priced.issues : [],
+      coupon,
+      couponIssue: discounted && !discounted.ok ? (discounted.issues[0] ?? null) : null,
+      applyCoupon: (code) => {
+        const next = String(code ?? "").trim().slice(0, MAX_CODE) || null;
+        setCoupon(next);
+        const r = withCode(next);
+        return r && !r.ok ? (r.issues[0] ?? null) : null;
+      },
+      removeCoupon: () => setCoupon(null),
       ready,
       add: (productId, opts = {}) =>
         setLines((prev) => {
@@ -121,11 +166,14 @@ export function CartProvider({ catalog, storageKey = "vb-cart", endpoint = "/api
       setQty: (productId, variantId, qty) =>
         setLines((prev) => (qty < 1 ? prev.filter((l) => !same(l, productId, variantId)) : prev.map((l) => (same(l, productId, variantId) ? { ...l, qty: Math.min(Math.trunc(qty), maxOf(productId)) } : l)))),
       remove: (productId, variantId) => setLines((prev) => prev.filter((l) => !same(l, productId, variantId))),
-      clear: () => setLines([]),
+      clear: () => {
+        setLines([]);
+        setCoupon(null);
+      },
       checkout: async ({ buyer, note, locale }) => {
         let res: Response;
         try {
-          res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: JSON.stringify({ lines, buyer, note, locale }) });
+          res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: JSON.stringify({ lines, buyer, note, locale, ...(coupon ? { coupon } : {}) }) });
         } catch {
           return { ok: false, error: "network" };
         }
@@ -140,7 +188,7 @@ export function CartProvider({ catalog, storageKey = "vb-cart", endpoint = "/api
         return { ok: false, error: known.includes(data.error as (typeof known)[number]) ? (data.error as (typeof known)[number]) : "network" };
       },
     };
-  }, [catalog, lines, ready, endpoint, redirect]);
+  }, [catalog, lines, coupon, ready, endpoint, redirect]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

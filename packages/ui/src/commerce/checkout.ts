@@ -2,8 +2,9 @@
  * Checkout endpoints as Web-standard `Request → Response` handlers (Next.js route handlers,
  * Cloudflare Pages Functions, Spacefast, Deno, Bun):
  *
- *   start(request)     POST JSON { lines, buyer, locale?, note? } from the checkout page. Prices the
- *                      cart from the catalog (never from the browser), starts an iyzico Checkout
+ *   start(request)     POST JSON { lines, buyer, locale?, note?, coupon? } from the checkout page.
+ *                      Prices the cart (and the discount code) from the catalog, never from the
+ *                      browser, starts an iyzico Checkout
  *                      Form, keeps the signed order in an HttpOnly cookie and answers
  *                      { order, paymentPageUrl }. The page sends the buyer to paymentPageUrl.
  *   callback(request)  iyzico posts `token` here from the buyer's browser after payment. The result
@@ -42,6 +43,8 @@ export interface CheckoutConfig {
   /** Installment counts to offer. Default: iyzico decides. */
   enabledInstallments?: number[];
   log?: (message: string, detail?: unknown) => void;
+  /** Clock for discount-code windows (tests). Default the real time. */
+  now?: () => Date;
 }
 
 export const ORDER_COOKIE = "vb_order";
@@ -143,7 +146,9 @@ export function createCheckout(config: CheckoutConfig) {
     const lines = Array.isArray(body.lines)
       ? (body.lines as Record<string, unknown>[]).map((l): CartLine => ({ productId: String(l?.productId ?? ""), variantId: l?.variantId ? String(l.variantId) : undefined, qty: Number(l?.qty) }))
       : [];
-    const priced = priceCart(config.catalog, lines);
+    const coupon = text(body.coupon, 64);
+    const now = config.now?.() ?? new Date();
+    const priced = priceCart(config.catalog, lines, { coupon, now });
     if (!priced.ok) return json(422, { error: "invalid-cart", issues: priced.issues });
     const { quote } = priced;
     const { buyer, invalid } = readBuyer(body.buyer, quote.physical);
@@ -156,7 +161,9 @@ export function createCheckout(config: CheckoutConfig) {
     const base = origin(request);
     const contactName = `${buyer.name} ${buyer.surname}`;
     const address = { contactName, city: buyer.city, country: buyer.country ?? "Turkey", address: [buyer.address, buyer.district].filter(Boolean).join(", "), zipCode: buyer.zipCode };
-    const basketItems = quote.lines.map((l, i) => ({ id: `${l.productId}${l.variantId ? `-${l.variantId}` : ""}`.slice(0, 60) || `item-${i}`, name: l.name.slice(0, 120), category1: l.category, itemType: l.itemType, price: toDecimal(l.total) }));
+    // Discounted line totals: iyzico needs the items to add up to `price` exactly, each above zero
+    // (priceCart keeps every line at 1 minor unit or more).
+    const basketItems = quote.lines.map((l, i) => ({ id: `${l.productId}${l.variantId ? `-${l.variantId}` : ""}`.slice(0, 60) || `item-${i}`, name: l.name.slice(0, 120), category1: l.category, itemType: l.itemType, price: toDecimal(l.total - l.discount) }));
     if (quote.shipping > 0) basketItems.push({ id: "shipping", name: quote.shippingLabel, category1: "Shipping", itemType: "VIRTUAL", price: toDecimal(quote.shipping) });
     try {
       const session = await iyzico.initializeCheckoutForm({

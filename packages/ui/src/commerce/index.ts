@@ -7,6 +7,8 @@ export {
   toDecimal,
   formatMoney,
   MAX_CART_LINES,
+  isCouponIssue,
+  normalizeCouponCode,
   type Catalog,
   type CatalogProduct,
   type CatalogVariant,
@@ -17,6 +19,9 @@ export {
   type Quote,
   type QuoteLine,
   type PriceResult,
+  type PriceOptions,
+  type Coupon,
+  type CouponIssueCode,
 } from "./pricing";
 export { createOrderId, signOrder, verifyOrder, type OrderBuyer, type OrderSnapshot, type PaidOrder } from "./order";
 export { createCheckout, readBuyer, ORDER_COOKIE, type CheckoutConfig, type Checkout, type CheckoutErrorCode } from "./checkout";
