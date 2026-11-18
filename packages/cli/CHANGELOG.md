@@ -4,6 +4,13 @@ Release notes for the `vamos-ui` command line tool.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/) and [semantic versioning](https://semver.org/) (0.x: minor versions may change commands).
 
+## 0.10.0 — 2026-11-18
+
+### Minor Changes
+
+- b904c97: `site store --provider paytr` writes the PayTR checkout (store/checkout.ts, /api/checkout and /api/checkout/paytr-notify) for the next and edge runtimes, with orders in a KV binding (ORDERS) or Upstash Redis. `--runtime`, `--currency` and `--provider` now take a separate value (`--runtime next`), not only `--runtime=next`.
+- b904c97: `site store` now works on shared hosting: a static export on cPanel (or any Apache with PHP 8.1+, via `--runtime php`) gets a PHP checkout with the same prices, cart checks, signed order cookie and iyzico signature checks as the Node and edge runtimes. Products live in one `catalog.json` that both the cart and the server read, the payment keys stay in a config file outside the web root, and each paid order is emailed once through the host's mail (plus the optional signed webhook). Discount codes are not supported by the PHP checkout yet. `--runtime` and `--currency` are now read correctly as options.
+
 ## 0.9.0 — 2026-11-17
 
 ### Minor Changes
