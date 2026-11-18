@@ -23,7 +23,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
   npx vamos-ui site form [--kind php-mail|edge|resend|smtp] [--host <host>] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
-  npx vamos-ui site store [--runtime next|edge] [--host <host>] [--currency TRY] [--dry-run]
+  npx vamos-ui site store [--provider iyzico|paytr] [--runtime next|edge] [--host <host>] [--currency TRY] [--dry-run]
   npx vamos-ui site deploy [--host vercel|netlify|cloudflare|spacefast|cpanel|vps] [--domain <name>] [--www] [--dry-run]
                          [--publish [--yes]] [--project <name>] [--space <space>]
   npx vamos-ui site check [url] [--min-score 90] [--ci] [--json]
@@ -79,6 +79,15 @@ ${pc.bold("site store")} writes an online store's checkout, never replacing a fi
 The server prices the cart again from the catalog, keeps the order in a signed HttpOnly cookie (no
 database), checks iyzico's signed result against it and emails the business and the buyer once.
 Static sites on shared hosting (cPanel) have no server for the payment keys and are refused.
+--provider paytr (default iyzico) writes the PayTR iFrame checkout instead:
+  store/checkout.ts    PayTR token, order store, order emails and the optional webhook
+  next   app/api/checkout/route.ts + paytr-notify/route.ts; orders in Upstash Redis
+         (UPSTASH_REDIS_REST_URL / _TOKEN, or KV_REST_API_URL / _TOKEN from Vercel's Marketplace)
+  edge   functions/api/checkout/index.ts + paytr-notify.ts; orders in a KV binding named ORDERS
+         (Cloudflare Pages), else the Upstash variables (Spacefast)
+PayTR sends the result server to server to /api/checkout/paytr-notify (set it as the Bildirim URL
+in the PayTR panel), so the order waits in the store, not in a cookie. Env: PAYTR_MERCHANT_ID,
+PAYTR_MERCHANT_KEY, PAYTR_MERCHANT_SALT, PAYTR_TEST_MODE (1 = test, the default; 0 = live).
 
 ${pc.bold("site deploy")} writes the host's config, never replacing a file, and prints the publishing
 steps and the checks to run afterwards. It never publishes anything itself:

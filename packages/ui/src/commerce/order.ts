@@ -40,7 +40,8 @@ export interface OrderSnapshot {
 
 export interface PaidOrder extends OrderSnapshot {
   paidAt: string;
-  provider: "iyzico";
+  provider: "iyzico" | "paytr";
+  /** iyzico payment id (PayTR identifies the payment by the order id). */
   paymentId?: string;
   /** Amount charged, decimal string as the provider returned it. */
   paidPrice?: string;

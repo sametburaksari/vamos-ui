@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
   title: "Online store checkout",
-  description: "A working store without a store platform: one catalog for cart and server, iyzico Checkout Form, a signed order instead of a database, and order emails.",
+  description: "A working store without a store platform: one catalog for cart and server, iyzico Checkout Form or PayTR iFrame, a signed order or a small order store instead of a database, and order emails.",
   path: "/docs/commerce/",
 });
 
@@ -19,6 +19,8 @@ export default function CommercePage() {
         { id: "catalog", title: "The catalog" },
         { id: "cart", title: "Cart and checkout form" },
         { id: "server", title: "The endpoints", sub: true },
+        { id: "paytr", title: "PayTR instead of iyzico" },
+        { id: "order-store", title: "Order storage", sub: true },
         { id: "orders", title: "Where orders go" },
         { id: "limits", title: "What it does not do yet" },
       ]}
@@ -154,6 +156,86 @@ export const POST = checkout.start;            // app/api/checkout/route.ts
         <li>If a payment succeeds but the cookie is gone (blocked cookies, another device), <C>onOrphanPayment</C> receives the iyzico payment id so nothing is lost silently.</li>
       </UL>
 
+      <H2 id="paytr">PayTR instead of iyzico</H2>
+      <Code
+        code={`npx vamos-ui site store --provider paytr   # default: iyzico`}
+      />
+      <P>
+        The cart, the catalog and the <C>start</C> request are the same. What differs is how the result comes back. iyzico
+        sends the buyer&apos;s browser back with a token, so the signed order can ride along in a cookie. PayTR tells the
+        result only to your notification URL (Bildirim URL), from its own servers: <C>merchant_oid</C>, <C>status</C>,{" "}
+        <C>total_amount</C> in kuruş and a <C>hash</C>. There is no cookie on that request, and the browser&apos;s return to{" "}
+        <C>merchant_ok_url</C> proves nothing about the payment. So the order snapshot has to wait on the server until the
+        notification arrives.
+      </P>
+      <Steps>
+        <Step title="Start">
+          <C>POST /api/checkout</C> prices the cart, stores the order under an alphanumeric order number for two hours, asks
+          PayTR for an iframe token and answers <C>{"{ order, iframeUrl, token, paymentPageUrl }"}</C>. The cart opens PayTR&apos;s
+          page (<C>paymentPageUrl</C> is the iframe URL); to embed it, pass <C>redirect={"{false}"}</C> to{" "}
+          <C>CartProvider</C> and show the URL in an iframe with <C>PAYTR_IFRAME_RESIZER</C>.
+        </Step>
+        <Step title="Notification">
+          PayTR posts to <C>/api/checkout/paytr-notify</C>. The hash is checked, the order is loaded, the charged amount must
+          be at least the order total (installment interest can raise it), and <C>notify</C> runs once. The answer is the
+          plain text <C>OK</C>.
+        </Step>
+        <Step title="Buyer returns">
+          The ok URL lands on <C>/order/confirmation?order=…</C>, the fail URL on <C>/checkout?payment=failed</C>. Word the
+          confirmation page as &quot;we are confirming your payment; the receipt comes by email&quot;: the email is the proof.
+        </Step>
+      </Steps>
+      <Table
+        head={["Variable", "What"]}
+        rows={[
+          [<C key="a">PAYTR_MERCHANT_ID</C>, "merchant number from the PayTR panel"],
+          [<C key="b">PAYTR_MERCHANT_KEY / PAYTR_MERCHANT_SALT</C>, "merchant key and salt (secrets)"],
+          [<C key="c">PAYTR_TEST_MODE</C>, <>1 (default, test transactions) or 0 (live)</>],
+          [<C key="d">ORDERS</C>, "edge on Cloudflare Pages: a KV namespace binding (npx wrangler kv namespace create ORDERS)"],
+          [<C key="e">UPSTASH_REDIS_REST_URL / _TOKEN</C>, <>Next.js server or Spacefast: Upstash Redis; on Vercel the Marketplace Redis sets <C>KV_REST_API_URL</C> / <C>_TOKEN</C>, read as well</>],
+        ]}
+      />
+      <UL>
+        <li>PayTR retries until it reads <C>OK</C>, so every answer is <C>OK</C> except a bad hash (400: not from PayTR) and an unreachable store (503, so the retry can still succeed).</li>
+        <li>A repeated notification, a failed payment, an amount below the order total and an unknown order number are logged and answered <C>OK</C>; an unknown paid order also reaches <C>onOrphanPayment</C>, once.</li>
+        <li><C>ORDER_SECRET</C> is not needed: nothing is signed into a cookie.</li>
+      </UL>
+
+      <H2 id="order-store">Order storage</H2>
+      <P>
+        <C>createPaytrCheckout</C> takes any <C>OrderStore</C>: <C>put(id, snapshot, ttlSeconds)</C>, <C>get(id)</C>,{" "}
+        <C>markPaid(id)</C> and <C>delete(id)</C>. <C>markPaid</C> answers true only the first time for an order, and the
+        order emails go out only then; its marker is kept for 30 days, longer than the snapshot.
+      </P>
+      <Code
+        code={`import { createPaytrCheckout, cloudflareKvOrderStore, upstashOrderStore, memoryOrderStore } from "@vamos-ui/react/commerce";
+
+const checkout = createPaytrCheckout({
+  catalog,
+  paytr: { merchantId, merchantKey, merchantSalt, testMode: true },
+  store: upstashOrderStore({ url: process.env.UPSTASH_REDIS_REST_URL!, token: process.env.UPSTASH_REDIS_REST_TOKEN! }),
+  // store: cloudflareKvOrderStore(env.ORDERS)   Cloudflare Pages Functions
+  // store: memoryOrderStore()                   tests only: one process, lost on restart
+  notify,
+});
+
+export const POST = checkout.start;            // app/api/checkout/route.ts
+// app/api/checkout/paytr-notify/route.ts: export const POST = checkout.notify;`}
+      />
+      <Table
+        head={["Store", "markPaid", "Notes"]}
+        rows={[
+          [<C key="u">upstashOrderStore</C>, "atomic (SET NX)", "REST over fetch, any runtime; also Vercel Marketplace Redis"],
+          [<C key="k">cloudflareKvOrderStore</C>, "best effort", "KV is eventually consistent (up to ~60 s between locations) and has no set-if-absent"],
+          [<C key="m">memoryOrderStore</C>, "atomic", "a single process: tests and local experiments"],
+        ]}
+      />
+      <Callout tone="info" title="Workers KV and duplicates">
+        Two notifications for the same order at the same moment in two Cloudflare locations could both pass{" "}
+        <C>markPaid</C> on KV. PayTR spaces its retries minutes apart, so this is unlikely; use Upstash when a duplicate
+        order email is not acceptable.
+      </Callout>
+
       <H2 id="orders">Where orders go</H2>
       <P>
         There is no order database: the business&apos;s email is the record, and the buyer gets a receipt with the same summary
@@ -164,12 +246,12 @@ export const POST = checkout.start;            // app/api/checkout/route.ts
 
       <H2 id="limits">What it does not do yet</H2>
       <Callout tone="warning" title="Phase one">
-        Stock counts, discount codes, shipping carriers and labels, refunds, PayTR and e-Arşiv invoices are not part of the
-        checkout yet; handle them in the iyzico panel and your accounting tool. A store on shared hosting (PHP) is not
+        Stock counts, discount codes, shipping carriers and labels, refunds and e-Arşiv invoices are not part of the
+        checkout yet; handle them in the iyzico or PayTR panel and your accounting tool. A store on shared hosting (PHP) is not
         supported. Test with iyzico&apos;s sandbox and test cards before switching <C>IYZICO_MODE</C> to live.
       </Callout>
       <P>
-        Card handling stays with iyzico (<A href="/docs/payments">Payments</A>); the legal pages a Turkish store needs come
+        Card handling stays with iyzico or PayTR (<A href="/docs/payments">Payments</A>); the legal pages a Turkish store needs come
         from <C>site essentials</C> (<A href="/docs/kvkk">KVKK</A>).
       </P>
     </DocPage>

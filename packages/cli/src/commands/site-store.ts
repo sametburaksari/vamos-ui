@@ -6,13 +6,16 @@ import { findProjectRoot } from "../core/config";
 import { detectProject } from "../core/project";
 import { CliError } from "../core/types";
 import { PROJECT_FILE, secretCommands, type Hosting } from "../project";
-import { storeFiles, type StoreRuntime } from "../project/store";
+import { storeFiles, type StoreProvider, type StoreRuntime } from "../project/store";
 import { SITE_FILE } from "../site-info";
 import { p, pc, plural, printJson, type Context } from "../ui";
 import { staticExport } from "./site-form";
 
 const RUNTIMES: StoreRuntime[] = ["next", "edge"];
 const EDGE_HOSTS = ["cloudflare", "spacefast"];
+const PROVIDERS: StoreProvider[] = ["iyzico", "paytr"];
+/** Settings and bindings that are not secrets (no secret command for them). */
+const NOT_SECRET = new Set(["IYZICO_MODE", "PAYTR_TEST_MODE", "ORDERS"]);
 
 function readJson(file: string): Record<string, any> | null {
   try {
@@ -23,7 +26,8 @@ function readJson(file: string): Record<string, any> | null {
 }
 
 /**
- * `site store`: writes the store checkout (catalog, iyzico checkout endpoints, order emails).
+ * `site store`: writes the store checkout (catalog, iyzico or PayTR checkout endpoints, order
+ * emails). --provider paytr also needs an order store (KV binding or Upstash Redis).
  * Runtime: --runtime, else a Next.js server → next, a static site on Cloudflare Pages or Spacefast
  * → edge. Other static hosting (cPanel) has no server to keep the payment keys: refused with the
  * options. Never replaces a file.
@@ -35,6 +39,8 @@ export async function siteStore(ctx: Context, args: ParsedArgs): Promise<number>
   const plan = readJson(path.join(root, PROJECT_FILE));
   const host = str(args.flags, "host") ?? (plan?.plan?.hosting?.value as string | undefined);
   const isStatic = project.framework !== "next" || staticExport(root);
+  const provider = (str(args.flags, "provider") ?? "iyzico") as StoreProvider;
+  if (!PROVIDERS.includes(provider)) throw new CliError(`--provider must be one of ${PROVIDERS.join(", ")}, got "${provider}".`);
   let runtime = str(args.flags, "runtime") as StoreRuntime | undefined;
   if (runtime && !RUNTIMES.includes(runtime)) throw new CliError(`--runtime must be one of ${RUNTIMES.join(", ")}, got "${runtime}".`);
   let why = "--runtime";
@@ -56,6 +62,7 @@ export async function siteStore(ctx: Context, args: ParsedArgs): Promise<number>
   if (!/^[A-Z]{3}$/.test(currency)) throw new CliError("--currency must be an ISO 4217 code such as TRY, USD or EUR.");
   const result = storeFiles({
     runtime,
+    provider,
     lang,
     currency,
     siteName: site?.name || plan?.answers?.business_name || undefined,
@@ -78,14 +85,14 @@ export async function siteStore(ctx: Context, args: ParsedArgs): Promise<number>
     }
     written.push(rel);
   }
-  const secretNames = Object.keys(result.env).filter((k) => k !== "IYZICO_MODE");
+  const secretNames = Object.keys(result.env).filter((k) => !NOT_SECRET.has(k));
   const secrets = host ? secretCommands(host as Hosting, secretNames, { project: str(args.flags, "project"), space: str(args.flags, "space") }) : [];
   if (ctx.json) {
-    printJson({ runtime, reason: why, written: dryRun ? [] : written, planned: written, kept, env: result.env, optionalEnv: result.optionalEnv, notes: result.notes, ...(host ? { secretCommands: secrets } : {}) });
+    printJson({ runtime, provider, reason: why, written: dryRun ? [] : written, planned: written, kept, env: result.env, optionalEnv: result.optionalEnv, notes: result.notes, ...(host ? { secretCommands: secrets } : {}) });
     return 0;
   }
   p.intro(pc.bold("vamos-ui site store"));
-  p.log.info(`Checkout: ${pc.cyan(runtime)} ${pc.dim(`(${why})`)}`);
+  p.log.info(`Checkout: ${pc.cyan(provider)} on ${pc.cyan(runtime)} ${pc.dim(`(${why})`)}`);
   p.note(
     [...written.map((f) => `${dryRun ? pc.dim("+") : pc.green("+")} ${f}`), ...kept.map((f) => `${pc.dim("=")} ${f} ${pc.dim("kept, already there")}`)].join("\n"),
     dryRun ? "Store checkout (dry run)" : "Store checkout",

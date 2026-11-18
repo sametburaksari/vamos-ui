@@ -9,14 +9,20 @@
  *          on Cloudflare Pages Functions (`onRequestPost`) and Spacefast functions (`POST`).
  *
  * Both share store/catalog.ts (written once, never replaced) and store/checkout.ts. Pure: returns
- * path → content; the caller writes the files.
+ * path → content; the caller writes the files. `provider: "paytr"` writes the PayTR variant
+ * instead (store-paytr.ts).
  */
 import type { Lang } from "./questions";
+import { paytrStoreFiles } from "./store-paytr";
 
 export type StoreRuntime = "next" | "edge";
+/** Payment provider. iyzico (default) needs no storage; PayTR needs an order store (store-paytr.ts). */
+export type StoreProvider = "iyzico" | "paytr";
 
 export interface StoreOptions {
   runtime: StoreRuntime;
+  /** Default iyzico. */
+  provider?: StoreProvider;
   /** Business name for email subjects. */
   siteName?: string;
   /** Catalog currency. Default TRY. */
@@ -39,7 +45,7 @@ export interface StoreResult {
 
 const ts = (s: string) => JSON.stringify(s);
 
-function catalogFile(o: { currency: string; lang: Lang }): string {
+export function catalogFile(o: { currency: string; lang: Lang }): string {
   const tr = o.lang === "tr";
   return `import type { Catalog } from "@vamos-ui/react/commerce";
 
@@ -107,7 +113,7 @@ export function storeCheckout(env: StoreEnv) {
 }
 
 /** Relative import from one project file to another, without the extension. */
-function rel(from: string, to: string): string {
+export function rel(from: string, to: string): string {
   const a = from.split("/").slice(0, -1);
   const b = to.replace(/\.tsx?$/, "").split("/");
   let i = 0;
@@ -118,6 +124,7 @@ function rel(from: string, to: string): string {
 }
 
 export function storeFiles(opts: StoreOptions): StoreResult {
+  if (opts.provider === "paytr") return paytrStoreFiles(opts);
   const lang: Lang = opts.lang ?? "tr";
   const tr = lang === "tr";
   const storeDir = opts.storeDir ?? "store";
