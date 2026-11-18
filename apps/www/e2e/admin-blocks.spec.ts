@@ -1025,20 +1025,13 @@ test.describe("commerce blocks", () => {
     expectClean(errors);
   });
 
-  test("cart-01: quantity unlocks free delivery, a bad and a good code, remove with undo, empty state", async ({ page }) => {
+  test("cart-01: quantity unlocks free delivery, remove with undo, empty state", async ({ page }) => {
     const errors = await open(page, "cart-01");
     await expect(page.getByText(/away from free delivery/)).toBeVisible();
     const mug = page.getByRole("spinbutton", { name: "Quantity of Speckled stoneware mug" });
     await mug.fill("3");
     await mug.press("Tab");
     await expect(page.getByText("Free standard delivery unlocked")).toBeVisible();
-    const code = page.getByRole("textbox", { name: "Discount code" });
-    await code.fill("nope");
-    await page.getByRole("button", { name: "Apply" }).click();
-    await expect(page.getByText("“NOPE” isn’t a valid code.")).toBeVisible();
-    await code.fill("kiln10");
-    await page.getByRole("button", { name: "Apply" }).click();
-    await expect(page.getByRole("button", { name: "Remove code KILN10" })).toBeVisible();
     await page.getByRole("button", { name: "Remove Beeswax pillar candles (3)" }).click();
     await expect(page.getByText("Beeswax pillar candles (3) removed from your cart.")).toBeVisible();
     await page.getByRole("button", { name: /^Undo: put Beeswax/ }).click();
@@ -1048,7 +1041,7 @@ test.describe("commerce blocks", () => {
     expectClean(errors);
   });
 
-  test("checkout-01: an empty submit focuses the first error, a full Turkish order with a card places and confirms", async ({ page }) => {
+  test("checkout-01: an empty submit focuses the first error, a full Turkish order places and confirms (demo)", async ({ page }) => {
     const errors = await open(page, "checkout-01");
     await page.getByRole("button", { name: /^Place order/ }).click();
     await expect(toast(page, /Check \d+ fields before placing the order/)).toBeVisible();
@@ -1060,24 +1053,10 @@ test.describe("commerce blocks", () => {
     await page.getByRole("combobox", { name: /Province/ }).first().selectOption("İstanbul");
     await page.getByRole("combobox", { name: /District/ }).first().selectOption("Kadıköy");
     await page.getByRole("textbox", { name: /Street address/ }).first().fill("Caferağa Mah. Moda Cad. No: 00");
-    await page.getByRole("textbox", { name: /Name on card/ }).fill("ASLI KORKMAZ");
-    const number = page.getByRole("textbox", { name: /Card number/ });
-    await number.fill("4242424242424241");
-    await number.press("Tab");
-    await expect(page.getByText("This card number isn’t valid. Check the digits.")).toBeVisible();
-    await number.fill("4242424242424242");
-    await expect(number).toHaveValue("4242 4242 4242 4242");
-    await expect(page.getByText("Visa", { exact: true })).toBeVisible();
-    await page.getByRole("textbox", { name: /Expiry/ }).fill("1225");
-    await page.getByRole("textbox", { name: /Expiry/ }).press("Tab");
-    await expect(page.getByText("This card has expired.")).toBeVisible();
-    await page.getByRole("textbox", { name: /Expiry/ }).fill("1229");
-    await page.getByRole("textbox", { name: /Security code/ }).fill("123");
-    await page.getByRole("radio", { name: /3 months/ }).click();
     await page.getByRole("checkbox", { name: /distance sales agreement/ }).click();
     await page.getByRole("button", { name: /^Place order/ }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Thank you, Aslı. Your order is in." })).toBeVisible({ timeout: 5_000 });
-    await expect(page.getByText(/Card •••• 4242 · 3 months/)).toBeVisible();
+    await expect(page.getByText("Demo: no request was sent and no card was charged.")).toBeVisible();
     expectClean(errors);
   });
 

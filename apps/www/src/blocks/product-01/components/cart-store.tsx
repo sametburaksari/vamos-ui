@@ -1,28 +1,16 @@
 "use client";
 
-// Cart state for the Commerce blocks: lines, quantity, remove with undo, one coupon and the
-// shipping method, plus the totals derived from them (decimal strings, VAT included).
+// Cart for the Commerce blocks, on top of the kit cart (@vamos-ui/react/commerce/cart): the kit
+// keeps the lines in localStorage and prices them from `catalog`, exactly as the checkout endpoint
+// will. This file adds what the storefront shows around it: the mini-cart drawer state, remove with
+// an inline undo, and totals read from the kit's priced quote.
 import * as React from "react";
 import { useFormat, useLocale } from "@vamos-ui/react";
+import type { Address } from "@vamos-ui/react";
+import { formatMoney, priceCart, type CartIssue, type CartLine, type Quote } from "@vamos-ui/react/commerce";
+import { CartProvider, useCart, type CartContextValue } from "@vamos-ui/react/commerce/cart";
 import { langOf, tx, type L, type Lang } from "../../_shared/l10n";
-import {
-  coupons,
-  couponDiscount,
-  FREE_SHIPPING_FROM,
-  gte,
-  minus,
-  shippingCost,
-  shippingMethods,
-  itemOf,
-  starterCart,
-  times,
-  total,
-  vatIncluded,
-  type CartLine,
-  type Coupon,
-  type ShopItem,
-  type ShippingId,
-} from "./catalogue";
+import { catalog, FREE_SHIPPING_FROM, itemOf, type ShopItem } from "./catalogue";
 
 /** Copy and money for storefront components: `const { c, t, money, date } = useShop();` */
 export function useShop() {
@@ -33,10 +21,11 @@ export function useShop() {
     () => ({
       f,
       lang,
+      intl: lang === "tr" ? "tr-TR" : "en-US",
       t: (value: L) => tx(value, lang),
       c: (en: string, tr: string) => (lang === "tr" ? tr : en),
-      /** TRY with the narrow ₺ sign in every locale: "₺1,190.00" / "₺1.190,00". */
-      money: (amount: string) => f.currency(amount, { currency: "TRY", display: "narrowSymbol" }),
+      /** Minor units in TRY: 119000 → "₺1.190" / "TRY 1,190". */
+      money: (minor: number) => formatMoney(minor, catalog.currency, lang === "tr" ? "tr-TR" : "en-US"),
       /** A date-only value ("2026-11-20") as "Fri 20 Nov" / "20 Kas Cum". */
       date: (ymd: string, o: Intl.DateTimeFormatOptions = { weekday: "short", day: "numeric", month: "short" }) => f.date(ymd, o),
     }),
@@ -44,106 +33,164 @@ export function useShop() {
   );
 }
 
+/** A cart row: the kit line, what it shows, and `removed` while its undo is offered. */
 export interface CartRow extends CartLine {
+  key: string;
+  item: ShopItem;
   removed?: boolean;
 }
 
+/** Money in minor units, from the kit's priced quote. */
 export interface Totals {
   count: number;
-  subtotal: string;
-  discount: string;
-  afterDiscount: string;
-  shipping: string;
-  fee: string;
-  total: string;
-  vat: string;
-  /** Left to spend for free standard delivery ("0.00" once reached). */
-  toFreeShipping: string;
+  subtotal: number;
+  shipping: number;
+  total: number;
+  /** VAT contained in `total` (products and shipping). */
+  vat: number;
+  /** Left to spend for free standard delivery (0 once reached). */
+  toFreeShipping: number;
 }
 
-/** `shippingPrice` overrides the method price (international rates, a carrier quote). */
-export function computeTotals(lines: CartRow[], coupon: Coupon | null, shippingId: ShippingId | null, fee = "0.00", shippingPrice?: string): Totals {
-  const live = lines.filter((l) => !l.removed);
-  const subtotal = total(live.map((l) => times(itemOf(l).price, l.qty)));
-  const discount = couponDiscount(coupon, subtotal);
-  const afterDiscount = minus(subtotal, discount);
-  const method = shippingMethods.find((m) => m.id === shippingId) ?? null;
-  const shipping = live.length === 0 || !method ? "0.00" : (shippingPrice ?? shippingCost(method, afterDiscount));
-  const grand = total([afterDiscount, shipping, fee]);
-  return {
-    count: live.reduce((n, l) => n + l.qty, 0),
-    subtotal,
-    discount,
-    afterDiscount,
-    shipping,
-    fee,
-    total: grand,
-    vat: vatIncluded(grand),
-    toFreeShipping: gte(afterDiscount, FREE_SHIPPING_FROM) ? "0.00" : minus(FREE_SHIPPING_FROM, afterDiscount),
-  };
-}
+export const lineKey = (l: Pick<CartLine, "productId" | "variantId">) => `${l.productId}:${l.variantId ?? ""}`;
 
-interface CartValue {
-  lines: CartRow[];
+interface StoreCartValue {
+  /** The kit cart: `kit.checkout()`, `kit.quote`, `kit.ready`, `kit.clear()`. */
+  kit: CartContextValue;
+  rows: CartRow[];
   totals: Totals;
-  coupon: Coupon | null;
-  shippingId: ShippingId;
+  /** Saved lines the catalog no longer sells (removed products, sold-out variants). */
+  issues: CartIssue[];
+  /** Removes the lines listed in `issues`. */
+  dropUnavailable: () => void;
   open: boolean;
   setOpen: (open: boolean) => void;
-  add: (itemId: string, qty: number, key?: string, item?: ShopItem) => void;
+  add: (productId: string, qty: number, variantId?: string) => void;
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
   restore: (key: string) => void;
-  /** Applies a code; returns the reason when it fails. */
-  applyCoupon: (code: string) => "ok" | "unknown" | "minimum";
-  clearCoupon: () => void;
-  setShippingId: (id: ShippingId) => void;
 }
 
-const CartContext = React.createContext<CartValue | null>(null);
+const StoreCartContext = React.createContext<StoreCartValue | null>(null);
 
-export function useCart(): CartValue {
-  const v = React.useContext(CartContext);
-  if (!v) throw new Error("useCart needs <CartProvider>");
+export function useStoreCart(): StoreCartValue {
+  const v = React.useContext(StoreCartContext);
+  if (!v) throw new Error("useStoreCart needs <StoreCartProvider>");
   return v;
 }
 
-export function CartProvider({ initialLines = starterCart, initialCoupon = null, children }: { initialLines?: CartLine[]; initialCoupon?: string | null; children: React.ReactNode }) {
-  const [lines, setLines] = React.useState<CartRow[]>(initialLines);
-  const [coupon, setCoupon] = React.useState<Coupon | null>(() => coupons.find((x) => x.code === initialCoupon) ?? null);
-  const [shippingId, setShippingId] = React.useState<ShippingId>("standard");
-  const [open, setOpen] = React.useState(false);
-  const totals = React.useMemo(() => computeTotals(lines, coupon, shippingId), [lines, coupon, shippingId]);
+/** Totals of the lines the catalog accepts (a stale saved line never blanks the summary). */
+export function totalsOf(lines: CartLine[], bad: Set<number> = new Set()): Totals {
+  const ok = lines.filter((_, i) => !bad.has(i));
+  const priced = ok.length ? priceCart(catalog, ok) : null;
+  const q = priced?.ok ? priced.quote : null;
+  const subtotal = q?.subtotal ?? 0;
+  return {
+    count: ok.reduce((n, l) => n + l.qty, 0),
+    subtotal,
+    shipping: q?.shipping ?? 0,
+    total: q?.total ?? 0,
+    vat: q?.vat ?? 0,
+    toFreeShipping: Math.max(0, FREE_SHIPPING_FROM - subtotal),
+  };
+}
 
-  const value = React.useMemo<CartValue>(
-    () => ({
-      lines,
-      totals,
-      coupon,
-      shippingId,
+function StoreCart({ children }: { children: React.ReactNode }) {
+  const kit = useCart();
+  const [open, setOpen] = React.useState(false);
+  // Rows removed with an undo still offered, at the position they were in.
+  const [removed, setRemoved] = React.useState<Array<{ at: number; row: CartRow }>>([]);
+
+  const value = React.useMemo<StoreCartValue>(() => {
+    const bad = new Set(kit.issues.map((i) => i.index).filter((i) => i >= 0));
+    const live: CartRow[] = [];
+    kit.lines.forEach((l, i) => {
+      const item = itemOf(l);
+      if (item && !bad.has(i)) live.push({ ...l, key: lineKey(l), item });
+    });
+    const liveKeys = new Set(live.map((r) => r.key));
+    const rows = [...live];
+    for (const r of removed) if (!liveKeys.has(r.row.key)) rows.splice(Math.min(r.at, rows.length), 0, { ...r.row, removed: true });
+    const find = (key: string) => kit.lines.find((l) => lineKey(l) === key);
+    return {
+      kit,
+      rows,
+      totals: totalsOf(kit.lines, bad),
+      issues: kit.issues,
+      dropUnavailable: () => kit.issues.forEach((i) => i.index >= 0 && kit.lines[i.index] && kit.remove(kit.lines[i.index]!.productId, kit.lines[i.index]!.variantId)),
       open,
       setOpen,
-      add: (itemId, qty, key = itemId, item) =>
-        setLines((prev) => {
-          // Drop rows removed earlier, so a re-added item comes back as a live line.
-          const kept = prev.filter((l) => !l.removed);
-          const hit = kept.find((l) => l.key === key);
-          return hit ? kept.map((l) => (l.key === key ? { ...l, qty: Math.min(20, l.qty + qty) } : l)) : [...kept, { key, itemId, qty, item }];
-        }),
-      setQty: (key, qty) => setLines((prev) => prev.map((l) => (l.key === key ? { ...l, qty: Math.max(1, Math.min(20, qty)) } : l))),
-      remove: (key) => setLines((prev) => prev.map((l) => (l.key === key ? { ...l, removed: true } : l))),
-      restore: (key) => setLines((prev) => prev.map((l) => (l.key === key ? { ...l, removed: false } : l))),
-      applyCoupon: (raw) => {
-        const hit = coupons.find((x) => x.code === raw.trim().toUpperCase());
-        if (!hit) return "unknown";
-        if (hit.min && !gte(totals.subtotal, hit.min)) return "minimum";
-        setCoupon(hit);
-        return "ok";
+      add: (productId, qty, variantId) => {
+        setRemoved((prev) => prev.filter((r) => r.row.key !== lineKey({ productId, variantId })));
+        kit.add(productId, { variantId, qty });
       },
-      clearCoupon: () => setCoupon(null),
-      setShippingId,
-    }),
-    [lines, totals, coupon, shippingId, open],
+      setQty: (key, qty) => {
+        const l = find(key);
+        if (l) kit.setQty(l.productId, l.variantId, Math.max(1, qty));
+      },
+      remove: (key) => {
+        const at = live.findIndex((r) => r.key === key);
+        if (at === -1) return;
+        setRemoved((prev) => [...prev.filter((r) => r.row.key !== key), { at, row: live[at]! }]);
+        kit.remove(live[at]!.productId, live[at]!.variantId);
+      },
+      restore: (key) => {
+        const hit = removed.find((r) => r.row.key === key);
+        if (!hit) return;
+        setRemoved((prev) => prev.filter((r) => r.row.key !== key));
+        kit.add(hit.row.productId, { variantId: hit.row.variantId, qty: hit.row.qty });
+      },
+    };
+  }, [kit, open, removed]);
+  return <StoreCartContext.Provider value={value}>{children}</StoreCartContext.Provider>;
+}
+
+/**
+ * The kit `CartProvider` with this storefront's catalog, plus the drawer and undo state.
+ * `storageKey`: one key for the whole shop, so the product page, cart and checkout share a cart.
+ */
+export function StoreCartProvider({ storageKey, initialLines, children }: { storageKey?: string; initialLines?: CartLine[]; children: React.ReactNode }) {
+  return (
+    // redirect={false}: the checkout page saves a short order summary for the confirmation page
+    // before it sends the buyer to the payment page.
+    <CartProvider catalog={catalog} storageKey={storageKey} initialLines={initialLines} redirect={false}>
+      <StoreCart>{children}</StoreCart>
+    </CartProvider>
   );
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+}
+
+/**
+ * What the confirmation page shows after the payment page sends the buyer back with `?order=`.
+ * There is no order database (the order email is the record), so the checkout page keeps this
+ * short summary in sessionStorage: this tab only, gone when it closes, no card data.
+ */
+export interface OrderSummary {
+  order: string;
+  placedAt: string;
+  quote: Quote;
+  firstName: string;
+  name: string;
+  email: string;
+  address: Address;
+  company?: string;
+}
+
+const summaryKey = (order: string) => `kiln-linen-order:${order}`;
+
+export function saveOrderSummary(summary: OrderSummary) {
+  try {
+    window.sessionStorage.setItem(summaryKey(summary.order), JSON.stringify(summary));
+  } catch {
+    /* private mode: the confirmation page falls back to the order number */
+  }
+}
+
+export function readOrderSummary(order: string): OrderSummary | null {
+  try {
+    const raw = window.sessionStorage.getItem(summaryKey(order));
+    const data = raw ? (JSON.parse(raw) as OrderSummary) : null;
+    return data && data.order === order && data.quote && Array.isArray(data.quote.lines) ? data : null;
+  } catch {
+    return null;
+  }
 }

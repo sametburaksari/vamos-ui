@@ -32,7 +32,7 @@ const reviews = [
 
 /** Product detail: glaze-driven gallery, glaze picker, quantity, add to cart, specs and reviews. */
 export function ProductPage() {
-  const { t, s, fmt, currency, add, locale, selected, select } = useStore();
+  const { t, s, fmt, add, locale, selected, select } = useStore();
   const product = productById(selected.productId);
   const index = Math.max(0, product.glazes.findIndex((g) => g.id === selected.glazeId));
   const glaze = product.glazes[index]!;
@@ -92,7 +92,7 @@ export function ProductPage() {
                 </p>
                 <h1 className="font-display text-display-l text-fg">{t(product.name)}</h1>
                 <div className="flex flex-wrap items-center gap-3">
-                  <p className="tabular text-h3 text-fg">{fmt(product.price[currency])}</p>
+                  <p className="tabular text-h3 text-fg">{fmt(product.price)}</p>
                   <span className="flex items-center gap-2 text-small text-fg-muted">
                     <RatingStars rating={product.rating} label={s("ratingLabel", { r: product.rating.toLocaleString(intl) })} />
                     {s("reviews", { n: product.reviews })}
@@ -124,7 +124,7 @@ export function ProductPage() {
                   <NumberInput value={qty} min={1} max={Math.max(1, Math.min(20, glaze.stock))} precision={0} stepper onValueChange={(v) => setQty(v ?? 1)} disabled={soldOut} />
                 </Field>
                 <Button variant="primary" size="lg" className="min-w-48 flex-1" disabled={soldOut} onClick={() => add(product.id, glaze.id, qty)}>
-                  {soldOut ? s("soldOut") : `${s("addToCart")} · ${fmt(Number(product.price[currency]) * qty)}`}
+                  {soldOut ? s("soldOut") : `${s("addToCart")} · ${fmt(product.price * qty)}`}
                 </Button>
               </div>
               <p className={`text-small ${glaze.stock > 0 && glaze.stock <= 4 ? "text-warning" : "text-fg-muted"}`}>
