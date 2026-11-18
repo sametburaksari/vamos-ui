@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Button, Pagination, Select, Switch, ToggleGroup, ToggleGroupItem } from "@vamos-ui/react";
 import { Container, PageIntro, Section, sitePageHref } from "@vamos-ui/react/blocks";
-import { categories, products, type Category, type Currency } from "./content";
+import { categories, products, type Category } from "./content";
 import { ProductCard } from "./product-card";
 import { useStore } from "./store-provider";
 
@@ -36,9 +36,9 @@ const copy = {
   shipsFrom: { en: "Üsküdar, İstanbul", tr: "Üsküdar, İstanbul" },
 };
 
-/** Shop: category filter, stock switch, sort, currency, a six-per-page grid and pagination. */
+/** Shop: category filter, stock switch, sort, a six-per-page grid and pagination (prices in TRY). */
 export function ShopPage() {
-  const { t, locale, currency, setCurrency, shopCategory: category, setShopCategory: setCategory } = useStore();
+  const { t, locale, shopCategory: category, setShopCategory: setCategory } = useStore();
   const [sort, setSort] = React.useState<Sort>("featured");
   const [inStockOnly, setInStockOnly] = React.useState(false);
   const [page, setPage] = React.useState(1);
@@ -48,12 +48,11 @@ export function ShopPage() {
   const list = React.useMemo(() => {
     let out = products.filter((p) => category === "all" || p.category === category);
     if (inStockOnly) out = out.filter((p) => p.glazes.some((g) => g.stock > 0));
-    const price = (p: (typeof products)[number]) => Number(p.price[currency]);
     if (sort === "new") out = [...out].sort((a, b) => b.batch.localeCompare(a.batch));
-    if (sort === "price-asc") out = [...out].sort((a, b) => price(a) - price(b));
-    if (sort === "price-desc") out = [...out].sort((a, b) => price(b) - price(a));
+    if (sort === "price-asc") out = [...out].sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") out = [...out].sort((a, b) => b.price - a.price);
     return out;
-  }, [category, sort, inStockOnly, currency]);
+  }, [category, sort, inStockOnly]);
 
   const pageCount = Math.max(1, Math.ceil(list.length / PER_PAGE));
   const current = Math.min(page, pageCount);
@@ -108,10 +107,6 @@ export function ShopPage() {
                     { value: "price-desc", label: t(copy.priceDesc) },
                   ]}
                 />
-                <ToggleGroup type="single" variant="segmented" size="sm" aria-label={locale === "tr" ? "Para birimi" : "Currency"} value={currency} onValueChange={(v) => v && setCurrency(v as Currency)}>
-                  <ToggleGroupItem value="TRY">₺ TRY</ToggleGroupItem>
-                  <ToggleGroupItem value="USD">$ USD</ToggleGroupItem>
-                </ToggleGroup>
               </div>
             </div>
           </div>

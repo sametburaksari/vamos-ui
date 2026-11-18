@@ -1,32 +1,13 @@
 "use client";
 
 import * as React from "react";
-import {
-  AddressField,
-  Badge,
-  Button,
-  Checkbox,
-  cn,
-  Field,
-  formatAddress,
-  Image,
-  Input,
-  PhoneInput,
-  RadioGroup,
-  RadioGroupItem,
-  TaxIdInput,
-  toast,
-  useLocale,
-  type Address,
-} from "@vamos-ui/react";
-import { Building2, Check, ChevronDown, Copy, CreditCard, Landmark, Lock, PackageOpen, Truck } from "lucide-react";
-import { TODAY } from "../../_shared/time";
-import { businessDay, itemOf, PAY_AT_DOOR_FEE, photo, shippingMethods, STORE, times, type ShippingId } from "../../product-01/components/catalogue";
-import { computeTotals, useCart, useShop } from "../../product-01/components/cart-store";
+import { AddressField, Alert, Button, Checkbox, cn, Field, formatAddress, Image, Input, PhoneInput, RadioGroup, RadioGroupItem, TaxIdInput, toast, useLocale, type Address } from "@vamos-ui/react";
+import type { OrderBuyer } from "@vamos-ui/react/commerce";
+import type { CheckoutOutcome } from "@vamos-ui/react/commerce/cart";
+import { Building2, Check, ChevronDown, CreditCard, Lock, Truck } from "lucide-react";
+import { businessDay, delivery, photo } from "../../product-01/components/catalogue";
+import { saveOrderSummary, useShop, useStoreCart } from "../../product-01/components/cart-store";
 import { Eyebrow, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
-import { CardFields, cardErrors, emptyCard, type CardValue } from "./card-fields";
-
-type Pay = "card" | "transfer" | "door";
 
 interface CheckoutForm {
   email: string;
@@ -36,11 +17,6 @@ interface CheckoutForm {
   firstName: string;
   lastName: string;
   ship: Address;
-  shippingId: ShippingId;
-  pay: Pay;
-  card: CardValue;
-  billingSame: boolean;
-  billing: Address;
   invoice: "individual" | "company";
   company: string;
   taxId: string;
@@ -53,15 +29,10 @@ const initial: CheckoutForm = {
   email: "",
   phone: "",
   phoneValid: false,
-  news: true,
+  news: false,
   firstName: "",
   lastName: "",
   ship: { country: "TR" },
-  shippingId: "standard",
-  pay: "card",
-  card: emptyCard,
-  billingSame: true,
-  billing: { country: "TR" },
   invoice: "individual",
   company: "",
   taxId: "",
@@ -69,9 +40,6 @@ const initial: CheckoutForm = {
   taxOffice: "",
   terms: false,
 };
-
-/** International parcels: one tracked rate, no same-city courier. */
-const INTERNATIONAL = "449.90";
 
 /** Error keys in on-page order; the first one gets focus on submit. Each maps to a control selector. */
 const FIELD_ORDER: Array<[string, string]> = [
@@ -83,44 +51,96 @@ const FIELD_ORDER: Array<[string, string]> = [
   ["ship.region2", "[name='ship[region2]']"],
   ["ship.line1", "[name='ship[line1]']"],
   ["ship.postalCode", "[name='ship[postalCode]']"],
-  ["card.name", "#card-name"],
-  ["card.number", "#card-number"],
-  ["card.exp", "#card-exp"],
-  ["card.cvc", "#card-cvc"],
-  ["billing.region1", "[name='billing[region1]']"],
-  ["billing.region2", "[name='billing[region2]']"],
-  ["billing.line1", "[name='billing[line1]']"],
-  ["billing.postalCode", "[name='billing[postalCode]']"],
   ["company", "#co-company"],
   ["taxId", "#co-taxid"],
   ["taxOffice", "#co-taxoffice"],
   ["terms", "#co-terms"],
 ];
 
-function addressErrors(a: Address, prefix: string, c: (en: string, tr: string) => string, out: Record<string, string>) {
-  const tr = a.country === "TR";
-  if (tr && !a.region1) out[`${prefix}.region1`] = c("Choose a province.", "Bir il seçin.");
-  if (!a.region2) out[`${prefix}.region2`] = tr ? c("Choose a district.", "Bir ilçe seçin.") : c("Enter a city.", "Bir şehir girin.");
-  if (!a.line1?.trim()) out[`${prefix}.line1`] = c("Enter the street and building number.", "Cadde / sokak ve bina numarasını girin.");
-  if (tr && a.postalCode && !/^\d{5}$/.test(a.postalCode)) out[`${prefix}.postalCode`] = c("Postal codes in Türkiye have 5 digits.", "Türkiye’de posta kodu 5 hanelidir.");
+/** Buyer fields the checkout endpoint can refuse (`invalid-buyer`) → the form field they come from. */
+const SERVER_FIELD: Record<string, string> = {
+  name: "firstName",
+  surname: "lastName",
+  email: "email",
+  phone: "phone",
+  address: "ship.line1",
+  city: "ship.region1",
+  district: "ship.region2",
+  zipCode: "ship.postalCode",
+};
+
+type C = (en: string, tr: string) => string;
+
+const messages = (c: C) => ({
+  email: c("Enter an email like name@example.com.", "ad@example.com gibi bir e-posta girin."),
+  phone: c("Enter a mobile number the courier can call.", "Kuryenin arayabileceği bir cep telefonu girin."),
+  firstName: c("Enter your first name.", "Adınızı girin."),
+  lastName: c("Enter your last name.", "Soyadınızı girin."),
+  "ship.region1": c("Choose a province.", "Bir il seçin."),
+  "ship.region2": c("Choose a district.", "Bir ilçe seçin."),
+  "ship.line1": c("Enter the street and building number.", "Cadde / sokak ve bina numarasını girin."),
+  "ship.postalCode": c("Postal codes in Türkiye have 5 digits.", "Türkiye’de posta kodu 5 hanelidir."),
+  company: c("Enter the company’s registered name.", "Şirketin ticari unvanını girin."),
+  taxId: c("Enter a valid 10-digit tax number.", "Geçerli, 10 haneli bir vergi numarası girin."),
+  taxOffice: c("Enter the tax office.", "Vergi dairesini girin."),
+  terms: c("Accept the distance sales agreement to place the order.", "Siparişi vermek için mesafeli satış sözleşmesini onaylayın."),
+});
+
+/** The street part the order carries: neighbourhood, street and building, flat. */
+const streetOf = (a: Address) => [a.region3, a.line1, a.line2].map((x) => x?.trim()).filter(Boolean).join(", ");
+
+function validate(f: CheckoutForm, c: C): Record<string, string> {
+  const m = messages(c);
+  const e: Record<string, string> = {};
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) e.email = m.email;
+  if (!f.phone || !f.phoneValid) e.phone = m.phone;
+  if (!f.firstName.trim()) e.firstName = m.firstName;
+  if (!f.lastName.trim()) e.lastName = m.lastName;
+  if (!f.ship.region1) e["ship.region1"] = m["ship.region1"];
+  if (!f.ship.region2) e["ship.region2"] = m["ship.region2"];
+  // The endpoint wants at least 8 characters for a delivery address.
+  if (!f.ship.line1?.trim() || streetOf(f.ship).length < 8) e["ship.line1"] = m["ship.line1"];
+  if (f.ship.postalCode && !/^\d{5}$/.test(f.ship.postalCode)) e["ship.postalCode"] = m["ship.postalCode"];
+  if (f.invoice === "company") {
+    if (!f.company.trim()) e.company = m.company;
+    if (!f.taxId || !f.taxIdValid) e.taxId = m.taxId;
+    if (!f.taxOffice.trim()) e.taxOffice = m.taxOffice;
+  }
+  if (!f.terms) e.terms = m.terms;
+  return e;
 }
 
-function validate(f: CheckoutForm, c: (en: string, tr: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) e.email = c("Enter an email like name@example.com.", "ad@example.com gibi bir e-posta girin.");
-  if (!f.phone || !f.phoneValid) e.phone = c("Enter a mobile number the courier can call.", "Kuryenin arayabileceği bir cep telefonu girin.");
-  if (!f.firstName.trim()) e.firstName = c("Enter your first name.", "Adınızı girin.");
-  if (!f.lastName.trim()) e.lastName = c("Enter your last name.", "Soyadınızı girin.");
-  if (f.shippingId !== "pickup") addressErrors(f.ship, "ship", c, e);
-  if (f.pay === "card") for (const [k, v] of Object.entries(cardErrors(f.card, TODAY, c))) e[`card.${k}`] = v!;
-  if (!f.billingSame || f.shippingId === "pickup") addressErrors(f.billing, "billing", c, e);
-  if (f.invoice === "company") {
-    if (!f.company.trim()) e.company = c("Enter the company’s registered name.", "Şirketin ticari unvanını girin.");
-    if (!f.taxId || !f.taxIdValid) e.taxId = c("Enter a valid 10-digit tax number.", "Geçerli, 10 haneli bir vergi numarası girin.");
-    if (!f.taxOffice.trim()) e.taxOffice = c("Enter the tax office.", "Vergi dairesini girin.");
+function toBuyer(f: CheckoutForm): OrderBuyer {
+  return {
+    name: f.firstName.trim(),
+    surname: f.lastName.trim(),
+    email: f.email.trim(),
+    phone: f.phone,
+    address: streetOf(f.ship),
+    city: f.ship.region1 ?? "",
+    district: f.ship.region2,
+    zipCode: f.ship.postalCode || undefined,
+    country: "Turkey",
+    ...(f.invoice === "company" ? { company: { name: f.company.trim(), taxOffice: f.taxOffice.trim(), taxNumber: f.taxId } } : {}),
+  };
+}
+
+type Failure = { title: string; body: string; fixCart?: boolean };
+
+/** Why a checkout failed, in words the buyer can act on. */
+function failureOf(res: Exclude<CheckoutOutcome, { ok: true }>, c: C): Failure {
+  switch (res.error) {
+    case "invalid-buyer":
+      return { title: c("Check the highlighted fields", "İşaretli alanları kontrol edin"), body: c("The store could not accept some of your details.", "Mağaza bazı bilgilerinizi kabul edemedi.") };
+    case "invalid-cart":
+      return { title: c("Your cart changed", "Sepetiniz değişti"), body: c("An item is sold out or no longer sold. Edit the cart, then place the order again.", "Bir ürün tükendi ya da artık satılmıyor. Sepeti düzenleyip siparişi yeniden verin."), fixCart: true };
+    case "payment-unavailable":
+      return { title: c("Payments are unavailable right now", "Ödeme şu an alınamıyor"), body: c("Nothing was charged. Try again in a few minutes.", "Hiçbir tutar çekilmedi. Birkaç dakika sonra yeniden deneyin.") };
+    case "too-large":
+      return { title: c("This order is too large to place online", "Bu sipariş internetten verilemeyecek kadar büyük"), body: c("Split it into two orders, or write to us and we’ll send a payment link.", "İki siparişe bölün ya da bize yazın, ödeme bağlantısı gönderelim.") };
+    default:
+      return { title: c("We couldn’t reach the store", "Mağazaya ulaşılamadı"), body: c("Check your connection and try again. Nothing was charged.", "Bağlantınızı kontrol edip yeniden deneyin. Hiçbir tutar çekilmedi.") };
   }
-  if (!f.terms) e.terms = c("Accept the distance sales agreement to place the order.", "Siparişi vermek için mesafeli satış sözleşmesini onaylayın.");
-  return e;
 }
 
 function Step({ n, title, id, children, aside }: { n: number; title: string; id: string; children: React.ReactNode; aside?: React.ReactNode }) {
@@ -140,46 +160,46 @@ function Step({ n, title, id, children, aside }: { n: number; title: string; id:
   );
 }
 
-/** One-page checkout → confirmation state. */
-export function CheckoutPage() {
-  const { c, t, f: fmt, money, date } = useShop();
+/**
+ * One-page checkout. "Place order" validates, then `cart.checkout()` posts the cart and buyer to
+ * /api/checkout and the buyer goes to the payment provider's page to enter the card; a failed
+ * payment comes back here with `?payment=failed`. `demo` skips the request and shows a simulated
+ * confirmation (the docs preview has no checkout endpoint).
+ */
+export function CheckoutPage({ demo = false }: { demo?: boolean }) {
+  const { c, t, f: fmt, money, lang } = useShop();
   const { locale } = useLocale();
-  const cart = useCart();
+  const cart = useStoreCart();
   const [form, setForm] = React.useState<CheckoutForm>(initial);
   const [touched, setTouched] = React.useState<Set<string>>(new Set());
   const [submitted, setSubmitted] = React.useState(false);
-  const [status, setStatus] = React.useState<"idle" | "placing" | "done">("idle");
+  const [serverErrors, setServerErrors] = React.useState<Record<string, string>>({});
+  const [failure, setFailure] = React.useState<Failure | null>(null);
+  const [paymentFailed, setPaymentFailed] = React.useState(false);
+  const [status, setStatus] = React.useState<"idle" | "placing" | "redirecting" | "done">("idle");
   const [summaryOpen, setSummaryOpen] = React.useState(false);
   const formRef = React.useRef<HTMLFormElement>(null);
   const doneRef = React.useRef<HTMLHeadingElement>(null);
+  const failureRef = React.useRef<HTMLDivElement>(null);
 
-  const set = (patch: Partial<CheckoutForm>) => setForm((p) => ({ ...p, ...patch }));
+  const set = (patch: Partial<CheckoutForm>) => {
+    setForm((p) => ({ ...p, ...patch }));
+    // A server error stays until the field it is about changes.
+    setServerErrors((prev) => Object.fromEntries(Object.entries(prev).filter(([k]) => !(k.split(".")[0]! in patch))));
+  };
   const touch = (k: string) => setTouched((p) => (p.has(k) ? p : new Set(p).add(k)));
 
-  const abroad = form.shippingId !== "pickup" && form.ship.country !== "TR";
-  const shippingId: ShippingId = abroad && form.shippingId === "express" ? "standard" : form.shippingId;
-  const fee = form.pay === "door" ? PAY_AT_DOOR_FEE : "0.00";
-  const totals = computeTotals(cart.lines, cart.coupon, shippingId, fee, abroad ? INTERNATIONAL : undefined);
+  const { totals } = cart;
   const all = validate(form, c);
-  const err = (k: string) => (submitted || touched.has(k) ? all[k] : undefined);
-  const addrErr = (prefix: string) => ({
-    region1: err(`${prefix}.region1`),
-    region2: err(`${prefix}.region2`),
-    line1: err(`${prefix}.line1`),
-    postalCode: err(`${prefix}.postalCode`),
-  });
-  const method = shippingMethods.find((m) => m.id === shippingId)!;
-  const eta = (id: ShippingId) => {
-    const m = shippingMethods.find((x) => x.id === id)!;
-    if (abroad && id === "standard") return fmt.dateRange(businessDay(5), businessDay(9), { day: "numeric", month: "short" });
-    if (m.days[1] === 0) return c("Ready today from 12:30", "Bugün 12:30’dan itibaren hazır");
-    return m.days[0] === m.days[1] ? date(businessDay(m.days[0]), { weekday: "long", day: "numeric", month: "short" }) : fmt.dateRange(businessDay(m.days[0]), businessDay(m.days[1]), { weekday: "short", day: "numeric", month: "short" });
-  };
+  const err = (k: string) => serverErrors[k] ?? (submitted || touched.has(k) ? all[k] : undefined);
+  const addrErr = { region1: err("ship.region1"), region2: err("ship.region2"), line1: err("ship.line1"), postalCode: err("ship.postalCode") };
+  const eta = fmt.dateRange(businessDay(delivery.days[0]), businessDay(delivery.days[1]), { weekday: "short", day: "numeric", month: "short" });
+  const live = cart.rows.filter((l) => !l.removed);
 
-  // Pay at the door needs a Turkish courier delivery.
+  // The payment page sends a failed or cancelled payment back here with ?payment=failed.
   React.useEffect(() => {
-    if (form.pay === "door" && (form.shippingId === "pickup" || abroad)) set({ pay: "card" });
-  }, [form.pay, form.shippingId, abroad]);
+    if (new URLSearchParams(window.location.search).get("payment") === "failed") setPaymentFailed(true);
+  }, []);
 
   React.useEffect(() => {
     if (status === "done") {
@@ -188,27 +208,65 @@ export function CheckoutPage() {
     }
   }, [status]);
 
-  const submit = (e: React.FormEvent) => {
+  React.useEffect(() => {
+    if (failure) failureRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, [failure]);
+
+  const focusFirst = (errors: Record<string, string>) => {
+    const first = FIELD_ORDER.find(([k]) => errors[k]);
+    const el = first ? formRef.current?.querySelector<HTMLElement>(first[1]) : null;
+    el?.focus();
+    el?.scrollIntoView({ block: "center", behavior: "smooth" });
+  };
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+    setFailure(null);
     const keys = Object.keys(all);
     if (keys.length) {
-      const first = FIELD_ORDER.find(([k]) => all[k]);
-      const el = first ? formRef.current?.querySelector<HTMLElement>(first[1]) : null;
-      el?.focus();
-      el?.scrollIntoView({ block: "center", behavior: "smooth" });
+      focusFirst(all);
       toast.danger(c(`Check ${keys.length} ${keys.length === 1 ? "field" : "fields"} before placing the order`, `Siparişi vermeden önce ${keys.length} alanı kontrol edin`));
       return;
     }
+    if (cart.issues.length || !cart.kit.quote) {
+      setFailure(failureOf({ ok: false, error: "invalid-cart", issues: cart.issues }, c));
+      return;
+    }
     setStatus("placing");
-    window.setTimeout(() => setStatus("done"), 1100);
+    if (demo) {
+      window.setTimeout(() => setStatus("done"), 1100);
+      return;
+    }
+    const quote = cart.kit.quote;
+    const res = await cart.kit.checkout({ buyer: toBuyer(form), locale: lang, ...(form.news ? { note: "Wants an email when a new firing comes out of the kiln." } : {}) });
+    if (res.ok) {
+      saveOrderSummary({
+        order: res.order,
+        placedAt: new Date().toISOString(),
+        quote,
+        firstName: form.firstName.trim(),
+        name: `${form.firstName.trim()} ${form.lastName.trim()}`,
+        email: form.email.trim(),
+        address: form.ship,
+        ...(form.invoice === "company" ? { company: form.company.trim() } : {}),
+      });
+      setStatus("redirecting");
+      window.location.assign(res.paymentPageUrl);
+      return;
+    }
+    setStatus("idle");
+    if (res.error === "invalid-buyer") {
+      const m = messages(c) as Record<string, string>;
+      const mapped = Object.fromEntries(res.fields.map((f) => SERVER_FIELD[f]).filter((k): k is string => !!k).map((k) => [k, m[k] ?? c("Check this field.", "Bu alanı kontrol edin.")]));
+      setServerErrors(mapped);
+      focusFirst(mapped);
+    }
+    setFailure(failureOf(res, c));
   };
 
-  const live = cart.lines.filter((l) => !l.removed);
-  const last4 = form.card.number.slice(-4);
-
   if (status === "done") {
-    const shipTo = form.shippingId === "pickup" ? null : formatAddress(form.ship, { locale });
+    const shipTo = formatAddress(form.ship, { locale });
     return (
       <StoreContainer className="max-w-[46rem] pt-12 lg:pt-20">
         <div className="flex flex-col gap-8">
@@ -221,13 +279,9 @@ export function CheckoutPage() {
               {c(`Thank you, ${form.firstName}. Your order is in.`, `Teşekkürler ${form.firstName}, siparişiniz alındı.`)}
             </h1>
             <p className="text-lead text-fg-muted">
-              {c(`We’ve sent the receipt to ${form.email}.`, `Makbuzu ${form.email} adresine gönderdik.`)}{" "}
-              {form.pay === "transfer"
-                ? c("Your items are reserved for 24 hours while we wait for the transfer.", "Havale beklenirken ürünleriniz 24 saat ayrıldı.")
-                : form.shippingId === "pickup"
-                  ? c("We’ll text you when it’s ready to collect.", "Teslim almaya hazır olunca size SMS göndereceğiz.")
-                  : c(`It should arrive ${eta(shippingId)}.`, `Tahmini teslimat: ${eta(shippingId)}.`)}
+              {c(`We’ve sent the receipt to ${form.email}.`, `Makbuzu ${form.email} adresine gönderdik.`)} {c(`It should arrive ${eta}.`, `Tahmini teslimat: ${eta}.`)}
             </p>
+            <p className="text-small text-fg-subtle">{c("Demo: no request was sent and no card was charged.", "Demo: istek gönderilmedi, karttan çekim yapılmadı.")}</p>
           </div>
           <dl className="grid gap-x-8 gap-y-5 rounded-ui-lg border border-line p-5 text-small sm:grid-cols-2">
             <div>
@@ -236,30 +290,17 @@ export function CheckoutPage() {
             </div>
             <div>
               <dt className="mb-1 text-fg-muted">{c("Payment", "Ödeme")}</dt>
-              <dd className="text-fg">
-                {form.pay === "card"
-                  ? `${c("Card", "Kart")} •••• ${last4}${form.card.installments !== "1" ? ` · ${c(`${form.card.installments} months`, `${form.card.installments} taksit`)}` : ""}`
-                  : form.pay === "transfer"
-                    ? c("Bank transfer (awaiting)", "Havale / EFT (bekleniyor)")
-                    : c("Pay at the door", "Kapıda ödeme")}
-              </dd>
+              <dd className="text-fg">{c("Card, on the payment provider’s page", "Kart, ödeme sağlayıcısının sayfasında")}</dd>
             </div>
             <div>
               <dt className="mb-1 text-fg-muted">{c("Delivery", "Teslimat")}</dt>
-              <dd className="text-fg">{t(method.name)}</dd>
+              <dd className="text-fg">{t(delivery.name)}</dd>
             </div>
             <div>
-              <dt className="mb-1 text-fg-muted">{shipTo ? c("Ship to", "Teslimat adresi") : c("Collect from", "Teslim noktası")}</dt>
-              <dd className="text-fg">{shipTo ? shipTo.join(", ") : c("Kiln & Linen studio, Kadıköy", "Kiln & Linen atölyesi, Kadıköy")}</dd>
+              <dt className="mb-1 text-fg-muted">{c("Ship to", "Teslimat adresi")}</dt>
+              <dd className="text-fg">{shipTo.join(", ")}</dd>
             </div>
           </dl>
-          {form.pay === "transfer" ? (
-            <div className="rounded-ui-lg bg-surface-2 p-5 text-small">
-              <p className="mb-1 text-fg-muted">{c("Transfer to", "Havale bilgileri")}</p>
-              <p className="font-mono text-fg">{STORE.iban}</p>
-              <p className="text-fg-muted">{t(STORE.bank)} · {c("Reference: KL-30418", "Açıklama: KL-30418")}</p>
-            </div>
-          ) : null}
           <div className="flex flex-wrap gap-3">
             <Button asChild variant="primary" size="lg">
               <a href={storeHref.confirmation}>{c("View order details", "Sipariş detayını gör")}</a>
@@ -276,36 +317,30 @@ export function CheckoutPage() {
   const summary = (
     <div className="flex flex-col gap-5">
       <ul aria-label={c("Items in your order", "Siparişinizdeki ürünler")} className="flex flex-col gap-4">
-        {live.map((l) => {
-          const item = itemOf(l);
-          return (
-            <li key={l.key} className="grid grid-cols-[3.5rem_minmax(0,1fr)_auto] items-center gap-3 text-small">
-              <span className="relative">
-                <Image src={photo(item.photo, 160)} width={160} height={200} alt="" aspect="4/5" rounded="ui" sizes="56px" />
-                <span className="absolute -end-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-fg text-[11px] font-medium text-scene tabular" aria-hidden>
-                  {l.qty}
-                </span>
+        {live.map((l) => (
+          <li key={l.key} className="grid grid-cols-[3.5rem_minmax(0,1fr)_auto] items-center gap-3 text-small">
+            <span className="relative">
+              <Image src={photo(l.item.photo, 160)} width={160} height={200} alt="" aspect="4/5" rounded="ui" sizes="56px" />
+              <span className="absolute -end-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-fg text-[11px] font-medium text-scene tabular" aria-hidden>
+                {l.qty}
               </span>
-              <span className="min-w-0">
-                <span className="block truncate text-fg">{t(item.name)}</span>
-                <span className="block truncate text-[12px] text-fg-muted">
-                  {c(`Qty ${l.qty}`, `${l.qty} adet`)}
-                  {item.option ? ` · ${t(item.option)}` : ""}
-                </span>
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-fg">{t(l.item.name)}</span>
+              <span className="block truncate text-[12px] text-fg-muted">
+                {c(`Qty ${l.qty}`, `${l.qty} adet`)}
+                {l.item.option ? ` · ${t(l.item.option)}` : ""}
               </span>
-              <span className="tabular text-fg">{money(times(item.price, l.qty))}</span>
-            </li>
-          );
-        })}
+            </span>
+            <span className="tabular text-fg">{money(l.item.price * l.qty)}</span>
+          </li>
+        ))}
       </ul>
-      <SummaryRows
-        totals={totals}
-        couponCode={cart.coupon?.code}
-        shippingLabel={abroad ? c("International tracked", "Uluslararası takipli") : t(method.name)}
-        feeLabel={c("Pay-at-door fee", "Kapıda ödeme bedeli")}
-      />
+      <SummaryRows totals={totals} shippingLabel={t(delivery.name)} />
     </div>
   );
+
+  const busy = status === "placing" || status === "redirecting";
 
   return (
     <StoreContainer className="pt-6 lg:pt-10">
@@ -315,6 +350,20 @@ export function CheckoutPage() {
             <Eyebrow className="mb-2">{c("Step 2 of 3 · Checkout", "Adım 2 / 3 · Ödeme")}</Eyebrow>
             <h1 className="font-display text-display-l text-fg">{c("Checkout", "Ödeme")}</h1>
           </div>
+
+          {paymentFailed ? (
+            <Alert tone="danger" live="assertive" className="mb-8" title={c("Your payment didn’t go through", "Ödemeniz tamamlanamadı")}>
+              {c("Nothing was charged and your cart is still here. Check the card details or try another card.", "Hiçbir tutar çekilmedi, sepetiniz duruyor. Kart bilgilerini kontrol edin ya da başka bir kart deneyin.")}
+            </Alert>
+          ) : null}
+
+          {cart.kit.ready && live.length === 0 ? (
+            <Alert tone="info" live="polite" className="mb-8" title={c("Your cart is empty", "Sepetiniz boş")}>
+              <a href={storeHref.product} className="rounded-ui-sm underline underline-offset-4 focus-ring">
+                {c("Add something to check out", "Ödeme için bir ürün ekleyin")}
+              </a>
+            </Alert>
+          ) : null}
 
           {/* Mobile: the summary collapses above the form, the total stays visible. */}
           <div className="surface mb-8 rounded-ui-lg lg:hidden">
@@ -338,7 +387,7 @@ export function CheckoutPage() {
             ) : null}
           </div>
 
-          <form ref={formRef} noValidate onSubmit={submit} aria-label={c("Checkout", "Ödeme")} className="flex flex-col gap-9">
+          <form ref={formRef} noValidate onSubmit={submit} aria-label={c("Checkout", "Ödeme")} aria-busy={busy || undefined} className="flex flex-col gap-9">
             <Step n={1} id="co-contact" title={c("Contact", "İletişim")} aside={<a href="#" className="rounded-ui-sm text-small text-fg-muted underline underline-offset-4 hover:text-fg focus-ring">{c("Have an account? Sign in", "Hesabınız var mı? Giriş yapın")}</a>}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label={c("Email", "E-posta")} error={err("email")} hint={err("email") ? undefined : c("For the receipt and delivery updates.", "Makbuz ve teslimat bilgileri için.")} required id="co-email">
@@ -353,29 +402,16 @@ export function CheckoutPage() {
 
             <Step n={2} id="co-delivery" title={c("Delivery", "Teslimat")}>
               <div className="flex flex-col gap-6">
-                <Field label={c("Delivery method", "Teslimat yöntemi")}>
-                  <RadioGroup value={shippingId} onValueChange={(v) => set({ shippingId: v as ShippingId })} variant="card" className="grid gap-2">
-                    {shippingMethods.map((m) => {
-                      const disabled = abroad && m.id === "express";
-                      const price = abroad && m.id === "standard" ? INTERNATIONAL : m.id === "standard" && totals.toFreeShipping === "0.00" ? "0.00" : m.price;
-                      return (
-                        <RadioGroupItem
-                          key={m.id}
-                          value={m.id}
-                          disabled={disabled}
-                          icon={m.id === "pickup" ? <PackageOpen aria-hidden /> : <Truck aria-hidden />}
-                          label={
-                            <span className="flex w-full flex-wrap items-baseline justify-between gap-x-3">
-                              <span>{abroad && m.id === "standard" ? c("International tracked", "Uluslararası takipli") : t(m.name)}</span>
-                              <span className="tabular font-normal text-fg">{price === "0.00" ? c("Free", "Ücretsiz") : money(price)}</span>
-                            </span>
-                          }
-                          description={disabled ? c("Only within Türkiye", "Yalnızca Türkiye içi") : m.id === "pickup" ? t(m.carrier) : `${eta(m.id)} · ${abroad && m.id === "standard" ? c("Duties may be charged on arrival", "Varışta gümrük vergisi alınabilir") : t(m.carrier)}`}
-                        />
-                      );
-                    })}
-                  </RadioGroup>
-                </Field>
+                <div className="flex items-start gap-3 rounded-ui-lg border border-line p-4 text-small">
+                  <Truck aria-hidden className="mt-0.5 size-4 shrink-0 text-fg-muted" />
+                  <p className="min-w-0 flex-1 text-fg-muted">
+                    <span className="flex flex-wrap items-baseline justify-between gap-x-3">
+                      <span className="font-medium text-fg">{t(delivery.name)}</span>
+                      <span className="tabular text-fg">{totals.shipping === 0 ? c("Free", "Ücretsiz") : money(totals.shipping)}</span>
+                    </span>
+                    {eta} · {t(delivery.carrier)}
+                  </p>
+                </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label={c("First name", "Ad")} error={err("firstName")} required id="co-first">
@@ -386,95 +422,36 @@ export function CheckoutPage() {
                   </Field>
                 </div>
 
-                {form.shippingId === "pickup" ? (
-                  <div className="flex items-start gap-3 rounded-ui-lg bg-surface-2 p-4 text-small">
-                    <PackageOpen aria-hidden className="mt-0.5 size-4 shrink-0 text-fg-muted" />
-                    <p className="text-fg-muted">
-                      <span className="block font-medium text-fg">{c("Kiln & Linen studio", "Kiln & Linen atölyesi")}</span>
-                      {c("Moda Cad. No: 00, Kadıköy / İstanbul · Mon–Sat 10:00–19:00. Bring the order number or the SMS.", "Moda Cad. No: 00, Kadıköy / İstanbul · Pzt–Cmt 10:00–19:00. Sipariş numarasını ya da SMS’i getirin.")}
-                    </p>
-                  </div>
-                ) : (
-                  <div onBlur={(e) => { const n = (e.target as HTMLInputElement).name?.match(/^ship\[(\w+)\]$/)?.[1]; if (n) touch(`ship.${n}`); }}>
-                    <AddressField
-                      legend={c("Delivery address", "Teslimat adresi")}
-                      name="ship"
-                      value={form.ship}
-                      onValueChange={(a) => set({ ship: a })}
-                      required={["region1", "region2", "line1"]}
-                      errors={addrErr("ship")}
-                    />
-                    {abroad ? <p className="mt-3 text-[12px] text-fg-muted">{c("We ship to 38 countries with a tracked courier. Prices exclude any import duties.", "38 ülkeye takipli kargoyla gönderiyoruz. Fiyatlara gümrük vergileri dahil değildir.")}</p> : null}
-                  </div>
-                )}
+                <div onBlur={(e) => { const n = (e.target as HTMLInputElement).name?.match(/^ship\[(\w+)\]$/)?.[1]; if (n) touch(`ship.${n}`); }}>
+                  <AddressField
+                    legend={c("Delivery address", "Teslimat adresi")}
+                    name="ship"
+                    countries={["TR"]}
+                    value={form.ship}
+                    onValueChange={(a) => set({ ship: a })}
+                    required={["region1", "region2", "line1"]}
+                    errors={addrErr}
+                  />
+                  <p className="mt-3 text-[12px] text-fg-muted">{c("We deliver anywhere in Türkiye.", "Türkiye’nin her yerine teslim ediyoruz.")}</p>
+                </div>
               </div>
             </Step>
 
             <Step n={3} id="co-payment" title={c("Payment", "Ödeme")} aside={<span className="inline-flex items-center gap-1.5 text-[12px] text-fg-muted"><Lock aria-hidden className="size-3.5" />{c("Encrypted · 3-D Secure", "Şifreli · 3D Secure")}</span>}>
-              <div className="flex flex-col gap-6">
-                <Field label={c("Payment method", "Ödeme yöntemi")}>
-                  <RadioGroup value={form.pay} onValueChange={(v) => set({ pay: v as Pay })} variant="card" orientation="horizontal" className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                    <RadioGroupItem value="card" icon={<CreditCard aria-hidden />} label={c("Card", "Kart")} description={c("Debit or credit", "Banka / kredi kartı")} />
-                    <RadioGroupItem value="transfer" icon={<Landmark aria-hidden />} label={c("Bank transfer", "Havale / EFT")} description={c("Reserved for 24 h", "24 saat ayrılır")} />
-                    <RadioGroupItem
-                      value="door"
-                      icon={<Truck aria-hidden />}
-                      label={c("Pay at the door", "Kapıda ödeme")}
-                      description={c(`Cash or card · +${money(PAY_AT_DOOR_FEE)}`, `Nakit ya da kart · +${money(PAY_AT_DOOR_FEE)}`)}
-                      disabled={form.shippingId === "pickup" || abroad}
-                    />
-                  </RadioGroup>
-                </Field>
-
-                {form.pay === "card" ? (
-                  <CardFields
-                    value={form.card}
-                    onChange={(patch) => setForm((p) => ({ ...p, card: { ...p.card, ...patch } }))}
-                    errors={{ name: err("card.name"), number: err("card.number"), exp: err("card.exp"), cvc: err("card.cvc") }}
-                    onBlurField={(k) => touch(`card.${k}`)}
-                    total={totals.total}
-                  />
-                ) : form.pay === "transfer" ? (
-                  <div className="flex flex-col gap-3 rounded-ui-lg bg-surface-2 p-4 text-small">
-                    <p className="text-fg-muted">{c("Transfer the total within 24 hours with your order number as the reference. We ship once it lands — usually within an hour on weekdays.", "Toplam tutarı 24 saat içinde, açıklamaya sipariş numaranızı yazarak gönderin. Ödeme ulaşınca kargolarız — hafta içi genelde bir saat içinde.")}</p>
-                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-ui border border-line bg-surface p-3">
-                      <span className="min-w-0">
-                        <span className="block text-[12px] text-fg-muted">IBAN</span>
-                        <span className="block font-mono text-fg">{STORE.iban}</span>
-                        <span className="block text-[12px] text-fg-muted">{t(STORE.bank)}</span>
-                      </span>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => {
-                          void navigator.clipboard?.writeText(STORE.iban.replace(/\s/g, "")).catch(() => {});
-                          toast.success(c("IBAN copied", "IBAN kopyalandı"));
-                        }}
-                      >
-                        <Copy aria-hidden />
-                        {c("Copy IBAN", "IBAN’ı kopyala")}
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="rounded-ui-lg bg-surface-2 p-4 text-small text-fg-muted">
-                    {c(`Pay the courier in cash or by card when the parcel arrives. A ${money(PAY_AT_DOOR_FEE)} handling fee is added to the total.`, `Paket geldiğinde kuryeye nakit ya da kartla ödeyin. Toplama ${money(PAY_AT_DOOR_FEE)} hizmet bedeli eklenir.`)}
-                  </p>
-                )}
+              <div className="flex items-start gap-3 rounded-ui-lg bg-surface-2 p-4 text-small">
+                <CreditCard aria-hidden className="mt-0.5 size-4 shrink-0 text-fg-muted" />
+                <p className="text-fg-muted">
+                  <span className="block font-medium text-fg">{c("Debit or credit card", "Banka ya da kredi kartı")}</span>
+                  {c(
+                    "After you place the order you enter the card on the payment provider’s secure page, where instalments are offered. Card details never reach this site.",
+                    "Siparişi verdikten sonra kartı ödeme sağlayıcısının güvenli sayfasında girersiniz; taksit seçenekleri orada sunulur. Kart bilgileri bu siteye hiç gelmez.",
+                  )}
+                </p>
               </div>
             </Step>
 
-            <Step n={4} id="co-billing" title={c("Billing & invoice", "Fatura")}>
+            <Step n={4} id="co-billing" title={c("Invoice", "Fatura")}>
               <div className="flex flex-col gap-5">
-                {form.shippingId === "pickup" ? null : (
-                  <Checkbox checked={form.billingSame} onCheckedChange={(v) => set({ billingSame: v === true })} label={c("Billing address is the same as delivery", "Fatura adresi teslimat adresiyle aynı")} />
-                )}
-                {!form.billingSame || form.shippingId === "pickup" ? (
-                  <div onBlur={(e) => { const n = (e.target as HTMLInputElement).name?.match(/^billing\[(\w+)\]$/)?.[1]; if (n) touch(`billing.${n}`); }}>
-                    <AddressField legend={c("Billing address", "Fatura adresi")} name="billing" value={form.billing} onValueChange={(a) => set({ billing: a })} required={["region1", "region2", "line1"]} errors={addrErr("billing")} />
-                  </div>
-                ) : null}
                 <Field label={c("Invoice type", "Fatura tipi")}>
                   <RadioGroup value={form.invoice} onValueChange={(v) => set({ invoice: v as CheckoutForm["invoice"] })} variant="segmented">
                     <RadioGroupItem value="individual" label={c("Individual", "Bireysel")} />
@@ -494,7 +471,7 @@ export function CheckoutPage() {
                     </Field>
                   </div>
                 ) : (
-                  <p className="text-[12px] text-fg-muted">{c("We email an e-Archive invoice with the receipt.", "e-Arşiv faturanızı makbuzla birlikte e-postayla göndeririz.")}</p>
+                  <p className="text-[12px] text-fg-muted">{c("The invoice goes to the delivery address. We email it with the receipt.", "Fatura teslimat adresine düzenlenir; makbuzla birlikte e-postayla göndeririz.")}</p>
                 )}
               </div>
             </Step>
@@ -515,12 +492,26 @@ export function CheckoutPage() {
                   }
                 />
               </Field>
-              <Button type="submit" variant="primary" size="xl" block loading={status === "placing"} disabled={live.length === 0}>
-                {status === "placing" ? c("Placing your order…", "Siparişiniz veriliyor…") : <>{c("Place order", "Siparişi ver")} · <span className="tabular">{money(totals.total)}</span></>}
+              {failure ? (
+                <div ref={failureRef}>
+                  <Alert tone="danger" live="assertive" title={failure.title}>
+                    {failure.body}{" "}
+                    {failure.fixCart ? (
+                      <a href={storeHref.cart} className="rounded-ui-sm underline underline-offset-4 focus-ring">
+                        {c("Edit cart", "Sepeti düzenle")}
+                      </a>
+                    ) : null}
+                  </Alert>
+                </div>
+              ) : null}
+              <Button type="submit" variant="primary" size="xl" block loading={busy} disabled={!cart.kit.ready || live.length === 0}>
+                {status === "redirecting"
+                  ? c("Opening the payment page…", "Ödeme sayfası açılıyor…")
+                  : status === "placing"
+                    ? c("Placing your order…", "Siparişiniz veriliyor…")
+                    : <>{c("Place order", "Siparişi ver")} · <span className="tabular">{money(totals.total)}</span></>}
               </Button>
-              <p className="text-center text-[12px] text-fg-subtle">
-                {form.pay === "card" ? c("Your bank may ask you to confirm with a code by SMS.", "Bankanız SMS ile gelen bir kodla onay isteyebilir.") : c("No payment is taken now.", "Şu anda ödeme alınmaz.")}
-              </p>
+              <p className="text-center text-[12px] text-fg-subtle">{c("Next: the card on a secure payment page. Your bank may ask for a code by SMS.", "Sırada: güvenli ödeme sayfasında kart. Bankanız SMS ile bir kod isteyebilir.")}</p>
             </div>
           </form>
         </div>
@@ -536,12 +527,6 @@ export function CheckoutPage() {
               </a>
             </div>
             {summary}
-            {cart.coupon ? null : (
-              <p className="flex items-center gap-2 text-[12px] text-fg-muted">
-                <Badge tone="outline" shape="square">KILN10</Badge>
-                {c("Have a code? Add it in the cart.", "Kodunuz mu var? Sepette ekleyin.")}
-              </p>
-            )}
           </div>
         </aside>
       </div>

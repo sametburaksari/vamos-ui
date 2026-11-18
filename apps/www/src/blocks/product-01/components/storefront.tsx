@@ -1,8 +1,8 @@
 "use client";
 
 // Storefront chrome shared by the Commerce blocks: the EN / TR locale switch (TRY everywhere),
-// header with the mini-cart drawer, footer, cart line rows, the free-delivery meter and the
-// order summary. Swap `KilnMark` and the nav for your own shop.
+// the kit cart (StoreCartProvider), header with the mini-cart drawer, footer, cart line rows, the
+// free-delivery meter and the order summary. Swap `KilnMark` and the nav for your own shop.
 import * as React from "react";
 import {
   Button,
@@ -21,9 +21,8 @@ import {
 import { tr } from "@vamos-ui/react/locale/tr";
 import { RotateCcw, ShoppingBag, Trash2, Truck } from "lucide-react";
 import { KilnMark } from "../../auth-2fa-setup-01/components/kiln-brand";
-import { FREE_SHIPPING_FROM, itemOf, photo, STORE, times, type ShopItem } from "./catalogue";
-import { CartProvider, useCart, useShop, type CartRow, type Totals } from "./cart-store";
-import type { CartLine } from "./catalogue";
+import { FREE_SHIPPING_FROM, photo, starterLines, STORE, type ShopItem } from "./catalogue";
+import { StoreCartProvider, useShop, useStoreCart, type CartRow, type Totals } from "./cart-store";
 
 export type StoreLang = "en" | "tr";
 
@@ -43,27 +42,19 @@ const nav = [
   { en: "Journal", tr: "Günlük" },
 ];
 
+/** localStorage key of the shop's cart: one key, so every page shares the same cart. */
+export const CART_KEY = "kiln-linen-cart";
+
 /**
- * Page frame: locale (en-US / tr-TR, TRY, Europe/Istanbul), cart state, header, main and footer.
- * `minimal` drops the nav and mini-cart (checkout keeps people on the task).
+ * Page frame: locale (en-US / tr-TR, TRY, Europe/Istanbul), the cart, header, main and footer.
+ * `minimal` drops the nav and mini-cart (checkout keeps people on the task). `demo` (the preview's
+ * block name) gives the preview its own saved cart that starts with a few items.
  */
-export function StoreFrame({
-  children,
-  minimal,
-  initialLines,
-  initialCoupon,
-  defaultLang = "en",
-}: {
-  children: React.ReactNode;
-  minimal?: boolean;
-  initialLines?: CartLine[];
-  initialCoupon?: string | null;
-  defaultLang?: StoreLang;
-}) {
+export function StoreFrame({ children, minimal, demo, defaultLang = "en" }: { children: React.ReactNode; minimal?: boolean; demo?: string; defaultLang?: StoreLang }) {
   const [lang, setLang] = React.useState<StoreLang>(defaultLang);
   return (
     <LocaleProvider locale={lang === "tr" ? "tr-TR" : "en-US"} messages={lang === "tr" ? tr : undefined} currency="TRY" timeZone="Europe/Istanbul">
-      <CartProvider initialLines={initialLines} initialCoupon={initialCoupon}>
+      <StoreCartProvider storageKey={demo ? `vb-demo:${demo}` : CART_KEY} initialLines={demo ? starterLines : undefined}>
         <div lang={lang} className="flex min-h-dvh flex-col bg-scene text-fg">
           <StoreHeader lang={lang} onLang={setLang} minimal={minimal} />
           <main className="flex-1">{children}</main>
@@ -71,7 +62,7 @@ export function StoreFrame({
           {minimal ? null : <MiniCart />}
           <Toaster />
         </div>
-      </CartProvider>
+      </StoreCartProvider>
     </LocaleProvider>
   );
 }
@@ -112,7 +103,7 @@ function LangSwitch({ lang, onLang }: { lang: StoreLang; onLang: (l: StoreLang) 
 
 function StoreHeader({ lang, onLang, minimal }: { lang: StoreLang; onLang: (l: StoreLang) => void; minimal?: boolean }) {
   const { c, t, money } = useShop();
-  const { totals, setOpen } = useCart();
+  const { totals, setOpen } = useStoreCart();
   return (
     <>
       {minimal ? null : (
@@ -188,7 +179,7 @@ function StoreFooter({ minimal }: { minimal?: boolean }) {
 /* ------------------------------------------------------------------ */
 
 /** Price with the sale price first and the old price struck through. */
-export function PriceTag({ price, compareAt, size = "md", className }: { price: string; compareAt?: string; size?: "sm" | "md" | "lg"; className?: string }) {
+export function PriceTag({ price, compareAt, size = "md", className }: { price: number; compareAt?: number; size?: "sm" | "md" | "lg"; className?: string }) {
   const { money, c } = useShop();
   return (
     <span className={cn("inline-flex flex-wrap items-baseline gap-x-2 tabular", className)}>
@@ -210,14 +201,14 @@ export function PriceTag({ price, compareAt, size = "md", className }: { price: 
 export function FreeShippingMeter({ totals, className }: { totals: Totals; className?: string }) {
   const { c, money } = useShop();
   const left = totals.toFreeShipping;
-  const done = left === "0.00";
-  const value = Math.min(Number(totals.afterDiscount), Number(FREE_SHIPPING_FROM));
+  const done = left === 0;
+  const value = Math.min(totals.subtotal, FREE_SHIPPING_FROM);
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       <Progress
         size="xs"
         value={value}
-        max={Number(FREE_SHIPPING_FROM)}
+        max={FREE_SHIPPING_FROM}
         tone={done ? "success" : undefined}
         aria-label={c("Progress to free delivery", "Ücretsiz kargoya ilerleme")}
         label={
@@ -234,8 +225,8 @@ export function FreeShippingMeter({ totals, className }: { totals: Totals; class
 /** One cart line: photo, name, option, quantity stepper, remove (inline undo row once removed). */
 export function CartLineItem({ line, size = "md" }: { line: CartRow; size?: "sm" | "md" }) {
   const { t, c, money } = useShop();
-  const { setQty, remove, restore } = useCart();
-  const item = itemOf(line);
+  const { setQty, remove, restore } = useStoreCart();
+  const item = line.item;
   const name = t(item.name);
   const undoRef = React.useRef<HTMLButtonElement>(null);
   const removeRef = React.useRef<HTMLButtonElement>(null);
@@ -276,14 +267,14 @@ export function CartLineItem({ line, size = "md" }: { line: CartRow; size?: "sm"
             </p>
             {!sm && item.stock > 0 && item.stock <= 20 ? <p className="mt-1 text-[12px] text-warning">{c(`Only ${item.stock} left`, `Son ${item.stock} adet`)}</p> : null}
           </div>
-          <p className="tabular text-fg">{money(times(item.price, line.qty))}</p>
+          <p className="tabular text-fg">{money(item.price * line.qty)}</p>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <NumberInput
             aria-label={c(`Quantity of ${name}`, `${name} adedi`)}
             value={line.qty}
             min={1}
-            max={20}
+            max={Math.max(1, Math.min(20, item.stock))}
             precision={0}
             stepper
             size="sm"
@@ -300,30 +291,15 @@ export function CartLineItem({ line, size = "md" }: { line: CartRow; size?: "sm"
   );
 }
 
-/** Subtotal → discount → shipping → total, with the VAT contained in it. */
-export function SummaryRows({ totals, couponCode, shippingLabel, feeLabel, className }: { totals: Totals; couponCode?: string | null; shippingLabel?: string; feeLabel?: string; className?: string }) {
+/** Subtotal → shipping → total, with the VAT contained in it (all from the kit's priced quote). */
+export function SummaryRows({ totals, shippingLabel, className }: { totals: Totals; shippingLabel?: string; className?: string }) {
   const { c, money } = useShop();
   return (
     <dl className={cn("grid grid-cols-[minmax(0,1fr)_auto] gap-y-2 text-small [&>dd]:ps-6", className)}>
       <dt className="text-fg-muted">{c(`Subtotal · ${totals.count} items`, `Ara toplam · ${totals.count} ürün`)}</dt>
       <dd className="tabular text-end text-fg">{money(totals.subtotal)}</dd>
-      {totals.discount !== "0.00" ? (
-        <>
-          <dt className="text-fg-muted">
-            {c("Discount", "İndirim")}
-            {couponCode ? <span className="ms-1.5 rounded-ui-sm bg-accent-soft px-1.5 py-0.5 font-mono text-[11px] text-accent-ink">{couponCode}</span> : null}
-          </dt>
-          <dd className="tabular text-end text-success">−{money(totals.discount)}</dd>
-        </>
-      ) : null}
       <dt className="text-fg-muted">{shippingLabel ?? c("Delivery", "Kargo")}</dt>
-      <dd className="tabular text-end text-fg">{totals.shipping === "0.00" ? c("Free", "Ücretsiz") : money(totals.shipping)}</dd>
-      {totals.fee !== "0.00" ? (
-        <>
-          <dt className="text-fg-muted">{feeLabel ?? c("Service fee", "Hizmet bedeli")}</dt>
-          <dd className="tabular text-end text-fg">{money(totals.fee)}</dd>
-        </>
-      ) : null}
+      <dd className="tabular text-end text-fg">{totals.shipping === 0 ? c("Free", "Ücretsiz") : money(totals.shipping)}</dd>
       <dt className="mt-2 border-t border-line pt-3 text-body font-medium text-fg">{c("Total", "Toplam")}</dt>
       <dd className="tabular mt-2 border-t border-line pt-3 text-end text-h3 font-medium text-fg">{money(totals.total)}</dd>
       <dt className="sr-only">{c("VAT included", "Dahil KDV")}</dt>
@@ -360,8 +336,8 @@ export function ProductTile({ item, onAdd }: { item: ShopItem; onAdd?: (item: Sh
 /** The header's mini-cart drawer. */
 export function MiniCart() {
   const { c } = useShop();
-  const { lines, totals, open, setOpen } = useCart();
-  const empty = lines.every((l) => l.removed);
+  const { rows, totals, open, setOpen } = useStoreCart();
+  const empty = rows.every((l) => l.removed);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="end" size="md">
@@ -378,7 +354,7 @@ export function MiniCart() {
             <>
               <FreeShippingMeter totals={totals} className="mb-2 rounded-ui bg-surface-2 p-3" />
               <ul aria-label={c("Items in your cart", "Sepetteki ürünler")}>
-                {lines.map((l) => (
+                {rows.map((l) => (
                   <CartLineItem key={l.key} line={l} size="sm" />
                 ))}
               </ul>
