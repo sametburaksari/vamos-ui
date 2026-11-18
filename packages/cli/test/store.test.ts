@@ -84,7 +84,7 @@ describe("vamos-ui site store", () => {
     return dir;
   };
 
-  it("server → next route handlers; static on Cloudflare → edge; static on cPanel → refused; files kept", async () => {
+  it("server → next route handlers; static on Cloudflare → edge; static on cPanel → php; files kept", async () => {
     const { run } = await import("../src/cli");
     const server = project({});
     expect(await run(["site", "store", "--json"], opts(server))).toBe(0);
@@ -98,7 +98,18 @@ describe("vamos-ui site store", () => {
     expect(await run(["site", "store", "--json"], opts(edge))).toBe(0);
     expect(existsSync(path.join(edge, "functions/api/checkout/index.ts"))).toBe(true);
 
-    expect(await run(["site", "store", "--json"], opts(project({ static: true, hosting: "cpanel" })))).not.toBe(0);
+    const cpanel = project({ static: true, hosting: "cpanel" });
+    expect(await run(["site", "store", "--json"], opts(cpanel))).toBe(0);
+    expect(existsSync(path.join(cpanel, "public/api/checkout.php"))).toBe(true);
+    expect(existsSync(path.join(cpanel, "public/api/_store/catalog.json"))).toBe(true);
+    expect(readFileSync(path.join(cpanel, "store/catalog.ts"), "utf8")).toContain('from "../public/api/_store/catalog.json"');
+    expect(existsSync(path.join(cpanel, "functions"))).toBe(false);
+
+    const plain = project({ static: true });
+    expect(await run(["site", "store", "--json"], opts(plain))).not.toBe(0);
+    expect(await run(["site", "store", "--runtime", "php", "--json"], opts(plain))).toBe(0);
+    expect(existsSync(path.join(plain, "public/api/checkout-callback.php"))).toBe(true);
+    expect(await run(["site", "store", "--runtime", "php", "--json"], opts(project({})))).not.toBe(0);
     expect(await run(["site", "store", "--runtime", "next", "--json"], opts(project({ static: true })))).not.toBe(0);
   });
 });

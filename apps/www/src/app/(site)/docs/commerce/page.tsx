@@ -22,6 +22,7 @@ export default function CommercePage() {
         { id: "server", title: "The endpoints", sub: true },
         { id: "paytr", title: "PayTR instead of iyzico" },
         { id: "order-store", title: "Order storage", sub: true },
+        { id: "php", title: "Shared hosting (PHP)", sub: true },
         { id: "orders", title: "Where orders go" },
         { id: "limits", title: "What it does not do yet" },
       ]}
@@ -56,8 +57,9 @@ npx vamos-ui site essentials           # distance-sales contract, pre-informatio
       />
       <P>
         <C>site store</C> picks the runtime: route handlers for a Next.js server (Vercel, a VPS), edge functions for a static
-        export on Cloudflare Pages or Spacefast. A static site on shared hosting has no server to keep the payment keys, so
-        the command refuses it and names the options. It never replaces a file you already have.
+        export on Cloudflare Pages or Spacefast, and PHP endpoints for a static export on shared hosting (cPanel;{" "}
+        <C>--runtime php</C> anywhere else with Apache and PHP, see <A href="#php">Shared hosting</A>). It never replaces a
+        file you already have.
       </P>
       <Table
         head={["Variable", "What"]}
@@ -264,6 +266,51 @@ export const POST = checkout.start;            // app/api/checkout/route.ts
         order email is not acceptable.
       </Callout>
 
+      <H2 id="php">Shared hosting (PHP)</H2>
+      <P>
+        On cPanel the static export is uploaded to <C>public_html</C> and the checkout runs as two PHP files next to it. They
+        follow the same rules as <C>createCheckout</C> (the same prices, VAT shares, cart issues, buyer checks, signed cookie
+        and iyzico signature checks), and the package&apos;s tests run them with a real PHP against the TypeScript core.
+      </P>
+      <Code
+        code={`npx vamos-ui site store --runtime php    # automatic with --host cpanel
+# public/api/checkout.php            POST /api/checkout
+# public/api/checkout-callback.php   POST /api/checkout/callback (routed by public/api/.htaccess)
+# public/api/_store/store.php        the logic; the folder is denied to the web
+# public/api/_store/catalog.json     the products: store/catalog.ts imports this same file
+# store/php-config.example.php       the settings, to copy outside the web root`}
+      />
+      <Steps>
+        <Step title="Products">
+          Edit <C>public/api/_store/catalog.json</C> (prices in minor units, VAT included). The cart reads it at build time
+          and the PHP at payment time, so there is no copy to forget. Rebuild and upload after a price change.
+        </Step>
+        <Step title="Settings">
+          In cPanel&apos;s File Manager, copy <C>store/php-config.example.php</C> to your home directory as{" "}
+          <C>vamos-store-config.php</C> (next to <C>public_html</C>, never inside it), fill in the same variables as above and
+          set its permissions to 600. Another location: put its full path in <C>VAMOS_STORE_CONFIG</C>. Empty values fall
+          back to <C>getenv</C>.
+        </Step>
+        <Step title="PHP">
+          MultiPHP Manager: PHP 8.1 or newer with <C>curl</C> and <C>mbstring</C> (<C>intl</C> for nicer amounts in the
+          emails). The site must be served over HTTPS: the order cookie is <C>Secure</C>.
+        </Step>
+        <Step title="Emails">
+          Orders go out through the host&apos;s <C>mail()</C>, like the contact form sender: <C>ORDER_FROM</C> must be a real
+          mailbox on the site&apos;s domain so SPF and DKIM pass. <C>RESEND_API_KEY</C> is not used. The optional webhook is
+          signed exactly like <C>webhookNotifier</C>.
+        </Step>
+        <Step title="Try it">
+          Locally: <C>next build</C>, then <C>php -S localhost:8080 -t out store/php-dev-router.php</C> with{" "}
+          <C>VAMOS_STORE_CONFIG</C> set. iyzico must reach the callback URL, so test a full payment on the host with sandbox
+          keys and iyzico&apos;s test cards.
+        </Step>
+      </Steps>
+      <P>
+        A marker file per paid order (in <C>STATE_DIR</C>, default the system temp folder) makes the emails go out once even
+        when the same callback is posted twice with the same cookie.
+      </P>
+
       <H2 id="orders">Where orders go</H2>
       <P>
         There is no order database: the business&apos;s email is the record, and the buyer gets a receipt with the same summary
@@ -275,7 +322,10 @@ export const POST = checkout.start;            // app/api/checkout/route.ts
       <H2 id="limits">What it does not do yet</H2>
       <Callout tone="warning" title="Not yet">
         Stock counts, per-customer or single-use codes, shipping carriers and labels, refunds and e-Arşiv invoices are not part of the
-        checkout yet; handle them in the iyzico or PayTR panel and your accounting tool. Test with iyzico&apos;s sandbox and test cards before switching <C>IYZICO_MODE</C> to live.
+        checkout yet; handle them in the iyzico or PayTR panel and your accounting tool. The PHP runtime supports iyzico only and
+        refuses a request that carries a discount code (<C>invalid-cart</C>, <C>coupon-unsupported</C>) instead of charging the
+        full price; it needs Apache (<C>.htaccess</C>) with PHP 8.1+. Test with iyzico&apos;s sandbox and test cards before switching{" "}
+        <C>IYZICO_MODE</C> to live.
       </Callout>
       <P>
         Card handling stays with iyzico or PayTR (<A href="/docs/payments">Payments</A>); the legal pages a Turkish store needs come

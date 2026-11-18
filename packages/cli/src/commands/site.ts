@@ -23,7 +23,7 @@ ${pc.bold("Usage")}
   npx vamos-ui site import <url> [--write]   read a current site into ${SITE_FILE} drafts
   npx vamos-ui site essentials [--dry-run] [--no-install]
   npx vamos-ui site form [--kind php-mail|edge|resend|smtp] [--host <host>] [--to <inbox>] [--from <mailbox>] [--booking] [--dry-run]
-  npx vamos-ui site store [--provider iyzico|paytr] [--runtime next|edge] [--host <host>] [--currency TRY] [--dry-run]
+  npx vamos-ui site store [--provider iyzico|paytr] [--runtime next|edge|php] [--host <host>] [--currency TRY] [--dry-run]
   npx vamos-ui site deploy [--host vercel|netlify|cloudflare|spacefast|cpanel|vps] [--domain <name>] [--www] [--dry-run]
                          [--publish [--yes]] [--project <name>] [--space <space>]
   npx vamos-ui site check [url] [--min-score 90] [--ci] [--json]
@@ -76,10 +76,16 @@ ${pc.bold("site store")} writes an online store's checkout, never replacing a fi
   next   app/api/checkout/route.ts + callback/route.ts for a Next.js server (Vercel, VPS)
   edge   functions/api/checkout/index.ts + callback.ts for static sites on Cloudflare Pages and
          Spacefast
+  php    public/api/checkout.php + checkout-callback.php (routed by public/api/.htaccess) for
+         static exports on shared hosting (Apache + PHP 8.1+, cPanel). The products live in
+         public/api/_store/catalog.json, read by the cart (store/catalog.ts) and by the PHP; the
+         keys in ~/vamos-store-config.php outside the web root (store/php-config.example.php);
+         orders are emailed with the host's mail(). No discount codes.
 The server prices the cart again from the catalog, keeps the order in a signed HttpOnly cookie (no
 database), checks iyzico's signed result against it and emails the business and the buyer once.
-Static sites on shared hosting (cPanel) have no server for the payment keys and are refused.
---provider paytr (default iyzico) writes the PayTR iFrame checkout instead:
+Runtime: --runtime, else next for a Next.js server, edge for a static site on Cloudflare /
+Spacefast, php for a static site on cPanel (--host or the plan); other static sites are refused.
+--provider paytr (default iyzico; next and edge only) writes the PayTR iFrame checkout instead:
   store/checkout.ts    PayTR token, order store, order emails and the optional webhook
   next   app/api/checkout/route.ts + paytr-notify/route.ts; orders in Upstash Redis
          (UPSTASH_REDIS_REST_URL / _TOKEN, or KV_REST_API_URL / _TOKEN from Vercel's Marketplace)

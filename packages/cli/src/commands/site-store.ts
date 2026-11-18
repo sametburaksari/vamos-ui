@@ -7,15 +7,17 @@ import { detectProject } from "../core/project";
 import { CliError } from "../core/types";
 import { PROJECT_FILE, secretCommands, type Hosting } from "../project";
 import { storeFiles, type StoreProvider, type StoreRuntime } from "../project/store";
+import { PHP_CONFIG_NAME } from "../project/store-php";
 import { SITE_FILE } from "../site-info";
 import { p, pc, plural, printJson, type Context } from "../ui";
 import { staticExport } from "./site-form";
 
-const RUNTIMES: StoreRuntime[] = ["next", "edge"];
+const RUNTIMES: StoreRuntime[] = ["next", "edge", "php"];
 const EDGE_HOSTS = ["cloudflare", "spacefast"];
 const PROVIDERS: StoreProvider[] = ["iyzico", "paytr"];
 /** Settings and bindings that are not secrets (no secret command for them). */
 const NOT_SECRET = new Set(["IYZICO_MODE", "PAYTR_TEST_MODE", "ORDERS"]);
+const PHP_HOSTS = ["cpanel"];
 
 function readJson(file: string): Record<string, any> | null {
   try {
@@ -29,7 +31,7 @@ function readJson(file: string): Record<string, any> | null {
  * `site store`: writes the store checkout (catalog, iyzico or PayTR checkout endpoints, order
  * emails). --provider paytr also needs an order store (KV binding or Upstash Redis).
  * Runtime: --runtime, else a Next.js server → next, a static site on Cloudflare Pages or Spacefast
- * → edge. Other static hosting (cPanel) has no server to keep the payment keys: refused with the
+ * → edge, a static site on shared hosting (cPanel) → php. Any other static site is refused with the
  * options. Never replaces a file.
  */
 export async function siteStore(ctx: Context, args: ParsedArgs): Promise<number> {
@@ -47,14 +49,17 @@ export async function siteStore(ctx: Context, args: ParsedArgs): Promise<number>
   if (!runtime) {
     if (!isStatic) [runtime, why] = ["next", "Next.js server"];
     else if (host && EDGE_HOSTS.includes(host)) [runtime, why] = ["edge", `static site on ${host}`];
+    else if (host && PHP_HOSTS.includes(host)) [runtime, why] = ["php", `static site on ${host}`];
     else {
       throw new CliError(
         `A store needs a server to keep the payment keys, and this is a static ${project.framework === "next" ? "export" : "site"}${host ? ` on ${host}` : ""}. ` +
-          "Host it on Cloudflare Pages or Spacefast (--host cloudflare: checkout runs as edge functions next to the static files), or run Next.js as a server (remove output: \"export\"; Vercel or a VPS).",
+          "Host it on Cloudflare Pages or Spacefast (--host cloudflare: checkout runs as edge functions next to the static files), on shared hosting with PHP (--host cpanel or --runtime php), or run Next.js as a server (remove output: \"export\"; Vercel or a VPS).",
       );
     }
   }
-  if (runtime === "next" && isStatic) throw new CliError('--runtime next needs a Next.js server, but this project is a static export. Use --runtime edge on Cloudflare Pages or Spacefast.');
+  if (runtime === "next" && isStatic) throw new CliError("--runtime next needs a Next.js server, but this project is a static export. Use --runtime edge on Cloudflare Pages or Spacefast, or --runtime php on shared hosting.");
+  if (provider === "paytr" && runtime === "php") throw new CliError("--provider paytr needs an order store (Cloudflare KV or Upstash Redis) and runs on the next or edge runtime; the PHP runtime supports iyzico only.");
+  if (runtime === "php" && !isStatic) throw new CliError("--runtime php is for a static export served by Apache with PHP (cPanel). This project runs Next.js as a server: use --runtime next, or set output: \"export\" first.");
 
   const lang = (str(args.flags, "lang") ?? (String(site?.locale ?? "").startsWith("en") ? "en" : "tr")) as "tr" | "en";
   if (lang !== "tr" && lang !== "en") throw new CliError("--lang must be tr or en.");
@@ -86,7 +91,8 @@ export async function siteStore(ctx: Context, args: ParsedArgs): Promise<number>
     written.push(rel);
   }
   const secretNames = Object.keys(result.env).filter((k) => !NOT_SECRET.has(k));
-  const secrets = host ? secretCommands(host as Hosting, secretNames, { project: str(args.flags, "project"), space: str(args.flags, "space") }) : [];
+  // php reads a config file outside the web root (the notes say where), not host environment variables.
+  const secrets = host && runtime !== "php" ? secretCommands(host as Hosting, secretNames, { project: str(args.flags, "project"), space: str(args.flags, "space") }) : [];
   if (ctx.json) {
     printJson({ runtime, provider, reason: why, written: dryRun ? [] : written, planned: written, kept, env: result.env, optionalEnv: result.optionalEnv, notes: result.notes, ...(host ? { secretCommands: secrets } : {}) });
     return 0;
@@ -97,7 +103,7 @@ export async function siteStore(ctx: Context, args: ParsedArgs): Promise<number>
     [...written.map((f) => `${dryRun ? pc.dim("+") : pc.green("+")} ${f}`), ...kept.map((f) => `${pc.dim("=")} ${f} ${pc.dim("kept, already there")}`)].join("\n"),
     dryRun ? "Store checkout (dry run)" : "Store checkout",
   );
-  p.log.info(`Environment:\n${Object.entries(result.env).map(([k, v]) => `  ${k}  ${pc.dim(v)}`).join("\n")}\n${pc.dim("Optional:")}\n${Object.entries(result.optionalEnv).map(([k, v]) => `  ${k}  ${pc.dim(v)}`).join("\n")}`);
+  p.log.info(`${runtime === "php" ? `Settings (~/${PHP_CONFIG_NAME} outside the web root, or getenv)` : "Environment"}:\n${Object.entries(result.env).map(([k, v]) => `  ${k}  ${pc.dim(v)}`).join("\n")}\n${pc.dim("Optional:")}\n${Object.entries(result.optionalEnv).map(([k, v]) => `  ${k}  ${pc.dim(v)}`).join("\n")}`);
   if (secrets.length) p.log.info(`${lang === "tr" ? `${host} üzerinde gizli değerler (her komut değeri sorar)` : `Secrets on ${host} (each command asks for the value)`}:\n${secrets.map((c) => `  ${c}`).join("\n")}`);
   for (const note of result.notes) p.log.message(note);
   p.outro(dryRun ? "Dry run: nothing was written." : written.length ? `Wrote ${plural(written.length, "file")}.` : "Nothing to write.");

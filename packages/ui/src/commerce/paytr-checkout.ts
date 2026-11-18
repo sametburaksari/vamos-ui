@@ -56,6 +56,8 @@ export interface PaytrCheckoutConfig {
   /** Runs once when PayTR reports a payment for an order the store does not have (expired, another store). */
   onOrphanPayment?: (info: { merchantOid: string; totalAmount?: string }) => Promise<void> | void;
   log?: (message: string, detail?: unknown) => void;
+  /** Clock for discount-code date windows (tests). Default: now. */
+  now?: () => Date;
 }
 
 const json = (status: number, data: unknown, headers: Record<string, string> = {}) =>
@@ -109,7 +111,8 @@ export function createPaytrCheckout(config: PaytrCheckoutConfig) {
     const lines = Array.isArray(body.lines)
       ? (body.lines as Record<string, unknown>[]).map((l): CartLine => ({ productId: String(l?.productId ?? ""), variantId: l?.variantId ? String(l.variantId) : undefined, qty: Number(l?.qty) }))
       : [];
-    const priced = priceCart(config.catalog, lines);
+    const coupon = typeof body.coupon === "string" ? body.coupon.trim().slice(0, 64) : "";
+    const priced = priceCart(config.catalog, lines, { coupon, now: config.now?.() ?? new Date() });
     if (!priced.ok) return json(422, { error: "invalid-cart", issues: priced.issues });
     const { quote } = priced;
     const { buyer, invalid } = readBuyer(body.buyer, quote.physical);
@@ -127,7 +130,8 @@ export function createPaytrCheckout(config: PaytrCheckoutConfig) {
     }
 
     const base = origin(request);
-    const basket = quote.lines.map((l) => ({ name: l.name.slice(0, 120), price: toDecimal(l.unit), quantity: l.qty }));
+    // A discounted line is listed once at what it is charged, so the basket adds up to the amount.
+    const basket = quote.lines.map((l) => (l.discount > 0 ? { name: `${l.qty} × ${l.name}`.slice(0, 120), price: toDecimal(l.total - l.discount), quantity: 1 } : { name: l.name.slice(0, 120), price: toDecimal(l.unit), quantity: l.qty }));
     if (quote.shipping > 0) basket.push({ name: quote.shippingLabel, price: toDecimal(quote.shipping), quantity: 1 });
     try {
       const { token, iframeUrl } = await createPaytrIframeToken(config.paytr, {

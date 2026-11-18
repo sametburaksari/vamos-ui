@@ -24,7 +24,7 @@ const snapshot = (id: string): OrderSnapshot => ({
   createdAt: "2026-11-18T10:00:00.000Z",
   locale: "tr",
   buyer,
-  quote: { currency: "TRY", lines: [], subtotal: 100_00, shipping: 0, shippingLabel: "Kargo", vatByRate: {}, vat: 16_67, total: 100_00, physical: false },
+  quote: { currency: "TRY", lines: [], subtotal: 100_00, shipping: 0, shippingLabel: "Kargo", discount: 0, vatByRate: {}, vat: 16_67, total: 100_00, physical: false },
 });
 
 describe("memoryOrderStore", () => {
@@ -184,6 +184,21 @@ describe("createPaytrCheckout", () => {
     expect(sent.merchant_fail_url).toBe("https://kiln.test/checkout?payment=failed");
     expect(JSON.stringify(sent)).not.toContain(PAYTR.merchantSalt);
     expect((await store.get(data.order))?.quote.total).toBe(459_80);
+  });
+
+  it("start charges the discounted total for a discount code and refuses an unknown code", async () => {
+    tokenCalls.length = 0;
+    const store = memoryOrderStore();
+    const checkout = createPaytrCheckout({ catalog: { ...catalog, coupons: [{ code: "ONLUK", kind: "amount", value: 10_00 }] }, paytr: { ...PAYTR, fetch: paytrFetch }, store, log: () => {} });
+    const res = await checkout.start(startRequest({ lines: [{ productId: "mug", variantId: "ink", qty: 1 }], buyer, coupon: "onluk" }));
+    expect(res.status).toBe(200);
+    const sent = tokenCalls[0]!;
+    // 379.90 − 10.00 + 79.90 shipping
+    expect(sent.payment_amount).toBe("44980");
+    const basket = JSON.parse(Buffer.from(sent.user_basket!, "base64").toString("utf8")) as [string, string, number][];
+    expect(basket.reduce((s, [, p, q]) => s + Math.round(Number(p) * 100) * q, 0)).toBe(449_80);
+    const bad = await checkout.start(startRequest({ lines: [{ productId: "mug", variantId: "ink", qty: 1 }], buyer, coupon: "NOPE" }));
+    expect([bad.status, ((await bad.json()) as { error: string }).error]).toEqual([422, "invalid-cart"]);
   });
 
   it("start refuses other origins, bad carts and non-ASCII emails before calling PayTR", async () => {
