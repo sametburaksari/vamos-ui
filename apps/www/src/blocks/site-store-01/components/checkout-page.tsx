@@ -3,10 +3,10 @@
 import * as React from "react";
 import { Alert, Button, Checkbox, Field, Input, Stepper } from "@vamos-ui/react";
 import { Container, Section, sitePageHref } from "@vamos-ui/react/blocks";
-import type { OrderBuyer } from "@vamos-ui/react/commerce";
+import { isCouponIssue, type OrderBuyer } from "@vamos-ui/react/commerce";
 import type { CheckoutOutcome } from "@vamos-ui/react/commerce/cart";
 import { Truck } from "lucide-react";
-import { CartLineRow, CartTotals, FreeShippingMeter, useStore } from "./store-provider";
+import { CartLineRow, CartTotals, CouponField, FreeShippingMeter, useStore } from "./store-provider";
 
 const copy = {
   title: { en: "Check out", tr: "Ödeme" },
@@ -45,6 +45,7 @@ const copy = {
   terms: { en: "Accept the agreement to continue.", tr: "Devam etmek için sözleşmeyi onaylayın." },
   fixErrors: { en: "A few fields need a look before we can continue.", tr: "Devam etmeden önce birkaç alana bakmak gerekiyor." },
   refused: { en: "The shop could not accept the highlighted fields.", tr: "Mağaza işaretli alanları kabul edemedi." },
+  codeGone: { en: "Your discount code no longer applies. Remove it or try another, then continue.", tr: "İndirim kodunuz artık geçerli değil. Kaldırın ya da başka bir kod deneyin, sonra devam edin." },
   cartChanged: { en: "A piece in your cart is sold out or no longer sold. Check the cart and try again.", tr: "Sepetinizdeki bir parça tükendi ya da artık satılmıyor. Sepeti kontrol edip yeniden deneyin." },
   unavailable: { en: "Payments are unavailable right now. Nothing was charged — try again in a few minutes.", tr: "Ödeme şu an alınamıyor. Hiçbir tutar çekilmedi — birkaç dakika sonra yeniden deneyin." },
   network: { en: "We couldn’t reach the shop. Check your connection and try again. Nothing was charged.", tr: "Mağazaya ulaşılamadı. Bağlantınızı kontrol edip yeniden deneyin. Hiçbir tutar çekilmedi." },
@@ -144,7 +145,7 @@ export function CheckoutPage() {
   };
 
   const failureText = (res: Exclude<CheckoutOutcome, { ok: true }>) =>
-    t(res.error === "invalid-buyer" ? copy.refused : res.error === "invalid-cart" ? copy.cartChanged : res.error === "payment-unavailable" ? copy.unavailable : copy.network);
+    t(res.error === "invalid-buyer" ? copy.refused : res.error === "invalid-cart" ? (res.issues.some(isCouponIssue) ? copy.codeGone : copy.cartChanged) : res.error === "payment-unavailable" ? copy.unavailable : copy.network);
 
   if (returned && "paid" in returned) {
     return (
@@ -297,6 +298,7 @@ export function CheckoutPage() {
                   <CartLineRow key={`${l.productId}:${l.variantId ?? ""}`} line={l} compact />
                 ))}
               </ul>
+              <CouponField />
               <CartTotals />
             </aside>
           </div>

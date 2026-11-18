@@ -20,6 +20,7 @@ export default function CommercePage() {
         { id: "coupons", title: "Discount codes", sub: true },
         { id: "cart", title: "Cart and checkout form" },
         { id: "server", title: "The endpoints", sub: true },
+        { id: "blocks", title: "Return pages for the store blocks", sub: true },
         { id: "paytr", title: "PayTR instead of iyzico" },
         { id: "order-store", title: "Order storage", sub: true },
         { id: "php", title: "Shared hosting (PHP)", sub: true },
@@ -185,6 +186,27 @@ export const POST = checkout.start;            // app/api/checkout/route.ts
         <li><C>notify</C> runs once per order: a refreshed callback lands on the confirmation page without sending the emails again.</li>
         <li>If a payment succeeds but the cookie is gone (blocked cookies, another device), <C>onOrphanPayment</C> receives the iyzico payment id so nothing is lost silently.</li>
       </UL>
+
+      <H2 id="blocks">Return pages for the store blocks</H2>
+      <P>
+        After payment the buyer comes back with <C>?order=…</C> (paid) or <C>?payment=failed</C>. The defaults fit the
+        Commerce blocks: <C>order-confirmation-01</C> at <C>/order/confirmation</C> empties the cart and shows the order,{" "}
+        <C>checkout-01</C> at <C>/checkout</C> explains a failed payment. <C>site-store-01</C> is one page with its own{" "}
+        <C>?page=</C> switch and no confirmation route: its checkout page handles both returns itself, so point both paths at
+        it.
+      </P>
+      <Code
+        code={`// site-store-01 mounted at "/" (use "/shop?page=checkout" if it lives at /shop)
+createCheckout({ catalog, iyzico, orderSecret, successPath: "/?page=checkout", failurePath: "/?page=checkout" });
+
+// PayTR: the same with okPath / failPath
+createPaytrCheckout({ catalog, paytr, store, okPath: "/?page=checkout", failPath: "/?page=checkout" });`}
+      />
+      <P>
+        The query keeps the page: the buyer lands on <C>/?page=checkout&amp;order=…</C>, sees the thank-you state and the cart is
+        cleared; <C>/?page=checkout&amp;payment=failed</C> keeps the cart and shows why. Each block takes <C>demo</C> for the docs
+        gallery (its own cart, no request); leave it off in your app.
+      </P>
 
       <H2 id="paytr">PayTR instead of iyzico</H2>
       <Code

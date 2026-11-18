@@ -7,7 +7,7 @@ import { Check, Copy, MessageSquareText, PackageCheck, Printer, UserRound } from
 import { customers } from "../../_shared/orders";
 import { NOW } from "../../_shared/time";
 import { businessDay, catalog, delivery, itemOf, photo, starterLines, STORE } from "../../product-01/components/catalogue";
-import { readOrderSummary, useShop, useStoreCart, type Totals } from "../../product-01/components/cart-store";
+import { readOrderSummary, totalsOfQuote, useShop, useStoreCart } from "../../product-01/components/cart-store";
 import { Eyebrow, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
 
 /** What the page shows about one order. Only `number` is certain: the rest comes from this tab. */
@@ -23,10 +23,10 @@ interface OrderView {
   payment?: { brand: string; last4: string; installments: number };
 }
 
-/** The demo order: the starter cart, standard delivery, card in 3 instalments. */
+/** The demo order: the starter cart with KILN10, standard delivery, card in 3 instalments. */
 function demoOrder(): OrderView {
   const customer = customers[0]!;
-  const priced = priceCart(catalog, starterLines);
+  const priced = priceCart(catalog, starterLines, { coupon: "KILN10" });
   return {
     number: "KL-30418",
     placedAt: NOW,
@@ -39,7 +39,6 @@ function demoOrder(): OrderView {
   };
 }
 
-const totalsOf = (q: Quote): Totals => ({ count: q.lines.reduce((n, l) => n + l.qty, 0), subtotal: q.subtotal, shipping: q.shipping, total: q.total, vat: q.vat, toFreeShipping: 0 });
 
 type PageState = { kind: "loading" } | { kind: "order"; view: OrderView } | { kind: "failed" } | { kind: "none" };
 
@@ -106,7 +105,7 @@ function Confirmed({ order: ORDER }: { order: OrderView }) {
   const [account, setAccount] = React.useState<"idle" | "done">("idle");
   const [password, setPassword] = React.useState("");
   const [pwError, setPwError] = React.useState<string | null>(null);
-  const totals = ORDER.quote ? totalsOf(ORDER.quote) : null;
+  const totals = ORDER.quote ? totalsOfQuote(ORDER.quote) : null;
   const first = ORDER.firstName;
   const arrives = f.dateRange(businessDay(delivery.days[0]), businessDay(delivery.days[1]), { weekday: "short", day: "numeric", month: "short" });
   const monthly = totals && ORDER.payment ? money(Math.round(totals.total / ORDER.payment.installments)) : null;

@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { AddressField, Alert, Button, Checkbox, cn, Field, formatAddress, Image, Input, PhoneInput, RadioGroup, RadioGroupItem, TaxIdInput, toast, useLocale, type Address } from "@vamos-ui/react";
-import type { OrderBuyer } from "@vamos-ui/react/commerce";
+import { isCouponIssue, type OrderBuyer } from "@vamos-ui/react/commerce";
 import type { CheckoutOutcome } from "@vamos-ui/react/commerce/cart";
 import { Building2, Check, ChevronDown, CreditCard, Lock, Truck } from "lucide-react";
 import { businessDay, delivery, photo } from "../../product-01/components/catalogue";
 import { saveOrderSummary, useShop, useStoreCart } from "../../product-01/components/cart-store";
-import { Eyebrow, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
+import { CouponForm, Eyebrow, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
 
 interface CheckoutForm {
   email: string;
@@ -133,6 +133,8 @@ function failureOf(res: Exclude<CheckoutOutcome, { ok: true }>, c: C): Failure {
     case "invalid-buyer":
       return { title: c("Check the highlighted fields", "İşaretli alanları kontrol edin"), body: c("The store could not accept some of your details.", "Mağaza bazı bilgilerinizi kabul edemedi.") };
     case "invalid-cart":
+      if (res.issues.some(isCouponIssue))
+        return { title: c("Your discount code no longer applies", "İndirim kodunuz artık geçerli değil"), body: c("Remove it or try another code, then place the order again.", "Kodu kaldırın ya da başka bir kod deneyin, sonra siparişi yeniden verin.") };
       return { title: c("Your cart changed", "Sepetiniz değişti"), body: c("An item is sold out or no longer sold. Edit the cart, then place the order again.", "Bir ürün tükendi ya da artık satılmıyor. Sepeti düzenleyip siparişi yeniden verin."), fixCart: true };
     case "payment-unavailable":
       return { title: c("Payments are unavailable right now", "Ödeme şu an alınamıyor"), body: c("Nothing was charged. Try again in a few minutes.", "Hiçbir tutar çekilmedi. Birkaç dakika sonra yeniden deneyin.") };
@@ -336,6 +338,7 @@ export function CheckoutPage({ demo = false }: { demo?: boolean }) {
           </li>
         ))}
       </ul>
+      <CouponForm />
       <SummaryRows totals={totals} shippingLabel={t(delivery.name)} />
     </div>
   );

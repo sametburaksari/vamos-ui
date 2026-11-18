@@ -5,7 +5,7 @@ import { Alert, Button, EmptyState, toast } from "@vamos-ui/react";
 import { Lock, ShoppingBag, Truck } from "lucide-react";
 import { businessDay, delivery, recommendedIds, shopItems, type ShopItem } from "../../product-01/components/catalogue";
 import { useShop, useStoreCart } from "../../product-01/components/cart-store";
-import { CartLineItem, Eyebrow, FreeShippingMeter, ProductTile, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
+import { CartLineItem, CouponForm, Eyebrow, FreeShippingMeter, ProductTile, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
 
 /** Cart page: lines with quantity + remove / undo, free delivery meter, summary, recommendations. */
 export function CartPage() {
@@ -101,6 +101,7 @@ export function CartPage() {
                     {t(delivery.carrier)} · {eta}
                   </p>
                 </div>
+                <CouponForm hint={c("Try KILN10", "KILN10’u deneyin")} />
                 <SummaryRows totals={totals} shippingLabel={t(delivery.name)} />
                 <div className="flex flex-col gap-2">
                   <Button asChild variant="primary" size="lg" block>

@@ -1025,13 +1025,24 @@ test.describe("commerce blocks", () => {
     expectClean(errors);
   });
 
-  test("cart-01: quantity unlocks free delivery, remove with undo, empty state", async ({ page }) => {
+  test("cart-01: quantity unlocks free delivery, a bad, a short and a good code, remove with undo, empty state", async ({ page }) => {
     const errors = await open(page, "cart-01");
     await expect(page.getByText(/away from free delivery/)).toBeVisible();
     const mug = page.getByRole("spinbutton", { name: "Quantity of Speckled stoneware mug" });
     await mug.fill("3");
     await mug.press("Tab");
     await expect(page.getByText("Free standard delivery unlocked")).toBeVisible();
+    const code = page.getByRole("textbox", { name: "Discount code" });
+    await code.fill("nope");
+    await page.getByRole("button", { name: "Apply" }).click();
+    await expect(page.getByText("“NOPE” isn’t a valid code.")).toBeVisible();
+    await code.fill("summerkiln");
+    await page.getByRole("button", { name: "Apply" }).click();
+    await expect(page.getByText("“SUMMERKILN” has expired.")).toBeVisible();
+    await code.fill("kiln10");
+    await page.getByRole("button", { name: "Apply" }).click();
+    await expect(page.getByRole("button", { name: "Remove code KILN10" })).toBeVisible();
+    await expect(page.getByText("Discount")).toBeVisible();
     await page.getByRole("button", { name: "Remove Beeswax pillar candles (3)" }).click();
     await expect(page.getByText("Beeswax pillar candles (3) removed from your cart.")).toBeVisible();
     await page.getByRole("button", { name: /^Undo: put Beeswax/ }).click();

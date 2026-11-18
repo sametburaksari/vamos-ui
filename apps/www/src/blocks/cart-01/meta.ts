@@ -3,7 +3,7 @@ import type { BlockMeta } from "../types";
 const meta: BlockMeta = {
   title: "Cart and mini-cart",
   description:
-    "Shopping cart page and mini-cart drawer on the kit cart: line items with a quantity stepper and remove with inline undo, free-delivery progress, standard delivery with dates, order summary priced from the catalog with VAT and shipping, a notice for saved items no longer sold, empty state and recommended items. Saved in localStorage and shared with the product and checkout pages. Discount codes, express delivery and pick-up are not in the checkout core yet. EN / TR, TRY.",
+    "Shopping cart page and mini-cart drawer on the kit cart: line items with a quantity stepper and remove with inline undo, free-delivery progress, a discount code, standard delivery with dates, order summary priced from the catalog with VAT and shipping, a notice for saved items no longer sold, empty state and recommended items. Saved in localStorage and shared with the product and checkout pages. Discount codes with an error per reason (invalid, expired, below the minimum, not for these items) and the discount in the summary. Express delivery and pick-up are not in the checkout core yet. EN / TR, TRY.",
   category: "Commerce",
   order: 20,
   tags: ["site", "ops"],

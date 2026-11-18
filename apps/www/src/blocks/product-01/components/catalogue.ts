@@ -189,6 +189,14 @@ export const catalog: Catalog = {
   currency: "TRY",
   vatRate: VAT_RATE,
   shipping: { flat: SHIPPING_FLAT, freeOver: FREE_SHIPPING_FROM, label: "Standard delivery" },
+  // Fictional demo codes. The catalog is public, so these are readable by anyone: fine for shop-wide
+  // codes, not for single-use or per-customer ones.
+  coupons: [
+    { code: "KILN10", kind: "percent", value: 10 },
+    { code: "WELCOME150", kind: "amount", value: 150_00, minSubtotal: 1000_00 },
+    { code: "LINEN15", kind: "percent", value: 15, categories: ["Textiles"] },
+    { code: "SUMMERKILN", kind: "percent", value: 20, endsAt: "2026-09-01T00:00:00+03:00" },
+  ],
   products: [
     {
       id: PLATE_ID,

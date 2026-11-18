@@ -26,13 +26,13 @@ export function copyFor(locale: SiteLocale) {
 
 /**
  * One currency: the catalog is priced in TRY and the payment page charges TRY, so English
- * visitors see lira too ("TRY 3,400"). A second currency needs its own catalog and checkout.
+ * visitors see lira too ("₺3,400"). A second currency needs its own catalog and checkout.
  */
 export const CURRENCY = "TRY";
 
-/** Minor units through the commerce formatter: 340000 → "₺3.400" / "TRY 3,400". */
+/** Minor units through the commerce formatter: 340000 → "₺3.400" / "₺3,400" (narrow symbol, like ProductCard). */
 export function money(minor: number, locale: SiteLocale) {
-  return formatMoney(minor, CURRENCY, intlOf(locale));
+  return formatMoney(minor, CURRENCY, intlOf(locale), "narrowSymbol");
 }
 
 const unsplash = (id: string, w: number, h: number, focal?: { x: number; y: number }) => ({
@@ -277,6 +277,12 @@ export const catalog: Catalog = {
   currency: CURRENCY,
   vatRate: 20,
   shipping: { flat: SHIPPING, freeOver: FREE_SHIPPING, label: "Standard parcel" },
+  // Fictional demo codes; the catalog is public, so only shop-wide codes belong here.
+  coupons: [
+    { code: "FIRSTFIRING", kind: "percent", value: 10 },
+    { code: "STUDIO250", kind: "amount", value: 250_00, minSubtotal: 2000_00 },
+    { code: "VASEWEEK", kind: "percent", value: 15, categories: ["Vases"] },
+  ],
   products: products.map((p) => ({
     id: p.id,
     name: p.name.en,
@@ -331,6 +337,17 @@ export const ui = {
   ratingLabel: { en: "Rated {r} out of 5", tr: "5 üzerinden {r} puan" },
   fired: { en: "Fired {date}", tr: "Pişirim {date}" },
   continueShopping: { en: "Keep shopping", tr: "Alışverişe devam" },
+  discount: { en: "Discount", tr: "İndirim" },
+  code: { en: "Discount code", tr: "İndirim kodu" },
+  apply: { en: "Apply", tr: "Uygula" },
+  codeHint: { en: "Try FIRSTFIRING", tr: "FIRSTFIRING’i deneyin" },
+  codeEmpty: { en: "Enter a code.", tr: "Bir kod girin." },
+  codeApplied: { en: "Code applied", tr: "Kod uygulandı" },
+  removeCode: { en: "Remove code {code}", tr: "{code} kodunu kaldır" },
+  "coupon-invalid": { en: "“{code}” isn’t a valid code.", tr: "“{code}” geçerli bir kod değil." },
+  "coupon-expired": { en: "“{code}” has expired.", tr: "“{code}” kodunun süresi doldu." },
+  "coupon-min-subtotal": { en: "This code needs a subtotal of {amount} or more.", tr: "Bu kod için ara toplam en az {amount} olmalı." },
+  "coupon-not-applicable": { en: "“{code}” doesn’t apply to the pieces in your cart.", tr: "“{code}” sepetinizdeki parçalarda geçerli değil." },
 } satisfies Record<string, L>;
 
 export const fill = (s: string, vars: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ""));

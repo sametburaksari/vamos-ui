@@ -9,7 +9,8 @@ import { StoreSite } from "./components/store-site";
  * (@vamos-ui/react/commerce/cart, priced from `catalog` in content.ts), the cart drawer and the
  * selected product live in StoreProvider, above the EN / TR switch. Checkout posts to
  * /api/checkout (`npx vamos-ui site store`); point the endpoint's `successPath` and `failurePath`
- * at this page's checkout ("/?page=checkout") so a paid or failed payment lands back here.
+ * (PayTR: `okPath` / `failPath`) at this page's checkout ("/?page=checkout") so a paid or failed
+ * payment lands back here (see /docs/commerce#blocks).
  * Prices are TRY only: the catalog and the payment page are single-currency.
  * `demo` (the docs preview) gives the preview its own cart and skips the checkout request.
  * Signature: glaze swatches on every product card swap the photo to that glaze.

@@ -7,7 +7,9 @@ import * as React from "react";
 import {
   Button,
   cn,
+  Field,
   Image,
+  Input,
   LocaleProvider,
   NumberInput,
   Progress,
@@ -17,12 +19,13 @@ import {
   SheetFooter,
   SheetHeader,
   Toaster,
+  toast,
 } from "@vamos-ui/react";
 import { tr } from "@vamos-ui/react/locale/tr";
-import { RotateCcw, ShoppingBag, Trash2, Truck } from "lucide-react";
+import { RotateCcw, ShoppingBag, Tag, Trash2, Truck, X } from "lucide-react";
 import { KilnMark } from "../../auth-2fa-setup-01/components/kiln-brand";
 import { FREE_SHIPPING_FROM, photo, starterLines, STORE, type ShopItem } from "./catalogue";
-import { StoreCartProvider, useShop, useStoreCart, type CartRow, type Totals } from "./cart-store";
+import { couponMessage, couponOf, StoreCartProvider, useShop, useStoreCart, type CartRow, type Totals } from "./cart-store";
 
 export type StoreLang = "en" | "tr";
 
@@ -291,13 +294,22 @@ export function CartLineItem({ line, size = "md" }: { line: CartRow; size?: "sm"
   );
 }
 
-/** Subtotal → shipping → total, with the VAT contained in it (all from the kit's priced quote). */
+/** Subtotal → discount → shipping → total, with the VAT contained in it (all from the kit's priced quote). */
 export function SummaryRows({ totals, shippingLabel, className }: { totals: Totals; shippingLabel?: string; className?: string }) {
   const { c, money } = useShop();
   return (
     <dl className={cn("grid grid-cols-[minmax(0,1fr)_auto] gap-y-2 text-small [&>dd]:ps-6", className)}>
       <dt className="text-fg-muted">{c(`Subtotal · ${totals.count} items`, `Ara toplam · ${totals.count} ürün`)}</dt>
       <dd className="tabular text-end text-fg">{money(totals.subtotal)}</dd>
+      {totals.discount > 0 ? (
+        <>
+          <dt className="text-fg-muted">
+            {c("Discount", "İndirim")}
+            {totals.couponCode ? <span className="ms-1.5 rounded-ui-sm bg-accent-soft px-1.5 py-0.5 font-mono text-[11px] text-accent-ink">{totals.couponCode}</span> : null}
+          </dt>
+          <dd className="tabular text-end text-success">−{money(totals.discount)}</dd>
+        </>
+      ) : null}
       <dt className="text-fg-muted">{shippingLabel ?? c("Delivery", "Kargo")}</dt>
       <dd className="tabular text-end text-fg">{totals.shipping === 0 ? c("Free", "Ücretsiz") : money(totals.shipping)}</dd>
       <dt className="mt-2 border-t border-line pt-3 text-body font-medium text-fg">{c("Total", "Toplam")}</dt>
@@ -305,6 +317,73 @@ export function SummaryRows({ totals, shippingLabel, className }: { totals: Tota
       <dt className="sr-only">{c("VAT included", "Dahil KDV")}</dt>
       <dd className="col-span-2 text-end text-[12px] text-fg-subtle">{c(`Includes ${money(totals.vat)} VAT (20%)`, `${money(totals.vat)} KDV (%20) dahildir`)}</dd>
     </dl>
+  );
+}
+
+/**
+ * Discount code entry on the kit cart: apply, an inline error per issue (invalid, expired, below
+ * the minimum, not for these items), and the applied code as a chip with remove. A code that does
+ * not apply yet (below the minimum) stays in the cart and starts working once the cart qualifies.
+ */
+export function CouponForm({ hint }: { hint?: string }) {
+  const { c, money } = useShop();
+  const cart = useStoreCart();
+  const [code, setCode] = React.useState("");
+  const [empty, setEmpty] = React.useState(false);
+  const applied = cart.coupon && !cart.couponIssue ? (couponOf(cart.coupon) ?? null) : null;
+
+  if (applied) {
+    const what = applied.kind === "percent" ? c(`${applied.value}% off`, `%${applied.value} indirim`) : applied.kind === "amount" ? c(`${money(applied.value ?? 0)} off`, `${money(applied.value ?? 0)} indirim`) : c("Free delivery", "Ücretsiz kargo");
+    return (
+      <div className="flex items-center justify-between gap-3 rounded-ui border border-dashed border-line px-3 py-2.5">
+        <p className="flex min-w-0 items-center gap-2 text-small" role="status">
+          <Tag aria-hidden className="size-4 shrink-0 text-accent-ink" />
+          <span className="font-mono text-[12px] tracking-[0.06em] text-fg">{applied.code}</span>
+          <span className="truncate text-fg-muted">{what}</span>
+        </p>
+        <Button variant="ghost" size="icon-xs" onClick={cart.removeCoupon} aria-label={c(`Remove code ${applied.code}`, `${applied.code} kodunu kaldır`)}>
+          <X aria-hidden />
+        </Button>
+      </div>
+    );
+  }
+
+  const error = empty ? c("Enter a code.", "Bir kod girin.") : cart.coupon && cart.couponIssue ? couponMessage(cart.couponIssue.code, cart.coupon, c, money) : null;
+  return (
+    <form
+      noValidate
+      className="flex"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!code.trim()) return setEmpty(true);
+        setEmpty(false);
+        if (!cart.applyCoupon(code)) {
+          setCode("");
+          toast.success(c("Code applied", "Kod uygulandı"));
+        }
+      }}
+    >
+      <Field label={c("Discount code", "İndirim kodu")} hint={error ? undefined : hint} error={error} className="min-w-0 flex-1">
+        <div className="flex gap-2">
+          <Input
+            value={code}
+            onChange={(e) => {
+              setCode(e.target.value);
+              setEmpty(false);
+              // Editing the code clears the old one's error.
+              if (cart.coupon && cart.couponIssue) cart.removeCoupon();
+            }}
+            autoComplete="off"
+            autoCapitalize="characters"
+            spellCheck={false}
+            className="min-w-0 flex-1 uppercase"
+          />
+          <Button type="submit" variant="secondary">
+            {c("Apply", "Uygula")}
+          </Button>
+        </div>
+      </Field>
+    </form>
   );
 }
 

@@ -7,7 +7,7 @@
 import * as React from "react";
 import { useFormat, useLocale } from "@vamos-ui/react";
 import type { Address } from "@vamos-ui/react";
-import { formatMoney, priceCart, type CartIssue, type CartLine, type Quote } from "@vamos-ui/react/commerce";
+import { formatMoney, normalizeCouponCode, priceCart, type CartIssue, type CartIssueCode, type CartLine, type Coupon, type Quote } from "@vamos-ui/react/commerce";
 import { CartProvider, useCart, type CartContextValue } from "@vamos-ui/react/commerce/cart";
 import { langOf, tx, type L, type Lang } from "../../_shared/l10n";
 import { catalog, FREE_SHIPPING_FROM, itemOf, type ShopItem } from "./catalogue";
@@ -24,8 +24,8 @@ export function useShop() {
       intl: lang === "tr" ? "tr-TR" : "en-US",
       t: (value: L) => tx(value, lang),
       c: (en: string, tr: string) => (lang === "tr" ? tr : en),
-      /** Minor units in TRY: 119000 → "₺1.190" / "TRY 1,190". */
-      money: (minor: number) => formatMoney(minor, catalog.currency, lang === "tr" ? "tr-TR" : "en-US"),
+      /** Minor units in TRY: 119000 → "₺1.190" / "₺1,190" (narrow symbol in both languages). */
+      money: (minor: number) => formatMoney(minor, catalog.currency, lang === "tr" ? "tr-TR" : "en-US", "narrowSymbol"),
       /** A date-only value ("2026-11-20") as "Fri 20 Nov" / "20 Kas Cum". */
       date: (ymd: string, o: Intl.DateTimeFormatOptions = { weekday: "short", day: "numeric", month: "short" }) => f.date(ymd, o),
     }),
@@ -43,7 +43,12 @@ export interface CartRow extends CartLine {
 /** Money in minor units, from the kit's priced quote. */
 export interface Totals {
   count: number;
+  /** Before the discount. */
   subtotal: number;
+  /** From the discount code (0 without one). */
+  discount: number;
+  /** The code behind `discount`, as the catalog writes it. */
+  couponCode?: string;
   shipping: number;
   total: number;
   /** VAT contained in `total` (products and shipping). */
@@ -63,6 +68,12 @@ interface StoreCartValue {
   issues: CartIssue[];
   /** Removes the lines listed in `issues`. */
   dropUnavailable: () => void;
+  /** The discount code in the cart (may not apply: see `couponIssue`). */
+  coupon: string | null;
+  couponIssue: CartIssue | null;
+  /** Applies a code; returns why it does not apply, or null. */
+  applyCoupon: (code: string) => CartIssue | null;
+  removeCoupon: () => void;
   open: boolean;
   setOpen: (open: boolean) => void;
   add: (productId: string, qty: number, variantId?: string) => void;
@@ -79,20 +90,52 @@ export function useStoreCart(): StoreCartValue {
   return v;
 }
 
-/** Totals of the lines the catalog accepts (a stale saved line never blanks the summary). */
-export function totalsOf(lines: CartLine[], bad: Set<number> = new Set()): Totals {
-  const ok = lines.filter((_, i) => !bad.has(i));
-  const priced = ok.length ? priceCart(catalog, ok) : null;
-  const q = priced?.ok ? priced.quote : null;
+/** Summary rows from a priced quote. */
+export function totalsOfQuote(q: Quote | null, count = q?.lines.reduce((n, l) => n + l.qty, 0) ?? 0): Totals {
   const subtotal = q?.subtotal ?? 0;
   return {
-    count: ok.reduce((n, l) => n + l.qty, 0),
+    count,
     subtotal,
+    discount: q?.discount ?? 0,
+    couponCode: q?.coupon?.code,
     shipping: q?.shipping ?? 0,
     total: q?.total ?? 0,
     vat: q?.vat ?? 0,
+    // Free delivery is judged on the subtotal before the discount, as `priceCart` does.
     toFreeShipping: Math.max(0, FREE_SHIPPING_FROM - subtotal),
   };
+}
+
+/**
+ * Totals of the cart: the kit's quote (with the discount), or — while a stale saved line blocks
+ * it — the lines the catalog still accepts, so the summary never goes blank.
+ */
+function totalsOfCart(kit: CartContextValue, bad: Set<number>): Totals {
+  if (kit.quote) return totalsOfQuote(kit.quote);
+  const ok = kit.lines.filter((_, i) => !bad.has(i));
+  const priced = ok.length ? priceCart(catalog, ok) : null;
+  return totalsOfQuote(priced?.ok ? priced.quote : null, ok.reduce((n, l) => n + l.qty, 0));
+}
+
+/** The catalog's coupon for a typed code. */
+export const couponOf = (code: string | null | undefined): Coupon | undefined =>
+  code ? catalog.coupons?.find((x) => normalizeCouponCode(x.code) === normalizeCouponCode(code)) : undefined;
+
+/** Why a code does not apply, in words (one message per issue code). */
+export function couponMessage(issue: CartIssueCode, code: string, c: (en: string, tr: string) => string, money: (minor: number) => string): string {
+  const shown = code.trim().toUpperCase();
+  switch (issue) {
+    case "coupon-expired":
+      return c(`“${shown}” has expired.`, `“${shown}” kodunun süresi doldu.`);
+    case "coupon-min-subtotal": {
+      const min = couponOf(code)?.minSubtotal ?? 0;
+      return c(`This code needs a subtotal of ${money(min)} or more.`, `Bu kod için ara toplam en az ${money(min)} olmalı.`);
+    }
+    case "coupon-not-applicable":
+      return c(`“${shown}” doesn’t apply to the items in your cart.`, `“${shown}” sepetinizdeki ürünlerde geçerli değil.`);
+    default:
+      return c(`“${shown}” isn’t a valid code.`, `“${shown}” geçerli bir kod değil.`);
+  }
 }
 
 function StoreCart({ children }: { children: React.ReactNode }) {
@@ -115,8 +158,12 @@ function StoreCart({ children }: { children: React.ReactNode }) {
     return {
       kit,
       rows,
-      totals: totalsOf(kit.lines, bad),
+      totals: totalsOfCart(kit, bad),
       issues: kit.issues,
+      coupon: kit.coupon,
+      couponIssue: kit.couponIssue,
+      applyCoupon: kit.applyCoupon,
+      removeCoupon: kit.removeCoupon,
       dropUnavailable: () => kit.issues.forEach((i) => i.index >= 0 && kit.lines[i.index] && kit.remove(kit.lines[i.index]!.productId, kit.lines[i.index]!.variantId)),
       open,
       setOpen,

@@ -325,8 +325,11 @@ export function toDecimal(minor: number): string {
   return `${sign}${Math.floor(abs / 100)}.${String(abs % 100).padStart(2, "0")}`;
 }
 
-/** Formats minor units for display with `Intl.NumberFormat`. */
-export function formatMoney(minor: number, currency: string, locale = "tr-TR"): string {
+/**
+ * Formats minor units for display with `Intl.NumberFormat`. `currencyDisplay` is the Intl option:
+ * default "symbol" (en-US shows "TRY 3,400"); "narrowSymbol" gives "₺3,400" in every locale.
+ */
+export function formatMoney(minor: number, currency: string, locale = "tr-TR", currencyDisplay?: Intl.NumberFormatOptions["currencyDisplay"]): string {
   const whole = minor % 100 === 0;
-  return new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: 2 }).format(minor / 100);
+  return new Intl.NumberFormat(locale, { style: "currency", currency, ...(currencyDisplay ? { currencyDisplay } : {}), minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: 2 }).format(minor / 100);
 }
