@@ -84,10 +84,14 @@ const ident = (s) => s.replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()).r
   }
   for (const n of names) {
     fs.mkdirSync(path.join(viewDir, n), { recursive: true });
+    // A block may ship <name>/preview.tsx (not in meta.files, so never copied): what the gallery
+    // renders instead of page.tsx, e.g. `<Page demo />` for a store block that would otherwise
+    // call a checkout endpoint the static docs site does not have.
+    const entry = fs.existsSync(path.join(dir, n, "preview.tsx")) ? "preview" : "page";
     write(
       path.join(viewDir, n, "page.tsx"),
       header +
-        `import Block from "@/blocks/${n}/page";\nimport meta from "@/blocks/${n}/meta";\nimport { pageMeta } from "@/lib/seo";\n\n` +
+        `import Block from "@/blocks/${n}/${entry}";\nimport meta from "@/blocks/${n}/meta";\nimport { pageMeta } from "@/lib/seo";\n\n` +
         `// Fictional demo content: kept out of search results; /blocks and /websites are the indexable entries.\n` +
         `export const metadata = pageMeta({ title: meta.title, description: meta.description, path: "/view/${n}/", noindex: true });\n\n` +
         `export default function View() {\n  return <Block />;\n}\n`,

@@ -1,66 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { Button, EmptyState, Field, Input, RadioGroup, RadioGroupItem, toast } from "@vamos-ui/react";
-import { Lock, ShoppingBag, Tag, X } from "lucide-react";
-import { businessDay, recommendedIds, shippingMethods, shopItems, type ShippingId, type ShopItem } from "../../product-01/components/catalogue";
-import { useCart, useShop } from "../../product-01/components/cart-store";
-import { CartLineItem, Eyebrow, FreeShippingMeter, ProductTile, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
+import { Alert, Button, EmptyState, toast } from "@vamos-ui/react";
+import { Lock, ShoppingBag, Truck } from "lucide-react";
+import { businessDay, delivery, recommendedIds, shopItems, type ShopItem } from "../../product-01/components/catalogue";
+import { useShop, useStoreCart } from "../../product-01/components/cart-store";
+import { CartLineItem, CouponForm, Eyebrow, FreeShippingMeter, ProductTile, storeHref, StoreContainer, SummaryRows } from "../../product-01/components/storefront";
 
-/** Coupon entry: apply, inline error, applied chip with remove. */
-function CouponForm() {
-  const { c, t } = useShop();
-  const { coupon, applyCoupon, clearCoupon } = useCart();
-  const [code, setCode] = React.useState("");
-  const [error, setError] = React.useState<string | null>(null);
-
-  if (coupon) {
-    return (
-      <div className="flex items-center justify-between gap-3 rounded-ui border border-dashed border-line px-3 py-2.5">
-        <p className="flex min-w-0 items-center gap-2 text-small">
-          <Tag aria-hidden className="size-4 shrink-0 text-accent-ink" />
-          <span className="font-mono text-[12px] tracking-[0.06em] text-fg">{coupon.code}</span>
-          <span className="truncate text-fg-muted">{t(coupon.label)}</span>
-        </p>
-        <Button variant="ghost" size="icon-xs" onClick={clearCoupon} aria-label={c(`Remove code ${coupon.code}`, `${coupon.code} kodunu kaldır`)}>
-          <X aria-hidden />
-        </Button>
-      </div>
-    );
-  }
-
-  return (
-    <form
-      noValidate
-      className="flex"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!code.trim()) return setError(c("Enter a code.", "Bir kod girin."));
-        const r = applyCoupon(code);
-        if (r === "unknown") return setError(c(`“${code.trim().toUpperCase()}” isn’t a valid code.`, `“${code.trim().toUpperCase()}” geçerli bir kod değil.`));
-        if (r === "minimum") return setError(c("This code needs a subtotal of ₺1,000 or more.", "Bu kod için ara toplam en az 1.000 ₺ olmalı."));
-        setError(null);
-        setCode("");
-        toast.success(c("Code applied", "Kod uygulandı"));
-      }}
-    >
-      <Field label={c("Discount code", "İndirim kodu")} hint={error ? undefined : c("Try KILN10", "KILN10’u deneyin")} error={error} className="min-w-0 flex-1">
-        <div className="flex gap-2">
-          <Input value={code} onChange={(e) => { setCode(e.target.value); setError(null); }} autoComplete="off" autoCapitalize="characters" spellCheck={false} className="min-w-0 flex-1 uppercase" />
-          <Button type="submit" variant="secondary">
-            {c("Apply", "Uygula")}
-          </Button>
-        </div>
-      </Field>
-    </form>
-  );
-}
-
-/** Cart page: lines with quantity + remove / undo, coupon, free delivery meter, summary, recommendations. */
+/** Cart page: lines with quantity + remove / undo, free delivery meter, summary, recommendations. */
 export function CartPage() {
-  const { c, t, f, date } = useShop();
-  const cart = useCart();
-  const { lines, totals, shippingId, setShippingId } = cart;
+  const { c, t, f } = useShop();
+  const cart = useStoreCart();
+  const { rows: lines, totals, issues } = cart;
   const live = lines.filter((l) => !l.removed);
   const empty = live.length === 0;
 
@@ -70,11 +21,7 @@ export function CartPage() {
     toast.success(c("Added to your cart", "Sepetinize eklendi"), { description: t(item.name) });
   };
 
-  const eta = (id: ShippingId) => {
-    const m = shippingMethods.find((x) => x.id === id)!;
-    if (m.days[1] === 0) return c("Today", "Bugün");
-    return m.days[0] === m.days[1] ? date(businessDay(m.days[0])) : f.dateRange(businessDay(m.days[0]), businessDay(m.days[1]), { weekday: "short", day: "numeric", month: "short" });
-  };
+  const eta = f.dateRange(businessDay(delivery.days[0]), businessDay(delivery.days[1]), { weekday: "short", day: "numeric", month: "short" });
 
   return (
     <>
@@ -91,13 +38,26 @@ export function CartPage() {
           </Button>
         </div>
 
-        {empty ? (
+        {issues.length ? (
+          <Alert tone="warning" live="assertive" className="mb-6" title={c("Some saved items are no longer sold", "Kayıtlı bazı ürünler artık satılmıyor")}>
+            <span className="flex flex-wrap items-center gap-3">
+              {c("They are left out of the total. Remove them to check out.", "Toplama katılmadılar. Ödemeye geçmek için çıkarın.")}
+              <Button variant="secondary" size="sm" onClick={cart.dropUnavailable}>
+                {c("Remove them", "Çıkar")}
+              </Button>
+            </span>
+          </Alert>
+        ) : null}
+
+        {!cart.kit.ready ? (
+          <div aria-busy="true" className="h-64 animate-pulse rounded-ui-lg bg-surface-2" />
+        ) : empty ? (
           <EmptyState
             size="lg"
             icon={<ShoppingBag aria-hidden />}
             as="h2"
             title={c("Your cart is empty", "Sepetiniz boş")}
-            description={c("Things you add show up here. Your cart is kept for 30 days on this device.", "Eklediğiniz ürünler burada görünür. Sepetiniz bu cihazda 30 gün saklanır.")}
+            description={c("Things you add show up here. Your cart is saved on this device.", "Eklediğiniz ürünler burada görünür. Sepetiniz bu cihazda saklanır.")}
             actions={
               <>
                 <Button asChild variant="primary">
@@ -134,15 +94,15 @@ export function CartPage() {
                 <h2 id="summary-title" className="font-display text-[1.5rem] leading-tight text-fg">
                   {c("Order summary", "Sipariş özeti")}
                 </h2>
-                <Field label={c("Delivery", "Teslimat")}>
-                  <RadioGroup value={shippingId} onValueChange={(v) => setShippingId(v as ShippingId)} size="sm" className="gap-3">
-                    {shippingMethods.map((m) => (
-                      <RadioGroupItem key={m.id} value={m.id} label={t(m.name)} description={eta(m.id)} />
-                    ))}
-                  </RadioGroup>
-                </Field>
-                <CouponForm />
-                <SummaryRows totals={totals} couponCode={cart.coupon?.code} shippingLabel={t(shippingMethods.find((m) => m.id === shippingId)!.name)} />
+                <div className="flex items-start gap-3 text-small">
+                  <Truck aria-hidden className="mt-0.5 size-4 shrink-0 text-fg-muted" />
+                  <p className="text-fg-muted">
+                    <span className="block text-fg">{t(delivery.name)}</span>
+                    {t(delivery.carrier)} · {eta}
+                  </p>
+                </div>
+                <CouponForm hint={c("Try KILN10", "KILN10’u deneyin")} />
+                <SummaryRows totals={totals} shippingLabel={t(delivery.name)} />
                 <div className="flex flex-col gap-2">
                   <Button asChild variant="primary" size="lg" block>
                     <a href={storeHref.checkout}>
@@ -150,7 +110,7 @@ export function CartPage() {
                       {c("Check out securely", "Güvenli ödemeye geç")}
                     </a>
                   </Button>
-                  <p className="text-center text-[12px] text-fg-subtle">{c("Card, bank transfer or pay at the door", "Kart, havale / EFT ya da kapıda ödeme")}</p>
+                  <p className="text-center text-[12px] text-fg-subtle">{c("Debit or credit card, instalments available", "Banka ya da kredi kartı, taksit seçenekli")}</p>
                 </div>
               </div>
             </aside>

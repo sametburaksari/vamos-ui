@@ -3,7 +3,7 @@ import type { BlockMeta } from "../types";
 const meta: BlockMeta = {
   title: "Order confirmation",
   description:
-    "Thank-you page after checkout: order number with copy and print, a progress timeline from placed to delivered with the expected date, next steps (tracking SMS, checking the parcel, returns), create an account from the guest order, and the order summary with address, instalments and VAT. EN / TR, TRY.",
+    "Thank-you page after payment: reads ?order= (empties the kit cart and shows the summary the checkout kept in this tab, or just the order number on another device) and ?payment=failed (a way back to checkout); order number with copy and print, a progress timeline from placed to delivered with the expected date, next steps, create an account from the guest order, and the order summary with the discount, address and VAT. The docs preview passes `demo` for a sample order. EN / TR, TRY.",
   category: "Commerce",
   order: 40,
   tags: ["site", "ops"],

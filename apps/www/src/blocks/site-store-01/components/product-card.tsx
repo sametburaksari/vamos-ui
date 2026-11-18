@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { commerceLabelsTr, ProductCard as KitProductCard, sitePageHref } from "@vamos-ui/react/blocks";
-import { intlOf, ui, type Product } from "./content";
+import { toDecimal } from "@vamos-ui/react/commerce";
+import { CURRENCY, intlOf, ui, type Product } from "./content";
 import { useStore } from "./store-provider";
 
 /**
@@ -11,7 +12,7 @@ import { useStore } from "./store-provider";
  * glaze (the choice lives in state here, so quick add is disabled when that glaze is sold out).
  */
 export function ProductCard({ product, priority, size = "md" }: { product: Product; priority?: boolean; size?: "md" | "lg" }) {
-  const { t, locale, currency, add, select } = useStore();
+  const { t, locale, add, select } = useStore();
   const [chosen, setChosen] = React.useState(0);
   const labels = React.useMemo(
     () => ({
@@ -28,7 +29,7 @@ export function ProductCard({ product, priority, size = "md" }: { product: Produ
       title={t(product.name)}
       href={sitePageHref("product")}
       image={{ ...product.glazes[0]!.photo, alt: t(product.glazes[0]!.alt) }}
-      price={{ amount: product.price[currency], currency }}
+      price={{ amount: toDecimal(product.price), currency: CURRENCY }}
       isNew={product.isNew}
       swatches={product.glazes.map((g) => ({ name: t(g.name), color: g.swatch, image: { ...g.photo, alt: t(g.alt) }, soldOut: g.stock === 0 }))}
       swatchIndex={chosen}

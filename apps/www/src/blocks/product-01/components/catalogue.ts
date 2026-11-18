@@ -1,8 +1,8 @@
 // Storefront data for "Kiln & Linen", the fictional homeware brand of the admin fixtures.
 // Shared by the Commerce blocks (product-01, cart-01, checkout-01, order-confirmation-01).
-// Money is a decimal string in TRY with 20% VAT (KDV) included, summed with the kit's decimal
-// helpers — never floats.
-import { addDecimal, compareDecimal, multiplyDecimal, subtractDecimal } from "@vamos-ui/react/format";
+// `catalog` is what the kit cart and the checkout endpoint price from: integer minor units (kuruş)
+// in TRY with 20% VAT (KDV) included. The rest is display data (names, photos, stock, ratings).
+import type { CartLine, Catalog } from "@vamos-ui/react/commerce";
 import { productsById } from "../../_shared/products";
 import type { L } from "../../_shared/l10n";
 import { day } from "../../_shared/time";
@@ -12,18 +12,18 @@ export { day };
 /** Unsplash photo URL (unbranded product shots also used by the other Kiln & Linen blocks). */
 export const photo = (id: string, w: number, h = Math.round(w * 1.25)) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&q=72&auto=format&fit=crop`;
 
-export const VAT_RATE = "0.20";
-/** Free standard delivery from this subtotal (after discounts). */
-export const FREE_SHIPPING_FROM = "3500.00";
+/** "389.00" → 38900. Fixture prices are decimal strings; the cart works in minor units. */
+export const toMinor = (decimal: string) => {
+  const [whole = "0", frac = ""] = decimal.split(".");
+  return Number(whole) * 100 + Number(frac.padEnd(2, "0").slice(0, 2));
+};
 
-/** VAT contained in a VAT-inclusive amount at 20%: gross × 0.2 / 1.2 = gross / 6. */
-export function vatIncluded(gross: string): string {
-  return multiplyDecimal(gross, "0.166666666667", 2);
-}
-export const times = (unit: string, qty: number) => multiplyDecimal(unit, String(qty));
-export const total = (values: string[]) => addDecimal(values.length ? values : ["0"]);
-export const gte = (a: string, b: string) => compareDecimal(a, b) >= 0;
-export const minus = subtractDecimal;
+export const VAT_RATE = 20;
+/** VAT contained in a VAT-inclusive amount (display only; the receipt uses the priced quote). */
+export const vatIncluded = (gross: number) => Math.round((gross * VAT_RATE) / (100 + VAT_RATE));
+/** Free standard delivery from this subtotal. */
+export const FREE_SHIPPING_FROM = 3500_00;
+export const SHIPPING_FLAT = 89_90;
 
 /* ------------------------------------------------------------------ */
 /* Featured product (product-01)                                        */
@@ -46,9 +46,10 @@ export interface SizeOption {
   id: string;
   name: L;
   detail: L;
-  price: string;
-  /** Price before the sale, when on sale. */
-  compareAt?: string;
+  /** Minor units (kuruş), VAT included. */
+  price: number;
+  /** Price before the sale, when on sale (display only). */
+  compareAt?: number;
 }
 
 export const featured = {
@@ -94,9 +95,9 @@ export const featured = {
     },
   ] satisfies Glaze[],
   sizes: [
-    { id: "side", name: { en: "Side", tr: "Küçük" }, detail: { en: "Ø 21 cm", tr: "Ø 21 cm" }, price: "429.00" },
-    { id: "dinner", name: { en: "Dinner", tr: "Yemek" }, detail: { en: "Ø 27 cm", tr: "Ø 27 cm" }, price: "529.00", compareAt: "629.00" },
-    { id: "platter", name: { en: "Platter", tr: "Servis" }, detail: { en: "Ø 32 cm", tr: "Ø 32 cm" }, price: "749.00" },
+    { id: "side", name: { en: "Side", tr: "Küçük" }, detail: { en: "Ø 21 cm", tr: "Ø 21 cm" }, price: 429_00 },
+    { id: "dinner", name: { en: "Dinner", tr: "Yemek" }, detail: { en: "Ø 27 cm", tr: "Ø 27 cm" }, price: 529_00, compareAt: 629_00 },
+    { id: "platter", name: { en: "Platter", tr: "Servis" }, detail: { en: "Ø 32 cm", tr: "Ø 32 cm" }, price: 749_00 },
   ] satisfies SizeOption[],
   /** Units on hand per glaze × size. */
   stock: {
@@ -139,37 +140,31 @@ export interface ShopItem {
   sku: string;
   name: L;
   option?: L;
-  price: string;
-  compareAt?: string;
+  /** Minor units, VAT included. */
+  price: number;
+  /** Price before the sale (display only). */
+  compareAt?: number;
   photo: string;
   /** 0 = sold out. */
   stock: number;
+  category: string;
 }
 
 const fromFixture = (id: string, option?: L, extra?: Partial<ShopItem>): ShopItem => {
   const p = productsById[id]!;
-  return { id: p.id, sku: p.sku, name: p.name, option, price: p.price.amount, photo: p.photo, stock: p.stock, ...extra };
+  return { id: p.id, sku: p.sku, name: p.name, option, price: toMinor(p.price.amount), photo: p.photo, stock: p.stock, category: p.category, ...extra };
 };
 
+/** Simple products, keyed by their catalog id. The featured plate (with variants) is `PLATE_ID`. */
 export const shopItems: Record<string, ShopItem> = {
   mug: fromFixture("pr-01", { en: "Sand", tr: "Kum" }),
   bowl: fromFixture("pr-03", { en: "Ø 24 cm", tr: "Ø 24 cm" }),
   board: fromFixture("pr-09", { en: "Medium", tr: "Orta" }),
   candles: fromFixture("pr-13"),
-  dish: fromFixture("pr-11", undefined, { compareAt: "1690.00" }),
+  dish: fromFixture("pr-11", undefined, { compareAt: 1690_00 }),
   coffee: fromFixture("pr-10"),
   lantern: fromFixture("pr-07"),
   mirror: fromFixture("pr-12"),
-  plate: {
-    id: "pr-02",
-    sku: "KL-CER-104-DIN",
-    name: featured.name,
-    option: { en: "Dinner Ø 27 cm · Sea salt", tr: "Yemek Ø 27 cm · Deniz tuzu" },
-    price: "529.00",
-    compareAt: "629.00",
-    photo: "1578749556568-bc2c40e68b61",
-    stock: 18,
-  },
 };
 
 /** "Goes with" rail on the product page. */
@@ -178,67 +173,90 @@ export const relatedIds = ["bowl", "mug", "board", "dish"] as const;
 export const recommendedIds = ["coffee", "lantern", "bowl", "board"] as const;
 
 /* ------------------------------------------------------------------ */
-/* Cart, coupons, shipping                                              */
+/* The catalog the cart and the checkout endpoint price from            */
 /* ------------------------------------------------------------------ */
 
-export interface CartLine {
-  key: string;
-  itemId: string;
-  qty: number;
-  /** A specific variant (size / colour) when it differs from the catalogue item. */
-  item?: ShopItem;
+export const PLATE_ID = "plate";
+/** Variant id of the featured plate: glaze + size ("sea-salt.dinner"). */
+export const plateVariant = (glazeId: string, sizeId: string) => `${glazeId}.${sizeId}`;
+
+/**
+ * Put this file (or the `catalog` part of it) where your checkout endpoint can import it: the
+ * server prices every order from it and never from the browser. Names are what the payment page
+ * and the order emails show.
+ */
+export const catalog: Catalog = {
+  currency: "TRY",
+  vatRate: VAT_RATE,
+  shipping: { flat: SHIPPING_FLAT, freeOver: FREE_SHIPPING_FROM, label: "Standard delivery" },
+  // Fictional demo codes. The catalog is public, so these are readable by anyone: fine for shop-wide
+  // codes, not for single-use or per-customer ones.
+  coupons: [
+    { code: "KILN10", kind: "percent", value: 10 },
+    { code: "WELCOME150", kind: "amount", value: 150_00, minSubtotal: 1000_00 },
+    { code: "LINEN15", kind: "percent", value: 15, categories: ["Textiles"] },
+    { code: "SUMMERKILN", kind: "percent", value: 20, endsAt: "2026-09-01T00:00:00+03:00" },
+  ],
+  products: [
+    {
+      id: PLATE_ID,
+      name: featured.name.en,
+      price: featured.sizes[0]!.price,
+      category: "Ceramics",
+      variants: featured.glazes.flatMap((g) =>
+        featured.sizes.map((s) => ({
+          id: plateVariant(g.id, s.id),
+          name: `${s.name.en} ${s.detail.en} · ${g.name.en}`,
+          price: s.price,
+          available: (featured.stock[g.id]?.[s.id] ?? 0) > 0,
+        })),
+      ),
+    },
+    ...Object.entries(shopItems).map(([id, item]) => ({
+      id,
+      name: item.option ? `${item.name.en} · ${item.option.en}` : item.name.en,
+      price: item.price,
+      category: item.category.charAt(0).toUpperCase() + item.category.slice(1),
+      available: item.stock > 0,
+      maxQty: Math.min(20, item.stock),
+    })),
+  ],
+};
+
+/** What a cart line shows: the shop item, or the featured plate in the chosen glaze and size. */
+export function itemOf(line: Pick<CartLine, "productId" | "variantId">): ShopItem | null {
+  if (line.productId !== PLATE_ID) return shopItems[line.productId] ?? null;
+  const [glazeId, sizeId] = (line.variantId ?? "").split(".");
+  const glaze = featured.glazes.find((g) => g.id === glazeId);
+  const size = featured.sizes.find((s) => s.id === sizeId);
+  if (!glaze || !size) return null;
+  return {
+    id: featured.id,
+    sku: `${featured.sku}-${size.id.slice(0, 3).toUpperCase()}-${glaze.id.slice(0, 2).toUpperCase()}`,
+    name: featured.name,
+    option: { en: `${size.name.en} ${size.detail.en} · ${glaze.name.en}`, tr: `${size.name.tr} ${size.detail.tr} · ${glaze.name.tr}` },
+    price: size.price,
+    compareAt: size.compareAt,
+    photo: glaze.photos[0]!.id,
+    stock: featured.stock[glaze.id]?.[size.id] ?? 0,
+    category: "ceramics",
+  };
 }
 
-export const itemOf = (line: CartLine): ShopItem => line.item ?? shopItems[line.itemId]!;
-
-export const starterCart: CartLine[] = [
-  { key: "plate-dinner-sea-salt", itemId: "plate", qty: 4 },
-  { key: "mug-sand", itemId: "mug", qty: 2 },
-  { key: "candles", itemId: "candles", qty: 1 },
+/** What the previews start with, so the cart, checkout and summary show real content. */
+export const starterLines: CartLine[] = [
+  { productId: PLATE_ID, variantId: plateVariant("sea-salt", "dinner"), qty: 4 },
+  { productId: "mug", qty: 2 },
+  { productId: "candles", qty: 1 },
 ];
 
-export interface Coupon {
-  code: string;
-  label: L;
-  kind: "percent" | "fixed";
-  value: string;
-  /** Minimum subtotal. */
-  min?: string;
-}
-
-export const coupons: Coupon[] = [
-  { code: "KILN10", label: { en: "10% off everything", tr: "Her şeyde %10 indirim" }, kind: "percent", value: "0.10" },
-  { code: "WELCOME150", label: { en: "₺150 off your first order over ₺1,000", tr: "1.000 ₺ üzeri ilk siparişe 150 ₺ indirim" }, kind: "fixed", value: "150.00", min: "1000.00" },
-];
-
-export function couponDiscount(coupon: Coupon | null, subtotal: string): string {
-  if (!coupon) return "0.00";
-  if (coupon.min && !gte(subtotal, coupon.min)) return "0.00";
-  return coupon.kind === "percent" ? multiplyDecimal(subtotal, coupon.value) : coupon.value;
-}
-
-export type ShippingId = "standard" | "express" | "pickup";
-
-export interface ShippingMethod {
-  id: ShippingId;
-  name: L;
-  carrier: L;
-  price: string;
+/** The one delivery the catalog charges for. Express or pick-up need their own catalog rules. */
+export const delivery = {
+  name: { en: "Standard delivery", tr: "Standart teslimat" },
+  carrier: { en: "Parcel courier, tracked", tr: "Kargo, takipli" },
   /** Business days from TODAY: [earliest, latest]. */
-  days: [number, number];
-}
-
-export const shippingMethods: ShippingMethod[] = [
-  { id: "standard", name: { en: "Standard delivery", tr: "Standart teslimat" }, carrier: { en: "Parcel courier, tracked", tr: "Kargo, takipli" }, price: "89.90", days: [2, 4] },
-  { id: "express", name: { en: "Express", tr: "Hızlı teslimat" }, carrier: { en: "Same-city courier, order by 14:00", tr: "Şehir içi kurye, 14:00’e kadar" }, price: "149.90", days: [1, 1] },
-  { id: "pickup", name: { en: "Collect from the Kadıköy studio", tr: "Kadıköy atölyesinden teslim al" }, carrier: { en: "Ready in 2 hours, Mon–Sat 10:00–19:00", tr: "2 saatte hazır, Pzt–Cmt 10:00–19:00" }, price: "0.00", days: [0, 0] },
-];
-
-/** Standard is free over the threshold. */
-export function shippingCost(method: ShippingMethod, subtotalAfterDiscount: string): string {
-  if (method.id === "standard" && gte(subtotalAfterDiscount, FREE_SHIPPING_FROM)) return "0.00";
-  return method.price;
-}
+  days: [2, 4] as [number, number],
+};
 
 /** TODAY + n business days (Mon–Fri), YYYY-MM-DD. */
 export function businessDay(n: number): string {
@@ -252,13 +270,9 @@ export function businessDay(n: number): string {
   return day(offset);
 }
 
-export const PAY_AT_DOOR_FEE = "29.90";
-
 /** Fictional studio details. */
 export const STORE = {
   name: "Kiln & Linen",
   phone: "+90 216 000 00 00",
   email: "hello@kilnlinen.example.com",
-  iban: "TR33 0006 1005 1978 6457 8413 26",
-  bank: { en: "Account holder: Kiln & Linen Ev Ürünleri Ltd. Şti.", tr: "Hesap sahibi: Kiln & Linen Ev Ürünleri Ltd. Şti." },
 };

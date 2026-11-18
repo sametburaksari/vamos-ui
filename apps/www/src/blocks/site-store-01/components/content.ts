@@ -1,10 +1,11 @@
 // Sample content for "Kilnhouse", a fictional small-batch ceramics studio in Kuzguncuk.
-// Every human-readable field is `{ en, tr }`; prices are decimal strings per currency.
+// Every human-readable field is `{ en, tr }`. Prices are integer minor units (kuruş) in TRY with
+// 20% VAT included: `catalog` below is what the kit cart and the checkout endpoint price from.
+import type { Catalog } from "@vamos-ui/react/commerce";
+import { formatMoney } from "@vamos-ui/react/commerce";
 import { blockLabelsTr, pickLocale, site1LabelsTr, site2LabelsTr, type Localized } from "@vamos-ui/react/blocks";
-import { createFormatter } from "@vamos-ui/react/format";
 
 export type SiteLocale = "en" | "tr";
-export type Currency = "USD" | "TRY";
 export type L = { en: string; tr: string };
 
 /** Fictional numbers only. */
@@ -12,7 +13,6 @@ export const PHONE = "+902160000000";
 export const EMAIL = "studio@kilnhouse.example.com";
 
 export const intlOf = (locale: SiteLocale) => (locale === "tr" ? "tr-TR" : "en-US");
-export const defaultCurrency = (locale: SiteLocale): Currency => (locale === "tr" ? "TRY" : "USD");
 
 export function copyFor(locale: SiteLocale) {
   const t = (value: Localized<string>) => pickLocale(value, locale) ?? "";
@@ -24,9 +24,15 @@ export function copyFor(locale: SiteLocale) {
   };
 }
 
-/** Money through the kit formatter, whole units (every price in the shop is a round number). */
-export function money(value: number | string, currency: Currency, locale: SiteLocale) {
-  return createFormatter(intlOf(locale), { currency }).currency(value, currency, { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+/**
+ * One currency: the catalog is priced in TRY and the payment page charges TRY, so English
+ * visitors see lira too ("₺3,400"). A second currency needs its own catalog and checkout.
+ */
+export const CURRENCY = "TRY";
+
+/** Minor units through the commerce formatter: 340000 → "₺3.400" / "₺3,400" (narrow symbol, like ProductCard). */
+export function money(minor: number, locale: SiteLocale) {
+  return formatMoney(minor, CURRENCY, intlOf(locale), "narrowSymbol");
 }
 
 const unsplash = (id: string, w: number, h: number, focal?: { x: number; y: number }) => ({
@@ -36,10 +42,9 @@ const unsplash = (id: string, w: number, h: number, focal?: { x: number; y: numb
   ...(focal ? { focal } : null),
 });
 
-/** Free delivery above these subtotals; flat rate below. */
-export const FREE_SHIPPING: Record<Currency, number> = { USD: 75, TRY: 2500 };
-export const SHIPPING: Record<Currency, number> = { USD: 12, TRY: 190 };
-export const COURIER: Record<Currency, number> = { USD: 18, TRY: 290 };
+/** Free delivery from this subtotal; a flat rate below it (minor units). */
+export const FREE_SHIPPING = 2500_00;
+export const SHIPPING = 190_00;
 
 export type Category = "tableware" | "cups" | "vases" | "sets";
 export const categories: { id: Category; label: L; blurb: L }[] = [
@@ -63,7 +68,8 @@ export interface Product {
   id: string;
   name: L;
   category: Category;
-  price: Record<Currency, string>;
+  /** Minor units (kuruş), VAT included. */
+  price: number;
   /** Kiln batch date, `YYYY-MM-DD`. */
   batch: string;
   isNew?: boolean;
@@ -94,7 +100,7 @@ export const products: Product[] = [
     id: "tide-plates",
     name: { en: "Tide dinner plates, set of 4", tr: "Gelgit yemek tabağı, 4’lü" },
     category: "tableware",
-    price: { USD: "98", TRY: "3400" },
+    price: 3400_00,
     batch: "2026-11-03",
     isNew: true,
     rating: 4.9,
@@ -114,7 +120,7 @@ export const products: Product[] = [
     id: "morning-cup",
     name: { en: "Morning cup", tr: "Sabah fincanı" },
     category: "cups",
-    price: { USD: "22", TRY: "780" },
+    price: 780_00,
     batch: "2026-11-05",
     isNew: true,
     rating: 4.8,
@@ -134,7 +140,7 @@ export const products: Product[] = [
     id: "long-neck-bottle",
     name: { en: "Long-neck bottle vase", tr: "Uzun boyunlu şişe vazo" },
     category: "vases",
-    price: { USD: "56", TRY: "1950" },
+    price: 1950_00,
     batch: "2026-10-27",
     rating: 4.9,
     reviews: 33,
@@ -153,7 +159,7 @@ export const products: Product[] = [
     id: "bud-vase-pair",
     name: { en: "Bud vase pair", tr: "Tomurcuk vazo, çift" },
     category: "vases",
-    price: { USD: "36", TRY: "1250" },
+    price: 1250_00,
     batch: "2026-11-05",
     isNew: true,
     rating: 4.7,
@@ -173,7 +179,7 @@ export const products: Product[] = [
     id: "moon-vase",
     name: { en: "Moon vase", tr: "Ay vazo" },
     category: "vases",
-    price: { USD: "69", TRY: "2400" },
+    price: 2400_00,
     batch: "2026-10-20",
     rating: 5,
     reviews: 17,
@@ -189,7 +195,7 @@ export const products: Product[] = [
     id: "everyday-mug",
     name: { en: "Everyday mug", tr: "Her gün kupası" },
     category: "cups",
-    price: { USD: "19", TRY: "690" },
+    price: 690_00,
     batch: "2026-11-01",
     rating: 4.8,
     reviews: 212,
@@ -208,7 +214,7 @@ export const products: Product[] = [
     id: "nesting-bowls",
     name: { en: "Nesting bowls, set of 3", tr: "İç içe kâse, 3’lü" },
     category: "tableware",
-    price: { USD: "46", TRY: "1600" },
+    price: 1600_00,
     batch: "2026-10-30",
     rating: 4.6,
     reviews: 29,
@@ -227,7 +233,7 @@ export const products: Product[] = [
     id: "espresso-pair",
     name: { en: "Espresso pair", tr: "Espresso fincanı, çift" },
     category: "cups",
-    price: { USD: "26", TRY: "920" },
+    price: 920_00,
     batch: "2026-10-24",
     rating: 4.7,
     reviews: 64,
@@ -246,7 +252,7 @@ export const products: Product[] = [
     id: "shelf-collection",
     name: { en: "The open-shelf collection", tr: "Açık raf koleksiyonu" },
     category: "sets",
-    price: { USD: "195", TRY: "6900" },
+    price: 6900_00,
     batch: "2026-11-03",
     isNew: true,
     rating: 4.9,
@@ -262,6 +268,29 @@ export const products: Product[] = [
 ];
 
 export const productById = (id: string) => products.find((p) => p.id === id) ?? products[0]!;
+
+/**
+ * The catalog for the kit cart and the checkout endpoint (`npx vamos-ui site store` writes the
+ * endpoint; import this there). Each glaze is a variant; a sold-out glaze cannot be checked out.
+ */
+export const catalog: Catalog = {
+  currency: CURRENCY,
+  vatRate: 20,
+  shipping: { flat: SHIPPING, freeOver: FREE_SHIPPING, label: "Standard parcel" },
+  // Fictional demo codes; the catalog is public, so only shop-wide codes belong here.
+  coupons: [
+    { code: "FIRSTFIRING", kind: "percent", value: 10 },
+    { code: "STUDIO250", kind: "amount", value: 250_00, minSubtotal: 2000_00 },
+    { code: "VASEWEEK", kind: "percent", value: 15, categories: ["Vases"] },
+  ],
+  products: products.map((p) => ({
+    id: p.id,
+    name: p.name.en,
+    price: p.price,
+    category: categories.find((c) => c.id === p.category)?.label.en ?? "Ceramics",
+    variants: p.glazes.map((g) => ({ id: g.id, name: g.name.en, available: g.stock > 0 })),
+  })),
+};
 
 export const photos = {
   hero: { ...unsplash("1610701596007-11502861dcfa", 1600, 1900), alt: { en: "Morning cups with raw clay feet, lined up after glazing", tr: "Sırlamadan sonra dizilmiş, kil tabanlı sabah fincanları" } },
@@ -303,12 +332,22 @@ export const ui = {
   glazeOf: { en: "Glaze of {name}", tr: "{name} sırrı" },
   showGlaze: { en: "Show {glaze}", tr: "{glaze} göster" },
   glazes: { en: "{n} glazes", tr: "{n} sır" },
-  currency: { en: "Currency", tr: "Para birimi" },
   newBadge: { en: "New this week", tr: "Bu hafta yeni" },
   reviews: { en: "{n} reviews", tr: "{n} değerlendirme" },
   ratingLabel: { en: "Rated {r} out of 5", tr: "5 üzerinden {r} puan" },
   fired: { en: "Fired {date}", tr: "Pişirim {date}" },
   continueShopping: { en: "Keep shopping", tr: "Alışverişe devam" },
+  discount: { en: "Discount", tr: "İndirim" },
+  code: { en: "Discount code", tr: "İndirim kodu" },
+  apply: { en: "Apply", tr: "Uygula" },
+  codeHint: { en: "Try FIRSTFIRING", tr: "FIRSTFIRING’i deneyin" },
+  codeEmpty: { en: "Enter a code.", tr: "Bir kod girin." },
+  codeApplied: { en: "Code applied", tr: "Kod uygulandı" },
+  removeCode: { en: "Remove code {code}", tr: "{code} kodunu kaldır" },
+  "coupon-invalid": { en: "“{code}” isn’t a valid code.", tr: "“{code}” geçerli bir kod değil." },
+  "coupon-expired": { en: "“{code}” has expired.", tr: "“{code}” kodunun süresi doldu." },
+  "coupon-min-subtotal": { en: "This code needs a subtotal of {amount} or more.", tr: "Bu kod için ara toplam en az {amount} olmalı." },
+  "coupon-not-applicable": { en: "“{code}” doesn’t apply to the pieces in your cart.", tr: "“{code}” sepetinizdeki parçalarda geçerli değil." },
 } satisfies Record<string, L>;
 
 export const fill = (s: string, vars: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ""));

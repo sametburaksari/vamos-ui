@@ -3,7 +3,7 @@ import type { BlockMeta } from "../types";
 const meta: BlockMeta = {
   title: "Product detail",
   description:
-    "Storefront product page: gallery with thumbnails, hover magnifier and full-screen zoom; glaze and size pickers with stock per variant; quantity; sale price with VAT; add to cart with a toast and mini-cart drawer; delivery estimate from the dispatch cut-off; details, size guide and reviews tabs; related products. EN / TR, TRY.",
+    "Storefront product page on the kit cart: gallery with thumbnails, hover magnifier and full-screen zoom; glaze and size pickers with stock per variant (each glaze + size is a catalog variant); quantity; sale price with VAT; add to cart with a toast and mini-cart drawer; delivery estimate from the dispatch cut-off; details, size guide and reviews tabs; related products. The cart is saved in localStorage and priced from the same catalog as the checkout endpoint. EN / TR, TRY.",
   category: "Commerce",
   order: 10,
   tags: ["site", "ops"],

@@ -25,10 +25,10 @@ import {
   toast,
 } from "@vamos-ui/react";
 import { RatingStars } from "@vamos-ui/react/blocks";
-import { Clock, PackageCheck, RotateCcw, Store, Truck } from "lucide-react";
+import { Clock, RotateCcw, Truck } from "lucide-react";
 import { NOW_MS } from "../../_shared/time";
-import { businessDay, featured, FREE_SHIPPING_FROM, ratingBreakdown, relatedIds, reviews, shopItems, times, vatIncluded, type FeaturedSizeId, type ShopItem } from "./catalogue";
-import { useCart, useShop } from "./cart-store";
+import { businessDay, featured, FREE_SHIPPING_FROM, PLATE_ID, plateVariant, ratingBreakdown, relatedIds, reviews, shopItems, vatIncluded, type FeaturedSizeId, type ShopItem } from "./catalogue";
+import { useShop, useStoreCart } from "./cart-store";
 import { ProductGallery } from "./product-gallery";
 import { Eyebrow, PriceTag, ProductTile, StoreContainer } from "./storefront";
 
@@ -44,7 +44,7 @@ const CUTOFF_MIN = (() => {
 /** Product detail: gallery, glaze + size with stock, quantity, price, add to cart, delivery, tabs, related. */
 export function ProductDetail() {
   const { t, c, f, money, date } = useShop();
-  const cart = useCart();
+  const cart = useStoreCart();
   const [glazeId, setGlazeId] = React.useState("sea-salt");
   const [sizeId, setSizeId] = React.useState<FeaturedSizeId>("dinner");
   const [qty, setQty] = React.useState(1);
@@ -57,24 +57,16 @@ export function ProductDetail() {
   const glazeOut = featured.sizes.every((s) => (featured.stock[glazeId]?.[s.id] ?? 0) === 0);
   const name = t(featured.name);
   const optionText = `${t(size.name)} ${t(size.detail)} · ${t(glaze.name)}`;
-  const saving = size.compareAt ? Math.round((1 - Number(size.price) / Number(size.compareAt)) * 100) : 0;
-  const lineTotal = times(size.price, qty);
+  const saving = size.compareAt ? Math.round((1 - size.price / size.compareAt) * 100) : 0;
+  const lineTotal = size.price * qty;
 
   React.useEffect(() => {
     if (stock > 0 && qty > stock) setQty(stock);
   }, [stock, qty]);
 
   const addToCart = () => {
-    // Same key as the starter cart's dinner / sea-salt row, so adding it again raises that quantity.
-    cart.add("plate", qty, `plate-${sizeId}-${glazeId}`, {
-      ...shopItems.plate!,
-      sku: `${featured.sku}-${sizeId.slice(0, 3).toUpperCase()}-${glazeId.slice(0, 2).toUpperCase()}`,
-      option: { en: `${size.name.en} ${size.detail.en} · ${glaze.name.en}`, tr: `${size.name.tr} ${size.detail.tr} · ${glaze.name.tr}` },
-      price: size.price,
-      compareAt: size.compareAt,
-      photo: glaze.photos[0]!.id,
-      stock,
-    });
+    // One catalog variant per glaze + size: adding the same one again raises that line's quantity.
+    cart.add(PLATE_ID, qty, plateVariant(glazeId, sizeId));
     toast.success(c("Added to your cart", "Sepetinize eklendi"), {
       description: `${qty} × ${name} — ${optionText}`,
       action: { label: c("View cart", "Sepeti gör"), onClick: () => cart.setOpen(true) },
@@ -222,16 +214,6 @@ export function ProductDetail() {
                   <span className="text-fg-muted">
                     <span className="text-fg">{c("Standard", "Standart")}</span> · {f.dateRange(businessDay(2), businessDay(4), { weekday: "short", day: "numeric", month: "short" })}
                   </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <PackageCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-fg-muted" />
-                  <span className="text-fg-muted">
-                    <span className="text-fg">{c("Express", "Hızlı")}</span> · {date(businessDay(1), { weekday: "long", day: "numeric", month: "short" })}
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Store aria-hidden className="mt-0.5 size-4 shrink-0 text-fg-muted" />
-                  <span className="text-fg-muted">{c("Collect from the Kadıköy studio today, free", "Kadıköy atölyesinden bugün ücretsiz teslim alın")}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <RotateCcw aria-hidden className="mt-0.5 size-4 shrink-0 text-fg-muted" />
